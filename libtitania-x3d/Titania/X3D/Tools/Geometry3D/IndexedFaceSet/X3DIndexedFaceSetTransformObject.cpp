@@ -71,7 +71,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double SIZE_MIN = 1e-7;
+static constexpr double SIZE_MIN = 0;
 static constexpr size_t EVENTS   = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
@@ -372,7 +372,6 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 		}
 
 		setTranslate (false);
-		setTranslation (Vector3d ());
 	}
 }
 
@@ -429,10 +428,6 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 		// Transform tool was moved:
 
 		if (not (active or transformTool -> getField <SFBool> ("grouped")))
-			return;
-
-		// Prevent accidentially move.
-		if (events ++ < EVENTS)
 			return;
 	
 		setTranslate (true);
