@@ -384,8 +384,14 @@ box2 <Type>::normals () const
 {
 	vector2 <vector2 <Type>> normals;
 
-	const auto x = matrix () .x_axis ();
-	const auto y = matrix () .y_axis ();
+	auto x = matrix () .x_axis ();
+	auto y = matrix () .y_axis ();
+
+	if (abs (x) == 0)
+		x = vector2 <Type> (1, 0);
+
+	if (abs (y) == 0)
+		y = vector2 <Type> (0, 1);
 
 	normals .x (normalize (vector2 <Type> (-x .y (), x .x ())));
 	normals .y (normalize (vector2 <Type> (-y .y (), y .x ())));

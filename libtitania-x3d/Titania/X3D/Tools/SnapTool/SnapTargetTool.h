@@ -140,7 +140,7 @@ private:
 	set_enabled ();
 
 	void
-	set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool> & value);
+	set_transform_tools ();
 
 	void
 	set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master);
@@ -200,6 +200,7 @@ private:
 	
 	X3DWeakPtrArray <X3DTransformNode> transformNodes;
 	X3DWeakPtr <SnapTargetTool>        activeSnapTarget;
+	sigc::connection                   focusInConnection;
 
 };
 

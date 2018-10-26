@@ -271,7 +271,7 @@ X3DGridTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool> &
 			transformNode -> rotation ()    .removeInterest (&X3DGridTool::set_rotation,    this);
 			transformNode -> scale ()       .removeInterest (&X3DGridTool::set_scale,       this);
 		}
-		catch (const Error <DISPOSED> &)
+		catch (const Error <DISPOSED> & error)
 		{ }
 	}
 

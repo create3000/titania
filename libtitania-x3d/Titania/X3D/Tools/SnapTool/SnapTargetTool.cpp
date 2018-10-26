@@ -69,11 +69,12 @@ SnapTargetTool::Fields::Fields () :
 { }
 
 SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     X3DSnapTool (),
-	          fields (),
-	  transformNodes (),
-	activeSnapTarget (this)
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DSnapTool (),
+	           fields (),
+	   transformNodes (),
+	 activeSnapTarget (this),
+	focusInConnection ()
 {
 	addType (X3DConstants::SnapTargetTool);
 
@@ -125,9 +126,12 @@ SnapTargetTool::initialize ()
 	}
 
 	getBrowser () -> getTransformTools () .addInterest (&SnapTargetTool::set_transform_tools, this);
-	enabled () .addInterest (&SnapTargetTool::set_enabled, this);
 
-	set_transform_tools (getBrowser () -> getTransformTools ());
+	enabled () .addInterest (&SnapTargetTool::set_enabled,         this);
+	enabled () .addInterest (&SnapTargetTool::set_transform_tools, this);
+
+	set_enabled ();
+	set_transform_tools ();
 }
 
 void
@@ -137,16 +141,11 @@ SnapTargetTool::realize ()
 	{
 		X3DSnapTool::realize ();
 
-		getBrowser () -> signal_focus_in_event () .connect (sigc::mem_fun (this, &SnapTargetTool::on_focus_in_event));
-
 		getToolNode () -> setField <SFString> ("type", "SNAP_TARGET");
 
 		auto & set_snapped = getToolNode () -> getField <SFBool> ("set_snapped");
 		snapped () .addInterest (set_snapped);
 		set_snapped = snapped ();
-
-		if (getBrowser () -> has_focus ())
-			on_focus_in_event (nullptr);
 	}
 	catch (const X3DError & error)
 	{
@@ -165,18 +164,29 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	getBrowser () -> getTransformTools () .addInterest (&SnapTargetTool::set_transform_tools, this);
 
-	set_transform_tools (getBrowser () -> getTransformTools ());
+	set_enabled ();
+	set_transform_tools ();
 }
 
 void
 SnapTargetTool::set_enabled ()
 {
-	set_transform_tools (getBrowser () -> getTransformTools ());
+	focusInConnection .disconnect ();
+
+	if (enabled ())
+	{
+		focusInConnection = getBrowser () -> signal_focus_in_event () .connect (sigc::mem_fun (this, &SnapTargetTool::on_focus_in_event));
+	
+		if (getBrowser () -> has_focus ())
+			on_focus_in_event (nullptr);
+	}
 }
 
 void
-SnapTargetTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool> & value)
+SnapTargetTool::set_transform_tools ()
 {
+	const auto & value = getBrowser () -> getTransformTools ();
+
 	for (const auto & transformNode : transformNodes)
 	{
 		try
@@ -184,7 +194,7 @@ SnapTargetTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool
 			transformNode -> translation () .removeInterest (&SnapTargetTool::set_translation, this);
 			transformNode -> rotation ()    .removeInterest (&SnapTargetTool::set_rotation,    this);
 		}
-		catch (const Error <DISPOSED> &)
+		catch (const Error <DISPOSED> & error)
 		{ }
 	}
 
@@ -457,7 +467,7 @@ SnapTargetTool::getSnapTranslation (const Vector3d & position,
 		const auto & axis          = axes [i];
 		const auto & normal        = normals [i];
 		const auto   positionPlane = Plane3d (position, normal);
-		const auto   axisLine      = Line3d (center, normalize (axis));
+		const auto   axisLine      = Line3d (center, abs (axis) == 0 ? normal : normalize (axis));
 		const auto   intersection  = positionPlane .intersects (axisLine);
 
 		if (not intersection .second)
