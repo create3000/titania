@@ -167,6 +167,14 @@ X3DPrototypeInstance::construct ()
 {
 	try
 	{
+		if (protoNode -> checkLoadState () == FAILED_STATE)
+		{
+			if (isInitialized ())
+				getBrowser () -> removeLoadCount (this);
+
+			return;
+		}
+
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
