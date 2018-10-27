@@ -258,8 +258,16 @@ function eventsProcessed ()
 		var matrix      = new SFMatrix4f ();
 
 		modelViewMatrix .getTransform (translation, rotation, scale);
+		matrix .setTransform (translation, rotation);
 
 		// Reset scale and scaleOrientation
+
+		var inverseModelViewMatrix = modelViewMatrix .inverse () .multLeft (matrix);
+
+		inverseModelViewMatrix .getTransform (handles .translation,
+		                                      handles .rotation,
+		                                      handles .scale,
+		                                      handles .scaleOrientation);
 		
 		// Uniform scale circles
 
