@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 23 Oct 2018 10:54:28 GMT"
+META "modified" "Sat, 27 Oct 2018 12:37:25 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -111,80 +111,172 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF RotateScript Script {
-              inputOnly      SFBool     set_active
-              inputOnly      SFRotation set_rotation
-              inputOnly      SFRotation set_xRotation
-              inputOnly      SFRotation set_yRotation
-              inputOnly      SFRotation set_zRotation
-              inputOutput    SFDouble   snapAngle 0.19634954
-              inputOutput    SFBool     controlKey FALSE
-              inputOutput    SFBool     shiftKey FALSE
-              outputOnly     SFInt32    activeTool_changed
-              initializeOnly SFRotation rotation 0 0 1 0
-              initializeOnly SFVec3f    scale 1 1 1
-              initializeOnly SFRotation scaleOrientation 0 0 1 0
-              initializeOnly SFInt32    events 0
+            value DEF RotationHandleScript Script {
+              inputOnly      SFVec3f    set_center
+              inputOutput    SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+              inputOutput    SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
               inputOutput    SFNode     transform NULL
+              inputOutput    SFVec3f    bboxSize 0 0 0
+              inputOutput    SFVec3f    bboxCenter 0 0 0
+              initializeOnly SFNode     handles DEF RotationHandles Transform {
+                children [
+                  Group {
+                    children [
+                      DEF XRotationSensor CylinderSensor {
+                        axisRotation 0 0 1 90.0002104591497
+                        diskAngle 74.4845
+                        autoOffset FALSE
+                      }
+                      DEF XRotationHandle Transform {
+                        rotation 0 1 0 90.0002104591497
+                        children [
+                          DEF Cylinder Transform {
+                            rotation 1 0 0 90.0002104591497
+                            children Shape {
+                              appearance DEF Transparent Appearance {
+                                material Material {
+                                  transparency 1
+                                }
+                              }
+                              geometry Cylinder {
+                                height 0.02
+                              }
+                            }
+                          }
+                          Shape {
+                            appearance Appearance {
+                              material Material {
+                                emissiveColor 1 0 0
+                              }
+                            }
+                            geometry DEF Circle Circle2D { }
+                          }
+                          DEF XCircleSwitch Switch {
+                            whichChoice 0
+                            children Shape {
+                              appearance Appearance {
+                                material DEF XCircleMaterial Material {
+                                  emissiveColor 1 0 0
+                                  transparency 1
+                                }
+                              }
+                              geometry DEF Disk Disk2D { }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                  Group {
+                    children [
+                      DEF YRotationSensor CylinderSensor {
+                        diskAngle 74.4845
+                        autoOffset FALSE
+                      }
+                      DEF YRotationHandle Transform {
+                        rotation 1 0 0 90.0002104591497
+                        children [
+                          USE Cylinder
+                          Shape {
+                            appearance Appearance {
+                              material Material {
+                                emissiveColor 0 1 0
+                              }
+                            }
+                            geometry USE Circle
+                          }
+                          DEF YCircleSwitch Switch {
+                            whichChoice 0
+                            children Shape {
+                              appearance Appearance {
+                                material DEF YCircleMaterial Material {
+                                  emissiveColor 0 1 0
+                                  transparency 1
+                                }
+                              }
+                              geometry USE Disk
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                  Group {
+                    children [
+                      DEF ZRotationSensor CylinderSensor {
+                        axisRotation 1 0 0 90.0002104591497
+                        diskAngle 74.4845
+                        autoOffset FALSE
+                      }
+                      DEF ZRotationHandle Transform {
+                        children [
+                          USE Cylinder
+                          Shape {
+                            appearance Appearance {
+                              material Material {
+                                emissiveColor 0 0 1
+                              }
+                            }
+                            geometry USE Circle
+                          }
+                          DEF ZCircleSwitch Switch {
+                            whichChoice 0
+                            children Shape {
+                              appearance Appearance {
+                                material DEF ZCircleMaterial Material {
+                                  emissiveColor 0 0 1
+                                  transparency 1
+                                }
+                              }
+                              geometry USE Disk
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+              initializeOnly SFNode     xHandle USE XRotationHandle
+              initializeOnly SFNode     yHandle USE YRotationHandle
+              initializeOnly SFNode     zHandle USE ZRotationHandle
+              initializeOnly SFNode     self USE RotationHandleScript
 
-              url "peaseblossom:
-function set_active (value)
+              url "vrmlscript:
+function set_transform ()
 {
-	if (value)
+  Browser .addRoute (transform, 'center', self, 'set_center');
+}    
+
+function eventsProcessed ()
+{
+	try
 	{
-		activeTool_changed = 2;
+		var translation = new SFVec3f ();
+		var rotation    = new SFRotation ();
+		var scale       = new SFVec3f ();
+		var matrix      = new SFMatrix4f ();
 
-		// Normalize scale rotation matrix.
+		modelViewMatrix .getTransform (translation, rotation, scale);
 
-		var scaleRotation = new SFMatrix4f ();
-		scaleRotation .setTransform (new SFVec3f (),
-		                             transform. rotation,
-		                             transform .scale,
-		                             transform .scaleOrientation);
+		// Reset scale and scaleOrientation
+		
+		// Uniform scale circles
 
-		scaleRotation .getTransform (null, rotation, scale, scaleOrientation);
+		var bboxOuterRadius  = bboxSize .length () * Math .max (scale .x, scale .y, scale .z) / 2;
+		var distanceToCenter = transform .center .subtract (bboxCenter) .multVec (scale) .length ();
 
-		transform .rotation         = rotation;
-		transform .scale            = scale;
-		transform .scaleOrientation = scaleOrientation;
+		var radius = Math .max (bboxOuterRadius, distanceToCenter);
+		var scale  = new SFVec3f (radius, radius, radius);
 
-		events = 4;
+		xHandle .scale = scale;
+		yHandle .scale = scale;
+		zHandle .scale = scale;
 	}
-	else
-		activeTool_changed = 0;
-}
-
-function set_xRotation (value)
-{
-	rotate (value);
-}
-
-function set_yRotation (value)
-{
-	rotate (value);
-}
-
-function set_zRotation (value)
-{
-	rotate (value);
-}
-
-function rotate (value)
-{
-	if (events)
+	catch (error)
 	{
-		// Prevent accidentially move.
-		-- events;
-		return;
+		// Catch error from matrix inverse.
 	}
-
-	if (controlKey && ! shiftKey)
-	{
-		var angle = Math .round (value .angle / snapAngle) * snapAngle;
-		value = new SFRotation (value .getAxis (), angle);
-	}
-
-	transform .rotation = value .multiply (rotation);
 }
 "
               directOutput TRUE
@@ -364,11 +456,7 @@ Collision {
                           autoOffset FALSE
                         }
                         DEF Plane Shape {
-                          appearance DEF Transparent Appearance {
-                            material Material {
-                              transparency 1
-                            }
-                          }
+                          appearance USE Transparent
                           geometry Rectangle2D {
                             size 1 1
                           }
@@ -1210,121 +1298,7 @@ Collision {
               whichChoice 0
               children [
                 Group { }
-                DEF RotationHandles Transform {
-                  children [
-                    Group {
-                      children [
-                        DEF XRotationSensor CylinderSensor {
-                          axisRotation 0 0 1 90.0002104591497
-                          diskAngle 74.4845
-                          autoOffset FALSE
-                        }
-                        DEF XRotationHandle Transform {
-                          rotation 0 1 0 90.0002104591497
-                          children [
-                            DEF Cylinder Transform {
-                              rotation 1 0 0 90.0002104591497
-                              children Shape {
-                                appearance USE Transparent
-                                geometry Cylinder {
-                                  height 0.02
-                                }
-                              }
-                            }
-                            Shape {
-                              appearance Appearance {
-                                material Material {
-                                  emissiveColor 1 0 0
-                                }
-                              }
-                              geometry DEF Circle Circle2D { }
-                            }
-                            DEF XCircleSwitch Switch {
-                              whichChoice 0
-                              children Shape {
-                                appearance Appearance {
-                                  material DEF XCircleMaterial Material {
-                                    emissiveColor 1 0 0
-                                    transparency 1
-                                  }
-                                }
-                                geometry DEF Disk Disk2D { }
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                    Group {
-                      children [
-                        DEF YRotationSensor CylinderSensor {
-                          diskAngle 74.4845
-                          autoOffset FALSE
-                        }
-                        DEF YRotationHandle Transform {
-                          rotation 1 0 0 90.0002104591497
-                          children [
-                            USE Cylinder
-                            Shape {
-                              appearance Appearance {
-                                material Material {
-                                  emissiveColor 0 1 0
-                                }
-                              }
-                              geometry USE Circle
-                            }
-                            DEF YCircleSwitch Switch {
-                              whichChoice 0
-                              children Shape {
-                                appearance Appearance {
-                                  material DEF YCircleMaterial Material {
-                                    emissiveColor 0 1 0
-                                    transparency 1
-                                  }
-                                }
-                                geometry USE Disk
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                    Group {
-                      children [
-                        DEF ZRotationSensor CylinderSensor {
-                          axisRotation 1 0 0 90.0002104591497
-                          diskAngle 74.4845
-                          autoOffset FALSE
-                        }
-                        DEF ZRotationHandle Transform {
-                          children [
-                            USE Cylinder
-                            Shape {
-                              appearance Appearance {
-                                material Material {
-                                  emissiveColor 0 0 1
-                                }
-                              }
-                              geometry USE Circle
-                            }
-                            DEF ZCircleSwitch Switch {
-                              whichChoice 0
-                              children Shape {
-                                appearance Appearance {
-                                  material DEF ZCircleMaterial Material {
-                                    emissiveColor 0 0 1
-                                    transparency 1
-                                  }
-                                }
-                                geometry USE Disk
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
+                USE RotationHandles
                 Group { }
               ]
             }
@@ -1787,66 +1761,7 @@ function eventsProcessed ()
   directOutput TRUE
 }
 
-DEF RotationHandleScript Script {
-  inputOnly      SFVec3f    set_center
-  inputOutput    SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput    SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput    SFNode     transform NULL
-  inputOutput    SFVec3f    bboxSize 0 0 0
-  inputOutput    SFVec3f    bboxCenter 0 0 0
-  initializeOnly SFNode     handles USE RotationHandles
-  initializeOnly SFNode     xHandle USE XRotationHandle
-  initializeOnly SFNode     yHandle USE YRotationHandle
-  initializeOnly SFNode     zHandle USE ZRotationHandle
-  initializeOnly SFNode     self USE RotationHandleScript
-
-  url "vrmlscript:
-function set_transform ()
-{
-  Browser .addRoute (transform, 'center', self, 'set_center');
-}    
-
-function eventsProcessed ()
-{
-	try
-	{
-		var translation = new SFVec3f ();
-		var rotation    = new SFRotation ();
-		var scale       = new SFVec3f ();
-		var matrix      = new SFMatrix4f ();
-
-		modelViewMatrix .getTransform (translation, rotation, scale);
-		matrix .setTransform (translation, rotation);
-
-		// Reset scale and scaleOrientation
-
-		var inverseModelViewMatrix = modelViewMatrix .inverse () .multLeft (matrix);
-
-		inverseModelViewMatrix .getTransform (handles .translation,
-		                                      handles .rotation,
-		                                      handles .scale,
-		                                      handles .scaleOrientation);
-		
-		// Uniform scale circles
-
-		var bboxOuterRadius  = bboxSize .multVec (scale) .length () / 2;
-		var distanceToCenter = transform .center .subtract (bboxCenter) .multVec (scale) .length ();
-
-		var radius = Math .max (bboxOuterRadius, distanceToCenter);
-		var scale  = new SFVec3f (radius, radius, radius);
-
-		xHandle .scale = scale;
-		yHandle .scale = scale;
-		zHandle .scale = scale;
-	}
-	catch (error)
-	{
-		// Catch error from matrix inverse.
-	}
-}
-"
-  directOutput TRUE
-}
+USE RotationHandleScript
 
 DEF DiskScript Script {
   inputOnly      SFBool  set_x
@@ -1890,7 +1805,84 @@ function isActive (sensorA, sensorB, sensorC)
 "
 }
 
-USE RotateScript
+DEF RotateScript Script {
+  inputOnly      SFBool     set_active
+  inputOnly      SFRotation set_rotation
+  inputOnly      SFRotation set_xRotation
+  inputOnly      SFRotation set_yRotation
+  inputOnly      SFRotation set_zRotation
+  inputOutput    SFDouble   snapAngle 0.19634954
+  inputOutput    SFBool     controlKey FALSE
+  inputOutput    SFBool     shiftKey FALSE
+  outputOnly     SFInt32    activeTool_changed
+  initializeOnly SFRotation rotation 0 0 1 0
+  initializeOnly SFVec3f    scale 1 1 1
+  initializeOnly SFRotation scaleOrientation 0 0 1 0
+  initializeOnly SFInt32    events 0
+  inputOutput    SFNode     transform NULL
+
+  url "peaseblossom:
+function set_active (value)
+{
+	if (value)
+	{
+		activeTool_changed = 2;
+
+		// Normalize scale rotation matrix.
+
+		var scaleRotation = new SFMatrix4f ();
+		scaleRotation .setTransform (new SFVec3f (),
+		                             transform. rotation,
+		                             transform .scale,
+		                             transform .scaleOrientation);
+
+		scaleRotation .getTransform (null, rotation, scale, scaleOrientation);
+
+		transform .rotation         = rotation;
+		transform .scale            = scale;
+		transform .scaleOrientation = scaleOrientation;
+
+		events = 4;
+	}
+	else
+		activeTool_changed = 0;
+}
+
+function set_xRotation (value)
+{
+	rotate (value);
+}
+
+function set_yRotation (value)
+{
+	rotate (value);
+}
+
+function set_zRotation (value)
+{
+	rotate (value);
+}
+
+function rotate (value)
+{
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
+	if (controlKey && ! shiftKey)
+	{
+		var angle = Math .round (value .angle / snapAngle) * snapAngle;
+		value = new SFRotation (value .getAxis (), angle);
+	}
+
+	transform .rotation = value .multiply (rotation);
+}
+"
+  directOutput TRUE
+}
 
 DEF ScaleHandlesScript Script {
   inputOutput    SFVec3f bboxSize 0 0 0

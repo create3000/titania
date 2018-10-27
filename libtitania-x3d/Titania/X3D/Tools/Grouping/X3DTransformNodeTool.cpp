@@ -537,7 +537,6 @@ X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 	
 		switch (type)
 		{
-			case TraverseType::POINTER:
 			case TraverseType::DISPLAY:
 			{
 				// Last chance to process events

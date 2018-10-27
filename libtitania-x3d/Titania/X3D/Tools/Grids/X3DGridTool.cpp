@@ -374,8 +374,8 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 //__LOG__ << std::endl;
 
-		const auto matrixBefore = normalize (Matrix4d (master -> getMatrix ())) * master -> getModelMatrix (); // Matrix before transformation
-		const auto matrixAfter  = normalize (master -> getCurrentMatrix ()) * master -> getModelMatrix (); // Matrix after transformation
+		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
+		const auto matrixAfter  = master -> getCurrentMatrix () * master -> getModelMatrix ();     // Matrix after transformation
 
 		const auto distances = std::vector <double> ({ dot (normalize (matrixAfter .x_axis ()), normalize (matrixBefore .x_axis ())),
 		                                               dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),

@@ -569,7 +569,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 		// The abs () wrapping is to avoid problems when `dot' "overflows" a tiny wee bit,
 		// which can lead to sqrt () returning NaN.
 		crossvec *= std::sqrt (std::abs (1 - cos_angle) / 2);
-		m_quat   = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt ((1 + cos_angle) / 2));
+		m_quat   = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt (std::abs (1 + cos_angle) / 2));
 	}
 
 	update ();
@@ -616,7 +616,7 @@ template <class Type>
 void
 rotation4 <Type>::update ()
 {
-	if (std::abs (m_quat .w ()) >= 1)
+	if (std::abs (m_quat .w ()) > 1)
 	{
 		m_x     = 0;
 		m_y     = 0;
@@ -625,12 +625,25 @@ rotation4 <Type>::update ()
 	}
 	else
 	{
-		const vector3 <Type> vector = math::normalize (imag (m_quat));
+		const auto angle = std::acos (m_quat .w ()) * 2;
+		const auto scale = std::sin (angle / 2);
+
+		if (scale == 0)
+		{
+			m_x     = 0;
+			m_y     = 0;
+			m_z     = 1;
+			m_angle = 0;
+		}
+		else
+		{
+			const auto axis = imag (m_quat) / scale;
 	
-		m_x     = vector .x ();
-		m_y     = vector .y ();
-		m_z     = vector .z ();
-		m_angle = 2 * std::acos (m_quat .w ());
+			m_x     = axis .x ();
+			m_y     = axis .y ();
+			m_z     = axis .z ();
+			m_angle = angle;
+		}
 	}
 }
 

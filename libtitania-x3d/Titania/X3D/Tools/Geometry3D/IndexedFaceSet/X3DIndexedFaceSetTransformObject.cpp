@@ -211,10 +211,13 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 
 		if (abs (bbox .size ()))
 		{
-			orientation = Rotation4d (normalize (bbox .matrix ()) .submatrix ());
-			center      = bbox .center () * ~orientation;
-			size        = Vector3d (abs (bbox .matrix () .x_axis ()), abs (bbox .matrix () .y_axis ()), abs (bbox .matrix () .z_axis ())) * 2.0;
-			size        = max (size, -size); // max (v, -v): Componentwise abs.
+			Vector3d t;
+
+			normalize (bbox .matrix ()) .get (t, orientation);
+
+			center = bbox .center () * ~orientation;
+			size   = Vector3d (abs (bbox .matrix () .x_axis ()), abs (bbox .matrix () .y_axis ()), abs (bbox .matrix () .z_axis ())) * 2.0;
+			size   = max (size, -size); // max (v, -v): Componentwise abs.
 		}
 		else
 		{

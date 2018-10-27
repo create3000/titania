@@ -118,31 +118,13 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto m = Matrix4d ();
+	auto f = Vector3d (1,1,0);
+	auto t = Vector3d (1,1,1);
+	auto r = Rotation4d (f, t);
 
-	m .x_axis (Vector3d (0, 0, 0));
-	m .y_axis (Vector3d (0, 0, 0));
-	m .z_axis (Vector3d (1, 0, 0));
-
-	__LOG__ << normalize (m) << std::endl;
-
-	m .x_axis (Vector3d (0, 0, 0));
-	m .y_axis (Vector3d (0, 0, 0));
-	m .z_axis (Vector3d (0, 1, 0));
-
-	__LOG__ << normalize (m) << std::endl;
-
-	m .x_axis (Vector3d (0, 0, 0));
-	m .y_axis (Vector3d (0, 0, 0));
-	m .z_axis (Vector3d (0, 0, 1));
-
-	__LOG__ << normalize (m) << std::endl;
-
-	m .x_axis (Vector3d (0, 0, 0));
-	m .y_axis (Vector3d (0, 0, 0));
-	m .z_axis (Vector3d (0, 0, 0));
-
-	__LOG__ << normalize (m) << std::endl;
+	__LOG__ << normalize (cross (f, t)) << std::endl;
+	__LOG__ << r << std::endl;
+	__LOG__ << abs (r .axis ()) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

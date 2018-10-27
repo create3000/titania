@@ -295,9 +295,9 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		const auto absolutePosition = Vector3d (position () .getValue ()) * getModelMatrix ();
 		const auto absoluteNormal   = normalize (getModelMatrix () .mult_dir_matrix (Vector3d (normal () .getValue ())));
-		const auto matrixBefore     = normalize (Matrix4d (master -> getMatrix ())) * master -> getModelMatrix (); // Matrix before transformation
-		const auto matrixAfter      = normalize (master -> getCurrentMatrix ()) * master -> getModelMatrix (); // Matrix after transformation
-		const auto absoluteMatrix   = master -> getCurrentMatrix () * master -> getModelMatrix ();
+		const auto matrixBefore     = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
+		const auto matrixAfter      = master -> getCurrentMatrix () * master -> getModelMatrix ();     // Matrix after transformation
+		const auto absoluteMatrix   = matrixAfter;
 		const auto bbox             = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 
 		// Determine rotation axis and the tho snap axes.
@@ -333,11 +333,11 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		const auto dynamicSnapDistance = getDynamicSnapDistance () * 2;
 		const auto distance            = std::max (abs (bbox .center () - center), abs (bbox .size ()));
-		const auto snapPoint           = center + snapVector * distance;
-		const auto point1a             = center + snapAxis1 * distance;
-		const auto point1b             = center - snapAxis1 * distance;
-		const auto point2a             = center + snapAxis2 * distance;
-		const auto point2b             = center - snapAxis2 * distance;
+		const auto snapPoint           = snapVector * distance;
+		const auto point1a             = snapAxis1 * distance;
+		const auto point1b             = -snapAxis1 * distance;
+		const auto point2a             = snapAxis2 * distance;
+		const auto point2b             = -snapAxis2 * distance;
 
 		// Determine snap rotation.
 
@@ -353,16 +353,16 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		{
 			if (distance1 < dynamicSnapDistance)
 			{
-				snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (distance1a < distance1b ? axis1 : -axis1),
-		                                 inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
+				snapRotation = Rotation4d (master -> getModelMatrix () .mult_matrix_dir (distance1a < distance1b ? snapAxis1 : -snapAxis1),
+		                                 master -> getModelMatrix () .mult_matrix_dir (snapVector));
 			}
 		}
 		else
 		{
 			if (distance2 < dynamicSnapDistance)
 			{
-				snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (distance2a < distance2b ? axis2 : -axis2),
-		                                 inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
+				snapRotation = Rotation4d (master -> getModelMatrix () .mult_matrix_dir (distance2a < distance2b ? snapAxis2 : -snapAxis2),
+		                                 master -> getModelMatrix () .mult_matrix_dir (snapVector));
 			}
 		}
 
@@ -372,7 +372,6 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			return;
 
 		// Snap master.
-
 
 		const auto currentMatrix = Matrix4d (master -> translation ()      .getValue (),
 		                                     master -> rotation ()         .getValue () * snapRotation,
