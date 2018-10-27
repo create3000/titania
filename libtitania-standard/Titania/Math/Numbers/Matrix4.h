@@ -1712,7 +1712,11 @@ normalize (const matrix4 <Type> & matrix)
 	}
 	else
 	{
-		std::array <vector3 <Type>, 3> axes = { vector3 <Type> (1, 0, 0), vector3 <Type> (0, 1, 0), vector3 <Type> (0, 0, 1) };
+		const std::array <vector3 <Type>, 3> axes = {
+			vector3 <Type> (1, 0, 0),
+			vector3 <Type> (0, 1, 0),
+			vector3 <Type> (0, 0, 1)
+		};
 
 		if (norm (x) == 0)
 		{
