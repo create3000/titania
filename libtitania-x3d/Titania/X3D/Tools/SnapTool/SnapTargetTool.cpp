@@ -312,14 +312,9 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		const auto axes = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
 
-		const auto axis0 = normalize (axes [index0]); // Rotation axis
 		const auto axis1 = normalize (axes [index1]); // Snap axis 1
 		const auto axis2 = normalize (axes [index2]); // Snap axis 2
-
-		// Project snap axes onto plane of rotation axis.
-
-		const auto snapAxis1 = normalize (cross (cross (axis0, axis1), axis0));
-		const auto snapAxis2 = normalize (cross (cross (axis0, axis2), axis0));
+		const auto axis0 = normalize (cross (axis1, axis2)); // Rotation axis
 
 		// Determine snap vector, from center to the position of this SnapTarget, projected onto plane of rotation axis.
 		// If the angle between the normal of this SnapTarget and rotation axis is very small (<10°) the vector from
@@ -334,10 +329,10 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto dynamicSnapDistance = getDynamicSnapDistance () * 2;
 		const auto distance            = std::max (abs (bbox .center () - center), abs (bbox .size ()));
 		const auto snapPoint           = snapVector * distance;
-		const auto point1a             = snapAxis1 * distance;
-		const auto point1b             = -snapAxis1 * distance;
-		const auto point2a             = snapAxis2 * distance;
-		const auto point2b             = -snapAxis2 * distance;
+		const auto point1a             = axis1 * distance;
+		const auto point1b             = -axis1 * distance;
+		const auto point2a             = axis2 * distance;
+		const auto point2b             = -axis2 * distance;
 
 		// Determine snap rotation.
 
@@ -353,16 +348,16 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		{
 			if (distance1 < dynamicSnapDistance)
 			{
-				snapRotation = Rotation4d (master -> getModelMatrix () .mult_matrix_dir (distance1a < distance1b ? snapAxis1 : -snapAxis1),
-		                                 master -> getModelMatrix () .mult_matrix_dir (snapVector));
+				snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (distance1a < distance1b ? axis1 : -axis1),
+		                                 inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
 			}
 		}
 		else
 		{
 			if (distance2 < dynamicSnapDistance)
 			{
-				snapRotation = Rotation4d (master -> getModelMatrix () .mult_matrix_dir (distance2a < distance2b ? snapAxis2 : -snapAxis2),
-		                                 master -> getModelMatrix () .mult_matrix_dir (snapVector));
+				snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (distance2a < distance2b ? axis2 : -axis2),
+		                                 inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
 			}
 		}
 
