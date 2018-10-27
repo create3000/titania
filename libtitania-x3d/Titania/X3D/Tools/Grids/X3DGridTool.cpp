@@ -374,20 +374,17 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 //__LOG__ << std::endl;
 
-		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
-		const auto matrixAfter  = master -> getCurrentMatrix ()     * master -> getModelMatrix (); // Matrix after transformation
+		const auto matrixBefore = normalize (Matrix4d (master -> getMatrix ())) * master -> getModelMatrix (); // Matrix before transformation
+		const auto matrixAfter  = normalize (master -> getCurrentMatrix ()) * master -> getModelMatrix (); // Matrix after transformation
 
-		const auto axesBefore = normalize (matrixBefore);
-		const auto axesAfter  = normalize (matrixAfter);
-
-		const auto distances = std::vector <double> ({ dot (normalize (axesAfter .x_axis ()), normalize (axesBefore .x_axis ())),
-		                                               dot (normalize (axesAfter .y_axis ()), normalize (axesBefore .y_axis ())),
-		                                               dot (normalize (axesAfter .z_axis ()), normalize (axesBefore .z_axis ())) });
+		const auto distances = std::vector <double> ({ dot (normalize (matrixAfter .x_axis ()), normalize (matrixBefore .x_axis ())),
+		                                               dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),
+		                                               dot (normalize (matrixAfter .z_axis ()), normalize (matrixBefore .z_axis ())) });
 
 		const auto index0 = std::max_element (distances .cbegin (), distances .cend ()) - distances .cbegin (); // Index of rotation axis
 
-		const auto y = std::vector <Vector3d> ({ axesAfter .x_axis (), axesAfter .y_axis (), axesAfter .z_axis () }); // Rotation axis, equates to grid normal
-		const auto z = std::vector <Vector3d> ({ axesAfter .y_axis (), axesAfter .z_axis (), axesAfter .y_axis () }); // Axis which snaps, later transformed to grid space
+		const auto y = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
+		const auto z = std::vector <Vector3d> ({ matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }); // Axis which snaps, later transformed to grid space
 
 		const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 

@@ -295,25 +295,22 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		const auto absolutePosition = Vector3d (position () .getValue ()) * getModelMatrix ();
 		const auto absoluteNormal   = normalize (getModelMatrix () .mult_dir_matrix (Vector3d (normal () .getValue ())));
-		const auto matrixBefore     = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
-		const auto matrixAfter      = master -> getCurrentMatrix ()     * master -> getModelMatrix (); // Matrix after transformation
-		const auto absoluteMatrix   = matrixAfter;
+		const auto matrixBefore     = normalize (Matrix4d (master -> getMatrix ())) * master -> getModelMatrix (); // Matrix before transformation
+		const auto matrixAfter      = normalize (master -> getCurrentMatrix ()) * master -> getModelMatrix (); // Matrix after transformation
+		const auto absoluteMatrix   = master -> getCurrentMatrix () * master -> getModelMatrix ();
 		const auto bbox             = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
 
 		// Determine rotation axis and the tho snap axes.
 
-		const auto axesBefore = normalize (matrixBefore);
-		const auto axesAfter  = normalize (matrixAfter);
-
-		const auto distances = std::vector <double> ({ dot (normalize (axesAfter .x_axis ()), normalize (axesBefore .x_axis ())),
-		                                               dot (normalize (axesAfter .y_axis ()), normalize (axesBefore .y_axis ())),
-		                                               dot (normalize (axesAfter .z_axis ()), normalize (axesBefore .z_axis ())) });
+		const auto distances = std::vector <double> ({ dot (normalize (matrixAfter .x_axis ()), normalize (matrixBefore .x_axis ())),
+		                                               dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),
+		                                               dot (normalize (matrixAfter .z_axis ()), normalize (matrixBefore .z_axis ())) });
 
 		const auto index0 = std::max_element (distances .cbegin (), distances .cend ()) - distances .cbegin (); // Index of rotation axis
 		const auto index1 = (index0 + 1) % distances .size ();
 		const auto index2 = (index0 + 2) % distances .size ();
 
-		const auto axes = std::vector <Vector3d> ({ axesAfter .x_axis (), axesAfter .y_axis (), axesAfter .z_axis () }); // Rotation axis, equates to grid normal
+		const auto axes = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
 
 		const auto axis0 = normalize (axes [index0]); // Rotation axis
 		const auto axis1 = normalize (axes [index1]); // Snap axis 1
