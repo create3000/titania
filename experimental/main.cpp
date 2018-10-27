@@ -118,18 +118,31 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto b = Box3d (Vector3d (0, 0, 0), Vector3d ());
+	auto m = Matrix4d ();
 
-	__LOG__ << b .matrix () << std::endl;
+	m .x_axis (Vector3d (0, 0, 0));
+	m .y_axis (Vector3d (0, 0, 0));
+	m .z_axis (Vector3d (1, 0, 0));
 
-	b .rotate (Rotation4d (0, 1, 0, pi <double> / 4));
+	__LOG__ << normalize (m) << std::endl;
 
-	__LOG__ << b .matrix () << std::endl;
+	m .x_axis (Vector3d (0, 0, 0));
+	m .y_axis (Vector3d (0, 0, 0));
+	m .z_axis (Vector3d (0, 1, 0));
 
-	auto n = b .normals ();
-	
-	for (const auto & v : n)
-		__LOG__ << v << std::endl;
+	__LOG__ << normalize (m) << std::endl;
+
+	m .x_axis (Vector3d (0, 0, 0));
+	m .y_axis (Vector3d (0, 0, 0));
+	m .z_axis (Vector3d (0, 0, 1));
+
+	__LOG__ << normalize (m) << std::endl;
+
+	m .x_axis (Vector3d (0, 0, 0));
+	m .y_axis (Vector3d (0, 0, 0));
+	m .z_axis (Vector3d (0, 0, 0));
+
+	__LOG__ << normalize (m) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

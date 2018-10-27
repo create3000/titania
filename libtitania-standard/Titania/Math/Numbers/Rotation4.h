@@ -552,7 +552,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 		else
 		{
 			// Try crossing with x axis.
-			vector3 <Type> t = cross (from, vector3 <Type> (1, 0, 0));
+			auto t = cross (from, vector3 <Type> (1, 0, 0));
 
 			// If not ok, cross with y axis.
 			if (norm (t) == 0)

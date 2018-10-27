@@ -261,9 +261,6 @@ private:
 	void
 	set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master);
 
-	vector3 <Vector3d>
-	getRotationAxes (const Matrix4d & matrix) const;
-
 	Matrix4d
 	getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t);
 

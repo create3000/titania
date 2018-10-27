@@ -211,7 +211,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 
 		if (abs (bbox .size ()))
 		{
-			orientation = Rotation4d (getRotationMatrix (bbox .matrix ()));
+			orientation = Rotation4d (normalize (bbox .matrix ()) .submatrix ());
 			center      = bbox .center () * ~orientation;
 			size        = Vector3d (abs (bbox .matrix () .x_axis ()), abs (bbox .matrix () .y_axis ()), abs (bbox .matrix () .z_axis ())) * 2.0;
 			size        = max (size, -size); // max (v, -v): Componentwise abs.
@@ -510,63 +510,6 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox (const std::vector <Vector3d> &
 	                        center .x (), center .y (), center .z (), 1));
 
 	return bbox;
-}
-
-Matrix3d
-X3DIndexedFaceSetTransformObject::getRotationMatrix (const Matrix4d & matrix) const
-{
-	auto x = matrix .x_axis ();
-	auto y = matrix .y_axis ();
-	auto z = matrix .z_axis ();
-
-	if (abs (x) == 0)
-	{
-		x = cross (y, z);
-
-		if (abs (x) == 0)
-		{
-			x = Vector3d (1, 0, 0);
-
-			if (abs (y))
-				x = cross (y, cross (x, y));
-			else if (abs (z))
-				x = cross (z, cross (x, z));
-		}
-	}
-
-	if (abs (y) == 0)
-	{
-		y = cross (z, x);
-
-		if (abs (y) == 0)
-		{
-			y = Vector3d (0, 1, 0);
-
-			if (abs (x))
-				y = cross (x, cross (y, x));
-			else if (abs (z))
-				y = cross (z, cross (y, z));
-		}
-	}
-
-	if (abs (z) == 0)
-	{
-		z = cross (x, y);
-
-		if (abs (z) == 0)
-		{
-			z = Vector3d (0, 0, 1);
-
-			if (abs (x))
-				z = cross (x, cross (z, x));
-			else if (abs (y))
-				z = cross (y, cross (z, y));
-		}
-	}
-
-	return Matrix3d (x .x (), x .y (), x .z (),
-	                 y .x (), y .y (), y .z (),
-	                 z .x (), z .y (), z .z ());
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()

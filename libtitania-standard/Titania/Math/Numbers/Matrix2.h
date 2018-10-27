@@ -1077,6 +1077,23 @@ operator / (const matrix2 <Type> & lhs, const Type & rhs)
 	return matrix2 <Type> (lhs) /= rhs;
 }
 
+///  Return @a matrix normalized, so that there are no axes with zero length.
+template <class Type>
+matrix2 <Type> 
+normalize (const matrix2 <Type> & matrix)
+{
+	auto x = matrix .x_axis ();
+
+	if (std::abs (x) == 0)
+		x = 1;
+
+	const auto o = matrix .origin ();
+
+	return matrix2 <Type> (x, 0,
+	                       o, 1);
+}
+
+
 ///  @relates matrix2
 ///  @name Input/Output operations
 

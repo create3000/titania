@@ -1695,6 +1695,142 @@ operator / (const matrix4 <Type> & lhs, const Type & rhs)
 	return matrix4 <Type> (lhs) /= rhs;
 }
 
+///  Return @a matrix normalized, so that there are no axes with zero length.
+template <class Type>
+matrix4 <Type> 
+normalize (const matrix4 <Type> & matrix)
+{
+	auto x = matrix .x_axis ();
+	auto y = matrix .y_axis ();
+	auto z = matrix .z_axis ();
+
+	if (norm (x) == 0 and norm (y) == 0 and norm (z) == 0)
+	{
+		x = vector3 <Type> (1, 0, 0);
+		y = vector3 <Type> (0, 1, 0);
+		z = vector3 <Type> (0, 0, 1);
+	}
+	else
+	{
+		std::array <vector3 <Type>, 3> axes = { vector3 <Type> (1, 0, 0), vector3 <Type> (0, 1, 0), vector3 <Type> (0, 0, 1) };
+
+		if (norm (x) == 0)
+		{
+			x = cross (y, z);
+	
+			if (norm (x) == 0)
+			{
+				for (const auto & a : axes)
+				{
+					x = cross (a, y);
+	
+					if (norm (x) == 0)
+						continue;
+	
+					break;
+				}
+			}
+	
+			if (norm (x) == 0)
+			{
+				for (const auto & a : axes)
+				{
+					x = cross (a, z);
+	
+					if (norm (x) == 0)
+						continue;
+	
+					break;
+				}
+			}
+	
+			if (norm (x) == 0)
+				x = vector3 <Type> (1, 0, 0);
+			else
+				x .normalize ();
+		}
+	
+		if (norm (y) == 0)
+		{
+			y = cross (z, x);
+	
+			if (norm (y) == 0)
+			{
+				for (const auto & a : axes)
+				{
+					y = cross (a, z);
+	
+					if (norm (y) == 0)
+						continue;
+	
+					break;
+				}
+			}
+	
+			if (norm (y) == 0)
+			{
+				for (const auto & a : axes)
+				{
+					y = cross (a, x);
+	
+					if (norm (y) == 0)
+						continue;
+	
+					break;
+				}
+			}
+	
+			if (norm (y) == 0)
+				y = vector3 <Type> (0, 1, 0);
+			else
+				y .normalize ();
+		}
+	
+		if (norm (z) == 0)
+		{
+			z = cross (x, y);
+	
+			if (norm (z) == 0)
+			{
+				for (const auto & a : axes)
+				{
+					z = cross (a, x);
+	
+					if (norm (z) == 0)
+						continue;
+	
+					break;
+				}
+			}
+	
+			if (norm (z) == 0)
+			{
+				for (const auto & a : axes)
+				{
+					z = cross (a, y);
+	
+					if (norm (z) == 0)
+						continue;
+	
+					break;
+				}
+			}
+	
+			if (norm (z) == 0)
+				z = vector3 <Type> (0, 0, 1);
+			else
+				z .normalize ();
+		}
+	}
+
+	const auto o = matrix .origin ();
+
+	return matrix4 <Type> (x .x (), x .y (), x .z (), 0,
+	                       y .x (), y .y (), y .z (), 0,
+	                       z .x (), z .y (), z .z (), 0,
+	                       o .x (), o .y (), o .z (), 1);
+}
+
 ///  @relates matrix4
 ///  @name Input/Output operations
 

@@ -169,9 +169,6 @@ private:
 	                    const std::vector <Vector3d> & normals,
 	                    const double snapDistance) const;
 
-	vector3 <Vector3d>
-	getRotationAxes (const Matrix4d & matrix) const;
-
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
 

@@ -368,54 +368,10 @@ box3 <Type>::normals () const
 {
 	vector3 <vector3 <Type>> normals;
 
-	auto x = matrix () .x_axis ();
-	auto y = matrix () .y_axis ();
-	auto z = matrix () .z_axis ();
-
-	if (abs (x) == 0)
-	{
-		x = cross (y, z);
-
-		if (abs (x) == 0)
-		{
-			x = vector3 <Type> (1, 0, 0);
-
-			if (abs (y))
-				x = cross (y, cross (x, y));
-			else if (abs (z))
-				x = cross (z, cross (x, z));
-		}
-	}
-
-	if (abs (y) == 0)
-	{
-		y = cross (z, x);
-
-		if (abs (y) == 0)
-		{
-			y = vector3 <Type> (0, 1, 0);
-
-			if (abs (x))
-				y = cross (x, cross (y, x));
-			else if (abs (z))
-				y = cross (z, cross (y, z));
-		}
-	}
-
-	if (abs (z) == 0)
-	{
-		z = cross (x, y);
-
-		if (abs (z) == 0)
-		{
-			z = vector3 <Type> (0, 0, 1);
-
-			if (abs (x))
-				z = cross (x, cross (z, x));
-			else if (abs (y))
-				z = cross (y, cross (z, y));
-		}
-	}
+	const auto n = normalize (matrix ());
+	const auto x = n .x_axis ();
+	const auto y = n .y_axis ();
+	const auto z = n .z_axis ();
 
 	normals .x (normalize (cross (y, z)));
 	normals .y (normalize (cross (z, x)));

@@ -1567,6 +1567,41 @@ operator / (const matrix3 <Type> & lhs, const Type & rhs)
 	return matrix3 <Type> (lhs) /= rhs;
 }
 
+///  Return @a matrix normalized, so that there are no axes with zero length.
+template <class Type>
+matrix3 <Type> 
+normalize (const matrix3 <Type> & matrix)
+{
+	auto x = matrix .x_axis ();
+	auto y = matrix .y_axis ();
+
+	if (norm (x) == 0)
+	{
+		if (norm (y))
+			x = vector2 <Type> (y .y (), -y .x ());
+		else
+			x = vector2 <Type> (1, 0);
+
+		x .normalize ();
+	}
+
+	if (norm (y) == 0)
+	{
+		if (norm (x))
+			y = vector2 <Type> (-x .y (), x .x ());
+		else
+			y = vector2 <Type> (0, 1);
+
+		y .normalize ();
+	}
+
+	const auto o = matrix .origin ();
+
+	return matrix3 <Type> (x .x (), x .y (), 0,
+	                       y .x (), y .y (), 0,
+	                       o .x (), o .y (), 1);
+}
+
 ///  @relates matrix3
 ///  @name Input/Output operations
 
