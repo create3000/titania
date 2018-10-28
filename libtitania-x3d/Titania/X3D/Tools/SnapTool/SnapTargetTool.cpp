@@ -518,35 +518,90 @@ SnapTargetTool::getSnapTranslation (const Vector3d & position,
 std::pair <Matrix4d, bool>
 SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
-	const auto currentMatrix = master -> getCurrentMatrix ();
+	__LOG__ << std::endl;
+	__LOG__ << tool << std::endl;
+
+	const auto dynamicSnapDistance = getDynamicSnapDistance ();
+	const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
+	const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
+	const auto geometry            = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
+	const auto shape               = Box3d (geometry .size (), geometry .center ()); // AABB BBox
+	const auto bbox                = shape * absoluteMatrix;                         // Absolute OBB of AABB
+	const auto axes                = bbox .axes ();
+	const auto normals             = bbox .normals ();
+
+	__LOG__ << getScaleFromEdge (master) << std::endl;
 
 	if (getScaleFromEdge (master))
 	{
-
+		// Scale from edge.
 	}
 	else
 	{
+		// Scale one axis in both directions.
 
+		const size_t axis            = tool % 3;
+		const double sgn             = tool < 3 ? 1 : -1;
+		const auto   aCenters        = std::vector <Vector3d> ({ bbox .center () + axes [axis], bbox .center () - axes [axis] });
+		const auto   aAxes           = std::vector <Vector3d> ({ axes [axis], -axes [axis] });
+		const auto   aNormals        = std::vector <Vector3d> ({ normals [axis], -normals [axis] });
+		const auto   snapTranslation = getSnapTranslation (absolutePosition, aCenters, aAxes, aNormals, dynamicSnapDistance);
+
+		snapped () = abs (snapTranslation) > 0.0001;
+
+		if (snapTranslation not_eq Vector3d ())
+		{
+			const auto aSnapCenter  = std::vector <Vector3d> ({ aCenters [0] + snapTranslation, aCenters [1] + snapTranslation });
+			const auto aAxis        = distance (aSnapCenter [0], absolutePosition) < distance (aSnapCenter [1], absolutePosition) ? 0 : 1;
+			const auto aSnapScale   = (aAxes [aAxis] [axis] + snapTranslation [axis]) / aAxes [aAxis] [axis];
+			auto       snapScale    = Vector3d (1, 1, 1);
+
+			snapScale [axis] = aSnapScale;
+
+			auto snapMatrix = Matrix4d (Vector3d (), Rotation4d (), snapScale);
+
+			snapMatrix *= getOffset (master, bbox, snapMatrix, shape .axes () [axis] * sgn);
+			snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
+
+			return std::make_pair (snapMatrix, true);
+		}
 	}
 
-	return std::make_pair (currentMatrix, false);
+	return std::make_pair (Matrix4d (), false);
 }
 
 std::pair <Matrix4d, bool>
 SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
-	const auto currentMatrix = master -> getCurrentMatrix ();
+	__LOG__ << std::endl;
+	__LOG__ << tool << std::endl;
+	__LOG__ << getScaleFromEdge (master) << std::endl;
 
 	if (getScaleFromEdge (master))
 	{
-
+		// Uniform scale from corner.
 	}
 	else
 	{
-
+	   // Scale from center.
 	}
 
-	return std::make_pair (currentMatrix, false);
+	return std::make_pair (Matrix4d (), false);
+}
+
+Matrix4d
+SnapTargetTool::getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & offset) const
+{
+	// To keep the bbox center at its point we must compute a translation offset.
+
+	auto distanceFromCenter = bbox .center ();
+
+	if (getScaleFromEdge (master))
+		distanceFromCenter -= offset;
+
+	const auto translation = Matrix4d (distanceFromCenter - scaledMatrix .mult_dir_matrix (distanceFromCenter));
+
+	return translation;
 }
 
 bool
