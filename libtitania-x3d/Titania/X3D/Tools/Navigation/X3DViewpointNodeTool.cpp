@@ -215,6 +215,9 @@ X3DViewpointNodeTool::removeTool (const bool really)
 	{
 		try
 		{
+			if (getTransformTools () .empty ())
+				return;
+
 			const auto & transformTool = getTransformTools () [0];
 			const auto & toolNode      = getToolNode ();
 

@@ -133,8 +133,9 @@ void
 SoundTool::removeTool (const bool really)
 {
 	if (really)
+	{
 		X3DSoundNodeTool::removeTool ();
-
+	}
 	else
 	{
 		try
