@@ -535,6 +535,30 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 	if (getScaleFromEdge (master))
 	{
 		// Scale from edge.
+
+		const size_t axis            = tool % 3;
+		const double sgn             = tool < 3 ? 1 : -1;
+		const auto   aCenters        = std::vector <Vector3d> ({ bbox .center () + axes [axis] * sgn });
+		const auto   aAxes           = std::vector <Vector3d> ({ axes [axis] * sgn });
+		const auto   aNormals        = std::vector <Vector3d> ({ normals [axis] * sgn });
+		const auto   snapTranslation = getSnapTranslation (absolutePosition, aCenters, aAxes, aNormals, dynamicSnapDistance);
+
+		snapped () = abs (snapTranslation) > 0.0001;
+
+		if (snapTranslation not_eq Vector3d ())
+		{
+			const auto aSnapScale = (aAxes [0] [axis] + snapTranslation [axis] + aAxes [0] [axis]) / (2 * aAxes [0] [axis]);
+			auto       snapScale  = Vector3d (1, 1, 1);
+
+			snapScale [axis] = aSnapScale;
+
+			auto snapMatrix = Matrix4d (Vector3d (), Rotation4d (), snapScale);
+
+			snapMatrix *= getOffset (master, bbox, snapMatrix, axes [axis] * sgn);
+			snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
+
+			return std::make_pair (snapMatrix, true);
+		}
 	}
 	else
 	{
@@ -560,7 +584,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 
 			auto snapMatrix = Matrix4d (Vector3d (), Rotation4d (), snapScale);
 
-			snapMatrix *= getOffset (master, bbox, snapMatrix, shape .axes () [axis] * sgn);
+			snapMatrix *= getOffset (master, bbox, snapMatrix, axes [axis] * sgn);
 			snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
 			return std::make_pair (snapMatrix, true);
