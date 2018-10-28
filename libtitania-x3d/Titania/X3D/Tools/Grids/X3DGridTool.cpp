@@ -324,7 +324,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		else
 		{
 			// snapping to bbox center.
-			const auto bbox = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+			const auto bbox = master -> X3DGroupingNode::getBBox () * absoluteMatrix;
 			position = bbox .center ();
 		}
 	
@@ -477,17 +477,18 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 {
 	// All points are first transformed to grid space, then a snapping position is calculated, and then transformed back to absolute space.
 
-	constexpr double infinity = std::numeric_limits <double>::infinity ();
-	constexpr double eps      = 1e-6;
+	constexpr double infinity  = std::numeric_limits <double>::infinity ();
+	constexpr double MIN_DELTA = 1e-6;
+	constexpr double MIN_RATIO = 1e-3;
 
 	// Get absolute position.
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getModelMatrix ();
-	const auto geometry       = master -> X3DGroupingNode::getBBox ();          // BBox of the geometry.
-	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
-	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
-	const auto position       = bbox .center ();                                // Absolute position
+	const auto geometry       = master -> X3DGroupingNode::getBBox (); // BBox of the geometry.
+	const auto shape          = geometry .aabb ();                     // AABB BBox
+	const auto bbox           = shape * absoluteMatrix;                // Absolute OBB of AABB
+	const auto position       = bbox .center ();                       // Absolute position
 
 	// Calculate snapping scale for one axis. The ratio is calculated in transforms sub space.
 
@@ -513,7 +514,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 
 	// We must procced with the original current matrix and a snapping scale of [1 1 1], for correct grouped event handling.
 
-	if (std::abs (delta) < eps or std::abs (ratio) < 1e-3 or std::isnan (ratio) or std::abs (ratio) == infinity)
+	if (std::abs (delta) < MIN_DELTA or std::abs (ratio) < MIN_RATIO or std::isnan (ratio) or std::abs (ratio) == infinity)
 		return currentMatrix;
 
 	auto snapScale = Vector3d (1, 1, 1);
@@ -542,10 +543,8 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getModelMatrix ();
-	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
-	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
-	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
-	const auto position       = bbox .center ();                                // Absolute position
+	const auto bbox           = master -> X3DGroupingNode::getBBox () .aabb () * absoluteMatrix; // Absolute BBox
+	const auto position       = bbox .center (); // Absolute position
 
 	// Calculate snapping scale and apply absolute relative translation.
 

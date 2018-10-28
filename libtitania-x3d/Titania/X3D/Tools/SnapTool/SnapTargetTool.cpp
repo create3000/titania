@@ -232,7 +232,7 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto dynamicSnapDistance = getDynamicSnapDistance ();
 		const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
 		const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
-		const auto bbox                = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+		const auto bbox                = master -> X3DGroupingNode::getBBox () * absoluteMatrix;
 		const auto center              = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
 		const auto axes                = bbox .axes ();
 		const auto normals             = bbox .normals ();
@@ -300,7 +300,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto matrixBefore     = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
 		const auto matrixAfter      = master -> getCurrentMatrix () * master -> getModelMatrix ();     // Matrix after transformation
 		const auto absoluteMatrix   = matrixAfter;
-		const auto bbox             = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+		const auto bbox             = master -> X3DGroupingNode::getBBox () * absoluteMatrix;
 
 		// Determine rotation axis and the tho snap axes.
 
@@ -329,7 +329,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		// Determine snap point onto plane and axes points onto plane with same distance to center as snap point.
 
 		const auto dynamicSnapDistance = getDynamicSnapDistance () * 2;
-		const auto distance            = std::max (abs (bbox .center () - center), abs (bbox .size ()));
+		const auto distance            = std::max (math::distance (bbox .center (), center), abs (bbox .size ()));
 		const auto snapPoint           = snapVector * distance;
 		const auto point1a             = axis1 * distance;
 		const auto point1b             = -axis1 * distance;
@@ -338,8 +338,8 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		// Determine snap rotation.
 
-		const auto distance1a   = abs (snapPoint - point1a);
-		const auto distance1b   = abs (snapPoint - point1b);
+		const auto distance1a   = math::distance (snapPoint, point1a);
+		const auto distance1b   = math::distance (snapPoint, point1b);
 		const auto distance1    = std::min (distance1a, distance1b);
 		const auto distance2a   = abs (snapPoint - point2a);
 		const auto distance2b   = abs (snapPoint - point2b);
@@ -518,22 +518,16 @@ SnapTargetTool::getSnapTranslation (const Vector3d & position,
 std::pair <Matrix4d, bool>
 SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
-	__LOG__ << std::endl;
-	__LOG__ << tool << std::endl;
-
-	constexpr double infinity = std::numeric_limits <double>::infinity ();
-	constexpr double eps      = 1e-6;
+	constexpr double infinity  = std::numeric_limits <double>::infinity ();
+	constexpr double MIN_DELTA = 1e-6;
+	constexpr double MIN_RATIO = 1e-3;
 
 	const auto dynamicSnapDistance = getDynamicSnapDistance ();
 	const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
 	const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
-	const auto geometry            = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
-	const auto shape               = Box3d (geometry .size (), geometry .center ()); // AABB BBox
-	const auto bbox                = shape * absoluteMatrix;                         // Absolute OBB of AABB
+	const auto bbox                = master -> X3DGroupingNode::getBBox () .aabb () * absoluteMatrix; // Absolute BBox.
 	const auto axes                = bbox .axes ();
 	const auto normals             = bbox .normals ();
-
-	__LOG__ << getScaleFromEdge (master) << std::endl;
 
 	if (getScaleFromEdge (master))
 	{
@@ -555,7 +549,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 			const auto aDelta  = aAfter - aBefore;
 			const auto aRatio  = aAfter / aBefore;
 
-			if (std::abs (aDelta) < eps or std::abs (aRatio) < 1e-3 or std::isnan (aRatio) or std::abs (aRatio) == infinity)
+			if (std::abs (aDelta) < MIN_DELTA or std::abs (aRatio) < MIN_RATIO or std::isnan (aRatio) or std::abs (aRatio) == infinity)
 				return std::make_pair (Matrix4d (), false);
 
 			auto snapScale = Vector3d (1, 1, 1);
@@ -593,7 +587,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 			const auto aDelta      = aAfter - aBefore;
 			const auto aRatio      = aAfter / aBefore;
 
-			if (std::abs (aDelta) < eps or std::abs (aRatio) < 1e-3 or std::isnan (aRatio) or std::abs (aRatio) == infinity)
+			if (std::abs (aDelta) < MIN_DELTA or std::abs (aRatio) < MIN_RATIO or std::isnan (aRatio) or std::abs (aRatio) == infinity)
 				return std::make_pair (Matrix4d (), false);
 
 			auto snapScale = Vector3d (1, 1, 1);
