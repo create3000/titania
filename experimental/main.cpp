@@ -118,13 +118,11 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto f = Vector3d (1,1,0);
-	auto t = Vector3d (1,1,1);
-	auto r = Rotation4d (f, t);
+	auto v = Vector3d (1, 1, 1);
+	auto n = Vector3d (1, 0, 0);
 
-	__LOG__ << normalize (cross (f, t)) << std::endl;
-	__LOG__ << r << std::endl;
-	__LOG__ << abs (r .axis ()) << std::endl;
+	__LOG__ << cross (n, cross (v, n)) << std::endl;
+	__LOG__ << cross (cross (n, v), n) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

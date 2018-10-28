@@ -195,7 +195,7 @@ X3DGridTool::getPickable (X3DRenderObject* const renderObject) const
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		// __LOG__ << error .what () << std::endl;
 		return renderObject -> getBrowser () -> getToolsPickable () .top ();
 	}
 }
@@ -372,8 +372,6 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (getBrowser () -> getSnapTarget () -> enabled ())
 			return;
 
-//__LOG__ << std::endl;
-
 		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
 		const auto matrixAfter  = master -> getCurrentMatrix () * master -> getModelMatrix ();     // Matrix after transformation
 
@@ -391,17 +389,12 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto index1 = (index0 + 1) % distances .size ();
 		const auto index2 = (index0 + 2) % distances .size ();
 
-		Vector3d   Y             = normalize (cross (y [index1], y [index2]));
+		Vector3d   Y             = normalize (cross (y [index1], y [index2])); // Normal of rotation plane
 		Vector3d   X             = cross (gridMatrix .y_axis (), Y); // Intersection between both planes
 		Vector3d   Z             = cross (X, Y); // Front vector
 		Matrix3d   rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
 		Rotation4d gridRotation  = Rotation4d (rotation () .getValue ());
 		Matrix3d   gridPlane     = gridMatrix .submatrix ();
-
-//__LOG__ << abs (X) << std::endl;
-//__LOG__ << abs (Y) << std::endl;
-//__LOG__ << abs (Z) << std::endl;
-//__LOG__ << 1 - std::abs (dot (normalize (gridMatrix .y ()), Y)) << std::endl;
 
 		// If X or Z are near 0 then Y is collinear to the y-axis.
 
@@ -411,31 +404,19 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			gridRotation  = Rotation4d ();
 		}
 
-//__LOG__ << std::endl;
-//__LOG__ << X << std::endl;
-//__LOG__ << Y << std::endl;
-//__LOG__ << Z << std::endl;
 
-		const Vector3d vectorToSnap = z [index0];
-		const Vector3d vectorOnGrid = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
-
+		const auto vectorToSnap = z [index0];
+		const auto vectorOnGrid = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
 		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * inverse (gridRotation) * rotationPlane;
 		const auto snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (vectorToSnap),
                                             inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
+
 
 		const auto currentMatrix = Matrix4d (master -> translation ()      .getValue (),
 		                                     master -> rotation ()         .getValue () * snapRotation,
 		                                     master -> scale ()            .getValue (),
 		                                     master -> scaleOrientation () .getValue (),
 		                                     master -> center ()           .getValue ());
-
-//__LOG__ << std::endl;
-//__LOG__ << gridPlane << std::endl;
-//__LOG__ << vectorToSnap << std::endl;
-//__LOG__ << normalize (vectorToSnap * inverse (rotationPlane)) << std::endl;
-//__LOG__ << vectorOnGrid << std::endl;
-//__LOG__ << getSnapPosition (vectorOnGrid, true) << std::endl;
-//__LOG__ << snapVector << std::endl;
 
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
@@ -536,13 +517,6 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 
 	const auto delta = after - before;
 	auto       ratio = after / before;
-
-	//	__LOG__ << std::endl;
-	//	__LOG__ << tool << std::endl;
-	//	__LOG__ << before << std::endl;
-	//	__LOG__ << after << std::endl;
-	//	__LOG__ << delta << std::endl;
-	//	__LOG__ << ratio << std::endl;
 
 	// We must procced with the original current matrix and a snapping scale of [1 1 1], for correct grouped event handling.
 
