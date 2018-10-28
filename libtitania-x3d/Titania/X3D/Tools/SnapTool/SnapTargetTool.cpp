@@ -64,8 +64,8 @@ const std::string   SnapTargetTool::typeName       = "SnapTargetTool";
 const std::string   SnapTargetTool::containerField = "SnapTool";
 
 SnapTargetTool::Fields::Fields () :
-	     snapped (new SFBool ()),
-	snapToCenter (new SFBool (true))
+	snapToCenter (new SFBool (true)),
+	     snapped (new SFBool ())
 { }
 
 SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
@@ -85,8 +85,8 @@ SnapTargetTool::SnapTargetTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "enabled",      enabled ());
 	addField (inputOutput, "position",     position ());
 	addField (inputOutput, "normal",       normal ());
-	addField (inputOutput, "snapped",      snapped ());
 	addField (inputOutput, "snapToCenter", snapToCenter ());
+	addField (outputOnly,  "snapped",      snapped ());
 }
 
 X3DBaseNode*

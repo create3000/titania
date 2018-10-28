@@ -100,20 +100,20 @@ public:
 	///  @name Fields
 
 	SFBool &
-	snapped ()
-	{ return *fields .snapped; }
-
-	const SFBool &
-	snapped () const
-	{ return *fields .snapped; }
-
-	SFBool &
 	snapToCenter ()
 	{ return *fields .snapToCenter; }
 
 	const SFBool &
 	snapToCenter () const
 	{ return *fields .snapToCenter; }
+
+	SFBool &
+	snapped ()
+	{ return *fields .snapped; }
+
+	const SFBool &
+	snapped () const
+	{ return *fields .snapped; }
 
 
 private:
@@ -211,8 +211,8 @@ private:
 	{
 		Fields ();
 
-		SFBool* const snapped;
 		SFBool* const snapToCenter;
+		SFBool* const snapped;
 	};
 
 	Fields fields;
