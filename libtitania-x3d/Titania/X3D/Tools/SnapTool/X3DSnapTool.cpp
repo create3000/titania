@@ -130,10 +130,8 @@ X3DSnapTool::set_enabled ()
 
 	if (enabled ())
 	{
-		#ifdef TITANIA_DEBUG
 		buttonPressConnection   = getBrowser () -> signal_button_press_event ()   .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_press_event),   false);
 		buttonReleaseConnection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DSnapTool::on_button_release_event), false);
-		#endif
 	}
 }
 

@@ -186,24 +186,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	getToolbar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
-	// Debug
-
-	#ifndef TITANIA_DEBUG
-	// Also remove TITANIA_DEBUG in X3DSnapTool::on_button_press_event.
-	getSeparatorMenuItem38 ()                            .set_visible (false);
-	getActivateSnapTargetMenuItem ()                     .set_visible (false);
-	getActivateSnapSourceMenuItem ()                     .set_visible (false);
-	getCenterSnapTargetInSelectionMenuItem ()            .set_visible (false);
-	getMoveSelectionToSnapTargetMenuItem ()              .set_visible (false);
-	getMoveSelectionCenterToSnapTargetMenuItem ()        .set_visible (false);
-	getBrowserSeparatorMenuItem18 ()                     .set_visible (false);
-	getBrowserActivateSnapTargetMenuItem ()              .set_visible (false);
-	getBrowserActivateSnapSourceMenuItem ()              .set_visible (false);
-	getBrowserCenterSnapTargetInSelectionMenuItem ()     .set_visible (false);
-	getBrowserMoveSelectionToSnapTargetMenuItem ()       .set_visible (false);
-	getBrowserMoveSelectionCenterToSnapTargetMenuItem () .set_visible (false);
-	#endif
-
 	// Setup.
 
 	setup ();
