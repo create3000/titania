@@ -79,11 +79,15 @@ X3DGridTool::Fields::Fields () :
 X3DGridTool::X3DGridTool () :
 	X3DActiveLayerTool (),
 	            fields (),
-	    transformNodes ()
+	    transformNodes (),
+	    gridTouchGroup (),
+	 handlesTouchGroup ()
 {
 	addType (X3DConstants::X3DGridTool);
 
-	addChildObjects (transformNodes);
+	addChildObjects (transformNodes,
+	                 gridTouchGroup,
+	                 handlesTouchGroup);
 
 	translation ()  .setUnit (UnitCategory::LENGTH);
 	snapDistance () .setUnit (UnitCategory::LENGTH);
@@ -105,6 +109,9 @@ X3DGridTool::realize ()
 	try
 	{
 		X3DActiveLayerTool::realize ();
+
+		gridTouchGroup    = getInlineNode () -> getExportedNode <TouchGroup> ("GridTouchGroup");
+		handlesTouchGroup = getInlineNode () -> getExportedNode <TouchGroup> ("HandlesTouchGroup");
 	
 		auto & set_translation = getToolNode () -> getField <SFVec3f> ("set_translation");
 		translation ()  .addInterest (set_translation);
@@ -177,9 +184,6 @@ X3DGridTool::getPickable (X3DRenderObject* const renderObject) const
 {
 	try
 	{
-		const auto gridTouchGroup    = getInlineNode () -> getExportedNode <TouchGroup> ("GridTouchGroup");
-		const auto handlesTouchGroup = getInlineNode () -> getExportedNode <TouchGroup> ("HandlesTouchGroup");
-
 		if (renderObject -> getBrowser () -> getToolsPickable () .top ())
 		{
 			gridTouchGroup    -> enabled () = false;

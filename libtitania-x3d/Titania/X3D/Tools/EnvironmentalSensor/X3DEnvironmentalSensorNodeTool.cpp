@@ -118,6 +118,30 @@ X3DEnvironmentalSensorNodeTool::getBBox () const
 	return Box3d ();
 }
 
+bool
+X3DEnvironmentalSensorNodeTool::getPickable (X3DRenderObject* const renderObject) const
+{
+	try
+	{
+		if (getTransformTools () .empty ())
+			return renderObject -> getBrowser () -> getToolsPickable () .top ();
+
+		const auto & transformTool = getTransformTools () [0];
+
+		if (renderObject -> getBrowser () -> getToolsPickable () .top ())
+			transformTool -> isPickable () = true;
+		else
+			transformTool -> isPickable () = false;
+
+		return true;
+	}
+	catch (const X3DError & error)
+	{
+		// __LOG__ << error .what () << std::endl;
+		return renderObject -> getBrowser () -> getToolsPickable () .top ();
+	}
+}
+
 void
 X3DEnvironmentalSensorNodeTool::beginUndo ()
 {

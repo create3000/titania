@@ -316,6 +316,8 @@ private:
 	///  @name Members
 	
 	X3DWeakPtrArray <X3DTransformNode> transformNodes;
+	X3DPtr <TouchGroup>                gridTouchGroup;
+	X3DPtr <TouchGroup>                handlesTouchGroup;
 
 };
 

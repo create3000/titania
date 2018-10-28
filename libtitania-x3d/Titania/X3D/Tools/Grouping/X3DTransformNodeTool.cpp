@@ -54,6 +54,7 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/X_ITE/TouchGroup.h"
 #include "../../Editing/Undo/UndoStepContainer.h"
 #include "../../Editing/X3DEditor.h"
 #include "../../Prototype/X3DProtoDeclarationNode.h"
@@ -80,9 +81,10 @@ X3DTransformNodeTool::Fields::Fields () :
 	  scaleFromEdge (new SFBool (true)),
 	scaleFromCenter (new SFBool (true)),
 	  connectedAxes (new MFString ()),
-	          color (new SFColor (ToolColors::GREEN)),
 	    displayBBox (new SFBool (true)),
 	  displayCenter (new SFBool (true)),
+	     isPickable (new SFBool (true)),
+	          color (new SFColor (ToolColors::GREEN)),
 	        grouped (new SFBool (false)),
 	       isActive (new SFBool ()),
 	      touchTime (new SFTime ())
@@ -91,6 +93,7 @@ X3DTransformNodeTool::Fields::Fields () :
 X3DTransformNodeTool::X3DTransformNodeTool () :
 	            X3DTransformNode (),
 	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
+	           handlesTouchGroup (),
 	              availableTools (),
 	                 modelMatrix (),
 	                 groupMatrix (),
@@ -111,14 +114,17 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 	addField (inputOutput, "scaleFromEdge",   scaleFromEdge ());
 	addField (inputOutput, "scaleFromCenter", scaleFromCenter ());
 	addField (inputOutput, "connectedAxes",   connectedAxes ());
-	addField (inputOutput, "color",           color ());
 	addField (inputOutput, "displayBBox",     displayBBox ());
 	addField (inputOutput, "displayCenter",   displayCenter ());
+	addField (inputOutput, "isPickable",      isPickable ());
+	addField (inputOutput, "color",           color ());
 	addField (outputOnly,  "grouped",         grouped ());
 	addField (outputOnly,  "isActive",        isActive ());
 	addField (outputOnly,  "touchTime",       touchTime ());
 
-	setCameraObject (true);
+	addChildObjects (handlesTouchGroup);
+
+	setCameraObject (true); // Needed???
 }
 
 void
@@ -164,6 +170,8 @@ X3DTransformNodeTool::realize ()
 	try
 	{
 		getNode <X3DTransformNode> () -> addInterest (&X3DTransformNodeTool::eventsProcessed, this);
+
+		handlesTouchGroup = getInlineNode () -> getExportedNode <TouchGroup> ("HandlesTouchGroup");
 
 		getBrowser ()  -> getTransformToolOptions () -> toolMode ()  .addInterest (getToolNode () -> getField ("toolMode"));
 		getBrowser ()  -> getTransformToolOptions () -> snapAngle () .addInterest (getToolNode () -> getField ("snapAngle"));
@@ -213,6 +221,28 @@ X3DTransformNodeTool::realize ()
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+bool
+X3DTransformNodeTool::getPickable (X3DRenderObject* const renderObject) const
+{
+	try
+	{
+		if (not isPickable ())
+			return false;
+
+		if (renderObject -> getBrowser () -> getToolsPickable () .top ())
+			handlesTouchGroup -> enabled () = true;
+		else
+			handlesTouchGroup -> enabled () = false;
+
+		return true;
+	}
+	catch (const X3DError & error)
+	{
+		// __LOG__ << error .what () << std::endl;
+		return renderObject -> getBrowser () -> getToolsPickable () .top ();
 	}
 }
 

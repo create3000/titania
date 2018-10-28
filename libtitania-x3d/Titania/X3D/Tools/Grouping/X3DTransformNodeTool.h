@@ -242,6 +242,14 @@ public:
 	displayCenter () const
 	{ return *fields .displayCenter; }
 
+	SFBool &
+	isPickable ()
+	{ return *fields .isPickable; }
+
+	const SFBool &
+	isPickable () const
+	{ return *fields .isPickable; }
+
 	SFColor &
 	color ()
 	{ return *fields .color; }
@@ -355,6 +363,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	virtual
+	bool
+	getPickable (X3DRenderObject* const renderObject) const final override;
+
 
 private:
 
@@ -405,16 +419,18 @@ private:
 		SFBool* const scaleFromEdge;
 		SFBool* const scaleFromCenter;
 		MFString* const connectedAxes;
-		SFColor* const color;
 		SFBool* const displayBBox;
 		SFBool* const displayCenter;
+		SFBool* const isPickable;
+		SFColor* const color;
 		SFBool* const grouped;
 		SFBool* const isActive;
 		SFTime* const touchTime;
 	};
 
 	Fields fields;
-	
+
+	X3DPtr <TouchGroup> handlesTouchGroup;
 	std::set <ToolType> availableTools;
 	Matrix4d            modelMatrix;
 	Matrix4d            groupMatrix;

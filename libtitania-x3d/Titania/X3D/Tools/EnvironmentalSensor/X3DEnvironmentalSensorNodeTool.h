@@ -167,6 +167,12 @@ protected:
 	void
 	realize () final override;
 
+	///  @name Member access
+
+	virtual
+	bool
+	getPickable (X3DRenderObject* const renderObject) const final override;
+
 
 private:
 
