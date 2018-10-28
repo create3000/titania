@@ -178,11 +178,14 @@ private:
 	std::pair <Matrix4d, bool>
 	getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool);
 
-	bool
-	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
+	Vector3d
+	getConnectedAxes (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t axis, Vector3d scale) const;
 
 	Matrix4d
 	getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & offset) const;
+
+	bool
+	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
 
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);

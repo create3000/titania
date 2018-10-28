@@ -267,6 +267,9 @@ private:
 	Matrix4d
 	getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t);
 
+	Vector3d
+	getConnectedAxes (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t axis, Vector3d scale) const;
+
 	Matrix4d
 	getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d &, const Matrix4d, const Vector3d &) const;
 

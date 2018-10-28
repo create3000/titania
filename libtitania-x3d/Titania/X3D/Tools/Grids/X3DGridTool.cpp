@@ -516,32 +516,14 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	if (std::abs (delta) < eps or std::abs (ratio) < 1e-3 or std::isnan (ratio) or std::abs (ratio) == infinity)
 		return currentMatrix;
 
-	Vector3d scale (1, 1, 1);
-	scale [axis] = ratio;
+	auto snapScale = Vector3d (1, 1, 1);
 
-	for (const auto & connectedAxis : basic::make_const_range (master -> connectedAxes ()))
-	{
-		try
-		{
-			static const std::map <String::value_type, size_t> axes = {
-				std::make_pair ('x', 0),
-				std::make_pair ('y', 1),
-				std::make_pair ('z', 2),
-			};
-
-			const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));
-			const auto rhs = axes .at (std::tolower (connectedAxis .at (1)));
-
-			if (rhs == axis)
-				scale [lhs] = scale [rhs];
-		}
-		catch (const std::out_of_range &)
-		{ }
-	}
+	snapScale [axis] = ratio;
+	snapScale        = getConnectedAxes (master, axis, snapScale);
 
 	auto snapMatrix = Matrix4d ();
 
-	snapMatrix .scale (scale);
+	snapMatrix .scale (snapScale);
 
 	snapMatrix *= getOffset (master, shape, snapMatrix, shape .axes () [axis] * sgn);
 	snapMatrix *= currentMatrix;
@@ -627,6 +609,32 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 	snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
 	return snapMatrix;
+}
+
+Vector3d
+X3DGridTool::getConnectedAxes (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t axis, Vector3d scale) const
+{
+	for (const auto & connectedAxis : basic::make_const_range (master -> connectedAxes ()))
+	{
+		try
+		{
+			static const std::map <String::value_type, size_t> axes = {
+				std::make_pair ('x', 0),
+				std::make_pair ('y', 1),
+				std::make_pair ('z', 2),
+			};
+
+			const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));
+			const auto rhs = axes .at (std::tolower (connectedAxis .at (1)));
+
+			if (rhs == axis)
+				scale [lhs] = scale [rhs];
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+
+	return scale;
 }
 
 Matrix4d

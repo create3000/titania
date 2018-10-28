@@ -521,6 +521,9 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 	__LOG__ << std::endl;
 	__LOG__ << tool << std::endl;
 
+	constexpr double infinity = std::numeric_limits <double>::infinity ();
+	constexpr double eps      = 1e-6;
+
 	const auto dynamicSnapDistance = getDynamicSnapDistance ();
 	const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
 	const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
@@ -547,10 +550,18 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 
 		if (snapTranslation not_eq Vector3d ())
 		{
-			const auto aSnapScale = (aAxes [0] [axis] + snapTranslation [axis] + aAxes [0] [axis]) / (2 * aAxes [0] [axis]);
-			auto       snapScale  = Vector3d (1, 1, 1);
+			const auto aBefore = 2 * aAxes [0] [axis];
+			const auto aAfter  = aAxes [0] [axis] + snapTranslation [axis] + aAxes [0] [axis];
+			const auto aDelta  = aAfter - aBefore;
+			const auto aRatio  = aAfter / aBefore;
 
-			snapScale [axis] = aSnapScale;
+			if (std::abs (aDelta) < eps or std::abs (aRatio) < 1e-3 or std::isnan (aRatio) or std::abs (aRatio) == infinity)
+				return std::make_pair (Matrix4d (), false);
+
+			auto snapScale = Vector3d (1, 1, 1);
+
+			snapScale [axis] = aRatio;
+			snapScale        = getConnectedAxes (master, axis, snapScale);
 
 			auto snapMatrix = Matrix4d (Vector3d (), Rotation4d (), snapScale);
 
@@ -575,12 +586,20 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 
 		if (snapTranslation not_eq Vector3d ())
 		{
-			const auto aSnapCenter  = std::vector <Vector3d> ({ aCenters [0] + snapTranslation, aCenters [1] + snapTranslation });
-			const auto aAxis        = distance (aSnapCenter [0], absolutePosition) < distance (aSnapCenter [1], absolutePosition) ? 0 : 1;
-			const auto aSnapScale   = (aAxes [aAxis] [axis] + snapTranslation [axis]) / aAxes [aAxis] [axis];
-			auto       snapScale    = Vector3d (1, 1, 1);
+			const auto aSnapCenter = std::vector <Vector3d> ({ aCenters [0] + snapTranslation, aCenters [1] + snapTranslation });
+			const auto aAxis       = distance (aSnapCenter [0], absolutePosition) < distance (aSnapCenter [1], absolutePosition) ? 0 : 1;
+			const auto aBefore     = aAxes [aAxis] [axis];
+			const auto aAfter      = aAxes [aAxis] [axis] + snapTranslation [axis];
+			const auto aDelta      = aAfter - aBefore;
+			const auto aRatio      = aAfter / aBefore;
 
-			snapScale [axis] = aSnapScale;
+			if (std::abs (aDelta) < eps or std::abs (aRatio) < 1e-3 or std::isnan (aRatio) or std::abs (aRatio) == infinity)
+				return std::make_pair (Matrix4d (), false);
+
+			auto snapScale = Vector3d (1, 1, 1);
+
+			snapScale [axis] = aRatio;
+			snapScale        = getConnectedAxes (master, axis, snapScale);
 
 			auto snapMatrix = Matrix4d (Vector3d (), Rotation4d (), snapScale);
 
@@ -611,6 +630,32 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 	}
 
 	return std::make_pair (Matrix4d (), false);
+}
+
+Vector3d
+SnapTargetTool::getConnectedAxes (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t axis, Vector3d scale) const
+{
+	for (const auto & connectedAxis : basic::make_const_range (master -> connectedAxes ()))
+	{
+		try
+		{
+			static const std::map <String::value_type, size_t> axes = {
+				std::make_pair ('x', 0),
+				std::make_pair ('y', 1),
+				std::make_pair ('z', 2),
+			};
+
+			const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));
+			const auto rhs = axes .at (std::tolower (connectedAxis .at (1)));
+
+			if (rhs == axis)
+				scale [lhs] = scale [rhs];
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+
+	return scale;
 }
 
 Matrix4d
