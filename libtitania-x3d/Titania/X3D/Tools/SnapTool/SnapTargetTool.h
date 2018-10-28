@@ -148,6 +148,9 @@ private:
 	void
 	set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master);
 
+	void
+	set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master);
+
 	bool
 	on_focus_in_event (GdkEventFocus* event);
 
@@ -169,6 +172,15 @@ private:
 	                    const std::vector <Vector3d> & normals,
 	                    const double snapDistance) const;
 
+	std::pair <Matrix4d, bool>
+	getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool);
+	
+	std::pair <Matrix4d, bool>
+	getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool);
+
+	bool
+	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
+
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
 
@@ -177,6 +189,9 @@ private:
 
 	void
 	connectRotation (const X3DWeakPtr <X3DTransformNodeTool> & tool);
+
+	void
+	connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool);
 
 	///  @name Static members
 

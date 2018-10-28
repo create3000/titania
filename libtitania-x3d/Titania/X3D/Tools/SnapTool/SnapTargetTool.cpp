@@ -193,6 +193,7 @@ SnapTargetTool::set_transform_tools ()
 		{
 			transformNode -> translation () .removeInterest (&SnapTargetTool::set_translation, this);
 			transformNode -> rotation ()    .removeInterest (&SnapTargetTool::set_rotation,    this);
+			transformNode -> scale ()       .removeInterest (&SnapTargetTool::set_scale,       this);
 		}
 		catch (const Error <DISPOSED> & error)
 		{ }
@@ -208,6 +209,7 @@ SnapTargetTool::set_transform_tools ()
 			{
 				tool -> translation () .addInterest (&SnapTargetTool::set_translation, this, tool);
 				tool -> rotation ()    .addInterest (&SnapTargetTool::set_rotation,    this, tool);
+				tool -> scale ()       .addInterest (&SnapTargetTool::set_scale,       this, tool);
 			}
 			catch (const Error <DISPOSED> & error)
 			{ }
@@ -392,6 +394,44 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	}
 }
 
+void
+SnapTargetTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
+{
+	try
+	{
+		// If Shift-key or Ctrl+Shift-key is pressed disable snapping.
+		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
+			return;
+	
+		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE);
+
+		if (tool < 0)
+			return;
+
+		const auto scaleMatrix   = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
+		const auto currentMatrix = scaleMatrix .first;
+
+		if (not scaleMatrix .second)
+			return;
+
+		if (master -> getKeepCenter ())
+			master -> setMatrixKeepCenter (currentMatrix);
+		else
+			master -> setMatrix (currentMatrix);
+	
+		// Apply transformation to transformation group.
+
+		master -> scale () .removeInterest (&SnapTargetTool::set_scale, this);
+		master -> scale () .addInterest (&SnapTargetTool::connectScale, this, master);
+	
+		setTransformGroup (master, currentMatrix * master -> getModelMatrix ());
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
 bool
 SnapTargetTool::on_focus_in_event (GdkEventFocus* event)
 {
@@ -475,6 +515,52 @@ SnapTargetTool::getSnapTranslation (const Vector3d & position,
 	return Vector3d ();
 }
 
+std::pair <Matrix4d, bool>
+SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
+{
+	const auto currentMatrix = master -> getCurrentMatrix ();
+
+	if (getScaleFromEdge (master))
+	{
+
+	}
+	else
+	{
+
+	}
+
+	return std::make_pair (currentMatrix, false);
+}
+
+std::pair <Matrix4d, bool>
+SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
+{
+	const auto currentMatrix = master -> getCurrentMatrix ();
+
+	if (getScaleFromEdge (master))
+	{
+
+	}
+	else
+	{
+
+	}
+
+	return std::make_pair (currentMatrix, false);
+}
+
+bool
+SnapTargetTool::getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const
+{
+	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ())
+		return true;
+
+	if (not master -> scaleFromCenter () and master -> scaleFromEdge ())
+		return true;
+
+	return false;
+}
+
 /// Apply transformation to transformation group.
 void
 SnapTargetTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix)
@@ -527,6 +613,18 @@ SnapTargetTool::connectRotation (const X3DWeakPtr <X3DTransformNodeTool> & tool)
 	{
 		tool -> rotation () .removeInterest (&SnapTargetTool::connectRotation, this);
 		tool -> rotation () .addInterest (&SnapTargetTool::set_rotation, this, tool);
+	}
+	catch (const Error <DISPOSED> &)
+	{ }
+}
+
+void
+SnapTargetTool::connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool)
+{
+	try
+	{
+		tool -> scale () .removeInterest (&SnapTargetTool::connectScale, this);
+		tool -> scale () .addInterest (&SnapTargetTool::set_scale, this, tool);
 	}
 	catch (const Error <DISPOSED> &)
 	{ }

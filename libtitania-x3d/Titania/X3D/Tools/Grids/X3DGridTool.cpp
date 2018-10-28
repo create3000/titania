@@ -441,6 +441,9 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		// If Shift-key or Ctrl+Shift-key is pressed disable snapping.
 		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
 			return;
+
+		if (getBrowser () -> getSnapTarget () -> enabled ())
+			return;
 	
 		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE);
 
@@ -641,6 +644,18 @@ X3DGridTool::getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const 
 	return translation;
 }
 
+bool
+X3DGridTool::getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const
+{
+	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ())
+		return true;
+
+	if (not master -> scaleFromCenter () and master -> scaleFromEdge ())
+		return true;
+
+	return false;
+}
+
 /// Apply transformation to transformation group.
 void
 X3DGridTool::setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix)
@@ -708,18 +723,6 @@ X3DGridTool::connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool)
 	}
 	catch (const Error <DISPOSED> &)
 	{ }
-}
-
-bool
-X3DGridTool::getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const
-{
-	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ())
-		return true;
-
-	if (not master -> scaleFromCenter () and master -> scaleFromEdge ())
-		return true;
-
-	return false;
 }
 
 X3DGridTool::~X3DGridTool ()

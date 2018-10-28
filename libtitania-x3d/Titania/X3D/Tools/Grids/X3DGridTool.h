@@ -270,6 +270,9 @@ private:
 	Matrix4d
 	getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d &, const Matrix4d, const Vector3d &) const;
 
+	bool
+	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
+
 	void
 	setTransformGroup (const X3DWeakPtr <X3DTransformNodeTool> & master, const Matrix4d & snapMatrix);
 
@@ -281,9 +284,6 @@ private:
 
 	void
 	connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool);
-
-	bool
-	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
 
 	///  @name Fields
 
