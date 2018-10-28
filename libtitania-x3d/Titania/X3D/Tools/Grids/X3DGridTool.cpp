@@ -339,8 +339,6 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		else
 			master -> setMatrix (currentMatrix);
 
-		//getBrowser () -> setDescription (master -> getDescription ());
-
 		// Apply transformation to transformation group.
 
 		master -> translation () .removeInterest (&X3DGridTool::set_translation, this);
@@ -380,15 +378,13 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		                                               dot (normalize (matrixAfter .z_axis ()), normalize (matrixBefore .z_axis ())) });
 
 		const auto index0 = std::max_element (distances .cbegin (), distances .cend ()) - distances .cbegin (); // Index of rotation axis
+		const auto index1 = (index0 + 1) % distances .size ();
+		const auto index2 = (index0 + 2) % distances .size ();
 
 		const auto y = std::vector <Vector3d> ({ matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }); // Rotation axis, equates to grid normal
 		const auto z = std::vector <Vector3d> ({ matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }); // Axis which snaps, later transformed to grid space
 
-		const auto gridMatrix = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
-
-		const auto index1 = (index0 + 1) % distances .size ();
-		const auto index2 = (index0 + 2) % distances .size ();
-
+		const auto gridMatrix    = Matrix4d (translation () .getValue (), rotation () .getValue (), scale () .getValue ()) * getModelMatrix ();
 		Vector3d   Y             = normalize (cross (y [index1], y [index2])); // Normal of rotation plane
 		Vector3d   X             = cross (gridMatrix .y_axis (), Y); // Intersection between both planes
 		Vector3d   Z             = cross (X, Y); // Front vector
@@ -404,13 +400,11 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			gridRotation  = Rotation4d ();
 		}
 
-
 		const auto vectorToSnap = z [index0];
 		const auto vectorOnGrid = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
 		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * inverse (gridRotation) * rotationPlane;
 		const auto snapRotation = Rotation4d (inverse (master -> getModelMatrix ()) .mult_dir_matrix (vectorToSnap),
                                             inverse (master -> getModelMatrix ()) .mult_dir_matrix (snapVector));
-
 
 		const auto currentMatrix = Matrix4d (master -> translation ()      .getValue (),
 		                                     master -> rotation ()         .getValue () * snapRotation,
@@ -422,8 +416,6 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			master -> setMatrixKeepCenter (currentMatrix);
 		else
 			master -> setMatrix (currentMatrix);
-
-		//getBrowser () -> setDescription (master -> getDescription ());
 	
 		// Apply transformation to transformation group.
 
@@ -463,8 +455,6 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			master -> setMatrixKeepCenter (currentMatrix);
 		else
 			master -> setMatrix (currentMatrix);
-
-		//getBrowser () -> setDescription (master -> getDescription ());
 	
 		// Apply transformation to transformation group.
 
