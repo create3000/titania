@@ -610,10 +610,6 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 std::pair <Matrix4d, bool>
 SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
-	__LOG__ << std::endl;
-	__LOG__ << tool << std::endl;
-	__LOG__ << getScaleFromEdge (master) << std::endl;
-
 	constexpr double infinity = std::numeric_limits <double>::infinity ();
 
 	const auto dynamicSnapDistance = getDynamicSnapDistance ();
@@ -687,8 +683,11 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		}		
 	
 		if (min == 0 or min == infinity)
+		{
+			snapped () = false;
 			return std::make_pair (Matrix4d (), false);
-	
+		}
+
 		auto snapMatrix = Matrix4d ();
 	
 		snapMatrix .scale (Vector3d (min, min, min));
@@ -701,6 +700,68 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 	else
 	{
 	   // Scale from center.
+
+		auto min = infinity;
+
+		for (const auto & point : points)
+		{
+			const auto pCenters         = std::vector <Vector3d> ({ point });
+			const auto pAxes            = std::vector <Vector3d> ({ point - center });
+			const auto pNormals         = std::vector <Vector3d> ({ normalize (point - center) });
+			const auto pointLine        = Line3d (pCenters [0], pNormals [0]);
+			auto       snapTranslations = std::vector <Vector3d> ();
+	
+			for (const auto & normal : normals)
+			{
+				const auto positionPlane = Plane3d (absolutePosition, normal);
+				const auto intersection  = positionPlane .intersects (pointLine);
+	
+				if (not intersection .second)
+					continue;
+	
+				snapTranslations .emplace_back (getSnapTranslation (intersection .first, pCenters, pAxes, pNormals, dynamicSnapDistance));
+			}
+
+			snapTranslations .erase (std::remove (snapTranslations .begin (), snapTranslations .end (), Vector3d ()), snapTranslations .end ());
+
+			const auto minTranslation = std::min_element (snapTranslations .cbegin (), snapTranslations .cend (),
+			[ ] (const Vector3d & lhs, const Vector3d & rhs)
+			{
+				return abs (lhs) < abs (rhs);
+			});
+	
+			const auto snapTranslation = *minTranslation;
+
+			const auto before = point - center;
+			const auto after  = point + snapTranslation - center;
+			const auto delta  = after - before;
+			const auto ratio  = after / before;
+
+			for (size_t i = 0; i < 3; ++ i)
+			{
+				const auto r = std::abs (ratio [i] - 1);
+
+				if (delta [i] and r < std::abs (min - 1))
+					min = ratio [i];
+			}
+		}
+
+		if (min == 0 or min == infinity)
+		{
+			snapped () = false;
+			return std::make_pair (Matrix4d (), false);
+		}
+
+		snapped () = true;
+
+		auto snapMatrix = Matrix4d ();
+	
+		snapMatrix .scale (Vector3d (min, min, min));
+	
+		snapMatrix *= getOffset (master, bbox, snapMatrix, points [tool] - bbox .center ());
+		snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
+	
+		return std::make_pair (snapMatrix, true);
 	}
 
 	return std::make_pair (Matrix4d (), false);
