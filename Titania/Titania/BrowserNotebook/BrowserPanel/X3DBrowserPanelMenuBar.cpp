@@ -673,7 +673,7 @@ X3DBrowserPanelMenuBar::on_viewpoints_toggled ()
 }
 
 void
-X3DBrowserPanelMenuBar::on_hide_all_object_icons_activated ()
+X3DBrowserPanelMenuBar::on_hide_all_iconic_objects_activated ()
 {
 	if (getLightsMenuItem () .get_active ())
 		getLightsMenuItem () .set_active (false);

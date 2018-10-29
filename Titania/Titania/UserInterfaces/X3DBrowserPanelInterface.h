@@ -214,8 +214,8 @@ public:
 	{ return *m_ViewpointsMenuItem; }
 
 	Gtk::MenuItem &
-	getHideAllObjectIconsMenuItem () const
-	{ return *m_HideAllObjectIconsMenuItem; }
+	getHideAllIconicObjectsMenuItem () const
+	{ return *m_HideAllIconicObjectsMenuItem; }
 
 	Gtk::MenuItem &
 	getLayersMenuItem () const
@@ -369,7 +369,7 @@ public:
 
 	virtual
 	void
-	on_hide_all_object_icons_activated () = 0;
+	on_hide_all_iconic_objects_activated () = 0;
 
 	virtual
 	void
@@ -462,7 +462,7 @@ private:
 	Gtk::CheckMenuItem* m_TransformSensorsMenuItem;
 	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem* m_ViewpointsMenuItem;
-	Gtk::MenuItem* m_HideAllObjectIconsMenuItem;
+	Gtk::MenuItem* m_HideAllIconicObjectsMenuItem;
 	Gtk::MenuItem* m_LayersMenuItem;
 	Gtk::Menu* m_LayersMenu;
 	Gtk::MenuItem* m_PanelsMenuItem;

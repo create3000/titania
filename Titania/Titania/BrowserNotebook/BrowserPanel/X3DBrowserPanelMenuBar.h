@@ -243,7 +243,7 @@ private:
 
 	virtual
 	void
-	on_hide_all_object_icons_activated () final override;
+	on_hide_all_iconic_objects_activated () final override;
 
 	///  @name Layers menu
 

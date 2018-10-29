@@ -377,13 +377,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="HideAllObjectIconsMenuItem">
+                      <object class="GtkMenuItem" id="HideAllIconicObjectsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Hide All Object Icons</property>
-                        <property name="label" translatable="yes">Hide All Object Icons</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Hide All Iconic Objects</property>
+                        <property name="label" translatable="yes">Hide All Iconic Objects</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_hide_all_object_icons_activated" swapped="no"/>
+                        <signal name="activate" handler="on_hide_all_iconic_objects_activated" swapped="no"/>
                       </object>
                     </child>
                   </object>

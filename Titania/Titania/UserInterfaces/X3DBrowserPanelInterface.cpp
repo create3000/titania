@@ -111,7 +111,7 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("TransformSensorsMenuItem", m_TransformSensorsMenuItem);
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
-	m_builder -> get_widget ("HideAllObjectIconsMenuItem", m_HideAllObjectIconsMenuItem);
+	m_builder -> get_widget ("HideAllIconicObjectsMenuItem", m_HideAllIconicObjectsMenuItem);
 	m_builder -> get_widget ("LayersMenuItem", m_LayersMenuItem);
 	m_builder -> get_widget ("LayersMenu", m_LayersMenu);
 	m_builder -> get_widget ("PanelsMenuItem", m_PanelsMenuItem);
@@ -162,8 +162,8 @@ X3DBrowserPanelInterface::create ()
 	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_visibility_sensors_toggled));
 	m_ViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_viewpoints_toggled));
 
-	// Connect object Gtk::MenuItem with id 'HideAllObjectIconsMenuItem'.
-	m_HideAllObjectIconsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_hide_all_object_icons_activated));
+	// Connect object Gtk::MenuItem with id 'HideAllIconicObjectsMenuItem'.
+	m_HideAllIconicObjectsMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_hide_all_iconic_objects_activated));
 	m_LayersMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_layers_activate));
 	m_MainViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_main_view_activate));
 	m_PerspectiveViewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_perspective_view_activate));

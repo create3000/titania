@@ -5,6 +5,7 @@
 ; (gtk_accel_path "<Titania>/File/Open" "<Primary>o")
 ; (gtk_accel_path "<Titania>/File/Open Recent" "<Primary>t")
 ; (gtk_accel_path "<Titania>/File/Open Location" "<Primary>l")
+; (gtk_accel_path "<Titania>/File/Import" "<Primary>i")
 ; (gtk_accel_path "<Titania>/File/Save" "<Primary>s")
 ; (gtk_accel_path "<Titania>/File/Save As" "<Primary><Shift>s")
 ; (gtk_accel_path "<Titania>/File/Export" "<Primary>e")
