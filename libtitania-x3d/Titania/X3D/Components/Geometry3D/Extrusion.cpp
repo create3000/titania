@@ -148,7 +148,7 @@ Extrusion::createPoints (const bool hasCaps) const
 
 	// calculate SCP rotations
 
-	const auto rotations = createRotations ();
+	auto rotations = createRotations ();
 
 	// calculate vertices.
 
@@ -159,7 +159,7 @@ Extrusion::createPoints (const bool hasCaps) const
 		matrix .translate (spine () [i]);
 
 		if (orientation () .size ())
-			matrix .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
+			rotations [i] .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
 
 		matrix .mult_left (rotations [i]);
 
