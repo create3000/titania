@@ -118,11 +118,32 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto v = Vector3d (1, 1, 1);
-	auto n = Vector3d (1, 0, 0);
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:275: in function 'createRotations': 0.96225 0.19245 -0.19245 : -0.196116 0 -0.980581
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:289: in function 'createRotations': 1
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:290: in function 'createRotations': -625
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:291: in function 'createRotations': 25 -5 -5 : -25 -5 5
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 0 -0.196116 : -0.196116 0 -0.980581
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:289: in function 'createRotations': 0.0384615
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:290: in function 'createRotations': -625
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:291: in function 'createRotations': 25 -5 5 : -25 5 5
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 -0.196116 -0 : -0.196116 -0.980581 0
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:289: in function 'createRotations': 0.0384615
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:290: in function 'createRotations': -625
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:291: in function 'createRotations': 25 5 5 : -25 5 -5
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 -0 0.196116 : -0.196116 0 0.980581
+//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:353: in function 'createRotations': 0.96225 0.19245 0.19245 : -0.196116 0 0.980581
 
-	__LOG__ << cross (n, cross (v, n)) << std::endl;
-	__LOG__ << cross (cross (n, v), n) << std::endl;
+	auto a1 = Vector3d (25, -5, -5);
+	auto a2 = Vector3d (-25, -5, 5);
+	auto a3 = normalize (cross (a1, a2));
+	__LOG__ << a3 << std::endl;
+
+	auto b1 = Vector3d (25, -5, 5);
+	auto b2 = Vector3d (-25, 5, 5);
+	auto b3 = normalize (cross (b1, b2));
+	__LOG__ << b3 << std::endl;
+
+	__LOG__ << dot (a3, b3) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -154,14 +154,10 @@ Extrusion::createPoints (const bool hasCaps) const
 
 	for (size_t i = 0, size = spine () .size (); i < size; i ++)
 	{
-		Matrix4d matrix;
-
-		matrix .translate (spine () [i]);
+		auto & matrix = rotations [i];
 
 		if (orientation () .size ())
-			rotations [i] .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
-
-		matrix .mult_left (rotations [i]);
+			matrix .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
 
 		if (scale () .size ())
 		{
@@ -216,13 +212,35 @@ Extrusion::createRotations () const
 	// SCP for the first point:
 	if (closedSpine)
 	{
-		SCPyAxis = normalize (spine () [1] - spine () [spine () .size () - 2]);
-		SCPzAxis = normalize (cross (spine () [1] - spine () [0],
-		                             spine () [spine () .size () - 2] - spine () [0]));
+		// Find first defined Y-axis.
+		for (size_t i = 1, size = spine () .size () - 2; i < size; i ++)
+		{
+			SCPyAxis = normalize (spine () [i] - spine () [size]);
+
+			if (SCPyAxis not_eq Vector3f ())
+				break;
+		}
+
+		// Find first defined Z-axis.
+		for (size_t i = 0, size = spine () .size () - 2; i < size; i ++)
+		{
+			SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i],
+			                             spine () [size] - spine () [i]));
+
+			if (SCPzAxis not_eq Vector3f ())
+				break;
+		}
 	}
 	else
 	{
-		SCPyAxis = normalize (spine () [1] - spine () [0]);
+		// Find first defined Y-axis.
+		for (size_t i = 0, size = spine () .size () - 1; i < size; i ++)
+		{
+			SCPyAxis = normalize (spine () [i + 1] - spine () [i]);
+
+			if (SCPyAxis not_eq Vector3f ())
+				break;
+		}
 
 		// Find first defined Z-axis.
 		for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
@@ -246,10 +264,13 @@ Extrusion::createRotations () const
 	// We do not have to normalize SCPxAxis, as SCPyAxis and SCPzAxis are orthogonal.
 	SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
+	// Get first spine point.
+	const auto s = spine () [0];
+
 	rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
 	                         SCPyAxis .x (), SCPyAxis .y (), SCPyAxis .z (), 0,
 	                         SCPzAxis .x (), SCPzAxis .y (), SCPzAxis .z (), 0,
-	                         0,              0,              0,              1);
+	                         s .x (),        s .y (),        s .z (),        1);
 
 	// For all points other than the first or last:
 
@@ -258,9 +279,11 @@ Extrusion::createRotations () const
 
 	for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 	{
+		const auto s = spine () [i];
+
 		SCPyAxis = normalize (spine () [i + 1] - spine () [i - 1]);
-		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i],
-		                             spine () [i - 1] - spine () [i]));
+		SCPzAxis = normalize (cross (spine () [i + 1] - s,
+		                             spine () [i - 1] - s));
 
 		// g.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
@@ -284,7 +307,7 @@ Extrusion::createRotations () const
 		rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
 		                         SCPyAxis .x (), SCPyAxis .y (), SCPyAxis .z (), 0,
 		                         SCPzAxis .x (), SCPzAxis .y (), SCPzAxis .z (), 0,
-		                         0,              0,              0,              1);
+		                         s .x (),        s .y (),        s .z (),        1);
 	}
 
 	// SCP for the last point
@@ -295,10 +318,12 @@ Extrusion::createRotations () const
 	}
 	else
 	{
-		SCPyAxis = normalize (spine () [spine () .size () - 1] - spine () [spine () .size () - 2]);
+		const auto s = spine () [spine () .size () - 1];
+
+		SCPyAxis = normalize (s - spine () [spine () .size () - 2]);
 
 		if (spine () .size () > 2)
-			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2],
+			SCPzAxis = normalize (cross (s - spine () [spine () .size () - 2],
 			                             spine () [spine () .size () - 3] - spine () [spine () .size () - 2]));
 
 		// g.
@@ -321,7 +346,7 @@ Extrusion::createRotations () const
 		rotations .emplace_back (SCPxAxis .x (), SCPxAxis .y (), SCPxAxis .z (), 0,
 		                         SCPyAxis .x (), SCPyAxis .y (), SCPyAxis .z (), 0,
 		                         SCPzAxis .x (), SCPzAxis .y (), SCPzAxis .z (), 0,
-		                         0,              0,              0,              1);
+		                         s .x (),        s .y (),        s .z (),        1);
 	}
 
 	return rotations;

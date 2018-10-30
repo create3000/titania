@@ -1,11 +1,53 @@
-#VRML V2.0 utf8 CosmoWorlds V1.0
+#VRML V2.0 utf8 Titania V4.3.3
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF _1 ImageTexture {
+              url "../images/lena.jpg"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  title "Cylinder2"
+}
 
 Group {
   children Shape {
     appearance Appearance {
-      texture ImageTexture {
-        url "Pixi.png"
-      }
+      texture USE _1
     }
     geometry Extrusion {
       ccw FALSE
@@ -34,10 +76,9 @@ Group {
         0 0 1 0
       ]
       scale [
-        1 1,
+        2 2,
         1 1
       ]
     }
   }
 }
-
