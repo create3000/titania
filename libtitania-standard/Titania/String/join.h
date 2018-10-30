@@ -54,11 +54,11 @@
 namespace titania {
 namespace basic {
 
-template <class InputIterator>
-std::string
-join (InputIterator first, InputIterator last, const std::string & delimiter)
+template <class StringT, class InputIterator>
+StringT
+basic_join (InputIterator first, InputIterator last, const StringT & delimiter)
 {
-	std::string value;
+	StringT value;
 
 	if (first not_eq last)
 	{
@@ -74,12 +74,28 @@ join (InputIterator first, InputIterator last, const std::string & delimiter)
 	return value;
 }
 
+template <class StringT, class Container>
+inline
+StringT
+basic_join (Container & container, const StringT & delimiter)
+{
+	return basic_join <StringT> (container .begin (), container .end (), delimiter);
+}
+
+template <class InputIterator>
+inline
+std::string
+join (InputIterator first, InputIterator last, const std::string & delimiter)
+{
+	return basic_join <std::string> (first, last, delimiter);
+}
+
 template <class Container>
 inline
 std::string
 join (Container & container, const std::string & delimiter)
 {
-	return join (container .begin (), container .end (), delimiter);
+	return basic_join <std::string> (container, delimiter);
 }
 
 } // basic

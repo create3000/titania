@@ -133,17 +133,35 @@ main (int argc, char** argv)
 //########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 -0 0.196116 : -0.196116 0 0.980581
 //########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:353: in function 'createRotations': 0.96225 0.19245 0.19245 : -0.196116 0 0.980581
 
-	auto a1 = Vector3d (25, -5, -5);
-	auto a2 = Vector3d (-25, -5, 5);
-	auto a3 = normalize (cross (a1, a2));
-	__LOG__ << a3 << std::endl;
+	basic::uri uri ("https://splace.github.io/3d/2005/island/island map.jpg");
 
-	auto b1 = Vector3d (25, -5, 5);
-	auto b2 = Vector3d (-25, 5, 5);
-	auto b3 = normalize (cross (b1, b2));
-	__LOG__ << b3 << std::endl;
+	__LOG__ << uri .is_local () << std::endl;
+	__LOG__ << uri .escape () << std::endl;
+	__LOG__ << uri .unescape () << std::endl;
+	__LOG__ << uri .unescape () .escape () << std::endl;
 
-	__LOG__ << dot (a3, b3) << std::endl;
+	basic::ifilestream stream (uri, 0);
+
+	if (stream)
+	{
+		stream .send ();
+
+		if (stream)
+		{
+			__LOG__ << "ok to send" << std::endl;
+
+			while (stream)
+				std::clog << stream .get () << std::endl;
+		}
+		else
+		{
+			__LOG__ << "failed to send" << std::endl;
+		}
+	}
+	else
+	{
+		__LOG__ << "failed to open" << std::endl;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

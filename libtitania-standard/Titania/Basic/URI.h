@@ -51,7 +51,8 @@
 #ifndef __TITANIA_BASIC_URI_H__
 #define __TITANIA_BASIC_URI_H__
 
-#include "Path.h"
+#include "../Basic/Path.h"
+#include "../String/to_string.h"
 
 #include <map>
 #include <sstream>
@@ -120,7 +121,6 @@ public:
 
 		string_type scheme;
 		string_type slashs;
-		string_type authority;
 		string_type host;
 		size_type port;
 		string_type path;
@@ -138,7 +138,7 @@ public:
 	///  This constructs an URI with the empty URI ''.
 	constexpr
 	basic_uri () :
-		value ({ true, false, string_type (), string_type (), string_type (), string_type (), 0 })
+		value ({ true, false, string_type (), string_type (), string_type (), 0 })
 	{ }
 
 	///  Copy constructor.
@@ -235,9 +235,8 @@ public:
 	hierarchy () const;
 
 	///  Returns the authority of this URI.
-	const string_type &
-	authority () const
-	{ return value .authority; }
+	string_type
+	authority () const;
 
 	///  Returns the scheme of this URI.
 	const string_type &
@@ -307,7 +306,6 @@ public:
 		                    is_absolute (),
 		                    scheme (),
 		                    value .slashs,
-		                    authority (),
 		                    host (),
 		                    port (),
 		                    is_local () ? string_type (1, Signs::Slash) : string_type () });
@@ -325,7 +323,6 @@ public:
 		                    is_absolute (),
 		                    scheme (),
 		                    value .slashs,
-		                    authority (),
 		                    host (),
 		                    port (),
 		                    path () .substr (0, path (). rfind (Signs::Slash) + 1) });
@@ -426,9 +423,6 @@ private:
 		port (string_type &, const size_type, const size_type) const;
 
 		void
-		tidyUpAuthority (const string_type &, string_type &) const;
-
-		void
 		path (const size_type) const;
 
 		void
@@ -503,7 +497,7 @@ basic_uri <StringT>::basic_uri (Value && value) :
 	value (std::move (value))
 {
 	if (value .string .empty ())
-		this -> value .string = std::move (to_string ());
+		this -> value .string = to_string ();
 }
 
 template <class StringT>
@@ -526,7 +520,7 @@ template <class StringT>
 inline
 basic_uri <StringT>::basic_uri (const basic_uri & base, const basic_uri & uri)
 {
-	*this = std::move (base .transform (uri));
+	*this = base .transform (uri);
 }
 
 template <class StringT>
@@ -552,7 +546,7 @@ inline
 typename basic_uri <StringT>::basic_uri &
 basic_uri <StringT>::operator = (const string_type & string)
 {
-	return *this = std::move (basic_uri (string));
+	return *this = basic_uri (string);
 }
 
 template <class StringT>
@@ -560,7 +554,7 @@ inline
 typename basic_uri <StringT>::basic_uri &
 basic_uri <StringT>::operator = (const char_type* string)
 {
-	return *this = std::move (basic_uri (string));
+	return *this = basic_uri (string);
 }
 
 template <class StringT>
@@ -574,6 +568,21 @@ basic_uri <StringT>::hierarchy () const
 	hierarchy += path ();
 
 	return hierarchy;
+}
+
+template <class StringT>
+typename basic_uri <StringT>::string_type
+basic_uri <StringT>::authority () const
+{
+	auto authority = host ();
+
+	if (port ())
+	{
+		authority += Signs::Colon;
+		authority += basic::to_string (port (), std::locale::classic ());
+	}
+
+	return authority;
 }
 
 template <class StringT>
@@ -592,12 +601,12 @@ template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::path (const bool q) const
 {
-	string_type string = value .path;
+	auto string = value .path;
 
 	if (q and query () .length ())
 	{
-		string += Signs::QuestionMark
-		          + query ();
+		string += Signs::QuestionMark;
+		string += query ();
 	}
 
 	return string;
@@ -612,7 +621,6 @@ basic_uri <StringT>::base () const
 	                      is_absolute (),
 	                      scheme (),
 	                      value .slashs,
-	                      authority (),
 	                      host (),
 	                      port (),
 	                      path () })
@@ -628,7 +636,6 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 
 	string_type T_scheme;
 	string_type T_slashs;
-	string_type T_authority;
 	string_type T_host;
 	size_type   T_port;
 	string_type T_path;
@@ -641,7 +648,6 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 		T_absolute  = reference .is_absolute ();
 		T_scheme    = reference .scheme ();
 		T_slashs    = reference .value .slashs;
-		T_authority = reference .authority ();
 		T_host      = reference .host ();
 		T_port      = reference .port ();
 		T_path      = reference .path ();
@@ -653,7 +659,6 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 		{
 			T_local     = reference .is_local ();
 			T_absolute  = reference .is_absolute ();
-			T_authority = reference .authority ();
 			T_host      = reference .host ();
 			T_port      = reference .port ();
 			T_path      = reference .path ();
@@ -695,7 +700,6 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 
 			T_local     = is_local ();
 			T_absolute  = is_absolute () or reference .is_absolute ();
-			T_authority = authority ();
 			T_host      = host ();
 			T_port      = port ();
 		}
@@ -710,7 +714,6 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 	                    T_absolute,
 	                    T_scheme,
 	                    T_slashs,
-	                    T_authority,
 	                    T_host,
 	                    T_port,
 	                    remove_dot_segments (T_path),
@@ -744,7 +747,6 @@ basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 	                    StringT (),
 	                    StringT (),
 	                    StringT (),
-	                    StringT (),
 	                    0,
 	                    uri_path .relative_path (descendant_path) .str (),
 	                    descendant .query (),
@@ -761,7 +763,6 @@ basic_uri <StringT>::filename (const bool q) const
 	                    is_absolute (),
 	                    scheme (),
 	                    value .slashs,
-	                    authority (),
 	                    host (),
 	                    port (),
 	                    path (),
@@ -832,7 +833,6 @@ basic_uri <StringT>::add_file_scheme () const
 		                    is_absolute (),
 		                    FileSchemeId,
 		                    StringT (2, Signs::Slash),
-		                    authority (),
 		                    host (),
 		                    port (),
 		                    path (),
@@ -851,12 +851,11 @@ basic_uri <StringT>::escape () const
 	                    is_absolute (),
 	                    scheme (),
 	                    value .slashs,
-	                    authority (),
 	                    host (),
 	                    port (),
 	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
-	                    query (),
-	                    fragment () });
+	                    Glib::uri_escape_string (query ()),
+	                    Glib::uri_escape_string (fragment ()) });
 }
 
 template <class StringT>
@@ -867,12 +866,11 @@ basic_uri <StringT>::unescape () const
 	                    is_absolute (),
 	                    scheme (),
 	                    value .slashs,
-	                    authority (),
 	                    host (),
 	                    port (),
 	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
-	                    query (),
-	                    fragment () });
+	                    Glib::uri_unescape_string (query ()),
+	                    Glib::uri_unescape_string (fragment ()) });
 }
 
 // Private Funtions
@@ -881,9 +879,7 @@ template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::to_string () const
 {
-	string_type string;
-
-	string += scheme ();
+	auto string = scheme ();
 
 	if (scheme () .length ())
 		string += Signs::Colon;
@@ -892,14 +888,14 @@ basic_uri <StringT>::to_string () const
 
 	if (query () .length ())
 	{
-		string += Signs::QuestionMark
-		          + query ();
+		string += Signs::QuestionMark;
+		string += query ();
 	}
 
 	if (fragment () .length ())
 	{
-		string += Signs::NumberSign
-		          + fragment ();
+		string += Signs::NumberSign;
+		string += fragment ();
 	}
 
 	return string;
@@ -941,7 +937,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 		}
 	}
 
-	size_type begin = first;
+	auto begin = first;
 
 	if (string [begin ++] == Signs::Slash)
 	{
@@ -973,7 +969,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 	}
 
 	uri .value .local = uri .value .scheme == FileSchemeId
-	                    or (not uri .value .scheme .length () and not uri .value .authority .length ());
+	                    or (not uri .value .scheme .length () and not (uri .value .host .length () || uri .value .port));
 }
 
 template <class StringT>
@@ -982,12 +978,12 @@ basic_uri <StringT>::parser::scheme (const size_type first) const
 {
 	if (std::isalpha (string [0]))
 	{
-		size_type last = string .find (Signs::Colon, first);
+		auto last = string .find (Signs::Colon, first);
 
 		if (last == string_type::npos)
 			return first;
 
-		uri .value .scheme = std::move (string .substr (first, last - first));
+		uri .value .scheme = string .substr (first, last - first);
 
 		return last;
 	}
@@ -999,7 +995,7 @@ template <class StringT>
 typename StringT::size_type
 basic_uri <StringT>::parser::authority (const size_type first) const
 {
-	size_type last = string .find_first_of (Signs::SlashQuestionNumber, first, 3);
+	auto last = string .find_first_of (Signs::SlashQuestionNumber, first, 3);
 
 	// Return if no authority.
 	if (first == last)
@@ -1008,9 +1004,8 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 	if (last == string_type::npos)
 		last = string .length ();
 
-	string_type authority = string .substr (first, last - first);
-
-	const size_type colon = authority .find (Signs::Colon);
+	auto       authority = string .substr (first, last - first);
+	const auto colon     = authority .find (Signs::Colon);
 
 	if (colon not_eq string_type::npos)
 	{
@@ -1018,9 +1013,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 		port (authority, colon + 1, authority .length ());
 	}
 	else
-		uri .value .host = authority;
-
-	uri .value .authority = std::move (authority);
+		uri .value .host = Glib::uri_unescape_string (authority);
 
 	return last;
 }
@@ -1028,16 +1021,16 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 template <class StringT>
 inline
 void
-basic_uri <StringT>::parser::host (const string_type &authority, const size_type first, const size_type last) const
+basic_uri <StringT>::parser::host (const string_type & authority, const size_type first, const size_type last) const
 {
-	uri .value .host = std::move (authority .substr (first, last - first));
+	uri .value .host = Glib::uri_unescape_string (authority .substr (first, last - first));
 }
 
 template <class StringT>
 void
 basic_uri <StringT>::parser::port (string_type & authority, const size_type first, const size_type last) const
 {
-	size_type pos = first;
+	auto pos = first;
 
 	string_type portString = authority .substr (first);
 
@@ -1051,34 +1044,18 @@ basic_uri <StringT>::parser::port (string_type & authority, const size_type firs
 
 		uri .value .port = 0;
 	}
-
-	tidyUpAuthority (portString, authority);
-}
-
-template <class StringT>
-void
-basic_uri <StringT>::parser::tidyUpAuthority (const string_type &portString, string_type & authority) const
-{
-	// Tidy up authority. Remove leading zeros.
-	size_type zero = 0;
-
-	while (portString [zero ++] == Signs::Zero and zero not_eq portString .length ())
-		;
-
-	if (zero not_eq string_type::npos)
-		authority = std::move (uri .value .host + Signs::Colon + portString .substr (zero - 1));
 }
 
 template <class StringT>
 void
 basic_uri <StringT>::parser::path (const size_type first) const
 {
-	size_type last = string .find_first_of (Signs::QuestionNumber, first, 2);
+	auto last = string .find_first_of (Signs::QuestionNumber, first, 2);
 
 	if (last == string_type::npos)
 		last = string .length ();
 
-	uri .value .path = std::move (string .substr (first, last - first));
+	uri .value .path = Glib::uri_unescape_string (string .substr (first, last - first));
 
 	switch (string [last])
 	{
@@ -1095,12 +1072,12 @@ template <class StringT>
 void
 basic_uri <StringT>::parser::query (const size_type first) const
 {
-	size_type last = string .find (Signs::NumberSign, first);
+	auto last = string .find (Signs::NumberSign, first);
 
 	if (last == string_type::npos)
 		last = string .length ();
 
-	uri .value .query = std::move (string .substr (first, last - first));
+	uri .value .query = Glib::uri_unescape_string (string .substr (first, last - first));
 
 	if (string [last] == Signs::NumberSign)
 		fragment (last + 1);
@@ -1111,7 +1088,7 @@ inline
 void
 basic_uri <StringT>::parser::fragment (const size_type first) const
 {
-	uri .value .fragment = std::move (string .substr (first));
+	uri .value .fragment = Glib::uri_unescape_string (string .substr (first));
 }
 
 ///  @relates basic_uri
