@@ -854,7 +854,7 @@ basic_uri <StringT>::escape () const
 	                    host (),
 	                    port (),
 	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
-	                    Glib::uri_escape_string (query ()),
+	                    query (),
 	                    Glib::uri_escape_string (fragment ()) });
 }
 
@@ -869,7 +869,7 @@ basic_uri <StringT>::unescape () const
 	                    host (),
 	                    port (),
 	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
-	                    Glib::uri_unescape_string (query ()),
+	                    query (),
 	                    Glib::uri_unescape_string (fragment ()) });
 }
 
@@ -1077,7 +1077,7 @@ basic_uri <StringT>::parser::query (const size_type first) const
 	if (last == string_type::npos)
 		last = string .length ();
 
-	uri .value .query = Glib::uri_unescape_string (string .substr (first, last - first));
+	uri .value .query = string .substr (first, last - first);
 
 	if (string [last] == Signs::NumberSign)
 		fragment (last + 1);
