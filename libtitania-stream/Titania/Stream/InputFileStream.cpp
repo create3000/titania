@@ -158,10 +158,10 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 
 			if (base64 .empty ())
 			{
-				auto escaped = Glib::uri_unescape_string (data);
+				auto unescaped = Glib::uri_unescape_string (data);
 
-				if (not escaped .empty ())
-					data = std::move (escaped);
+				if (not unescaped .empty ())
+					data = std::move (unescaped);
 			}
 			else
 				data = Glib::Base64::decode (data);
