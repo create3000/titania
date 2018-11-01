@@ -245,8 +245,7 @@ private:
 	///  @name Operations
 
 	void
-	getEllipsoidParameter (Matrix4d modelViewMatrix, const float & back, const float & front, float & radius, float & distance)
-	throw (std::domain_error);
+	getEllipsoidParameter (Matrix4d matrix, const float back, const float front, float & radius, float & distance);
 
 	///  @name Static members
 

@@ -224,8 +224,9 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 		if (maxDistance < maxRadius)
 		{
 			if (minDistance < minRadius)
+			{
 				sourceNode -> setVolume (intensity ());
-
+			}
 			else
 			{
 				const auto d1 = maxRadius - maxDistance;
@@ -235,7 +236,9 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			}
 		}
 		else
+		{
 			sourceNode -> setVolume (0);
+		}
 	}
 	catch (const std::domain_error &)
 	{
@@ -249,23 +252,26 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
  *
  * The ellipsoid is transformed to a sphere for easier calculation and then the viewer position is
  * transformed into this coordinate system. The radius and distance can then be obtained.
+ *
+ * throws std::domain_error
  */
 
 void
-Sound::getEllipsoidParameter (Matrix4d modelViewMatrix, const float & back, const float & front, float & radius, float & distance)
-throw (std::domain_error)
+Sound::getEllipsoidParameter (Matrix4d matrix, const float back, const float front, float & radius, float & distance)
 {
 	const auto a = (back + front) / 2;
 	const auto e = a - back;
 	const auto b = std::sqrt (a * a - e * e);
 
-	modelViewMatrix .translate (location () .getValue ());
-	modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
+	matrix .translate (location () .getValue ());
+	matrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
 
-	modelViewMatrix .translate (Vector3d (0, 0, e));
-	modelViewMatrix .scale (Vector3d (1, 1, a / b));
+	matrix .translate (Vector3d (0, 0, e));
+	matrix .scale (Vector3d (1, 1, a / b));
 
-	const auto viewer = inverse (modelViewMatrix) .origin ();
+	matrix .inverse ();
+
+	const auto viewer = matrix .origin ();
 
 	radius   = b;
 	distance = abs (viewer);
