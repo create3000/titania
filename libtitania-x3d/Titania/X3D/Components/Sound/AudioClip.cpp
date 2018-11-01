@@ -144,6 +144,7 @@ AudioClip::load ()
 {
 	if (urlStack .empty ())
 	{
+		do_stop ();
 		duration_changed () = -1;
 
 		setLoadState (FAILED_STATE);
@@ -160,8 +161,23 @@ AudioClip::load ()
 void
 AudioClip::on_audio_changed ()
 {
-	if (isActive () and not isPaused ())
-		getStream () -> play ();
+	if (getLive ())
+	{
+		if (isActive () and not isPaused ())
+		{
+			if (loop ())
+			{
+				do_stop ();
+				do_start ();
+			}
+			else
+				do_stop ();
+		}
+	}
+	else
+	{
+		getStream () -> pause ();
+	}
 
 	setLoadState (COMPLETE_STATE);
 	setLoadedUrl (getStream () -> getUri ());
@@ -188,17 +204,6 @@ AudioClip::set_buffer ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
-
-	if (isActive () and not isPaused ())
-	{
-		if (loop ())
-		{
-			do_stop ();
-			do_start ();
-		}
-		else
-			do_stop ();
-	}
 }
 
 void

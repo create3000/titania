@@ -205,7 +205,7 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{
 		if (type not_eq TraverseType::DISPLAY)
 			return;
-	
+
 		if (not sourceNode)
 			return;
 	
@@ -216,23 +216,27 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 
 		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 
-		float minRadius, maxRadius, minDistance, maxDistance;
+		double minDistance, maxDistance;
+		Vector3d minIntersection, maxIntersection;
 
-		getEllipsoidParameter (modelViewMatrix, maxBack (), maxFront (), maxRadius, maxDistance);
-		getEllipsoidParameter (modelViewMatrix, minBack (), minFront (), minRadius, minDistance);
+		getEllipsoidParameter (modelViewMatrix, maxBack (), maxFront (), maxDistance, maxIntersection);
+		getEllipsoidParameter (modelViewMatrix, minBack (), minFront (), minDistance, minIntersection);
 
-		if (maxDistance < maxRadius)
+		if (maxDistance < 1) // Sphere radius is 1
 		{
-			if (minDistance <= minRadius)
+			if (minDistance < 1) // Sphere radius is 1
 			{
 				sourceNode -> setVolume (intensity ());
 			}
 			else
 			{
-				const auto d1 = maxRadius - maxDistance;
-				const auto d2 = maxRadius - minRadius;
+				const auto d1 = abs (minIntersection); // Viewer is here at (0, 0, 0)
+				const auto d2 = distance (maxIntersection, minIntersection);
+				const auto d  = 1 - (d1 / d2);
 
-				sourceNode -> setVolume (intensity () * (d1 / d2));
+				//__LOG__ << d << std::endl;
+
+				sourceNode -> setVolume (intensity () * d);
 			}
 		}
 		else
@@ -257,24 +261,38 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
  */
 
 void
-Sound::getEllipsoidParameter (Matrix4d matrix, const float back, const float front, float & radius, float & distance)
+Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const double front, double & distance, Vector3d & intersection)
 {
 	const auto a = (back + front) / 2;
 	const auto e = a - back;
 	const auto b = std::sqrt (a * a - e * e);
 
-	matrix .translate (location () .getValue ());
-	matrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
+	auto       location = Vector3d (0, 0, e);
+	const auto scale    = Vector3d (b, b, a);
 
-	matrix .translate (Vector3d (0, 0, e));
-	matrix .scale (Vector3d (1, 1, a / b));
+	const auto rotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (this -> direction () .getValue ()));
 
-	matrix .inverse ();
+	sphereMatrix .translate (this -> location () .getValue ());
+	sphereMatrix .rotate (rotation);
+	sphereMatrix .translate (location);
+	sphereMatrix .scale (scale);
 
-	const auto viewer = matrix .origin ();
+	const auto viewer = inverse (sphereMatrix) .origin ();
+	location .negate ();
+	location /= scale;
 
-	radius   = b;
-	distance = abs (viewer);
+	const auto   line          = Line3d (viewer, normalize (location - viewer));
+	const auto   sphere        = Sphere3d (1, Vector3f ());
+	const auto   intersections = sphere .intersects (line);
+	const auto & intersection1 = std::get <0> (intersections);
+	const auto & intersection2 = std::get <1> (intersections);
+
+	if (math::distance (viewer, intersection1) < math::distance (viewer, intersection2))
+		intersection = intersection1 * sphereMatrix;
+	else
+		intersection = intersection2 * sphereMatrix;
+
+	distance = abs (viewer); // Distance to sphere center
 }
 
 Sound::~Sound ()

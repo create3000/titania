@@ -157,6 +157,7 @@ MovieTexture::load ()
 {
 	if (urlStack .empty ())
 	{
+		do_stop ();
 		duration_changed () = -1;
 		components ()       = 0;
 
@@ -179,7 +180,15 @@ MovieTexture::on_video_changed ()
 	if (getLive ())
 	{
 		if (isActive () and not isPaused ())
-			getStream () -> play ();
+		{
+			if (loop ())
+			{
+				do_stop ();
+				do_start ();
+			}
+			else
+				do_stop ();
+		}
 	}
 	else
 	{
@@ -242,17 +251,6 @@ MovieTexture::update ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
-
-	if (isActive () and not isPaused ())
-	{
-		if (loop ())
-		{
-			do_stop ();
-			do_start ();
-		}
-		else
-			do_stop ();
-	}
 }
 
 void

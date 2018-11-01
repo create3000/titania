@@ -245,7 +245,7 @@ private:
 	///  @name Operations
 
 	void
-	getEllipsoidParameter (Matrix4d matrix, const float back, const float front, float & radius, float & distance);
+	getEllipsoidParameter (Matrix4d matrix, const double back, const double front, double & distance, Vector3d & intersection);
 
 	///  @name Static members
 
