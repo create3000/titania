@@ -223,7 +223,7 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 
 		if (maxDistance < maxRadius)
 		{
-			if (minDistance < minRadius)
+			if (minDistance <= minRadius)
 			{
 				sourceNode -> setVolume (intensity ());
 			}
