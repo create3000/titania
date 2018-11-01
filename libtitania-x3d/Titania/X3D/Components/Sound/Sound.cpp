@@ -51,6 +51,7 @@
 #include "Sound.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Types/Geometry.h"
@@ -79,10 +80,12 @@ Sound::Fields::Fields () :
 { }
 
 Sound::Sound (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSoundNode (),
-	      fields (),
-	  sourceNode ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DSoundNode (),
+	          fields (),
+	      sourceNode (),
+	       traversed (true),
+	currentTraversed (true)
 {
 	addType (X3DConstants::Sound);
 
@@ -104,7 +107,8 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	maxBack ()  .setUnit (UnitCategory::LENGTH);
 	maxFront () .setUnit (UnitCategory::LENGTH);
 
-	addChildObjects (sourceNode);
+	addChildObjects (sourceNode,
+	                 traversed);
 }
 
 X3DBaseNode*
@@ -118,9 +122,59 @@ Sound::initialize ()
 {
 	X3DSoundNode::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (&Sound::set_live, this);
+	isLive () .addInterest (&Sound::set_live, this);
+	traversed .addInterest (&Sound::set_live, this);
+
 	source () .addInterest (&Sound::set_source, this);
 
+	set_live ();
 	set_source ();
+}
+
+void
+Sound::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> sensorEvents ()    .removeInterest (&Sound::update,   this);
+	getExecutionContext () -> isLive () .removeInterest (&Sound::set_live, this);
+
+	X3DSoundNode::setExecutionContext (executionContext);
+
+	getExecutionContext () -> isLive () .addInterest (&Sound::set_live, this);
+
+	set_live ();
+}
+
+void
+Sound::setTraversed (const bool value)
+{
+   if (value)
+	{
+		if (traversed == false)
+			traversed = true;
+	}
+	else
+	{
+		if (currentTraversed != traversed)
+			traversed = currentTraversed;
+	}
+
+   currentTraversed = value;
+}
+
+void
+Sound::set_live ()
+{
+	if (isLive () && getExecutionContext () -> isLive () && traversed)
+	{
+		getBrowser () -> sensorEvents () .addInterest (&Sound::update, this);
+	}
+	else
+	{
+		getBrowser () -> sensorEvents () .removeInterest (&Sound::update, this);
+	}
 }
 
 void
@@ -133,19 +187,33 @@ Sound::set_source ()
 }
 
 void
+Sound::update ()
+{
+	if (not getTraversed ())
+	{
+		if (sourceNode)
+			sourceNode -> setVolume (0);
+	}
+
+	setTraversed (false);
+}
+
+void
 Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type not_eq TraverseType::DISPLAY)
-		return;
-
-	if (not sourceNode)
-		return;
-
-	if (not sourceNode -> isActive () or sourceNode -> isPaused ())
-		return;
-
 	try
 	{
+		if (type not_eq TraverseType::DISPLAY)
+			return;
+	
+		if (not sourceNode)
+			return;
+	
+		if (not sourceNode -> isActive () or sourceNode -> isPaused ())
+			return;
+
+		setTraversed (true);
+
 		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 
 		float minRadius, maxRadius, minDistance, maxDistance;
@@ -171,7 +239,8 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	}
 	catch (const std::domain_error &)
 	{
-		sourceNode -> setVolume (0);
+		if (sourceNode)
+			sourceNode -> setVolume (0);
 	}
 }
 

@@ -91,6 +91,12 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Fields
 
 	virtual
@@ -216,10 +222,25 @@ protected:
 
 private:
 
+	///  @name Member access
+
+	void
+	setTraversed (const bool value);
+
+	bool
+	getTraversed () const
+	{  return currentTraversed; }
+
 	///  @name Event handlers
 
 	void
+	set_live ();
+
+	void
 	set_source ();
+
+	void
+	update ();
 
 	///  @name Operations
 
@@ -254,6 +275,8 @@ private:
 	Fields fields;
 
 	X3DPtr <X3DSoundSourceNode> sourceNode;
+	SFBool                      traversed;
+	bool                        currentTraversed;
 
 };
 
