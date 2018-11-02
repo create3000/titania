@@ -244,7 +244,7 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			{
 				const auto d1        = abs (maxIntersection); // Viewer is here at (0, 0, 0)
 				const auto d2        = distance (maxIntersection, minIntersection);
-				const auto d         = clamp <double> (d1 / d2, 0, 1);
+				const auto d         = std::min <double> (d1 / d2, 1);
 				const auto intensity = clamp <double> (this -> intensity (), 0, 1);
 				const auto volume    = intensity * d;
 
