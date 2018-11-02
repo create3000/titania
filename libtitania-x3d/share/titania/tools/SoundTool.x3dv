@@ -274,8 +274,11 @@ function eventsProcessed ()
 
 function minRange ()
 {
-	var a = (sound .minBack + sound .minFront) / 2;
-	var e = a - sound .minBack;
+	var minBack  = Math .max (sound .minBack,  0);
+	var minFront = Math .max (sound .minFront, 0);
+
+	var a = (minBack + minFront) / 2;
+	var e = a - minBack;
 	var b = Math .sqrt (a * a - e * e);
 	
 	minTranslation_changed = new SFVec3f (0, 0, e);
@@ -284,8 +287,11 @@ function minRange ()
 
 function maxRange ()
 {
-	var a = (sound .maxBack + sound .maxFront) / 2;
-	var e = a - sound .maxBack;
+	var maxBack  = Math .max (sound .maxBack,  0);
+	var maxFront = Math .max (sound .maxFront, 0);
+
+	var a = (maxBack + maxFront) / 2;
+	var e = a - maxBack;
 	var b = Math .sqrt (a * a - e * e);
 	
 	maxTranslation_changed = new SFVec3f (0, 0, e);
