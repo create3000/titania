@@ -149,6 +149,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_buffer ();
+
+	void
 	on_video_changed ();
 
 	void

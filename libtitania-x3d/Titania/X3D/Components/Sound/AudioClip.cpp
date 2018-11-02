@@ -134,6 +134,12 @@ AudioClip::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	buffer .addEvent ();
+}
+
+void
+AudioClip::set_buffer ()
+{
 	urlStack = url ();
 
 	load ();
@@ -194,12 +200,6 @@ AudioClip::on_error ()
 
 void
 AudioClip::set_url ()
-{
-	buffer .addEvent ();
-}
-
-void
-AudioClip::set_buffer ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

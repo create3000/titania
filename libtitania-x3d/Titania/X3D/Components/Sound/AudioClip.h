@@ -125,6 +125,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_buffer ();
+
+	void
 	on_audio_changed ();
 
 	void
@@ -132,9 +135,6 @@ private:
 
 	void
 	set_url ();
-
-	void
-	set_buffer ();
 
 	///  @name Static members
 

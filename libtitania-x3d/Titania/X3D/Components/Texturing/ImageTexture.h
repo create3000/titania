@@ -159,10 +159,10 @@ private:
 	setTexture (const basic::uri URL, const TexturePtr & texture);
 
 	void
-	set_url ();
+	set_buffer ();
 
 	void
-	set_buffer ();
+	set_url ();
 
 	virtual
 	void

@@ -116,7 +116,7 @@ MovieTexture::initialize ()
 
 	url () .addInterest (&MovieTexture::set_url, this);
 
-	buffer .addInterest (&MovieTexture::update, this);
+	buffer .addInterest (&MovieTexture::set_buffer, this);
 
 	set_url ();
 }
@@ -147,6 +147,12 @@ MovieTexture::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	buffer .addEvent ();
+}
+
+void
+MovieTexture::set_buffer ()
+{
 	urlStack = url ();
 
 	load ();
@@ -242,7 +248,9 @@ MovieTexture::on_buffer_changed ()
 void
 MovieTexture::set_url ()
 {
-	buffer .addEvent ();
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
 }
 
 void
