@@ -234,13 +234,15 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			}
 			else
 			{
-				const auto d1 = abs (minIntersection); // Viewer is here at (0, 0, 0)
-				const auto d2 = distance (maxIntersection, minIntersection);
-				const auto d  = 1 - (d1 / d2);
+				const auto d1        = abs (maxIntersection); // Viewer is here at (0, 0, 0)
+				const auto d2        = distance (maxIntersection, minIntersection);
+				const auto d         = d1 / d2;
+				const auto intensity = clamp <float> (this -> intensity (), 0, 1);
+				const auto volume    = intensity * d;
 
 				//__LOG__ << d << std::endl;
 
-				sourceNode -> setVolume (intensity () * d);
+				sourceNode -> setVolume (volume);
 			}
 		}
 		else
@@ -267,6 +269,8 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 void
 Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const double front, double & distance, Vector3d & intersection)
 {
+	static constexpr auto sphere = Sphere3d ();
+
 	const auto a = (back + front) / 2;
 	const auto e = a - back;
 	const auto b = std::sqrt (a * a - e * e);
@@ -286,7 +290,6 @@ Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const do
 	location /= scale;
 
 	const auto   line          = Line3d (viewer, normalize (location - viewer));
-	const auto   sphere        = Sphere3d (1, Vector3f ());
 	const auto   intersections = sphere .intersects (line);
 	const auto & intersection1 = std::get <0> (intersections);
 	const auto & intersection2 = std::get <1> (intersections);

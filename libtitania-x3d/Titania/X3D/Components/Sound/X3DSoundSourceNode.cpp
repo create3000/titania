@@ -113,7 +113,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DSoundSourceNode::setVolume (const float value)
 {
-	mediaStream -> setVolume (clamp <float> (value * getBrowser () -> getVolume () * (not getBrowser () -> getMute ()), 0, 1));
+	const auto mute      = getBrowser () -> getMute ();
+	const auto intensity = clamp <float> (getBrowser () -> getVolume (), 0, 1);
+	const auto volume    = clamp <float> (value, 0, 1);
+
+	mediaStream -> setVolume (volume * intensity * (not mute));
 }
 
 const std::unique_ptr <MediaStream> &
