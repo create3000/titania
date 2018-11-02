@@ -216,14 +216,18 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 
 		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 
-		double minDistance, maxDistance;
-		Vector3d minIntersection, maxIntersection;
+		auto maxDistance     = 0.0;
+		auto maxIntersection = Vector3d ();
 
 		getEllipsoidParameter (modelViewMatrix, maxBack (), maxFront (), maxDistance, maxIntersection);
-		getEllipsoidParameter (modelViewMatrix, minBack (), minFront (), minDistance, minIntersection);
 
 		if (maxDistance < 1) // Sphere radius is 1
 		{
+			auto minDistance     = 0.0;
+			auto minIntersection = Vector3d ();
+
+			getEllipsoidParameter (modelViewMatrix, minBack (), minFront (), minDistance, minIntersection);
+
 			if (minDistance < 1) // Sphere radius is 1
 			{
 				sourceNode -> setVolume (intensity ());
