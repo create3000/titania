@@ -219,14 +219,14 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 		auto maxDistance     = 0.0;
 		auto maxIntersection = Vector3d ();
 
-		getEllipsoidParameter (modelViewMatrix, std::max <float> (maxBack (), 0), std::max <float> (maxFront (), 0), maxDistance, maxIntersection);
+		getEllipsoidParameter (modelViewMatrix, std::max <double> (maxBack (), 0), std::max <double> (maxFront (), 0), maxDistance, maxIntersection);
 
 		if (maxDistance < 1) // Sphere radius is 1
 		{
 			auto minDistance     = 0.0;
 			auto minIntersection = Vector3d ();
 
-			getEllipsoidParameter (modelViewMatrix, std::max <float> (minBack (), 0), std::max <float> (minFront (), 0), minDistance, minIntersection);
+			getEllipsoidParameter (modelViewMatrix, std::max <double> (minBack (), 0), std::max <double> (minFront (), 0), minDistance, minIntersection);
 
 			if (minDistance < 1) // Sphere radius is 1
 			{
@@ -236,8 +236,8 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			{
 				const auto d1        = abs (maxIntersection); // Viewer is here at (0, 0, 0)
 				const auto d2        = distance (maxIntersection, minIntersection);
-				const auto d         = d1 / d2;
-				const auto intensity = clamp <float> (this -> intensity (), 0, 1);
+				const auto d         = clamp <double> (d1 / d2, 0, 1);
+				const auto intensity = clamp <double> (this -> intensity (), 0, 1);
 				const auto volume    = intensity * d;
 
 				//__LOG__ << d << std::endl;
