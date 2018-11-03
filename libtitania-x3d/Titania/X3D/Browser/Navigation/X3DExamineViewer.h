@@ -157,7 +157,7 @@ private:
 	getPositionOffset () const;
 
 	Rotation4d
-	getOrientationOffset (const bool _throw);
+	getOrientationOffset (const Rotation4d & rotation, const bool _throw);
 
 	Rotation4d
 	getHorizonRotation (const Rotation4d & rotation) const;

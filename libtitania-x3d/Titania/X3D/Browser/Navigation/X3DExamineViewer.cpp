@@ -119,7 +119,7 @@ X3DExamineViewer::set_activeViewpoint ()
 	if (getBrowser () -> getStraightenHorizon ())
 	{
 		if (getActiveViewpoint ())
-			getActiveViewpoint () -> orientationOffset () = getOrientationOffset (false);
+			getActiveViewpoint () -> orientationOffset () = getOrientationOffset (Rotation4d (), false);
 	}
 
 	disconnect ();
@@ -378,7 +378,7 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 
 		try
 		{
-			viewpoint -> orientationOffset () = getOrientationOffset (true);
+			viewpoint -> orientationOffset () = getOrientationOffset (rotation, true);
 			viewpoint -> positionOffset ()    = getPositionOffset ();
 		}
 		catch (const X3DError & error)
@@ -387,7 +387,7 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 
 			rotation = getHorizonRotation (rotation);
 
-			viewpoint -> orientationOffset () = getOrientationOffset (false);
+			viewpoint -> orientationOffset () = getOrientationOffset (rotation, false);
 			viewpoint -> positionOffset ()    = getPositionOffset ();
 		}
 
@@ -461,7 +461,7 @@ X3DExamineViewer::spin ()
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
-		viewpoint -> orientationOffset () = getOrientationOffset (false);
+		viewpoint -> orientationOffset () = getOrientationOffset (rotation, false);
 		viewpoint -> positionOffset ()    = getPositionOffset ();
 
 		return true;
@@ -489,7 +489,7 @@ X3DExamineViewer::getPositionOffset () const
 }
 
 Rotation4d
-X3DExamineViewer::getOrientationOffset (const bool _throw)
+X3DExamineViewer::getOrientationOffset (const Rotation4d & rotation, const bool _throw)
 {
 	const auto & viewpoint = getActiveViewpoint ();
 
