@@ -99,10 +99,9 @@ X3DExamineViewer::initialize ()
 		getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (this, &X3DExamineViewer::on_scroll_event));
 
 		getNavigationInfo () -> transitionStart () .addInterest (&X3DExamineViewer::disconnect, this);
-		getBrowser () -> getActiveViewpoint () .addInterest (&X3DExamineViewer::disconnect, this);
+		getBrowser () -> getActiveViewpoint () .addInterest (&X3DExamineViewer::set_activeViewpoint, this);
 
-		if (getBrowser () -> getStraightenHorizon ())
-			getActiveViewpoint () -> orientationOffset () = getOrientationOffset (false);
+		set_activeViewpoint ();
 	}
 	catch (const X3DError & error)
 	{ }
@@ -112,6 +111,18 @@ void
 X3DExamineViewer::disconnect ()
 {
 	spin_id .disconnect ();
+}
+
+void
+X3DExamineViewer::set_activeViewpoint ()
+{
+	if (getBrowser () -> getStraightenHorizon ())
+	{
+		if (getActiveViewpoint ())
+			getActiveViewpoint () -> orientationOffset () = getOrientationOffset (false);
+	}
+
+	disconnect ();
 }
 
 bool

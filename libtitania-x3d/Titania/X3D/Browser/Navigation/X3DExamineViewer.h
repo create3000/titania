@@ -109,6 +109,9 @@ private:
 	void
 	disconnect ();
 
+	void
+	set_activeViewpoint ();
+
 	bool
 	on_button_press_event (GdkEventButton* event);
 
