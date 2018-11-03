@@ -167,24 +167,7 @@ AudioClip::load ()
 void
 AudioClip::on_audio_changed ()
 {
-	if (getLive ())
-	{
-		if (isActive () and not isPaused ())
-		{
-			if (loop ())
-			{
-				do_stop ();
-				do_start ();
-			}
-			else
-				do_stop ();
-		}
-	}
-	else
-	{
-		getStream () -> pause ();
-	}
-
+	setMedia ();
 	setLoadState (COMPLETE_STATE);
 	setLoadedUrl (getStream () -> getUri ());
 }

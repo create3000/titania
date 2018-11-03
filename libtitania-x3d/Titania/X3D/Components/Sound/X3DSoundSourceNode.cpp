@@ -127,6 +127,42 @@ X3DSoundSourceNode::getStream () const
 }
 
 void
+X3DSoundSourceNode::setMedia ()
+{
+	if (isActive ())
+	{
+		if (isPaused ())
+		{
+			if (loop ())
+			{
+				do_stop ();
+				do_pause ();
+			}
+			else
+			{
+				do_stop ();
+			}
+		}
+		else
+		{
+			if (loop ())
+			{
+				do_stop ();
+				do_start ();
+			}
+			else
+			{
+				do_stop ();
+			}
+		}
+	}
+	else
+	{
+		set_stop ();
+	}
+}
+
+void
 X3DSoundSourceNode::on_end ()
 {
 	end = getCurrentTime ();

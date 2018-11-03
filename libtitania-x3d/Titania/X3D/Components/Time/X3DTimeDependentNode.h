@@ -217,6 +217,9 @@ protected:
 
 	void
 	do_start ();
+
+	void
+	do_pause ();
 	
 	void
 	do_stop ();
@@ -252,9 +255,6 @@ private:
 	set_stopTime ();
 
 	// Wrapper functions
-
-	void
-	do_pause ();
 
 	void
 	real_pause ();

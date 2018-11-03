@@ -299,7 +299,7 @@ X3DTimeDependentNode::do_start ()
 		{
 			getBrowser () -> timeEvents () .addInterest (&X3DTimeDependentNode::set_time, this);
 		}
-		else if (not disabled)
+		else
 		{
 			disabled = true;
 			real_pause ();

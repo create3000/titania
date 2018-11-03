@@ -159,6 +159,9 @@ protected:
 	const std::unique_ptr <MediaStream> &
 	getStream () const;
 
+	void
+	setMedia ();
+	
 	///  @name Event handlers
 
 	virtual
