@@ -100,6 +100,9 @@ X3DExamineViewer::initialize ()
 
 		getNavigationInfo () -> transitionStart () .addInterest (&X3DExamineViewer::disconnect, this);
 		getBrowser () -> getActiveViewpoint () .addInterest (&X3DExamineViewer::disconnect, this);
+
+		if (getBrowser () -> getStraightenHorizon ())
+			getActiveViewpoint () -> orientationOffset () = getOrientationOffset (false);
 	}
 	catch (const X3DError & error)
 	{ }
