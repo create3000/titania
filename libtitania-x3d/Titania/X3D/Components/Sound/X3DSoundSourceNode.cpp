@@ -129,6 +129,8 @@ X3DSoundSourceNode::getStream () const
 void
 X3DSoundSourceNode::setMedia ()
 {
+	setVolume (0);
+
 	if (isActive ())
 	{
 		if (isPaused ())
