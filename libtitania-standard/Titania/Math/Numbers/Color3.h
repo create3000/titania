@@ -659,16 +659,30 @@ hsv_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, con
 {
 	const auto & a     = source;
 	const auto & b     = destination;
-	const Type   range = std::abs (b [0] - a [0]);
+	auto         ha    = a [0];
+	const auto   sa    = a [1];
+	const auto   va    = a [2];
+	auto         hb    = b [0];
+	const auto   sb    = b [1];
+	const auto   vb    = b [2];
+	const auto   range = std::abs (hb - ha);
+
+	if (sa == 0)
+		ha = hb;
+
+	if (sb == 0)
+		hb = ha;
 
 	if (range <= pi <Type>)
 	{
-		return lerp (a, b, t);
+		return vector3 <Type> (lerp (ha, hb, t),
+		                       lerp (sa, sb, t),
+		                       lerp (va, vb, t));
 	}
 	else
 	{
 		const Type step = (pi2 <Type>- range) * t;
-		Type       h    = a [0] < b [0] ? a [0] - step : a [0] + step;
+		Type       h    = ha < hb ? ha - step : ha + step;
 
 		if (h < 0)
 			h += pi2 <Type>;
@@ -677,8 +691,8 @@ hsv_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, con
 			h -= pi2 <Type>;
 
 		return vector3 <Type> (h,
-		                       lerp (a [1], b [1], t),
-		                       lerp (a [2], b [2], t));
+		                       lerp (sa, sb, t),
+		                       lerp (va, vb, t));
 	}
 }
 
