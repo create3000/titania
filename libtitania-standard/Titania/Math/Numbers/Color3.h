@@ -657,21 +657,22 @@ static
 vector3 <Type>
 hsv_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, const Type & t)
 {
-	const auto & a     = source;
-	const auto & b     = destination;
-	auto         ha    = a [0];
-	const auto   sa    = a [1];
-	const auto   va    = a [2];
-	auto         hb    = b [0];
-	const auto   sb    = b [1];
-	const auto   vb    = b [2];
-	const auto   range = std::abs (hb - ha);
+	const auto & a  = source;
+	const auto & b  = destination;
+	auto         ha = a [0];
+	const auto   sa = a [1];
+	const auto   va = a [2];
+	auto         hb = b [0];
+	const auto   sb = b [1];
+	const auto   vb = b [2];
 
 	if (sa == 0)
 		ha = hb;
 
 	if (sb == 0)
 		hb = ha;
+
+	const auto range = std::abs (hb - ha);
 
 	if (range <= pi <Type>)
 	{

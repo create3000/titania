@@ -118,50 +118,14 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:275: in function 'createRotations': 0.96225 0.19245 -0.19245 : -0.196116 0 -0.980581
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:289: in function 'createRotations': 1
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:290: in function 'createRotations': -625
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:291: in function 'createRotations': 25 -5 -5 : -25 -5 5
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 0 -0.196116 : -0.196116 0 -0.980581
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:289: in function 'createRotations': 0.0384615
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:290: in function 'createRotations': -625
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:291: in function 'createRotations': 25 -5 5 : -25 5 5
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 -0.196116 -0 : -0.196116 -0.980581 0
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:289: in function 'createRotations': 0.0384615
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:290: in function 'createRotations': -625
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:291: in function 'createRotations': 25 5 5 : -25 5 -5
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:315: in function 'createRotations': 0.980581 -0 0.196116 : -0.196116 0 0.980581
-//########## Titania/X3D/Components/Geometry3D/Extrusion.cpp:353: in function 'createRotations': 0.96225 0.19245 0.19245 : -0.196116 0 0.980581
+	auto r1 = Rotation4d (1,2,3,4);
+	auto r2 = Rotation4d ();
 
-	basic::uri uri ("https://splace.github.io/3d/2005/island/island map.jpg");
+	r2 = r1;
 
-	__LOG__ << uri .is_local () << std::endl;
-	__LOG__ << uri .escape () << std::endl;
-	__LOG__ << uri .unescape () << std::endl;
-	__LOG__ << uri .unescape () .escape () << std::endl;
-
-	basic::ifilestream stream (uri, 0);
-
-	if (stream)
-	{
-		stream .send ();
-
-		if (stream)
-		{
-			__LOG__ << "ok to send" << std::endl;
-
-			while (stream)
-				std::clog << stream .get () << std::endl;
-		}
-		else
-		{
-			__LOG__ << "failed to send" << std::endl;
-		}
-	}
-	else
-	{
-		__LOG__ << "failed to open" << std::endl;
-	}
+	__LOG__ << r1 << std::endl;
+	__LOG__ << r2 << std::endl;
+	__LOG__ << normalize (r2) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

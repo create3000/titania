@@ -179,11 +179,7 @@ public:
 	///  Assign @a rotation to this rotation.
 	template <class Up>
 	rotation4 &
-	operator = (const rotation4 <Up> & other)
-	{
-		*this = rotation4 (other);
-		return *this;
-	}
+	operator = (const rotation4 <Up> & other);
 
 	///  Assign rotation @a matrix to this rotation.
 	template <class Up>
@@ -573,6 +569,19 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 	}
 
 	update ();
+}
+
+template <class Type>
+template <class Up>
+rotation4 <Type> &
+rotation4 <Type>::operator = (const rotation4 <Up> & other)
+{
+	m_x     = other .x ();
+	m_y     = other .y ();
+	m_z     = other .z ();
+	m_angle = other .angle ();
+	m_quat  = other .quat ();
+	return *this;
 }
 
 ///  Access components by @a index.
