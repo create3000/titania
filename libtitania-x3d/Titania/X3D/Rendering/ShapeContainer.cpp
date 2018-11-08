@@ -96,7 +96,7 @@ ShapeContainer::display ()
 
 	glLoadMatrixd (getModelViewMatrix () .front () .data ());
 
-	getFog () -> enable (renderObject);
+	getFog () -> enable ();
 
 	getShape () -> display (this);
 

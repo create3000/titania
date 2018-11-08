@@ -1085,7 +1085,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	// Fog
 
-	context -> getFog () -> setShaderUniforms (this, renderObject);
+	context -> getFog () -> setShaderUniforms (this);
 
 	// Appearance
 

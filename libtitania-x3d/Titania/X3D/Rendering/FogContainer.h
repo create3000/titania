@@ -61,7 +61,6 @@ namespace X3D {
 
 class X3DFogObject;
 class X3DProgrammableShaderObject;
-class X3DRenderObject;
 
 class FogContainer
 {
@@ -74,10 +73,10 @@ public:
 	///  @name Operations
 
 	void
-	enable (X3DRenderObject* const renderObject);
+	enable ();
 
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, X3DRenderObject* const renderObject);
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject);
 
 	///  @name Destruction
 

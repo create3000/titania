@@ -103,7 +103,7 @@ public:
 	{ return hidden; }	
 
 	float
-	getVisibilityRange (X3DRenderObject* const renderObject);
+	getVisibilityRange () const;
 
 	size_t
 	getMode () const

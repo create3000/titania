@@ -52,7 +52,6 @@
 
 #include "../Components/EnvironmentalEffects/X3DFogObject.h"
 #include "../Components/Shaders/X3DProgrammableShaderObject.h"
-#include "../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -95,9 +94,9 @@ FogContainer::getDensitiy (const float visibilityRange) const
 }
 
 void
-FogContainer::enable (X3DRenderObject* const renderObject)
+FogContainer::enable ()
 {
-	const float glVisibilityRange = node -> getVisibilityRange (renderObject);
+	const float glVisibilityRange = node -> getVisibilityRange ();
 	const float glDensity         = getDensitiy (glVisibilityRange);
 
 	GLfloat glColor [4];
@@ -105,7 +104,7 @@ FogContainer::enable (X3DRenderObject* const renderObject)
 	glColor [0] = node -> color () .getRed ();
 	glColor [1] = node -> color () .getGreen ();
 	glColor [2] = node -> color () .getBlue ();
-	glColor [3] = node -> isHidden () ? 0 : 1;
+	glColor [3] = node -> isHidden () or glVisibilityRange == 0 ? 0 : 1;
 
 	glEnable (GL_FOG);
 
@@ -117,9 +116,11 @@ FogContainer::enable (X3DRenderObject* const renderObject)
 }
 
 void
-FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, X3DRenderObject* const renderObject)
+FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
 {
-	if (node -> isHidden ())
+	const auto visibilityRange = node -> getVisibilityRange ();
+
+	if (node -> isHidden () or visibilityRange == 0)
 	{
 		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
 	}
@@ -128,7 +129,7 @@ FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject
 		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            node -> getMode ());
 		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, node -> color () .getValue () .data ());
 		glUniform3fv (shaderObject -> getFogCenterUniformLocation (),          1, center .data ());
-		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), node -> getVisibilityRange (renderObject));
+		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), visibilityRange);
 	}
 }
 

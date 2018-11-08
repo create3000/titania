@@ -96,16 +96,9 @@ X3DFogObject::isHidden (const bool value)
 }
 
 float
-X3DFogObject::getVisibilityRange (X3DRenderObject* const renderObject)
+X3DFogObject::getVisibilityRange () const
 {
-	const auto visibilityRange = std::max <float> (0, this -> visibilityRange ());
-
-	if (visibilityRange)
-		return visibilityRange;
-
-	const auto viewpoint = renderObject -> getViewpoint ();
-
-	return renderObject -> getNavigationInfo () -> getFarValue (viewpoint);
+	return std::max <float> (0, this -> visibilityRange ());
 }
 
 void
