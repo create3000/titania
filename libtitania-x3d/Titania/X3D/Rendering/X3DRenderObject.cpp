@@ -369,8 +369,8 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 
 	if (getBlend () .empty () ? shapeNode -> isTransparent () : getBlend () .top ())
 	{
-	   if (numTransparentShapes == transparentShapes .size ())
-	      transparentShapes .emplace_back (new ShapeContainer (this, true));
+		if (numTransparentShapes == transparentShapes .size ())
+			transparentShapes .emplace_back (new ShapeContainer (this, true));
 
 		context = transparentShapes [numTransparentShapes] .get ();
 
@@ -378,8 +378,8 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	}
 	else
 	{
-	   if (numOpaqueShapes == opaqueShapes .size ())
-	      opaqueShapes .emplace_back (new ShapeContainer (this, false));
+		if (numOpaqueShapes == opaqueShapes .size ())
+			opaqueShapes .emplace_back (new ShapeContainer (this, false));
 
 		context = opaqueShapes [numOpaqueShapes] .get ();
 
