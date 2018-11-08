@@ -93,31 +93,21 @@ public:
 	visibilityRange () const
 	{ return *fields .visibilityRange; }
 
-	SFFloat &
-	transparency ()
-	{ return fields .transparency; }
-
-	const SFFloat &
-	transparency () const
-	{ return fields .transparency; }
-
 	///  @name Member access
 	
 	void
-	isHidden (const bool);
+	isHidden (const bool value);
 
 	bool
 	isHidden () const
 	{ return hidden; }	
 
-	///  @name Operations
+	float
+	getVisibilityRange (X3DRenderObject* const renderObject);
 
-	virtual
-	void
-	enable (X3DRenderObject* const renderObject);
-
-	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, X3DRenderObject* const renderObject);
+	size_t
+	getMode () const
+	{ return mode; }
 
 	///  @name Destruction
 
@@ -139,21 +129,7 @@ protected:
 
 private:
 
-	///  @name Member access
-
-	float
-	getVisibilityRange (X3DRenderObject* const renderObject);
-
-	float
-	getDensitiy (const float);
-
 	///  @name Event handlers
-
-	void
-	set_color ();
-
-	void
-	set_transparency ();
 
 	void
 	set_fogType ();
@@ -167,14 +143,11 @@ private:
 		SFColor* const color;
 		SFString* const fogType;
 		SFFloat* const visibilityRange;
-		SFFloat transparency;
 	};
 
 	Fields fields;
 
 	bool    hidden;
-	GLenum  glMode;
-	GLfloat glColor [4];
 	size_t  mode;
 
 };

@@ -226,10 +226,7 @@ X3DLayerNode::getBackground () const
 X3DFogObject*
 X3DLayerNode::getFog () const
 {
-	if (getLocalFogs () .empty ())
-		return fogStack -> getTop ();
-
-	return getLocalFogs () .back ();
+	return fogStack -> getTop ();
 }
 
 UserViewpointList

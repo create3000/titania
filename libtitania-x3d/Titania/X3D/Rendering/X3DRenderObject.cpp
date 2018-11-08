@@ -389,7 +389,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	context -> setScissor (viewVolume .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shapeNode);
-	context -> setFog (getFog ());
+	context -> setFog (getLocalFogs () .empty () ? std::make_shared <FogContainer> (getFog (), Matrix4d ()) : getLocalFogs () .back ());
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 	context -> setLocalLights (getLocalLights ());

@@ -82,6 +82,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              x3d_ClipPlane (getBrowser () -> getMaxClipPlanes (), -1),
 	                x3d_FogType (-1),
 	               x3d_FogColor (-1),
+	              x3d_FogCenter (-1),
 	     x3d_FogVisibilityRange (-1),
 	   x3d_LinewidthScaleFactor (-1),
 	               x3d_Lighting (-1),
@@ -204,6 +205,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	x3d_FogType            = getUniformLocation (program, "x3d_Fog.type",            "x3d_FogType");
 	x3d_FogColor           = getUniformLocation (program, "x3d_Fog.color",           "x3d_FogColor");
+	x3d_FogCenter          = getUniformLocation (program, "x3d_Fog.center",          "x3d_FogCenter");
 	x3d_FogVisibilityRange = getUniformLocation (program, "x3d_Fog.visibilityRange", "x3d_FogVisibilityRange");
 
 	x3d_LinewidthScaleFactor = glGetUniformLocation (program, "x3d_LinewidthScaleFactor");

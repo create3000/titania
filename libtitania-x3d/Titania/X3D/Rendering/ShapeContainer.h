@@ -53,6 +53,7 @@
 
 #include "../Browser/Rendering/GeometryType.h"
 #include "../Rendering/ClipPlaneContainer.h"
+#include "../Rendering/FogContainer.h"
 #include "../Rendering/LightContainer.h"
 #include "../Rendering/X3DCollectableObject.h"
 #include "../Rendering/X3DShapeContainer.h"
@@ -66,7 +67,6 @@ namespace titania {
 namespace X3D {
 
 class X3DBrowser;
-class X3DFogObject;
 class X3DRenderObject;
 class X3DShapeNode;
 
@@ -93,10 +93,10 @@ public:
 	{ return transparent; }
 
 	void
-	setFog (X3DFogObject* value)
+	setFog (const FogContainerPtr & value)
 	{ fog = value; }
 
-	X3DFogObject*
+	const FogContainerPtr &
 	getFog () const
 	{ return fog; }
 
@@ -152,7 +152,7 @@ private:
 
 	X3DRenderObject* const  renderObject;
 	bool                    transparent;
-	X3DFogObject*           fog;
+	FogContainerPtr         fog;
 	LightContainerArray     localLights;
 	bool                    shadow;
 	GeometryType            geometryType;

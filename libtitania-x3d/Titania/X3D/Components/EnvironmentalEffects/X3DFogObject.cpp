@@ -61,21 +61,16 @@ namespace X3D {
 X3DFogObject::Fields::Fields () :
 	          color (new SFColor (1, 1, 1)),
 	        fogType (new SFString ("LINEAR")),
-	visibilityRange (new SFFloat ()),
-	   transparency (0)
+	visibilityRange (new SFFloat ())
 { }
 
 X3DFogObject::X3DFogObject () :
 	X3DBaseNode (),
 	     fields (),
 	     hidden (false),
-	     glMode (GL_LINEAR),
-	    glColor (),
 	       mode (1)
 {
 	addType (X3DConstants::X3DFogObject);
-
-	addChildObjects (transparency ());
 
 	visibilityRange () .setUnit (UnitCategory::LENGTH);
 }
@@ -83,14 +78,10 @@ X3DFogObject::X3DFogObject () :
 void
 X3DFogObject::initialize ()
 {
-	color ()           .addInterest (&X3DFogObject::set_color, this);
 	fogType ()         .addInterest (&X3DFogObject::set_fogType, this);
 	visibilityRange () .addInterest (&X3DFogObject::set_fogType, this);
-	transparency ()    .addInterest (&X3DFogObject::set_transparency, this);
 
-	set_color        ();
-	set_transparency ();
-	set_fogType      ();
+	set_fogType ();
 }
 
 void
@@ -99,8 +90,6 @@ X3DFogObject::isHidden (const bool value)
 	if (value not_eq hidden)
 	{
 		hidden = value;
-
-		set_transparency ();
 
 		getBrowser () -> addEvent ();
 	}
@@ -119,84 +108,15 @@ X3DFogObject::getVisibilityRange (X3DRenderObject* const renderObject)
 	return renderObject -> getNavigationInfo () -> getFarValue (viewpoint);
 }
 
-float
-X3DFogObject::getDensitiy (const float visibilityRange)
-{
-	switch (glMode)
-	{
-		case GL_EXP2:
-			return 4 / visibilityRange;
-		case GL_EXP:
-			return 2 / visibilityRange;
-		default:
-			return 1;
-	}
-}
-
-void
-X3DFogObject::set_color ()
-{
-	glColor [0] = color () .getRed ();
-	glColor [1] = color () .getGreen ();
-	glColor [2] = color () .getBlue ();
-}
-
-void
-X3DFogObject::set_transparency ()
-{
-	glColor [3] = hidden ? 0 : 1 - transparency ();
-}
-
 void
 X3DFogObject::set_fogType ()
 {
 	if (fogType () == "EXPONENTIAL2")
-	{
-		glMode = GL_EXP2;
-		mode   = 3;
-	}
+		mode = 3;
 	else if (fogType () == "EXPONENTIAL")
-	{
-		glMode = GL_EXP;
-		mode   = 2;
-	}
+		mode = 2;
 	else  // LINEAR
-	{
-		glMode = GL_LINEAR;
-		mode   = 1;
-	}
-}
-
-void
-X3DFogObject::enable (X3DRenderObject* const renderObject)
-{
-	if (glColor [3])
-	{
-		const float glVisibilityRange = getVisibilityRange (renderObject);
-		const float glDensity         = getDensitiy (glVisibilityRange);
-
-		glEnable (GL_FOG);
-
-		glFogi  (GL_FOG_MODE,    glMode);
-		glFogf  (GL_FOG_DENSITY, glDensity);
-		glFogf  (GL_FOG_START,   0);
-		glFogf  (GL_FOG_END,     glVisibilityRange);
-		glFogfv (GL_FOG_COLOR,   glColor);
-	}
-}
-
-void
-X3DFogObject::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, X3DRenderObject* const renderObject)
-{
-	if (hidden)
-		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
-
-	else
-	{
-		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            mode);
-		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, color () .getValue () .data ());
-		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), getVisibilityRange (renderObject));
-	}
+		mode = 1;
 }
 
 void

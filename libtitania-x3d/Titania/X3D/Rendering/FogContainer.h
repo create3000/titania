@@ -48,91 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_LOCAL_FOG_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_LOCAL_FOG_H__
+#ifndef __TITANIA_X3D_RENDERING_FOG_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_FOG_CONTAINER_H__
 
-#include "../Core/X3DChildNode.h"
-#include "../EnvironmentalEffects/X3DFogObject.h"
+#include "../Rendering/OpenGL.h"
+#include "../Types/Numbers.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-class LocalFog :
-	virtual public X3DChildNode, public X3DFogObject
+class X3DFogObject;
+class X3DProgrammableShaderObject;
+class X3DRenderObject;
+
+class FogContainer
 {
 public:
 
-	LocalFog (X3DExecutionContext* const executionContext);
+	///  @name Construction
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+	FogContainer (X3DFogObject* const node, const Matrix4d & modelViewMatrix);
 
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
+	///  @name Operations
 
 	void
-	push (X3DRenderObject* const renderObject);
+	enable (X3DRenderObject* const renderObject);
 
 	void
-	pop (X3DRenderObject* const renderObject);
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, X3DRenderObject* const renderObject);
 
-	virtual
-	void
-	dispose () final override;
+	///  @name Destruction
+
+	~FogContainer ();
 
 
 private:
 
-	virtual
-	void
-	initialize () final override;
+	///  @name Member access
 
-	///  @name Static members
+	GLenum
+	getMode () const;
 
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	float
+	getDensitiy (const float visibilityRange) const;
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const enabled;
-	};
-
-	Fields fields;
+	X3DFogObject* const node;
+	Vector3f            center;
 
 };
+
+using FogContainerPtr = std::shared_ptr <FogContainer>;
 
 } // X3D
 } // titania

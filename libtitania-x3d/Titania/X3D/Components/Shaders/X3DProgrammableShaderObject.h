@@ -115,6 +115,10 @@ public:
 	{ return x3d_FogColor; }
 
 	GLint
+	getFogCenterUniformLocation () const
+	{ return x3d_FogCenter; }
+
+	GLint
 	getFogVisibilityRangeUniformLocation () const
 	{ return x3d_FogVisibilityRange; }
 
@@ -467,6 +471,7 @@ private:
 
 	GLint x3d_FogType;
 	GLint x3d_FogColor;
+	GLint x3d_FogCenter;
 	GLint x3d_FogVisibilityRange;
 
 	GLint x3d_LinewidthScaleFactor;

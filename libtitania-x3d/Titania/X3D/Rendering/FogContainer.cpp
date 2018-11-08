@@ -48,93 +48,92 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_LOCAL_FOG_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_LOCAL_FOG_H__
+#include "FogContainer.h"
 
-#include "../Core/X3DChildNode.h"
-#include "../EnvironmentalEffects/X3DFogObject.h"
+#include "../Components/EnvironmentalEffects/X3DFogObject.h"
+#include "../Components/Shaders/X3DProgrammableShaderObject.h"
+#include "../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
 
-class LocalFog :
-	virtual public X3DChildNode, public X3DFogObject
+FogContainer::FogContainer (X3DFogObject* const node, const Matrix4d & modelViewMatrix) :
+	  node (node),
+	center (modelViewMatrix .origin ())
+{ }
+
+GLenum
+FogContainer::getMode () const
 {
-public:
-
-	LocalFog (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
-	void
-	push (X3DRenderObject* const renderObject);
-
-	void
-	pop (X3DRenderObject* const renderObject);
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
+	switch (node -> getMode ())
 	{
-		Fields ();
+		case 1:
+			return GL_LINEAR;
+		case 2:
+			return GL_EXP;
+		case 3:
+			return GL_EXP2;
+	}
 
-		SFBool* const enabled;
-	};
+	return GL_LINEAR;
+}
 
-	Fields fields;
+float
+FogContainer::getDensitiy (const float visibilityRange) const
+{
+	switch (node -> getMode ())
+	{
+		case 1:
+			return 1;
+		case 2:
+			return 2 / visibilityRange;
+		case 3:
+			return 4 / visibilityRange;
+	}
 
-};
+	return 1;
+}
+
+void
+FogContainer::enable (X3DRenderObject* const renderObject)
+{
+	const float glVisibilityRange = node -> getVisibilityRange (renderObject);
+	const float glDensity         = getDensitiy (glVisibilityRange);
+
+	GLfloat glColor [4];
+
+	glColor [0] = node -> color () .getRed ();
+	glColor [1] = node -> color () .getGreen ();
+	glColor [2] = node -> color () .getBlue ();
+	glColor [3] = node -> isHidden () ? 0 : 1;
+
+	glEnable (GL_FOG);
+
+	glFogi  (GL_FOG_MODE,    getMode ());
+	glFogf  (GL_FOG_DENSITY, glDensity);
+	glFogf  (GL_FOG_START,   0);
+	glFogf  (GL_FOG_END,     glVisibilityRange);
+	glFogfv (GL_FOG_COLOR,   glColor);
+}
+
+void
+FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, X3DRenderObject* const renderObject)
+{
+	if (node -> isHidden ())
+	{
+		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
+	}
+	else
+	{
+		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            node -> getMode ());
+		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, node -> color () .getValue () .data ());
+		glUniform3fv (shaderObject -> getFogCenterUniformLocation (),          1, center .data ());
+		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), node -> getVisibilityRange (renderObject));
+	}
+}
+
+FogContainer::~FogContainer ()
+{ }
 
 } // X3D
 } // titania
-
-#endif
