@@ -149,14 +149,13 @@ LOD::getLevel (X3DBrowser* const browser, const Matrix4d & modelViewMatrix) cons
 		if (size == 2)
 			return frameRate > FRAME_RATE_MAX;
 
-		const auto   n        = size - 1;
-		const double fraction = std::max ((frameRate - FRAME_RATE_MIN) / (FRAME_RATE_MAX - FRAME_RATE_MIN), 0.0);
+		const auto fraction = 1 - clamp ((frameRate - FRAME_RATE_MIN) / (FRAME_RATE_MAX - FRAME_RATE_MIN), 0.0, 1.0);
 
-		return std::min <size_t> (std::ceil (fraction * (n - 1)), n);
+		return std::min (std::floor (fraction * size), size - 1.0);
 	}
 
-	const double distance = getDistance (modelViewMatrix);
-	const auto   iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
+	const auto distance = getDistance (modelViewMatrix);
+	const auto iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();
 }
