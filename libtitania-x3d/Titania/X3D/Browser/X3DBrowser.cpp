@@ -489,6 +489,7 @@ throw (Error <INVALID_URL>,
 
 	future .setValue (new SceneFuture (this,
 	                                   url,
+	                                   false,
 	                                   std::bind (&X3DBrowser::set_scene_async, this, _1)));
 
 	addLoadCount (future .getValue ());
@@ -587,7 +588,7 @@ throw (Error <INVALID_URL>,
 {
 	using namespace std::placeholders;
 
-	return MakePtr <SceneFuture> (getExecutionContext (), url, [callback] (X3DScenePtr && scene) { scene -> setup (); callback (std::move (scene)); });
+	return MakePtr <SceneFuture> (getExecutionContext (), url, false, [callback] (X3DScenePtr && scene) { scene -> setup (); callback (std::move (scene)); });
 }
 
 void

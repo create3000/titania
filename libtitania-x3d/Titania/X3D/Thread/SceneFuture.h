@@ -74,7 +74,7 @@ public:
 
 	///  @name Construction
 
-	SceneFuture (X3DExecutionContext* const, const MFString &, const SceneFutureCallback &);
+	SceneFuture (X3DExecutionContext* const executionContext, const MFString & url, const bool externproto, const SceneFutureCallback & callback);
 
 	///  @name Member access
 
@@ -154,6 +154,7 @@ private:
 
 	///  @name Members
 
+	std::atomic <bool>        externproto;
 	SceneFutureCallback       callback;
 	FileLoader                loader;
 	X3DScenePtr               scene;

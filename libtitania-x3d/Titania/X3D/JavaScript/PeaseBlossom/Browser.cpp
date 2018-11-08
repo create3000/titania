@@ -384,6 +384,7 @@ Browser::createVrmlFromURL (const pb::ptr <pb::pbExecutionContext> & ec, const p
 
 		context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
 		                                                         *url,
+		                                                         false,
 		                                                         std::bind (&Browser::setSceneAsync,
 		                                                                    X3D::SFNode (script),
 		                                                                    *node,

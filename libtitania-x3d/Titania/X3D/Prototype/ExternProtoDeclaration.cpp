@@ -313,6 +313,7 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	future .setValue (new SceneFuture (getExecutionContext (),
 	                                   url (),
+	                                   true,
 	                                   std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
 }
 

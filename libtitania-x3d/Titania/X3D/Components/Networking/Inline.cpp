@@ -345,6 +345,7 @@ Inline::set_buffer ()
 
 	future .setValue (new SceneFuture (getExecutionContext (),
 	                                   url (),
+	                                   false,
 	                                   std::bind (&Inline::setSceneAsync, this, _1)));
 }
 

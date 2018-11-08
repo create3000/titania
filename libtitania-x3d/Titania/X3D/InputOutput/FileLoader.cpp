@@ -202,18 +202,15 @@ throw (Error <INVALID_URL>,
 		}
 		catch (const X3DError & error)
 		{
+			executionContext -> getBrowser () -> getConsole () -> error (error .what ());
+
 			urlError .emplace_back (error .what ());
 
 			istream .close ();
 		}
 	}
 
-	std::ostringstream error;
-
-	for (const auto & string : urlError)
-		error << string;
-
-	throw Error <URL_UNAVAILABLE> (error .str () + "\nCouldn't load any URL of " + url .toString () + "\n");
+	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + "\n");
 }
 
 /***

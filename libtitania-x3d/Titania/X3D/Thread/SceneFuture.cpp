@@ -66,9 +66,10 @@ const ComponentType SceneFuture::component      = ComponentType::TITANIA;
 const std::string   SceneFuture::typeName       = "SceneFuture";
 const std::string   SceneFuture::containerField = "future";
 
-SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFString & url, const SceneFutureCallback & callback) :
+SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFString & url, const bool externproto, const SceneFutureCallback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DFuture (),
+	externproto (externproto),
 	   callback (callback),
 	     loader (executionContext, executionContext -> getWorldURL ()),
 	      scene (),
@@ -162,21 +163,73 @@ SceneFuture::loadAsync (const MFString & url)
 
 		std::lock_guard <std::mutex> lock (*mutex);
 
-		checkForInterrupt ();
-
-		const auto scene = getBrowser () -> createScene (false);
-
-		checkForInterrupt ();
-
-		loader .parseIntoScene (scene, url);
-
-		checkForInterrupt ();
-
-		getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
-
-		checkForInterrupt ();
-
-		return scene;
+		if (externproto)
+		{
+			for (const auto & URL : url)
+			{
+				try
+				{
+					checkForInterrupt ();
+		
+					const auto scene = getBrowser () -> createScene (false);
+		
+					checkForInterrupt ();
+		
+					loader .parseIntoScene (scene, { URL });
+		
+					if (externproto)
+					{
+						const auto & protoName = basic::uri (URL) .fragment ();
+	
+						if (protoName .empty ())
+						{
+							if (scene -> getProtoDeclarations () .empty ())
+							{
+								getBrowser () -> getConsole () -> error ("No PROTO found\n");
+								continue;
+							}
+						}
+						else
+							scene -> getProtoDeclaration (protoName);
+					}
+	
+					checkForInterrupt ();
+			
+					getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
+			
+					checkForInterrupt ();
+			
+					return scene;
+				}
+				catch (const Error <INVALID_NAME> & error)
+				{
+					getBrowser () -> getConsole () -> error (error .what (), "\n");
+					continue;
+				}
+				catch (const X3DError & error)
+				{
+					continue;
+				}
+			}
+	
+			throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + "\n");
+		}
+		else
+		{
+			const auto scene = getBrowser () -> createScene (false);
+	
+			checkForInterrupt ();
+	
+			loader .parseIntoScene (scene, url);
+	
+			checkForInterrupt ();
+	
+			getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
+	
+			checkForInterrupt ();
+	
+			return scene;
+		}
 	}
 	catch (const InterruptThreadException &)
 	{
@@ -185,9 +238,6 @@ SceneFuture::loadAsync (const MFString & url)
 	catch (const std::exception & error)
 	{
 		checkForInterrupt ();
-
-		getBrowser () -> getConsole () -> error (error .what (), "\n");
-
 		throw;
 	}
 }
