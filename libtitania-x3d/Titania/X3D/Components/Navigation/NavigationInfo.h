@@ -267,6 +267,9 @@ private:
 	void
 	set_transitionComplete ();
 
+	void
+	set_isBound ();
+
 	///  @name Static members
 
 	static const ComponentType component;

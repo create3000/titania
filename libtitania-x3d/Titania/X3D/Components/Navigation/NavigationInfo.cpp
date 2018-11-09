@@ -128,6 +128,7 @@ NavigationInfo::initialize ()
 	type ()               .addInterest (&NavigationInfo::set_type,               this);
 	transitionStart ()    .addInterest (&NavigationInfo::set_transitionStart,    this);
 	transitionComplete () .addInterest (&NavigationInfo::set_transitionComplete, this);
+	isBound ()            .addInterest (&NavigationInfo::set_isBound,            this);
 
 	set_type ();
 }
@@ -358,13 +359,25 @@ NavigationInfo::set_type ()
 void
 NavigationInfo::set_transitionStart ()
 {
-	transitionActive () = true;
+	if (not transitionActive ())
+		transitionActive () = true;
 }
 
 void
 NavigationInfo::set_transitionComplete ()
 {
-	transitionActive () = false;
+	if (transitionActive ())
+		transitionActive () = false;
+}
+
+void
+NavigationInfo::set_isBound ()
+{
+	if (isBound ())
+		return;
+
+	if (transitionActive ())
+		transitionActive () = false;
 }
 
 void
