@@ -259,8 +259,13 @@ GoldenGate::text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifil
 {
 	// Test
 
-	const auto state = istream .rdstate ();
-	const auto pos   = istream .tellg ();
+	std::string errorString;
+
+	basic::ifilestream::iostate  state;
+	basic::ifilestream::pos_type pos;
+
+	state = istream .rdstate ();
+	pos   = istream .tellg ();
 
 	try
 	{
@@ -268,13 +273,44 @@ GoldenGate::text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifil
 	}
 	catch (const X3DError & error)
 	{
-		istream .clear (state);
+		errorString += error .what ();
+		errorString += '\n';
+	}
 
-		for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
-			istream .unget ();
+	istream .clear (state);
 
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
+
+	state = istream .rdstate ();
+	pos   = istream .tellg ();
+
+	try
+	{
 		return GoldenParser::parse <XMLParser> (scene, uri, istream);
 	}
+	catch (const X3DError & error)
+	{
+		errorString += error .what ();
+		errorString += '\n';
+	}
+
+	istream .clear (state);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
+
+	try
+	{
+		return GoldenParser::parse <JSONParser> (scene, uri, istream);
+	}
+	catch (const X3DError & error)
+	{
+		errorString += error .what ();
+		errorString += '\n';
+	}
+
+	throw Error <INVALID_X3D> (errorString);
 }
 
 void

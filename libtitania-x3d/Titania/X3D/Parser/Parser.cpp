@@ -1429,10 +1429,10 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	auto state = istream .rdstate ();
-	auto pos   = istream .tellg ();
-	auto ln    = lineNumber;
-	auto com   = currentComments .size ();
+	const auto state = istream .rdstate ();
+	const auto pos   = istream .tellg ();
+	const auto ln    = lineNumber;
+	const auto com   = currentComments .size ();
 
 	std::string _accessTypeId;
 
