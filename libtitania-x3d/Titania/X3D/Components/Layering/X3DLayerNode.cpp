@@ -391,6 +391,9 @@ X3DLayerNode::collision (const TraverseType type, X3DRenderObject* const renderO
 {
 	using namespace std::placeholders;
 
+	if (getNavigationInfo () -> transitionActive ())
+		return;
+
 	const auto collisionRadius  = getNavigationInfo () -> getCollisionRadius ();
 	const auto avatarHeight     = getNavigationInfo () -> getAvatarHeight ();
 	const auto size             = std::max (collisionRadius * 2, avatarHeight * 2);

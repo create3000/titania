@@ -177,6 +177,14 @@ public:
 	transitionComplete () const
 	{ return *fields .transitionComplete; }
 
+	SFBool &
+	transitionActive ()
+	{ return fields .transitionActive; }
+
+	const SFBool &
+	transitionActive () const
+	{ return fields .transitionActive; }
+
 	///  @name Member access
 
 	const SFEnum <X3DConstants::NodeType> &
@@ -253,6 +261,12 @@ private:
 	void
 	set_type ();
 
+	void
+	set_transitionStart ();
+
+	void
+	set_transitionComplete ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -274,6 +288,7 @@ private:
 		SFTime* const transitionTime;
 		SFBool* const transitionComplete;
 		SFBool transitionStart;
+		SFBool transitionActive;
 	};
 
 	Fields fields;

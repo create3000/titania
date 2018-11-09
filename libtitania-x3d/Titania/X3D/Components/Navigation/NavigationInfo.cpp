@@ -77,7 +77,8 @@ NavigationInfo::Fields::Fields () :
 	    transitionType (new MFString ({ "LINEAR" })),
 	    transitionTime (new SFTime (1)),
 	transitionComplete (new SFBool ()),
-	   transitionStart ()
+	   transitionStart (),
+	  transitionActive ()
 { }
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
@@ -103,6 +104,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "bindTime",           bindTime ());
 
 	addChildObjects (transitionStart (),
+	                 transitionActive (),
 	                 viewer,
 	                 availableViewers);
 
@@ -123,9 +125,80 @@ NavigationInfo::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	type () .addInterest (&NavigationInfo::set_type, this);
+	type ()               .addInterest (&NavigationInfo::set_type,               this);
+	transitionStart ()    .addInterest (&NavigationInfo::set_transitionStart,    this);
+	transitionComplete () .addInterest (&NavigationInfo::set_transitionComplete, this);
 
 	set_type ();
+}
+double
+NavigationInfo::getCollisionRadius () const
+{
+	if (avatarSize () .size () > 0)
+	{
+		if (avatarSize () [0] > 0)
+			return avatarSize () [0];
+	}
+
+	return 0.25;
+}
+
+double
+NavigationInfo::getAvatarHeight () const
+{
+	if (avatarSize () .size () > 1)
+		return avatarSize () [1];
+
+	return 1.6;
+}
+
+double
+NavigationInfo::getStepHeight () const
+{
+	if (avatarSize () .size () > 2)
+		return avatarSize () [2];
+
+	return 0.75;
+}
+
+double
+NavigationInfo::getNearValue () const
+{
+	const double nearValue = getCollisionRadius ();
+
+	if (nearValue == 0)
+		return std::numeric_limits <float>::epsilon () * 100;
+
+	else
+		return nearValue / 2;
+}
+
+double
+NavigationInfo::getFarValue (const X3DViewpointNode* const viewpoint) const
+{
+	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxFarValue ();
+}
+
+TransitionType
+NavigationInfo::getTransitionType () const
+{
+	static const std::map <std::string, TransitionType> transitionTypes = {
+		std::make_pair ("TELEPORT", TransitionType::TELEPORT),
+		std::make_pair ("LINEAR",   TransitionType::LINEAR),
+		std::make_pair ("ANIMATE",  TransitionType::ANIMATE)
+	};
+
+	for (const auto & type : transitionType ())
+	{
+		try
+		{
+			return transitionTypes .at (type);
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+
+	return TransitionType::LINEAR;
 }
 
 void
@@ -282,74 +355,16 @@ NavigationInfo::set_type ()
 	}
 }
 
-double
-NavigationInfo::getCollisionRadius () const
+void
+NavigationInfo::set_transitionStart ()
 {
-	if (avatarSize () .size () > 0)
-	{
-		if (avatarSize () [0] > 0)
-			return avatarSize () [0];
-	}
-
-	return 0.25;
+	transitionActive () = true;
 }
 
-double
-NavigationInfo::getAvatarHeight () const
+void
+NavigationInfo::set_transitionComplete ()
 {
-	if (avatarSize () .size () > 1)
-		return avatarSize () [1];
-
-	return 1.6;
-}
-
-double
-NavigationInfo::getStepHeight () const
-{
-	if (avatarSize () .size () > 2)
-		return avatarSize () [2];
-
-	return 0.75;
-}
-
-double
-NavigationInfo::getNearValue () const
-{
-	const double nearValue = getCollisionRadius ();
-
-	if (nearValue == 0)
-		return std::numeric_limits <float>::epsilon () * 100;
-
-	else
-		return nearValue / 2;
-}
-
-double
-NavigationInfo::getFarValue (const X3DViewpointNode* const viewpoint) const
-{
-	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxFarValue ();
-}
-
-TransitionType
-NavigationInfo::getTransitionType () const
-{
-	static const std::map <std::string, TransitionType> transitionTypes = {
-		std::make_pair ("TELEPORT", TransitionType::TELEPORT),
-		std::make_pair ("LINEAR",   TransitionType::LINEAR),
-		std::make_pair ("ANIMATE",  TransitionType::ANIMATE)
-	};
-
-	for (const auto & type : transitionType ())
-	{
-		try
-		{
-			return transitionTypes .at (type);
-		}
-		catch (const std::out_of_range &)
-		{ }
-	}
-
-	return TransitionType::LINEAR;
+	transitionActive () = false;
 }
 
 void
