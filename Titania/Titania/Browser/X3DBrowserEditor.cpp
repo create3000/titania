@@ -329,9 +329,34 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		try
 		{
 			const auto scene         = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
-			const auto importedNodes = X3D::X3DEditor::importScene (getCurrentContext (), scene, undoStep);
+			auto       importedNodes = X3D::X3DEditor::importScene (getCurrentContext (), scene, undoStep);
+
+			// If more than one nodes create a parent Transform node.
+		
+			if (importedNodes .size () > 1)
+			{
+				const auto transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
+		
+				transformNode -> children () = std::move (importedNodes);
+		
+				importedNodes .emplace_back (transformNode);
+			}
+		
+			// Add nodes to root nodes or layer children.
+		
+			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+			{
+				for (const auto & node : importedNodes)
+					X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
+			}
+			else
+			{
+				for (const auto & node : importedNodes)
+					X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
+			}
 
 			// Bind bindables
+
 			magicImport .process (getCurrentContext (), importedNodes, scene, undoStep);
 
 			nodes .append (std::move (importedNodes));
@@ -340,30 +365,6 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		{
 			getCurrentBrowser () -> getConsole () -> error (error .what ());
 		}
-	}
-
-	// If more than one nodes create a parent Transform node.
-
-	if (nodes .size () > 1)
-	{
-		const auto transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
-
-		transformNode -> children () = std::move (nodes);
-
-		nodes .emplace_back (transformNode);
-	}
-
-	// Add nodes to root nodes or layer children.
-
-	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-	{
-		for (const auto & node : nodes)
-			X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
-	}
-	else
-	{
-		for (const auto & node : nodes)
-			X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
 	}
 
 	// If Snap Target is enabled place nodes at it.
