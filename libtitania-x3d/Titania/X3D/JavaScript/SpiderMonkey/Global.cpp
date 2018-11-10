@@ -53,7 +53,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
+#include "Arguments.h"
 #include "Context.h"
+#include "Error.h"
 #include "String.h"
 
 #include <Titania/LOG.h>
@@ -74,6 +76,12 @@ JSFunctionSpec Globals::functions [ ] = {
 	{ "print",   Globals::print,   0, 0 }, // VRML 2.0
 	{ "trace",   Globals::print,   0, 0 }, // Non standard
 	{ "require", Globals::require, 1, 0 }, // Non standard
+
+	{ "SFBool",   Globals::SFBool,   1, 0 }, // Dummy native objects
+	{ "SFDouble", Globals::SFDouble, 1, 0 }, // Dummy native objects
+	{ "SFFloat",  Globals::SFFloat,  1, 0 }, // Dummy native objects
+	{ "SFString", Globals::SFString, 1, 0 }, // Dummy native objects
+	{ "SFTime",   Globals::SFTime,   1, 0 }, // Dummy native objects
 	{ 0 }
 
 };
@@ -142,6 +150,88 @@ Globals::require (JSContext* cx, uint32_t argc, jsval* vp)
 
 	JS_SET_RVAL (cx, vp, rval);
 	return success;
+}
+
+// Dummy native objects
+
+JSBool
+Globals::SFBool (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+
+	JSObject* Boolean = nullptr;
+
+	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Boolean, &Boolean);
+
+	const auto object = JS_New (cx, Boolean, argc, argv);
+
+	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	return true;
+}
+
+JSBool
+Globals::SFDouble (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+
+	JSObject* Number = nullptr;
+
+	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+
+	const auto object = JS_New (cx, Number, argc, argv);
+
+	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	return true;
+}
+
+JSBool
+Globals::SFFloat (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+
+	JSObject* Number = nullptr;
+
+	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+
+	const auto object = JS_New (cx, Number, argc, argv);
+
+	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	return true;
+}
+
+JSBool
+Globals::SFString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+
+	JSObject* String = nullptr;
+
+	JS_GetClassObject (cx, context -> getGlobal (), JSProto_String, &String);
+
+	const auto object = JS_New (cx, String, argc, argv);
+
+	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	return true;
+}
+
+JSBool
+Globals::SFTime (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+
+	JSObject* Number = nullptr;
+
+	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+
+	const auto object = JS_New (cx, Number, argc, argv);
+
+	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	return true;
 }
 
 } // spidermonkey
