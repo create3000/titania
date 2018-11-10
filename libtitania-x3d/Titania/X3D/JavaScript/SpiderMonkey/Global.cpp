@@ -207,7 +207,10 @@ JSBool
 Globals::SFInt32 (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
-	const auto argv    = JS_ARGV (cx, vp);
+	auto       argv    = JS_ARGV (cx, vp);
+
+	for (uint32_t i = 0; i < argc; ++ i)
+		JS_NewNumberValue (cx, getArgument <int32_t> (cx, argv, i), &argv [i]);
 
 	JSObject* Number = nullptr;
 
