@@ -159,99 +159,173 @@ JSBool
 Globals::SFBool (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
+	const auto self    = JS_THIS_OBJECT (cx, vp);
 	const auto argv    = JS_ARGV (cx, vp);
 
-	JSObject* Boolean = nullptr;
+	if (self == context -> getGlobal ())
+	{
+		if (argc == 0)
+			JS_SET_RVAL (cx, vp, JSVAL_FALSE);
+		else
+			JS_SET_RVAL (cx, vp, getArgument <bool> (cx, argv, 0) ? JSVAL_TRUE : JSVAL_FALSE);
 
-	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Boolean, &Boolean);
-
-	const auto object = JS_New (cx, Boolean, argc, argv);
-
-	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
-	return true;
+		return true;
+	}
+	else
+	{
+		JSObject* Boolean = nullptr;
+	
+		JS_GetClassObject (cx, context -> getGlobal (), JSProto_Boolean, &Boolean);
+	
+		const auto object = JS_New (cx, Boolean, argc, argv);
+	
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	
+		return true;
+	}
 }
 
 JSBool
 Globals::SFDouble (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
+	const auto self    = JS_THIS_OBJECT (cx, vp);
 	const auto argv    = JS_ARGV (cx, vp);
 
-	JSObject* Number = nullptr;
-
-	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
-
-	const auto object = JS_New (cx, Number, argc, argv);
-
-	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
-	return true;
+	if (self == context -> getGlobal ())
+	{
+		if (argc == 0)
+			return JS_NewNumberValue (cx, 0, vp);
+		else
+			return JS_NewNumberValue (cx, getArgument <double> (cx, argv, 0), vp);
+	}
+	else
+		{
+		JSObject* Number = nullptr;
+	
+		JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+	
+		const auto object = JS_New (cx, Number, argc, argv);
+	
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	
+		return true;
+	}
 }
 
 JSBool
 Globals::SFFloat (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
+	const auto self    = JS_THIS_OBJECT (cx, vp);
 	const auto argv    = JS_ARGV (cx, vp);
 
-	JSObject* Number = nullptr;
-
-	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
-
-	const auto object = JS_New (cx, Number, argc, argv);
-
-	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
-	return true;
+	if (self == context -> getGlobal ())
+	{
+		if (argc == 0)
+			return JS_NewNumberValue (cx, 0, vp);
+		else
+			return JS_NewNumberValue (cx, getArgument <float> (cx, argv, 0), vp);
+	}
+	else
+	{
+		JSObject* Number = nullptr;
+	
+		JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+	
+		const auto object = JS_New (cx, Number, argc, argv);
+	
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	
+		return true;
+	}
 }
 
 JSBool
 Globals::SFInt32 (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
+	const auto self    = JS_THIS_OBJECT (cx, vp);
 	auto       argv    = JS_ARGV (cx, vp);
 
-	for (uint32_t i = 0; i < argc; ++ i)
-		JS_NewNumberValue (cx, getArgument <int32_t> (cx, argv, i), &argv [i]);
-
-	JSObject* Number = nullptr;
-
-	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
-
-	const auto object = JS_New (cx, Number, argc, argv);
-
-	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
-	return true;
+	if (self == context -> getGlobal ())
+	{
+		if (argc == 0)
+			return JS_NewNumberValue (cx, 0, vp);
+		else
+			return JS_NewNumberValue (cx, getArgument <int32_t> (cx, argv, 0), vp);
+	}
+	else
+	{
+		for (uint32_t i = 0; i < argc; ++ i)
+			JS_NewNumberValue (cx, getArgument <int32_t> (cx, argv, i), &argv [i]);
+	
+		JSObject* Number = nullptr;
+	
+		JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+	
+		const auto object = JS_New (cx, Number, argc, argv);
+	
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	
+		return true;
+	}
 }
 
 JSBool
 Globals::SFString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
+	const auto self    = JS_THIS_OBJECT (cx, vp);
 	const auto argv    = JS_ARGV (cx, vp);
 
-	JSObject* String = nullptr;
-
-	JS_GetClassObject (cx, context -> getGlobal (), JSProto_String, &String);
-
-	const auto object = JS_New (cx, String, argc, argv);
-
-	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
-	return true;
+	if (self == context -> getGlobal ())
+	{
+		if (argc == 0)
+			return JS_NewStringValue (cx, "", vp);
+		else
+			return JS_NewStringValue (cx, getArgument <std::string> (cx, argv, 0), vp);
+	}
+	else
+	{
+		JSObject* String = nullptr;
+	
+		JS_GetClassObject (cx, context -> getGlobal (), JSProto_String, &String);
+	
+		const auto object = JS_New (cx, String, argc, argv);
+	
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	
+		return true;
+	}
 }
 
 JSBool
 Globals::SFTime (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
+	const auto self    = JS_THIS_OBJECT (cx, vp);
 	const auto argv    = JS_ARGV (cx, vp);
 
-	JSObject* Number = nullptr;
-
-	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
-
-	const auto object = JS_New (cx, Number, argc, argv);
-
-	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
-	return true;
+	if (self == context -> getGlobal ())
+	{
+		if (argc == 0)
+			return JS_NewNumberValue (cx, 0, vp);
+		else
+			return JS_NewNumberValue (cx, getArgument <double> (cx, argv, 0), vp);
+	}
+	else
+	{
+		JSObject* Number = nullptr;
+	
+		JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+	
+		const auto object = JS_New (cx, Number, argc, argv);
+	
+		JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	
+		return true;
+	}
 }
 
 } // spidermonkey
