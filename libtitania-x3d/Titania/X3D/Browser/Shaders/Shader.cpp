@@ -232,7 +232,7 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	std::ostringstream constants;
 	std::ostringstream definitions;
-	std::ifstream types (basic::uri (get_data ("shaders/Shaders/Types.h")) .path ());
+	std::ifstream Types (basic::uri (get_data ("shaders/Shaders/Types.h")) .path ());
 
 	definitions .imbue (std::locale::classic ());
 
@@ -284,7 +284,25 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	// Types
 
-	definitions << types .rdbuf ();
+	static const std::regex rf (R"/(\s*precision\s+(lowp|mediump|highp)\s+float\s*;)/");
+	static const std::regex ri (R"/(\s*precision\s+(lowp|mediump|highp)\s+int\s*;)/");
+	static const std::regex rrf (R"/(mediump\s+(float|vec2|vec3|mat3|mat4))/");
+	static const std::regex rri (R"/(mediump\s+(int))/");
+
+	std::smatch mf;
+	std::smatch mi;
+
+	const auto sf = std::regex_search (source, mf, rf);
+	const auto si = std::regex_search (source, mi, ri);
+	const auto pf = sf ? mf .str (1) : "mediump";
+	const auto pi = si ? mi .str (1) : "mediump";
+
+	auto types = basic::to_string (Types);
+
+	types = std::regex_replace (types, rrf, pf + " $1");
+	types = std::regex_replace (types, rri, pi + " $1");
+
+	definitions << types;
 	definitions << "\n";
 
 	// Combine
