@@ -80,6 +80,7 @@ JSFunctionSpec Globals::functions [ ] = {
 	{ "SFBool",   Globals::SFBool,   1, 0 }, // Dummy native objects
 	{ "SFDouble", Globals::SFDouble, 1, 0 }, // Dummy native objects
 	{ "SFFloat",  Globals::SFFloat,  1, 0 }, // Dummy native objects
+	{ "SFInt32",  Globals::SFInt32,  1, 0 }, // Dummy native objects
 	{ "SFString", Globals::SFString, 1, 0 }, // Dummy native objects
 	{ "SFTime",   Globals::SFTime,   1, 0 }, // Dummy native objects
 	{ 0 }
@@ -188,6 +189,22 @@ Globals::SFDouble (JSContext* cx, uint32_t argc, jsval* vp)
 
 JSBool
 Globals::SFFloat (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	const auto context = getContext (cx);
+	const auto argv    = JS_ARGV (cx, vp);
+
+	JSObject* Number = nullptr;
+
+	JS_GetClassObject (cx, context -> getGlobal (), JSProto_Number, &Number);
+
+	const auto object = JS_New (cx, Number, argc, argv);
+
+	JS_SET_RVAL (cx, vp, OBJECT_TO_JSVAL (object));
+	return true;
+}
+
+JSBool
+Globals::SFInt32 (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	const auto context = getContext (cx);
 	const auto argv    = JS_ARGV (cx, vp);
