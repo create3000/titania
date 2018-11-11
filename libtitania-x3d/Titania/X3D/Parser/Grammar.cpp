@@ -70,6 +70,7 @@ const io::string Grammar::DEF ("DEF");
 const io::string Grammar::EXPORT ("EXPORT");
 const io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
 const io::string Grammar::FALSE_ ("FALSE");
+const io::string Grammar::false_ ("false");
 const io::string Grammar::IMPORT ("IMPORT");
 const io::string Grammar::IS ("IS");
 const io::string Grammar::META ("META");
@@ -79,6 +80,7 @@ const io::string Grammar::PROTO ("PROTO");
 const io::string Grammar::ROUTE ("ROUTE");
 const io::string Grammar::TO ("TO");
 const io::string Grammar::TRUE_ ("TRUE");
+const io::string Grammar::true_ ("true");
 const io::string Grammar::UNIT ("UNIT");
 const io::string Grammar::USE ("USE");
 

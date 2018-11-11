@@ -76,6 +76,8 @@ public:
 
 	static const io::string falseValue;
 	static const io::string trueValue;
+	static const io::string FALSEValue;
+	static const io::string TRUEValue;
 
 	static const io::number <double>      DoubleValue;
 	static const io::number <long double> LongDoubleValue;
@@ -94,6 +96,8 @@ const std::map <std::string, AccessType> XMLGrammar::AccessTypes = {
 
 const io::string XMLGrammar::falseValue ("false");
 const io::string XMLGrammar::trueValue ("true");
+const io::string XMLGrammar::FALSEValue ("FALSE");
+const io::string XMLGrammar::TRUEValue ("TRUE");
 
 const io::number <double>      XMLGrammar::DoubleValue;
 const io::number <long double> XMLGrammar::LongDoubleValue;
@@ -1273,13 +1277,13 @@ XMLParser::sfboolValue (std::istream & istream, SFBool* field)
 
 	XMLGrammar::WhiteSpaces (istream, whiteSpaces);
 
-	if (XMLGrammar::trueValue (istream))
+	if (XMLGrammar::trueValue (istream) or XMLGrammar::TRUEValue (istream))
 	{
 		field -> setValue (true);
 		return true;
 	}
 
-	if (XMLGrammar::falseValue (istream))
+	if (XMLGrammar::falseValue (istream) or XMLGrammar::FALSEValue (istream))
 	{
 		field -> setValue (false);
 		return true;

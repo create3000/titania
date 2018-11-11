@@ -2017,13 +2017,13 @@ Parser::sfboolValue (SFBool* _field)
 
 	comments ();
 
-	if (Grammar::TRUE_ (istream))
+	if (Grammar::TRUE_ (istream) or Grammar::true_ (istream))
 	{
 		_field -> setValue (true);
 		return true;
 	}
 
-	if (Grammar::FALSE_ (istream))
+	if (Grammar::FALSE_ (istream) or Grammar::false_ (istream))
 	{
 		_field -> setValue (false);
 		return true;

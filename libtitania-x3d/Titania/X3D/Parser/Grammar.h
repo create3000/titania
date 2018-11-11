@@ -107,6 +107,7 @@ public:
 	static const io::string EXPORT;
 	static const io::string EXTERNPROTO;
 	static const io::string FALSE_;
+	static const io::string false_;
 	static const io::string IMPORT;
 	static const io::string IS;
 	static const io::string META;
@@ -116,6 +117,7 @@ public:
 	static const io::string ROUTE;
 	static const io::string TO;
 	static const io::string TRUE_;
+	static const io::string true_;
 	static const io::string UNIT;
 	static const io::string USE;
 
