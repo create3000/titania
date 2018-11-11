@@ -200,12 +200,6 @@ private:
 	void
 	fieldValue (X3DFieldDefinition* const field, const std::string & value);
 
-	bool
-	sfboolValue (std::istream & istream, SFBool* field);
-
-	void
-	sfboolValues (std::istream & istream, MFBool* field);
-
 	void
 	addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const node);
 

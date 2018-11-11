@@ -1176,6 +1176,38 @@ JSONParser::doubleValue (json_object* const jobj, double & value)
 			value = json_object_get_double (jobj);
 			return true;
 
+		case json_type_string:
+		{
+			std::string string = json_object_get_string (jobj);
+
+			if (string == "+inf" or string == "inf" or string == "+Infinity" or string == "Infinity")
+			{
+				value = std::numeric_limits <double>::infinity ();
+				return true;
+			}
+
+			if (string == "-inf" or string == "-Infinity")
+			{
+				value = -std::numeric_limits <double>::infinity ();
+				return true;
+			}
+
+			if (string == "+nan" or string == "nan" or string == "+NaN" or string == "NaN")
+			{
+				value = std::numeric_limits <double>::quiet_NaN ();
+				return true;
+			}
+
+			if (string == "-nan" or string == "-NaN")
+			{
+				value = -std::numeric_limits <double>::quiet_NaN ();
+				return true;
+			}
+
+			value = 0;
+			return true;
+		}
+
 		default:
 			value = 0;
 			return true;

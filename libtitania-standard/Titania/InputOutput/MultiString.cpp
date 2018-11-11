@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,13 +48,19 @@
  *
  ******************************************************************************/
 
-#include "InputOutput/Character.h"
-#include "InputOutput/SingleLineComment.h"
-#include "InputOutput/QuotedString.h"
-#include "InputOutput/String.h"
-#include "InputOutput/Sequence.h"
-#include "InputOutput/InverseString.h"
-#include "InputOutput/Hex.h"
-#include "InputOutput/InverseCharacter.h"
-#include "InputOutput/Number.h"
-#include "InputOutput/MultiString.h"
+#include "MultiString.h"
+
+namespace titania {
+namespace io {
+
+template <>
+const std::string basic_multi_string <std::string::value_type>::delimiter = "|";
+
+template <>
+const std::wstring basic_multi_string <std::wstring::value_type>::delimiter = L"|";
+
+template class basic_multi_string <char>;
+template class basic_multi_string <wchar_t>;
+
+} // io
+} // titania

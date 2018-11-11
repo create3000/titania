@@ -34,6 +34,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/InputOutput/InverseSequence.cpp \
 	Titania/InputOutput/InverseString.cpp \
 	Titania/InputOutput/MultiLineComment.cpp \
+	Titania/InputOutput/MultiString.cpp \
 	Titania/InputOutput/QuotedString.cpp \
 	Titania/InputOutput/Sequence.cpp \
 	Titania/InputOutput/SingleLineComment.cpp \

@@ -55,48 +55,6 @@
 using namespace titania;
 using namespace titania::X3D;
 
-using Vector4ui = math::vector4 <uint8_t>;
-
-Vector3f
-fract (const Vector3f & vector)
-{
-	return vector - floor (vector);
-}
-
-Vector4f
-pack (const float value)
-{
-	const Vector3f bitShifts = Vector3f (255.0,
-	                                     255.0 * 255.0,
-	                                     255.0 * 255.0 * 255.0);
-
-	const Vector3f f = fract (value * bitShifts);
-
-	return Vector4f (value, f .x (), f .y (), f .z ());
-}
-
-float
-unpack (const Vector4f & color)
-{
-	const Vector3f bitShifts = Vector3f (1.0 / 255.0,
-	                                     1.0 / (255.0 * 255.0),
-	                                     1.0 / (255.0 * 255.0 * 255.0));
-
-	return color .x () + dot (Vector3f (color .y (), color .z (), color .w ()), bitShifts);
-}
-
-Vector4ui
-to_int (const Vector4f & color)
-{
-	return Vector4ui (color * 255.0f);
-}
-
-Vector4f
-to_float (const Vector4ui & color)
-{
-	return Vector4f (color) * (1 / 255.0f);
-}
-
 int
 main (int argc, char** argv)
 {
@@ -118,14 +76,14 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto r1 = Rotation4d (1,2,3,4);
-	auto r2 = Rotation4d ();
+	std::istringstream istream ("inf+inf-inf");
 
-	r2 = r1;
+	static const io::multi_string inf ("inf|+inf|-inf");
 
-	__LOG__ << r1 << std::endl;
-	__LOG__ << r2 << std::endl;
-	__LOG__ << normalize (r2) << std::endl;
+	__LOG__ << inf (istream) << std::endl;
+	__LOG__ << inf (istream) << std::endl;
+	__LOG__ << inf (istream) << std::endl;
+	__LOG__ << inf (istream) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

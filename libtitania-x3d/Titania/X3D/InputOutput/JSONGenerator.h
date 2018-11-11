@@ -76,13 +76,11 @@ public:
 
 	static
 	void
-	Encode (std::ostream & ostream, const double value, const UnitCategory unitCategory)
-	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const double value, const UnitCategory unitCategory);
 
 	static
 	void
-	Encode (std::ostream & ostream, const float value, const UnitCategory unitCategory)
-	{ VRMLGenerator::Encode (ostream, value, unitCategory); }
+	Encode (std::ostream & ostream, const float value, const UnitCategory unitCategory);
 
 	static
 	void

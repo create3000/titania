@@ -74,14 +74,7 @@ public:
 
 	static const std::map <std::string, AccessType> AccessTypes;
 
-	static const io::string falseValue;
-	static const io::string trueValue;
-	static const io::string FALSEValue;
-	static const io::string TRUEValue;
-
-	static const io::number <double>      DoubleValue;
-	static const io::number <long double> LongDoubleValue;
-	static const io::number <int32_t>     IntegerValue;
+	static const io::number <int32_t> IntegerValue;
 
 };
 
@@ -94,13 +87,6 @@ const std::map <std::string, AccessType> XMLGrammar::AccessTypes = {
 	std::make_pair ("inputOutput",    inputOutput),
 };
 
-const io::string XMLGrammar::falseValue ("false");
-const io::string XMLGrammar::trueValue ("true");
-const io::string XMLGrammar::FALSEValue ("FALSE");
-const io::string XMLGrammar::TRUEValue ("TRUE");
-
-const io::number <double>      XMLGrammar::DoubleValue;
-const io::number <long double> XMLGrammar::LongDoubleValue;
 const io::number <int32_t>     XMLGrammar::IntegerValue;
 
 // XMLParser
@@ -965,7 +951,7 @@ XMLParser::doubleAttribute (xmlpp::Attribute* const xmlAttribute, double & value
 
 	istream .imbue (std::locale::classic ());
 
-	return XMLGrammar::DoubleValue (istream, value);
+	return Grammar::Double (istream, value);
 }
 
 bool
@@ -980,7 +966,7 @@ XMLParser::longDoubleAttribute (xmlpp::Attribute* const xmlAttribute, long doubl
 
 	istream .imbue (std::locale::classic ());
 
-	return XMLGrammar::LongDoubleValue (istream, value);
+	return Grammar::LongDouble (istream, value);
 }
 
 bool
@@ -1102,7 +1088,7 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:
-			sfboolValue (istream, static_cast <SFBool*> (field));
+			parser .sfboolValue (static_cast <SFBool*> (field));
 			return;
 
 		case X3DConstants::SFColor:
@@ -1186,7 +1172,7 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 			return;
 
 		case X3DConstants::MFBool:
-			sfboolValues (istream, static_cast <MFBool*> (field));
+			parser .sfboolValues (static_cast <MFBool*> (field));
 			return;
 
 		case X3DConstants::MFColor:
@@ -1268,39 +1254,6 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 			parser .sfvec4fValues (static_cast <MFVec4f*> (field));
 			return;
 	}
-}
-
-bool
-XMLParser::sfboolValue (std::istream & istream, SFBool* field)
-{
-	std::string whiteSpaces;
-
-	XMLGrammar::WhiteSpaces (istream, whiteSpaces);
-
-	if (XMLGrammar::trueValue (istream) or XMLGrammar::TRUEValue (istream))
-	{
-		field -> setValue (true);
-		return true;
-	}
-
-	if (XMLGrammar::falseValue (istream) or XMLGrammar::FALSEValue (istream))
-	{
-		field -> setValue (false);
-		return true;
-	}
-
-	return false;
-}
-
-void
-XMLParser::sfboolValues (std::istream & istream, MFBool* field)
-{
-	SFBool value;
-
-	field -> clear ();
-
-	while (sfboolValue (istream, &value))
-		field -> emplace_back (value);
 }
 
 void

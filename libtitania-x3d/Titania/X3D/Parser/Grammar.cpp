@@ -69,8 +69,7 @@ const io::string Grammar::COMPONENT ("COMPONENT");
 const io::string Grammar::DEF ("DEF");
 const io::string Grammar::EXPORT ("EXPORT");
 const io::string Grammar::EXTERNPROTO ("EXTERNPROTO");
-const io::string Grammar::FALSE_ ("FALSE");
-const io::string Grammar::false_ ("false");
+const io::multi_string Grammar::FALSE_ ("FALSE|false");
 const io::string Grammar::IMPORT ("IMPORT");
 const io::string Grammar::IS ("IS");
 const io::string Grammar::META ("META");
@@ -79,20 +78,14 @@ const io::string Grammar::PROFILE ("PROFILE");
 const io::string Grammar::PROTO ("PROTO");
 const io::string Grammar::ROUTE ("ROUTE");
 const io::string Grammar::TO ("TO");
-const io::string Grammar::TRUE_ ("TRUE");
-const io::string Grammar::true_ ("true");
+const io::multi_string Grammar::TRUE_ ("TRUE|true");
 const io::string Grammar::UNIT ("UNIT");
 const io::string Grammar::USE ("USE");
 
-const io::string Grammar::initializeOnly ("initializeOnly");
-const io::string Grammar::inputOnly ("inputOnly");
-const io::string Grammar::outputOnly ("outputOnly");
-const io::string Grammar::inputOutput ("inputOutput");
-
-const io::string Grammar::field ("field");
-const io::string Grammar::eventIn ("eventIn");
-const io::string Grammar::eventOut ("eventOut");
-const io::string Grammar::exposedField ("exposedField");
+const io::multi_string Grammar::initializeOnly ("initializeOnly|field");
+const io::multi_string Grammar::inputOnly ("inputOnly|eventIn");
+const io::multi_string Grammar::outputOnly ("outputOnly|eventOut");
+const io::multi_string Grammar::inputOutput ("inputOutput|exposedField");
 
 const std::set <std::string> Grammar::SupportedFields = getSupportedFields ();
 
@@ -110,12 +103,12 @@ const io::quoted_string Grammar::String ('\"');
 const io::sequence      Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
 
 // Values
-const io::string Grammar::inf ("inf");
-const io::string Grammar::neg_inf ("-inf");
-const io::string Grammar::nan ("nan");
-const io::string Grammar::neg_nan ("-nan");
-const io::string Grammar::hex ("0x");
-const io::string Grammar::HEX ("0X");
+
+const io::multi_string Grammar::PosInfinity ("+inf|inf|+Infinity|Infinity");
+const io::multi_string Grammar::NegInfinity ("-inf|-Infinity");
+const io::multi_string Grammar::PosNaN ("+nan|nan|+NaN|NaN");
+const io::multi_string Grammar::NegNaN ("-nan|-NaN");
+const io::multi_string Grammar::HEX ("0x|0X");
 
 const io::sequence Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
@@ -148,124 +141,19 @@ Grammar::Header (const std::string & header, std::string & encoding, std::string
 bool
 Grammar::LongDouble (std::istream & istream, long double & value)
 {
-	const auto pos = istream .tellg ();
-
-	if (istream >> value)
-		return true;
-
-	istream .clear ();
-
-	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
-		istream .unget ();
-
-	if (inf (istream))
-	{
-		value = std::numeric_limits <long double>::infinity ();
-		return true;
-	}
-
-	if (neg_inf (istream))
-	{
-		value = -std::numeric_limits <long double>::infinity ();
-		return true;
-	}
-
-	if (nan (istream))
-	{
-		value = std::numeric_limits <long double>::quiet_NaN ();
-		return true;
-	}
-
-	if (neg_nan (istream))
-	{
-		value = -std::numeric_limits <long double>::quiet_NaN ();
-		return true;
-	}
-
-	istream .setstate (std::ios::failbit);
-	return false;
+	return Number <long double> (istream, value);
 }
 
 bool
 Grammar::Double (std::istream & istream, double & value)
 {
-	const auto pos = istream .tellg ();
-
-	if (istream >> value)
-		return true;
-
-	istream .clear ();
-
-	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
-		istream .unget ();
-
-	if (inf (istream))
-	{
-		value = std::numeric_limits <double>::infinity ();
-		return true;
-	}
-
-	if (neg_inf (istream))
-	{
-		value = -std::numeric_limits <double>::infinity ();
-		return true;
-	}
-
-	if (nan (istream))
-	{
-		value = std::numeric_limits <double>::quiet_NaN ();
-		return true;
-	}
-
-	if (neg_nan (istream))
-	{
-		value = -std::numeric_limits <double>::quiet_NaN ();
-		return true;
-	}
-
-	istream .setstate (std::ios::failbit);
-	return false;
+	return Number <double> (istream, value);
 }
 
 bool
 Grammar::Float (std::istream & istream, float & value)
 {
-	const auto pos = istream .tellg ();
-
-	if (istream >> value)
-		return true;
-
-	istream .clear ();
-
-	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
-		istream .unget ();
-
-	if (inf (istream))
-	{
-		value = std::numeric_limits <float>::infinity ();
-		return true;
-	}
-
-	if (neg_inf (istream))
-	{
-		value = -std::numeric_limits <float>::infinity ();
-		return true;
-	}
-
-	if (nan (istream))
-	{
-		value = std::numeric_limits <float>::quiet_NaN ();
-		return true;
-	}
-
-	if (neg_nan (istream))
-	{
-		value = -std::numeric_limits <float>::quiet_NaN ();
-		return true;
-	}
-
-	istream .setstate (std::ios::failbit);
-	return false;
+	return Number <float> (istream, value);
 }
 
 bool
@@ -280,7 +168,7 @@ Grammar::Int32 (std::istream & istream, int32_t & value)
 bool
 Grammar::Hex (std::istream & istream, uint32_t & value)
 {
-	if (hex (istream) or HEX (istream))
+	if (HEX (istream))
 		return static_cast <bool> (istream >> std::hex >> value);
 
 	return false;

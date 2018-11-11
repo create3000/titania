@@ -156,6 +156,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/InputOutput/InverseSequence.lo \
 	Titania/InputOutput/InverseString.lo \
 	Titania/InputOutput/MultiLineComment.lo \
+	Titania/InputOutput/MultiString.lo \
 	Titania/InputOutput/QuotedString.lo \
 	Titania/InputOutput/Sequence.lo \
 	Titania/InputOutput/SingleLineComment.lo \
@@ -457,6 +458,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/InputOutput/InverseSequence.cpp \
 	Titania/InputOutput/InverseString.cpp \
 	Titania/InputOutput/MultiLineComment.cpp \
+	Titania/InputOutput/MultiString.cpp \
 	Titania/InputOutput/QuotedString.cpp \
 	Titania/InputOutput/Sequence.cpp \
 	Titania/InputOutput/SingleLineComment.cpp \
@@ -702,6 +704,9 @@ Titania/InputOutput/InverseString.lo:  \
 Titania/InputOutput/MultiLineComment.lo:  \
 	Titania/InputOutput/$(am__dirstamp) \
 	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+Titania/InputOutput/MultiString.lo:  \
+	Titania/InputOutput/$(am__dirstamp) \
+	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
 Titania/InputOutput/QuotedString.lo:  \
 	Titania/InputOutput/$(am__dirstamp) \
 	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
@@ -918,6 +923,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseString.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/MultiString.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/QuotedString.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/Sequence.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo@am__quote@

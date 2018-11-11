@@ -64,13 +64,13 @@ MiniParser::Decode (std::istream & istream, bool & value)
 	
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	if (Grammar::TRUE_ (istream) or Grammar::true_ (istream))
+	if (Grammar::TRUE_ (istream))
 	{
 		value = true;
 		return true;
 	}
 
-	if (Grammar::FALSE_ (istream) or Grammar::false_ (istream))
+	if (Grammar::FALSE_ (istream))
 	{
 		value = false;
 		return true;

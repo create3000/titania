@@ -67,29 +67,30 @@ public:
 
 	template <class Type>
 	static
-	bool
-	Number (std::istream &, Type &)
-	{ return false; }
+	std::enable_if_t <
+		std::is_floating_point <Type>::value,
+		bool>
+	Number (std::istream & istream, Type & value);
 
 	static
 	bool
-	LongDouble (std::istream &, long double &);
+	LongDouble (std::istream & istream, long double & value);
 
 	static
 	bool
-	Double (std::istream &, double &);
+	Double (std::istream & istream, double & value);
 
 	static
 	bool
-	Float (std::istream &, float &);
+	Float (std::istream & istream, float & value);
 
 	static
 	bool
-	Int32 (std::istream &, int32_t &);
+	Int32 (std::istream & istream, int32_t & value);
 
 	static
 	bool
-	Hex (std::istream &, uint32_t &);
+	Hex (std::istream & istream, uint32_t & value);
 
 	///  @name General
 	static const io::sequence            WhiteSpaces;
@@ -106,8 +107,7 @@ public:
 	static const io::string DEF;
 	static const io::string EXPORT;
 	static const io::string EXTERNPROTO;
-	static const io::string FALSE_;
-	static const io::string false_;
+	static const io::multi_string FALSE_;
 	static const io::string IMPORT;
 	static const io::string IS;
 	static const io::string META;
@@ -116,20 +116,14 @@ public:
 	static const io::string PROTO;
 	static const io::string ROUTE;
 	static const io::string TO;
-	static const io::string TRUE_;
-	static const io::string true_;
+	static const io::multi_string TRUE_;
 	static const io::string UNIT;
 	static const io::string USE;
 
-	static const io::string initializeOnly;
-	static const io::string inputOnly;
-	static const io::string outputOnly;
-	static const io::string inputOutput;
-
-	static const io::string field;
-	static const io::string eventIn;
-	static const io::string eventOut;
-	static const io::string exposedField;
+	static const io::multi_string initializeOnly;
+	static const io::multi_string inputOnly;
+	static const io::multi_string outputOnly;
+	static const io::multi_string inputOutput;
 
 	static const std::set <std::string> SupportedFields;
 
@@ -163,34 +157,60 @@ private:
 	getSupportedFields ();
 
 	///  @name Values
-	static const io::string inf;
-	static const io::string neg_inf;
-	static const io::string nan;
-	static const io::string neg_nan;
-	static const io::string hex;
-	static const io::string HEX;
+
+	static const io::multi_string PosInfinity;
+	static const io::multi_string NegInfinity;
+	static const io::multi_string PosNaN;
+	static const io::multi_string NegNaN;
+	static const io::multi_string HEX;
 
 	static const io::sequence WhiteSpacesNoCommaSequence;
 
 };
 
-template <>
-inline
-bool
-Grammar::Number <double> (std::istream & istream, double & value)
-{ return Double (istream, value); }
+template <class Type>
+std::enable_if_t <
+	std::is_floating_point <Type>::value,
+	bool>
+Grammar::Number (std::istream & istream, Type & value)
+{
+	const auto pos = istream .tellg ();
 
-template <>
-inline
-bool
-Grammar::Number <float> (std::istream & istream, float & value)
-{ return Float (istream, value); }
+	if (istream >> value)
+		return true;
 
-template <>
-inline
-bool
-Grammar::Number <int32_t> (std::istream & istream, int32_t & value)
-{ return Int32 (istream, value); }
+	istream .clear ();
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
+
+	if (PosInfinity (istream))
+	{
+		value = std::numeric_limits <Type>::infinity ();
+		return true;
+	}
+
+	if (NegInfinity (istream))
+	{
+		value = -std::numeric_limits <Type>::infinity ();
+		return true;
+	}
+
+	if (PosNaN (istream))
+	{
+		value = std::numeric_limits <Type>::quiet_NaN ();
+		return true;
+	}
+
+	if (NegNaN (istream))
+	{
+		value = -std::numeric_limits <Type>::quiet_NaN ();
+		return true;
+	}
+
+	istream .setstate (std::ios::failbit);
+	return false;
+}
 
 } // X3D
 } // titania
