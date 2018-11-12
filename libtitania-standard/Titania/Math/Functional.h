@@ -158,9 +158,9 @@ constexpr
 std::enable_if_t <std::is_floating_point <Type>::value, Type>
 fract (const Type & value)
 {
-	Type i;
+	Type intpart = 0;
 
-	return std::modf (value, &i);
+	return std::modf (value, &intpart);
 }
 
 ///  Clamp @a value in the range @a low and @a high.
