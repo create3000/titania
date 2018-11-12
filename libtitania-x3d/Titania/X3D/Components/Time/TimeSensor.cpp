@@ -179,9 +179,7 @@ TimeSensor::set_stop ()
 void
 TimeSensor::set_fraction ()
 {
-	time_type intpart;
-
-	fraction_changed () = fraction = first + std::modf ((getCurrentTime () - cycle) / interval, &intpart) * scale;
+	fraction_changed () = fraction = first + fract ((getCurrentTime () - cycle) / interval) * scale;
 }
 
 void

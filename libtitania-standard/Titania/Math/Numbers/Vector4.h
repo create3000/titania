@@ -922,6 +922,22 @@ clamp (const vector4 <Type> & arg, const Type & min, const Type & max)
 	                       clamp (arg .w (), min, max));
 }
 
+/**
+ * @returns Computes the fractional part of the @a arg.
+ * @param a vector4 <Type>.\n
+ * @a Type is any floating point type.
+ */
+
+template <class Type>
+std::enable_if_t <std::is_floating_point <Type>::value, vector4 <Type>>
+fract (const vector4 <Type> & arg)
+{
+	return vector4 <Type> (fract (arg .x ()),
+	                       fract (arg .y ()),
+	                       fract (arg .z ()),
+	                       fract (arg .w ()));
+}
+
 ///  @relates vector4
 ///  @name Input/Output operations
 

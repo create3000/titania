@@ -902,6 +902,21 @@ clamp (const vector3 <Type> & arg, const Type & min, const Type & max)
 	                       clamp (arg .z (), min, max));
 }
 
+/**
+ * @returns Computes the fractional part of the @a arg.
+ * @param a vector3 <Type>.\n
+ * @a Type is any floating point type.
+ */
+
+template <class Type>
+std::enable_if_t <std::is_floating_point <Type>::value, vector3 <Type>>
+fract (const vector3 <Type> & arg)
+{
+	return vector3 <Type> (fract (arg .x ()),
+	                       fract (arg .y ()),
+	                       fract (arg .z ()));
+}
+
 ///  @relates vector3
 ///  @name Input/Output operations
 

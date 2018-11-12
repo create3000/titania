@@ -55,6 +55,41 @@
 using namespace titania;
 using namespace titania::X3D;
 
+
+vector4 <float>
+pack1 (const float value)
+{
+	const auto bitShifts = vector3 <float> (255.0,
+	                                        255.0 * 255.0,
+	                                        255.0 * 255.0 * 255.0);
+
+	const auto v = fract (value * bitShifts);
+
+	return vector4 <float> (value, v .x (), v .y (), v .z ());
+}
+
+vector4 <float>
+pack2 (float value)
+{
+	auto v = vector4 <float> ();
+
+	v .x (value);
+
+	value *= 255;
+	value  = fract (value);
+	v .y (value);
+
+	value *= 255;
+	value  = fract (value);
+	v .z (value);
+
+	value *= 255;
+	value  = fract (value);
+	v .w (value);
+
+	return v;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -76,14 +111,20 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::istringstream istream ("inf+inf-inf");
+	auto p1 = pack1 (0.12345678901234567890);
+	auto i1 = vector4 <uint32_t> (p1 * 255.0f);
 
-	static const io::multi_string inf ("inf|+inf|-inf");
+	__LOG__ << i1 << std::endl;
 
-	__LOG__ << inf (istream) << std::endl;
-	__LOG__ << inf (istream) << std::endl;
-	__LOG__ << inf (istream) << std::endl;
-	__LOG__ << inf (istream) << std::endl;
+	auto p2 = pack2 (0.12345678901234567890);
+	auto i2 = vector4 <uint32_t> (p2 * 255.0f);
+
+	__LOG__ << i2 << std::endl;
+
+	auto u1 = i1 [0] / 255.0 + i1 [1] / (255.0 * 255.0) + i1 [2] / (255.0 * 255.0 * 255.0) + i1 [3] / (255.0 * 255.0 * 255.0 * 255.0);
+
+	__LOG__ << u1 << std::endl;
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

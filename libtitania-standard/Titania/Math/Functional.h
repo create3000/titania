@@ -152,6 +152,17 @@ operator "" _rad (const long double value)
 	return degrees (value);
 }
 
+template <class Type>
+inline
+constexpr
+std::enable_if_t <std::is_floating_point <Type>::value, Type>
+fract (const Type & value)
+{
+	Type i;
+
+	return std::modf (value, &i);
+}
+
 ///  Clamp @a value in the range @a low and @a high.
 template <class Type>
 inline
@@ -304,10 +315,10 @@ next_power_of_two (Type n)
 
 template <class Type>
 Type
-min (std::initializer_list <Type> ilist)
+min (std::initializer_list <Type> list)
 {
-	auto       first = ilist .begin ();
-	const auto last  = ilist .end ();
+	auto       first = list .begin ();
+	const auto last  = list .end ();
 
 	if (first == last)
 		return *first;
@@ -322,10 +333,10 @@ min (std::initializer_list <Type> ilist)
 
 template <class Type>
 Type
-max (std::initializer_list <Type> ilist)
+max (std::initializer_list <Type> list)
 {
-	auto       first = ilist .begin ();
-	const auto last  = ilist .end ();
+	auto       first = list .begin ();
+	const auto last  = list .end ();
 
 	if (first == last)
 		return *first;
