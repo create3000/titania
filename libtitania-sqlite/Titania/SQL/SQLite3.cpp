@@ -69,9 +69,9 @@ sqlite3::sqlite3 (const std::string & filename) :
 	open (filename);
 }
 
+///  throws std::invalid_argument
 void
 sqlite3::open (const std::string & filename)
-throw (std::invalid_argument)
 {
 	if (::sqlite3_open (filename .c_str (), &database))
 		error ("Can't open database: ", ::sqlite3_errmsg (database), "");
@@ -79,9 +79,9 @@ throw (std::invalid_argument)
 	query ("PRAGMA database_list");
 }
 
+///  throws std::invalid_argument
 void
 sqlite3::query (const std::string & statement)
-throw (std::invalid_argument)
 {
 	exec (statement, nullptr);
 }
@@ -100,9 +100,9 @@ sqlite3::try_query (const std::string & statement)
 	}
 }
 
+///  throws std::invalid_argument
 const sqlite3::array_type &
 sqlite3::query_array (const std::string & statement) const
-throw (std::invalid_argument)
 {
 	array .clear ();
 
@@ -111,9 +111,9 @@ throw (std::invalid_argument)
 	return array;
 }
 
+///  throws std::invalid_argument
 const sqlite3::assoc_type &
 sqlite3::query_assoc (const std::string & statement) const
-throw (std::invalid_argument)
 {
 	array_map .clear ();
 
@@ -124,9 +124,9 @@ throw (std::invalid_argument)
 
 // http://www.sqlite.org/cvstrac/wiki?p=BlobExample
 
+///  throws std::invalid_argument
 void
 sqlite3::write_blob (const std::string & statement, const std::string & value) const
-throw (std::invalid_argument)
 {
 	::sqlite3_stmt* prepared_statement;
 	int returnCode;
@@ -150,9 +150,9 @@ throw (std::invalid_argument)
 	while (returnCode == SQLITE_SCHEMA);
 }
 
+///  throws std::invalid_argument
 void
 sqlite3::read_blob (const std::string & statement, std::string & value) const
-throw (std::invalid_argument)
 {
 	::sqlite3_stmt* prepared_statement;
 	int             returnCode;
@@ -174,9 +174,9 @@ throw (std::invalid_argument)
 	while (returnCode == SQLITE_SCHEMA);
 }
 
+///  throws std::out_of_range
 const std::string &
 sqlite3::last_insert_rowid () const
-throw (std::out_of_range)
 {
 	try
 	{
@@ -196,9 +196,9 @@ sqlite3::quote (const std::string & value) const
 	return "'" + std::regex_replace (value, SingleQuote, "''") + "'";
 }
 
+///  throws std::invalid_argument
 void
 sqlite3::exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
-throw (std::invalid_argument)
 {
 	lastQuery = statement;
 
@@ -275,9 +275,9 @@ sqlite3::print (int argc, char** argv, char** columns)
 	}
 }
 
+///  throws std::invalid_argument
 void
 sqlite3::error (const std::string & what, const std::string & message, const std::string & statement) const
-throw (std::invalid_argument)
 {
 	throw std::invalid_argument ("SQL error: " + what + message + (statement .empty () ? "." : ":\n" + statement));
 }

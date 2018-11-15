@@ -74,65 +74,66 @@ public:
 	typedef std::map <std::string, std::string> assoc_row_type;
 	typedef std::deque <assoc_row_type>         assoc_type;
 
-	/// @name Constructors
+	///  @name Constructors
 
 	sqlite3 ();
 
 	sqlite3 (const std::string &);
 
-	/// @name Database handling
+	///  @name Database handling
+
+	///  throws std::invalid_argument
 	void
-	open (const std::string &)
-	throw (std::invalid_argument);
+	open (const std::string &);
 
 	/// @name Query handling
 
+	///  throws std::invalid_argument
 	void
-	query (const std::string &)
-	throw (std::invalid_argument);
+	query (const std::string &);
 
 	bool
 	try_query (const std::string &);
 
+	///  throws std::invalid_argument
 	const array_type &
-	query_array (const std::string &) const
-	throw (std::invalid_argument);
+	query_array (const std::string &) const;
 
+	///  throws std::invalid_argument
 	const assoc_type &
-	query_assoc (const std::string &) const
-	throw (std::invalid_argument);
+	query_assoc (const std::string &) const;
 
+	///  throws std::invalid_argument
 	void
-	write_blob (const std::string &, const std::string &) const
-	throw (std::invalid_argument);
+	write_blob (const std::string &, const std::string &) const;
 
+	///  throws std::invalid_argument
 	void
-	read_blob (const std::string &, std::string &) const
-	throw (std::invalid_argument);
+	read_blob (const std::string &, std::string &) const;
 
+	///  throws std::out_of_range
 	const std::string &
-	last_insert_rowid () const
-	throw (std::out_of_range);
+	last_insert_rowid () const;
 
 	const std::string &
 	last_query () const
 	{ return lastQuery; }
 
-	/// @name Utility funtions
+	///  @name Utility funtions
 
 	std::string
 	quote (const std::string &) const;
 
-	/// @name Destructor
+	///  @name Destructor
 
 	~sqlite3 ();
 
 
 private:
 
+	///  throws std::invalid_argument
 	void
-	exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const
-	throw (std::invalid_argument);
+	exec (const std::string & statement, int (* callback) (void*, int, char**, char**)) const;
 
 	static
 	int
@@ -150,9 +151,9 @@ private:
 	void
 	print (int, char**, char**);
 
+	///  throws std::invalid_argument
 	void
-	error (const std::string &, const std::string &, const std::string & statement) const
-	throw (std::invalid_argument);
+	error (const std::string &, const std::string &, const std::string & statement) const;
 
 
 private:
