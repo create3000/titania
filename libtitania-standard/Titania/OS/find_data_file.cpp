@@ -57,9 +57,8 @@
 namespace titania {
 namespace os {
 
-typedef Glib::RefPtr <Gio::File> File;
-
-typedef std::deque <File> FileArray;
+using File      = Glib::RefPtr <Gio::File>;
+using FileArray = std::deque <File>;
 
 static
 File
@@ -73,13 +72,14 @@ static
 FileArray
 create_data_directories ();
 
+///  throws std::ios_base::failure
 std::string
 find_data_file (const std::string & file)
-//throw (std::ios_base::failure)
 {
 	return find_file (file, get_data_directories ()) -> get_path ();
 }
 
+///  throws std::ios_base::failure
 static
 File
 find_file (const std::string & file, const FileArray & directories)
