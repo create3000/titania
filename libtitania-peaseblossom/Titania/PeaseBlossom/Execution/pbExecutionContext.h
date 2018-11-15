@@ -129,10 +129,10 @@ public:
 	noexcept (true)
 	{ return getRootContext () -> getStandardFunction (); }
 
+	///  throws std::out_of_range
 	virtual
 	const ptr <pbFunction> &
 	getStandardClass (const StandardClassType type) const
-	throw (std::out_of_range)
 	{ return getRootContext () -> getStandardClass (type); }
 
 	/// @name Function handling
@@ -145,9 +145,9 @@ public:
 
 	///  Returns @a name local function, throws std::invalid_argument if function .name is empty or a function with
 	///  name not exists.
+	///  throws std::out_of_range
 	const ptr <pbFunction> &
 	getFunctionDeclaration (const Identifier & identifier) const
-	throw (std::out_of_range)
 	{ return functionDeclarations .at (identifier .getId ()); }
 
 	const std::map <size_t, ptr <pbFunction>> &
@@ -170,20 +170,20 @@ public:
 	/// @name Execution
 
 	///  Executes the associated expessions of this context.
+	///  throws pbError
 	virtual
 	var
 	run ()
-	throw (pbError)
 	{ return undefined; }
 
 	/// @name Input/Output
 
 	///  Parses @a istream and adds the expressions to this context. The stream must contain valid ECMAScript content
 	///  otherwise an exception is thrown.
+	///  throws pbError
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (pbError) final override;
+	fromStream (std::istream & istream) final override;
 
 	///  Inserts this object into the output stream @a ostream.
 	virtual
@@ -217,14 +217,14 @@ protected:
 
 	///  Adds a function to this context, throws std::invalid_argument if a function with function .name already exists
 	///  or function .name is empty.
+	///  throws std::invalid_argumen
 	void
-	addFunctionDeclaration (ptr <pbFunction> && function)
-	throw (std::invalid_argument);
+	addFunctionDeclaration (ptr <pbFunction> && function);
 
 	///  Updates a global function, throws std::invalid_argument if function .name is empty.
+	///  throws std::invalid_argumen
 	void
-	updateFunctionDeclaration (ptr <pbFunction> && function)
-	throw (std::invalid_argument);
+	updateFunctionDeclaration (ptr <pbFunction> && function);
 	///  Removes the function identified by @a name from this execution context.
 	void
 	removeFunctionDeclaration (const Identifier & identifier)
@@ -272,9 +272,9 @@ protected:
 	/// @name Operations
 
 	///  Imports all function declarations and expressions from @a executionContext into this execution context.
+	///  throws pbError
 	void
-	import (const pbExecutionContext* const executionContext)
-	throw (pbError);
+	import (const pbExecutionContext* const executionContext);
 
 
 private:

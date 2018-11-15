@@ -332,50 +332,46 @@ public:
 	hasProperty (const Identifier & identifier) const
 	noexcept (true);
 
+	///  throws pbError, std::out_of_range, std::invalid_argument
 	var
-	call (const Identifier & identifier, const std::vector <var> & args = { }) const
-	throw (pbError,
-	       std::out_of_range,
-	       std::invalid_argument);
+	call (const Identifier & identifier, const std::vector <var> & args = { }) const;
 
 	///  Sets the value of the property for @a identifier.
+	///  throws pbError, std::out_of_range
 	virtual
 	void
 	put (const Identifier & identifier, const var & value, const bool throw_ = false)
-	throw (pbError,
-	       std::out_of_range)
 	{ return put (identifier, value, NONE, throw_); }
 
 	///  Returns the value of the property for @a identifier.
+	///  throws pbError, std::out_of_range
 	virtual
 	var
-	get (const Identifier & identifier) const
-	throw (pbError,
-	       std::out_of_range);
+	get (const Identifier & identifier) const;
 
 	///  Returns the property descriptor for @a identifier.
+	///  throws std::out_of_range
 	const PropertyDescriptorPtr &
-	getProperty (const Identifier & identifier) const
-	throw (std::out_of_range);
+	getProperty (const Identifier & identifier) const;
 
 	///  Returns the own property descriptor for @a identifier.
+	///  throws std::out_of_range
 	const PropertyDescriptorPtr &
 	getOwnProperty (const Identifier & identifier) const
-	throw (std::out_of_range)
 	{ return properties .at (identifier .getId ()); }
 
 	///  Adds the named property described by the given descriptor for this object.
+	///  throws TypeError, std::invalid_argument
 	void
 	addOwnProperty (const Identifier & identifier,
 	                const var & value,
 	                const AttributeType attributes = DEFAULT,
 	                const ptr <pbFunction> & getter = DefaultGetter,
 	                const ptr <pbFunction> & setter = DefaultSetter,
-	                const bool throw_ = false)
-	throw (TypeError,
-	       std::invalid_argument);
+	                const bool throw_ = false);
 
 	///  Adds the named property described by the given descriptor for this object.
+	///  throws TypeError, std::invalid_argument
 	virtual
 	void
 	addOwnProperty (const Identifier & identifier,
@@ -383,11 +379,10 @@ public:
 	                const AttributeType attributes = DEFAULT,
 	                ptr <pbFunction> && getter = nullptr,
 	                ptr <pbFunction> && setter = nullptr,
-	                const bool throw_ = false)
-	throw (TypeError,
-	       std::invalid_argument);
+	                const bool throw_ = false);
 
 	///  Updates the named property described by the given descriptor for this object.
+	///  throws TypeError
 	virtual
 	void
 	defineOwnProperty (const Identifier & identifier,
@@ -395,25 +390,23 @@ public:
 	                   const AttributeType attributes = DEFAULT,
 	                   const ptr <pbFunction> & getter = DefaultGetter,
 	                   const ptr <pbFunction> & setter = DefaultSetter,
-	                   const bool throw_ = false)
-	throw (TypeError);
+	                   const bool throw_ = false);
 
+	///  throws TypeError, std::out_of_range
 	bool
-	deleteOwnProperty (const Identifier & identifier, const bool throw_ = false)
-	throw (TypeError,
-          std::out_of_range);
+	deleteOwnProperty (const Identifier & identifier, const bool throw_ = false);
 
 	///  @name Operations
 
+	///  throws TypeError
 	virtual
 	bool
 	hasInstance (const var & value)
-	throw (TypeError)
 	{ throw TypeError ("pbObject::hasInstance"); }
 
+	///  throws pbError
 	var
-	getDefaultValue (const ValueType preferedType) const
-	throw (pbError);
+	getDefaultValue (const ValueType preferedType) const;
 
 	///  @name Input/Output
 
@@ -468,9 +461,9 @@ protected:
 	setConstructor (pbFunction* const value)
 	{ constructor = value; }
 
+	///  throws std::invalid_argument
 	void
-	setProto (pbObject* const value)
-	throw (std::invalid_argument);
+	setProto (pbObject* const value);
 
 	///  @name Operations
 
@@ -479,15 +472,14 @@ protected:
 	noexcept (true);
 
 	///  Sets the value of the property for @a identifier.
+	///  throws pbError, std::out_of_range
 	void
-	put (const Identifier & identifier, const var & value, const AttributeType attributes, const bool throw_)
-	throw (pbError,
-	       std::out_of_range);
+	put (const Identifier & identifier, const var & value, const AttributeType attributes, const bool throw_);
 
+	///  throws pbError
 	virtual
 	bool
-	resolve (const Identifier & identifier)
-	throw (pbError);
+	resolve (const Identifier & identifier);
 
 
 private:

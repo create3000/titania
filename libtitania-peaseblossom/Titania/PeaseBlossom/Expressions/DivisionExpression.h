@@ -84,10 +84,10 @@ public:
 	///  @name Operations
 
 	///  Converts its arguments to a value of type Number.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		const auto x = lhs -> getValue () .toNumber ();
 		const auto y = rhs -> getValue () .toNumber ();

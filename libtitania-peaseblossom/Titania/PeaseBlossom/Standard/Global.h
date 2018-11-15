@@ -83,8 +83,7 @@ protected:
 
 	virtual
 	bool
-	resolve (const Identifier & identifier)
-	throw (pbError) final override;
+	resolve (const Identifier & identifier) final override;
 
 
 private:

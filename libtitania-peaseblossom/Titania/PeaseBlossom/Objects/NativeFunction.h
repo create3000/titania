@@ -92,10 +92,10 @@ public:
 
 	///  @name Operations
 
+	///  throws pbError
 	virtual
 	var
-	call (const var & object, const std::vector <var> & arguments = { })
-	throw (pbError) final override;
+	call (const var & object, const std::vector <var> & arguments = { }) final override;
 
 	///  @name Input/Output
 
@@ -109,10 +109,10 @@ protected:
 
 	///  @name operations
 
+	///  throws pbError
 	virtual
 	var
-	construct (const var & object, const std::vector <var> & arguments = { })
-	throw (pbError) final override;
+	construct (const var & object, const std::vector <var> & arguments = { }) final override;
 
 
 private:

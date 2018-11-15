@@ -81,9 +81,9 @@ pbStatement::isPrimitive () const
 	return false;
 }
 
+///  throws pbError
 var
 pbStatement::call (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments) const
-throw (pbError)
 {
 	const auto value = getValue ();
 
@@ -98,9 +98,9 @@ throw (pbError)
 	throw TypeError ("'" + value .toString () + "' is not a function.");
 }
 
+///  throws pbError
 bool
 pbStatement::deleteProperty () const
-throw (pbError)
 {
 	getValue ();
 	return true;

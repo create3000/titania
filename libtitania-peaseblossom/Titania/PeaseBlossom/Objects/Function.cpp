@@ -128,16 +128,16 @@ Function::getLocalObjects () const
 	return variableObject;
 }
 
+///  throws pbError
 var
 Function::construct (const var & object, const std::vector <var> & arguments)
-throw (pbError)
 {
 	return call (object, arguments);
 }
 
+///  throws pbError
 var
 Function::call (const var & object, const std::vector <var> & arguments)
-throw (pbError)
 {
 	const auto & variableObject = getLocalObjects ();
 

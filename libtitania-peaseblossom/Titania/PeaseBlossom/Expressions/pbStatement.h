@@ -105,26 +105,26 @@ public:
 
 	///  @name Conversion operations
 
+	///  throws pbError
 	virtual
 	void
 	putValue (const var &) const
-	throw (pbError)
 	{ throw ReferenceError ("Invalid assignment left-hand side."); }
 
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) = 0;
+	getValue () const = 0;
 
+	///  throws pbError
 	virtual
 	var
-	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const
-	throw (pbError);
+	call (const ptr <pbExecutionContext> &, const std::vector <var> &) const;
 
+	///  throws pbError
 	virtual
 	bool
-	deleteProperty () const
-	throw (pbError);
+	deleteProperty () const;
 
 
 protected:

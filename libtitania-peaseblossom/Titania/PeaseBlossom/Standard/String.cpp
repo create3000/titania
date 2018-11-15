@@ -64,9 +64,9 @@ namespace Standard {
 namespace String {
 
 ///  Checks whether this object can be converted into an object.
+///  throws TypeError
 void
 CheckObjectCoercible (const var & value)
-throw (TypeError)
 {
 	switch (value .getType ())
 	{

@@ -78,10 +78,9 @@ Array::Array (pbExecutionContext* const executionContext, const std::nullptr_t) 
 	                new pb::NativeFunction (executionContext, "length", setLength, 1));
 }
 
+///  throws pbError, std::out_of_range
 void
 Array::put (const Identifier & identifier, const var & value, const bool throw_)
-throw (pbError,
-       std::out_of_range)
 {
 	const auto index = identifier .toUInt32 ();
 	

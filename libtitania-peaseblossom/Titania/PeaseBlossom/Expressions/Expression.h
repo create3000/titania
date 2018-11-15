@@ -92,10 +92,10 @@ public:
 	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
 			expression -> getValue ();

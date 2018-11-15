@@ -84,10 +84,9 @@ String::addProperties (pbExecutionContext* const ec)
 	                DefaultSetter);
 }
 
+///  throws pbError, std::out_of_range
 void
 String::put (const Identifier & identifier, const var & value, const bool throw_)
-throw (pbError,
-       std::out_of_range)
 {
 	const auto index = identifier .toUInt32 ();
 
@@ -98,10 +97,9 @@ throw (pbError,
 		return pbObject::put (identifier, value, throw_);
 }
 
+///  throws pbError, std::out_of_range
 var
 String::get (const Identifier & identifier) const
-throw (pbError,
-       std::out_of_range)
 {
 	const auto index = identifier .toUInt32 ();
 

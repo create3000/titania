@@ -99,13 +99,13 @@ public:
 
 	///  @name Operations
 
+	///  throws SyntaxError
 	void
 	defineOwnProperty (Identifier && identifier,
 	                   ptr <pbStatement> && value,
 	                   const AttributeType attributes,
 	                   ptr <Function> && getter = nullptr,
 	                   ptr <Function> && setter = nullptr)
-	throw (SyntaxError)
 	{
 		auto & property = properties [identifier .getId ()];
 
@@ -143,10 +143,10 @@ public:
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		const auto object = new Object (executionContext .get ());
 

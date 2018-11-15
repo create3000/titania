@@ -93,10 +93,9 @@ pbFunction::addProperties ()
 	addOwnProperty ("length", length,             NONE);
 }
 
+///  throws td::out_of_range, std::invalid_argument
 const ptr <pbObject> &
 pbFunction::getPrototype () const
-throw (std::out_of_range,
-       std::invalid_argument)
 {
 	static const Identifier prototype ("prototype");
 
@@ -138,9 +137,9 @@ noexcept (true)
 	return false;
 }
 
+///  throws pbError
 var
 pbFunction::construct (const ptr <pbExecutionContext> & executionContext, const std::vector <var> & arguments)
-throw (pbError)
 {
 	const var  object = createInstance (executionContext);
 	const auto result = construct (object, arguments);

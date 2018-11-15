@@ -86,9 +86,9 @@ protected:
 
 	///  @name Operations
 
+	///  throws pbError
 	void
-	parseIntoContext ()
-	throw (pbError);
+	parseIntoContext ();
 
 
 private:

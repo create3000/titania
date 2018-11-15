@@ -86,10 +86,10 @@ public:
 	///  @name Operations
 
 	///  Converts its arguments to a value of type Number.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{ return std::fmod (lhs -> getValue () .toNumber (), rhs -> getValue () .toNumber ()); }
 
 	///  @name Input/Output

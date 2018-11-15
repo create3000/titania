@@ -81,10 +81,9 @@ public:
 	getLength () const
 	{ return length; }
 
+	///  throws std::out_of_range, std::invalid_argument
 	const ptr <pbObject> &
-	getPrototype () const
-	throw (std::out_of_range,
-	       std::invalid_argument);
+	getPrototype () const;
 
 	///  @name Operations
 
@@ -99,15 +98,15 @@ public:
 	noexcept (true) final override;
 
 	///  Constructs new object of this class.
+	///  throws pbError
 	var
-	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { })
-	throw (pbError);
+	construct (const ptr <pbExecutionContext> &, const std::vector <var> & = { });
 
 	///  Executes this function.
+	///  throws pbError
 	virtual
 	var
-	call (const var & object, const std::vector <var> & arguments = { })
-	throw (pbError) = 0;
+	call (const var & object, const std::vector <var> & arguments = { }) = 0;
 
 
 protected:
@@ -122,10 +121,10 @@ protected:
 
 	///  @name Operations
 
+	///  throws pbError
 	virtual
 	var
-	construct (const var & object, const std::vector <var> & arguments = { })
-	throw (pbError) = 0;
+	construct (const var & object, const std::vector <var> & arguments = { }) = 0;
 
 
 private:

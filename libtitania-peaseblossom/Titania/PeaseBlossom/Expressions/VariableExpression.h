@@ -87,10 +87,10 @@ public:
 
 	///  @name Operations
 
+	///  throws pbError
 	virtual
 	void
-	putValue (const var & value) const
-	throw (pbError) final override
+	putValue (const var & value) const final override
 	{
 		if (variableObject == executionContext -> getVariableObject () .get () or index)
 		{
@@ -138,10 +138,10 @@ public:
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		if (variableObject == executionContext -> getVariableObject () .get () or index)
 		{
@@ -203,10 +203,10 @@ public:
 		throw ReferenceError (identifier .getString () + " is not defined.");
 	}
 
+	///  throws pbError
 	virtual
 	bool
-	deleteProperty () const
-	throw (pbError) final override
+	deleteProperty () const final override
 	{
 		for (const auto & variableObject : executionContext -> getVariableObjects ())
 		{

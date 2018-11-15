@@ -72,10 +72,10 @@ public:
 	getUserData () const
 	{ return userData; }
 
+	///  throws std::out_of_range
 	template <class Type>
 	Type
 	getUserData (const size_t index) const
-	throw (std::out_of_range)
 	{ return reinterpret_cast <Type> (userData .at (index)); }
 
 	///  @name Destruction

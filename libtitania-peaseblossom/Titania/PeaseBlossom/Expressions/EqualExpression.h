@@ -85,18 +85,18 @@ public:
 	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		return evaluate (lhs, rhs);
 	}
 
+	///  throws pbError
 	static
 	bool
 	evaluate (const ptr <pbStatement> & lhs, const ptr <pbStatement> & rhs)
-	throw (pbError)
 	{
 		const auto x = lhs -> getValue ();
 		const auto y = rhs -> getValue ();

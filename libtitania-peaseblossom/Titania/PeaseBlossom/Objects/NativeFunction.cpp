@@ -91,16 +91,16 @@ NativeFunction::getDefaultFunction (const Identifier & name) const
 	};
 }
 
+///  throws pbError
 var
 NativeFunction::construct (const var & object, const std::vector <var> & arguments)
-throw (pbError)
 {
 	return constructor (executionContext, object, arguments);
 }
 
+///  throws pbError
 var
 NativeFunction::call (const var & object, const std::vector <var> & arguments)
-throw (pbError)
 {
 	return function (executionContext, object, arguments);
 }

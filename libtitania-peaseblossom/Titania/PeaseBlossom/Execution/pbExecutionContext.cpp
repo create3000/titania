@@ -86,9 +86,9 @@ noexcept (true)
 	variableDeclarations .emplace_back (std::move (variable));
 }
 
+///  throws std::invalid_argument
 void
 pbExecutionContext::addFunctionDeclaration (ptr <pbFunction> && function)
-throw (std::invalid_argument)
 {
 	const auto pair = functionDeclarations .emplace (function -> getName () .getId (), std::move (function));
 
@@ -99,9 +99,9 @@ throw (std::invalid_argument)
 		throw std::invalid_argument ("Function already exists.");
 }
 
+///  throws std::invalid_argument
 void
 pbExecutionContext::updateFunctionDeclaration (ptr <pbFunction> && function)
-throw (std::invalid_argument)
 {
 	try
 	{
@@ -120,9 +120,9 @@ noexcept (true)
 	functionDeclarations .erase (identifier .getId ());
 }
 
+///  throws pbError
 void
 pbExecutionContext::import (const pbExecutionContext* const executionContext)
-throw (pbError)
 {
 	for (const auto & function : executionContext -> getFunctionDeclarations ())
 		addFunctionDeclaration (function .second -> copy (this));
@@ -131,9 +131,9 @@ throw (pbError)
 		addStatement (statement -> copy (this));
 }
 
+///  throws pbError
 void
 pbExecutionContext::fromStream (std::istream & istream)
-throw (pbError)
 {
 	Parser (this, istream) .parseIntoContext ();
 }

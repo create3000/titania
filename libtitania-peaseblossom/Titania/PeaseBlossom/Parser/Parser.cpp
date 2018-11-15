@@ -77,9 +77,9 @@ Parser::Parser (pbExecutionContext* const executionContext, std::istream & istre
 	             switchLevel (0)
 { }
 
+///  throws pbError
 void
 Parser::parseIntoContext ()
-throw (pbError)
 {
 	//__LOG__ << (char) istream .peek () << std::endl;
 

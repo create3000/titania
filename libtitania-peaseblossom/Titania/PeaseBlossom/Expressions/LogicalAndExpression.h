@@ -84,10 +84,10 @@ public:
 	///  @name Operations
 
 	///  Converts its argument to a value of type Boolean.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		const auto lval = lhs -> getValue ();
 

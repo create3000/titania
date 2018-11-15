@@ -93,10 +93,10 @@ public:
 	///  @name Operations
 
 	///  Converts its input argument to either Primitive or Object type.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		std::vector <var> arguments;
 

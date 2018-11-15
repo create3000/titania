@@ -73,18 +73,16 @@ public:
 	///  @name Array access
 
 	///  Sets the value of the property for @a identifier.
+	///  throws pbError, std::out_of_range
 	virtual
 	void
-	put (const Identifier & identifier, const var & value, const bool throw_ = false)
-	throw (pbError,
-	       std::out_of_range) final override;
+	put (const Identifier & identifier, const var & value, const bool throw_ = false) final override;
 
 	///  Returns the value of the property for @a identifier.
+	///  throws pbError, std::out_of_range
 	virtual
 	var
-	get (const Identifier & identifier) const
-	throw (pbError,
-	       std::out_of_range) final override;
+	get (const Identifier & identifier) const final override;
 
 	///  @name Member access
 

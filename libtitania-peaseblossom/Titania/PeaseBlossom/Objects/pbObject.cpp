@@ -166,9 +166,9 @@ noexcept (true)
 	return constructor -> getTypeName ();
 }
 
+///  throws std::invalid_argument
 void
 pbObject::setProto (pbObject* const value)
-throw (std::invalid_argument)
 {
 	static const Identifier __proto__ ("__proto__");
 
@@ -323,11 +323,9 @@ noexcept (true)
 	return false;
 }
 
+///  throws pbError, std::out_of_range, std::invalid_argument
 var
 pbObject::call (const Identifier & identifier, const std::vector <var> & arguments) const
-throw (pbError,
-       std::out_of_range,
-       std::invalid_argument)
 {
 	const auto property = get (identifier);
 
@@ -342,10 +340,9 @@ throw (pbError,
 	throw std::invalid_argument ("pbObject::apply");
 }
 
+///  throws pbError, std::out_of_range
 void
 pbObject::put (const Identifier & identifier, const var & value, const AttributeType attributes, const bool throw_)
-throw (pbError,
-       std::out_of_range)
 {
 	try
 	{
@@ -395,10 +392,9 @@ throw (pbError,
 	pbObject::addOwnProperty (identifier, value, attributes | (WRITABLE | CONFIGURABLE | ENUMERABLE), nullptr, nullptr, true);
 }
 
+///  throws pbError, std::out_of_range
 var
 pbObject::get (const Identifier & identifier) const
-throw (pbError,
-       std::out_of_range)
 {
 	if (callbacks -> getter)
 	{
@@ -421,9 +417,9 @@ throw (pbError,
 	return undefined;
 }
 
+///  throws std::out_of_range
 const PropertyDescriptorPtr &
 pbObject::getProperty (const Identifier & identifier) const
-throw (std::out_of_range)
 {
 	auto object = const_cast <pbObject*> (this);
 
@@ -449,13 +445,14 @@ throw (std::out_of_range)
 	throw std::out_of_range ("pbObject::getProperty");
 }
 
+///  throws pbError
 bool
 pbObject::resolve (const Identifier & identifier)
-throw (pbError)
 {
 	return callbacks -> resolve and callbacks -> resolve (this, identifier);
 }
 
+///  throws TypeError,  std::invalid_argument
 void
 pbObject::addOwnProperty (const Identifier & identifier,
                           const var & value,
@@ -463,12 +460,11 @@ pbObject::addOwnProperty (const Identifier & identifier,
                           const ptr <pbFunction> & getter,
                           const ptr <pbFunction> & setter,
                           const bool throw_)
-throw (TypeError,
-       std::invalid_argument)
 {
 	addOwnProperty (identifier, var (value), attributes, ptr <pbFunction> (getter), ptr <pbFunction> (setter), throw_);
 }
 
+///  throws TypeError, std::invalid_argument
 void
 pbObject::addOwnProperty (const Identifier & identifier,
                           var && value,
@@ -476,8 +472,6 @@ pbObject::addOwnProperty (const Identifier & identifier,
                           ptr <pbFunction> && getter,
                           ptr <pbFunction> && setter,
                           const bool throw_)
-throw (TypeError,
-       std::invalid_argument)
 {
 	if (not isExtensible ())
 	{
@@ -501,6 +495,7 @@ throw (TypeError,
 	throw std::invalid_argument ("Couldn't add property.");
 }
 
+///  throws TypeError
 void
 pbObject::defineOwnProperty (const Identifier & identifier,
                              const var & value,
@@ -508,7 +503,6 @@ pbObject::defineOwnProperty (const Identifier & identifier,
                              const ptr <pbFunction> & getter,
                              const ptr <pbFunction> & setter,
                              const bool throw_)
-throw (TypeError)
 {
 	const auto iter = properties .find (identifier .getId ());
 
@@ -543,10 +537,9 @@ throw (TypeError)
 	}
 }
 
+///  throws TypeError, std::out_of_range
 bool
 pbObject::deleteOwnProperty (const Identifier & identifier, const bool throw_)
-throw (TypeError,
-       std::out_of_range)
 {
 	const auto iter = properties .find (identifier .getId ());
 
@@ -569,9 +562,9 @@ throw (TypeError,
 	throw std::out_of_range ("pbObject::deleteOwnProperty");
 }
 
+///  throws pbError
 var
 pbObject::getDefaultValue (const ValueType preferedType) const
-throw (pbError)
 {
 	// All native ECMAScript objects except Date objects handle the absence of a hint as if the hint Number were given;
 	// Date objects handle the absence of a hint as if the hint String were given. Host objects may handle the absence of

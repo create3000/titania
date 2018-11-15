@@ -88,10 +88,10 @@ public:
 
 	///  @name Operations
 
+	///  throws pbError
 	virtual
 	void
-	putValue (const var & value) const
-	throw (pbError) final override
+	putValue (const var & value) const final override
 	{
 		const auto base = expression -> getValue ();
 
@@ -125,10 +125,10 @@ public:
 	}
 
 	///  Converts its input argument to either Primitive or Object type.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		const auto base = expression -> getValue ();
 
@@ -170,10 +170,10 @@ public:
 		return undefined;
 	}
 
+	///  throws pbError
 	virtual
 	var
-	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const
-	throw (pbError) final override
+	call (const ptr <pbExecutionContext> & ec, const std::vector <var> & arguments) const final override
 	{
 		const auto base = expression -> getValue ();
 
@@ -221,10 +221,10 @@ public:
 		throw TypeError ("'" + base .toString () + "." + identifier .getString () + "' is not a function");
 	}
 
+	///  throws pbError
 	virtual
 	bool
-	deleteProperty () const
-	throw (pbError) final override
+	deleteProperty () const final override
 	{
 		const auto base = expression -> getValue ();
 

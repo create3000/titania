@@ -228,9 +228,9 @@ var::operator = (pbObject* const object)
 	return *this;
 }
 
+///  throws pbError
 var
 var::toPrimitive (const ValueType preferedType) const
-throw (pbError)
 {
 	switch (type)
 	{
@@ -361,9 +361,9 @@ var::toNumber () const
 	return 0;
 }
 
+///  throws TypeError
 ptr <pbObject>
 var::toObject (const ptr <pbExecutionContext> & ec) const
-throw (TypeError)
 {
 	switch (type)
 	{

@@ -331,9 +331,9 @@ public:
 	///  @name Conversion operations
 
 	///  Converts its argument to a value of type Boolean.
+	///  throws pbError
 	var
-	toPrimitive (const ValueType = UNDEFINED) const
-	throw (pbError);
+	toPrimitive (const ValueType = UNDEFINED) const;
 
 	///  Converts its argument to a value of type Boolean.
 	bool
@@ -361,9 +361,9 @@ public:
 	toNumber () const;
 
 	///  Converts its argument to a value of type pbObject.
+	///  throws TypeError
 	ptr <pbObject>
-	toObject (const ptr <pbExecutionContext> &) const
-	throw (TypeError);
+	toObject (const ptr <pbExecutionContext> &) const;
 
 	///  @name Member access
 

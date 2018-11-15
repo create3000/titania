@@ -100,10 +100,10 @@ public:
 	/// @name Execution
 
 	///  Executes this function.
+	///  throws pbError
 	virtual
 	var
-	call (const var & object, const std::vector <var> & arguments = { })
-	throw (pbError) final override;
+	call (const var & object, const std::vector <var> & arguments = { }) final override;
 
 	///  @name Input/Output
 
@@ -133,10 +133,10 @@ protected:
 	///  @name Operations
 
 	///  Constructs new object of this class.
+	///  throws pbError
 	virtual
 	var
-	construct (const var & object, const std::vector <var> & arguments = { })
-	throw (pbError) final override;
+	construct (const var & object, const std::vector <var> & arguments = { }) final override;
 
 
 private:

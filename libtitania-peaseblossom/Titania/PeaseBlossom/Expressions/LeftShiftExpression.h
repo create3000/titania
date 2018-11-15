@@ -84,10 +84,10 @@ public:
 	///  @name Operations
 
 	///  Converts its argument to an integral signed value of 32 bit.
+	///  throws pbError
 	virtual
 	CompletionType
-	getValue () const
-	throw (pbError) final override
+	getValue () const final override
 	{
 		const auto x = lhs -> getValue () .toInt32 ();
 		const auto y = rhs -> getValue () .toUInt32 () & 0x1f;

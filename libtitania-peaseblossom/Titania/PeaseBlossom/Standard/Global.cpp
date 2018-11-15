@@ -79,9 +79,9 @@ GlobalObject::GlobalObject (pbExecutionContext* const ec, const std::function <b
 	addOwnProperty ("parseFloat", new NativeFunction (ec, "parseFloat", parseFloat, 1), WRITABLE | CONFIGURABLE);
 }
 
+///  throws pbError
 bool
 GlobalObject::resolve (const Identifier & identifier)
-throw (pbError)
 {
 	if (resolveCallback (identifier))
 		return true;

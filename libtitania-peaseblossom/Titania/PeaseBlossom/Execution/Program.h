@@ -92,17 +92,17 @@ public:
 	noexcept (true) final override
 	{ return standardFunction; }
 
+	///  throws std::out_of_range
 	virtual
 	const ptr <pbFunction> &
-	getStandardClass (const StandardClassType type) const
-	throw (std::out_of_range);
+	getStandardClass (const StandardClassType type) const;
 
 	/// @name Execution
 
+	///  throws pbError
 	virtual
 	var
-	run ()
-	throw (pbError) final override;
+	run () final override;
 
 	///  @name Input/Output
 

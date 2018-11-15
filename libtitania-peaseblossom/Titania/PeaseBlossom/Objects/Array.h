@@ -74,13 +74,13 @@ public:
 	///  @name Property access
 
 	///  Sets the value of the property for @a identifier.
+	///  throws pbError, std::out_of_range
 	virtual
 	void
-	put (const Identifier & identifier, const var & value, const bool throw_ = false)
-	throw (pbError,
-	       std::out_of_range) final override;
+	put (const Identifier & identifier, const var & value, const bool throw_ = false) final override;
 
 	///  Adds the named property described by the given descriptor for this object.
+	///  throws TypeError, std::invalid_argument
 	virtual
 	void
 	addOwnProperty (const Identifier & identifier,
@@ -88,12 +88,11 @@ public:
 	                const AttributeType attributes = DEFAULT,
 	                ptr <pbFunction> && getter = nullptr,
 	                ptr <pbFunction> && setter = nullptr,
-	                const bool throw_ = false)
-	throw (TypeError,
-	       std::invalid_argument) final override
+	                const bool throw_ = false) final override
 	{ pbObject::addOwnProperty (identifier, std::move (value), identifier .toUInt32 () | attributes, std::move (getter), std::move (setter), throw_); }
 
 	///  Updates the named property described by the given descriptor for this object.
+	///  throws TypeError
 	virtual
 	void
 	defineOwnProperty (const Identifier & identifier,
@@ -101,8 +100,7 @@ public:
 	                   const AttributeType attributes = DEFAULT,
 	                   const ptr <pbFunction> & getter = nullptr,
 	                   const ptr <pbFunction> & setter = nullptr,
-	                   const bool throw_ = false)
-	throw (TypeError) final override
+	                   const bool throw_ = false) final override
 	{ pbObject::defineOwnProperty (identifier, value, identifier .toUInt32 () | attributes, getter, setter, throw_); }
 
 	///  @name Input/Output

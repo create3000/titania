@@ -116,9 +116,9 @@ Program::resolve (const Identifier & identifier)
 	return true;
 }
 
+///  throws std::out_of_range
 const ptr <pbFunction> &
 Program::getStandardClass (const StandardClassType type) const
-throw (std::out_of_range)
 {
 	using Initialize = std::function <ptr <NativeFunction> (pbExecutionContext* const)>;
 
@@ -136,9 +136,9 @@ throw (std::out_of_range)
 	return standardClass = functions .at (type) (const_cast <Program*> (this));
 }
 
+///  throws pbError
 var
 Program::run ()
-throw (pbError)
 {
 	for (const auto & function : getFunctionDeclarations ())
 		getGlobalObject () -> defineOwnProperty (function .second -> getName (), function .second, WRITABLE | CONFIGURABLE);
