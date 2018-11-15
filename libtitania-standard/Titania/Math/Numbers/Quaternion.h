@@ -153,13 +153,6 @@ public:
 		m_array { x, y, z, w }
 	{ }
 
-	///  Component constructor. Set values to @a v.
-	explicit
-	constexpr
-	quaternion (const Type & v) :
-		m_array { v, v, v, v }
-	{ }
-
 	///  Construct quaternion from vector @a imag and @a w.
 	template <class Up>
 	constexpr

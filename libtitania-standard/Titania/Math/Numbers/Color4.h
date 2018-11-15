@@ -148,16 +148,6 @@ public:
 		          clamp (a, Type (), Type (1)) }
 	{ }
 
-	///  Components constructor. Set values to @a v.
-	explicit
-	constexpr
-	color4 (const Type & v) :
-		m_array { clamp (v, Type (), Type (1)),
-		          clamp (v, Type (), Type (1)),
-		          clamp (v, Type (), Type (1)),
-		          clamp (v, Type (), Type (1)) }
-	{ }
-
 	///  @name Assignment operator
 
 	///  Assign @a other to this color.

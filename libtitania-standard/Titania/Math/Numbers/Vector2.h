@@ -138,13 +138,6 @@ public:
 		m_array { x, y }
 	{ }
 
-	///  Components constructor. Set values to @a v.
-	explicit
-	constexpr
-	vector2 (const Type & v) :
-		m_array { v, v }
-	{ }
-
 	///  @name Assignment operator
 
 	///  Assign @a other to this vector.
