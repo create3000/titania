@@ -100,8 +100,6 @@ ImageTexture3D::initialize ()
 
 void
 ImageTexture3D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (future)
 		future -> setExecutionContext (executionContext);

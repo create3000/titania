@@ -131,8 +131,6 @@ Sphere::initialize ()
 
 void
 Sphere::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DGeometryNode::setExecutionContext (executionContext);
 
@@ -187,8 +185,6 @@ Sphere::build ()
 
 SFNode
 Sphere::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto geometry = optionsNode -> toPrimitive (getExecutionContext ());
 

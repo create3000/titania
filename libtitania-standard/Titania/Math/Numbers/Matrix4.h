@@ -644,9 +644,9 @@ public:
 	negate ();
 
 	///  Inverses this matrix in place.
+	///  throws std::domain_error
 	void
-	inverse ()
-	throw (std::domain_error);
+	inverse ();
 
 	///  Add @a matrix to this matrix.
 	matrix4 &
@@ -1037,10 +1037,10 @@ matrix4 <Type>::negate ()
 	                        -m_array [12], -m_array [13], -m_array [14], -m_array [15]);
 }
 
+///  throws std::domain_error
 template <class Type>
 void
 matrix4 <Type>::inverse ()
-throw (std::domain_error)
 {
 	const Type
 		m00 = m_array [ 0],
@@ -1513,11 +1513,11 @@ negate (const matrix4 <Type> & matrix)
 }
 
 ///  Returns the inverse of the @a matrix.
+///  throws std::domain_error
 template <class Type>
 inline
 matrix4 <Type>
 operator ~ (const matrix4 <Type> & matrix)
-throw (std::domain_error)
 {
 	matrix4 <Type> result (matrix);
 	result .inverse ();
@@ -1525,11 +1525,11 @@ throw (std::domain_error)
 }
 
 ///  Returns the inverse of the @a matrix.
+///  throws std::domain_error
 template <class Type>
 inline
 matrix4 <Type>
 inverse (const matrix4 <Type> & matrix)
-throw (std::domain_error)
 {
 	matrix4 <Type> result (matrix);
 	result .inverse ();

@@ -72,11 +72,10 @@ public:
 
 	///  @name Construction
 
+   ///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	void
 	copy (X3DExecutionContext* const, X3DFieldDefinition* field, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
 	{ static_cast <X3DField*> (field) -> set (getValue ()); }
 
 	///  @name Assignment operators
@@ -104,10 +103,10 @@ public:
 	getType () const override
 	{ return type; }
 
+	///  throws Error <DISPOSED>
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) override
+	getTypeName () const override
 	{ return typeName; }
 
 	///  @name Element access

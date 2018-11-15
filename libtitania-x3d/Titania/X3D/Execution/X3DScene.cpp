@@ -119,10 +119,9 @@ X3DScene::initialize ()
 	X3DExecutionContext::initialize ();
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::setWorldURL (const basic::uri & value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	worldURL = value;
 
@@ -169,10 +168,9 @@ X3DScene::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	}
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::setSpecificationVersion (const std::string & value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	static const std::map <std::string, SpecificationVersionType> specificationVersions = {
 		std::make_pair ("2.0", VRML_V2_0),
@@ -194,10 +192,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 // Profile/Component handling
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::updateComponent (const ComponentInfoPtr & component)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -218,11 +215,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 // Unit handling
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DScene::updateUnit (const std::string & category, const std::string & name, const long double conversionFactor)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -251,9 +246,9 @@ X3DScene::getUnit (const UnitCategory unit) const
 	}
 }
 
+///  throws Error <X3D::DISPOSED>
 long double
 X3DScene::fromUnit (const UnitCategory unit, const long double value) const
-throw (Error <DISPOSED>)
 {
 	switch (unit)
 	{
@@ -283,9 +278,9 @@ throw (Error <DISPOSED>)
 	return value;
 }
 
+///  throws Error <X3D::DISPOSED>
 long double
 X3DScene::toUnit (const UnitCategory unit, const long double value) const
-throw (Error <DISPOSED>)
 {
 	switch (unit)
 	{
@@ -317,10 +312,9 @@ throw (Error <DISPOSED>)
 
 // MetaData handling
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::addStandardMetaData ()
-throw (Error <INVALID_OPERATION_TIMING>,
-	    Error <DISPOSED>)
 {
 	// VRML files are saved as is, but we do not add extra stuff!
 
@@ -341,10 +335,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		setMetaData ("created", X3D::SFTime (SFTime::now ()) .toUTCString ());
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::addMetaData (const std::string & key, const std::string & value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (key .empty ())
 		return;
@@ -354,20 +347,18 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	metaDataOutput = getCurrentTime ();
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::removeMetaData (const std::string & key)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	metadatas .erase (key);
 
 	metaDataOutput = getCurrentTime ();
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::setMetaData (const std::string & key, const std::string & value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (key .empty ())
 		return;
@@ -378,11 +369,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	metaDataOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const std::string &
 X3DScene::getMetaData (const std::string & key) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	auto range = metadatas .equal_range (key);
 
@@ -392,23 +381,18 @@ throw (Error <INVALID_NAME>,
 	throw Error <INVALID_NAME> ("Unkown meta key '" + key + "'.");
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 const MetaDataIndex &
 X3DScene::getMetaDatas () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	return metadatas;
 }
 
 // Exported nodes handling
 
+///  throws Error <NODE_IN_USE>, Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ExportedNodePtr &
 X3DScene::addExportedNode (const std::string & exportedName, const SFNode & node)
-throw (Error <NODE_IN_USE>,
-       Error <INVALID_NAME>,
-       Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (exportedNodes .count (exportedName))
 		throw Error <NODE_IN_USE> ("Couldn't add exported node: exported name '" + exportedName + "' already in use.");
@@ -416,12 +400,9 @@ throw (Error <NODE_IN_USE>,
 	return updateExportedNode (exportedName, node);
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ExportedNodePtr &
 X3DScene::updateExportedNode (const std::string & exportedName, const SFNode & node)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (exportedName .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update exported node: exported node name is empty.");
@@ -452,21 +433,18 @@ throw (Error <INVALID_NAME>,
 	return exportedNode;
 }
 
+///  throws Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 void
 X3DScene::removeExportedNode (const std::string & exportedName)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	exportedNodes .erase (exportedName);
 
 	exportedNodesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 SFNode
 X3DScene::getExportedNode (const std::string & exportedName) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = exportedNodes .find (exportedName);
 
@@ -507,13 +485,13 @@ X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string ex
 
 // Import handling
 
-///	 importScene
+///  importScene
 ///
-///	 throws:
-///      Error <INVALID_NAME>,
-///	   Error <NOT_SUPPORTED>,
-///	   Error <INVALID_OPERATION_TIMING>,
-///	   Error <DISPOSED>
+///  throws:
+///    Error <INVALID_NAME>,
+///	 Error <NOT_SUPPORTED>,
+///	 Error <INVALID_OPERATION_TIMING>,
+///	 Error <DISPOSED>
 MFNode
 X3DScene::importScene (X3DExecutionContext* const executionContext)
 {
@@ -580,24 +558,18 @@ X3DScene::importExportedNodes (const X3DScene* const scene)
 
 // Input/Output
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DScene::fromStream (const basic::uri & worldURL, std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	setWorldURL (worldURL);
 
 	fromStream (istream);
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DScene::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	Parser (istream, this) .parseIntoScene ();
 }

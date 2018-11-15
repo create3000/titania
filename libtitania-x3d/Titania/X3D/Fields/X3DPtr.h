@@ -169,11 +169,10 @@ public:
 	{ return new X3DPtr (); }
 
 	///  Constructs new X3DPtr.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DPtr*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType type) const final override
 	{
 		if (type == FLAT_COPY)
 			return new X3DPtr (getValue ());
@@ -185,11 +184,10 @@ public:
 	}
 
 	///  Constructs new X3DPtr.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DPtr*
-	copy (X3DExecutionContext* const executionContext, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const final override
 	{
 		const auto field = new X3DPtr ();
 
@@ -199,11 +197,10 @@ public:
 	}
 
 	///  Constructs new X3DPtr.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	void
-	copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType type) const final override
 	{
 		const auto field = static_cast <X3DPtr*> (fieldDefinition);
 
@@ -309,9 +306,9 @@ public:
 
 	///  @name Observers
 
+	///  throws Error <DISPOSED>
 	InternalType*
 	operator -> () const
-	throw (Error <DISPOSED>)
 	{
 	   const auto value = getValue ();
 
@@ -324,9 +321,9 @@ public:
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
+	///  throws Error <DISPOSED>
 	InternalType &
 	operator * () const
-	throw (Error <DISPOSED>)
 	{
 	   const auto value = getValue ();
 
@@ -344,8 +341,7 @@ public:
 	///  Returns the type name of the object.
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	///  Returns the type of the object.
@@ -412,11 +408,7 @@ public:
 	///  Not supported.
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	fromStream (std::istream & istream) final override
 	{ }
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.

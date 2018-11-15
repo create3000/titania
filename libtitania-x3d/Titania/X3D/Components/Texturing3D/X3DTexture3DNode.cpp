@@ -100,8 +100,6 @@ X3DTexture3DNode::initialize ()
 
 void
 X3DTexture3DNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DTextureNode::setExecutionContext (executionContext);
 

@@ -210,6 +210,7 @@ public:
 
 	///  @name Route handling
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	static
 	void
 	addRoute (const X3DExecutionContextPtr & executionContext,
@@ -217,11 +218,7 @@ public:
 	          const std::string & sourceField,
 	          const SFNode & destinationNode,
 	          const std::string & destinationField,
-	          const UndoStepPtr & undoStep)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	          const UndoStepPtr & undoStep);
 
 	static
 	void
@@ -433,10 +430,10 @@ public:
 	MFNode
 	getParentNodes  (const SFNode & child);
 
+	///  throws Error <INVALID_NODE>
 	static
 	X3DFieldDefinition*
-	getContainerField (const SFNode & parent, const SFNode & child)
-	throw (Error <INVALID_NODE>);
+	getContainerField (const SFNode & parent, const SFNode & child);
 
 	static
 	void

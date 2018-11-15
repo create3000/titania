@@ -235,8 +235,6 @@ QuadSphereOptions::build ()
 
 SFNode
 QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto xDimension_1    = xDimension ();
 	const auto xDimension_2    = xDimension () - 1;

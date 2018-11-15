@@ -182,11 +182,11 @@ X3DBaseNode::initialize ()
  *
  *      auto clone = node -> copy (executionContext, FLAT_COPY);
  *      executionContext -> realize ();
+ *
+ *  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
  */
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	switch (type)
 	{
@@ -220,11 +220,10 @@ throw (Error <INVALID_NAME>,
 /***
  *  Creates a copy of this node and all of its child nodes into @a executionContext. If a named node of one of this
  *  node children already exists in @a executionContext then only a clone is created.
+ *  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
  */
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	static const auto needsName = [ ] (const X3DBaseNode* const baseNode)
 	{
@@ -334,11 +333,10 @@ throw (Error <INVALID_NAME>,
 
 /***
  *  Creates a flat copy of this node into @a executionContext.
+ *  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
  */
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	const SFNode copy (create (executionContext));
 
@@ -358,11 +356,10 @@ throw (Error <INVALID_NAME>,
 /***
  *  Assigns all fields from @a node to this node.  @a node must be of the same type and must have exacly the same field
  *  definitions.  If @a compare is true the fields are only assigned if they are not equal to prevent event generation.
+ *  throws Error <INVALID_NODE>, Error <INVALID_FIELD>
  */
 void
 X3DBaseNode::assign (const X3DBaseNode* const node, const bool compare)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_FIELD>)
 {
 	for (const auto lhs : fieldDefinitions)
 	{
@@ -425,10 +422,10 @@ X3DBaseNode::setName (const std::string & value)
 
 /***
  *  Returns the current browser time for the current frame.
+ *  throws Error <DISPOSED>
  */
 time_type
 X3DBaseNode::getCurrentTime () const
-throw (Error <DISPOSED>)
 {
 	return getBrowser () -> getClock () -> cycle ();
 }
@@ -438,8 +435,6 @@ throw (Error <DISPOSED>)
  */
 void
 X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (value not_eq executionContext)
 	{
@@ -457,11 +452,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 /***
  *  Returns the master execution context for this node.  This is normaly the initial scene the node belongs to.
+ *  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 X3DScene*
 X3DBaseNode::getMasterScene () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DScene* scene = getExecutionContext () -> getScene ();
 
@@ -473,11 +467,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 /***
  *  Returns the root execution context for this node.  This is normaly the scene the node belongs to.
+ *  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 X3DScene*
 X3DBaseNode::getScene () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DExecutionContext* executionContext = getExecutionContext ();
 
@@ -489,10 +482,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 /***
  *  Returns true if the node is one of the types in @a types.
+ *  throws Error <DISPOSED>
  */
 bool
 X3DBaseNode::isType (const NodeTypeSet & types) const
-throw (Error <DISPOSED>)
 {
 	for (const auto & type : getType ())
 	{
@@ -505,10 +498,10 @@ throw (Error <DISPOSED>)
 
 /***
  *  Returns either a node declaration or the prototype of this node.
+ *  throws Error <DISPOSED>
  */
 const X3DBaseNode*
 X3DBaseNode::getInterfaceDeclaration () const
-throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -522,10 +515,10 @@ throw (Error <DISPOSED>)
 
 /***
  *  Returns true if field is in the set of fields either pre or user defined.
+ *  throws Error <DISPOSED>
  */
 bool
 X3DBaseNode::hasField (const std::string & name) const
-throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -540,12 +533,10 @@ throw (Error <DISPOSED>)
 
 /***
  *  Adds @a field to the set of pre defined fields. @a accessType and @a name will be assigned to @a field.
+ *  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
  */
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
 {
 	const auto iter = fields .find (name);
 
@@ -588,11 +579,10 @@ X3DBaseNode::set_sceneGraph ()
 
 /***
  *  Adds a @a alias for a field named @a name.
+ *  throws Error <INVALID_NAME>, Error <DISPOSED>
  */
 void
 X3DBaseNode::addField (const SpecificationVersionType version, const std::string & alias, const std::string & name)
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	auto & fieldAlias = fieldAliases [version];
 
@@ -602,10 +592,10 @@ throw (Error <INVALID_NAME>,
 
 /***
  *  Removes @a field from the set of fields.
+ *  throws Error <DISPOSED>
  */
 void
 X3DBaseNode::removeField (const std::string & name)
-throw (Error <DISPOSED>)
 {
 	removeField (fields .find (name), false, true);
 }
@@ -652,12 +642,10 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
  *  The getField service returns a field identifier so that operations can be performed on the node properties.  If the
  *  field requested is an inputOutput field, either the field name or the set_ and _changed modifiers may be used to
  *  access the appropriate form of the node as required..
+ *  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 X3DFieldDefinition*
 X3DBaseNode::getField (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto field = fields .find (getFieldName (name));
 
@@ -724,12 +712,10 @@ X3DBaseNode::getFieldName (const std::string & name, const SpecificationVersionT
 
 /***
  *  Replaces the set of user defined fields of this node with @a userDefinedFields.
+ *  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
  */
 void
 X3DBaseNode::setUserDefinedFields (const X3D::FieldDefinitionArray & userDefinedFields)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
 {
 	// Unfortunately this has to be done field by field as long as derived classes do not override this function.
 
@@ -748,12 +734,10 @@ throw (Error <INVALID_NAME>,
 
 /***
  *  Adds @a field to the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+ *  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
  */
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
 {
 	addField (accessType, name, *field);
 
@@ -765,12 +749,10 @@ throw (Error <INVALID_NAME>,
 
 /***
  *  Updates @a field in the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+ *  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
  */
 void
 X3DBaseNode::updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
 {
 	auto userDefinedFields = getUserDefinedFields ();
 	auto iter              = std::find (userDefinedFields .cbegin (), userDefinedFields .cend (), field);
@@ -791,10 +773,10 @@ throw (Error <INVALID_NAME>,
 /***
  *  Removes @a field from the set of user defined fields.  You are self responsible to remove all routes of this field
  *  from and to this node before you remove the field.
+ *  throws Error <DISPOSED>
  */
 void
 X3DBaseNode::removeUserDefinedField (const std::string & name)
-throw (Error <DISPOSED>)
 {
 	removeField (fields .find (name), true, true);
 
@@ -803,11 +785,10 @@ throw (Error <DISPOSED>)
 
 /***
  *  Returns all predefined fields.
+ *  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 FieldDefinitionArray
 X3DBaseNode::getPreDefinedFields () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	FieldDefinitionArray predefinedFields;
 
@@ -822,11 +803,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 			predefinedFields .emplace_back (field);
 		}
-		catch (const X3D::Error <INVALID_NAME> &)
+		catch (const Error <INVALID_NAME> &)
 		{
 			// Field is not defined in ExternProto but in Proto.
 		}
-		catch (const X3D::Error <DISPOSED> &)
+		catch (const Error <DISPOSED> &)
 		{
 			// Field is not defined in ExternProto but in Proto.
 
@@ -839,11 +820,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 /***
  *  Returns all user defined fields.
+ *  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 FieldDefinitionArray
 X3DBaseNode::getUserDefinedFields () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	return FieldDefinitionArray (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());
 }
@@ -890,12 +870,10 @@ X3DBaseNode::getChangedFields () const
 
 /***
  *  Returns true if @a field has the default value, @a field must be a field of this node.
+ *  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 bool
 X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -1016,10 +994,10 @@ X3DBaseNode::removeTool (X3DBaseNode* const node)
 
 /***
  *  Enables this node if possible, ie. the execution context of this node must be enabled too.
+ *  throws Error <DISPOSED>
  */
 void
 X3DBaseNode::beginUpdate ()
-throw (Error <DISPOSED>)
 {
 	if (not live)
 		live = true;
@@ -1027,10 +1005,10 @@ throw (Error <DISPOSED>)
 
 /***
  *  Definitely disables this node. No further event processing is done.
+ *  throws Error <DISPOSED>
  */
 void
 X3DBaseNode::endUpdate ()
-throw (Error <DISPOSED>)
 {
 	if (live)
 		live = false;
@@ -1058,10 +1036,6 @@ X3DBaseNode::hasRoutes () const
  */
 void
 X3DBaseNode::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	//	return istream >> value;
 }

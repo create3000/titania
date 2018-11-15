@@ -197,8 +197,6 @@ PolygonText::build ()
 
 SFNode
 PolygonText::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	// Triangulate lines.
 
@@ -302,8 +300,6 @@ FontStyle::initialize ()
 
 void
 FontStyle::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getFontStyleOptions () -> removeInterest (&FontStyle::set_font, this);

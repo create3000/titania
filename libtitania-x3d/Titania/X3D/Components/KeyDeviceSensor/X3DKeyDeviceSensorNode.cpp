@@ -74,8 +74,6 @@ X3DKeyDeviceSensorNode::initialize ()
 
 void
 X3DKeyDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 	{

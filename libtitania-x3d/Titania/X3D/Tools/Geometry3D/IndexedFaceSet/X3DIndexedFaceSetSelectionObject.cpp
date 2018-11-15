@@ -180,8 +180,6 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 
 void
 X3DIndexedFaceSetSelectionObject::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	selection -> setExecutionContext (executionContext);
 }

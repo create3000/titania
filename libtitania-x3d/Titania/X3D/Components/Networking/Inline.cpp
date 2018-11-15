@@ -122,8 +122,6 @@ Inline::initialize ()
 
 void
 Inline::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (&Inline::set_live, this);
 
@@ -157,12 +155,9 @@ Inline::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
+///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 SFNode
 Inline::getExportedNode (const std::string & exportedName) const
-throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (scene)
 		return scene -> getExportedNode (exportedName);
@@ -170,11 +165,9 @@ throw (Error <INVALID_NAME>,
 	throw Error <DISPOSED> ("Inline::getExportedNode: scene is disposed.");
 }
 
+///  throws Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ExportedNodeIndex &
 Inline::getExportedNodes () const
-throw (Error <NODE_NOT_AVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (scene)
 		return scene -> getExportedNodes ();

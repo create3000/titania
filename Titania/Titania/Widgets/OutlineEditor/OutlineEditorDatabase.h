@@ -72,20 +72,18 @@ public:
 	void
 	setItem (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment);
 
+	///  throws std::out_of_range, std::invalid_argument
 	std::tuple <std::string, double, double>
-	getItem (const std::string & worldURL) const
-	throw (std::out_of_range,
-	       std::invalid_argument);
+	getItem (const std::string & worldURL) const;
 
 
 private:
 
 	///  @name Member access
 
+	///  throws sstd::out_of_range, std::invalid_argument
 	const std::string &
-	getId (const std::string & worldURL) const
-	throw (std::out_of_range,
-	       std::invalid_argument);
+	getId (const std::string & worldURL) const;
 
 	///  @name Operations
 

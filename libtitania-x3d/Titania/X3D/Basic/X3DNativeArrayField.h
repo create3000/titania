@@ -155,19 +155,17 @@ public:
 	{ return new X3DNativeArrayField (); }
 
 	///  Construct new X3DNativeArrayField.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DNativeArrayField*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (const CopyType) const override
 	{ return new X3DNativeArrayField (*this); }
 
 	///  Construct new X3DNativeArrayField.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DNativeArrayField*
-	copy (X3DExecutionContext* const, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (X3DExecutionContext* const, const CopyType type) const override
 	{ return copy (type); }
 
 	///  @name Assignment operators
@@ -485,13 +483,10 @@ public:
 	///  @name Input/Output
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding.
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	fromStream (std::istream &) override;
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
@@ -760,10 +755,6 @@ X3DNativeArrayField <ValueType>::swap (X3DNativeArrayField & other)
 template <class ValueType>
 void
 X3DNativeArrayField <ValueType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (istream)
 	{

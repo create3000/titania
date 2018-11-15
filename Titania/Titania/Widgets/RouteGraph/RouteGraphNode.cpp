@@ -116,9 +116,9 @@ RouteGraphNode::setConnectorsSensitive (const bool value)
 		pair .second -> set_sensitive (connectorsSensitive);
 }
 
+///  throws std::out_of_range
 X3D::Vector2i
 RouteGraphNode::getInputPosition (X3D::X3DFieldDefinition* const field) const
-throw (std::out_of_range)
 {
 	const auto button = headerConnectors ? headerInput : inputs .at (field);
 	const auto width  = button -> get_width ();
@@ -131,9 +131,9 @@ throw (std::out_of_range)
 	return X3D::Vector2i (x, y);
 }
 
+///  throws std::out_of_range
 X3D::Vector2i
 RouteGraphNode::getOutputPosition (X3D::X3DFieldDefinition* const field) const
-throw (std::out_of_range)
 {
 	const auto button = headerConnectors ? headerOutput : outputs .at (field);
 	const auto width  = button -> get_width ();

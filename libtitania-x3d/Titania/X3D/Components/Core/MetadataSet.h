@@ -75,20 +75,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -104,25 +101,22 @@ public:
 	///  @name Member access
 
 	///  Return the metadata with where name is @a name if it exists otherwise create it.
+	///  throws Error <INVALID_NAME>, Error <DISPOSED>
 	template <class Type>
 	X3DPtr <Type>
 	createValue (const std::string & name)
-	throw (Error <INVALID_NAME>,
-	       Error <DISPOSED>)
 	{ return X3DPtr <Type> (getValue <Type> (name, false)); }
 
 	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
+	///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <DISPOSED>
 	template <class Type>
 	X3DPtr <Type>
 	getValue (const std::string & name)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <DISPOSED>)
 	{ return X3DPtr <Type> (getValue <Type> (name, true)); }
 
+	///  throws Error <DISPOSED>
 	void
-	removeValue (const std::string & name)
-	throw (Error <DISPOSED>);
+	removeValue (const std::string & name);
 
 	///  @name Destruction
 
@@ -138,12 +132,10 @@ protected:
 	friend class X3DNode;
 
 	///  Return the metadata with where name is @a name.
+	///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <DISPOSED>
 	template <class Type>
 	Type*
-	getValue (const std::string & name, const bool throw_)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <DISPOSED>);
+	getValue (const std::string & name, const bool throw_);
 
 
 private:
@@ -157,17 +149,16 @@ private:
 	void
 	addValue (const SFNode &);
 
+	///  throws Error <INVALID_NAME>, Error <DISPOSED>
 	X3DMetadataObject*
-	getObject (const std::string & name) const
-	throw (Error <INVALID_NAME>,
-	       Error <DISPOSED>);
+	getObject (const std::string & name) const;
 
 	void
 	setValue (const std::string & name, X3DMetadataObject* const metadataObject);
 
+	///  throws Error <DISPOSED>
 	void
-	removeValues ()
-	throw (Error <DISPOSED>);
+	removeValues ();
 
 	///  @name Event handlers
 
@@ -197,12 +188,10 @@ private:
 };
 
 ///  Return the field with @a name.
+///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <DISPOSED>
 template <class Type>
 Type*
 MetadataSet::getValue (const std::string & name, const bool throw_)
-throw (Error <INVALID_NODE>,
-	    Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	try
 	{

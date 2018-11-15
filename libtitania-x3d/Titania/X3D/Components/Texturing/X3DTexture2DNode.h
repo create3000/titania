@@ -66,9 +66,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Fields
 
@@ -140,11 +138,9 @@ public:
 	getHeight () const
 	{ return textureHeight; }
 
+	///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 	Magick::Image
-	getImage () const
-	throw (X3D::Error <X3D::INVALID_NODE>,
-	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>);
+	getImage () const;
 
 	///  @name Operations
 
@@ -211,11 +207,9 @@ private:
 	void
 	updateTextureProperties ();
 
+	///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 	std::vector <uint8_t>
-	getImageData () const
-	throw (X3D::Error <X3D::INVALID_NODE>,
-	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>);
+	getImageData () const;
 
 	///  @name Members
 

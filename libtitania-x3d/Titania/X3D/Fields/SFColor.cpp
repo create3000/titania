@@ -149,10 +149,6 @@ SFColor::lerp (const color3 <value_type> & dest, const value_type & t) const
 
 void
 SFColor::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	Color3f value;
 

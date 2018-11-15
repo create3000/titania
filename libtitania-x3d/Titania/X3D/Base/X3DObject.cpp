@@ -114,22 +114,16 @@ X3DObject::getUserData () const
 
 // String
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 bool
 X3DObject::fromString (const std::string & string)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	return fromLocaleString (string, std::locale::classic ());
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 bool
 X3DObject::fromLocaleString (const std::string & string, const std::locale & locale)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	std::istringstream istringstream (string);
 

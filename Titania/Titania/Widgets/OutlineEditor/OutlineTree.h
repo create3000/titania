@@ -128,9 +128,9 @@ public:
 		OutlineNode ()
 	{ }
 
+	///  throws std::out_of_range
 	std::vector <OutlineTreeData*>
 	get_parents (const Gtk::TreePath & path) const
-	throw (std::out_of_range)
 	{
 		std::vector <OutlineTreeData*> parents;
 
@@ -152,9 +152,9 @@ public:
 		return parents;
 	}
 
+	///  throws std::out_of_range
 	OutlineNode &
 	get_node (const Gtk::TreePath & path, bool create = false)
-	throw (std::out_of_range)
 	{
 		OutlineNode* node = this;
 
@@ -164,9 +164,9 @@ public:
 		return *node;
 	}
 
+	///  throws std::out_of_range
 	const OutlineNode &
 	get_node (const Gtk::TreePath & path) const
-	throw (std::out_of_range)
 	{
 		return const_cast <OutlineTree*> (this) -> get_node (path, false);
 	}
@@ -196,9 +196,9 @@ private:
 
 	using OutlineNode::find;
 
+	///  throws std::out_of_range
 	OutlineNode &
 	get_child (OutlineNode* parent, size_t index, bool create)
-	throw (std::out_of_range)
 	{
 		if (index < parent -> get_children () .size ())
 			return parent -> get_children () [index];

@@ -78,27 +78,22 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Fields
 

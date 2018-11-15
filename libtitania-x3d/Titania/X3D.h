@@ -72,22 +72,21 @@ Init (int argc, char** argv);
  * getBrowser
  */
 
+///  throws Error <BROWSER_UNAVAILABLE>
 const BrowserApplicationPtr &
-getBrowser ()
-throw (Error <BROWSER_UNAVAILABLE>);
+getBrowser ();
 
 /*
  * createBrowser
  */
 
+///  throws Error <BROWSER_UNAVAILABLE>
 BrowserPtr
-createBrowser (const MFString & url = { }, const MFString & parameter = { })
-throw (Error <BROWSER_UNAVAILABLE>);
+createBrowser (const MFString & url = { }, const MFString & parameter = { });
 
+///  throws Error <INVALID_NODE>, Error <BROWSER_UNAVAILABLE>
 BrowserPtr
-createBrowser (const BrowserPtr & sharedBrowser, const MFString & url = { }, const MFString & parameter = { })
-throw (Error <INVALID_NODE>,
-       Error <BROWSER_UNAVAILABLE>);
+createBrowser (const BrowserPtr & sharedBrowser, const MFString & url = { }, const MFString & parameter = { });
 
 } // X3D
 } // titania

@@ -110,8 +110,6 @@ IcosahedronOptions::build ()
 
 SFNode
 IcosahedronOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	icosahedron3 <double> sphere (order (), sphericalInterpolation ());
 

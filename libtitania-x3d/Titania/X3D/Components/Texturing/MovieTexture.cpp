@@ -123,8 +123,6 @@ MovieTexture::initialize ()
 
 void
 MovieTexture::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DTexture2DNode::setExecutionContext (executionContext);

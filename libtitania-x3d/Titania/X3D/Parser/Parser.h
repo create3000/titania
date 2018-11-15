@@ -100,8 +100,7 @@ public:
 
 	virtual
 	void
-	parseIntoScene ()
-	throw (Error <INVALID_X3D>) final override;
+	parseIntoScene () final override;
 
 	static
 	const AccessTypes &
@@ -128,12 +127,10 @@ private:
 	getline ();
 
 	std::string
-	rgetline ()
-	throw (std::out_of_range);
+	rgetline ();
 
 	void
-	exception (const std::string &)
-	throw (Error <INVALID_X3D>);
+	exception (const std::string &);
 
 	std::vector <std::string>
 	getComments ()

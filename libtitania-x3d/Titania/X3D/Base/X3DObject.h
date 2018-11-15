@@ -95,10 +95,10 @@ public:
 	getName () const;
 
 	///  Returns the type name of this object.
+	///  throws Error <DISPOSED>
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) = 0;
+	getTypeName () const = 0;
 
 	///  @name Comment handling
 
@@ -136,20 +136,14 @@ public:
 	///  @name String creation
 
 	///  Extracts the value for this object from @a string. The string must be in VRML Classic Encoding.
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	bool
-	fromString (const std::string & string)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	fromString (const std::string & string);
 
 	///  Extracts the value for this object from @a string with locale support.
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	bool
-	fromLocaleString (const std::string & string, const std::locale & locale = std::locale ())
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	fromLocaleString (const std::string & string, const std::locale & locale = std::locale ());
 
 	///  Generates a string representation of this object in VRML Classic Encoding.
 	std::string
@@ -172,11 +166,7 @@ public:
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	fromStream (std::istream & istream) = 0;
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual

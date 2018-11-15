@@ -69,8 +69,8 @@ const ComponentType Context::component      = ComponentType::TITANIA;
 const std::string   Context::typeName       = "PeaseBlossomContext";
 const std::string   Context::containerField = "context";
 
-Context::Context (X3D::Script* const script, const std::string & ecmascript, const basic::uri & uri)
-throw (std::exception) :
+///  throws std::exception
+Context::Context (X3D::Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3D::X3DJavaScriptContext (script, ecmascript),
 	                 worldURL ({ uri }),
@@ -264,9 +264,9 @@ Context::resolve (pb::pbObject* const object, const pb::Identifier & identifier)
 	return true;
 }
 
+///  throws std::out_of_range
 const pb::ptr <pb::NativeFunction> &
 Context::getClass (const ObjectType type) const
-throw (std::out_of_range)
 {
 	using Initialize = std::function <pb::ptr <pb::NativeFunction> (Context* const, const pb::ptr <pb::Program> &)>;
 
@@ -327,9 +327,9 @@ throw (std::out_of_range)
 	return standardClass = functions .at (size_t (type)) (const_cast <Context*> (this), program);
 }
 
+///  throws std::invalid_argument
 void
 Context::addObject (X3DChildObject* const key, X3D::X3DFieldDefinition* const field, pb::pbObject* const object)
-throw (std::invalid_argument)
 {
 	assert (objects .emplace (key, object) .second);
 
@@ -406,8 +406,6 @@ Context::initialize ()
 
 void
 Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (future)
 		future -> setExecutionContext (executionContext);

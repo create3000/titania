@@ -243,7 +243,7 @@ X3DScene::getMetaData (JSContext* cx, uint32_t argc, jsval* vp)
 
 		return JS_NewStringValue (cx, scene -> getMetaData (key), &JS_RVAL (cx, vp));
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		return JS_NewStringValue (cx, "", &JS_RVAL (cx, vp));
 	}

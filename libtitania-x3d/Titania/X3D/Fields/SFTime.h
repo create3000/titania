@@ -91,18 +91,16 @@ public:
 	create () const final override
 	{ return new SFTime (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	SFTime*
 	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>)
 	{ return new SFTime (*this); }
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
@@ -194,11 +192,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	fromStream (std::istream & istream) final override;
 
 	virtual
 	void

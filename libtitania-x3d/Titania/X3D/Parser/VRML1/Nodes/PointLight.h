@@ -70,20 +70,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields

@@ -110,8 +110,6 @@ OctahedronOptions::build ()
 
 SFNode
 OctahedronOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	octahedron3 <double> sphere (order (), sphericalInterpolation ());
 

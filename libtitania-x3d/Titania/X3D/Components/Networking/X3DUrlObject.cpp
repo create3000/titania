@@ -75,8 +75,6 @@ X3DUrlObject::X3DUrlObject () :
 
 X3DUrlObject*
 X3DUrlObject::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext, type));
 
@@ -87,8 +85,6 @@ throw (Error <INVALID_NAME>,
 
 void
 X3DUrlObject::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	transform (url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 }

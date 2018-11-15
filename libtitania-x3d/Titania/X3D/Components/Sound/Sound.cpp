@@ -134,8 +134,6 @@ Sound::initialize ()
 
 void
 Sound::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> sensorEvents ()    .removeInterest (&Sound::update,   this);
 	getExecutionContext () -> isLive () .removeInterest (&Sound::set_live, this);

@@ -61,14 +61,11 @@ const ComponentType ImportedNode::component      = ComponentType::TITANIA;
 const std::string   ImportedNode::typeName       = "ImportedNode";
 const std::string   ImportedNode::containerField = "importedNode";
 
+///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
                             const X3DPtr <Inline> & inlineNode_,
                             const std::string & exportedName,
-                            const std::string & importedName)
-throw (Error <INVALID_NAME>,
-       Error <NODE_NOT_AVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>) :
+                            const std::string & importedName) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  inlineNode (inlineNode_),
 	exportedName (exportedName),
@@ -88,8 +85,6 @@ ImportedNode::create (X3DExecutionContext* const executionContext) const
 
 ImportedNode*
 ImportedNode::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	try
 	{
@@ -117,9 +112,9 @@ ImportedNode::initialize ()
 	set_inlineNode ();
 }
 
+///  throws Error <DISPOSED>
 X3DPtr <Inline>
 ImportedNode::getInlineNode () const
-throw (Error <DISPOSED>)
 {
 	if (inlineNode)
 		return X3DPtr <Inline> (inlineNode);
@@ -127,9 +122,9 @@ throw (Error <DISPOSED>)
 	throw Error <DISPOSED> ("ImportedNode::getInlineNode: Inline node is already disposed.");
 }
 
+///  throws Error <DISPOSED>
 SFNode
 ImportedNode::getExportedNode () const
-throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -315,10 +310,9 @@ ImportedNode::toStream (std::ostream & ostream) const
 	{ }
 }
 
+///  throws Error <INVALID_NODE>, Error <DISPOSED>
 void
 ImportedNode::toXMLStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	if (Generator::ExistsNode (ostream, getInlineNode ()))
 	{
@@ -401,10 +395,9 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 		throw Error <INVALID_NODE> ("ImportedNode::toXMLStream: Inline node does not exist.");
 }
 
+///  throws Error <INVALID_NODE>, Error <DISPOSED>
 void
 ImportedNode::toJSONStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	if (Generator::ExistsNode (ostream, getInlineNode ()))
 	{

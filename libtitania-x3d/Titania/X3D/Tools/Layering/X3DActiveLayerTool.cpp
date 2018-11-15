@@ -85,9 +85,6 @@ X3DActiveLayerTool::initialize ()
 
 void
 X3DActiveLayerTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-
 {
 	getBrowser () -> getActiveLayer () .removeInterest (&X3DActiveLayerTool::set_activeLayer, this);
 

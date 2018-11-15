@@ -76,8 +76,6 @@ X3DViewpointNodeTool::X3DViewpointNodeTool () :
 
 void
 X3DViewpointNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> removeViewpointTool (this);
 

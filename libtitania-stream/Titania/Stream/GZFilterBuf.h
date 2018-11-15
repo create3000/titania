@@ -82,16 +82,16 @@ public:
 	using std::basic_streambuf <CharT, Traits>::pbase;
 	using std::basic_streambuf <CharT, Traits>::setg;
 
-	basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>*)
-	throw (std::invalid_argument);
+	///  throws std::invalid_argument
+	basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>*);
 
 	bool
 	is_open ()
 	{ return opened; }
 
+	///  throws std::invalid_argument
 	basic_gzfilterbuf*
-	open ()
-	throw (std::invalid_argument);
+	open ();
 
 	basic_gzfilterbuf*
 	close ();
@@ -126,9 +126,9 @@ private:
 
 };
 
+///  throws std::invalid_argument
 template <class CharT, class Traits>
-basic_gzfilterbuf <CharT, Traits>::basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>* streambuf)
-throw (std::invalid_argument) :
+basic_gzfilterbuf <CharT, Traits>::basic_gzfilterbuf (std::basic_streambuf <CharT, Traits>* streambuf) :
 	    streambuf (streambuf),
 	       opened (false),
 	    bytesRead (0),
@@ -142,10 +142,10 @@ throw (std::invalid_argument) :
 	open ();
 }
 
+///  throws std::invalid_argument
 template <class CharT, class Traits>
 basic_gzfilterbuf <CharT, Traits>*
 basic_gzfilterbuf <CharT, Traits>::open ()
-throw (std::invalid_argument)
 {
 	if (is_open ())
 		return nullptr;

@@ -73,24 +73,20 @@ public:
 
 	virtual
 	const char*
-	what () const
-	throw ();
+	what () const noexcept;
 
 	virtual
 	ErrorType
-	getType () const
-	throw () = 0;
+	getType () const = 0;
 
 	virtual
 	const std::string &
-	toString () const
-	throw ();
+	toString () const;
 
 	///  @name Destruction
 
 	virtual
-	~X3DError ()
-	throw ();
+	~X3DError ();
 
 
 private:
@@ -119,15 +115,13 @@ public:
 
 	virtual
 	ErrorType
-	getType () const
-	throw () final override
+	getType () const final override
 	{ return Type; }
 
 	///  @name Destruction
 
 	virtual
 	~Error ()
-	throw ()
 	{ }
 
 };

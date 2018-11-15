@@ -87,28 +87,23 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3D::X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	setExecutionContext (X3D::X3DExecutionContext* const) final override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -160,9 +155,9 @@ public:
 
 private:
 
+	///  throws std::runtime_error
 	void
-	addClasses ()
-	throw (std::runtime_error);
+	addClasses ();
 
 	void
 	addProto (const ObjectType type, JSObject* const proto)

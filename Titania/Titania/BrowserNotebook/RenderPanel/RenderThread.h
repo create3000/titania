@@ -125,9 +125,9 @@ public:
 
 	///  @name Operations
 
+	///  throws std::runtime_error
 	void
-	start ()
-	throw (std::runtime_error);
+	start ();
 
 	bool
 	stop ();

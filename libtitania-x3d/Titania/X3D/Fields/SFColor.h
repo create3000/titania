@@ -91,11 +91,10 @@ public:
 	create () const final override
 	{ return new SFColor (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	SFColor*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const final override
 	{ return new SFColor (*this); }
 
 	///  @name Interest service
@@ -160,11 +159,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	fromStream (std::istream & istream) final override;
 
 	virtual
 	void

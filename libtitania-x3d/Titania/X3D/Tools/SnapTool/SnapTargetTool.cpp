@@ -155,8 +155,6 @@ SnapTargetTool::realize ()
 
 void
 SnapTargetTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> getTransformTools () .removeInterest (&SnapTargetTool::set_transform_tools, this);
 

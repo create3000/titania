@@ -66,10 +66,10 @@ public:
 
 	///  @name Tests
 
+	///  throws Error <DISPOSED>
 	virtual
 	bool
-	isExternproto () const
-	throw (Error <DISPOSED>) = 0;
+	isExternproto () const = 0;
 
 	///  @name Member access
 
@@ -78,10 +78,10 @@ public:
 	canUserDefinedFields () const final override
 	{ return true; }
 
+	///  throws Error <DISPOSED>
 	virtual
 	ProtoDeclaration*
-	getProtoDeclaration ()
-	throw (Error <DISPOSED>) = 0;
+	getProtoDeclaration () = 0;
 
 	///  @name Instances handling
 

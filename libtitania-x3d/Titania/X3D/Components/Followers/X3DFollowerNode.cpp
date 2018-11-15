@@ -68,8 +68,6 @@ X3DFollowerNode::X3DFollowerNode () :
 
 void
 X3DFollowerNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> prepareEvents () .removeInterest (&X3DFollowerNode::prepareEvents, this);

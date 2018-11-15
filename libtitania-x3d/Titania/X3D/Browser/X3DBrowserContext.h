@@ -179,11 +179,9 @@ public:
 
 	///  @name Operations
 
+	///  throws Error <INSUFFICIENT_CAPABILITIES>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	Magick::Image
-	getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
-	throw (Error <INSUFFICIENT_CAPABILITIES>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing);
 
 	///  @name Event handling
 

@@ -68,16 +68,13 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Member access
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const basic::uri &
 	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return worldURL; }
 
 	virtual

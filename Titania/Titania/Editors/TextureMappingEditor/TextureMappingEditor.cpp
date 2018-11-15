@@ -1925,9 +1925,7 @@ TextureMappingEditor::set_startDrag ()
 
 		set_selectedPoints ();
 	}
-	catch (const X3D::X3DError &)
-	{ }
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -2003,9 +2001,7 @@ TextureMappingEditor::set_left_hitPoint (const X3D::Vector3f & hitPoint)
 		else
 			set_left_point (hitPoint);
 	}
-	catch (const X3D::X3DError &)
-	{ }
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -2122,9 +2118,7 @@ TextureMappingEditor::set_left_point (const X3D::Vector3d & hitPoint)
 			}
 		}
 	}
-	catch (const X3D::X3DError &)
-	{ }
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -2212,9 +2206,7 @@ TextureMappingEditor::set_left_center (const X3D::Vector3f & value)
 
 		centerPoint -> translation () = translation;
 	}
-	catch (const X3D::X3DError &)
-	{ }
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -2329,14 +2321,14 @@ TextureMappingEditor::set_right_hitPoint ()
 	{ }
 }
 
+///  throws std::runtime_error
 X3D::Vector2d
 TextureMappingEditor::projectPoint (const X3D::Vector3d & point, const X3D::BrowserPtr & browser) const
-throw (std::domain_error) // TODO: runtime_error
 {
 	const auto & activeLayer = browser -> getActiveLayer ();
 
 	if (not activeLayer)
-		throw std::domain_error ("No active layer.");
+		throw std::runtime_error ("No active layer.");
 
 	const auto viewport   = activeLayer -> getViewport () -> getRectangle (browser);
 	const auto projection = activeLayer -> getViewpoint () -> getProjectionMatrix (0, -10, viewport);

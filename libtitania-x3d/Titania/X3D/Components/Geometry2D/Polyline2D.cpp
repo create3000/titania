@@ -126,8 +126,6 @@ Polyline2D::build ()
 
 SFNode
 Polyline2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("Polyline2D::toPrimitive");

@@ -129,9 +129,9 @@ public:
 	std::string
 	getFilename () const;
 
+	///  throws std::runtime_error
 	FontFace
-	getFace () const
-	throw (std::runtime_error);
+	getFace () const;
 
 	///  @name Operations
 

@@ -237,8 +237,6 @@ LineSet::build ()
 
 SFNode
 LineSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 

@@ -100,8 +100,6 @@ X3DSoundSourceNode::initialize ()
 
 void
 X3DSoundSourceNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> removeSoundSource (this);
 

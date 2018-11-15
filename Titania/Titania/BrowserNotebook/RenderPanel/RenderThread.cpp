@@ -110,9 +110,9 @@ RenderThread::getStderr ()
 	return videoEncoder -> getStderr ();
 }
 
+///  throws std::runtime_error
 void
 RenderThread::start ()
-throw (std::runtime_error)
 {
 	videoEncoder -> open ();
 

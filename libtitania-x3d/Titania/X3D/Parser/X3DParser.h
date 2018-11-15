@@ -89,9 +89,9 @@ protected:
 
 	///  @name Operations
 
+	///  throws Error <INVALID_X3D>
 	std::string
-	save (std::istream & istream, const std::string & suffix)
-	throw (Error <INVALID_X3D>);
+	save (std::istream & istream, const std::string & suffix);
 
 	long double
 	fromUnit (const UnitCategory unit, long double value) const;

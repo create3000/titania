@@ -88,11 +88,10 @@ public:
 	create () const final override
 	{ return new VrmlMatrix (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	VrmlMatrix*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const final override
 	{ return new VrmlMatrix (*this); }
 
 };

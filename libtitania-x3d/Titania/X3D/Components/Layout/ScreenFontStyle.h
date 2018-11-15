@@ -79,20 +79,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -124,9 +121,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	toPrimitive () const final override;
 
 	///  @name Destruction
 
@@ -189,20 +184,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields

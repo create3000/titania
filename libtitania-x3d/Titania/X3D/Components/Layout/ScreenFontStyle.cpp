@@ -472,8 +472,6 @@ ScreenText::draw (ShapeContainer* const context)
 
 SFNode
 ScreenText::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	throw Error <NOT_SUPPORTED> ("ScreenText::toPrimitive");
 }

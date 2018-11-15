@@ -61,16 +61,12 @@ X3DParametricGeometryNode::X3DParametricGeometryNode () :
 
 NodeType
 X3DParametricGeometryNode::getPrimitiveType () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	throw Error <NOT_SUPPORTED> ("X3DParametricGeometryNode::getPrimitiveType");
 }
 
 SFNode
 X3DParametricGeometryNode::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	throw Error <NOT_SUPPORTED> ("X3DParametricGeometryNode::toPrimitive");
 }

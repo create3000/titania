@@ -105,9 +105,9 @@ SupportedFields::SupportedFields ()
 	addField (new MFVec4f     ());
 }
 
+///  throws Error <INVALID_NAME>
 void
 SupportedFields::addField (X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>)
 {
 	//std::clog << "\tAdding field type " << field -> getTypeName () << ": " << std::flush;
 
@@ -117,9 +117,9 @@ throw (Error <INVALID_NAME>)
 	throw Error <INVALID_NAME> ("Field type '" + field -> getTypeName () + "' already exists.");
 }
 
+///  throws Error <NOT_SUPPORTED>
 const X3DFieldDefinition*
 SupportedFields::getField (const std::string & typeName) const
-throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{

@@ -94,8 +94,6 @@ Texture3DFuture::getFuture (const MFString & url,
 
 void
 Texture3DFuture::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&Texture3DFuture::prepareEvents, this);
 

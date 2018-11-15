@@ -114,9 +114,9 @@ SupportedComponents::add (const ComponentType type, const std::string & title, c
 	components .push_back (type, component);
 }
 
+///  throws Error <NOT_SUPPORTED>
 ComponentInfoPtr
 SupportedComponents::get (const std::string & name, const size_t level) const
-throw (Error <NOT_SUPPORTED>)
 {
 	const ComponentInfoPtr & component = get (name);
 
@@ -127,9 +127,9 @@ throw (Error <NOT_SUPPORTED>)
 		throw Error <NOT_SUPPORTED> ("Component '" + name + "' at level '" + basic::to_string (level, std::locale::classic ()) + "' is not supported.");
 }
 
+///  throws Error <NOT_SUPPORTED>
 const ComponentInfoPtr &
 SupportedComponents::get (const std::string & name) const
-throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{

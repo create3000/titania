@@ -83,8 +83,6 @@ X3DGeometricPropertyNodeTool::initialize ()
 
 void
 X3DGeometricPropertyNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	inlineNode -> setExecutionContext (executionContext);
 

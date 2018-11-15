@@ -138,8 +138,6 @@ ArcClose2D::initialize ()
 
 void
 ArcClose2D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getArcClose2DOptions () .removeInterest (&ArcClose2D::addEvent, this);
@@ -240,8 +238,6 @@ ArcClose2D::build ()
 
 SFNode
 ArcClose2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const double sweepAngle = getSweepAngle ();
 	const auto   circle     = sweepAngle == pi2 <double>;

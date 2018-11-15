@@ -163,8 +163,6 @@ X3DLayerNode::initialize ()
 
 void
 X3DLayerNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	defaultNavigationInfo -> setExecutionContext (executionContext);
 	defaultViewpoint      -> setExecutionContext (executionContext);

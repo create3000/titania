@@ -167,8 +167,6 @@ X3DGridTool::realize ()
 
 void
 X3DGridTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> getTransformTools () .removeInterest (&X3DGridTool::set_transform_tools, this);
 

@@ -94,8 +94,6 @@ X3DEnvironmentalSensorNode::initialize ()
 
 void
 X3DEnvironmentalSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 	{

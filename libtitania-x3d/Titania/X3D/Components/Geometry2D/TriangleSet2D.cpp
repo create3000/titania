@@ -141,8 +141,6 @@ TriangleSet2D::buildTexCoords ()
 
 SFNode
 TriangleSet2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("TriangleSet2D::toPrimitive");

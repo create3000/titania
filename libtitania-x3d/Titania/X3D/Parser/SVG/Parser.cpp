@@ -262,7 +262,7 @@ Parser::parseIntoScene ()
 	}
 	catch (const std::exception & error)
 	{
-		throw X3D::Error <X3D::INVALID_X3D> (error .what ()); 
+		throw Error <X3D::INVALID_X3D> (error .what ()); 
 	}
 	catch (...)
 	{

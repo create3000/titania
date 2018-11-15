@@ -174,25 +174,22 @@ public:
 	{ return new X3DBasePtrArray (); }
 
 	///  Constructs new X3DBasePtrArray.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DBasePtrArray*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (const CopyType) const final override;
 
 	///  Constructs new X3DBasePtrArray.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DBasePtrArray*
-	copy (X3DExecutionContext* const executionContext, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const executionContext, const CopyType) const final override;
 
 	///  Constructs new X3DBasePtrArray.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	void
-	copy (X3DExecutionContext* const, X3DFieldDefinition* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const, X3DFieldDefinition* const, const CopyType) const final override;
 
 	///  @name Assignment operators
 
@@ -231,8 +228,7 @@ public:
 	///  Returns the type name of the object.
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	///  Returns the type of the object.
@@ -343,13 +339,10 @@ public:
 	///  @name Input/Output
 
 	///  Not supported.
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	fromStream (std::istream & istream) final override;
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
@@ -427,11 +420,10 @@ private:
 template <class ValueType>
 const std::string X3DBasePtrArray <ValueType>::typeName = "MFNode";
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 template <class ValueType>
 X3DBasePtrArray <ValueType>*
 X3DBasePtrArray <ValueType>::copy (const CopyType type) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	if (type == FLAT_COPY)
 		return new X3DBasePtrArray (*this);
@@ -449,11 +441,10 @@ throw (Error <INVALID_NAME>,
 	return field;
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 template <class ValueType>
 X3DBasePtrArray <ValueType>*
 X3DBasePtrArray <ValueType>::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	X3DBasePtrArray* const field = new X3DBasePtrArray ();
 
@@ -462,11 +453,10 @@ throw (Error <INVALID_NAME>,
 	return field;
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 template <class ValueType>
 void
 X3DBasePtrArray <ValueType>::copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType type) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
 {
 	X3DBasePtrArray* const field = static_cast <X3DBasePtrArray*> (fieldDefinition);
 
@@ -530,13 +520,10 @@ X3DBasePtrArray <ValueType>::operator = (X3DBasePtrArray <Up> && other)
 	return *this;
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class ValueType>
 void
 X3DBasePtrArray <ValueType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 { }
 
 template <class ValueType>

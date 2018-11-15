@@ -196,10 +196,6 @@ SFTime::toStream (std::ostream & ostream, const std::string & format) const
 
 void
 SFTime::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	std::string whiteSpaces;
 	

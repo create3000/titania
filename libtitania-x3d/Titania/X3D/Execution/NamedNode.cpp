@@ -75,10 +75,9 @@ NamedNode::create (X3DExecutionContext* const executionContext) const
 	throw Error <NOT_SUPPORTED> ("Fabricating named nodes is not supported.");
 }
 
+///  throws Error <INVALID_NAME>, Error <DISPOSED>
 NamedNode*
 NamedNode::copy (X3DExecutionContext* const executionContext, const CopyType) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Copying named nodes into execution context is not supported.");
 }
@@ -93,9 +92,9 @@ NamedNode::initialize ()
 	set_node ();
 }
 
+///  throws Error <DISPOSED>
 SFNode
 NamedNode::getLocalNode () const
-throw (Error <DISPOSED>)
 {
 	if (node)
 		return SFNode (node);

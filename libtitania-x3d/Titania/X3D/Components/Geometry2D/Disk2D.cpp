@@ -132,8 +132,6 @@ Disk2D::initialize ()
 
 void
 Disk2D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getDisk2DOptions () .removeInterest (&Disk2D::addEvent, this);
@@ -349,8 +347,6 @@ Disk2D::draw (ShapeContainer* const context)
 
 NodeType
 Disk2D::getPrimitiveType () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (getElements () [0] .vertexMode () == GL_POINTS)
 		return X3DConstants::PointSet;
@@ -363,8 +359,6 @@ throw (Error <NOT_SUPPORTED>,
 
 SFNode
 Disk2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (innerRadius () == outerRadius ())
 	{

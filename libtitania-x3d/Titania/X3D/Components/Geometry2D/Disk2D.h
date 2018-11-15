@@ -75,27 +75,22 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Fields
 
@@ -173,15 +168,11 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
+	getPrimitiveType () const override;
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
+	toPrimitive () const override;
 
 	///  @name Construction
 

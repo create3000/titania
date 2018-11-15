@@ -67,13 +67,13 @@ public:
 
 	///  @name Operations
 
+	///  throws Error <NOT_SUPPORTED>
 	ComponentInfoPtr
-	get (const std::string &, const size_t) const
-	throw (Error <NOT_SUPPORTED>);
+	get (const std::string &, const size_t) const;
 
+	///  throws Error <NOT_SUPPORTED>
 	const ComponentInfoPtr &
-	get (const std::string &) const
-	throw (Error <NOT_SUPPORTED>);
+	get (const std::string &) const;
 
 	const ComponentInfoArray &
 	get () const

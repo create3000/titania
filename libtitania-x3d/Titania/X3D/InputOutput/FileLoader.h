@@ -82,66 +82,51 @@ public:
 
 	///  @name X3D Creation Handling
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromString (const std::string & string)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createX3DFromString (const std::string & string);
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromStream (basic::ifilestream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createX3DFromStream (basic::ifilestream & istream);
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream &);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	X3DScenePtr
-	createX3DFromURL (const MFString & url)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	createX3DFromURL (const MFString & url);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	void
-	loadURL (const MFString & url, const MFString & parameter)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	loadURL (const MFString & url, const MFString & parameter);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	void
-	parseIntoScene (const X3DScenePtr & scene, const MFString & urlzz)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	parseIntoScene (const X3DScenePtr & scene, const MFString & url);
 
 	void
 	stop ();
 
 	//  Stream Handling
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	std::string
-	loadDocument (const basic::uri & uri)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	loadDocument (const basic::uri & uri);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	basic::ifilestream
-	loadStream (const basic::uri & uri)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	loadStream (const basic::uri & uri);
 
 
 private:
 
 	///  @name Operations
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	void
-	loadStream (const basic::uri & uri, basic::ifilestream &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	loadStream (const basic::uri & uri, basic::ifilestream &);
 
 	///  @name Members
 

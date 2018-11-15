@@ -212,10 +212,9 @@ X3DBrowser::set_prepareEvents ()
 		currentFrameRate = 60;
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::setDescription (const std::string & value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	description = value;
 
@@ -223,10 +222,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getNotification () -> string () = value;
 }
 
+///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 const X3DFieldDefinition*
 X3DBrowser::getSupportedField (const std::string & typeName) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (not supportedFields)
 		throw Error <DISPOSED> ("X3DBrowser::getSupportedField: Browser is already disposed.");
@@ -234,9 +232,9 @@ throw (Error <NOT_SUPPORTED>,
 	return supportedFields -> getField (typeName);
 }
 
+///  throws Error <DISPOSED>
 const SupportedFieldsArray &
 X3DBrowser::getSupportedFields () const
-throw (Error <DISPOSED>)
 {
 	if (not supportedFields)
 		throw Error <DISPOSED> ("X3DBrowser::getSupportedFields: Browser is already disposed.");
@@ -244,10 +242,9 @@ throw (Error <DISPOSED>)
 	return supportedFields -> getFields ();
 }
 
+///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 const X3DBaseNode*
 X3DBrowser::getSupportedNode (const std::string & typeName) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (not supportedNodes)
 		throw Error <DISPOSED> ("X3DBrowser::getSupportedNode: Browser is already disposed.");
@@ -255,9 +252,9 @@ throw (Error <NOT_SUPPORTED>,
 	return supportedNodes -> getNode (typeName);
 }
 
+///  throws Error <DISPOSED>
 const SupportedNodesArray &
 X3DBrowser::getSupportedNodes () const
-throw (Error <DISPOSED>)
 {
 	if (not supportedNodes)
 		throw Error <DISPOSED> ("X3DBrowser::getSupportedNodes: Browser is already disposed.");
@@ -265,10 +262,9 @@ throw (Error <DISPOSED>)
 	return supportedNodes -> getNodes ();
 }
 
+///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 ComponentInfoPtr
 X3DBrowser::getComponent (const std::string & name, const size_t level) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (not supportedComponents)
 		throw Error <DISPOSED> ("X3DBrowser::getComponent: Browser is already disposed.");
@@ -276,9 +272,9 @@ throw (Error <NOT_SUPPORTED>,
 	return supportedComponents -> get (name, level);
 }
 
+///  throws Error <DISPOSED>
 const ComponentInfoArray &
 X3DBrowser::getSupportedComponents () const
-throw (Error <DISPOSED>)
 {
 	if (not supportedComponents)
 		throw Error <DISPOSED> ("X3DBrowser::getSupportedComponents: Browser is already disposed.");
@@ -286,9 +282,9 @@ throw (Error <DISPOSED>)
 	return supportedComponents -> get ();
 }
 
+///  throws Error <DISPOSED>
 const ProfileInfoArray &
 X3DBrowser::getSupportedProfiles () const
-throw (Error <DISPOSED>)
 {
 	if (not supportedProfiles)
 		throw Error <DISPOSED> ("X3DBrowser::getSupportedProfiles: Browser is already disposed.");
@@ -296,10 +292,9 @@ throw (Error <DISPOSED>)
 	return supportedProfiles -> get ();
 }
 
+///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 const ProfileInfoPtr &
 X3DBrowser::getProfile (const std::string & name) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (not supportedProfiles)
 		throw Error <DISPOSED> ("X3DBrowser::getProfile: Browser is already disposed.");
@@ -307,10 +302,9 @@ throw (Error <NOT_SUPPORTED>,
 	return supportedProfiles -> get (name);
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 X3DBrowser::createScene (const bool setup) const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const X3DScenePtr scene (new Scene (const_cast <X3DBrowser*> (this)));
 
@@ -322,10 +316,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return scene;
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArray & components, const bool setup) const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const X3DScenePtr scene = createScene (setup);
 
@@ -337,10 +330,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return scene;
 }
 
+///  throws Error <INVALID_SCENE>, Error <INVALID_OPERATION_TIMING>
 void
 X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
-throw (Error <INVALID_SCENE>,
-       Error <INVALID_OPERATION_TIMING>)
 {
 	ContextLock lock (this);
 
@@ -446,22 +438,17 @@ X3DBrowser::set_executionContext ()
 	#endif
 }
 
+///  throws Error <INVALID_DOCUMENT>, Error <INVALID_OPERATION_TIMING>, Error <NOT_SUPPORTED>, Error <DISPOSED>
 X3DScenePtr
 X3DBrowser::importDocument (/*const XML DOMNode &*/)
-throw (Error <INVALID_DOCUMENT>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>,
-       Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("XML DOM import is not supported.");
 	//return createScene ();
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>)
 {
 //	for (const auto & value : parameter)
 //	{
@@ -525,12 +512,9 @@ X3DBrowser::set_scene (const X3DScenePtr & scene)
 	setLoadState (COMPLETE_STATE);
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 X3DBrowser::createX3DFromString (const std::string & string)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	ContextLock lock (this);
 
@@ -539,12 +523,9 @@ throw (Error <INVALID_X3D>,
 	return loader .createX3DFromString (string);
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 X3DBrowser::createX3DFromStream (basic::ifilestream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	ContextLock lock (this);
 
@@ -553,12 +534,9 @@ throw (Error <INVALID_X3D>,
 	return loader .createX3DFromStream (istream);
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 X3DBrowser::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	ContextLock lock (this);
 
@@ -567,11 +545,9 @@ throw (Error <INVALID_X3D>,
 	return loader .createX3DFromStream (worldURL, istream);
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>
 X3DScenePtr
 X3DBrowser::createX3DFromURL (const MFString & url)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>)
 {
 	ContextLock lock (this);
 
@@ -580,21 +556,18 @@ throw (Error <INVALID_URL>,
 	return loader .createX3DFromURL (url);
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>
 SceneFuturePtr
 X3DBrowser::createX3DFromURL (const MFString & url, const SceneFutureCallback & callback)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>)
 {
 	using namespace std::placeholders;
 
 	return MakePtr <SceneFuture> (getExecutionContext (), url, false, [callback] (X3DScenePtr && scene) { scene -> setup (); callback (std::move (scene)); });
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::firstViewpoint ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (getActiveLayer ())
 	{
@@ -605,10 +578,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::previousViewpoint ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (getActiveLayer ())
 	{
@@ -640,10 +612,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::nextViewpoint ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (getActiveLayer ())
 	{
@@ -675,10 +646,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::lastViewpoint ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (getActiveLayer ())
 	{
@@ -689,10 +659,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DBrowser::changeViewpoint (const std::string & name)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -720,9 +689,9 @@ X3DBrowser::bindViewpoint (X3DViewpointNode* const viewpoint)
 	getNotification () -> string () = viewpoint -> description ();
 }
 
+///  throws Error <DISPOSED>
 void
 X3DBrowser::beginUpdate ()
-throw (Error <DISPOSED>)
 {
 	getClock () -> advance ();
 

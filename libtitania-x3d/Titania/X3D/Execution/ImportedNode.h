@@ -69,53 +69,43 @@ public:
 
 	///  @name Construction
 
+	///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	ImportedNode (X3DExecutionContext* const executionContext,
 	              const X3DPtr <Inline> & inlineNode,
 	              const std::string & exportedName,
-	              const std::string & importedName)
-	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	              const std::string & importedName);
 
 	virtual
 	ImportedNode*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	ImportedNode*
-	copy (X3DExecutionContext* const executionContext, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const final override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
 
+	///  throws Error <DISPOSED>
 	X3DPtr <Inline>
-	getInlineNode () const
-	throw (Error <DISPOSED>);
+	getInlineNode () const;
 
 	const std::string &
 	getExportedName () const
@@ -125,9 +115,9 @@ public:
 	getImportedName () const
 	{ return importedName; }
 
+	///  throws Error <DISPOSED>
 	SFNode
-	getExportedNode () const
-	throw (Error <DISPOSED>);
+	getExportedNode () const;
 
 	///  @name Route handling
 

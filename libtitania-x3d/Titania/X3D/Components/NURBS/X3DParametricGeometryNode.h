@@ -63,15 +63,11 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	getPrimitiveType () const final override;
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
+	toPrimitive () const override;
 
 
 protected:

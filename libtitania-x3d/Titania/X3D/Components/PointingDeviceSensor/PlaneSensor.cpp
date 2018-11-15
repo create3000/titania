@@ -111,9 +111,9 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 	return new PlaneSensor (executionContext);
 }
 
+///  throws std::domain_error
 std::pair <Vector3d, bool>
 PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line)
-throw (std::domain_error)
 {
 	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
 	const auto trackPoint1    = screenLine .closest_point (hit -> getPointer ());

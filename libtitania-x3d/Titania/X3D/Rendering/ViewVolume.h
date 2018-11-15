@@ -86,40 +86,40 @@ public:
 
 	///  @name Projection operations
 
+	///  throws std::domain_error
 	static
 	Vector3d
-	unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	throw (std::domain_error);
+	unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
+	///  throws std::domain_error
 	static
 	Vector3d
-	unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & modelViewProjection, const Vector4i & viewport)
-	throw (std::domain_error);
+	unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & modelViewProjection, const Vector4i & viewport);
 
+	///  throws std::domain_error
 	static
 	Line3d
-	unProjectRay (const Vector2d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	throw (std::domain_error);
+	unProjectRay (const Vector2d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
+	///  throws std::domain_error
 	static
 	Line3d
-	unProjectRay (const Vector2d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport)
-	throw (std::domain_error);
+	unProjectRay (const Vector2d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport);
 
+	///  throws std::domain_error
 	static
 	Vector3d
-	projectPoint (const Vector3d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	throw (std::domain_error);
+	projectPoint (const Vector3d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
+	///  throws std::domain_error
 	static
 	Vector3d
-	projectPoint (const Vector3d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport)
-	throw (std::domain_error);
+	projectPoint (const Vector3d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport);
 
+	///  throws std::domain_error
 	static
 	Line2d
-	projectLine (const Line3d & line, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-	throw (std::domain_error);
+	projectLine (const Line3d & line, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
 
 private:

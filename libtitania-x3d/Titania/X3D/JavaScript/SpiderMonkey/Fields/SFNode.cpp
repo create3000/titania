@@ -271,7 +271,7 @@ SFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval
 			*vp = JSVAL_VOID;
 			return true;
 		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		catch (const Error <X3D::INVALID_NAME> &)
 		{
 			return true;
 		}

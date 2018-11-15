@@ -83,10 +83,10 @@ public:
 	/// @name Common members
 
 	///  Returns the type name of this object.
+	///  throws X3D::Error <X3D::DISPOSED>
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) override
+	getTypeName () const override
 	{ return typeName; }
 
 	/// @name Member access
@@ -134,13 +134,13 @@ public:
 	bool
 	getAddStandardMetadata (const X3D::X3DScenePtr & scene);
 
+	///  throws X3D::Error <X3D::NOT_SUPPORTED>
 	X3D::X3DPtr <X3D::WorldInfo>
-	createWorldInfo (const X3D::X3DScenePtr & scene)
-	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+	createWorldInfo (const X3D::X3DScenePtr & scene);
 
+	///  throws X3D::Error <X3D::NOT_SUPPORTED>
 	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo (const X3D::X3DScenePtr & scene) const
-	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+	getWorldInfo (const X3D::X3DScenePtr & scene) const;
 
 	/***
 	 *  @name Meta data
@@ -200,11 +200,7 @@ public:
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
 	virtual
 	void
-	fromStream (std::istream &)
-	throw (X3D::Error <X3D::INVALID_X3D>,
-	       X3D::Error <X3D::NOT_SUPPORTED>,
-	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-	       X3D::Error <X3D::DISPOSED>) final override
+	fromStream (std::istream &) final override
 	{ }
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
@@ -251,9 +247,9 @@ protected:
 
 	/// @name Operations
 	 
+	///  throws X3D::Error <X3D::NOT_SUPPORTED>
 	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo (const X3D::X3DScenePtr & scene, const bool create)
-	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+	getWorldInfo (const X3D::X3DScenePtr & scene, const bool create);
 
 
 private:

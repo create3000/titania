@@ -125,8 +125,6 @@ Circle2D::initialize ()
 
 void
 Circle2D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getCircle2DOptions () .removeInterest (&Circle2D::addEvent, this);
@@ -192,8 +190,6 @@ Circle2D::build ()
 
 SFNode
 Circle2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("Circle2D::toPrimitive");

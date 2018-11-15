@@ -128,8 +128,6 @@ IndexedFaceSetTool::initialize ()
 
 void
 IndexedFaceSetTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DIndexedFaceSetTransformObject::setExecutionContext (executionContext);
 	X3DIndexedFaceSetSelectionObject::setExecutionContext (executionContext);

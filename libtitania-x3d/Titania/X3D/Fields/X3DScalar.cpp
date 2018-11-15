@@ -82,10 +82,6 @@ const FieldType X3DField <int32_t>::type = X3DConstants::SFInt32;
 template <>
 void
 X3DScalar <bool>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	bool value = false;
 
@@ -96,10 +92,6 @@ throw (Error <INVALID_X3D>,
 template <>
 void
 X3DScalar <double>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	double value = 0;
 
@@ -110,10 +102,6 @@ throw (Error <INVALID_X3D>,
 template <>
 void
 X3DScalar <float>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	float value = 0;
 
@@ -124,10 +112,6 @@ throw (Error <INVALID_X3D>,
 template <>
 void
 X3DScalar <int32_t>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	int32_t value = 0;
 

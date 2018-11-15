@@ -68,13 +68,13 @@ public:
 
 	///  @name Member access
 
+	///  throws Error <INVALID_NAME>
 	void
-	addNode (const std::string & typeName, const X3DBaseNode* const node)
-	throw (Error <INVALID_NAME>);
+	addNode (const std::string & typeName, const X3DBaseNode* const node);
 
+	///  throws Error <NOT_SUPPORTED>
 	const X3DBaseNode*
-	getNode (const std::string & typeName) const
-	throw (Error <NOT_SUPPORTED>);
+	getNode (const std::string & typeName) const;
 
 	const SupportedNodesArray &
 	getNodes () const;

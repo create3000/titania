@@ -210,17 +210,17 @@ SupportedTools::SupportedTools () :
 	addTool ("TouchGroup",              [ ] (X3DBaseNode* const node) { return new TouchGroupTool              (node); });
 }
 
+///  throws Error <INVALID_NAME>
 void
 SupportedTools::addTool (const std::string & typeName, const Function & function)
-throw (Error <INVALID_NAME>)
 {
 	if (not functions .emplace (typeName, function) .second)
 		throw Error <INVALID_NAME> ("Tool type '" + typeName + "' already exists.");
 }
 
+///  throws Error <INVALID_NAME>
 const SupportedTools::Function &
 SupportedTools::getTool (const std::string & typeName) const
-throw (Error <INVALID_NAME>)
 {
 	try
 	{

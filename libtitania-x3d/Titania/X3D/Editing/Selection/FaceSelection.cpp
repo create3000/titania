@@ -580,9 +580,9 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 }
 
 ///  Return the nearest edge for hitPoint.
+///  throws std::domain_error
 std::pair <FaceSelection::Edge, size_t>
 FaceSelection::getClosestEdge (const LineSegment3d & cutSegment, const std::vector <size_t> & faces) const
-throw (std::domain_error)
 {
 	static constexpr double EPSILON_DISTANCE = 1e-4;
 

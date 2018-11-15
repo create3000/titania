@@ -124,60 +124,50 @@ public:
 
 	///  @name X3DBaseNode
 
-	///  Copys this node and sets the execution context to @a executionContext.
+	///  Copies this node and sets the execution context to @a executionContext.
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DBaseNode*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (const CopyType type) const override
 	{ return node -> copy (type); }
 
-	///  Copys this node and sets the execution context to @a executionContext.
+	///  Copies this node and sets the execution context to @a executionContext.
 	virtual
 	X3DBaseNode*
-	copy (X3DExecutionContext* const executionContext, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const override
 	{ return node -> copy (executionContext, type); }
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>
 	virtual
 	void
-	assign (const X3DBaseNode* const other, const bool compare = false)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>) final override
+	assign (const X3DBaseNode* const other, const bool compare = false) final override
 	{ node -> assign (other, compare); }
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Field handling
 
 	///  Checks if a field with @a name exists for this node.
+	///  throws Error <DISPOSED>
 	virtual
 	bool
-	hasField (const std::string & name) const
-	throw (Error <DISPOSED>) final override
+	hasField (const std::string & name) const final override
 	{ return node -> hasField (name); }
 
 	///  Checks whether @a field has the default value for this node type.  The @a field must be of this node.
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	bool
-	isDefaultValue (const X3DFieldDefinition* const field) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	isDefaultValue (const X3DFieldDefinition* const field) const final override
 	{ return node -> isDefaultValue (field); }
 
 	///  Return the field with @a name.
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	X3DFieldDefinition*
-	getField (const std::string & name) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	getField (const std::string & name) const final override;
 
 	///  Returns whether this node can have user defined fields.
 	virtual
@@ -186,44 +176,38 @@ public:
 	{ return node -> canUserDefinedFields (); }
 
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
+	///  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
 	virtual
 	void
-	setUserDefinedFields (const X3D::FieldDefinitionArray & fieldDefinitions)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>) final override
+	setUserDefinedFields (const X3D::FieldDefinitionArray & fieldDefinitions) final override
 	{ node -> setUserDefinedFields (fieldDefinitions); }
 
 	///  Adds @a field to the set of user defined fields of this node.
+	///  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
 	virtual
 	void
-	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>) final override
+	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field) final override
 	{ node -> addUserDefinedField (accessType, name, field); }
 
 	///  Removes the field named @a name from the set of user defined fields of this node.
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	removeUserDefinedField (const std::string & name)
-	throw (Error <DISPOSED>) final override
+	removeUserDefinedField (const std::string & name) final override
 	{ node -> removeUserDefinedField (name); }
 
 	///  Returns an array with all pre defined fields of this node.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	FieldDefinitionArray
-	getPreDefinedFields () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getPreDefinedFields () const final override
 	{ return node -> getPreDefinedFields (); }
 
 	///  Returns an array with all user defined fields of this node.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	FieldDefinitionArray
-	getUserDefinedFields () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getUserDefinedFields () const final override
 	{ return node -> getUserDefinedFields (); }
 
 	///  Returns an array of all fields with non default value.
@@ -233,11 +217,10 @@ public:
 	{ return node -> getChangedFields (); }
 
 	///  Return all field definition for this node, that is all predefined field and user defined fields.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const FieldDefinitionArray &
-	getFieldDefinitions () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getFieldDefinitions () const final override
 	{ return node -> getFieldDefinitions (); }
 
 	///  Field that processes its interests when the set of fields has changed.
@@ -303,16 +286,16 @@ public:
 	isLive () const final override
 	{ return node -> isLive (); }
 
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override
+	beginUpdate () final override
 	{ return node -> beginUpdate (); }
 
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	endUpdate ()
-	throw (Error <DISPOSED>) final override
+	endUpdate () final override
 	{ return node -> endUpdate (); }
 
 	///  Returns true if any field has a input or output route otherwise false.

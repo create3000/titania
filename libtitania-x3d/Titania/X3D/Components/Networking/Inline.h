@@ -77,28 +77,23 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -125,51 +120,40 @@ public:
 
 	///  @name Root node handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	MFNode &
 	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return scene -> getRootNodes (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const MFNode &
 	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return scene -> getRootNodes (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const X3DScenePtr &
 	getInternalScene () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return scene; }
 
 	///  @name Exported node handling
 
+	///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	SFNode
-	getExportedNode (const std::string & exportedName) const
-	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExportedNode (const std::string & exportedName) const;
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type>
 	X3DPtr <Type>
-	getExportedNode (const std::string & exportedName) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExportedNode (const std::string & exportedName) const;
 
+	///  throws Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ExportedNodeIndex &
-	getExportedNodes () const
-	throw (Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExportedNodes () const;
 
 	///  @name Operations
 
@@ -250,13 +234,10 @@ private:
 
 };
 
+///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type>
 X3DPtr <Type>
 Inline::getExportedNode (const std::string & exportedName) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DPtr <Type> node (getExportedNode (exportedName));
 

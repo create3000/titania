@@ -67,13 +67,13 @@ public:
 
 	///  @name Member access
 
+	///  throws Error <INVALID_NAME>
 	void
-	addField (X3DFieldDefinition* const field)
-	throw (Error <INVALID_NAME>);
+	addField (X3DFieldDefinition* const field);
 
+	///  throws Error <NOT_SUPPORTED>
 	const X3DFieldDefinition*
-	getField (const std::string & typeName) const
-	throw (Error <NOT_SUPPORTED>);
+	getField (const std::string & typeName) const;
 
 	const SupportedFieldsArray &
 	getFields () const;

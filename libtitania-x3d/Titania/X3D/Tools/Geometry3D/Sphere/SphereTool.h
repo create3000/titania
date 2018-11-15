@@ -69,9 +69,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	setExecutionContext (X3DExecutionContext* const executionContext) final override
 	{ X3DGeometryNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Fields
@@ -112,9 +110,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
+	toPrimitive () const final override
 	{ return getNode <Sphere> () -> toPrimitive (); }
 
 	virtual

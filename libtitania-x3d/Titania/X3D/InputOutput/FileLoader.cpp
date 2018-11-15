@@ -74,34 +74,25 @@ FileLoader::FileLoader (X3DExecutionContext* const executionContext, const basic
 
 //  X3D Creation Handling
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 FileLoader::createX3DFromString (const std::string & string)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	basic::ifilestream istream (string);
 
 	return createX3DFromStream (istream);
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 FileLoader::createX3DFromStream (basic::ifilestream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	return createX3DFromStream (referer, istream);
 }
 
+///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DScenePtr
 FileLoader::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene (false);
 
@@ -119,10 +110,9 @@ throw (Error <INVALID_X3D>,
 	return scene;
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 X3DScenePtr
 FileLoader::createX3DFromURL (const MFString & url)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	const auto scene = executionContext -> getBrowser () -> createScene (false);
 
@@ -140,10 +130,9 @@ throw (Error <INVALID_URL>,
 	return scene;
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 void
 FileLoader::loadURL (const MFString & url, const MFString & parameter)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	if (url .empty ())
 		return;
@@ -176,11 +165,10 @@ throw (Error <INVALID_URL>,
  *
  *  thread save
  *
+ *  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
  */
 void
 FileLoader::parseIntoScene (const X3DScenePtr & scene, const MFString & url)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	if (url .empty ())
 	{
@@ -230,11 +218,10 @@ FileLoader::stop ()
  *
  *  thread save
  *
+ *  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
  */
 std::string
 FileLoader::loadDocument (const basic::uri & uri)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	loadStream (uri, istream);
 
@@ -251,11 +238,10 @@ throw (Error <INVALID_URL>,
  *
  *  thread save
  *
+ *  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
  */
 basic::ifilestream
 FileLoader::loadStream (const basic::uri & uri)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	loadStream (uri, istream);
 
@@ -266,11 +252,10 @@ throw (Error <INVALID_URL>,
  *
  *  thread save
  *
+ *  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
  */
 void
 FileLoader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");

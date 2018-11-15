@@ -98,9 +98,9 @@ ScreenGroup::getBBox () const
 }
 
 // Same as in Text
+///  throws std::domain_error
 Matrix4d
 ScreenGroup::scale (X3DRenderObject* const renderObject)
-throw (std::domain_error)
 {
 	// Determine model view matrix.
 

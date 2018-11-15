@@ -285,9 +285,9 @@ X3DBrowserNotebook::store ()
 /***
  *  Return an iterator to a page widget determined by @a URL.
  */
+///  throws std::out_of_range
 NotebookPagePtr
 X3DBrowserNotebook::getPage (const basic::uri & URL) const
-throw (std::out_of_range)
 {
 	const auto iter = std::find_if (pages .begin (), pages .end (), [&] (const NotebookPagePtr & page)
 	{

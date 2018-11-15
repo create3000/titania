@@ -72,134 +72,116 @@ public:
 
 	///  @name Member access
 
+	///  throws Error <DISPOSED>
 	bool
 	isMasterScene () const
-	throw (Error <DISPOSED>)
 	{ return this == getExecutionContext (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setWorldURL (const basic::uri & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setWorldURL (const basic::uri & value);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override
+	getWorldURL () const override
 	{ return worldURL; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	setEncoding (const EncodingType & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ encoding = value; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	EncodingType
-	getEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getEncoding () const final override
 	{ return encoding; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setSpecificationVersion (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setSpecificationVersion (const std::string &);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	setSpecificationVersion (const SpecificationVersionType value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ specificationVersion = value; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	SpecificationVersionType
-	getSpecificationVersion () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getSpecificationVersion () const final override
 	{ return specificationVersion; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	setCharacterEncoding (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ characterEncoding = value; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const std::string &
-	getCharacterEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getCharacterEncoding () const final override
 	{ return characterEncoding; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	setComment (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ comment = value; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const std::string &
-	getComment () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getComment () const final override
 	{ return comment; }
 
 	///  @name Profile/Component handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	setProfile (const ProfileInfoPtr & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ profile = value; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ProfileInfoPtr &
-	getProfile ()  const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getProfile () const final override
 	{ return profile; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	updateComponent (const ComponentInfoPtr & component)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	updateComponent (const ComponentInfoPtr & component) final override;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ComponentInfoArray &
-	getComponents () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getComponents () const final override
 	{ return components; }
 
 	///  @name Unit handling
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	updateUnit (const std::string & category, const std::string & name, const long double conversionFactor)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateUnit (const std::string & category, const std::string & name, const long double conversionFactor);
 
 	const Unit &
 	getUnit (const UnitCategory unit) const;
 	
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const UnitArray &
 	getUnits () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return units; }
 
+	///  throws Error <DISPOSED>
 	virtual
 	long double
-	fromUnit (const UnitCategory unit, const long double value) const
-	throw (Error <DISPOSED>) final override;
+	fromUnit (const UnitCategory unit, const long double value) const final override;
 
+	///  throws Error <DISPOSED>
 	virtual
 	long double
-	toUnit (const UnitCategory unit, const long double value) const
-	throw (Error <DISPOSED>) final override;
+	toUnit (const UnitCategory unit, const long double value) const final override;
 
 	const SFTime &
 	units_changed () const
@@ -207,36 +189,29 @@ public:
 
 	///  @name MetaData handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	addStandardMetaData ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addStandardMetaData ();
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	addMetaData (const std::string &, const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addMetaData (const std::string &, const std::string &);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	removeMetaData (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	removeMetaData (const std::string &);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setMetaData (const std::string &, const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setMetaData (const std::string &, const std::string &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const std::string &
-	getMetaData (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getMetaData (const std::string &) const;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const MetaDataIndex &
-	getMetaDatas () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getMetaDatas () const;
 
 	const SFTime &
 	metaData_changed () const
@@ -244,44 +219,29 @@ public:
 
 	///  @name Exported nodes handling
 
+	///  throws Error <NODE_IN_USE>, Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ExportedNodePtr &
-	addExportedNode (const std::string &, const SFNode &)
-	throw (Error <NODE_IN_USE>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addExportedNode (const std::string &, const SFNode &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ExportedNodePtr &
-	updateExportedNode (const std::string &, const SFNode &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateExportedNode (const std::string &, const SFNode &);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	removeExportedNode (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	removeExportedNode (const std::string &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	SFNode
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExportedNode (const std::string &) const;
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type>
 	X3DPtr <Type>
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExportedNode (const std::string &) const;
 
 	const ExportedNodeIndex &
 	getExportedNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return exportedNodes; }
 
 	const SFTime &
@@ -303,20 +263,14 @@ public:
 
 	///  @name Input/Output
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	fromStream (const basic::uri &, std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	fromStream (const basic::uri &, std::istream & istream);
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	fromStream (std::istream &) override;
 
 	virtual
 	void
@@ -406,13 +360,10 @@ private:
 
 };
 
+///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type>
 X3DPtr <Type>
 X3DScene::getExportedNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DPtr <Type> node (getExportedNode (name));
 

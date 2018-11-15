@@ -87,8 +87,6 @@ Route::create (X3DExecutionContext* const executionContext) const
 
 Route*
 Route::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	try
 	{
@@ -128,9 +126,9 @@ Route::isConnected () const
 	return sourceNode and destinationNode;
 }
 
+///  throws Error <DISPOSED>
 SFNode
 Route::getSourceNode () const
-throw (Error <DISPOSED>)
 {
 	if (isConnected ())
 		return SFNode (sourceNode);
@@ -138,9 +136,9 @@ throw (Error <DISPOSED>)
 	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
+///  throws Error <DISPOSED>
 const std::string &
 Route::getSourceField () const
-throw (Error <DISPOSED>)
 {
 	if (isConnected ())
 		return sourceField -> getName ();
@@ -148,9 +146,9 @@ throw (Error <DISPOSED>)
 	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
+///  throws Error <DISPOSED>
 SFNode
 Route::getDestinationNode () const
-throw (Error <DISPOSED>)
 {
 	if (isConnected ())
 		return SFNode (destinationNode);
@@ -158,9 +156,9 @@ throw (Error <DISPOSED>)
 	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
+///  throws Error <DISPOSED>
 const std::string &
 Route::getDestinationField () const
-throw (Error <DISPOSED>)
 {
 	if (isConnected ())
 		return destinationField -> getName ();
@@ -220,10 +218,10 @@ Route::set_node ()
 		getExecutionContext () -> deleteRoute (this);
 }
 
+//throw Error <INVALID_NODE>,
+//       Error <DISPOSED>
 void
 Route::toStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	const std::string & sourceNodeName      = Generator::LocalName (ostream, getSourceNode ());
 	const std::string & destinationNodeName = Generator::LocalName (ostream, getDestinationNode ());
@@ -271,10 +269,10 @@ Route::toStream (std::ostream & ostream) const
 	ostream << destinationField -> getName ();
 }
 
+//throw Error <INVALID_NODE>,
+//      Error <DISPOSED>
 void
 Route::toXMLStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	const std::string & sourceNodeName      = Generator::LocalName (ostream, getSourceNode ());
 	const std::string & destinationNodeName = Generator::LocalName (ostream, getDestinationNode ());
@@ -311,10 +309,10 @@ Route::toXMLStream (std::ostream & ostream) const
 		<< "/>";
 }
 
+///  throws Error <INVALID_NODE>,
+///        Error <DISPOSED>
 void
 Route::toJSONStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	const std::string & sourceNodeName      = Generator::LocalName (ostream, getSourceNode ());
 	const std::string & destinationNodeName = Generator::LocalName (ostream, getDestinationNode ());

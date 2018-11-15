@@ -116,8 +116,6 @@ AudioClip::initialize ()
 
 void
 AudioClip::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DSoundSourceNode::setExecutionContext (executionContext);

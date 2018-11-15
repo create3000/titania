@@ -73,9 +73,9 @@ public:
 	void
 	add (const ProfileInfoPtr &);
 
+	///  throws Error <NOT_SUPPORTED>
 	const ProfileInfoPtr &
-	get (const std::string &) const
-	throw (Error <NOT_SUPPORTED>);
+	get (const std::string &) const;
 
 	const ProfileInfoArray &
 	get () const

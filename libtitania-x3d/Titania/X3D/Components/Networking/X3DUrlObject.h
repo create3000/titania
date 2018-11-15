@@ -83,23 +83,17 @@ public:
 	
 	virtual
 	X3DUrlObject*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (const CopyType type) const override
 	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	X3DUrlObject*
-	copy (X3DExecutionContext* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override;
+	copy (X3DExecutionContext* const, const CopyType) const override;
 
 	///  Sets the current excecution context to @a executionContext.
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Member access
 

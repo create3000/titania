@@ -72,8 +72,6 @@ X3DLightNodeTool::X3DLightNodeTool () :
 
 void
 X3DLightNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> removeLightTool (this);
 

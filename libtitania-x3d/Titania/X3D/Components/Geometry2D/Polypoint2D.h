@@ -73,20 +73,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -111,16 +108,12 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override
+	getPrimitiveType () const override
 	{ return X3DConstants::PointSet; }
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
+	toPrimitive () const override;
 
 
 protected:

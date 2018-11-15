@@ -98,8 +98,6 @@ X3DTexture2DNode::initialize ()
 
 void
 X3DTexture2DNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DTextureNode::setExecutionContext (executionContext);
 
@@ -223,11 +221,9 @@ X3DTexture2DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
 }
 
+///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 Magick::Image
 X3DTexture2DNode::getImage () const
-throw (X3D::Error <X3D::INVALID_NODE>,
-       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-       X3D::Error <X3D::DISPOSED>)
 {
 	// Process image.
 	const auto width     = getWidth ();
@@ -252,11 +248,9 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	return image;
 }
 
+///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
 std::vector <uint8_t>
 X3DTexture2DNode::getImageData () const
-throw (X3D::Error <X3D::INVALID_NODE>,
-       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
-       X3D::Error <X3D::DISPOSED>)
 {
 	X3D::ContextLock lock (getBrowser ());
 
@@ -345,7 +339,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 			break;
 	}
 
-	throw X3D::Error <X3D::INVALID_NODE> ("Unsupported comonent count.");
+	throw Error <X3D::INVALID_NODE> ("Unsupported comonent count.");
 }
 
 } // X3D

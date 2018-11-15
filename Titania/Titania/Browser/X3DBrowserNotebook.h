@@ -86,9 +86,9 @@ public:
 	getCurrentPage () const
 	{ return page; }
 
+	///  throws std::out_of_range
 	NotebookPagePtr
-	getPage (const basic::uri &) const
-	throw (std::out_of_range);
+	getPage (const basic::uri &) const;
 
 	virtual
 	const X3D::BrowserPtr &

@@ -373,8 +373,6 @@ IndexedLineSet::build ()
 
 SFNode
 IndexedLineSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto geometry = getExecutionContext () -> createNode <PointSet> ();
 

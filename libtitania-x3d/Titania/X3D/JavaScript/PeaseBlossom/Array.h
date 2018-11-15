@@ -137,6 +137,7 @@ private:
 	pb::var
 	getLength (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
+	///  throws pb::pbError
 	template <class Class>
 	static
 	typename std::enable_if <
@@ -147,11 +148,11 @@ private:
 	   typename Class::internal_type &
 	   >::type
 	get1Argument (const pb::var & value)
-	throw (pb::pbError)
 	{
 		return *peaseblossom::get1Argument <Class> (value);
 	}
 
+	///  throws pb::pbError
 	template <class Class>
 	static
 	typename std::enable_if <
@@ -162,11 +163,11 @@ private:
 	   typename Class::internal_type::internal_type
 	   >::type
 	get1Argument (const pb::var & value)
-	throw (pb::pbError)
 	{
 		return peaseblossom::get1Argument <typename Class::internal_type::internal_type> (value);
 	}
 
+	///  throws pb::pbError
 	template <class Class>
 	static
 	typename std::enable_if <
@@ -177,7 +178,6 @@ private:
 	   typename Class::internal_type
 	   >::type
 	get1Argument (const pb::var & value)
-	throw (pb::pbError)
 	{
 		return peaseblossom::get1Argument <typename Class::internal_type> (value);
 	}

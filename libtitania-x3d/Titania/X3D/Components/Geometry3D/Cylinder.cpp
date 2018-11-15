@@ -137,8 +137,6 @@ Cylinder::initialize ()
 
 void
 Cylinder::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getCylinderOptions () .removeInterest (&Cylinder::addEvent, this);
@@ -277,8 +275,6 @@ Cylinder::build ()
 
 SFNode
 Cylinder::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const double xDimension = optionsNode -> xDimension ();
 

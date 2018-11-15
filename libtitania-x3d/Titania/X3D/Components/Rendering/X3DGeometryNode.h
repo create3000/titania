@@ -119,9 +119,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Tests
 
@@ -229,15 +227,11 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) = 0;
+	getPrimitiveType () const = 0;
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) = 0;
+	toPrimitive () const = 0;
 
 	///  @name Destruction
 

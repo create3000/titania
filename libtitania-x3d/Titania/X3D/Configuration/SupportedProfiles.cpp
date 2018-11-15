@@ -228,9 +228,9 @@ SupportedProfiles::add (const ProfileInfoPtr & profile)
 	profiles .push_back (profile -> getName (), profile);
 }
 
+///  throws Error <NOT_SUPPORTED>
 const ProfileInfoPtr &
 SupportedProfiles::get (const std::string & name) const
-throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{

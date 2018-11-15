@@ -138,8 +138,6 @@ Rectangle2D::build ()
 
 SFNode
 Rectangle2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("Rectangle2D::toPrimitive");

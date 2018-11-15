@@ -160,64 +160,54 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 }
 
 ///  Performs Boolean operation union on IndexFaceSets in @a shapes.
+///  throws Error <INVALID_NODE>, Error <DISPOSED>, std::domain_error
 bool
 Combine::geometryUnion (const X3DExecutionContextPtr & executionContext,
                         const X3DPtrArray <X3DShapeNode> & shapes,
                         const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <DISPOSED>,
-       std::domain_error)
 {
 	return geometryBoolean (mesh_union, executionContext, shapes, false, undoStep);
 }
 
 ///  Performs Boolean operation difference on IndexFaceSets in @a shapes.
+///  throws Error <INVALID_NODE>, Error <DISPOSED>, std::domain_error
 bool
 Combine::geometryDifference (const X3DExecutionContextPtr & executionContext,
                              const X3DPtrArray <X3DShapeNode> & shapes,
                              const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <DISPOSED>,     
-       std::domain_error)
 {
 	return geometryBoolean (mesh_difference, executionContext, shapes, true, undoStep);
 }
 
 ///  Performs Boolean operation intersection on IndexFaceSets in @a shapes.
+///  throws Error <INVALID_NODE>, Error <DISPOSED>, std::domain_error
 bool
 Combine::geometryIntersection (const X3DExecutionContextPtr & executionContext,
                                const X3DPtrArray <X3DShapeNode> & shapes,
                                const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <DISPOSED>,     
-       std::domain_error)
 {
 	return geometryBoolean (mesh_intersection, executionContext, shapes, false, undoStep);
 }
 
 ///  Performs Boolean operation exclusion on IndexFaceSets in @a shapes.
+///  throws Error <INVALID_NODE>, Error <DISPOSED>, std::domain_error
 bool
 Combine::geometryExclusion (const X3DExecutionContextPtr & executionContext,
                             const X3DPtrArray <X3DShapeNode> & shapes,
                             const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <DISPOSED>,     
-       std::domain_error)
 {
 	return geometryBoolean (mesh_exclusion, executionContext, shapes, false, undoStep);
 }
 
 /// Performs Boolean operation @a booleanOperation on IndexFaceSets in @a shapes. If front is true the master shape is
 //  the first Shape node in @a shapes otherwise the last is selected as master shape.
+///  throws Error <INVALID_NODE>, Error <DISPOSED>, std::domain_error
 bool
 Combine::geometryBoolean (const BooleanOperation & booleanOperation,
                           const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
                           const bool front,
                           const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <DISPOSED>,
-       std::domain_error)
 {
 	try
 	{
@@ -311,13 +301,11 @@ throw (Error <INVALID_NODE>,
 }
 
 ///  Performs geometry combination on IndexFaceSets in @a shapes.
+///  throws Error <INVALID_NODE>, Error <DISPOSED>, std::domain_error
 bool
 Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
                           const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <DISPOSED>,
-       std::domain_error)
 {
 	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
 		executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));

@@ -71,44 +71,39 @@ public:
 
 	///  @name Construction (NOT SUPPORTED)
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	NamedNode*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	NamedNode*
-	copy (X3DExecutionContext* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const, const CopyType) const final override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
 
+	///  throws Error <DISPOSED>
 	SFNode
-	getLocalNode () const
-	throw (Error <DISPOSED>);
+	getLocalNode () const;
 
 	///  @name Input/Output
 

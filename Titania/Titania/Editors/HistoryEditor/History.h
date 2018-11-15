@@ -83,17 +83,16 @@ public:
 
 	///  @name Operations
 
+	///  throws std::out_of_range, std::invalid_argument
 	std::string
-	getId (const std::string & worldURL) const
-	throw (std::out_of_range,
-	       std::invalid_argument);
+	getId (const std::string & worldURL) const;
 
 	void
 	setPreview (const std::string & worldURL, const std::string & image);
 
+	///  throws std::invalid_argument
 	std::string
-	getPreview (const std::string & id) const
-	throw (std::invalid_argument);
+	getPreview (const std::string & id) const;
 
 	void
 	setContextPath (const std::string & worldURL, const std::string & contextPath);

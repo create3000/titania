@@ -87,8 +87,6 @@ ProtoDeclaration::create (X3DExecutionContext* const executionContext) const
 
 ProtoDeclaration*
 ProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	switch (type)
 	{
@@ -143,18 +141,16 @@ ProtoDeclaration::initialize ()
 
 void
 ProtoDeclaration::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DExecutionContext::setExecutionContext (executionContext);
 }
 
+// Spec says
+//throw Error <INVALID_NODE>,
+//      Error <INVALID_OPERATION_TIMING>,
+//      Error <DISPOSED>
 X3DPrototypeInstance*
 ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
-// Spec says
-//throw (Error <INVALID_NODE>,
-//       Error <INVALID_OPERATION_TIMING>,
-//       Error <DISPOSED>)
 {
 	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
 }

@@ -163,9 +163,9 @@ Font::getMatch () const
 	return Font (FontPatternPtr (FcFontMatch (nullptr, pattern .get (), &result), PatternDeleter ()));
 }
 
+///  throws std::runtime_error
 FontFace
 Font::getFace () const
-throw (std::runtime_error)
 {
 	FcInit ();
 

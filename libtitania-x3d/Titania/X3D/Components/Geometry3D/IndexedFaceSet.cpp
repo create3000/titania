@@ -1294,8 +1294,6 @@ IndexedFaceSet::mergePoints (const double distance)
 
 SFNode
 IndexedFaceSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 

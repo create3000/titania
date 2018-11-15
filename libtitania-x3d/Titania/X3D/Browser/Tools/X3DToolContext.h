@@ -69,15 +69,13 @@ public:
 
 	///  @name Member access
 
+	///  throws Error <INVALID_NAME>, Error <DISPOSED>
 	const SupportedTools::Function &
-	getSupportedTool (const std::string & typeName) const
-	throw (Error <INVALID_NAME>,
-	       Error <DISPOSED>);
+	getSupportedTool (const std::string & typeName) const;
 
+	///  throws Error <DISPOSED>
 	const SupportedTools &
 	getSupportedTools () const
-	throw (Error <INVALID_NAME>,
-	       Error <DISPOSED>)
 	{ return supportedTools; }
 
 	std::stack <bool> &

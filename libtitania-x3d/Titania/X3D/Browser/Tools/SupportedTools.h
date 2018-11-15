@@ -75,13 +75,13 @@ public:
 
 	///  @name Operations
 
+	///  throws Error <INVALID_NAME>
 	void
-	addTool (const std::string & typeName, const Function & function)
-	throw (Error <INVALID_NAME>);
+	addTool (const std::string & typeName, const Function & function);
 
+	///  throws Error <INVALID_NAME>
 	const Function &
-	getTool (const std::string & typeName) const
-	throw (Error <INVALID_NAME>);
+	getTool (const std::string & typeName) const;
 
 	const std::map <std::string, Function> &
 	getTools () const

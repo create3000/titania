@@ -73,132 +73,117 @@ public:
 	ProtoDeclaration*
 	create (X3DExecutionContext* const executionContext) const final override;
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ProtoDeclaration*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ProtoDeclaration*
-	copy (X3DExecutionContext* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const, const CopyType) const final override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Tests
 
+	///  throws Error <DISPOSED>
 	virtual
 	bool
-	isExternproto () const
-	throw (Error <DISPOSED>) final override
+	isExternproto () const final override
 	{ return false; }
 
 	///  @name Member access
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getWorldURL () const final override
 	{ return getExecutionContext () -> getWorldURL (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	EncodingType
-	getEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getEncoding () const final override
 	{ return getExecutionContext () -> getEncoding (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	SpecificationVersionType
-	getSpecificationVersion () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getSpecificationVersion () const final override
 	{ return getExecutionContext () -> getSpecificationVersion (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const std::string &
-	getCharacterEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getCharacterEncoding () const final override
 	{ return getExecutionContext () -> getCharacterEncoding (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const std::string &
-	getComment () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getComment () const final override
 	{ return getExecutionContext () -> getComment (); }
 
 	///  @name Profile/Component handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ProfileInfoPtr &
-	getProfile ()  const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getProfile () const final override
 	{ return getExecutionContext () -> getProfile (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	updateComponent (const ComponentInfoPtr & component)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	updateComponent (const ComponentInfoPtr & component) final override
 	{ return getExecutionContext () -> updateComponent (component); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ComponentInfoArray &
-	getComponents () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getComponents () const final override
 	{ return getExecutionContext () -> getComponents (); }
 
 	///  @name Unit handling
 
+	///  throws Error <DISPOSED>
 	virtual
 	long double
-	fromUnit (const UnitCategory category, const long double value) const
-	throw (Error <DISPOSED>) final override
+	fromUnit (const UnitCategory category, const long double value) const final override
 	{ return getExecutionContext () -> fromUnit (category, value); }
 
+	///  throws Error <DISPOSED>
 	virtual
 	long double
-	toUnit (const UnitCategory category, const long double value) const
-	throw (Error <DISPOSED>) final override
+	toUnit (const UnitCategory category, const long double value) const final override
 	{ return getExecutionContext () -> toUnit (category, value); }
 
 	///  @name Member access
 
+	///  throws Error <DISPOSED>
 	virtual
 	ProtoDeclaration*
-	getProtoDeclaration ()
-	throw (Error <DISPOSED>) final override
+	getProtoDeclaration () final override
 	{ return this; }
 
 	///  @name Instances handling

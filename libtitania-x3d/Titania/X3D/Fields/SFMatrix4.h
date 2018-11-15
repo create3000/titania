@@ -119,11 +119,10 @@ public:
 	create () const override
 	{ return new SFMatrix4 (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	SFMatrix4*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override;
+	copy (const CopyType) const override;
 
 	///  @name Interest service
 
@@ -241,11 +240,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	fromStream (std::istream & istream) final override;
 
 	virtual
 	void
@@ -266,12 +261,11 @@ protected:
 
 };
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 template <class InternalType>
 inline
 SFMatrix4 <InternalType>*
 SFMatrix4 <InternalType>::copy (const CopyType) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	return new SFMatrix4 (*this);
 }
@@ -496,10 +490,6 @@ template <class InternalType>
 inline
 void
 SFMatrix4 <InternalType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	InternalType value;
 

@@ -96,21 +96,17 @@ public:
 
 	///  @name Member access
 
-	///  Copys this node and sets the execution context to @a executionContext.
+	///  Copies this node and sets the execution context to @a executionContext.
 	virtual
 	X3DUrlObject*
-	copy (X3DExecutionContext* const executionContext, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const final override
 	{ return getNode <Inline> () -> copy (executionContext, type); }
 
 	///  @name Member access
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	setExecutionContext (X3DExecutionContext* const executionContext) final override
 	{ X3DChildNodeTool::setExecutionContext (executionContext); }
 
 	virtual
@@ -127,44 +123,36 @@ public:
 
 	///  @name Root node handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	MFNode &
-	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getRootNodes () final override
 	{ return getNode <Inline> () -> getRootNodes (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const MFNode &
-	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getRootNodes () const final override
 	{ return getNode <Inline> () -> getRootNodes (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const X3DScenePtr &
-	getInternalScene () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getInternalScene () const final override
 	{ return getNode <Inline> () -> getInternalScene (); }
 
 	///  @name Exported node handling
 
+	///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	SFNode
-	getExportedNode (const std::string & exportedName) const
-	throw (Error <INVALID_NAME>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getExportedNode (const std::string & exportedName) const final override
 	{ return getNode <Inline> () -> getExportedNode (exportedName); }
 
+	///  throws Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ExportedNodeIndex &
-	getExportedNodes () const
-	throw (Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getExportedNodes () const final override
 	{ return getNode <Inline> () -> getExportedNodes (); }
 
 	///  @name Operations

@@ -60,62 +60,62 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
+///  throws std::out_of_range
 inline
 Context*
 getContext (pb::pbObject* const object)
-throw (std::out_of_range)
 {
 	return object -> getUserData <Context*> (0);
 }
 
+///  throws std::out_of_range
 inline
 Context*
 getContext (pb::ptr <pb::pbObject> const object)
-throw (std::out_of_range)
 {
 	return getContext (object .get ());
 }
 
+///  throws std::out_of_range
 inline
 Context*
 getContext (const pb::ptr <pb::pbExecutionContext> & ec)
-throw (std::out_of_range)
 {
 	return ec -> getUserData <Context*> (0);
 }
 
+///  throws std::out_of_range
 template <class Type>
 inline
 Type*
 getObject (pb::pbObject* const object)
-throw (std::out_of_range)
 {
 	return object -> getUserData <Type*> (1);
 }
 
+///  throws std::out_of_range
 template <class Type>
 inline
 Type*
 getObject (const pb::ptr <pb::pbObject> & object)
-throw (std::out_of_range)
 {
 	return getObject <Type> (object .get ());
 }
 
+///  throws std::out_of_range
 template <class Type>
 inline
 Type*
 getObject (const pb::var & value)
-throw (std::out_of_range)
 {
 	return getObject <Type> (value .getObject () .get ());
 }
 
+///  throws std::invalid_argument
 template <class Class>
 inline
 typename Class::internal_type*
 getThis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value)
-throw (std::invalid_argument)
 {
 	try
 	{
@@ -130,6 +130,7 @@ throw (std::invalid_argument)
 	throw std::invalid_argument (Class::getTypeName ());
 }
 
+///  throws pb::pbError
 template <class Class>
 typename std::enable_if <
 	not (std::is_integral <typename Class::internal_type::internal_type>::value or
@@ -139,7 +140,6 @@ typename std::enable_if <
 	typename Class::internal_type*
 >::type
 get1Argument (const pb::var & value)
-throw (pb::pbError)
 {
 	try
 	{
@@ -158,6 +158,7 @@ throw (pb::pbError)
 	throw pb::TypeError ("Type of value is invalid, must be " + Class::getTypeName () + ".");
 }
 
+///  throws pb::pbError
 template <class Class>
 inline
 typename std::enable_if <
@@ -168,7 +169,6 @@ typename std::enable_if <
 	typename Class::internal_type*
 >::type
 get1Argument (const std::vector <pb::var> & args, const size_t index)
-throw (pb::pbError)
 {
 	try
 	{
@@ -180,6 +180,7 @@ throw (pb::pbError)
 	}
 }
 
+///  throws pb::pbError
 template <class Type>
 inline
 typename std::enable_if <
@@ -190,74 +191,74 @@ typename std::enable_if <
 	Type
 >::type
 get1Argument (const pb::var & value)
-throw (pb::pbError)
 {
 	throw pb::TypeError ("get1Argument");
 }
 
+///  throws pb::pbError
 template <>
 inline
 bool
 get1Argument <bool> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toBoolean ();
 }
 
+///  throws pb::pbError
 template <>
 inline
 double
 get1Argument <double> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toNumber ();
 }
 
+///  throws pb::pbError
 template <>
 inline
 float
 get1Argument <float> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toNumber ();
 }
 
+///  throws pb::pbError
 template <>
 inline
 int32_t
 get1Argument <int32_t> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toInt32 ();
 }
 
+///  throws pb::pbError
 template <>
 inline
 uint32_t
 get1Argument <uint32_t> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toUInt32 ();
 }
 
+///  throws pb::pbError
 template <>
 inline
 std::string
 get1Argument <std::string> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toString ();
 }
 
+///  throws pb::pbError
 template <>
 inline
 X3D::String
 get1Argument <X3D::String> (const pb::var & value)
-throw (pb::pbError)
 {
 	return value .toString ();
 }
 
+///  throws pb::pbError
 template <class Type>
 inline
 typename std::enable_if <
@@ -268,7 +269,6 @@ typename std::enable_if <
 	Type
 >::type
 get1Argument (const std::vector <pb::var> & args, const size_t index)
-throw (pb::pbError)
 {
 	return get1Argument <Type> (args [index]);
 }

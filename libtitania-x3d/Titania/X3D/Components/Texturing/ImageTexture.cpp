@@ -101,8 +101,6 @@ ImageTexture::initialize ()
 
 void
 ImageTexture::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (future)
 		future -> setExecutionContext (executionContext);
@@ -176,10 +174,9 @@ ImageTexture::set_buffer ()
 	                                     std::bind (&ImageTexture::setTexture, this, _1, _2)));
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 ImageTexture::setUrl (Magick::Image & image)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	Magick::Blob blob;
 
@@ -192,10 +189,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	url () = { "data:image/png;base64," + Glib::Base64::encode (data) };
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 ImageTexture::setUrl (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	std::ostringstream osstream;
 

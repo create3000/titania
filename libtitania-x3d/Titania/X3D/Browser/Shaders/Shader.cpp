@@ -133,10 +133,9 @@ Shader::getProgramStageBit (const std::string & type)
 	}
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 ShaderSource
 Shader::getSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const bool shadow)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	ShaderSource          source;
 	std::set <basic::uri> files;
@@ -147,6 +146,7 @@ throw (Error <INVALID_URL>,
 	return source;
 }
 
+///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 std::string
 Shader::getSource (X3DBaseNode* const node,
                    const std::string & source,
@@ -154,8 +154,6 @@ Shader::getSource (X3DBaseNode* const node,
                    std::vector <basic::uri> & uris,
                    const size_t level,
                    std::set <basic::uri> & files)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
 {
 	static const std::regex include (R"/(^#pragma\s+X3D\s+include\s+\"(.*?)\"\s*$)/");
 

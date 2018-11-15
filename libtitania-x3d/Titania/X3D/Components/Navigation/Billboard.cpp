@@ -106,9 +106,9 @@ Billboard::getBBox () const
 	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
+///  throws std::domain_error
 const Matrix4d &
 Billboard::rotate (X3DRenderObject* const renderObject)
-throw (std::domain_error)
 {
 	const auto invModelViewMatrix = inverse (renderObject -> getModelViewMatrix () .get ());
 	const auto billboardToViewer  = normalize (invModelViewMatrix .origin ());       // Normalized to get work with Geo

@@ -71,9 +71,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	setExecutionContext (X3DExecutionContext* const executionContext) final override
 	{ X3DLineGeometryNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Fields
@@ -157,16 +155,12 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
+	getPrimitiveType () const final override
 	{ return getNode <Disk2D> () -> getPrimitiveType (); }
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
+	toPrimitive () const final override
 	{ return getNode <Disk2D> () -> toPrimitive (); }
 
 	virtual

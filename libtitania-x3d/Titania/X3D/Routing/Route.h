@@ -79,35 +79,28 @@ public:
 
 	virtual
 	Route*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	Route*
-	copy (X3DExecutionContext* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const, const CopyType) const final override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -118,21 +111,21 @@ public:
 	bool
 	isConnected () const;
 
+	///  throws Error <DISPOSED>
 	SFNode
-	getSourceNode () const
-	throw (Error <DISPOSED>);
+	getSourceNode () const;
 
+	///  throws Error <DISPOSED>
 	const std::string &
-	getSourceField () const
-	throw (Error <DISPOSED>);
+	getSourceField () const;
 
+	///  throws Error <DISPOSED>
 	SFNode
-	getDestinationNode () const
-	throw (Error <DISPOSED>);
+	getDestinationNode () const;
 
+	///  throws Error <DISPOSED>
 	const std::string &
-	getDestinationField () const
-	throw (Error <DISPOSED>);
+	getDestinationField () const;
 
 	///  @name Operations
 

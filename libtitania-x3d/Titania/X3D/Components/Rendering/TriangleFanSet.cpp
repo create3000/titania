@@ -148,8 +148,6 @@ TriangleFanSet::addNormals ()
 
 SFNode
 TriangleFanSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (3, coordIndex .size ());
 }

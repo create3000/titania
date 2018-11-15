@@ -97,11 +97,11 @@ getObject (JSContext* const cx, JSObject* const obj)
 }
 
 // Version for functions.
+///  throws std::invalid_argument
 template <class Type>
 inline
 typename Type::internal_type*
 getThis (JSContext* const cx, jsval* const vp)
-throw (std::invalid_argument)
 {
 	const auto self = JS_THIS_OBJECT (cx, vp);
 
@@ -117,11 +117,11 @@ throw (std::invalid_argument)
 }
 
 // Version for properties.
+///  throws std::invalid_argument
 template <class Type>
 inline
 typename Type::internal_type*
 getThis (JSContext* const cx, JSObject* const obj)
-throw (std::invalid_argument)
 {
 	const auto object = getObject <typename Type::internal_type*> (cx, obj);
 
@@ -131,6 +131,7 @@ throw (std::invalid_argument)
 	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <class Type>
 typename std::enable_if <
    not (std::is_integral <Type>::value or
@@ -140,8 +141,6 @@ typename std::enable_if <
    typename Type::internal_type*
    >::type
 getArgument (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	JSObject* obj = nullptr;
 
@@ -157,6 +156,7 @@ throw (std::invalid_argument,
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <class Type>
 typename std::enable_if <
    std::is_integral <Type>::value or
@@ -166,18 +166,15 @@ typename std::enable_if <
    Type
    >::type
 getArgument (JSContext* const, jsval* const, const size_t)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	throw std::invalid_argument ("getArgument");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 bool
 getArgument <bool> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	JSBool boolean = false;
 
@@ -187,12 +184,11 @@ throw (std::invalid_argument,
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Boolean'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 double
 getArgument <double> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	double number = 0;
 
@@ -202,12 +198,11 @@ throw (std::invalid_argument,
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 float
 getArgument <float> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	double number = 0;
 
@@ -217,12 +212,11 @@ throw (std::invalid_argument,
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 int32_t
 getArgument <int32_t> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	int32_t number = 0;
 
@@ -232,12 +226,11 @@ throw (std::invalid_argument,
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 uint32_t
 getArgument <uint32_t> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	uint32_t number = 0;
 
@@ -247,22 +240,20 @@ throw (std::invalid_argument,
 	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 std::string
 getArgument <std::string> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	return to_string (cx, argv [index]);
 }
 
+///  throws std::invalid_argument, std::domain_error
 template <>
 inline
 X3D::String
 getArgument <X3D::String> (JSContext* const cx, jsval* const argv, const size_t index)
-throw (std::invalid_argument,
-       std::domain_error)
 {
 	return to_string (cx, argv [index]);
 }

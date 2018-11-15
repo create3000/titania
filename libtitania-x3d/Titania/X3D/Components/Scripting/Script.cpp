@@ -107,8 +107,6 @@ Script::initialize ()
 
 void
 Script::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (javaScript)
 		javaScript -> setExecutionContext (executionContext);
@@ -116,11 +114,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DScriptNode::setExecutionContext (executionContext);
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
 void
 Script::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
 {
 	X3DScriptNode::addUserDefinedField (accessType, name, field);
 	
@@ -128,9 +124,9 @@ throw (Error <INVALID_NAME>,
 		url () .addEvent ();
 }
 
+///  throws Error <DISPOSED>
 void
 Script::removeUserDefinedField (const std::string & name)
-throw (Error <DISPOSED>)
 {
 	X3DScriptNode::removeUserDefinedField (name);
 

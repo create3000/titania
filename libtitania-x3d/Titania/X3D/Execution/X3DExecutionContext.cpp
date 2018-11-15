@@ -115,8 +115,6 @@ X3DExecutionContext::X3DExecutionContext () :
 
 void
 X3DExecutionContext::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const bool sameBrowser = value -> getBrowser () == getBrowser ();
 
@@ -158,9 +156,9 @@ X3DExecutionContext::initialize ()
 		realize ();
 }
 
+///  throws Error <DISPOSED>
 void
 X3DExecutionContext::realize ()
-throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -182,10 +180,9 @@ throw (Error <DISPOSED>)
 	{ }
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::addUninitializedNode (X3DBaseNode* const uninitializedNode)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	uninitializedNodes .emplace_back (uninitializedNode);
 
@@ -220,11 +217,9 @@ X3DExecutionContext::hasComponent (const ComponentType & component) const
 
 // Node handling
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 SFNode
 X3DExecutionContext::createNode (const std::string & typeName)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -252,15 +247,9 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_X3D>, Error <INVALID_FIELD>, Error <INVALID_ACCESS_TYPE>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DPrototypeInstancePtr
 X3DExecutionContext::createProto (const std::string & typeName)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_X3D>,
-       Error <INVALID_FIELD>,
-       Error <INVALID_ACCESS_TYPE>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DPrototypeInstancePtr node (findProtoDeclaration (typeName, AvailableType { }) -> createInstance (this));
 
@@ -281,14 +270,9 @@ throw (Error <INVALID_NAME>,
 // DONE: A node may be part of more than one run-time name scope. A node shall be removed from a name scope when it is
 // removed from the scene graph. See: http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/concepts.html#Runtimenamescope
 
+///  throws Error <NODE_IN_USE>, Error <IMPORTED_NODE>, Error <INVALID_NODE>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::addNamedNode (const std::string & name, const SFNode & node)
-throw (Error <NODE_IN_USE>,
-       Error <IMPORTED_NODE>,
-       Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (namedNodes .count (name))
 		throw Error <NODE_IN_USE> ("Couldn't add named node: node name '" + name + "' is already in use.");
@@ -296,13 +280,9 @@ throw (Error <NODE_IN_USE>,
 	updateNamedNode (name, node);
 }
 
+///  throws Error <IMPORTED_NODE>, Error <INVALID_NODE>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::updateNamedNode (const std::string & name, const SFNode & node)
-throw (Error <IMPORTED_NODE>,
-       Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't update named node: node IS NULL.");
@@ -335,10 +315,9 @@ throw (Error <IMPORTED_NODE>,
 	namedNodesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::removeNamedNode (const std::string & name)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = namedNodes .find (name);
 
@@ -359,11 +338,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	namedNodesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 SFNode
 X3DExecutionContext::getNamedNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto namedNode = namedNodes .find (name);
 
@@ -375,11 +352,10 @@ throw (Error <INVALID_NAME>,
 
 /***
  *  Returns a name that is unique in this execution contentext.
+ *  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 std::string
 X3DExecutionContext::getUniqueName (std::string name) const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	name = RemoveTrailingNumber (name);
  	
@@ -432,11 +408,9 @@ X3DExecutionContext::getVeryUniqueName (X3DExecutionContext* const executionCont
 
 // Imported nodes handling
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 bool
 X3DExecutionContext::isImportedNode (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not node)
 		throw Error <INVALID_NODE> ("Node is NULL.");
@@ -461,15 +435,9 @@ throw (Error <INVALID_NODE>,
 	return count;
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <NODE_IN_USE>, Error <URL_UNAVAILABLE> Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ImportedNodePtr &
 X3DExecutionContext::addImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <NODE_IN_USE>,
-       Error <URL_UNAVAILABLE>,
-       Error <NODE_NOT_AVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (importedNodes .count (importedName))
 		throw Error <NODE_IN_USE> ("Couldn't add imported node: imported name '" + importedName + "' already in use.");
@@ -477,14 +445,9 @@ throw (Error <INVALID_NODE>,
 	return updateImportedNode (inlineNode, exportedName, importedName);
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <URL_UNAVAILABLE>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ImportedNodePtr &
 X3DExecutionContext::updateImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <URL_UNAVAILABLE>,
-       Error <NODE_NOT_AVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not inlineNode)
 		throw Error <INVALID_NODE> ("Couldn't update imported node: Inline node is NULL.");
@@ -545,21 +508,18 @@ throw (Error <INVALID_NODE>,
 	return importedNode;
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::removeImportedNode (const std::string & importedName)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	importedNodes .erase (importedName);
 
 	importedNodesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 SFNode
 X3DExecutionContext::getImportedNode (const std::string & importedName) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = importedNodes .find (importedName);
 
@@ -598,11 +558,9 @@ X3DExecutionContext::getVeryUniqueImportedName (const X3DExecutionContext* const
 	return uniqueName;
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 bool
 X3DExecutionContext::isLocalNode (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not node)
 		throw Error <INVALID_NODE> ("Node is NULL.");
@@ -616,12 +574,10 @@ throw (Error <INVALID_NODE>,
 	return false;
 }
 
-// Returns either a X3DNode with name @a name or a node of type ImportedNode.
+///  Returns either a X3DNode with name @a name or a node of type ImportedNode.
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 SFNode
 X3DExecutionContext::getLocalNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -638,11 +594,9 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const std::string &
 X3DExecutionContext::getLocalName (const SFNode & node) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not node)
 		throw Error <INVALID_NODE> ("Couldn't get local name: node is NULL.");
@@ -675,10 +629,9 @@ throw (Error <INVALID_NODE>,
 
 //	Proto declaration handling
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 ProtoDeclarationPtr
 X3DExecutionContext::createProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
@@ -702,11 +655,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return prototype;
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::addProtoDeclaration (const std::string & name, const ProtoDeclarationPtr & prototype)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
@@ -720,11 +671,9 @@ throw (Error <INVALID_NAME>,
 	prototypesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::updateProtoDeclaration (const std::string & name, const ProtoDeclarationPtr & prototype)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
@@ -745,10 +694,9 @@ throw (Error <INVALID_NAME>,
 	prototypesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::removeProtoDeclaration (const std::string & name)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = std::remove_if (prototypes .begin (), prototypes .end (),
 	[&name] (const ProtoDeclarationPtr & prototype)
@@ -761,11 +709,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	prototypesOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ProtoDeclarationPtr &
 X3DExecutionContext::getProtoDeclaration (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = std::find_if (prototypes .cbegin (), prototypes .cend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
@@ -789,9 +735,9 @@ X3DExecutionContext::hasProtoDeclaration (const std::string & name) const
 	});
 }
 
+///  throws Error <DISPOSED>
 std::string
 X3DExecutionContext::getUniqueProtoName (std::string name) const
-throw (Error <DISPOSED>)
 {
 	if (not name .empty () and not hasProtoDeclaration (name))
 		return name;
@@ -820,10 +766,9 @@ throw (Error <DISPOSED>)
 
 //	ExternProto declaration handling
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 ExternProtoDeclarationPtr
 X3DExecutionContext::createExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const ExternProtoDeclarationPtr externProto (new ExternProtoDeclaration (this));
 
@@ -846,11 +791,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return externProto;
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const ExternProtoDeclarationPtr & externProto)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add extern proto declaration: extern proto name is empty.");
@@ -864,11 +807,9 @@ throw (Error <INVALID_NAME>,
 	externProtosOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const ExternProtoDeclarationPtr & externProto)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update extern proto declaration: extern proto name is empty.");
@@ -889,10 +830,9 @@ throw (Error <INVALID_NAME>,
 	externProtosOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = std::remove_if (externProtos .begin (), externProtos .end (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
@@ -905,12 +845,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	externProtosOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const ExternProtoDeclarationPtr &
 X3DExecutionContext::getExternProtoDeclaration (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto iter = std::find_if (externProtos .cbegin (), externProtos .cend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
@@ -934,9 +871,9 @@ X3DExecutionContext::hasExternProtoDeclaration (const std::string & name) const
 	});
 }
 
+///  throws Error <DISPOSED>
 std::string
 X3DExecutionContext::getUniqueExternProtoName (std::string name) const
-throw (Error <DISPOSED>)
 {
 	if (not name .empty () and not hasExternProtoDeclaration (name))
 		return name;
@@ -1020,11 +957,9 @@ X3DExecutionContext::removeExternProtoLoadCount (const ExternProtoDeclaration* c
 
 // ProtoObject handling
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DProtoDeclarationNode*
 X3DExecutionContext::findProtoDeclaration (const std::string & name, const AvailableType & available) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -1046,11 +981,9 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DProtoDeclarationNode*
 X3DExecutionContext::findProtoDeclaration (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const auto protoNodes = findProtoDeclarations ();
 	const auto iter       = protoNodes .find (name);
@@ -1061,10 +994,9 @@ throw (Error <INVALID_NAME>,
 	throw Error <INVALID_NAME> ("Unknown proto object '" + name + "'.");
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 std::map <std::string, X3DProtoDeclarationNode*>
 X3DExecutionContext::findProtoDeclarations () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const X3DExecutionContext* executionContext = this;
 
@@ -1135,14 +1067,10 @@ X3DExecutionContext::set_bbox ()
 
 //	Dynamic route handling
 
+///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <IMPORTED_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const RoutePtr &
 X3DExecutionContext::addRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
                                const SFNode & destinationNode, const std::string & destinationFieldId)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_FIELD>,
-       Error <IMPORTED_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not sourceNode)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: source node is NULL.");
@@ -1190,14 +1118,10 @@ throw (Error <INVALID_NODE>,
 	return addSimpleRoute (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <IMPORTED_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const RoutePtr &
 X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
                                      const SFNode & destinationNode, const std::string & destinationFieldId)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_FIELD>,
-       Error <IMPORTED_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	// Create route and return.
 
@@ -1255,11 +1179,9 @@ throw (Error <INVALID_NODE>,
 	}
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 const RoutePtr &
 X3DExecutionContext::addRoute (Route* const value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not value)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
@@ -1279,13 +1201,10 @@ throw (Error <INVALID_NODE>,
 	return route;
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
                                   const SFNode & destinationNode, const std::string & destinationFieldId)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_FIELD>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -1308,11 +1227,9 @@ throw (Error <INVALID_NODE>,
 	}
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::deleteRoute (Route* const route)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
@@ -1326,11 +1243,9 @@ throw (Error <INVALID_NODE>,
 	routes .erase (routeKey);
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 X3DExecutionContext::changeViewpoint (const std::string & name)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{

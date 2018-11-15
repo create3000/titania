@@ -67,9 +67,9 @@ X3DParser::X3DParser () :
 	                units (true)
 { }
 
+///  throws Error <INVALID_X3D>
 std::string
 X3DParser::save (std::istream & istream, const std::string & suffix)
-throw (Error <INVALID_X3D>)
 {
 	// Create temp file
 

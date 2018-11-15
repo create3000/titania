@@ -438,9 +438,9 @@ private:
 	void
 	set_right_hitPoint ();
 
+	///  throws std::runtime_error
 	X3D::Vector2d
-	projectPoint (const X3D::Vector3d &, const X3D::BrowserPtr &) const
-	throw (std::domain_error);
+	projectPoint (const X3D::Vector3d &, const X3D::BrowserPtr &) const;
 
 	///  @name Operations
 

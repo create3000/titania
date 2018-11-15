@@ -103,10 +103,9 @@ X3DToolContext::initialize ()
 	transformToolOptions -> setup ();
 }
 
+///  throws Error <INVALID_NAME>, Error <DISPOSED>
 const SupportedTools::Function &
 X3DToolContext::getSupportedTool (const std::string & typeName) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	return supportedTools .getTool (typeName);
 }

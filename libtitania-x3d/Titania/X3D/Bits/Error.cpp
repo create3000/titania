@@ -58,21 +58,18 @@ X3DError::X3DError (const std::string & message) :
 { }
 
 const char*
-X3DError::what () const
-throw ()
+X3DError::what () const noexcept
 {
 	return message .c_str ();
 }
 
 const std::string &
 X3DError::toString () const
-throw ()
 {
 	return message;
 }
 
 X3DError::~X3DError ()
-throw ()
 { }
 
 } // X3D

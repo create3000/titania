@@ -61,9 +61,9 @@ namespace peaseblossom {
 
 class Context;
 
+///  throws pb::pbError
 void
-setValue (X3DFieldDefinition* const field, const pb::var & value)
-throw (pb::pbError);
+setValue (X3DFieldDefinition* const field, const pb::var & value);
 
 pb::var
 getValue (Context* const context, X3DFieldDefinition* const field);

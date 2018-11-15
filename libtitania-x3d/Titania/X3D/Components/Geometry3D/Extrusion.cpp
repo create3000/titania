@@ -751,8 +751,6 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 
 SFNode
 Extrusion::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();

@@ -68,8 +68,8 @@ public:
 
 	///  @name Construction
 
-	Context (X3D::Script* const, const std::string &, const basic::uri &)
-	throw (std::exception);
+	///  throws std::exception
+	Context (X3D::Script* const, const std::string &, const basic::uri &);
 
 	virtual
 	X3DBaseNode*
@@ -77,28 +77,24 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3D::X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	setExecutionContext (X3D::X3DExecutionContext* const) final override;
 
 	///  @name Common members
 
+	///  throws Error <DISPOSED>
 	virtual
 	X3D::ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -107,13 +103,13 @@ public:
 	getProgram () const
 	{ return program; }
 
+	///  throws std::out_of_range
 	const pb::ptr <pb::NativeFunction> &
-	getClass (const ObjectType type) const
-	throw (std::out_of_range);
+	getClass (const ObjectType type) const;
 
+	///  throws std::invalid_argument
 	void
-	addObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const, pb::pbObject* const)
-	throw (std::invalid_argument);
+	addObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const, pb::pbObject* const);
 
 	void
 	removeObject (X3D::X3DChildObject* const, X3D::X3DFieldDefinition* const)

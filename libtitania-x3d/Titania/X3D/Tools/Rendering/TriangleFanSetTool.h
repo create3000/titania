@@ -88,9 +88,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
+	toPrimitive () const final override
 	{ return getNode <TriangleFanSet> () -> toPrimitive (); }
 
 	///  @name Destruction

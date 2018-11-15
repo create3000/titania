@@ -102,18 +102,16 @@ public:
 	create () const final override
 	{ return new X3DConstArrayField (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DConstArrayField*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const final override
 	{ return new X3DConstArrayField (*this); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DConstArrayField*
-	copy (X3DExecutionContext* const, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (X3DExecutionContext* const, const CopyType type) const final override
 	{ return copy (type); }
 
 	///  @name Tests
@@ -133,13 +131,10 @@ public:
 
 	///  @name Input/Output
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	fromStream (std::istream &) final override
 	{ }
 
 	virtual

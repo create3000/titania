@@ -73,20 +73,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -106,11 +103,9 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DNode)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DNode);
 
 
 private:

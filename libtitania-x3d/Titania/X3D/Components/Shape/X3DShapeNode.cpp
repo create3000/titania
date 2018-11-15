@@ -101,8 +101,6 @@ X3DShapeNode::initialize ()
 
 void
 X3DShapeNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DChildNode::setExecutionContext (executionContext);
 

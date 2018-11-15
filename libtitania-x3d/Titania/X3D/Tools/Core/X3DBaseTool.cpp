@@ -82,8 +82,6 @@ X3DBaseTool::initialize ()
 
 void
 X3DBaseTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	node -> setExecutionContext (value);
 
@@ -91,11 +89,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DBaseNode::setExecutionContext (value);
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DFieldDefinition*
 X3DBaseTool::getField (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{

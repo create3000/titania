@@ -331,7 +331,7 @@ Browser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 						JS_SET_RVAL (cx, vp, JSVAL_VOID);
 						return true;
 					}
-					catch (const X3D::Error <X3D::INVALID_NAME> &)
+					catch (const Error <X3D::INVALID_NAME> &)
 					{
 						return ThrowException (cx, "Browser .createX3DFromURL: no such field '%s' in node %s.", event .c_str (), node -> getValue () -> getTypeName () .c_str ());
 					}
@@ -416,7 +416,7 @@ Browser::getRenderingProperty (JSContext* cx, uint32_t argc, jsval* vp)
 
 			return getValue (cx, field, vp);
 		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		catch (const Error <X3D::INVALID_NAME> &)
 		{
 			return ThrowException (cx, "Browser .getRenderingProperty: unknown property '%s'.", name .c_str ());
 		}
@@ -445,7 +445,7 @@ Browser::getBrowserProperty (JSContext* cx, uint32_t argc, jsval* vp)
 
 			return getValue (cx, field, vp);
 		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		catch (const Error <X3D::INVALID_NAME> &)
 		{
 			return ThrowException (cx, "Browser .getBrowserProperty: unknown property '%s'.", name .c_str ());
 		}
@@ -474,7 +474,7 @@ Browser::getBrowserOption (JSContext* cx, uint32_t argc, jsval* vp)
 
 			return getValue (cx, field, vp);
 		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		catch (const Error <X3D::INVALID_NAME> &)
 		{
 			return ThrowException (cx, "Browser .getBrowserOption: unknown property '%s'.", name .c_str ());
 		}
@@ -507,7 +507,7 @@ Browser::setBrowserOption (JSContext* cx, uint32_t argc, jsval* vp)
 			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 			return true;
 		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		catch (const Error <X3D::INVALID_NAME> &)
 		{
 			return ThrowException (cx, "Browser .setBrowserOption: unknown property '%s'.", name .c_str ());
 		}

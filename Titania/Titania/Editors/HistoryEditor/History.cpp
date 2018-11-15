@@ -170,10 +170,9 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 		processInterests ();
 }
 
+///  throws std::out_of_range, std::invalid_argument
 std::string
 History::getId (const std::string & worldURL) const
-throw (std::out_of_range,
-	    std::invalid_argument)
 {
 	const auto & result = database .query_array ("SELECT id FROM History WHERE "
 	                                             "worldURL = " + database .quote (worldURL));
@@ -181,10 +180,9 @@ throw (std::out_of_range,
 	return result .at (0) .at (0);
 }
 
+///  throws std::out_of_range, std::invalid_argument
 //const std::string &
 //History::getIndex (const std::string & worldURL) const
-//throw (std::out_of_range,
-//	    std::invalid_argument)
 //{
 //	const auto & result = database .query_array ("SELECT "
 //	                                             "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
@@ -213,9 +211,9 @@ History::setPreview (const std::string & worldURL, const std::string & image)
 	}
 }
 
+///  throws std::invalid_argument
 std::string
 History::getPreview (const std::string & id) const
-throw (std::invalid_argument)
 {
 	std::string value;
 

@@ -95,13 +95,13 @@ public:
 	getConnectorsSensitive () const
 	{ return connectorsSensitive; }
 
+	///  throws std::out_of_range
 	X3D::Vector2i
-	getInputPosition (X3D::X3DFieldDefinition* const field) const
-	throw (std::out_of_range);
+	getInputPosition (X3D::X3DFieldDefinition* const field) const;
 
+	///  throws std::out_of_range
 	X3D::Vector2i
-	getOutputPosition (X3D::X3DFieldDefinition* const field) const
-	throw (std::out_of_range);
+	getOutputPosition (X3D::X3DFieldDefinition* const field) const;
 
 	///  @name Operations
 

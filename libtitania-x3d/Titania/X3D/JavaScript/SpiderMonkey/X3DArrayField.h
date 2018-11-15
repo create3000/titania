@@ -119,6 +119,7 @@ private:
 	static JSBool length (JSContext*, JSObject*, jsid, JSBool, jsval*);
 	static JSBool length (JSContext*, JSObject*, jsid, jsval*);
 
+	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
 	typename std::enable_if <
@@ -129,12 +130,11 @@ private:
 	   typename Class::internal_type &
 	   >::type
 	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
-	throw (std::invalid_argument,
-	       std::domain_error)
 	{
 		return *spidermonkey::getArgument <Class> (cx, argv, index);
 	}
 
+	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
 	typename std::enable_if <
@@ -145,12 +145,11 @@ private:
 	   typename Class::internal_type::internal_type
 	   >::type
 	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
-	throw (std::invalid_argument,
-	       std::domain_error)
 	{
 		return spidermonkey::getArgument <typename Class::internal_type::internal_type> (cx, argv, index);
 	}
 
+	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
 	typename std::enable_if <
@@ -161,8 +160,6 @@ private:
 	   typename Class::internal_type
 	   >::type
 	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
-	throw (std::invalid_argument,
-	       std::domain_error)
 	{
 		return spidermonkey::getArgument <typename Class::internal_type> (cx, argv, index);
 	}

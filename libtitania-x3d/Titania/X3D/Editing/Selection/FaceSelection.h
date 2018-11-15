@@ -78,20 +78,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -151,9 +148,9 @@ public:
 	Edge
 	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;
 
+	///  throws std::domain_error
 	std::pair <Edge, size_t>
-	getClosestEdge (const LineSegment3d &, const std::vector <size_t> &) const
-	throw (std::domain_error);
+	getClosestEdge (const LineSegment3d &, const std::vector <size_t> &) const;
 
 	bool
 	isEdge (const std::vector <size_t> & vertices, const size_t, const size_t) const;

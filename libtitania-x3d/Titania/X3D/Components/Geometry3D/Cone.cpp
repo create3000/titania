@@ -135,8 +135,6 @@ Cone::initialize ()
 
 void
 Cone::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getConeOptions () .removeInterest (&Cone::addEvent, this);
@@ -257,8 +255,6 @@ Cone::build ()
 
 SFNode
 Cone::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const double xDimension = optionsNode -> xDimension ();
 

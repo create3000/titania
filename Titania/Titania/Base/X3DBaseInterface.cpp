@@ -175,26 +175,26 @@ X3DBaseInterface::getAddStandardMetadata (const X3D::X3DScenePtr & scene)
 }
 
 ///  Return the WorldInfo node from the current scene. The node is created if needed.
+///  throws X3D::Error <X3D::NOT_SUPPORTED>
 X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::createWorldInfo (const X3D::X3DScenePtr & scene)
-throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	return getWorldInfo (scene, true);
 }
 
 ///  Return the WorldInfo node from the current scene, otherwise it throws an exception.
+///  throws X3D::Error <X3D::NOT_SUPPORTED>
 X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene) const
-throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (scene, false);
 }
 
 ///  Returns the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it
 ///  throws an exception.
+///  throws X3D::Error <X3D::NOT_SUPPORTED>
 X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene, const bool create)
-throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	if (scene -> getRootNodes () .empty () or not scene -> getRootNodes () .front () -> isType ({ X3D::X3DConstants::WorldInfo }))
 	{

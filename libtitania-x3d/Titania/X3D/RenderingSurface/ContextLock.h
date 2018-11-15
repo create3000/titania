@@ -66,8 +66,8 @@ class ContextLock
 {
 public:
 
-	ContextLock (X3DRenderingSurface* const renderingSurface)
-	throw (Error <INVALID_OPERATION_TIMING>);
+	///  throws Error <INVALID_OPERATION_TIMING>
+	ContextLock (X3DRenderingSurface* const renderingSurface);
 
 	~ContextLock ();
 

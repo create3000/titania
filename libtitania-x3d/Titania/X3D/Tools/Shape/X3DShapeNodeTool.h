@@ -95,9 +95,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override
+	setExecutionContext (X3DExecutionContext* const executionContext) override
 	{ X3DChildNodeTool::setExecutionContext (executionContext); }
 
 	virtual

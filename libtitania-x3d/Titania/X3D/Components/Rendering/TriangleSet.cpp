@@ -113,8 +113,6 @@ TriangleSet::addNormals ()
 
 SFNode
 TriangleSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (3, getCoord () ? getCoord () -> getSize () : 0);
 }

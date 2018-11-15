@@ -85,337 +85,250 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Construction
 
+	///  throws Error <DISPOSED>
 	bool
 	getRealized () const
-	throw (Error <DISPOSED>)
 	{ return realized; }
 
+	///  throws Error <DISPOSED>
 	void
-	realize ()
-	throw (Error <DISPOSED>);
+	realize ();
 
 	///  @name Member access
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getWorldURL () const = 0;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	EncodingType
-	getEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getEncoding () const = 0;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	SpecificationVersionType
-	getSpecificationVersion () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getSpecificationVersion () const = 0;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const std::string &
-	getCharacterEncoding () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getCharacterEncoding () const = 0;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const std::string &
-	getComment () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getComment () const = 0;
 
 	///  @name Profile/Component handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ProfileInfoPtr &
-	getProfile ()  const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getProfile () const = 0;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	updateComponent (const ComponentInfoPtr & component)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	updateComponent (const ComponentInfoPtr & component) = 0;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ComponentInfoArray &
-	getComponents () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) = 0;
+	getComponents () const = 0;
 
 	bool
 	hasComponent (const ComponentType &) const;
 
 	///  @name Unit handling
 
+	///  throws Error <DISPOSED>
 	virtual
 	long double
-	fromUnit (const UnitCategory category, const long double value) const
-	throw (Error <DISPOSED>) = 0;
+	fromUnit (const UnitCategory category, const long double value) const = 0;
 
+	///  throws Error <DISPOSED>
 	virtual
 	long double
-	toUnit (const UnitCategory category, const long double value) const
-	throw (Error <DISPOSED>) = 0;
+	toUnit (const UnitCategory category, const long double value) const = 0;
 
 	///  @name Node handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type, class ... Args>
 	X3DPtr <Type>
-	createNode (Args && ... args)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createNode (Args && ... args);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	SFNode
-	createNode (const std::string & typeName)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createNode (const std::string & typeName);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_X3D>, Error <INVALID_FIELD>, Error <INVALID_ACCESS_TYPE>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DPrototypeInstancePtr
-	createProto (const std::string & typeName)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_X3D>,
-	       Error <INVALID_FIELD>,
-	       Error <INVALID_ACCESS_TYPE>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createProto (const std::string & typeName);
 
 	///  @name Named node handling
 
+	///  throws Error <NODE_IN_USE>, Error <IMPORTED_NODE>, Error <INVALID_NODE>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	addNamedNode (const std::string &, const SFNode &)
-	throw (Error <NODE_IN_USE>,
-	       Error <IMPORTED_NODE>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addNamedNode (const std::string &, const SFNode &);
 
+	///  throws Error <IMPORTED_NODE>, Error <INVALID_NODE>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	updateNamedNode (const std::string &, const SFNode &)
-	throw (Error <IMPORTED_NODE>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateNamedNode (const std::string &, const SFNode &);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	removeNamedNode (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	removeNamedNode (const std::string &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	SFNode
-	getNamedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getNamedNode (const std::string &) const;
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type>
 	X3DPtr <Type>
-	getNamedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getNamedNode (const std::string &) const;
 
+	///  throw rror <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const NamedNodeIndex &
 	getNamedNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return namedNodes; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	std::string
-	getUniqueName (std::string = "") const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getUniqueName (std::string = "") const;
 
 	const SFTime &
 	namedNodes_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return namedNodesOutput; }
 
 	///  @name Imported nodes handling
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	bool
-	isImportedNode (const SFNode & node) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	isImportedNode (const SFNode & node) const;
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <NODE_IN_USE>, Error <URL_UNAVAILABLE>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ImportedNodePtr &
-	addImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <NODE_IN_USE>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "");
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <URL_UNAVAILABLE>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ImportedNodePtr &
-	updateImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_NAME>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <NODE_NOT_AVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "");
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	removeImportedNode (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	removeImportedNode (const std::string &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	SFNode
-	getImportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getImportedNode (const std::string &) const;
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type>
 	X3DPtr <Type>
-	getImportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getImportedNode (const std::string &) const;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ImportedNodeIndex &
 	getImportedNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return importedNodes; }
 
 	const SFTime &
 	importedNodes_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return importedNodesOutput; }
 
 	///  @name Named/Imported node handling
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	bool
-	isLocalNode (const SFNode & node) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	isLocalNode (const SFNode & node) const;
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	SFNode
-	getLocalNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getLocalNode (const std::string &) const;
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const std::string &
-	getLocalName (const SFNode &) const
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getLocalName (const SFNode &) const;
 
 	///  @name Proto declaration handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	ProtoDeclarationPtr
-	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createProtoDeclaration (const std::string &, const FieldDefinitionArray &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	addProtoDeclaration (const std::string &, const ProtoDeclarationPtr &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addProtoDeclaration (const std::string &, const ProtoDeclarationPtr &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	updateProtoDeclaration (const std::string &, const ProtoDeclarationPtr &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateProtoDeclaration (const std::string &, const ProtoDeclarationPtr &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	removeProtoDeclaration (const std::string & name)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	removeProtoDeclaration (const std::string & name);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ProtoDeclarationPtr &
-	getProtoDeclaration (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getProtoDeclaration (const std::string &) const;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ProtoDeclarationArray &
 	getProtoDeclarations () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return prototypes; }
 
 	bool
 	hasProtoDeclaration (const std::string & name) const;
 
+	///  throws Error <DISPOSED>
 	std::string
-	getUniqueProtoName (std::string) const
-	throw (Error <DISPOSED>);
+	getUniqueProtoName (std::string) const;
 
 	const SFTime &
 	prototypes_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return prototypesOutput; }
 
 	///  @name Exterproto declaration handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	ExternProtoDeclarationPtr
-	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	addExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &);
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	updateExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	updateExternProtoDeclaration (const std::string &, const ExternProtoDeclarationPtr &);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	removeExternProtoDeclaration (const std::string & name)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	removeExternProtoDeclaration (const std::string & name);
 
+	///  throws Error <INVALID_NAME>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ExternProtoDeclarationPtr &
-	getExternProtoDeclaration (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExternProtoDeclaration (const std::string &) const;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const ExternProtoDeclarationArray &
 	getExternProtoDeclarations () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return externProtos; }
 
 	bool
 	hasExternProtoDeclaration (const std::string & name) const;
 
+	///  throws Error <DISPOSED>
 	std::string
-	getUniqueExternProtoName (std::string) const
-	throw (Error <DISPOSED>);
+	getUniqueExternProtoName (std::string) const;
 
 	void
 	requestImmediateLoadOfExternProtos ();
@@ -435,100 +348,73 @@ public:
 
 	const SFTime &
 	externProtos_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return externProtosOutput; }
 
 	///  @name ProtoObject handling
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	X3DProtoDeclarationNode*
-	findProtoDeclaration (const std::string &, const AvailableType &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	findProtoDeclaration (const std::string &, const AvailableType &) const;
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DProtoDeclarationNode*
-	findProtoDeclaration (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	findProtoDeclaration (const std::string &) const;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	std::map <std::string, X3DProtoDeclarationNode*>
-	findProtoDeclarations () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	findProtoDeclarations () const;
 
 	///  @name Root node handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	MFNode &
 	getRootNodes ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return *rootNodes; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const MFNode &
 	getRootNodes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return *rootNodes; }
 
 	const SFTime &
 	sceneGraph_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return sceneGraphOutput; }
 
 	const SFTime &
 	bbox_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return bboxOutput; }
 
 	///  @name Dynamic route node handling
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <IMPORTED_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const RoutePtr &
 	addRoute (const SFNode &, const std::string &,
-	          const SFNode &, const std::string &)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>,
-          Error <IMPORTED_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	          const SFNode &, const std::string &);
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	deleteRoute (const SFNode &, const std::string &,
-	             const SFNode &, const std::string &)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	             const SFNode &, const std::string &);
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	deleteRoute (Route* const)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	deleteRoute (Route* const);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const RouteArray &
 	getRoutes () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return routes; }
 
 	const SFTime &
 	routes_changed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return routesOutput; }
 
 	///  @name Viewpoint handling
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	changeViewpoint (const std::string &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	changeViewpoint (const std::string &);
 
 	///  @name Import handling
 
@@ -580,22 +466,17 @@ protected:
 	void
 	initialize () override;
 
-	/// Add uninitialized node. The node will be initialize if this execution context becomes initialized.
+	///  Add uninitialized node. The node will be initialize if this execution context becomes initialized.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	addUninitializedNode (X3DBaseNode* const node)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addUninitializedNode (X3DBaseNode* const node);
 
 	///  @name Route handling
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <IMPORTED_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const RoutePtr &
 	addSimpleRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
-	                const SFNode & destinationNode, const std::string & destinationFieldId)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>,
-	       Error <IMPORTED_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	                const SFNode & destinationNode, const std::string & destinationFieldId);
 
 	///  @name Import handling
 
@@ -637,11 +518,9 @@ private:
 
 	///  @name Route handling
 
+	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const RoutePtr &
-	addRoute (Route* const)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	addRoute (Route* const);
 
 	///  @name Import handling
 
@@ -682,11 +561,10 @@ private:
 
 };
 
+///  throws EError <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type, class ... Args>
 X3DPtr <Type>
 X3DExecutionContext::createNode (Args && ... args)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const X3DPtr <Type> node (new Type (this, std::forward <Args> (args) ...));
 
@@ -702,13 +580,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return node;
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type>
 X3DPtr <Type>
 X3DExecutionContext::getNamedNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DPtr <Type> node (getNamedNode (name));
 
@@ -718,13 +593,10 @@ throw (Error <INVALID_NAME>,
 	throw Error <INVALID_NODE> ("Invalid node: node '" + name + "' has other type.");
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type>
 X3DPtr <Type>
 X3DExecutionContext::getImportedNode (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DPtr <Type> node (getImportedNode (name));
 

@@ -137,15 +137,14 @@ public:
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	///  @name Observers
 
+	///  Error <DISPOSED>
 	InternalType*
 	operator -> () const
-	throw (Error <DISPOSED>)
 	{
 	   const auto value = getValue ();
 
@@ -158,9 +157,9 @@ public:
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
+	///  throws Error <DISPOSED>
 	InternalType &
 	operator * () const
-	throw (Error <DISPOSED>)
 	{
 	   const auto value = getValue ();
 
@@ -238,53 +237,51 @@ private:
 
 	///  @name Construction
 
+	///  throws Error <NOT_SUPPORTED>
 	virtual
 	X3DWeakPtr*
 	create () const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::create: not supported!"); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DWeakPtr*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DWeakPtr*
-	copy (X3DExecutionContext* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (X3DExecutionContext* const, const CopyType) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	void
-	copy (X3DExecutionContext* const, X3DFieldDefinition*, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (X3DExecutionContext* const, X3DFieldDefinition*, const CopyType) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
 	///  @name Input/Output
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	fromStream (std::istream & istream) final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::fromStream: not supported!"); }
 
+	///  throws Error <NOT_SUPPORTED>
 	virtual
 	void
 	toStream (std::ostream & ostream) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toStream: not supported!"); }
 
+	///  throws Error <NOT_SUPPORTED>
 	virtual
 	void
 	toXMLStream (std::ostream & ostream) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toXMLStream: not supported!"); }
 
+	///  throws Error <NOT_SUPPORTED>
 	virtual
 	void
 	toJSONStream (std::ostream & ostream) const final override
@@ -371,11 +368,11 @@ const std::string X3DWeakPtr <InternalType>::typeName = "SFNode";
 
 ///  Compares two X3DWeakPtr.
 ///  Returns true if @a lhs is equal to @a rhs.
+///  throws  Error <DISPOSED>
 template <class LHS, class RHS>
 inline
 bool
 operator == (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
-throw (Error <DISPOSED>)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -385,11 +382,11 @@ throw (Error <DISPOSED>)
 
 ///  Compares two X3DWeakPtr.
 ///  Returns true if @a lhs is not equal to @a rhs.
+///  throws  Error <DISPOSED>
 template <class LHS, class RHS>
 inline
 bool
 operator not_eq (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
-throw (Error <DISPOSED>)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -399,11 +396,11 @@ throw (Error <DISPOSED>)
 
 ///  Compares two X3DWeakPtr.
 ///  Returns true if @a lhs less than @a rhs.
+///  throws  Error <DISPOSED>
 template <class LHS, class RHS>
 inline
 bool
 operator < (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
-throw (Error <DISPOSED>)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -413,11 +410,11 @@ throw (Error <DISPOSED>)
 
 ///  Compares two X3DWeakPtr.
 ///  Returns true if @a lhs less than equal to @a rhs.
+///  throws  Error <DISPOSED>
 template <class LHS, class RHS>
 inline
 bool
 operator <= (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
-throw (Error <DISPOSED>)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -427,11 +424,11 @@ throw (Error <DISPOSED>)
 
 ///  Compares two X3DWeakPtr.
 ///  Returns true if @a lhs greater than @a rhs.
+///  throws  Error <DISPOSED>
 template <class LHS, class RHS>
 inline
 bool
 operator > (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
-throw (Error <DISPOSED>)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -441,11 +438,11 @@ throw (Error <DISPOSED>)
 
 ///  Compares two X3DWeakPtr.
 ///  Returns true if @a lhs greater than equal to @a rhs.
+///  throws  Error <DISPOSED>
 template <class LHS, class RHS>
 inline
 bool
 operator >= (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
-throw (Error <DISPOSED>)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;

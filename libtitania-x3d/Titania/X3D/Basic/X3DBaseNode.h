@@ -95,27 +95,22 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const = 0;
 
-	///  Copys this node.  The executionContext will be the same as for this node.
+	///  Copies this node.  The executionContext will be the same as for this node.
 	virtual
 	X3DBaseNode*
 	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>)
 	{ return copy (executionContext, type); }
 
-	///  Copys this node and sets the execution context to @a executionContext.
+	///  Copies this node and sets the execution context to @a executionContext.
 	virtual
 	X3DBaseNode*
-	copy (X3DExecutionContext* const executionContext, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const;
 
 	///  Assigns @a node. @a node must be of the same type as this node.
+	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>
 	virtual
 	void
-	assign (const X3DBaseNode* const baseNode, const bool compare = false)
-	throw (Error <INVALID_NODE>,
-	       Error <INVALID_FIELD>);
+	assign (const X3DBaseNode* const baseNode, const bool compare = false);
 
 	///  @name Commons members
 
@@ -131,130 +126,109 @@ public:
 	{ return nameOutput; }
 
 	///  Returns the current browser time for this frame.
+	///  throws Error <DISPOSED>
 	time_type
-	getCurrentTime () const
-	throw (Error <DISPOSED>);
+	getCurrentTime () const;
 
 	///  Sets the current excecution context to @a executionContext.
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setExecutionContext (X3DExecutionContext* const executionContext);
 
 	///  Returns a pointer to the execution context this node belongs to.
 	X3DExecutionContext*
 	getExecutionContext () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return executionContext; }
 
 	///  Returns a pointer to the master execution context this node belongs to.
 	X3DScene*
-	getMasterScene () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getMasterScene () const;
 
 	///  Returns a pointer to the root execution context this node belongs to.
 	X3DScene*
-	getScene () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getScene () const;
 
 	///  Returns the component name this node belongs to.
+	///  throws Error <DISPOSED>
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) = 0;
+	getComponent () const = 0;
 
 	///  Returns a array of types of this node.
+	///  throws Error <DISPOSED>
 	const NodeTypeArray &
 	getType () const
-	throw (Error <DISPOSED>)
 	{ return type; }
 
 	///  Returns true if the node is one of the types in @a types;
+	///  throws Error <DISPOSED>
 	bool
-	isType (const NodeTypeSet &) const
-	throw (Error <DISPOSED>);
+	isType (const NodeTypeSet &) const;
 
 	///  Returns the XML container field for this node type.
+	///  throws Error <DISPOSED>
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) = 0;
+	getContainerField () const = 0;
 
 	///  Returns either a node declaration or the prototype of this node.
+	///  throws Error <DISPOSED>
 	virtual
 	const X3DBaseNode*
-	getInterfaceDeclaration () const
-	throw (Error <DISPOSED>);
+	getInterfaceDeclaration () const;
 
 	///  Returns for X3DProtoypeInstances the innermost root node.
+	///  throws Error <DISPOSED>
 	virtual
 	X3DBaseNode*
 	getInnerNode ()
-	throw (Error <DISPOSED>)
 	{ return this; }
 
 	///  Returns for X3DProtoypeInstances the innermost root node.
+	///  throws Error <DISPOSED>
 	virtual
 	const X3DBaseNode*
 	getInnerNode () const
-	throw (Error <DISPOSED>)
 	{ return this; }
 
 	///  @name Field handling
 
 	///  Checks if a field with @a name exists for this node.
+	///  throws Error <DISPOSED>
 	virtual
 	bool
-	hasField (const std::string & name) const
-	throw (Error <DISPOSED>);
+	hasField (const std::string & name) const;
 
 	///  Checks whether @a field has the default value for this node type.  The @a field must be of this node.
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	bool
-	isDefaultValue (const X3DFieldDefinition* const field) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	isDefaultValue (const X3DFieldDefinition* const field) const;
 
 	///  Sets the value of the field with @a name.  If the third parameter is true, an event is only generated if the old
 	///  value is not the new value.
+	///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class FieldType, class ValueType>
 	void
-	setField (const std::string & name, const ValueType & value, const bool compare = false)
-	throw (Error <INVALID_FIELD>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setField (const std::string & name, const ValueType & value, const bool compare = false);
 
 	///  Return the field with @a name.
+	///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type>
 	Type &
-	getField (const std::string & name)
-	throw (Error <INVALID_FIELD>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getField (const std::string & name);
 
 	///  Return the field with @a name.
+	///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	template <class Type>
 	const Type &
-	getField (const std::string & name) const
-	throw (Error <INVALID_FIELD>,
-	       Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getField (const std::string & name) const;
 
 	///  Return the field with @a name.
+	///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	X3DFieldDefinition*
-	getField (const std::string & name) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getField (const std::string & name) const;
 
 	///  Returns whether this node can have user defined fields.
 	virtual
@@ -263,47 +237,39 @@ public:
 	{ return false; }
 
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
+	///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <DISPOSED>
 	virtual
 	void
-	setUserDefinedFields (const X3D::FieldDefinitionArray & fields)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>);
+	setUserDefinedFields (const X3D::FieldDefinitionArray & fields);
 
 	///  Adds @a field to the set of user defined fields of this node.
+	///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <DISPOSED>
 	virtual
 	void
-	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>);
+	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field);
 
 	///  Updates @a field in the set of user defined fields. @a accessType and @a name will be assigned to @a field.
+	///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <DISPOSED>
 	void
-	updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>);
+	updateUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field);
 
 	///  Removes the field named @a name from the set of user defined fields of this node.
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	removeUserDefinedField (const std::string & name)
-	throw (Error <DISPOSED>);
+	removeUserDefinedField (const std::string & name);
 
 	///  Returns an array with all pre defined fields of this node.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	FieldDefinitionArray
-	getPreDefinedFields () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getPreDefinedFields () const;
 
 	///  Returns an array with all user defined fields of this node.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	FieldDefinitionArray
-	getUserDefinedFields () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getUserDefinedFields () const;
 
 	///  Returns an array of all fields with non default value.
 	virtual
@@ -311,11 +277,10 @@ public:
 	getChangedFields () const;
 
 	///  Return all field definition for this node, that is all predefined field and user defined fields.
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const FieldDefinitionArray &
 	getFieldDefinitions () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return fieldDefinitions; }
 
 	///  Field that processes its interests when the set of fields has changed.
@@ -409,16 +374,16 @@ public:
 	{ return live; }
 
 	///  After calling beginUpdate the node is able to process events.  Effectivly sets isLive to true.
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	beginUpdate ()
-	throw (Error <DISPOSED>);
+	beginUpdate ();
 
 	///  Immediately stops event processing of this node.  Effectivly sets isLive to false.
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	endUpdate ()
-	throw (Error <DISPOSED>);
+	endUpdate ();
 
 	///  Returns true if any field has a input or output route otherwise false.
 	virtual
@@ -476,13 +441,9 @@ public:
 	///  @name Input/Output
 
 	///  NOT SUPPORTED
-	virtual
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	fromStream (std::istream &) override;
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding.
 	virtual
@@ -533,23 +494,20 @@ protected:
 	///  @name Field handling
 
 	///  Adds @a field to the set of fields of this node.
+	///  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
 	virtual
 	void
-	addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>);
+	addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field);
 
 	///  Adds a field for X3D @a version.
+	///  throws Error <INVALID_NAME>, Error <DISPOSED>
 	void
-	addField (const SpecificationVersionType specificationVersion, const std::string & alias, const std::string & name)
-	throw (Error <INVALID_NAME>,
-	       Error <DISPOSED>);
+	addField (const SpecificationVersionType specificationVersion, const std::string & alias, const std::string & name);
 
 	///  Remove field @a name from the set of fields.
+	///  throws Error <DISPOSED>
 	void
-	removeField (const std::string & name)
-	throw (Error <DISPOSED>);
+	removeField (const std::string & name);
 
 	///  @name Tool support
 
@@ -573,16 +531,14 @@ private:
 	///  @name Construction
 
 	///  Copy or clone this node into @a executionContext.
+	///  throws Error <INVALID_NAME>,  Error <DISPOSED>
 	X3DBaseNode*
-	copy (X3DExecutionContext* const executionContext) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	copy (X3DExecutionContext* const executionContext) const;
 
 	///  Flat copy this node into @a executionContext.
+	///  throws Error <INVALID_NAME>,  Error <DISPOSED>
 	X3DBaseNode*
-	copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>);
+	copy (X3DExecutionContext* const executionContext, const FlatCopyType &) const;
 
 	///  Replace @a node by this node.
 	void
@@ -638,13 +594,10 @@ private:
 
 };
 
+///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type, class ValueType>
 void
 X3DBaseNode::setField (const std::string & name, const ValueType & value, const bool compare)
-throw (Error <INVALID_FIELD>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	Type & field = getField <Type> (name);
 
@@ -653,13 +606,10 @@ throw (Error <INVALID_FIELD>,
 }
 
 ///  Return the field with @a name.
+///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type>
 Type &
 X3DBaseNode::getField (const std::string & name)
-throw (Error <INVALID_FIELD>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DFieldDefinition* const fieldDefinition = getField (name);
 
@@ -672,13 +622,10 @@ throw (Error <INVALID_FIELD>,
 }
 
 ///  Return the field with @a name.
+///  throws Error <INVALID_FIELD>, Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 template <class Type>
 const Type &
 X3DBaseNode::getField (const std::string & name) const
-throw (Error <INVALID_FIELD>,
-       Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DFieldDefinition* const fieldDefinition = getField (name);
 

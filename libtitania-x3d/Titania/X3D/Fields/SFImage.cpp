@@ -187,10 +187,6 @@ SFImage::getArray () const
 
 void
 SFImage::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	std::string whiteSpaces;
 

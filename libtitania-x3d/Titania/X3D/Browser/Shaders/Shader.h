@@ -73,11 +73,10 @@ public:
 	bool
 	getOpenGLES (const std::string & source);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	static
 	ShaderSource
-	getSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL, const bool shadow = false)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	getSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL, const bool shadow = false);
 
 	static
 	GLenum
@@ -107,6 +106,7 @@ public:
 
 private:
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>
 	static
 	std::string
 	getSource (X3DBaseNode* const node,
@@ -114,9 +114,7 @@ private:
 	           const basic::uri & worldURL,
 	           std::vector <basic::uri> & sources,
 	           const size_t level,
-	           std::set <basic::uri> & files)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	           std::set <basic::uri> & files);
 
 	static
 	std::string

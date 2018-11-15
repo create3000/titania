@@ -106,10 +106,9 @@ MetadataSet::initialize ()
 	set_value ();
 }
 
+///  throws Error <INVALID_NAME>, Error <DISPOSED>
 X3DMetadataObject*
 MetadataSet::getObject (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	const auto iter = metadataIndex .find (name);
 
@@ -119,9 +118,9 @@ throw (Error <INVALID_NAME>,
 	throw Error <INVALID_NAME> ("MetadataSet::getObject: Invalid name '" + name + "'.");
 }
 
+///  throws Error <DISPOSED>
 void
 MetadataSet::removeValue (const std::string & name)
-throw (Error <DISPOSED>)
 {
 	const auto iter = std::remove_if (value () .begin (), value () .end (), [&] (const SFNode &node)
 	                                  {
@@ -170,9 +169,9 @@ MetadataSet::addValue (const SFNode & node)
 	metadataIndex .emplace (metadataObject -> name (), metadataObject);
 }
 
+///  throws Error <DISPOSED>
 void
 MetadataSet::removeValues ()
-throw (Error <DISPOSED>)
 {
 	metadataIndex .clear ();
 }

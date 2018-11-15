@@ -88,8 +88,6 @@ X3DSnapTool::initialize ()
 
 void
 X3DSnapTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DActiveLayerTool::setExecutionContext (executionContext);
 

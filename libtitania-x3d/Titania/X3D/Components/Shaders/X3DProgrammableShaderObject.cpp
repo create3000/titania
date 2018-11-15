@@ -321,11 +321,9 @@ X3DProgrammableShaderObject::addShaderFields ()
 	}
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
 void
 X3DProgrammableShaderObject::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_FIELD>,
-       Error <DISPOSED>)
 {
 	X3DBaseNode::addUserDefinedField (accessType, name, field);
 
@@ -337,9 +335,9 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+///  throws Error <DISPOSED>
 void
 X3DProgrammableShaderObject::removeUserDefinedField (const std::string & name)
-throw (Error <DISPOSED>)
 {
 	try
 	{

@@ -199,10 +199,6 @@ SFString::append (const char_type & character)
 
 void
 SFString::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	String value;
 

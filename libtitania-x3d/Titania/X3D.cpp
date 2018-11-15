@@ -77,9 +77,9 @@ Init (int argc, char** argv)
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
+///  throws Error <BROWSER_UNAVAILABLE>
 const BrowserApplicationPtr &
 getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>)
 {
 	try
 	{
@@ -104,12 +104,12 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	}
 }
 
-/***
- *  The createBrowser service creates a new instance of a browser application.
- */
+///
+///  The createBrowser service creates a new instance of a browser application.
+///
+///  throws Error <BROWSER_UNAVAILABLE>
 BrowserPtr
 createBrowser (const MFString & url, const MFString & parameter)
-throw (Error <BROWSER_UNAVAILABLE>)
 {
 	try
 	{
@@ -121,13 +121,12 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	}
 }
 
-/***
- *  The createBrowser service creates a new instance of a browser application.
- */
+///
+///  The createBrowser service creates a new instance of a browser application.
+///
+///  throws Error <INVALID_NODE>, Error <BROWSER_UNAVAILABLE>
 BrowserPtr
 createBrowser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter)
-throw (Error <INVALID_NODE>,
-       Error <BROWSER_UNAVAILABLE>)
 {
 	try
 	{

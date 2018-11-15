@@ -100,8 +100,6 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 
 void
 X3DGeometryNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> getSelectable () .removeInterest (&X3DGeometryNodeTool::set_pickable, this);
 

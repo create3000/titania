@@ -120,11 +120,10 @@ public:
 	create () const final override
 	{ return new SFVec2 (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	SFVec2*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (const CopyType) const final override;
 
 	///  @name Interest service
 
@@ -218,11 +217,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	fromStream (std::istream & istream) final override;
 
 	virtual
 	void
@@ -243,12 +238,11 @@ protected:
 
 };
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 template <class InternalType>
 inline
 SFVec2 <InternalType>*
 SFVec2 <InternalType>::copy (const CopyType) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	return new SFVec2 (*this);
 }
@@ -461,10 +455,6 @@ template <class InternalType>
 inline
 void
 SFVec2 <InternalType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	InternalType value;
 

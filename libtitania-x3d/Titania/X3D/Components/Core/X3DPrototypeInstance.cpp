@@ -470,8 +470,6 @@ X3DPrototypeInstance::initialize ()
 
 void
 X3DPrototypeInstance::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (&X3DPrototypeInstance::set_live, this);
 
@@ -485,9 +483,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+///  throws Error <DISPOSED>
 const std::string &
 X3DPrototypeInstance::getTypeName () const
-throw (Error <DISPOSED>)
 {
 	if (protoNode)
 		return protoNode -> getName ();
@@ -513,11 +511,9 @@ X3DPrototypeInstance::setProtoDeclarationNode (const X3DProtoDeclarationNodePtr 
 	typeNameOutput = getCurrentTime ();
 }
 
+///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 X3DProtoDeclarationNode*
 X3DPrototypeInstance::findProtoDeclaration (const std::string & name, const AvailableType & available) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (protoNode)
 		return protoNode -> getProtoDeclaration () -> findProtoDeclaration (name, available);
@@ -525,23 +521,23 @@ throw (Error <INVALID_NAME>,
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
 }
 
+///  throws Error <DISPOSED>
 X3DBaseNode*
 X3DPrototypeInstance::getInnerNode ()
-throw (Error <DISPOSED>)
 {
 	return getRootNode () -> getInnerNode ();
 }
 
+///  throws Error <DISPOSED>
 const X3DBaseNode*
 X3DPrototypeInstance::getInnerNode () const
-throw (Error <DISPOSED>)
 {
 	return getRootNode () -> getInnerNode ();
 }
 
+///  throws Error <DISPOSED>
 X3DBaseNode*
 X3DPrototypeInstance::getRootNode () const
-throw (Error <DISPOSED>)
 {
 	if (getRootNodes () .empty () or not getRootNodes () .front ())
 		throw Error <DISPOSED> ("Root node not available.");
@@ -595,16 +591,16 @@ X3DPrototypeInstance::set_live ()
 	live = value;
 }
 
+///  throws Error <DISPOSED>
 void
 X3DPrototypeInstance::toStream (std::ostream & ostream) const
-//throw (Error <DISPOSED>)
 {
 	X3DNode::toStream (ostream);
 }
 
+///  throws Error <DISPOSED>
 void
 X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
-//throw (Error <DISPOSED>)
 {
 	ostream .imbue (std::locale::classic ());
 
@@ -871,9 +867,9 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	Generator::LeaveScope (ostream);
 }
 
+///  throws Error <DISPOSED>
 void
 X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
-//throw (Error <DISPOSED>)
 {
 	ostream .imbue (std::locale::classic ());
 

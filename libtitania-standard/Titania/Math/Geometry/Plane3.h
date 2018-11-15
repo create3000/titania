@@ -138,23 +138,23 @@ public:
 	///  All these operators modify this box3 inplace.
 
 	///  Transform this line by @a matrix.
+	///  throws std::domain_error
 	plane3 &
 	operator *= (const matrix4 <Type> & matrix)
-	throw (std::domain_error)
 	{
 		mult_right (matrix);
 		return *this;
 	}
 
 	///  Transform this plane by @a matrix.
+	///  throws std::domain_error
 	void
-	mult_right (const matrix4 <Type> & matrix)
-	throw (std::domain_error);
+	mult_right (const matrix4 <Type> & matrix);
 
 	///  Transform this plane by @a matrix.
+	///  throws std::domain_error
 	void
-	mult_left (const matrix4 <Type> & matrix)
-	throw (std::domain_error);
+	mult_left (const matrix4 <Type> & matrix);
 
 	//  @name Distance
 
@@ -189,10 +189,10 @@ private:
 ///  @name Arithmetic operations
 
 ///  Transform a plane by the given matrix
+///  throws std::domain_error
 template <class Type>
 void
 plane3 <Type>::mult_right (const matrix4 <Type> & matrix)
-throw (std::domain_error)
 {
 	// Taken from Inventor:
 
@@ -215,10 +215,11 @@ throw (std::domain_error)
 	*this = plane3 (point, newNormal);
 }
 
+///  Transform a plane by the given matrix
+///  throws std::domain_error
 template <class Type>
 void
 plane3 <Type>::mult_left (const matrix4 <Type> & matrix)
-throw (std::domain_error)
 {
 	// Taken from Inventor:
 
@@ -284,21 +285,22 @@ plane3 <Type>::intersects (const line3 <Type> & line) const
 ///  @relates plane3
 ///  @name Arithmetic operations
 
-///  Extraction operator for vector values.
+///  Transform a plane by the given matrix
+///  throws std::domain_error
 template <class Type>
 plane3 <Type>
 operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
-throw (std::domain_error)
 {
 	plane3 <Type> result (plane);
 	result .mult_right (matrix);
 	return result;
 }
 
+///  Transform a plane by the given matrix
+///  throws std::domain_error
 template <class Type>
 plane3 <Type>
 operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
-throw (std::domain_error)
 {
 	plane3 <Type> result (plane);
 	result .mult_left (matrix);

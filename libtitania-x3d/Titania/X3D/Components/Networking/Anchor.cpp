@@ -113,8 +113,6 @@ Anchor::initialize ()
 
 void
 Anchor::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	touchSensorNode -> setExecutionContext (executionContext);
 

@@ -57,9 +57,9 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
+///  throws pb::pbError
 void
 setValue (X3DFieldDefinition* const field, const pb::var & value)
-throw (pb::pbError)
 {
 	switch (field -> getType ())
 	{

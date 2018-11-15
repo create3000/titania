@@ -104,9 +104,9 @@ X3DNetworkingContext::initialize ()
 		mutex .reset (new std::mutex ());
 }
 
+///  throws Error <DISPOSED>
 const std::shared_ptr <std::mutex> &
 X3DNetworkingContext::getDownloadMutex ()
-//throw (Error <DISPOSED>)
 {
 	if (downloadMutexes .empty ())
 		throw Error <DISPOSED> ("X3DNetworkingContext::getDownloadMutex");

@@ -121,11 +121,9 @@ X3DRenderObject::initialize ()
 	depthBuffer -> setup (); // Throws a runtime error.
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <INSUFFICIENT_CAPABILITIES>, Error <DISPOSED
 void
 X3DRenderObject::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       //Error <INSUFFICIENT_CAPABILITIES>,
-       Error <DISPOSED>)
 {
 	X3DRenderObject::dispose ();
 

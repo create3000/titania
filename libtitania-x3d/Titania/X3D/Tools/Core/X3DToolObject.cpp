@@ -82,8 +82,6 @@ X3DToolObject::initialize ()
 
 void
 X3DToolObject::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	inlineNode -> setExecutionContext (value -> getBrowser () -> getPrivateScene ());
 }

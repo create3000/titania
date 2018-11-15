@@ -212,7 +212,7 @@ Browser::getRenderingProperty (const pb::ptr <pb::pbExecutionContext> & ec, cons
 
 		return getValue (context, field);
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		throw pb::Error (getTypeName () + ".prototype.getRenderingProperty: unknown property '" + name + "'.");
 	}
@@ -234,7 +234,7 @@ Browser::getBrowserProperty (const pb::ptr <pb::pbExecutionContext> & ec, const 
 
 		return getValue (context, field);
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		throw pb::Error (getTypeName () + ".prototype.getBrowserProperty: unknown property '" + name + "'.");
 	}
@@ -256,7 +256,7 @@ Browser::getBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, const pb
 
 		return getValue (context, field);
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		throw pb::Error (getTypeName () + ".prototype.getBrowserOption: unknown property '" + name + "'.");
 	}
@@ -279,7 +279,7 @@ Browser::setBrowserOption (const pb::ptr <pb::pbExecutionContext> & ec, const pb
 
 		return pb::undefined;
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		throw pb::Error (getTypeName () + ".prototype.setBrowserOption: unknown property '" + name + "'.");
 	}

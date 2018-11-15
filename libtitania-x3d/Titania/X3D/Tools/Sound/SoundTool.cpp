@@ -69,8 +69,6 @@ SoundTool::SoundTool (X3DBaseNode* const node) :
 
 void
 SoundTool::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getBrowser () -> removeSoundTool (this);
 

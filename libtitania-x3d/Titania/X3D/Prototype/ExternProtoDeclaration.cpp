@@ -92,8 +92,6 @@ ExternProtoDeclaration::create (X3DExecutionContext* const executionContext) con
 
 ExternProtoDeclaration*
 ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	switch (type)
 	{
@@ -144,8 +142,6 @@ ExternProtoDeclaration::initialize ()
 
 void
 ExternProtoDeclaration::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	getExecutionContext () -> isLive () .removeInterest (&ExternProtoDeclaration::set_live, this);
 
@@ -168,12 +164,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+// Spec says
+//throw Error <INVALID_NODE>,
+//      Error <INVALID_OPERATION_TIMING>,
+//      Error <DISPOSED>
 X3DPrototypeInstance*
 ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
-// Spec says
-//throw (Error <INVALID_NODE>,
-//       Error <INVALID_OPERATION_TIMING>,
-//       Error <DISPOSED>)
 {
 	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
 }
@@ -247,9 +243,9 @@ ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 	}
 }
 
+///  throws Error <DISPOSED>
 ProtoDeclaration*
 ExternProtoDeclaration::getProtoDeclaration ()
-throw (Error <DISPOSED>)
 {
 	if (protoDeclaration)
 		return protoDeclaration;

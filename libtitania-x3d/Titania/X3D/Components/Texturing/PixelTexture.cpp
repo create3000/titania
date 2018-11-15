@@ -243,11 +243,9 @@ PixelTexture::update ()
 	loadState = COMPLETE_STATE;
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not texture2DNode)
 		throw Error <INVALID_NODE> ("Node is NULL.");
@@ -394,10 +392,9 @@ throw (Error <INVALID_NODE>,
 	image () = SFImage (width, height, components, std::move (array));
 }
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 PixelTexture::setImage (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	auto & array = image () .getArray ();
 

@@ -161,9 +161,9 @@ Context::create (X3D::X3DExecutionContext* const) const
 	return new Context (getScriptNode (), getECMAScript (), worldURL .front ());
 }
 
+///  throws std::runtime_error
 void
 Context::addClasses ()
-throw (std::runtime_error)
 {
 	// Populate the global object with the standard globals, like Object and Array.
 	if (not JS_InitStandardClasses (cx, global))
@@ -542,8 +542,6 @@ Context::initialize ()
 
 void
 Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (future)
 		future -> setExecutionContext (executionContext);

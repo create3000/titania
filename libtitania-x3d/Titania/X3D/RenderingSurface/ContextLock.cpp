@@ -135,9 +135,10 @@ ContextLock::Implementation::~Implementation ()
  *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous OpenGL context is restored.
  *
  *  @param  renderingSurface  A valid X3DRenderingSurface instance.
+ *
+ *  throws Error <INVALID_OPERATION_TIMING>
  */
-ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface)
-throw (Error <INVALID_OPERATION_TIMING>) :
+ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface) :
 	implementation ()
 {
 	if (not renderingSurface)

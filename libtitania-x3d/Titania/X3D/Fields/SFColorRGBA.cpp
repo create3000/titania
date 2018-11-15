@@ -156,10 +156,6 @@ SFColorRGBA::lerp (const internal_type & dest, const value_type & t) const
 
 void
 SFColorRGBA::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	Color4f value;
 

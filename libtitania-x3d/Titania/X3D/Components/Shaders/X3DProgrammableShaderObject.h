@@ -76,17 +76,15 @@ public:
 	canUserDefinedFields () const final override
 	{ return true; }
 
+	///  throws Error <INVALID_NAME>, Error <INVALID_FIELD>, Error <DISPOSED>
 	virtual
 	void
-	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>) override;
+	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field) override;
 
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	removeUserDefinedField (const std::string & name)
-	throw (Error <DISPOSED>) override;
+	removeUserDefinedField (const std::string & name) override;
 
 	///  @name Member access
 

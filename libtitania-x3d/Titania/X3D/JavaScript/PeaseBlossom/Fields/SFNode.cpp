@@ -199,7 +199,7 @@ SFNode::setProperty (pb::pbObject* const object, const pb::Identifier & identifi
 
 		setValue (field, value);
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		throw std::out_of_range ("SFNode::setProperty");
 	}
@@ -223,7 +223,7 @@ SFNode::getProperty (pb::pbObject* const object, const pb::Identifier & identifi
 
 		return getValue (context, field);
 	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	catch (const Error <X3D::INVALID_NAME> &)
 	{
 		throw std::out_of_range ("SFNode::getProperty");
 	}

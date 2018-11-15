@@ -1508,10 +1508,6 @@ X3DEditor::addRoute (const X3DExecutionContextPtr & executionContext,
                      const SFNode & destinationNode,
                      const std::string & destinationField,
                      const UndoStepPtr & undoStep)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_FIELD>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	try
 	{
@@ -3768,9 +3764,9 @@ X3DEditor::getParentNodes (const SFNode & child)
 	return parentNodes;
 }
 
+///  throws Error <INVALID_NODE>
 X3DFieldDefinition*
 X3DEditor::getContainerField (const SFNode & parent, const SFNode & child)
-throw (Error <INVALID_NODE>)
 {
 	try
 	{

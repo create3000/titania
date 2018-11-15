@@ -104,10 +104,9 @@ public:
 		}
 	}
 
+	///  throws sstd::out_of_range, std::invalid_argument
 	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL) const
-	throw (std::out_of_range,
-	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
 		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
@@ -119,10 +118,9 @@ public:
 		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
 	}
 
+	///  throws std::out_of_range, std::invalid_argument
 	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL, const std::string & nodeName) const
-	throw (std::out_of_range,
-	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
 		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
@@ -159,10 +157,9 @@ private:
 		                                                                                                                                                                                                               "WHERE id = " + id);
 	}
 
+	///  throws std::out_of_range, std::invalid_argument
 	const std::string &
 	getId (const std::string & worldURL, const std::string & nodeName) const
-	throw (std::out_of_range,
-	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT id FROM Scripts WHERE "
 		                                             "worldURL = " + database .quote (worldURL) + " AND "

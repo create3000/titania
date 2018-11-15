@@ -79,18 +79,16 @@ ExportedNode::create (X3DExecutionContext* const executionContext) const
 	throw Error <NOT_SUPPORTED> ("Fabricating exported nodes is not supported.");
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 ExportedNode*
 ExportedNode::copy (X3DExecutionContext* const executionContext, const CopyType) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	throw Error <NOT_SUPPORTED> ("Cloning exported nodes into execution context is not supported.");
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 ExportedNode*
 ExportedNode::copy (X3DScene* const scene) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	try
 	{
@@ -114,9 +112,9 @@ ExportedNode::initialize ()
 	set_node ();
 }
 
+///  throws Error <DISPOSED>
 SFNode
 ExportedNode::getLocalNode () const
-throw (Error <DISPOSED>)
 {
 	if (node)
 		return SFNode (node);
@@ -131,10 +129,9 @@ ExportedNode::set_node ()
 		scene -> removeExportedNode (exportedName);
 }
 
+///  throws Error <INVALID_NODE>, Error <DISPOSED>
 void
 ExportedNode::toStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	const std::string & localName = Generator::LocalName (ostream, getLocalNode ());
 
@@ -170,10 +167,9 @@ ExportedNode::toStream (std::ostream & ostream) const
 	}
 }
 
+///  throws Error <INVALID_NODE>, Error <DISPOSED>
 void
 ExportedNode::toXMLStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	const std::string & localName = Generator::LocalName (ostream, getLocalNode ());
 
@@ -197,10 +193,9 @@ ExportedNode::toXMLStream (std::ostream & ostream) const
 	ostream << "/>";
 }
 
+///  throws Error <INVALID_NODE>, Error <DISPOSED>
 void
 ExportedNode::toJSONStream (std::ostream & ostream) const
-//throw (Error <INVALID_NODE>,
-//       Error <DISPOSED>)
 {
 	const std::string & localName = Generator::LocalName (ostream, getLocalNode ());
 

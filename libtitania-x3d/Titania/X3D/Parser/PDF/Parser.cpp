@@ -97,7 +97,7 @@ Parser::parseIntoScene ()
 	}
 	catch (const Glib::Error & error)
 	{
-		throw X3D::Error <X3D::NOT_SUPPORTED> (error .what ());
+		throw Error <X3D::NOT_SUPPORTED> (error .what ());
 	}
 }
 

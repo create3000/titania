@@ -112,8 +112,6 @@ QuadSet::addNormals ()
 
 SFNode
 QuadSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (4, getCoord () ? getCoord () -> getSize () : 0);
 }

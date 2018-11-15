@@ -75,20 +75,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -140,9 +137,9 @@ private:
 
 	///  @name Operations
 
+	///  throws std::domain_error
 	const Matrix4d &
-	rotate (X3DRenderObject* const renderObject)
-	throw (std::domain_error);
+	rotate (X3DRenderObject* const renderObject);
 
 	///  @name Static members
 

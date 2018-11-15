@@ -133,8 +133,6 @@ Arc2D::initialize ()
 
 void
 Arc2D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isInitialized ())
 		getBrowser () -> getArc2DOptions () .removeInterest (&Arc2D::addEvent, this);
@@ -226,8 +224,6 @@ Arc2D::build ()
 
 SFNode
 Arc2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("Arc2D::toPrimitive");

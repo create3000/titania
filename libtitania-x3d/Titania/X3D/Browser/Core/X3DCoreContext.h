@@ -100,22 +100,19 @@ public:
 
 	/// @name Browser properties service
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const BrowserOptionsPtr &
 	getBrowserOptions () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return browserOptions; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const BrowserPropertiesPtr &
 	getBrowserProperties () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return browserProperties; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const RenderingPropertiesPtr &
 	getRenderingProperties () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return renderingProperties; }
 
 	///  @name Destruction

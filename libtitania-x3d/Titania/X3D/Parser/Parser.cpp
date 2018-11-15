@@ -91,7 +91,6 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 
 void
 Parser::parseIntoScene ()
-throw (Error <INVALID_X3D>)
 {
 	//std::clog << "Parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 
@@ -213,7 +212,6 @@ Parser::getline ()
 
 std::string
 Parser::rgetline ()
-throw (std::out_of_range)
 {
 	//__LOG__ << this << " " << std::endl;
 
@@ -244,7 +242,6 @@ throw (std::out_of_range)
 
 void
 Parser::exception (const std::string & string)
-throw (Error <INVALID_X3D>)
 {
 	if (getBrowser () -> isStrict ())
 		throw Error <INVALID_X3D> (string);

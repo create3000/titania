@@ -120,8 +120,6 @@ Text::initialize ()
 
 void
 Text::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (textGeometry)
 		textGeometry -> setExecutionContext (executionContext);
@@ -230,8 +228,6 @@ Text::draw (ShapeContainer* const context)
 
 SFNode
 Text::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	return textGeometry -> toPrimitive ();
 }

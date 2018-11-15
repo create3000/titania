@@ -130,8 +130,6 @@ Box::build ()
 
 SFNode
 Box::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto & options  = getBrowser () -> getBoxOptions ();
 	const auto   geometry = options -> toPrimitive (getExecutionContext ());

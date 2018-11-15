@@ -71,12 +71,9 @@ const std::set <std::string> FileGenerator::knowFileTypes = {
 	".wrz",
 };
 
+///  throws Error <INVALID_URL> Error <NOT_SUPPORTED>, Error <DISPOSED> std::exception
 void
 FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle, const bool metadata)
-throw (Error <INVALID_URL>,
-       Error <NOT_SUPPORTED>,
-       Error <DISPOSED>,
-       std::exception)
 {
 	using GeneratorCallback = std::function <bool (std::ostream &, const X3DScenePtr &)>;
 
@@ -111,12 +108,9 @@ throw (Error <INVALID_URL>,
 		throw Error <INVALID_URL> ("Invalid URL: Couldn't save scene to output stream.");
 }
 
+///  throws Error <INVALID_URL> Error <NOT_SUPPORTED>, Error <DISPOSED> std::exception
 void
 FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle, const bool metadata)
-throw (Error <INVALID_URL>,
-       Error <NOT_SUPPORTED>,
-       Error <DISPOSED>,
-       std::exception)
 {
 	static const std::map <std::string, bool> compressed = {
 		std::make_pair (".x3d",   false),

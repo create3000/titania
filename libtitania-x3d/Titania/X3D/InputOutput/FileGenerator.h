@@ -73,21 +73,15 @@ public:
 
 	///  @name Operations
 
+	///  throws Error <INVALID_URL>, Error <NOT_SUPPORTED>, Error <DISPOSED>, std::exception
 	static
 	void
-	write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle, const bool metadata)
-	throw (Error <INVALID_URL>,
-	       Error <NOT_SUPPORTED>,
-          Error <DISPOSED>,
-          std::exception);
+	write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle, const bool metadata);
 
+	///  throws Error <INVALID_URL>, Error <NOT_SUPPORTED>, Error <DISPOSED>, std::exception
 	static
 	void
-	write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle, const bool metadata)
-	throw (Error <INVALID_URL>,
-	       Error <NOT_SUPPORTED>,
-          Error <DISPOSED>,
-          std::exception);
+	write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle, const bool metadata);
 
 	///  @name Destruction
 

@@ -80,13 +80,13 @@ public:
 
 	lsystem ();
 
+	///  throws std::runtime_error
 	template <class Iterator>
 	lsystem (const size_type iterations,
 	         const String & constants,
 	         const String & axiom,
 	         const Iterator & first_rule,
-	         const Iterator & last_rule)
-	throw (std::runtime_error);
+	         const Iterator & last_rule);
 
 	///  @name Member access
 
@@ -116,9 +116,9 @@ public:
 	axiom () const
 	{ return m_axiom; }
 
+	///  throws std::runtime_error
 	void
-	add_rule (const String & rule)
-	throw (std::runtime_error);
+	add_rule (const String & rule);
 
 	const rules_type &
 	rules () const
@@ -130,9 +130,9 @@ public:
 
 	///  @name Operations
 
+	///  throws std::runtime_error
 	void
-	generate ()
-	throw (std::runtime_error);
+	generate ();
 
 	///  @name Destruction
 
@@ -165,14 +165,14 @@ lsystem <String>::lsystem () :
 	  m_commands ()
 { }
 
+///  throws std::runtime_error
 template <class String>
 template <class Iterator>
 lsystem <String>::lsystem (const size_type iterations,
                            const String & constants,
                            const String & axiom,
                            const Iterator & first_rule,
-                           const Iterator & last_rule)
-throw (std::runtime_error) :
+                           const Iterator & last_rule) :
 	m_iterations (iterations),
 	     m_axiom (remove_spaces (axiom)),
 	 m_constants (),
@@ -221,10 +221,10 @@ lsystem <String>::is_constant (const typename String::value_type & constant) con
 	return m_constants .count (constant);
 }
 
+///  throws std::runtime_error
 template <class String>
 void
 lsystem <String>::add_rule (const String & rule)
-throw (std::runtime_error)
 {
 	const auto rule_without_spaces = remove_spaces (rule);
 
@@ -238,10 +238,10 @@ throw (std::runtime_error)
 		throw std::runtime_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
 }
 
+///  throws std::runtime_error
 template <class String>
 void
 lsystem <String>::generate ()
-throw (std::runtime_error)
 {
 	m_commands = axiom ();
 

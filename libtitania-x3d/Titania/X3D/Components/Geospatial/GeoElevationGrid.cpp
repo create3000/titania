@@ -522,8 +522,6 @@ GeoElevationGrid::addNormals ()
 
 SFNode
 GeoElevationGrid::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto texCoord = texCoordNode ? X3DPtr <TextureCoordinate> () : getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <GeoCoordinate> ();

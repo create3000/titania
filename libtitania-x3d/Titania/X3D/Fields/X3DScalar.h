@@ -107,11 +107,10 @@ public:
 	create () const final override
 	{ return new X3DScalar (); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DScalar*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType) const final override
 	{ return new X3DScalar (*this); }
 
 	///  @name Interest service
@@ -232,11 +231,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	fromStream (std::istream & istream) final override
 	{ }
 
 	virtual
@@ -303,35 +298,19 @@ X3DScalar <InternalType>::operator /= (const InternalType & value)
 
 template <>
 void
-X3DScalar <bool>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>);
+X3DScalar <bool>::fromStream (std::istream & istream);
 
 template <>
 void
-X3DScalar <double>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>);
+X3DScalar <double>::fromStream (std::istream & istream);
 
 template <>
 void
-X3DScalar <float>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>);
+X3DScalar <float>::fromStream (std::istream & istream);
 
 template <>
 void
-X3DScalar <int32_t>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>);
+X3DScalar <int32_t>::fromStream (std::istream & istream);
 
 extern template class X3DScalar <bool>;
 extern template class X3DScalar <double>;

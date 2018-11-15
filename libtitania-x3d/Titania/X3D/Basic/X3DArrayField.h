@@ -158,19 +158,17 @@ public:
 	{ return new X3DArrayField (); }
 
 	///  Construct new X3DArrayField.
+   ///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DArrayField*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (const CopyType) const override
 	{ return new X3DArrayField (*this); }
 
 	///  Construct new X3DArrayField.
+   ///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DArrayField*
-	copy (X3DExecutionContext* const, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) override
+	copy (X3DExecutionContext* const, const CopyType type) const override
 	{ return copy (type); }
 
 	///  @name Assignment operators
@@ -504,13 +502,10 @@ public:
 	///  @name Input/Output
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding.
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	fromStream (std::istream &) override;
 
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
@@ -901,10 +896,6 @@ X3DArrayField <ValueType>::swap (X3DArrayField & other)
 template <class ValueType>
 void
 X3DArrayField <ValueType>::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (istream)
 	{

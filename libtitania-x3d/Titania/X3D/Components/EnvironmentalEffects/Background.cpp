@@ -114,10 +114,9 @@ Background::create (X3DExecutionContext* const executionContext) const
 	return new Background (executionContext);
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 Background*
 Background::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
 {
 	Background* const copy = dynamic_cast <Background*> (X3DBackgroundNode::copy (executionContext, type));
 
@@ -131,10 +130,9 @@ throw (Error <INVALID_NAME>,
 	return copy;
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 void
 Background::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DUrlObject::transform (frontUrl (),  getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
 	X3DUrlObject::transform (backUrl (),   getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());

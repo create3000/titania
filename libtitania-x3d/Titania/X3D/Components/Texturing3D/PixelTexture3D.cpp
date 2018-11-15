@@ -262,11 +262,9 @@ PixelTexture3D::update ()
 	loadState = COMPLETE_STATE;
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
 PixelTexture3D::setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DNode)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (not texture3DNode)
 		throw Error <INVALID_NODE> ("Node is NULL.");

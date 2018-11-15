@@ -53,210 +53,171 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
 
+	///  throws Error <DISPOSED>
 	const std::string &
 	getVersion () const
-	throw (Error <DISPOSED>)
 	{ return version; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setDescription (const std::string & value)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	setDescription (const std::string & value);
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const SFString &
 	getDescription ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return description; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	double
 	getCurrentSpeed () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return currentSpeed; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	double
 	getCurrentFrameRate () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return currentFrameRate; }
 
+	///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 	const X3DFieldDefinition*
-	getSupportedField (const std::string &) const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>);
+	getSupportedField (const std::string &) const;
 
+	///  throws Error <DISPOSED>
 	const SupportedFieldsArray &
-	getSupportedFields () const
-	throw (Error <DISPOSED>);
+	getSupportedFields () const;
 
+	///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 	const X3DBaseNode*
-	getSupportedNode (const std::string &) const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>);
+	getSupportedNode (const std::string &) const;
 
+	///  throws Error <DISPOSED>
 	const SupportedNodesArray &
-	getSupportedNodes () const
-	throw (Error <DISPOSED>);
+	getSupportedNodes () const;
 
+	///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 	ComponentInfoPtr
-	getComponent (const std::string &, const size_t) const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>);
+	getComponent (const std::string &, const size_t) const;
 
+	///  throws Error <DISPOSED>
 	const ComponentInfoArray &
-	getSupportedComponents () const
-	throw (Error <DISPOSED>);
+	getSupportedComponents () const;
 
+	///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
 	const ProfileInfoPtr &
-	getProfile (const std::string &) const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>);
+	getProfile (const std::string &) const;
 
+	///  throws Error <DISPOSED>
 	const ProfileInfoArray &
-	getSupportedProfiles () const
-	throw (Error <DISPOSED>);
+	getSupportedProfiles () const;
 
 	///  @name Execution context handling
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
+	getWorldURL () const final override
 	{ return getExecutionContext () -> getWorldURL (); }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const X3DExecutionContextPtr &
 	getExecutionContext () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
 	{ return executionContext; }
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createScene (const bool setup = true) const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createScene (const bool setup = true) const;
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createScene (const ProfileInfoPtr &, const ComponentInfoArray &, const bool setup = true) const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createScene (const ProfileInfoPtr &, const ComponentInfoArray &, const bool setup = true) const;
 
+	///  throws Error <INVALID_SCENE>, Error <DISPOSED>
 	void
-	replaceWorld (const X3DExecutionContextPtr & executionContext)
-	throw (Error <INVALID_SCENE>,
-	       Error <INVALID_OPERATION_TIMING>);
+	replaceWorld (const X3DExecutionContextPtr & executionContext);
 
+	///  throws Error <INVALID_DOCUMENT>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>, Error <NOT_SUPPORTED>
 	X3DScenePtr
-	importDocument (/*const XML DOMNode &*/)
-	throw (Error <INVALID_DOCUMENT>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>,
-	       Error <NOT_SUPPORTED>);
+	importDocument (/*const XML DOMNode &*/);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>
 	void
-	loadURL (const MFString & url, const MFString & parameter)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>);
+	loadURL (const MFString & url, const MFString & parameter);
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromString (const std::string & x3dSyntax)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createX3DFromString (const std::string & x3dSyntax);
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromStream (basic::ifilestream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createX3DFromStream (basic::ifilestream & istream);
 
+	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	X3DScenePtr
-	createX3DFromURL (const MFString & url)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>);
+	createX3DFromURL (const MFString & url);
 
+	///  throws Error <INVALID_URL>, Error <URL_UNAVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	SceneFuturePtr
-	createX3DFromURL (const MFString & url, const SceneFutureCallback & callback)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>);
+	createX3DFromURL (const MFString & url, const SceneFutureCallback & callback);
 
 	/// @name Change viewpoint service
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	firstViewpoint ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	firstViewpoint ();
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	previousViewpoint ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	previousViewpoint ();
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	nextViewpoint ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	nextViewpoint ();
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	lastViewpoint ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	lastViewpoint ();
 
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	changeViewpoint (const std::string &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	changeViewpoint (const std::string &);
 
 	/// @name Begin/End update service
 
+	///  throws Error <DISPOSED>
 	virtual
 	void
-	beginUpdate ()
-	throw (Error <DISPOSED>) final override;
+	beginUpdate () final override;
 
 	///  @name print
 
+	///  throws Error <DISPOSED>
 	template <typename ... Args>
 	void
 	print (Args && ... args)
-	throw (Error <DISPOSED>)
 	{ getConsole () -> print (std::forward <Args> (args) ...); }
 
+	///  throws Error <DISPOSED>
 	template <typename ... Args>
 	void
 	println (Args && ... args)
-	throw (Error <DISPOSED>)
 	{ getConsole () -> print (std::forward <Args> (args) ..., '\n'); }
 
 	///  @name Error handling

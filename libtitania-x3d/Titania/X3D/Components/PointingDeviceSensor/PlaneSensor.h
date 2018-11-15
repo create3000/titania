@@ -73,20 +73,17 @@ public:
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -156,9 +153,9 @@ private:
 
 	///  @name Operations
 
+	///  throws std::domain_error
 	std::pair <Vector3d, bool>
-	getLineTrackPoint (const HitPtr &, const Line3d &)
-	throw (std::domain_error);
+	getLineTrackPoint (const HitPtr &, const Line3d &);
 
 	void
 	trackStart (const Vector3d &);

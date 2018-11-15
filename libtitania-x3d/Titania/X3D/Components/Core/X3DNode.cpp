@@ -426,15 +426,14 @@ X3DNode::X3DNode () :
 	addType (X3DConstants::X3DNode);
 
 }
+
 /*
  * Meta Data
  */
 
+///  throws Error <NOT_SUPPORTED>, Error <INVALID_NAME>, Error <DISPOSED>
 X3DPtr <MetadataSet>
 X3DNode::createMetadataSet (const std::string & key)
-throw (Error <NOT_SUPPORTED>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -445,11 +444,9 @@ throw (Error <NOT_SUPPORTED>,
 	return metadataSet -> createValue <MetadataSet> (names .back ());
 }
 
+///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <DISPOSED>
 X3DPtr <MetadataSet>
 X3DNode::getMetadataSet (const std::string & key) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	std::vector <std::string> names;
 
@@ -461,50 +458,50 @@ throw (Error <INVALID_NODE>,
 	return value;
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFBool::internal_type> (const std::string & key, const SFBool::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData(key, MFBool ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFColor::internal_type> (const std::string & key, const SFColor::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFColor ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFColorRGBA::internal_type> (const std::string & key, const SFColorRGBA::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFColorRGBA ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFDouble::internal_type> (const std::string & key, const SFDouble::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFDouble ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFFloat::internal_type> (const std::string & key, const SFFloat::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFImage> (const std::string & key, const SFImage & value)
-throw (Error <DISPOSED>)
 {
 	MFInt32 array;
 
@@ -518,162 +515,162 @@ throw (Error <DISPOSED>)
 	setMetaData (key, array);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFInt32 ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFMatrix3d::internal_type> (const std::string & key, const SFMatrix3d::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFMatrix3d ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFMatrix3f::internal_type> (const std::string & key, const SFMatrix3f::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFMatrix3f ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFMatrix4d::internal_type> (const std::string & key, const SFMatrix4d::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFMatrix4d ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFMatrix4f::internal_type> (const std::string & key, const SFMatrix4f::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFMatrix4f ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFNode> (const std::string & key, const SFNode & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFNode ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFRotation::internal_type> (const std::string & key, const SFRotation::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFRotation ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFString::internal_type> (const std::string & key, const SFString::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFString ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFVec2d::internal_type> (const std::string & key, const SFVec2d::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFVec2d ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFVec2f::internal_type> (const std::string & key, const SFVec2f::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFVec2f ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFVec3d::internal_type> (const std::string & key, const SFVec3d::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFVec3d ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFVec3f::internal_type> (const std::string & key, const SFVec3f::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFVec3f ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFVec4d::internal_type> (const std::string & key, const SFVec4d::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFVec4d ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <SFVec4f::internal_type> (const std::string & key, const SFVec4f::internal_type & value)
-throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFVec4f ({ value }));
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFBool> (const std::string & key, const MFBool & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFBool, MetadataBoolean> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFColor> (const std::string & key, const MFColor & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFColor, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFColorRGBA> (const std::string & key, const MFColorRGBA & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFColorRGBA, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFDouble> (const std::string & key, const MFDouble & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFDouble, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFFloat> (const std::string & key, const MFFloat & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFFloat, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFImage> (const std::string & key, const MFImage & value)
-throw (Error <DISPOSED>)
 {
 	MFInt32 array;
 
@@ -690,130 +687,130 @@ throw (Error <DISPOSED>)
 	setMetaData (key, array);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFInt32> (const std::string & key, const MFInt32 & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFInt32, MetadataInteger> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFMatrix3d> (const std::string & key, const MFMatrix3d & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFMatrix3d, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFMatrix3f> (const std::string & key, const MFMatrix3f & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFMatrix3f, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFMatrix4d> (const std::string & key, const MFMatrix4d & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFMatrix4d, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFMatrix4f> (const std::string & key, const MFMatrix4f & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFMatrix4f, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFNode> (const std::string & key, const MFNode & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFNode, MetadataSet> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFRotation> (const std::string & key, const MFRotation & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFRotation, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFString> (const std::string & key, const MFString & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFString, MetadataString> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFVec2d> (const std::string & key, const MFVec2d & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFVec2d, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFVec2f> (const std::string & key, const MFVec2f & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFVec2f, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFVec3d> (const std::string & key, const MFVec3d & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFVec3d, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFVec3f> (const std::string & key, const MFVec3f & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFVec3f, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFVec4d> (const std::string & key, const MFVec4d & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFVec4d, MetadataDouble> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 void
 X3DNode::setMetaData <MFVec4f> (const std::string & key, const MFVec4f & value)
-throw (Error <DISPOSED>)
 {
 	MetadataHandling::setMetaValue <MFVec4f, MetadataFloat> (this, key, value);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFBool::internal_type
 X3DNode::getMetaData <SFBool::internal_type> (const std::string & key, const SFBool::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <SFBool::internal_type, MetadataBoolean> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFColor::internal_type
 X3DNode::getMetaData <SFColor::internal_type> (const std::string & key, const SFColor::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -823,10 +820,10 @@ throw (Error <DISPOSED>)
 	return SFColor::internal_type (metaValue [0], metaValue [1], metaValue [2]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFColorRGBA::internal_type
 X3DNode::getMetaData <SFColorRGBA::internal_type> (const std::string & key, const SFColorRGBA::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -836,26 +833,26 @@ throw (Error <DISPOSED>)
 	return SFColorRGBA::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFDouble::internal_type
 X3DNode::getMetaData <SFDouble::internal_type> (const std::string & key, const SFDouble::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <SFDouble::internal_type, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFFloat::internal_type
 X3DNode::getMetaData <SFFloat::internal_type> (const std::string & key, const SFFloat::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <SFFloat::internal_type, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFImage
 X3DNode::getMetaData <SFImage> (const std::string & key, const SFImage & defaultValue)
-throw (Error <DISPOSED>)
 {
 	auto array = MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, MFInt32 ()); // XXX: defaultValue
 
@@ -875,18 +872,18 @@ throw (Error <DISPOSED>)
 	return SFImage (width, height, components, array);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFInt32::internal_type
 X3DNode::getMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <SFInt32::internal_type, MetadataInteger> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFMatrix3d::internal_type
 X3DNode::getMetaData <SFMatrix3d::internal_type> (const std::string & key, const SFMatrix3d::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
@@ -904,10 +901,10 @@ throw (Error <DISPOSED>)
 	                                  metaValue [8]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFMatrix3f::internal_type
 X3DNode::getMetaData <SFMatrix3f::internal_type> (const std::string & key, const SFMatrix3f::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -925,10 +922,10 @@ throw (Error <DISPOSED>)
 	                                  metaValue [8]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFMatrix4d::internal_type
 X3DNode::getMetaData <SFMatrix4d::internal_type> (const std::string & key, const SFMatrix4d::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
@@ -953,10 +950,10 @@ throw (Error <DISPOSED>)
 	                                  metaValue [15]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFMatrix4f::internal_type
 X3DNode::getMetaData <SFMatrix4f::internal_type> (const std::string & key, const SFMatrix4f::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -981,18 +978,18 @@ throw (Error <DISPOSED>)
 	                                  metaValue [15]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFNode
 X3DNode::getMetaData <SFNode> (const std::string & key, const SFNode & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <SFNode, MetadataSet> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFRotation::internal_type
 X3DNode::getMetaData <SFRotation::internal_type> (const std::string & key, const SFRotation::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
@@ -1002,18 +999,18 @@ throw (Error <DISPOSED>)
 	return SFRotation::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFString::internal_type
 X3DNode::getMetaData <SFString::internal_type> (const std::string & key, const SFString::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <SFString::internal_type, MetadataString> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFVec2d::internal_type
 X3DNode::getMetaData <SFVec2d::internal_type> (const std::string & key, const SFVec2d::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
@@ -1023,10 +1020,10 @@ throw (Error <DISPOSED>)
 	return SFVec2d::internal_type (metaValue [0], metaValue [1]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFVec2f::internal_type
 X3DNode::getMetaData <SFVec2f::internal_type> (const std::string & key, const SFVec2f::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -1036,10 +1033,10 @@ throw (Error <DISPOSED>)
 	return SFVec2f::internal_type (metaValue [0], metaValue [1]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFVec3d::internal_type
 X3DNode::getMetaData <SFVec3d::internal_type> (const std::string & key, const SFVec3d::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
@@ -1049,10 +1046,10 @@ throw (Error <DISPOSED>)
 	return SFVec3d::internal_type (metaValue [0], metaValue [1], metaValue [2]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFVec3f::internal_type
 X3DNode::getMetaData <SFVec3f::internal_type> (const std::string & key, const SFVec3f::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -1062,10 +1059,10 @@ throw (Error <DISPOSED>)
 	return SFVec3f::internal_type (metaValue [0], metaValue [1], metaValue [2]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFVec4d::internal_type
 X3DNode::getMetaData <SFVec4d::internal_type> (const std::string & key, const SFVec4d::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFDouble> (key);
 
@@ -1075,10 +1072,10 @@ throw (Error <DISPOSED>)
 	return SFVec4d::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 SFVec4f::internal_type
 X3DNode::getMetaData <SFVec4f::internal_type> (const std::string & key, const SFVec4f::internal_type & defaultValue)
-throw (Error <DISPOSED>)
 {
 	const auto metaValue = getMetaData <MFFloat> (key);
 
@@ -1088,50 +1085,50 @@ throw (Error <DISPOSED>)
 	return SFVec4f::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFBool
 X3DNode::getMetaData <MFBool> (const std::string & key, const MFBool & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFBool, MetadataBoolean> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFColor
 X3DNode::getMetaData <MFColor> (const std::string & key, const MFColor & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFColor, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFColorRGBA
 X3DNode::getMetaData <MFColorRGBA> (const std::string & key, const MFColorRGBA & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFColorRGBA, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFDouble
 X3DNode::getMetaData <MFDouble> (const std::string & key, const MFDouble & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFDouble, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFFloat
 X3DNode::getMetaData <MFFloat> (const std::string & key, const MFFloat & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFFloat, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFImage
 X3DNode::getMetaData <MFImage> (const std::string & key, const MFImage & defaultValue)
-throw (Error <DISPOSED>)
 {
 	auto array = MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, MFInt32 ());
 
@@ -1160,114 +1157,114 @@ throw (Error <DISPOSED>)
 	return images;
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFInt32
 X3DNode::getMetaData <MFInt32> (const std::string & key, const MFInt32 & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFMatrix3d
 X3DNode::getMetaData <MFMatrix3d> (const std::string & key, const MFMatrix3d & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFMatrix3d, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFMatrix3f
 X3DNode::getMetaData <MFMatrix3f> (const std::string & key, const MFMatrix3f & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFMatrix3f, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFMatrix4d
 X3DNode::getMetaData <MFMatrix4d> (const std::string & key, const MFMatrix4d & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFMatrix4d, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFMatrix4f
 X3DNode::getMetaData <MFMatrix4f> (const std::string & key, const MFMatrix4f & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFMatrix4f, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFNode
 X3DNode::getMetaData <MFNode> (const std::string & key, const MFNode & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFNode, MetadataSet> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFRotation
 X3DNode::getMetaData <MFRotation> (const std::string & key, const MFRotation & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFRotation, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFString
 X3DNode::getMetaData <MFString> (const std::string & key, const MFString & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFString, MetadataString> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFVec2d
 X3DNode::getMetaData <MFVec2d> (const std::string & key, const MFVec2d & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFVec2d, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFVec2f
 X3DNode::getMetaData <MFVec2f> (const std::string & key, const MFVec2f & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFVec2f, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFVec3d
 X3DNode::getMetaData <MFVec3d> (const std::string & key, const MFVec3d & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFVec3d, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFVec3f
 X3DNode::getMetaData <MFVec3f> (const std::string & key, const MFVec3f & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFVec3f, MetadataFloat> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFVec4d
 X3DNode::getMetaData <MFVec4d> (const std::string & key, const MFVec4d & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFVec4d, MetadataDouble> (this, key, defaultValue);
 }
 
+///  throws Error <DISPOSED>
 template <>
 MFVec4f
 X3DNode::getMetaData <MFVec4f> (const std::string & key, const MFVec4f & defaultValue)
-throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFVec4f, MetadataFloat> (this, key, defaultValue);
 }
@@ -1276,11 +1273,9 @@ throw (Error <DISPOSED>)
  * getMetadataSet
  */
 
+///  throws Error <INVALID_NODE>, Error <INVALID_NAME>, Error <DISPOSED>
 MetadataSet*
 X3DNode::getMetadataSet (const std::vector <std::string> & names, const bool throw_) const
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
 {
 	if (names .size () < 3)
 		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
@@ -1321,7 +1316,6 @@ throw (Error <INVALID_NODE>,
 
 void
 X3DNode::removeMetaData (const std::string & key)
-throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 

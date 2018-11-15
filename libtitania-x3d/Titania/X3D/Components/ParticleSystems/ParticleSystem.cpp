@@ -480,8 +480,6 @@ ParticleSystem::isSoftSystem () const
 
 void
 ParticleSystem::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	if (isSoftSystem ())
 	{
@@ -1880,9 +1878,9 @@ ParticleSystem::draw (ShapeContainer* const context)
 	}
 }
 
+///  throws std::domain_error
 Matrix3d
 ParticleSystem::getScreenAlignedRotation (const Matrix4d & modelViewMatrix) const
-throw (std::domain_error)
 {
 	const auto invModelViewMatrix = inverse (modelViewMatrix);
 	const auto billboardToScreen  = normalize (invModelViewMatrix .mult_dir_matrix (zAxis));

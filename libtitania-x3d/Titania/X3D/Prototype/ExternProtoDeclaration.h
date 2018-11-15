@@ -78,57 +78,48 @@ public:
 
 	virtual
 	ExternProtoDeclaration*
-	copy (const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override
+	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
 	virtual
 	ExternProtoDeclaration*
-	copy (X3DExecutionContext* const, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final override;
+	copy (X3DExecutionContext* const, const CopyType) const final override;
 	
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Common members
 
 	virtual
 	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
+	getComponent () const final override
 	{ return component; }
 
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
+	getTypeName () const final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Test
 
+	///  throws Error <DISPOSED>
 	virtual
 	bool
-	isExternproto () const
-	throw (Error <DISPOSED>) final override
+	isExternproto () const final override
 	{ return true; }
 
 	///  @name Member access
 
+	///  throws Error <DISPOSED>
 	virtual
 	ProtoDeclaration*
-	getProtoDeclaration ()
-	throw (Error <DISPOSED>) final override;
+	getProtoDeclaration () final override;
 
 	const X3DScenePtr &
 	getInternalScene () const

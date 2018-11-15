@@ -236,12 +236,11 @@ X3DBrowserContext::on_unmap ()
  *  @param  height        Height of the image.
  *  @param  alphaChannel  Whether or not the image should have a alpha channel.
  *  @param  antialiasing  Number of samples used for antialising.
+ *
+ *  throws Error <INSUFFICIENT_CAPABILITIES>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 Magick::Image
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
-throw (Error <INSUFFICIENT_CAPABILITIES>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	// Make snapshot.
 

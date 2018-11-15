@@ -203,9 +203,7 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override
+	getPrimitiveType () const override
 	{ return X3DConstants::IndexedFaceSet; }
 
 	///  @name Destruction

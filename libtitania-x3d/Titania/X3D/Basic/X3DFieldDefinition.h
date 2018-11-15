@@ -80,24 +80,20 @@ public:
 	X3DFieldDefinition*
 	create () const = 0;
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	X3DFieldDefinition*
-	copy (const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) = 0;
+	copy (const CopyType) const = 0;
 
 	virtual
 	X3DFieldDefinition*
 	copy (X3DExecutionContext* const executionContext, const CopyType type) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>)
 	{ return copy (type); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	void
-	copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType) const
-	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) = 0;
+	copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType) const = 0;
 
 	/// Assigns @a field to this X3DFieldDefinition. Both fields must be of the same type.
 	X3DFieldDefinition &

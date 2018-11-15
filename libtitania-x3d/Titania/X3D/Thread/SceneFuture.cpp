@@ -97,8 +97,6 @@ SceneFuture::getFuture (const MFString & url)
 
 void
 SceneFuture::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&SceneFuture::set_scene, this);
 

@@ -96,9 +96,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) = 0;
+	toPrimitive () const = 0;
 
 	virtual
 	~X3DTextGeometry () override;

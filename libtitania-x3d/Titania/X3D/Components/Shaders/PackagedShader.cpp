@@ -92,8 +92,6 @@ PackagedShader::initialize ()
 
 void
 PackagedShader::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DShaderNode::setExecutionContext (executionContext);

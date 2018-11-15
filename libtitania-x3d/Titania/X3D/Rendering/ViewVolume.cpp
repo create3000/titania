@@ -130,21 +130,21 @@ ViewVolume::intersects (const Box3d & bbox) const
 
 // http://www.opengl.org/wiki/GluProject_and_gluUnProject_code
 
+///  throws std::domain_error
 Vector3d
 ViewVolume::unProjectPoint (const double winx, const double winy, const double winz,
                             const Matrix4d & modelViewMatrix,
                             const Matrix4d & projectionMatrix,
                             const Vector4i & viewport)
-throw (std::domain_error)
 {
 	const Matrix4d invModelViewProjection = inverse (modelViewMatrix * projectionMatrix);
 
 	return unProjectPoint (winx, winy, winz, invModelViewProjection, viewport);
 }
 
+///  throws std::domain_error
 Vector3d
 ViewVolume::unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
-throw (std::domain_error)
 {
 	// Transformation of normalized coordinates between -1 and 1
 	Vector4d in ((winx - viewport [0]) / viewport [2] * 2 - 1,
@@ -163,19 +163,19 @@ throw (std::domain_error)
 	return Vector3d (in .x () * d, in .y () * d, in . z () * d);
 }
 
+///  throws std::domain_error
 Line3d
 ViewVolume::unProjectRay (const Vector2d & point,
                           const Matrix4d & modelViewMatrix,
                           const Matrix4d & projectionMatrix,
                           const Vector4i & viewport)
-throw (std::domain_error)
 {
 	return unProjectRay (point, inverse (modelViewMatrix * projectionMatrix), viewport);
 }
 
+///  throws std::domain_error
 Line3d
 ViewVolume::unProjectRay (const Vector2d & point, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
-throw (std::domain_error)
 {
 	const Vector3f near = ViewVolume::unProjectPoint (point .x (), point .y (), 0.0, invModelViewProjection, viewport);
 	const Vector3f far  = ViewVolume::unProjectPoint (point .x (), point .y (), 0.9, invModelViewProjection, viewport);
@@ -183,16 +183,16 @@ throw (std::domain_error)
 	return Line3d (near, far, points_type ());
 }
 
+///  throws std::domain_error
 Vector3d
 ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-throw (std::domain_error)
 {
 	return projectPoint (point, modelViewMatrix * projectionMatrix, viewport);
 }
 
+///  throws std::domain_error
 Vector3d
 ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport)
-throw (std::domain_error)
 {
 	Vector4d in (point .x (), point .y (), point .z (), 1);
 
@@ -208,9 +208,9 @@ throw (std::domain_error)
 	                 (1 + in .z () * d) / 2);
 }
 
+///  throws std::domain_error
 Line2d
 ViewVolume::projectLine (const Line3d & line, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-throw (std::domain_error)
 {
 	const auto modelViewProjection = modelViewMatrix * projectionMatrix;
 

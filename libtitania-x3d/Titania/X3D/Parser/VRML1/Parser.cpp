@@ -294,7 +294,7 @@ Parser::vrmlScene ()
 	if (istream .peek () not_eq std::char_traits <char>::eof ())
 	{
 		if (getBrowser () -> isStrict ())
-			throw X3D::Error <X3D::INVALID_X3D> ("Unknown statement.");
+			throw Error <X3D::INVALID_X3D> ("Unknown statement.");
 	}
 }
 
@@ -362,10 +362,10 @@ Parser::nodeStatement (X3D::SFNode & _node)
 			if (node (_node, _nodeNameId))
 				return true;
 
-			throw X3D::Error <X3D::INVALID_X3D> ("Expected node name after DEF.");
+			throw Error <X3D::INVALID_X3D> ("Expected node name after DEF.");
 		}
 
-		throw X3D::Error <X3D::INVALID_X3D> ("No name given after DEF.");
+		throw Error <X3D::INVALID_X3D> ("No name given after DEF.");
 	}
 
 	if (X3D::Grammar::USE (istream))
@@ -381,7 +381,7 @@ Parser::nodeStatement (X3D::SFNode & _node)
 			return true;
 		}
 
-		throw X3D::Error <X3D::INVALID_X3D> ("No name given after USE.");
+		throw Error <X3D::INVALID_X3D> ("No name given after USE.");
 	}
 
 	if (X3D::Grammar::NULL_ (istream))
@@ -463,7 +463,7 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 				return true;
 			}
 
-			throw X3D::Error <X3D::INVALID_X3D> ("Expected '}' at the end of node body.");
+			throw Error <X3D::INVALID_X3D> ("Expected '}' at the end of node body.");
 		}
 		else
 		{
@@ -480,7 +480,7 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 			return false;
 		}
 
-		throw X3D::Error <X3D::INVALID_X3D> ("Expected '{' at the beginning of node body.");
+		throw Error <X3D::INVALID_X3D> ("Expected '{' at the beginning of node body.");
 	}
 
 	//__LOG__ << this << " " << std::endl;
@@ -519,9 +519,9 @@ Parser::nodeBodyElement (const X3D::SFNode & _node)
 		{
 			_field = _node -> getField (_fieldId);
 		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		catch (const Error <X3D::INVALID_NAME> &)
 		{
-			throw X3D::Error <X3D::INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _node -> getTypeName () + "'.");
+			throw Error <X3D::INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _node -> getTypeName () + "'.");
 		}
 
 		if (_field -> isInitializable ())
@@ -529,10 +529,10 @@ Parser::nodeBodyElement (const X3D::SFNode & _node)
 			if (fieldValue (_field))
 				return true;
 
-			throw X3D::Error <X3D::INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
+			throw Error <X3D::INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 		}
 
-		throw X3D::Error <X3D::INVALID_X3D> ("Couldn't assign value to " + to_string (_field -> getAccessType ()) + " field '" + _fieldId + "'.");
+		throw Error <X3D::INVALID_X3D> ("Couldn't assign value to " + to_string (_field -> getAccessType ()) + " field '" + _fieldId + "'.");
 	}
 
 	return false;
@@ -556,7 +556,7 @@ Parser::fieldsElements (const X3D::SFNode & _node)
 				return;
 		}
 
-		throw X3D::Error <X3D::INVALID_X3D> ("Couldn't parse custom fields.");
+		throw Error <X3D::INVALID_X3D> ("Couldn't parse custom fields.");
 	}
 }
 

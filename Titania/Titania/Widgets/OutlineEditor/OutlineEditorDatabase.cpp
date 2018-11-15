@@ -92,10 +92,9 @@ OutlineEditorDatabase::setItem (const std::string & worldURL, const std::string 
 	}
 }
 
+///  throws std::out_of_range, std::invalid_argument
 std::tuple <std::string, double, double>
 OutlineEditorDatabase::getItem (const std::string & worldURL) const
-throw (std::out_of_range,
-       std::invalid_argument)
 {
 	const auto & result = database .query_array ("SELECT expanded, hAdjustment, vAdjustment FROM Paths "
 	                                             "WHERE worldURL = " + database .quote (worldURL));
@@ -105,10 +104,9 @@ throw (std::out_of_range,
 	return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
 }
 
+///  throws td::out_of_range, std::invalid_argument
 const std::string &
 OutlineEditorDatabase::getId (const std::string & worldURL) const
-throw (std::out_of_range,
-       std::invalid_argument)
 {
 	const auto & result = database .query_array ("SELECT id FROM Paths WHERE "
 	                                             "worldURL = " + database .quote (worldURL));

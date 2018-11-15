@@ -161,8 +161,6 @@ X3DViewpointNode::initialize ()
 
 void
 X3DViewpointNode::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	timeSensor                   -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());
 	easeInEaseOut                -> setExecutionContext (executionContext -> getBrowser () -> getPrivateScene ());

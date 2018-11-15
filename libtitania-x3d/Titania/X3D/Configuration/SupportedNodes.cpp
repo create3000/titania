@@ -312,9 +312,9 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	//std::clog << "\tDone creating node index." << std::endl;
 }
 
+///  throws Error <INVALID_NAME>
 void
 SupportedNodes::addNode (const std::string & typeName, const X3DBaseNode* const node)
-throw (Error <INVALID_NAME>)
 {
 	//__LOG__ << "\tAdding node type " << typeName << ": " << std::endl;
 
@@ -324,9 +324,9 @@ throw (Error <INVALID_NAME>)
 	throw Error <INVALID_NAME> ("Node type '" + typeName + "' already exists.");
 }
 
+///  throws Error <NOT_SUPPORTED>
 const X3DBaseNode*
 SupportedNodes::getNode (const std::string & typeName) const
-throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
