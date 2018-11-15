@@ -90,13 +90,13 @@ X3DLightNode::getColor () const
 float
 X3DLightNode::getAmbientIntensity () const
 {
-	return math::clamp <float> (ambientIntensity (), 0, 1);
+	return std::clamp <float> (ambientIntensity (), 0, 1);
 }
 
 float
 X3DLightNode::getIntensity () const
 {
-	return math::clamp <float> (intensity (), 0, 1);
+	return std::clamp <float> (intensity (), 0, 1);
 }
 
 const Color3f &
@@ -108,13 +108,13 @@ X3DLightNode::getShadowColor () const
 float
 X3DLightNode::getShadowIntensity () const
 {
-	return math::clamp <float> (shadowIntensity (), 0, 1);
+	return std::clamp <float> (shadowIntensity (), 0, 1);
 }
 
 float
 X3DLightNode::getShadowBias () const
 {
-	return math::clamp <float> (shadowBias (), 0, 1);
+	return std::clamp <float> (shadowBias (), 0, 1);
 }
 
 size_t

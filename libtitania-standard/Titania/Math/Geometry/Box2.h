@@ -676,7 +676,7 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & points)
 
 		// Rotate lines.
 
-		const auto theta = std::acos (clamp <Type> (max_cos_theta, 0, 1));
+		const auto theta = std::acos (std::clamp <Type> (max_cos_theta, 0, 1));
 
 		matrix3 <Type> matrix;
 

@@ -231,8 +231,8 @@ X3DBackgroundNode::buildHalfSphere (const double radius, const std::vector <doub
 
 	for (int32_t v = 0; v < V_DIMENSION; ++ v)
 	{
-		auto theta1 = math::clamp <double> (vAngle [v],     0, vAngleMax);
-		auto theta2 = math::clamp <double> (vAngle [v + 1], 0, vAngleMax);
+		auto theta1 = std::clamp <double> (vAngle [v],     0, vAngleMax);
+		auto theta2 = std::clamp <double> (vAngle [v + 1], 0, vAngleMax);
 
 		if (bottom)
 		{
@@ -289,7 +289,7 @@ X3DBackgroundNode::build ()
 	if (transparency () >= 1.0f)
 		return;
 
-	const float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
+	const float opacity = 1 - std::clamp <float> (transparency (), 0, 1);
 
 	if (groundColor () .empty () and skyColor () .size () == 1)
 	{

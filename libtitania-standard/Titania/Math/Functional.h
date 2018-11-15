@@ -53,6 +53,7 @@
 
 #include "../Math/Constants.h"
 #include <cmath>
+#include <algorithm>
 #include <stdexcept>
 #include <type_traits>
 
@@ -155,22 +156,12 @@ operator "" _rad (const long double value)
 template <class Type>
 inline
 constexpr
-std::enable_if_t <std::is_floating_point <Type>::value, Type>
+std::enable_if_t <std::is_floating_point_v <Type>, Type>
 fract (const Type & value)
 {
 	Type intpart = 0;
 
 	return std::modf (value, &intpart);
-}
-
-///  Clamp @a value in the range @a low and @a high.
-template <class Type>
-inline
-constexpr
-Type
-clamp (const Type & value, const Type & low, const Type & high)
-{
-	return value > low ? (value < high ? value : high) : low;
 }
 
 ///  Wrap value in the interval (low;high) so low <= result < high.

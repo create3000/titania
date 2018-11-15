@@ -143,13 +143,13 @@ SpotLight::getBeamWidth () const
 	if (beamWidth () > cutOffAngle)
 		return cutOffAngle;
 
-	return math::clamp <float> (beamWidth (), 0, pi <float> / 2);
+	return std::clamp <float> (beamWidth (), 0, pi <float> / 2);
 }
 
 float
 SpotLight::getCutOffAngle () const
 {
-	return math::clamp <float> (cutOffAngle (), 0, pi <float> / 2);
+	return std::clamp <float> (cutOffAngle (), 0, pi <float> / 2);
 }
 
 void
@@ -169,8 +169,8 @@ SpotLight::eventsProcessed ()
 	glDiffuseSpecular [2] = intensity * color () .getBlue ();
 	glDiffuseSpecular [3] = 1;
 
-	glSpotExponent = math::clamp <float> (beamWidth ? 0.5f / beamWidth : 0.0f, 0, 128);
-	glSpotCutOff   = math::clamp <float> (math::degrees (getCutOffAngle ()), 0, 90);
+	glSpotExponent = std::clamp <float> (beamWidth ? 0.5f / beamWidth : 0.0f, 0, 128);
+	glSpotCutOff   = std::clamp <float> (math::degrees (getCutOffAngle ()), 0, 90);
 
 	glPosition [0] = location () .getX ();
 	glPosition [1] = location () .getY ();

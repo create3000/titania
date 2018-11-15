@@ -104,8 +104,8 @@ X3DRevealerInterface::on_size_allocate (Gtk::Allocation & allocation)
 	const auto boxWidth  = getBrowserWindow () -> getBrowserOverlay () .get_width ();
 	const auto boxHeight = getBrowserWindow () -> getBrowserOverlay () .get_height ();
 
-	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, boxWidth  - getWidget () .get_width  ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, boxHeight - getWidget () .get_height ()));
+	getWidget () .set_margin_left (std::clamp <double> (getWidget () .get_margin_left (), 0, boxWidth  - getWidget () .get_width  ()));
+	getWidget () .set_margin_top  (std::clamp <double> (getWidget () .get_margin_top  (), 0, boxHeight - getWidget () .get_height ()));
 }
 
 void
@@ -150,8 +150,8 @@ X3DRevealerInterface::on_title_button_motion_notify_event (GdkEventMotion* event
 
 	const auto margin = position + X3D::Vector2d (x, y) - pointer;
 
-	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_width  () - getWidget () .get_width ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_height () - getWidget () .get_height ()));
+	getWidget () .set_margin_left (std::clamp <double> (margin .x (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_width  () - getWidget () .get_width ()));
+	getWidget () .set_margin_top  (std::clamp <double> (margin .y (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_height () - getWidget () .get_height ()));
 	return true;
 }
 

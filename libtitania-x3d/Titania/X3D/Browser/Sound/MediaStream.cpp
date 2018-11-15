@@ -193,7 +193,7 @@ MediaStream::setVolume (double value)
 {
 	static constexpr double granularity = 0.05;
 
-	value = std::round (math::clamp (value, 0.0, 1.0) / granularity) * granularity;
+	value = std::round (std::clamp (value, 0.0, 1.0) / granularity) * granularity;
 
 	if (value not_eq volume)
 	{

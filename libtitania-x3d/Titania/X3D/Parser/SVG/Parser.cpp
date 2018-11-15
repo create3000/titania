@@ -1868,7 +1868,7 @@ Parser::percentAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 		if (Grammar::PercentSign (vstream))
 			value /= 100;
 
-		value = math::clamp (value, 0.0, 1.0);
+		value = std::clamp (value, 0.0, 1.0);
 		return true;
 	}
 
@@ -2589,7 +2589,7 @@ Parser::fillOpacityStyle (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, fillOpacity))
 	{
-		style .fillOpacity = math::clamp (fillOpacity, 0.0, 1.0);
+		style .fillOpacity = std::clamp (fillOpacity, 0.0, 1.0);
 		return;
 	}
 
@@ -2665,7 +2665,7 @@ Parser::strokeOpacityStyle (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, strokeOpacity))
 	{
-		style .strokeOpacity = math::clamp (strokeOpacity, 0.0, 1.0);
+		style .strokeOpacity = std::clamp (strokeOpacity, 0.0, 1.0);
 		return;
 	}
 
@@ -2717,7 +2717,7 @@ Parser::opacityStyle (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, opacity))
 	{
-		style .opacity = math::clamp (opacity, 0.0, 1.0) * styles .back () .opacity;
+		style .opacity = std::clamp (opacity, 0.0, 1.0) * styles .back () .opacity;
 		return;
 	}
 
@@ -2755,7 +2755,7 @@ Parser::stopOpacityStyle (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, stopOpacity))
 	{
-		style .stopOpacity = math::clamp (stopOpacity, 0.0, 1.0);
+		style .stopOpacity = std::clamp (stopOpacity, 0.0, 1.0);
 		return;
 	}
 

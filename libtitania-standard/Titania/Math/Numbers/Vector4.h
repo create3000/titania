@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_NUMBERS_VECTOR4_H__
 #define __TITANIA_MATH_NUMBERS_VECTOR4_H__
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <istream>
@@ -909,10 +910,10 @@ template <class Type>
 vector4 <Type>
 clamp (const vector4 <Type> & arg, const Type & min, const Type & max)
 {
-	return vector4 <Type> (clamp (arg .x (), min, max),
-	                       clamp (arg .y (), min, max),
-	                       clamp (arg .z (), min, max),
-	                       clamp (arg .w (), min, max));
+	return vector4 <Type> (std::clamp (arg .x (), min, max),
+	                       std::clamp (arg .y (), min, max),
+	                       std::clamp (arg .z (), min, max),
+	                       std::clamp (arg .w (), min, max));
 }
 
 /**
@@ -922,7 +923,7 @@ clamp (const vector4 <Type> & arg, const Type & min, const Type & max)
  */
 
 template <class Type>
-std::enable_if_t <std::is_floating_point <Type>::value, vector4 <Type>>
+std::enable_if_t <std::is_floating_point_v <Type>, vector4 <Type>>
 fract (const vector4 <Type> & arg)
 {
 	return vector4 <Type> (fract (arg .x ()),

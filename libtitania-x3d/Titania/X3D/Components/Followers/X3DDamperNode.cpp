@@ -69,7 +69,7 @@ X3DDamperNode::X3DDamperNode () :
 size_t
 X3DDamperNode::getOrder () const
 {
-	return clamp <int32_t> (order (), 0, 5);
+	return std::clamp <int32_t> (order (), 0, 5);
 }
 
 double

@@ -134,7 +134,7 @@ BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::
 	X3D::MFFloat position;
 
 	for (const auto & value : positionValue)
-		position .emplace_back (math::clamp <float> (value / (pi <float> / 2), 0, 1));
+		position .emplace_back (std::clamp <float> (value / (pi <float> / 2), 0, 1));
 
 	if (not colorValue .empty ())
 		position .emplace_front (0);

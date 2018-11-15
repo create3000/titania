@@ -531,7 +531,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 	const vector3 <Type> from (math::normalize (fromVector));
 	const vector3 <Type> to (math::normalize (toVector));
 
-	const Type     cos_angle = clamp <Type> (dot (from, to), -1, 1);
+	const Type     cos_angle = std::clamp <Type> (dot (from, to), -1, 1);
 	vector3 <Type> crossvec  = math::normalize (cross (from, to));
 	const Type     crosslen  = abs (crossvec);
 

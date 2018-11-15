@@ -133,7 +133,7 @@ TwoSidedMaterial::eventsProcessed ()
 {
 	// Front
 
-	const float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
+	const float alpha = 1 - std::clamp <float> (transparency (), 0, 1);
 
 	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getRed ();
 	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getGreen ();
@@ -155,13 +155,13 @@ TwoSidedMaterial::eventsProcessed ()
 	glEmissiveColor [2] = emissiveColor () .getBlue ();
 	glEmissiveColor [3] = alpha;
 
-	glShininess = math::clamp <float> (shininess (), 0, 1) * 128;
+	glShininess = std::clamp <float> (shininess (), 0, 1) * 128;
 
 	// Back
 
 	if (separateBackColor ())
 	{
-		const float backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
+		const float backAlpha = 1 - std::clamp <float> (backTransparency (), 0, 1);
 
 		glBackAmbientColor [0] = backAmbientIntensity () * backDiffuseColor () .getRed ();
 		glBackAmbientColor [1] = backAmbientIntensity () * backDiffuseColor () .getGreen ();
@@ -183,7 +183,7 @@ TwoSidedMaterial::eventsProcessed ()
 		glBackEmissiveColor [2] = backEmissiveColor () .getBlue ();
 		glBackEmissiveColor [3] = backAlpha;
 
-		glBackShininess = math::clamp <float> (backShininess (), 0, 1) * 128;
+		glBackShininess = std::clamp <float> (backShininess (), 0, 1) * 128;
 	}
 	else
 	{

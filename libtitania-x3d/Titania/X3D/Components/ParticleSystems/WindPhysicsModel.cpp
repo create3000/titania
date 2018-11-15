@@ -110,7 +110,7 @@ WindPhysicsModel::addForce (X3DParticleEmitterNode* const emitter, MFVec3f & for
 		const Vector3f normal = direction () == Vector3f () ? random_normal () : normalize (direction () .getValue ());
 
 		force      .emplace_back (emitter -> surfaceArea () * pressure * normal);
-		turbulence .emplace_back (pi <float> * clamp <float> (this -> turbulence (), 0, 1));
+		turbulence .emplace_back (pi <float> * std::clamp <float> (this -> turbulence (), 0, 1));
 	}
 }
 

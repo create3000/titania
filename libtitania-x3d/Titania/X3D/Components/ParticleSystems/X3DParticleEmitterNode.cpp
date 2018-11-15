@@ -374,7 +374,7 @@ X3DParticleEmitterNode::getColors (std::vector <SoftParticle> & particles,
 				const float key0 = colorKeys [index0];
 				const float key1 = colorKeys [index1];
 		
-				weight = clamp <float> ((fraction - key0) / (key1 - key0), 0, 1);
+				weight = std::clamp <float> ((fraction - key0) / (key1 - key0), 0, 1);
 			}
 			else
 			{

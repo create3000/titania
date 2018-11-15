@@ -172,7 +172,7 @@ spherical_barycentric_coordinate (const Type x,
 	if (x == 0)
 		return 0;
 
-	const auto a1 = std::acos (clamp <Type> (dot (point0, point1), -1, 1));
+	const auto a1 = std::acos (std::clamp <Type> (dot (point0, point1), -1, 1));
 	const auto a2 = a1 * x;
 	const auto s1 = 2 * std::sin (a1 / 2);
 	const auto s2 = 2 * std::sin (a2 / 2);

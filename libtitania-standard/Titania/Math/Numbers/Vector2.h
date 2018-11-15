@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_NUMBERS_VECTOR2_H__
 #define __TITANIA_MATH_NUMBERS_VECTOR2_H__
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <istream>
@@ -860,8 +861,8 @@ template <class Type>
 vector2 <Type>
 clamp (const vector2 <Type> & arg, const Type & min, const Type & max)
 {
-	return vector2 <Type> (clamp (arg .x (), min, max),
-	                       clamp (arg .y (), min, max));
+	return vector2 <Type> (std::clamp (arg .x (), min, max),
+	                       std::clamp (arg .y (), min, max));
 }
 
 /**
@@ -871,7 +872,7 @@ clamp (const vector2 <Type> & arg, const Type & min, const Type & max)
  */
 
 template <class Type>
-std::enable_if_t <std::is_floating_point <Type>::value, vector2 <Type>>
+std::enable_if_t <std::is_floating_point_v <Type>, vector2 <Type>>
 fract (const vector2 <Type> & arg)
 {
 	return vector2 <Type> (fract (arg .x ()),

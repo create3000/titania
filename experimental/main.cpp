@@ -930,9 +930,9 @@ template <class Type>
 vector3 <Type>
 clamp (const vector3 <Type> & arg, const Type & min, const Type & max)
 {
-	return vector3 <Type> (clamp (arg .x (), min, max),
-	                       clamp (arg .y (), min, max),
-	                       clamp (arg .z (), min, max));
+	return vector3 <Type> (std::clamp (arg .x (), min, max),
+	                       std::clamp (arg .y (), min, max),
+	                       std::clamp (arg .z (), min, max));
 }
 
 /**

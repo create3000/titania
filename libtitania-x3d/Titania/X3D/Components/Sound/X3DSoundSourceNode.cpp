@@ -112,8 +112,8 @@ void
 X3DSoundSourceNode::setVolume (const float value)
 {
 	const auto mute      = getBrowser () -> getMute ();
-	const auto intensity = clamp <float> (getBrowser () -> getVolume (), 0, 1);
-	const auto volume    = clamp <float> (value, 0, 1);
+	const auto intensity = std::clamp <float> (getBrowser () -> getVolume (), 0, 1);
+	const auto volume    = std::clamp <float> (value, 0, 1);
 
 	mediaStream -> setVolume (volume * intensity * (not mute));
 }

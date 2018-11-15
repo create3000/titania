@@ -1179,7 +1179,7 @@ AnimationEditor::on_play_pause ()
 			lastFrame  = getDuration ();
 		}
 		else
-			currentFrame = math::clamp <double> (currentFrame, firstFrame, lastFrame);
+			currentFrame = std::clamp <double> (currentFrame, firstFrame, lastFrame);
 	
 		if (currentFrame >= lastFrame)
 			currentFrame = firstFrame;
@@ -2770,7 +2770,7 @@ AnimationEditor::on_motion_notify_event (GdkEventMotion* event)
 
 			const int32_t fromFrame = std::round ((fromPoint .x () - fromTranslation) / getScale ());
 			const int32_t toFrame   = std::round ((event -> x - getTranslation ()) / getScale ());
-			const int32_t distance  = math::clamp (toFrame - fromFrame, -selectedBounds .first, getDuration () - selectedBounds .second);
+			const int32_t distance  = std::clamp (toFrame - fromFrame, -selectedBounds .first, getDuration () - selectedBounds .second);
 
 			// Perform drag.
 
@@ -3100,8 +3100,8 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 	if (selectedRange .first not_eq selectedRange .second)
 	{
-		const auto    minFrame = math::clamp (selectedRange .first,  firstFrame, lastFrame - 1);
-		const auto    maxFrame = math::clamp (selectedRange .second, firstFrame, lastFrame - 1);
+		const auto    minFrame = std::clamp (selectedRange .first,  firstFrame, lastFrame - 1);
+		const auto    maxFrame = std::clamp (selectedRange .second, firstFrame, lastFrame - 1);
 		const int32_t x0       = minFrame * getScale () + getTranslation ();
 		const int32_t x1       = maxFrame * getScale () + getTranslation ();
 

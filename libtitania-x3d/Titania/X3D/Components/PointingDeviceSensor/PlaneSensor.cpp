@@ -272,12 +272,12 @@ PlaneSensor::track (const Vector3d & endPoint, const Vector3d & trackPoint)
 	// X component
 
 	if (not (minPosition () .getX () > maxPosition () .getX ()))
-		translation .x (clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
+		translation .x (std::clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
 
 	// Y component
 
 	if (not (minPosition () .getY () > maxPosition () .getY ()))
-		translation .y (clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
+		translation .y (std::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
 	translation = translation * Rotation4d (axisRotation () .getValue ());
 

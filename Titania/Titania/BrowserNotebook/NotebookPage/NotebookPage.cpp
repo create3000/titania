@@ -97,13 +97,13 @@ void
 NotebookPage::set_scene ()
 {
 	const auto worldInfo  = createWorldInfo (getScene ());
-	const auto activeView = math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
+	const auto activeView = std::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/activeView", 1), 0, 4);
 
 	for (int32_t i = 0, size = panels .size (); i < size; ++ i)
 		panels [i] -> setFocus (i == activeView);
 
 	setActiveView (activeView, false);
-	setMultiView (math::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1), false);
+	setMultiView (std::clamp (worldInfo -> getMetaData <int32_t> ("/Titania/Page/multiView"), 0, 1), false);
 
 	set_browser_ratio ();
 }

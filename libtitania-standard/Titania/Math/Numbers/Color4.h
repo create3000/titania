@@ -142,10 +142,10 @@ public:
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	color4 (const Type & r, const Type & g, const Type & b, const Type & a) :
-		m_array { clamp (r, Type (), Type (1)),
-		          clamp (g, Type (), Type (1)),
-		          clamp (b, Type (), Type (1)),
-		          clamp (a, Type (), Type (1)) }
+		m_array { std::clamp (r, Type (), Type (1)),
+		          std::clamp (g, Type (), Type (1)),
+		          std::clamp (b, Type (), Type (1)),
+		          std::clamp (a, Type (), Type (1)) }
 	{ }
 
 	///  @name Assignment operator
@@ -160,7 +160,7 @@ public:
 	///  Set red component of this color.
 	void
 	r (const Type & value)
-	{ m_array [0] = clamp (value, Type (), Type (1)); }
+	{ m_array [0] = std::clamp (value, Type (), Type (1)); }
 
 	///  Return red component of this color.
 	constexpr
@@ -171,7 +171,7 @@ public:
 	///  Set green component of this color.
 	void
 	g (const Type & value)
-	{ m_array [1] = clamp (value, Type (), Type (1)); }
+	{ m_array [1] = std::clamp (value, Type (), Type (1)); }
 
 	///  Return green component of this color.
 	constexpr
@@ -182,7 +182,7 @@ public:
 	///  Set blue component of this color.
 	void
 	b (const Type & value)
-	{ m_array [2] = clamp (value, Type (), Type (1)); }
+	{ m_array [2] = std::clamp (value, Type (), Type (1)); }
 
 	///  Return blue component of this color.
 	constexpr
@@ -193,7 +193,7 @@ public:
 	///  Set alpha component of this color.
 	void
 	a (const Type & value)
-	{ m_array [3] = clamp (value, Type (), Type (1)); }
+	{ m_array [3] = std::clamp (value, Type (), Type (1)); }
 
 	///  Return alpha component of this color.
 	constexpr
@@ -440,7 +440,7 @@ color4 <Type>::hsva (const vector4 <Type> & hsva)
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
-	v = clamp (v, Type (), Type (1));
+	v = std::clamp (v, Type (), Type (1));
 
 	if (s == 0)
 	{
@@ -449,7 +449,7 @@ color4 <Type>::hsva (const vector4 <Type> & hsva)
 		return;
 	}
 
-	s = clamp (s, Type (), Type (1));
+	s = std::clamp (s, Type (), Type (1));
 
 	const Type w = degrees (interval (h, Type (), pi2 <Type>)) / 60; // sector 0 to 5
 

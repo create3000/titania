@@ -303,7 +303,7 @@ PolylineEmitter::getRandomPosition () const
 			const auto key0 = lengthSoFarArray [index0];
 			const auto key1 = lengthSoFarArray [index1];
 	
-			weight = clamp <float> ((fraction - key0) / (key1 - key0), 0, 1);
+			weight = std::clamp <float> ((fraction - key0) / (key1 - key0), 0, 1);
 		}
 		else
 		{

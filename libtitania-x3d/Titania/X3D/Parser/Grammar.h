@@ -68,7 +68,7 @@ public:
 	template <class Type>
 	static
 	std::enable_if_t <
-		std::is_floating_point <Type>::value,
+		std::is_floating_point_v <Type>,
 		bool>
 	Number (std::istream & istream, Type & value);
 
@@ -170,7 +170,7 @@ private:
 
 template <class Type>
 std::enable_if_t <
-	std::is_floating_point <Type>::value,
+	std::is_floating_point_v <Type>,
 	bool>
 Grammar::Number (std::istream & istream, Type & value)
 {

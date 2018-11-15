@@ -87,7 +87,7 @@ FloatVertexAttribute::create (X3DExecutionContext* const executionContext) const
 void
 FloatVertexAttribute::addValue (std::vector <float> & array, const size_t index) const
 {
-	const size_t size  = clamp <int32_t> (numComponents (), 1, 4);
+	const size_t size  = std::clamp <int32_t> (numComponents (), 1, 4);
 	const size_t first = index * size;
 	const size_t last  = first + size;
 
@@ -102,7 +102,7 @@ FloatVertexAttribute::addValue (std::vector <float> & array, const size_t index)
 void
 FloatVertexAttribute::enable (X3DShaderNode* const shaderNode, const GLuint buffer) const
 {
-	shaderNode -> enableFloatAttrib (name (), buffer, clamp <int32_t> (numComponents (), 1, 4));
+	shaderNode -> enableFloatAttrib (name (), buffer, std::clamp <int32_t> (numComponents (), 1, 4));
 }
 
 void

@@ -112,7 +112,7 @@ SFColor::at (const size_type & index) const
 void
 SFColor::set1Value (const size_type & index, const value_type & value)
 {
-	get () [index] = math::clamp <value_type> (value, 0, 1);
+	get () [index] = std::clamp <value_type> (value, 0, 1);
 	addEvent ();
 }
 

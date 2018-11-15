@@ -112,7 +112,7 @@ X3DInterpolatorNode::set_fraction_ ()
 		const size_t index0 = index1 - 1;
 		const float  weight = (set_fraction () - key () .get1Value (index0)) / (key () .get1Value (index1) - key () .get1Value (index0));
 
-		interpolate (index0, index1, math::clamp (weight, 0.0f, 1.0f));
+		interpolate (index0, index1, std::clamp (weight, 0.0f, 1.0f));
 	}
 }
 
