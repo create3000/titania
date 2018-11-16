@@ -125,8 +125,6 @@ public:
 	static const io::multi_string outputOnly;
 	static const io::multi_string inputOutput;
 
-	static const std::set <std::string> SupportedFields;
-
 	///  @name Terminal symbols
 	static const io::character OpenBrace;
 	static const io::character CloseBrace;
@@ -151,10 +149,6 @@ public:
 
 
 private:
-
-	static
-	std::set <std::string>
-	getSupportedFields ();
 
 	///  @name Values
 

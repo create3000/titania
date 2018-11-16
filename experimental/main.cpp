@@ -51,6 +51,7 @@
 #include <Titania/X3D.h>
 
 #include <btBulletDynamicsCommon.h>
+//#include <filesystem>
 
 using namespace titania;
 using namespace titania::X3D;
@@ -1028,25 +1029,8 @@ main (int argc, char** argv)
 	__LOG__ << v1 << std::endl;
 	__LOG__ << v2 << std::endl;
 
-	std::map <std::string, bool> m;
+	//namespace fs = std::filesystem;
 
-	struct S { bool a; int b; };
-	auto s = S {true, 123};
-
-	const auto [t1, t2] = std::tuple (true, 1);
-	[[maybe_unused]] const auto [it, inserted] = m .emplace ("foo", true);
-	const auto [a, b] = s;
-
-	__LOG__ << t1 << std::endl;
-	__LOG__ << t2 << std::endl;
-	__LOG__ << inserted << std::endl;
-	__LOG__ << a << std::endl;
-	__LOG__ << b << std::endl;
-
-	addChildren (1,2,3,"a","b","c",true,false);
-
-	for ([[maybe_unused]] const auto & [k, v] : m)
-		__LOG__ << v << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

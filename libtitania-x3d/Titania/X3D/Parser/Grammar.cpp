@@ -87,8 +87,6 @@ const io::multi_string Grammar::inputOnly ("inputOnly|eventIn");
 const io::multi_string Grammar::outputOnly ("outputOnly|eventOut");
 const io::multi_string Grammar::inputOutput ("inputOutput|exposedField");
 
-const std::set <std::string> Grammar::SupportedFields = getSupportedFields ();
-
 // Terminal symbols
 const io::character Grammar::OpenBrace ('{');
 const io::character Grammar::CloseBrace ('}');
@@ -172,19 +170,6 @@ Grammar::Hex (std::istream & istream, uint32_t & value)
 		return static_cast <bool> (istream >> std::hex >> value);
 
 	return false;
-}
-
-std::set <std::string>
-Grammar::getSupportedFields ()
-{
-	X3D::SupportedFields X3DSupportedFields;
-
-	std::set <std::string> supportedFields;
-
-	for (const auto & field : X3DSupportedFields .getFields ())
-		supportedFields .emplace (field .second -> getTypeName ());
-
-	return supportedFields;
 }
 
 bool

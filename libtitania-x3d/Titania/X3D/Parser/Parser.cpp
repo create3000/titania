@@ -1786,7 +1786,7 @@ Parser::fieldType (std::string & _fieldType)
 
 	Id (_fieldType);
 
-	return Grammar::SupportedFields .count (_fieldType);
+	return getBrowser () -> getSupportedFields () .count (_fieldType);
 }
 
 bool
