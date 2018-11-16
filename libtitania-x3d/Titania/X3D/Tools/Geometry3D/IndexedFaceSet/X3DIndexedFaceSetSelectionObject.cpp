@@ -1097,7 +1097,7 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 		{
 			clearSelection ();
 
-		   // Proceed with next step:
+			[[fallthrough]];
 		}
 		case SelectActionType::ADD:
 		{
@@ -1128,7 +1128,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		{
 			clearSelection ();
 
-		   // Proceed with next step:
+			[[fallthrough]];
 		}
 		case SelectActionType::ADD:
 		{
@@ -1204,7 +1204,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <std::pair <siz
 		{
 			clearSelection ();
 
-		   // Proceed with next step:
+			[[fallthrough]];
 		}
 		case SelectActionType::ADD:
 		{
@@ -1370,7 +1370,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		{
 			clearSelection ();
 
-		   // Proceed with next step:
+		   [[fallthrough]];
 		}
 		case SelectActionType::ADD:
 		{

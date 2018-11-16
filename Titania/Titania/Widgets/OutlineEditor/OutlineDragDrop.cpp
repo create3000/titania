@@ -139,7 +139,8 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 					const auto sfnode = static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
 					protoLimits = get_proto_limits (sourcePath, dynamic_cast <X3D::ProtoDeclaration*> (sfnode -> getValue ()));
-					// Proceed with next step:
+
+					[[fallthrough]];
 				}
 				case OutlineIterType::ExternProtoDeclaration:
 				case OutlineIterType::X3DBaseNode:
@@ -563,7 +564,7 @@ OutlineDragDrop::on_drag_data_proto_received (const Glib::RefPtr <Gdk::DragConte
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
 			{
 				++ insertIndex;
-				// Procced with next case.
+				[[fallthrough]];
 			}
 			case Gtk::TREE_VIEW_DROP_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
@@ -658,7 +659,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
 			{
 				++ insertIndex;
-				// Procced with next case.
+				[[fallthrough]];
 			}
 			case Gtk::TREE_VIEW_DROP_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
@@ -1164,7 +1165,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
 			{
 				++ insertIndex;
-				// Procced with next case.
+				[[fallthrough]];
 			}
 			case Gtk::TREE_VIEW_DROP_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
@@ -1189,7 +1190,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Gdk::D
 			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
 			{
 				++ insertIndex;
-				// Procced with next case.
+				[[fallthrough]];
 			}
 			case Gtk::TREE_VIEW_DROP_BEFORE:
 			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:

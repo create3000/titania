@@ -99,7 +99,7 @@ X3DGeometricPropertyNodeTool::traverse (const TraverseType type, X3DRenderObject
 			if (not getBrowser () -> getToolsPickable () .top ())
 				break;
 
-			// Proceed with next case:
+			[[fallthrough]];
 		}
 		default:
 		{

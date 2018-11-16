@@ -1498,7 +1498,7 @@ ParticleSystem::updateGeometry (const Matrix4d & modelViewMatrix)
 			catch (const std::domain_error &)
 			{ }
 
-			// Proceed with next case.
+			[[fallthrough]];
 		}
 		case GeometryType::LINE:
 		case GeometryType::TRIANGLE:
@@ -1746,7 +1746,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 				catch (const std::exception &)
 				{ }
 
-				// Proceed with next case.
+				[[fallthrough]];
 			}
 			case GeometryType::LINE:
 			case GeometryType::TRIANGLE:

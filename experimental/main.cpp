@@ -1003,16 +1003,31 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	using V3d = test::math::vector3 <double>;
+	using Vec3d = test::math::vector3 <double>;
 
-	constexpr auto v = V3d ();
-	constexpr auto vc = V3d (1.0, 2.0, 3.0);
+	constexpr auto v  = Vec3d ();
+	constexpr auto vc = Vec3d (1.0, 2.0, 3.0);
 
-	auto v1 = V3d (1, 2, 3);
-	auto v2 = V3d (Vector2d (2.0, 3.0), Vector2d (2.0, 3.0));
+	auto v1 = Vec3d (1, 2, 3);
+	auto v2 = Vec3d (Vector2d (2.0, 3.0), Vector2d (2.0, 3.0));
 
 	__LOG__ << v1 << std::endl;
 	__LOG__ << v2 << std::endl;
+
+	std::map <std::string, bool> m;
+
+	struct S { bool a; int b; };
+	auto s = S {true, 123};
+
+	const auto [t1, t2] = std::make_tuple (true, 1);
+	const auto [it, inserted] = m .emplace ("foo", true);
+	const auto [a, b] = s;
+
+	__LOG__ << t1 << std::endl;
+	__LOG__ << t2 << std::endl;
+	__LOG__ << inserted << std::endl;
+	__LOG__ << a << std::endl;
+	__LOG__ << b << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

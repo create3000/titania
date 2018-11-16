@@ -116,7 +116,7 @@ SFNode::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 					break;
 				}
 
-				// Proceed with next case:
+				[[fallthrough]];
 			}
 			catch (const X3DError & error)
 			{

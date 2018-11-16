@@ -97,7 +97,7 @@ TouchGroup::traverse (const TraverseType type, X3DRenderObject* const renderObje
 			if (not enabled ())
 				return;
 
-			// Proceed with next step:
+			[[fallthrough]];
 		}
 		default:
 		{

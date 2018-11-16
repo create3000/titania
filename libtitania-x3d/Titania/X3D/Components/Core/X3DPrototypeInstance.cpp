@@ -794,7 +794,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 								break;
 							}
 	
-							// Proceed with next case.
+							[[fallthrough]];
 						}
 						default:
 						{

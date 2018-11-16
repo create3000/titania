@@ -101,7 +101,7 @@ X3DTexture::refineImageFormats ()
 				break;
 			}
 
-			// Proceed with next step:
+			[[fallthrough]];
 		}
 		case Magick::GrayscaleMatteType:
 		{
@@ -121,7 +121,7 @@ X3DTexture::refineImageFormats ()
 				break;
 			}
 
-			// Proceed with next step:
+			[[fallthrough]];
 		}
 		case Magick::TrueColorMatteType:
 		{

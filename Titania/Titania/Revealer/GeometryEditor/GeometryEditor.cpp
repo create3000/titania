@@ -264,7 +264,7 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 							node -> setField <X3D::SFBool>   ("cutSnapping",            coordEditor -> getField <X3D::SFBool>   ("cutSnapping"),            true);
 						}
 
-						// Proceed with next step:
+						[[fallthrough]];
 					}
 					case X3D::X3DConstants::IndexedQuadSetTool:
 					case X3D::X3DConstants::QuadSetTool:

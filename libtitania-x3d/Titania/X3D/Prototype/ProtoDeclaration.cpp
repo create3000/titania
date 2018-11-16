@@ -97,7 +97,7 @@ ProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyT
 			if (proto)
 				return proto;
 
-			// Proceed with next case:
+			[[fallthrough]];
 		}
 		case COPY_OR_CLONE:
 		{

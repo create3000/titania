@@ -3905,7 +3905,7 @@ X3DEditor::transformToZero (const SFNode & child,
 				if (proxy)
 					transformToZero (proxy, modelViewMatrix, coords, undoStep);
 
-				// Proceed with next step.
+				[[fallthrough]];
 			}
 			case X3DConstants::X3DGroupingNode:
 			{

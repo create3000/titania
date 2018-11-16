@@ -127,7 +127,7 @@ operator << (std::ostream & ostream, const StatementsOutputType & value)
 						if (lastType == StatementType::VARIABLE_STATEMENT)
 							break;
 
-						// Proceed with next case:
+						[[fallthrough]];
 					}
 				case StatementType::BLOCK_STATEMENT:
 				case StatementType::IF_STATEMENT:

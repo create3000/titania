@@ -102,7 +102,7 @@ ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext, const
 			if (externproto)
 				return externproto;
 
-			// Proceed with next case:
+			[[fallthrough]];
 		}
 		case COPY_OR_CLONE:
 		{
