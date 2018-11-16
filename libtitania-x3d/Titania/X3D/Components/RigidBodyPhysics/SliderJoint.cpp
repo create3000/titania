@@ -192,8 +192,8 @@ void
 SliderJoint::set_forceOutput ()
 {
 	const std::map <std::string, OutputType> outputTypes = {
-		std::make_pair ("separation",     OutputType::separation),
-		std::make_pair ("separationRate", OutputType::separationRate),
+		std::pair ("separation",     OutputType::separation),
+		std::pair ("separationRate", OutputType::separationRate),
 	};
 
 	std::fill (outputs .begin (), outputs .end (), false);

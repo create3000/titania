@@ -258,7 +258,7 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 			}
 		}
 
-		for (const auto & field : std::make_pair (userDefinedFields .cbegin (), userDefinedFields .cend () - 1))
+		for (const auto & field : std::pair (userDefinedFields .cbegin (), userDefinedFields .cend () - 1))
 		{
 			toStreamField (ostream, field, accessTypeLength, typeLength);
 			ostream << Generator::Break;

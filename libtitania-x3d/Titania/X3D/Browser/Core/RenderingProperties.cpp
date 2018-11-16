@@ -225,12 +225,12 @@ void
 RenderingProperties::set_Shading ()
 {
 	static const std::map <std::string, ShadingType> shadings = {
-		std::make_pair ("POINT",     ShadingType::POINT),
-		std::make_pair ("POINTSET",  ShadingType::POINT),
-		std::make_pair ("WIREFRAME", ShadingType::WIREFRAME),
-		std::make_pair ("FLAT",      ShadingType::FLAT),
-		std::make_pair ("GOURAUD",   ShadingType::GOURAUD),
-		std::make_pair ("PHONG",     ShadingType::PHONG),
+		std::pair ("POINT",     ShadingType::POINT),
+		std::pair ("POINTSET",  ShadingType::POINT),
+		std::pair ("WIREFRAME", ShadingType::WIREFRAME),
+		std::pair ("FLAT",      ShadingType::FLAT),
+		std::pair ("GOURAUD",   ShadingType::GOURAUD),
+		std::pair ("PHONG",     ShadingType::PHONG),
 	};
 
 	try

@@ -173,7 +173,7 @@ X3DNativeArrayField <String>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
-		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+		for (const auto & value : std::pair (cbegin (), cend () - 1))
 		{
 			ostream
 				<< '"';

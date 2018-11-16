@@ -104,8 +104,8 @@ basic_multi_line_comment <CharT, Traits>::operator () (std::basic_istream <CharT
 	return false;
 }
 
-typedef basic_multi_line_comment <char>    multi_line_comment;
-typedef basic_multi_line_comment <wchar_t> wmulti_line_comment;
+using multi_line_comment  = basic_multi_line_comment <char>;
+using wmulti_line_comment = basic_multi_line_comment <wchar_t>;
 
 extern template class basic_multi_line_comment <char>;
 extern template class basic_multi_line_comment <wchar_t>;

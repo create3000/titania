@@ -362,7 +362,7 @@ private:
 	add (const typename iterator::iterator_type & first,
 	     const typename iterator::iterator_type & last)
 	{
-		for (auto & pair : std::make_pair (first, last))
+		for (auto & pair : std::pair (first, last))
 			add (pair);
 	}
 
@@ -374,7 +374,7 @@ private:
 	remove (const typename iterator::iterator_type & first,
 	        const typename iterator::iterator_type & last)
 	{
-		for (auto & pair : std::make_pair (first, last))
+		for (auto & pair : std::pair (first, last))
 			remove (pair);
 	}
 
@@ -404,7 +404,7 @@ array <Type>::array (const InputIterator & first, const InputIterator & last) :
 {
 	// Insert at end
 
-	for (const auto & e : std::make_pair (first, last))
+	for (const auto & e : std::pair (first, last))
 	{
 		Type* const element = new Type (e);
 
@@ -501,7 +501,7 @@ template <class Type>
 typename array <Type>::iterator
 array <Type>::insert (const iterator & location, const Type & element)
 {
-	const auto iter = value .insert (location .base (), std::make_pair (new Type (element), std::list <pbChildObject*>::iterator ()));
+	const auto iter = value .insert (location .base (), std::pair (new Type (element), std::list <pbChildObject*>::iterator ()));
 
 	add (*iter);
 
@@ -514,7 +514,7 @@ array <Type>::insert (const iterator & location, const size_type count, const Ty
 {
 	const size_type pos = location - begin ();
 
-	value .insert (location .base (), count, std::make_pair (nullptr, std::list <pbChildObject*>::iterator ()));
+	value .insert (location .base (), count, std::pair (nullptr, std::list <pbChildObject*>::iterator ()));
 
 	const auto iter = value .begin () + pos;
 
@@ -536,7 +536,7 @@ array <Type>::insert (const iterator & location, InputIterator first, const Inpu
 	const size_type pos   = location - begin ();
 	const size_type count = last - first;
 
-	value .insert (location .base (), count, std::make_pair (nullptr, std::list <pbChildObject*>::iterator ()));
+	value .insert (location .base (), count, std::pair (nullptr, std::list <pbChildObject*>::iterator ()));
 
 	const auto iter = value .begin () + pos;
 
@@ -635,7 +635,7 @@ void
 array <Type>::emplace_front (Args && ... args)
 {
 	auto iter = value .insert (value .begin (),
-	                           std::make_pair (new Type (std::forward <Args> (args) ...),
+	                           std::pair (new Type (std::forward <Args> (args) ...),
 	                                           std::list <pbChildObject*>::iterator ()));
 
 	add (*iter);
@@ -669,9 +669,9 @@ array <Type>::resize (const size_type count, const Type & e)
 
 	if (count > currentSize)
 	{
-		value .resize (count, std::make_pair (nullptr, std::list <pbChildObject*>::iterator ()));
+		value .resize (count, std::pair (nullptr, std::list <pbChildObject*>::iterator ()));
 
-		for (auto & element : std::make_pair (value .begin () + currentSize, value .end ()))
+		for (auto & element : std::pair (value .begin () + currentSize, value .end ()))
 		{
 			element .first = new Type (e);
 			add (element);
@@ -705,7 +705,7 @@ array <Type>::toStream (std::ostream & ostream) const
 		{
 			ostream << "[ ";
 
-			for (const auto & element : std::make_pair (cbegin (), cend () - 1))
+			for (const auto & element : std::pair (cbegin (), cend () - 1))
 			{
 				ostream
 					<< element

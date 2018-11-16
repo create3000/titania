@@ -138,7 +138,7 @@ public:
 
 		if (not expressions .empty ())
 		{
-			for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+			for (const auto & expression : std::pair (expressions .begin (), expressions .end () - 1))
 			{
 				ostream
 					<< expression

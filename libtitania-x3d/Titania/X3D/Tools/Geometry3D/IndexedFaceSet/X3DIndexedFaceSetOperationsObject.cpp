@@ -853,7 +853,7 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 		
 		points .emplace_back (coordIndex () .get1Value (indices [0]));
 
-		for (const auto & index : std::make_pair (indices .cbegin () + 1, indices .cend ()))
+		for (const auto & index : std::pair (indices .cbegin () + 1, indices .cend ()))
 		{
 			const auto size = getCoord () -> getSize ();
 			

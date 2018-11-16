@@ -417,7 +417,7 @@ box3 <Type>::absolute_extents () const
 	const auto min = math::min ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 	const auto max = math::max ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 
-	return std::make_pair (min, max);
+	return std::pair (min, max);
 }
 
 template <class Type>

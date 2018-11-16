@@ -428,7 +428,7 @@ X3DUrlObject::transformURI (const basic::uri & _base, const basic::uri & uri)
 void
 X3DUrlObject::addURN (const basic::uri & urn, const basic::uri & uri)
 {
-	URNCache .insert (std::make_pair (urn .filename (), uri));
+	URNCache .insert (std::pair (urn .filename (), uri));
 }
 
 void

@@ -802,7 +802,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 
 									// Select route
 
-									get_cellrenderer () -> add_routes ({ std::make_pair (sourcePath, destinationPath) });
+									get_cellrenderer () -> add_routes ({ std::pair (sourcePath, destinationPath) });
 									get_route_graph () -> update (get_cellrenderer () -> get_routes ());
 								}
 							}
@@ -883,7 +883,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 
 									// Select route
 
-									get_cellrenderer () -> add_routes ({ std::make_pair (sourcePath, destinationPath) });
+									get_cellrenderer () -> add_routes ({ std::pair (sourcePath, destinationPath) });
 									get_route_graph () -> update (get_cellrenderer () -> get_routes ());
 								}
 							}

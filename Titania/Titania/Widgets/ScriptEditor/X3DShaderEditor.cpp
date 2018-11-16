@@ -62,12 +62,12 @@ namespace puck {
 //X3DShaderEditor
 
 const std::map <std::string, std::string> X3DShaderEditor::shaderTypes = {
-	std::make_pair ("VERTEX",          "VertexShader"),
-	std::make_pair ("TESS_CONTROL",    "TessControlShader"),
-	std::make_pair ("TESS_EVALUATION", "TessEvaluationShader"),
-	std::make_pair ("GEOMETRY",        "GeometryShader"),
-	std::make_pair ("FRAGMENT",        "FragmentShader"),
-	std::make_pair ("COMPUTE",         "ComputeShader"),
+	std::pair ("VERTEX",          "VertexShader"),
+	std::pair ("TESS_CONTROL",    "TessControlShader"),
+	std::pair ("TESS_EVALUATION", "TessEvaluationShader"),
+	std::pair ("GEOMETRY",        "GeometryShader"),
+	std::pair ("FRAGMENT",        "FragmentShader"),
+	std::pair ("COMPUTE",         "ComputeShader"),
 };
 
 X3DShaderEditor::X3DShaderEditor () :

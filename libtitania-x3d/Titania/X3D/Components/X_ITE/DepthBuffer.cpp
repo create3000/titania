@@ -108,14 +108,14 @@ void
 DepthBuffer::set_depthFunction ()
 {
 	static const std::map <std::string, GLenum> depthFunctionTypes = {
-	   std::make_pair ("NEVER",    GL_NEVER),
-	   std::make_pair ("LESS",     GL_LESS),
-	   std::make_pair ("EQUAL",    GL_EQUAL),
-	   std::make_pair ("LEQUAL",   GL_LEQUAL),
-	   std::make_pair ("GREATER",  GL_GREATER),
-	   std::make_pair ("NOTEQUAL", GL_NOTEQUAL),
-	   std::make_pair ("GEQUAL",   GL_GEQUAL),
-	   std::make_pair ("ALWAYS",   GL_ALWAYS),
+	   std::pair ("NEVER",    GL_NEVER),
+	   std::pair ("LESS",     GL_LESS),
+	   std::pair ("EQUAL",    GL_EQUAL),
+	   std::pair ("LEQUAL",   GL_LEQUAL),
+	   std::pair ("GREATER",  GL_GREATER),
+	   std::pair ("NOTEQUAL", GL_NOTEQUAL),
+	   std::pair ("GEQUAL",   GL_GEQUAL),
+	   std::pair ("ALWAYS",   GL_ALWAYS),
 	};
 
 	try

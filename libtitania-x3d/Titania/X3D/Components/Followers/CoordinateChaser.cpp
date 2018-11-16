@@ -106,7 +106,7 @@ CoordinateChaser::initialize ()
 
 	buffer .resize (getNumBuffers ());
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 	{
 		value .assign (initialValue () .cbegin (), initialValue () .cend ());
 		value .resize (initialDestination () .size ());

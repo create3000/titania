@@ -130,7 +130,7 @@ public:
 					<< Generator::Break
 					<< Generator::IncIndent;
 
-				for (const auto & variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
+				for (const auto & variableDeclaration : std::pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
 				{
 					ostream
 						<< Generator::Indent

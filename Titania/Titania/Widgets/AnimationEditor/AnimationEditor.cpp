@@ -89,15 +89,15 @@ const std::set <X3D::X3DConstants::NodeType> AnimationEditor::arrayInterpolators
 };
 
 const std::map <X3D::X3DConstants::NodeType, size_t> AnimationEditor::interpolatorComponents = {
-	std::make_pair (X3D::X3DConstants::BooleanSequencer,         1),
-	std::make_pair (X3D::X3DConstants::IntegerSequencer,         1),
-	std::make_pair (X3D::X3DConstants::ColorInterpolator,        3),
-	std::make_pair (X3D::X3DConstants::ScalarInterpolator,       1),
-	std::make_pair (X3D::X3DConstants::OrientationInterpolator,  4),
-	std::make_pair (X3D::X3DConstants::PositionInterpolator2D,   2),
-	std::make_pair (X3D::X3DConstants::PositionInterpolator,     3),
-	std::make_pair (X3D::X3DConstants::CoordinateInterpolator2D, 2),
-	std::make_pair (X3D::X3DConstants::CoordinateInterpolator,   3)
+	std::pair (X3D::X3DConstants::BooleanSequencer,         1),
+	std::pair (X3D::X3DConstants::IntegerSequencer,         1),
+	std::pair (X3D::X3DConstants::ColorInterpolator,        3),
+	std::pair (X3D::X3DConstants::ScalarInterpolator,       1),
+	std::pair (X3D::X3DConstants::OrientationInterpolator,  4),
+	std::pair (X3D::X3DConstants::PositionInterpolator2D,   2),
+	std::pair (X3D::X3DConstants::PositionInterpolator,     3),
+	std::pair (X3D::X3DConstants::CoordinateInterpolator2D, 2),
+	std::pair (X3D::X3DConstants::CoordinateInterpolator,   3)
 };
 
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
@@ -2846,8 +2846,8 @@ AnimationEditor::on_clear_selection ()
 	activeFrames   .clear ();
 	selectedFrames .clear ();
 	movedFrames    .clear ();
-	selectedBounds = std::make_pair (0, 0);
-	selectedRange  = std::make_pair (0, 0);
+	selectedBounds = std::pair (0, 0);
+	selectedRange  = std::pair (0, 0);
 	on_selection_changed ();
 }
 
@@ -2923,9 +2923,9 @@ AnimationEditor::getSelectedBounds () const
 	}
 
 	if (min > max)
-		return std::make_pair (0, 0);
+		return std::pair (0, 0);
 
-	return std::make_pair (min, max);
+	return std::pair (min, max);
 }
 
 std::pair <int32_t, int32_t>
@@ -2937,7 +2937,7 @@ AnimationEditor::getSelectedRange () const
 	if (firstFrame > lastFrame)
 		std::swap (firstFrame, lastFrame);
 
-	return std::make_pair (firstFrame, lastFrame);
+	return std::pair (firstFrame, lastFrame);
 }
 
 void
@@ -3057,7 +3057,7 @@ AnimationEditor::addKeyframes (const Gtk::TreePath & path,
 			const int32_t x    = frame * getScale () + getTranslation ();
 			const double  x1   = x - (FRAME_SIZE / 2);
 			const double  x2   = x1 + FRAME_SIZE;
-			const auto    key  = std::make_tuple (frame, field, path);
+			const auto    key  = std::tuple (frame, field, path);
 			const auto    bbox = X3D::Box2d (X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), math::extents_type ());
 
 			frames .emplace_back (key, bbox);
@@ -3249,11 +3249,11 @@ AnimationEditor::on_draw_keyframes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto   last         = std::upper_bound (key .begin (), key .end (), lastFrame);
 		const auto   y1           = y - (FRAME_SIZE / 2 - 1);
 
-		for (const auto & frame : std::make_pair (first, last))
+		for (const auto & frame : std::pair (first, last))
 		{
 			const int32_t x        = frame * getScale () + getTranslation ();
 			const double  x1       = x - (FRAME_SIZE / 2);
-			const auto    key      = std::make_tuple (frame, field, path);
+			const auto    key      = std::tuple (frame, field, path);
 			const auto    selected = selectedFrames .count (key);
 
 			if (not movedFrames .empty () and selected)
@@ -3298,14 +3298,14 @@ std::pair <int32_t, int32_t>
 AnimationEditor::getFrameParams () const
 {
 	static const std::map <double, std::pair <int32_t, int32_t>> params = {
-		std::make_pair (5 / 1.0,        std::make_pair (10,        50)),
-		std::make_pair (5 / 10.0,       std::make_pair (100,       500)),
-		std::make_pair (5 / 100.0,      std::make_pair (1000,      5000)),
-		std::make_pair (5 / 1000.0,     std::make_pair (10000,     50000)),
-		std::make_pair (5 / 10000.0,    std::make_pair (100000,    500000)),
-		std::make_pair (5 / 100000.0,   std::make_pair (1000000,   5000000)),
-		std::make_pair (5 / 1000000.0,  std::make_pair (10000000,  50000000)),
-		std::make_pair (5 / 10000000.0, std::make_pair (100000000, 500000000)),
+		std::pair (5 / 1.0,        std::pair (10,        50)),
+		std::pair (5 / 10.0,       std::pair (100,       500)),
+		std::pair (5 / 100.0,      std::pair (1000,      5000)),
+		std::pair (5 / 1000.0,     std::pair (10000,     50000)),
+		std::pair (5 / 10000.0,    std::pair (100000,    500000)),
+		std::pair (5 / 100000.0,   std::pair (1000000,   5000000)),
+		std::pair (5 / 1000000.0,  std::pair (10000000,  50000000)),
+		std::pair (5 / 10000000.0, std::pair (100000000, 500000000)),
 	};
 
 	const auto iter = params .upper_bound (getScale ());
@@ -3313,7 +3313,7 @@ AnimationEditor::getFrameParams () const
 	if (iter not_eq params .end ())
 		return iter -> second;
 
-	return std::make_pair (1, 5);
+	return std::pair (1, 5);
 }
 
 void

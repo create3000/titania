@@ -174,7 +174,7 @@ MFStringComboBoxText::getString (const X3D::X3DPtrArray <NodeType> & nodes, cons
 		{ }
 	}
 
-	return std::make_pair (std::move (found), active);
+	return std::pair (std::move (found), active);
 }
 
 } // puck

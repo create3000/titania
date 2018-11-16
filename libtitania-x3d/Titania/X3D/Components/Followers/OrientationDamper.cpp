@@ -125,7 +125,7 @@ OrientationDamper::equals (const Rotation4d & lhs, const Rotation4d & rhs, const
 void
 OrientationDamper::set_value_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
 
 	value_changed () = set_value ();
@@ -179,7 +179,7 @@ OrientationDamper::prepareEvents ()
 		order = 0;
 	}
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = buffer [order];
 
 	set_active (false);

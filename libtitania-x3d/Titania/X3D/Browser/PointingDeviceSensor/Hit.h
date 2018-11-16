@@ -160,7 +160,7 @@ public:
 	bool
 	operator () (const HitPtr & lhs, const HitPtr & rhs) const
 	{
-		return std::make_tuple (lhs -> getLayerNumber (), lhs -> getDistance ()) < std::make_tuple (rhs -> getLayerNumber (), rhs -> getDistance ());
+		return std::tuple (lhs -> getLayerNumber (), lhs -> getDistance ()) < std::tuple (rhs -> getLayerNumber (), rhs -> getDistance ());
 	}
 
 };

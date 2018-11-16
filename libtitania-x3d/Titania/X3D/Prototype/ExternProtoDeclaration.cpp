@@ -479,7 +479,7 @@ ExternProtoDeclaration::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
-		for (const auto & field : std::make_pair (fields .cbegin (), fields .cend () - 1))
+		for (const auto & field : std::pair (fields .cbegin (), fields .cend () - 1))
 		{
 			toStreamField (ostream, field, accessTypeLength, typeLength);
 			ostream << Generator::Break;			

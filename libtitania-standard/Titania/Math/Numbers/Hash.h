@@ -86,7 +86,7 @@ struct array_hash <double>
 
 		result_type h = 1;
 
-		for (const auto & value : std::make_pair (first, last))
+		for (const auto & value : std::pair (first, last))
 		{
 			IF f = { .f = value };
 
@@ -118,7 +118,7 @@ struct array_hash <float>
 
 		result_type h = 1;
 
-		for (const auto & value : std::make_pair (first, last))
+		for (const auto & value : std::pair (first, last))
 		{
 			IF f = { .f = value };
 
@@ -150,7 +150,7 @@ struct array_hash <int32_t>
 
 		result_type h = 1;
 
-		for (const auto & value : std::make_pair (first, last))
+		for (const auto & value : std::pair (first, last))
 		{
 			IF f = { .f = value };
 

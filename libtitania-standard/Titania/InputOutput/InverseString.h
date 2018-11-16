@@ -121,8 +121,8 @@ basic_inverse_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tr
 	return false;
 }
 
-typedef basic_inverse_string <char>    inverse_string;
-typedef basic_inverse_string <wchar_t> winverse_string;
+using inverse_string  = basic_inverse_string <char>;
+using winverse_string = basic_inverse_string <wchar_t>;
 
 extern template class basic_inverse_string <char>;
 extern template class basic_inverse_string <wchar_t>;

@@ -636,12 +636,12 @@ void
 ParticleSystem::set_geometryType ()
 {
 	static const std::map <std::string, GeometryType> geometryTypes = {
-		std::make_pair ("POINT",    GeometryType::POINT),
-		std::make_pair ("LINE",     GeometryType::LINE),
-		std::make_pair ("TRIANGLE", GeometryType::TRIANGLE),
-		std::make_pair ("QUAD",     GeometryType::QUAD),
-		std::make_pair ("GEOMETRY", GeometryType::GEOMETRY),
-		std::make_pair ("SPRITE",   GeometryType::SPRITE)
+		std::pair ("POINT",    GeometryType::POINT),
+		std::pair ("LINE",     GeometryType::LINE),
+		std::pair ("TRIANGLE", GeometryType::TRIANGLE),
+		std::pair ("QUAD",     GeometryType::QUAD),
+		std::pair ("GEOMETRY", GeometryType::GEOMETRY),
+		std::pair ("SPRITE",   GeometryType::SPRITE)
 	};
 
 	try

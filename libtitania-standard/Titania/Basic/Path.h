@@ -388,7 +388,7 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 	{
 		if (path .size () > 1)
 		{
-			for (const auto & segment : std::make_pair (path .begin (), -- path .end ()))
+			for (const auto & segment : std::pair (path .begin (), -- path .end ()))
 				ostream << segment << path .separator ();
 		}
 

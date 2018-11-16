@@ -1921,7 +1921,7 @@ TextureMappingEditor::set_startDrag ()
 			return;
 
 		selectedPoints = { activePoint };
-		startPositions = { std::make_pair (activePoint, startPosition) };
+		startPositions = { std::pair (activePoint, startPosition) };
 
 		set_selectedPoints ();
 	}

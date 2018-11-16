@@ -290,7 +290,7 @@ Function::toStream (std::ostream & ostream) const
 
 	if (not formalParameters .empty ())
 	{
-		for (const auto & parameter : std::make_pair (formalParameters .begin (), formalParameters .end () - 1))
+		for (const auto & parameter : std::pair (formalParameters .begin (), formalParameters .end () - 1))
 		{
 			ostream
 				<< parameter

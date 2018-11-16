@@ -105,7 +105,7 @@ CoordinateDamper::initialize ()
 
 	buffer .resize (getOrder () + 1);
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 	{
 		value .assign (initialValue () .cbegin (), initialValue () .cend ());
 		value .resize (initialDestination () .size ());
@@ -123,7 +123,7 @@ CoordinateDamper::initialize ()
 void
 CoordinateDamper::set_value_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value .assign (set_value () .begin (), set_value () .end ());
 
 	buffer [0] .resize (set_value () .size ());
@@ -136,7 +136,7 @@ CoordinateDamper::set_value_ ()
 void
 CoordinateDamper::set_destination_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value .resize (set_destination () .size ());
 
 	buffer [0] .assign (set_destination () .cbegin (), set_destination () .cend ());
@@ -180,7 +180,7 @@ CoordinateDamper::prepareEvents ()
 		order = 0;
 	}
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = buffer [order];
 
 	set_active (false);

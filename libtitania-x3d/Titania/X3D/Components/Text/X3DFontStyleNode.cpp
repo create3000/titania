@@ -233,7 +233,7 @@ X3DTextGeometry::vertical ()
 {
 	size_t numChars = 0;
 
-	for (const auto & line : std::make_pair (text -> string () .cbegin (), text -> string () .cend ()))
+	for (const auto & line : std::pair (text -> string () .cbegin (), text -> string () .cend ()))
 		numChars += line .length ();
 
 	charSpacings .resize (numChars);
@@ -367,7 +367,7 @@ X3DTextGeometry::vertical ()
 
 		double space = 0;
 
-		for (auto & glyph : std::make_pair (translations .begin () + t0, translations .begin () + t))
+		for (auto & glyph : std::pair (translations .begin () + t0, translations .begin () + t))
 		{
 			glyph += translation;
 
@@ -568,10 +568,10 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 		// Return for west-european normal alignment.
 
 		static const std::map <std::string, Alignment> alignments = {
-			std::make_pair ("FIRST",  Alignment::FIRST),
-			std::make_pair ("BEGIN",  Alignment::BEGIN),
-			std::make_pair ("MIDDLE", Alignment::MIDDLE),
-			std::make_pair ("END",    Alignment::END)
+			std::pair ("FIRST",  Alignment::FIRST),
+			std::pair ("BEGIN",  Alignment::BEGIN),
+			std::pair ("MIDDLE", Alignment::MIDDLE),
+			std::pair ("END",    Alignment::END)
 		};
 
 		try
@@ -586,10 +586,10 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 		// Return appropriate alignment if topToBottom or leftToRight are FALSE.
 
 		static const std::map <std::string, Alignment> ralignments = {
-			std::make_pair ("FIRST",  Alignment::END),
-			std::make_pair ("BEGIN",  Alignment::END),
-			std::make_pair ("MIDDLE", Alignment::MIDDLE),
-			std::make_pair ("END",    Alignment::BEGIN)
+			std::pair ("FIRST",  Alignment::END),
+			std::pair ("BEGIN",  Alignment::END),
+			std::pair ("MIDDLE", Alignment::MIDDLE),
+			std::pair ("END",    Alignment::BEGIN)
 		};
 
 		try
@@ -629,9 +629,9 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 	// TODO: add support for network paths.
 
 	static const std::map <std::string, std::string> defaultFonts = {
-		std::make_pair ("SERIF",      "Droid Serif"),
-		std::make_pair ("SANS",       "Ubuntu"),
-		std::make_pair ("TYPEWRITER", "Ubuntu Mono"),
+		std::pair ("SERIF",      "Droid Serif"),
+		std::pair ("SANS",       "Ubuntu"),
+		std::pair ("TYPEWRITER", "Ubuntu Mono"),
 	};
 
 	const auto iter       = defaultFonts .find (rawFamilyName);

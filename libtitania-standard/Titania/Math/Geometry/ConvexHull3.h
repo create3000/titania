@@ -133,10 +133,10 @@ convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) 
 	// Points that are behind all faces, are therefore automatically ignored and not used in the further process.
 
 	std::map <size_t, plane3 <Type>> faces = {
-		std::make_pair (0, plane3 <Type> (m_points [simplex [0]], m_points [simplex [1]], m_points [simplex [2]])),
-		std::make_pair (1, plane3 <Type> (m_points [simplex [1]], m_points [simplex [0]], m_points [simplex [3]])),
-		std::make_pair (2, plane3 <Type> (m_points [simplex [0]], m_points [simplex [2]], m_points [simplex [3]])),
-		std::make_pair (3, plane3 <Type> (m_points [simplex [2]], m_points [simplex [1]], m_points [simplex [3]])),
+		std::pair (0, plane3 <Type> (m_points [simplex [0]], m_points [simplex [1]], m_points [simplex [2]])),
+		std::pair (1, plane3 <Type> (m_points [simplex [1]], m_points [simplex [0]], m_points [simplex [3]])),
+		std::pair (2, plane3 <Type> (m_points [simplex [0]], m_points [simplex [2]], m_points [simplex [3]])),
+		std::pair (3, plane3 <Type> (m_points [simplex [2]], m_points [simplex [1]], m_points [simplex [3]])),
 	};
 
 	std::vector <std::array <size_t, 3>> triangles = {
@@ -446,9 +446,9 @@ convex_hull3 <Type>::extract_horizon_edges (const std::vector <size_t> & lit_fac
 		const auto   p1       = triangle [1];
 		const auto   p2       = triangle [2];
 
-		++ index [p0 < p1 ? std::make_pair (p0, p1) : std::make_pair (p1, p0)];
-		++ index [p1 < p2 ? std::make_pair (p1, p2) : std::make_pair (p2, p1)];
-		++ index [p2 < p0 ? std::make_pair (p2, p0) : std::make_pair (p0, p2)];
+		++ index [p0 < p1 ? std::pair (p0, p1) : std::pair (p1, p0)];
+		++ index [p1 < p2 ? std::pair (p1, p2) : std::pair (p2, p1)];
+		++ index [p2 < p0 ? std::pair (p2, p0) : std::pair (p0, p2)];
 	}
 
 	for (const auto & f : lit_faces)
@@ -458,17 +458,17 @@ convex_hull3 <Type>::extract_horizon_edges (const std::vector <size_t> & lit_fac
 		const auto   p1       = triangle [1];
 		const auto   p2       = triangle [2];
 
-		if (index [p0 < p1 ? std::make_pair (p0, p1) : std::make_pair (p1, p0)] == 1)
+		if (index [p0 < p1 ? std::pair (p0, p1) : std::pair (p1, p0)] == 1)
 		{
 			horizon_edges .emplace_back (p0, p1);
 		}
 
-		if (index [p1 < p2 ? std::make_pair (p1, p2) : std::make_pair (p2, p1)] == 1)
+		if (index [p1 < p2 ? std::pair (p1, p2) : std::pair (p2, p1)] == 1)
 		{
 			horizon_edges .emplace_back (p1, p2);
 		}
 
-		if (index [p2 < p0 ? std::make_pair (p2, p0) : std::make_pair (p0, p2)] == 1)
+		if (index [p2 < p0 ? std::pair (p2, p0) : std::pair (p0, p2)] == 1)
 		{
 			horizon_edges .emplace_back (p2, p0);
 		}

@@ -114,11 +114,11 @@ GLenum
 TextureProperties::getBoundaryMode (const std::string & boundaryMode) const
 {
 	static const std::map <std::string, GLenum> boundaryModes = {
-		std::make_pair ("CLAMP",             GL_CLAMP),
-		std::make_pair ("CLAMP_TO_EDGE",     GL_CLAMP_TO_EDGE),
-		std::make_pair ("CLAMP_TO_BOUNDARY", GL_CLAMP_TO_BORDER),
-		std::make_pair ("MIRRORED_REPEAT",   GL_MIRRORED_REPEAT),
-		std::make_pair ("REPEAT",            GL_REPEAT),
+		std::pair ("CLAMP",             GL_CLAMP),
+		std::pair ("CLAMP_TO_EDGE",     GL_CLAMP_TO_EDGE),
+		std::pair ("CLAMP_TO_BOUNDARY", GL_CLAMP_TO_BORDER),
+		std::pair ("MIRRORED_REPEAT",   GL_MIRRORED_REPEAT),
+		std::pair ("REPEAT",            GL_REPEAT),
 	};
 
 	try
@@ -154,14 +154,14 @@ GLenum
 TextureProperties::getMinificationFilter () const
 {
 	static const std::map <std::string, GLenum> minificationFilters = {
-		std::make_pair ("AVG_PIXEL_AVG_MIPMAP",         GL_LINEAR_MIPMAP_LINEAR),
-		std::make_pair ("AVG_PIXEL",                    GL_LINEAR),
-		std::make_pair ("AVG_PIXEL_NEAREST_MIPMAP",     GL_LINEAR_MIPMAP_NEAREST),
-		std::make_pair ("NEAREST_PIXEL_AVG_MIPMAP",     GL_NEAREST_MIPMAP_LINEAR),
-		std::make_pair ("NEAREST_PIXEL_NEAREST_MIPMAP", GL_NEAREST_MIPMAP_NEAREST),
-		std::make_pair ("NEAREST_PIXEL",                GL_NEAREST),
-		std::make_pair ("NICEST",                       GL_LINEAR_MIPMAP_LINEAR),
-		std::make_pair ("FASTEST",                      GL_NEAREST)
+		std::pair ("AVG_PIXEL_AVG_MIPMAP",         GL_LINEAR_MIPMAP_LINEAR),
+		std::pair ("AVG_PIXEL",                    GL_LINEAR),
+		std::pair ("AVG_PIXEL_NEAREST_MIPMAP",     GL_LINEAR_MIPMAP_NEAREST),
+		std::pair ("NEAREST_PIXEL_AVG_MIPMAP",     GL_NEAREST_MIPMAP_LINEAR),
+		std::pair ("NEAREST_PIXEL_NEAREST_MIPMAP", GL_NEAREST_MIPMAP_NEAREST),
+		std::pair ("NEAREST_PIXEL",                GL_NEAREST),
+		std::pair ("NICEST",                       GL_LINEAR_MIPMAP_LINEAR),
+		std::pair ("FASTEST",                      GL_NEAREST)
 	};
 
 	try
@@ -182,10 +182,10 @@ GLenum
 TextureProperties::getMagnificationFilter () const
 {
 	static const std::map <std::string, GLenum> magnificationFilters = {
-		std::make_pair ("AVG_PIXEL",     GL_LINEAR),
-		std::make_pair ("NEAREST_PIXEL", GL_NEAREST),
-		std::make_pair ("NICEST",        GL_LINEAR),
-		std::make_pair ("FASTEST",       GL_NEAREST)
+		std::pair ("AVG_PIXEL",     GL_LINEAR),
+		std::pair ("NEAREST_PIXEL", GL_NEAREST),
+		std::pair ("NICEST",        GL_LINEAR),
+		std::pair ("FASTEST",       GL_NEAREST)
 	};
 
 	try
@@ -203,11 +203,11 @@ CompressionMode
 TextureProperties::getTextureCompression () const
 {
 	static const std::map <std::string, CompressionMode> textureCompressions = {
-		std::make_pair ("HIGH",    CompressionMode::HIGH),
-		std::make_pair ("MEDIUM",  CompressionMode::MEDIUM),
-		std::make_pair ("LOW",     CompressionMode::LOW),
-		std::make_pair ("FASTEST", CompressionMode::FASTEST),
-		std::make_pair ("NICEST",  CompressionMode::NICEST)
+		std::pair ("HIGH",    CompressionMode::HIGH),
+		std::pair ("MEDIUM",  CompressionMode::MEDIUM),
+		std::pair ("LOW",     CompressionMode::LOW),
+		std::pair ("FASTEST", CompressionMode::FASTEST),
+		std::pair ("NICEST",  CompressionMode::NICEST)
 	};
 
 	try

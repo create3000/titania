@@ -397,7 +397,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
-		lookAt (point, std::make_pair (minDistance, fieldOfViewScale ()), factor, straighten, cycleInterval);
+		lookAt (point, std::pair (minDistance, fieldOfViewScale ()), factor, straighten, cycleInterval);
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -419,7 +419,7 @@ X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten
 		const double minDistance    = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 		const auto   lookAtDistance = getLookAtDistance (bbox);
 
-		lookAt (bbox .center (), std::make_pair (std::max (minDistance, lookAtDistance .first), lookAtDistance .second), factor, straighten, cycleInterval);
+		lookAt (bbox .center (), std::pair (std::max (minDistance, lookAtDistance .first), lookAtDistance .second), factor, straighten, cycleInterval);
 	}
 	catch (const std::domain_error &)
 	{ }

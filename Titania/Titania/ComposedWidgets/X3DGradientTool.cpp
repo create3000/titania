@@ -483,7 +483,7 @@ X3DGradientTool::set_buffer ()
 std::pair <X3D::MFFloat, X3D::MFColorRGBA>
 X3DGradientTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColorRGBA & colorValue)
 {
-	return std::make_pair (positionValue, colorValue);
+	return std::pair (positionValue, colorValue);
 }
 
 void

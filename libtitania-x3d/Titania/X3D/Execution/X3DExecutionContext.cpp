@@ -1156,7 +1156,7 @@ X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::
 	if (sourceField -> getType () not_eq destinationField -> getType ())
 		throw Error <INVALID_FIELD> ("ROUTE types " + sourceField -> getTypeName () + " and " + destinationField -> getTypeName () + " do not match.");
 
-	const auto routeKey = std::make_pair (sourceField, destinationField);
+	const auto routeKey = std::pair (sourceField, destinationField);
 
 	try
 	{
@@ -1490,7 +1490,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 
 	if (not getRootNodes () .empty ())
 	{
-		for (const auto & rootNode : std::make_pair (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
+		for (const auto & rootNode : std::pair (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
 		{
 			ostream
 				<< Generator::Indent
@@ -1696,7 +1696,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidyBreak;
 		}
 
-		for (const auto & value : std::make_pair (getRootNodes () .cbegin (), getRootNodes () .cend ()))
+		for (const auto & value : std::pair (getRootNodes () .cbegin (), getRootNodes () .cend ()))
 		{
 			if (value)
 			{

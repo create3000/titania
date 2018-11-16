@@ -263,7 +263,7 @@ Combine::geometryBoolean (const BooleanOperation & booleanOperation,
 
 		auto result = std::move (meshes .front ());
 
-		for (const auto & mesh : std::make_pair (meshes .cbegin () + 1, meshes .cend ()))
+		for (const auto & mesh : std::pair (meshes .cbegin () + 1, meshes .cend ()))
 			result = booleanOperation (result, mesh);
 	
 		// Store result in target geometry.

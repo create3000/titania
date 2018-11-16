@@ -462,11 +462,11 @@ std::pair <float, float>
 ElevationGrid::getMinMaxHeight () const
 {
 	if (height () .empty ())
-		return std::make_pair (0, 0);
+		return std::pair (0, 0);
 
 	const auto pair = std::minmax_element (height () .cbegin (), height () .cend ());
 
-	return std::make_pair (*pair .first, *pair .second);
+	return std::pair (*pair .first, *pair .second);
 }
 
 void

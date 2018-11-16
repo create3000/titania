@@ -561,8 +561,8 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 			{
 				// The destination path is above path
 
-				destinationData -> get_inputs_above  () .erase (std::make_pair (sourcePath, destinationPath));
-				sourceData      -> get_outputs_below () .erase (std::make_pair (sourcePath, destinationPath));
+				destinationData -> get_inputs_above  () .erase (std::pair (sourcePath, destinationPath));
+				sourceData      -> get_outputs_below () .erase (std::pair (sourcePath, destinationPath));
 
 				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_below), sourcePath, destinationPath));
 			}
@@ -570,8 +570,8 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 			{
 				// The destination path is below path
 
-				destinationData -> get_inputs_below  () .erase (std::make_pair (sourcePath, destinationPath));
-				sourceData      -> get_outputs_above () .erase (std::make_pair (sourcePath, destinationPath));
+				destinationData -> get_inputs_below  () .erase (std::pair (sourcePath, destinationPath));
+				sourceData      -> get_outputs_above () .erase (std::pair (sourcePath, destinationPath));
 
 				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
 			}
@@ -639,8 +639,8 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 			{
 				// The destination path is above path
 
-				sourceData      -> get_outputs_above () .erase (std::make_pair (sourcePath, destinationPath));
-				destinationData -> get_inputs_below ()  .erase (std::make_pair (sourcePath, destinationPath));
+				sourceData      -> get_outputs_above () .erase (std::pair (sourcePath, destinationPath));
+				destinationData -> get_inputs_below ()  .erase (std::pair (sourcePath, destinationPath));
 
 				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
 			}
@@ -648,8 +648,8 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 			{
 				// The destination path is below path
 
-				sourceData      -> get_outputs_below () .erase (std::make_pair (sourcePath, destinationPath));
-				destinationData -> get_inputs_above ()  .erase (std::make_pair (sourcePath, destinationPath));
+				sourceData      -> get_outputs_below () .erase (std::pair (sourcePath, destinationPath));
+				destinationData -> get_inputs_above ()  .erase (std::pair (sourcePath, destinationPath));
 
 				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_below), sourcePath, destinationPath));
 			}
@@ -680,7 +680,7 @@ OutlineRouteGraph::remove_connection_above (const Gtk::TreeModel::Path & path,
 			const auto iter = treeView -> get_model () -> get_iter (path);
 			const auto data = treeView -> get_model () -> get_data (iter);
 
-			data -> get_connections () .erase (std::make_pair (sourcePath, destinationPath));
+			data -> get_connections () .erase (std::pair (sourcePath, destinationPath));
 			treeView -> get_model () -> row_changed (path, iter);
 			return false;
 		}
@@ -705,7 +705,7 @@ OutlineRouteGraph::remove_connection_below (const Gtk::TreeModel::Path & path,
 			const auto iter = treeView -> get_model () -> get_iter (path);
 			const auto data = treeView -> get_model () -> get_data (iter);
 
-			data -> get_connections () .erase (std::make_pair (sourcePath, destinationPath));
+			data -> get_connections () .erase (std::pair (sourcePath, destinationPath));
 			treeView -> get_model () -> row_changed (path, iter);
 		}
 
@@ -784,7 +784,7 @@ OutlineRouteGraph::remove_route (const Gtk::TreeModel::iterator & iter,
                                  const Gtk::TreeModel::Path & destinationPath)
 {
 	const auto data       = treeView -> get_model () -> get_data (iter);
-	const auto connection = std::make_pair (sourcePath, destinationPath);
+	const auto connection = std::pair (sourcePath, destinationPath);
 
 	data -> get_inputs_above  () .erase (connection);
 	data -> get_inputs_below  () .erase (connection);

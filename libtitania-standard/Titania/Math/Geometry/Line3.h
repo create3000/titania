@@ -128,7 +128,7 @@ public:
 		return *this;
 	}
 
-	///  Transform this box by @a matrix.
+	///  Transform this line by @a matrix.
 	void
 	mult_left (const matrix4 <Type> & matrix)
 	{
@@ -136,7 +136,7 @@ public:
 		m_direction = normalize (matrix .mult_matrix_dir (m_direction));
 	}
 
-	///  Transform this box by @a matrix.
+	///  Transform this line by @a matrix.
 	void
 	mult_right (const matrix4 <Type> & matrix)
 	{
@@ -232,13 +232,13 @@ line3 <Type>::closest_point (const line3 & line) const
 	const auto theta = dot (d1, d2);
 
 	if (std::abs (theta) >= 1)
-		return std::make_pair (vector3 <Type> (), false);  // lines are parallel
+		return std::pair (vector3 <Type> (), false);  // lines are parallel
 
 	const auto u     = p2 - p1;
 	const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
 	const auto point = p1 + t * d1;
 
-	return std::make_pair (point, true);
+	return std::pair (point, true);
 }
 
 template <class Type>
@@ -263,7 +263,7 @@ line3 <Type>::intersects (const vector3 <Type> & A,
 	// Non culling intersection
 
 	if (det == 0)
-		return std::make_pair (vector3 <Type> (), false);
+		return std::pair (vector3 <Type> (), false);
 
 	const auto inv_det = 1 / det;
 
@@ -274,7 +274,7 @@ line3 <Type>::intersects (const vector3 <Type> & A,
 	const auto u = dot (tvec, pvec) * inv_det;
 
 	if (u < 0 or u > 1)
-		return std::make_pair (vector3 <Type> (), false);
+		return std::pair (vector3 <Type> (), false);
 
 	// prepare to test V parameter
 	const auto qvec = cross (tvec, edge1);
@@ -283,12 +283,12 @@ line3 <Type>::intersects (const vector3 <Type> & A,
 	const auto v = dot (direction (), qvec) * inv_det;
 
 	if (v < 0 or u + v > 1)
-		return std::make_pair (vector3 <Type> (), false);
+		return std::pair (vector3 <Type> (), false);
 
 	// Don' know what this is.
 	//t = dot (edge2, qvec) * inv_det;
 
-	return std::make_pair (vector3 <Type> (1 - u - v, u, v), true);
+	return std::pair (vector3 <Type> (1 - u - v, u, v), true);
 }
 
 ///  @relates line3

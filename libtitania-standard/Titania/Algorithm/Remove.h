@@ -121,7 +121,7 @@ remove (ForwardIterator first, ForwardIterator last, const RangeIterator & rfirs
 {
 	std::set <typename ForwardIterator::value_type> range;
 
-	for (const auto & element : std::make_pair (rfirst, rlast))
+	for (const auto & element : std::pair (rfirst, rlast))
 		range .emplace (value (element));
 
 	return remove (first, last, range);

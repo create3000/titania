@@ -146,8 +146,8 @@ basic_character <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & is
 	return static_cast <bool> (istream .unget ());
 }
 
-typedef basic_character <char>    character;
-typedef basic_character <wchar_t> wcharacter;
+using character  = basic_character <char>;
+using wcharacter = basic_character <wchar_t>;
 
 extern template class basic_character <char>;
 extern template class basic_character <wchar_t>;

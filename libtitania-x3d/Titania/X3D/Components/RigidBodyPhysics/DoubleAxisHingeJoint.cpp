@@ -158,14 +158,14 @@ void
 DoubleAxisHingeJoint::set_forceOutput ()
 {
 	const std::map <std::string, OutputType> outputTypes = {
-		std::make_pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
-		std::make_pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
-		std::make_pair ("body1Axis",        OutputType::body1Axis),
-		std::make_pair ("body2Axis",        OutputType::body2Axis),
-		std::make_pair ("hinge1Angle",      OutputType::hinge1Angle),
-		std::make_pair ("hinge2Angle",      OutputType::hinge2Angle),
-		std::make_pair ("hinge1AngleRate",  OutputType::hinge1AngleRate),
-		std::make_pair ("hinge2AngleRate",  OutputType::hinge2AngleRate),
+		std::pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
+		std::pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
+		std::pair ("body1Axis",        OutputType::body1Axis),
+		std::pair ("body2Axis",        OutputType::body2Axis),
+		std::pair ("hinge1Angle",      OutputType::hinge1Angle),
+		std::pair ("hinge2Angle",      OutputType::hinge2Angle),
+		std::pair ("hinge1AngleRate",  OutputType::hinge1AngleRate),
+		std::pair ("hinge2AngleRate",  OutputType::hinge2AngleRate),
 	};
 
 	std::fill (outputs .begin (), outputs .end (), false);

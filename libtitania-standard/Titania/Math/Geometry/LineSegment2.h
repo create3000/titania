@@ -143,7 +143,7 @@ line_segment2 <Type>::intersects (const line2 <Type> & line) const
 	const auto signum2 = signum (dot (normal, vector2));
 
 	if (std::abs (signum1 - signum2) not_eq 2)
-		return std::make_pair (l, false);
+		return std::pair (l, false);
 
 	return this -> line () .intersects (line);
 }

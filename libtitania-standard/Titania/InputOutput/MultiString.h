@@ -87,7 +87,7 @@ public:
 	///  Test whether the next characters in @a istream are the match string. Returns true on success and changes
 	///  @a istreams position to the next character after the match string otherwise it returns false and doesn't
 	///  changes the streams current position.
-	bool
+	std::pair <const std::basic_string <CharT> &, bool>
 	operator () (std::basic_istream <CharT, Traits> & istream) const;
 
 
@@ -95,6 +95,7 @@ private:
 
 	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
 
+	static const std::basic_string <CharT> empty;
 	static const std::basic_string <CharT> delimiter;
 
 	std::vector <io::basic_string <CharT, Traits>> strings;
@@ -115,20 +116,20 @@ basic_multi_string <CharT, Traits>::basic_multi_string (const std::basic_string 
 }
 
 template <class CharT, class Traits>
-bool
+std::pair <const std::basic_string <CharT> &, bool>
 basic_multi_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream) const
 {
 	for (const auto & string : strings)
 	{
 		if (string (istream))
-			return true;
+			return std::pair (string (), true);
 	}
 
-	return false;
+	return std::pair (empty, false);
 }
 
-typedef basic_multi_string <char>    multi_string;
-typedef basic_multi_string <wchar_t> multi_wstring;
+using multi_string  = basic_multi_string <char>;
+using multi_wstring = basic_multi_string <wchar_t>;
 
 extern template class basic_multi_string <char>;
 extern template class basic_multi_string <wchar_t>;

@@ -410,7 +410,7 @@ Context::getObject (X3D::X3DChildObject* const key) const
 void
 Context::setReference (X3D::X3DFieldDefinition* const array, const size_t index, X3D::X3DFieldDefinition* const reference)
 {
-	const auto key  = std::make_pair (size_t (array), index);
+	const auto key  = std::pair (size_t (array), index);
 	const auto iter = references .find (key);
 
 	if (iter not_eq references .end ())
@@ -424,7 +424,7 @@ Context::setReference (X3D::X3DFieldDefinition* const array, const size_t index,
 void
 Context::removeReference (X3D::X3DFieldDefinition* const array, const size_t index)
 {
-	const auto key = std::make_pair (size_t (array), index);
+	const auto key = std::pair (size_t (array), index);
 	
 	references .erase (key);
 }
@@ -432,7 +432,7 @@ Context::removeReference (X3D::X3DFieldDefinition* const array, const size_t ind
 X3D::X3DFieldDefinition*
 Context::getReference (X3D::X3DFieldDefinition* const array, const size_t index)
 {
-	const auto key  = std::make_pair (size_t (array), index);
+	const auto key  = std::pair (size_t (array), index);
 	const auto iter = references .find (key);
 
 	if (iter not_eq references .end ())

@@ -115,7 +115,7 @@ public:
 
 		const auto & item = result .at (0);
 
-		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
+		return std::tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
 	}
 
 	///  throws std::out_of_range, std::invalid_argument
@@ -128,7 +128,7 @@ public:
 
 		const auto & item = result .at (0);
 
-		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
+		return std::tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
 	}
 
 private:

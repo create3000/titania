@@ -300,12 +300,12 @@ SoftSystem::set_geometryType ()
 	// geometryType
 
 	static const std::map <std::string, ParticleSystem::GeometryType> geometryTypes = {
-		std::make_pair ("POINT",    ParticleSystem::GeometryType::POINT),
-		std::make_pair ("LINE",     ParticleSystem::GeometryType::LINE),
-		std::make_pair ("TRIANGLE", ParticleSystem::GeometryType::TRIANGLE),
-		std::make_pair ("QUAD",     ParticleSystem::GeometryType::QUAD),
-		std::make_pair ("SPRITE",   ParticleSystem::GeometryType::SPRITE),
-		std::make_pair ("GEOMETRY", ParticleSystem::GeometryType::GEOMETRY),
+		std::pair ("POINT",    ParticleSystem::GeometryType::POINT),
+		std::pair ("LINE",     ParticleSystem::GeometryType::LINE),
+		std::pair ("TRIANGLE", ParticleSystem::GeometryType::TRIANGLE),
+		std::pair ("QUAD",     ParticleSystem::GeometryType::QUAD),
+		std::pair ("SPRITE",   ParticleSystem::GeometryType::SPRITE),
+		std::pair ("GEOMETRY", ParticleSystem::GeometryType::GEOMETRY),
 	};
 
 	try

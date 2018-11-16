@@ -262,9 +262,9 @@ X3DIndexedFaceSetSelectionObject::set_selectionType ()
 	try
 	{
 	   static const std::map <std::string, SelectionType> selectionTypes = {
-			std::make_pair ("POINTS", SelectionType::POINTS),
-			std::make_pair ("EDGES",  SelectionType::EDGES),
-			std::make_pair ("FACES",  SelectionType::FACES),
+			std::pair ("POINTS", SelectionType::POINTS),
+			std::pair ("EDGES",  SelectionType::EDGES),
+			std::pair ("FACES",  SelectionType::FACES),
 		};
 
 		type = selectionTypes .at (selectionType ());
@@ -610,7 +610,7 @@ X3DIndexedFaceSetSelectionObject::setHotSelection (const std::vector <int32_t> &
 			{
 				// Edge
 				hotPoints = { coordIndex () .get1Value (edge .index0), coordIndex () .get1Value (edge .index1) };
-				hotEdges  = { std::make_pair (edge .index0, edge .index1) };
+				hotEdges  = { std::pair (edge .index0, edge .index1) };
 			}
 		}
 		else
@@ -759,7 +759,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 						}
 						case SelectionType::EDGES:
 						{
-							activeEdges  = { std::make_pair (edge .index0, edge .index1) };
+							activeEdges  = { std::pair (edge .index0, edge .index1) };
 							activePoints = { coordIndex () .get1Value (edge .index0), coordIndex () .get1Value (edge .index1) };
 							break;
 						}
@@ -791,7 +791,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 				}
 				case SelectionType::EDGES:
 				{
-					activeEdges  = { std::make_pair (edge .index0, edge .index1) };
+					activeEdges  = { std::pair (edge .index0, edge .index1) };
 					activePoints = { coordIndex () .get1Value (edge .index0), coordIndex () .get1Value (edge .index1) };
 					break;
 				}
@@ -1146,7 +1146,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 						if (std::binary_search (pointIndex .cbegin (), pointIndex .cend (), coordIndex () .get1Value (i0)) and
 						    std::binary_search (pointIndex .cbegin (), pointIndex .cend (), coordIndex () .get1Value (i1)))
 						{
-							addSelectedEdgesFunction ({ std::make_pair (i0, i1) });
+							addSelectedEdgesFunction ({ std::pair (i0, i1) });
 						}
 					}
 				}
@@ -1170,7 +1170,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 						if (std::binary_search (pointIndex .cbegin (), pointIndex .cend (), coordIndex () .get1Value (i0)) and
 						    std::binary_search (pointIndex .cbegin (), pointIndex .cend (), coordIndex () .get1Value (i1)))
 						{
-							removeSelectedEdgesFunction ({ std::make_pair (i0, i1) });
+							removeSelectedEdgesFunction ({ std::pair (i0, i1) });
 						}
 					}
 				}
@@ -1245,7 +1245,7 @@ X3DIndexedFaceSetSelectionObject::selectHoles ()
 			continue;
 		
 		const auto & points1 = edge .first;
-		const auto   points2 = std::make_pair (points1 .second, points1 .first);
+		const auto   points2 = std::pair (points1 .second, points1 .first);
 		
 		edges .emplace (points1);
 		edges .emplace (points2);
@@ -1330,7 +1330,7 @@ X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints
 
 		for (const auto & edge : edgeIndex .equal_range (last))
 		{
-			if (edge .second == std::make_pair (current .second, current .first))
+			if (edge .second == std::pair (current .second, current .first))
 				continue;
 			
 			selectHole (currentPoints, edgeIndex, edge .second, hole, holes);

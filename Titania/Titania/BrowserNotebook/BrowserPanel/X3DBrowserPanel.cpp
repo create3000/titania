@@ -91,47 +91,47 @@ const std::vector <BrowserPanelType> X3DBrowserPanel::defaultTypes = {
 };
 
 const std::map <BrowserPanelType, std::string> X3DBrowserPanel::names = {
-	std::make_pair (BrowserPanelType::MAIN_VIEW,        ""),
-	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, "Perspective"),
-	std::make_pair (BrowserPanelType::TOP_VIEW,         "Top"),
-	std::make_pair (BrowserPanelType::RIGHT_VIEW,       "Right"),
-	std::make_pair (BrowserPanelType::FRONT_VIEW,       "Front"),
-	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      "Bottom"),
-	std::make_pair (BrowserPanelType::LEFT_VIEW,        "Left"),
-	std::make_pair (BrowserPanelType::BACK_VIEW,        "Back")
+	std::pair (BrowserPanelType::MAIN_VIEW,        ""),
+	std::pair (BrowserPanelType::PERSPECTIVE_VIEW, "Perspective"),
+	std::pair (BrowserPanelType::TOP_VIEW,         "Top"),
+	std::pair (BrowserPanelType::RIGHT_VIEW,       "Right"),
+	std::pair (BrowserPanelType::FRONT_VIEW,       "Front"),
+	std::pair (BrowserPanelType::BOTTOM_VIEW,      "Bottom"),
+	std::pair (BrowserPanelType::LEFT_VIEW,        "Left"),
+	std::pair (BrowserPanelType::BACK_VIEW,        "Back")
 };
 
 const std::map <BrowserPanelType, X3D::Vector3d> X3DBrowserPanel::axes = {
-	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
-	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f ()),
-	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 1, 0)),
-	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (1, 0, 0)),
-	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 1)),
-	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -1, 0)),
-	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-1, 0, 0)),
-	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -1))
+	std::pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
+	std::pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f ()),
+	std::pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 1, 0)),
+	std::pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (1, 0, 0)),
+	std::pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 1)),
+	std::pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -1, 0)),
+	std::pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-1, 0, 0)),
+	std::pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -1))
 };
 
 const std::map <BrowserPanelType, X3D::Vector3d> X3DBrowserPanel::positions = {
-	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
-	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f (8.48219, 12, 8.48219)),
-	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 50000, 0)),
-	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (50000, 0, 0)),
-	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 50000)),
-	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -50000, 0)),
-	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-50000, 0, 0)),
-	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -50000))
+	std::pair (BrowserPanelType::MAIN_VIEW,        X3D::Vector3f ()),
+	std::pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Vector3f (8.48219, 12, 8.48219)),
+	std::pair (BrowserPanelType::TOP_VIEW,         X3D::Vector3f (0, 50000, 0)),
+	std::pair (BrowserPanelType::RIGHT_VIEW,       X3D::Vector3f (50000, 0, 0)),
+	std::pair (BrowserPanelType::FRONT_VIEW,       X3D::Vector3f (0, 0, 50000)),
+	std::pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Vector3f (0, -50000, 0)),
+	std::pair (BrowserPanelType::LEFT_VIEW,        X3D::Vector3f (-50000, 0, 0)),
+	std::pair (BrowserPanelType::BACK_VIEW,        X3D::Vector3f (0, 0, -50000))
 };
 
 const std::map <BrowserPanelType, X3D::Rotation4d> X3DBrowserPanel::orientations = {
-	std::make_pair (BrowserPanelType::MAIN_VIEW,        X3D::Rotation4f ()),
-	std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Rotation4f (1, 0, 0, -math::pi <float> / 4) * X3D::Rotation4f (0, 1, 0, math::pi <float> / 4)),
-	std::make_pair (BrowserPanelType::TOP_VIEW,         X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2)),
-	std::make_pair (BrowserPanelType::RIGHT_VIEW,       X3D::Rotation4f (0, 1, 0, math::pi <float> / 2)),
-	std::make_pair (BrowserPanelType::FRONT_VIEW,       X3D::Rotation4f ()),
-	std::make_pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Rotation4f (1, 0, 0, math::pi <float> / 2) * X3D::Rotation4f (0, 1, 0, math::pi <float>)),
-	std::make_pair (BrowserPanelType::LEFT_VIEW,        X3D::Rotation4f (0, 1, 0, -math::pi <float> / 2)),
-	std::make_pair (BrowserPanelType::BACK_VIEW,        X3D::Rotation4f (0, 1, 0, math::pi <float>))
+	std::pair (BrowserPanelType::MAIN_VIEW,        X3D::Rotation4f ()),
+	std::pair (BrowserPanelType::PERSPECTIVE_VIEW, X3D::Rotation4f (1, 0, 0, -math::pi <float> / 4) * X3D::Rotation4f (0, 1, 0, math::pi <float> / 4)),
+	std::pair (BrowserPanelType::TOP_VIEW,         X3D::Rotation4f (1, 0, 0, -math::pi <float> / 2)),
+	std::pair (BrowserPanelType::RIGHT_VIEW,       X3D::Rotation4f (0, 1, 0, math::pi <float> / 2)),
+	std::pair (BrowserPanelType::FRONT_VIEW,       X3D::Rotation4f ()),
+	std::pair (BrowserPanelType::BOTTOM_VIEW,      X3D::Rotation4f (1, 0, 0, math::pi <float> / 2) * X3D::Rotation4f (0, 1, 0, math::pi <float>)),
+	std::pair (BrowserPanelType::LEFT_VIEW,        X3D::Rotation4f (0, 1, 0, -math::pi <float> / 2)),
+	std::pair (BrowserPanelType::BACK_VIEW,        X3D::Rotation4f (0, 1, 0, math::pi <float>))
 };
 
 X3DBrowserPanel::X3DBrowserPanel () :
@@ -200,14 +200,14 @@ void
 X3DBrowserPanel::setBrowserPanelType (const size_t id, const BrowserPanelType browserPanelType)
 {
 	static const std::map <BrowserPanelType, std::string> browserPanelTypes = {
-		std::make_pair (BrowserPanelType::MAIN_VIEW,        "MAIN_VIEW"),
-		std::make_pair (BrowserPanelType::PERSPECTIVE_VIEW, "PERSPECTIVE_VIEW"),
-		std::make_pair (BrowserPanelType::TOP_VIEW,         "TOP_VIEW"),
-		std::make_pair (BrowserPanelType::RIGHT_VIEW,       "RIGHT_VIEW"),
-		std::make_pair (BrowserPanelType::FRONT_VIEW,       "FRONT_VIEW"),
-		std::make_pair (BrowserPanelType::BOTTOM_VIEW,      "BOTTOM_VIEW"),
-		std::make_pair (BrowserPanelType::LEFT_VIEW,        "LEFT_VIEW"),
-		std::make_pair (BrowserPanelType::BACK_VIEW,        "BACK_VIEW"),
+		std::pair (BrowserPanelType::MAIN_VIEW,        "MAIN_VIEW"),
+		std::pair (BrowserPanelType::PERSPECTIVE_VIEW, "PERSPECTIVE_VIEW"),
+		std::pair (BrowserPanelType::TOP_VIEW,         "TOP_VIEW"),
+		std::pair (BrowserPanelType::RIGHT_VIEW,       "RIGHT_VIEW"),
+		std::pair (BrowserPanelType::FRONT_VIEW,       "FRONT_VIEW"),
+		std::pair (BrowserPanelType::BOTTOM_VIEW,      "BOTTOM_VIEW"),
+		std::pair (BrowserPanelType::LEFT_VIEW,        "LEFT_VIEW"),
+		std::pair (BrowserPanelType::BACK_VIEW,        "BACK_VIEW"),
 	};
 
 	auto browserPanelTypeArray = createWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/type");
@@ -230,14 +230,14 @@ X3DBrowserPanel::getBrowserPanelType (const size_t id) const
 	try
 	{
 		static const std::map <std::string, BrowserPanelType> browserPanelTypes = {
-			std::make_pair ("MAIN_VIEW",        BrowserPanelType::MAIN_VIEW),
-			std::make_pair ("PERSPECTIVE_VIEW", BrowserPanelType::PERSPECTIVE_VIEW),
-			std::make_pair ("TOP_VIEW",         BrowserPanelType::TOP_VIEW),
-			std::make_pair ("RIGHT_VIEW",       BrowserPanelType::RIGHT_VIEW),
-			std::make_pair ("FRONT_VIEW",       BrowserPanelType::FRONT_VIEW),
-			std::make_pair ("BOTTOM_VIEW",      BrowserPanelType::BOTTOM_VIEW),
-			std::make_pair ("LEFT_VIEW",        BrowserPanelType::LEFT_VIEW),
-			std::make_pair ("BACK_VIEW",        BrowserPanelType::BACK_VIEW),
+			std::pair ("MAIN_VIEW",        BrowserPanelType::MAIN_VIEW),
+			std::pair ("PERSPECTIVE_VIEW", BrowserPanelType::PERSPECTIVE_VIEW),
+			std::pair ("TOP_VIEW",         BrowserPanelType::TOP_VIEW),
+			std::pair ("RIGHT_VIEW",       BrowserPanelType::RIGHT_VIEW),
+			std::pair ("FRONT_VIEW",       BrowserPanelType::FRONT_VIEW),
+			std::pair ("BOTTOM_VIEW",      BrowserPanelType::BOTTOM_VIEW),
+			std::pair ("LEFT_VIEW",        BrowserPanelType::LEFT_VIEW),
+			std::pair ("BACK_VIEW",        BrowserPanelType::BACK_VIEW),
 		};
 
 		const auto browserPanelTypeArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/type");
@@ -519,11 +519,11 @@ X3DBrowserPanel::getShading (const size_t id) const
 	try
 	{
 		static const std::map <std::string, std::string> shadingTypes = {
-			std::make_pair ("PHONG",     "PHONG"),
-			std::make_pair ("GOURAUD",   "GOURAUD"),
-			std::make_pair ("FLAT",      "FLAT"),
-			std::make_pair ("WIREFRAME", "WIREFRAME"),
-			std::make_pair ("POINTSET",  "POINTSET"),
+			std::pair ("PHONG",     "PHONG"),
+			std::pair ("GOURAUD",   "GOURAUD"),
+			std::pair ("FLAT",      "FLAT"),
+			std::pair ("WIREFRAME", "WIREFRAME"),
+			std::pair ("POINTSET",  "POINTSET"),
 		};
 
 		const auto shadingArray = getWorldInfo (getPage () -> getScene ()) -> getMetaData <X3D::MFString> ("/Titania/BrowserPanel/shading");
@@ -773,29 +773,29 @@ X3DBrowserPanel::set_grid ()
 		// <plane, type> = <x, y>
 		static const std::map <std::pair <int32_t, BrowserPanelType>, X3D::Vector2i> mappings = {
 			// x-plane
-			std::make_pair (std::make_pair (0, BrowserPanelType::TOP_VIEW),   X3D::Vector2i (1, 0)),
-			std::make_pair (std::make_pair (0, BrowserPanelType::RIGHT_VIEW), X3D::Vector2i (0, 2)),
-			std::make_pair (std::make_pair (0, BrowserPanelType::FRONT_VIEW), X3D::Vector2i (1, 2)),
+			std::pair (std::pair (0, BrowserPanelType::TOP_VIEW),   X3D::Vector2i (1, 0)),
+			std::pair (std::pair (0, BrowserPanelType::RIGHT_VIEW), X3D::Vector2i (0, 2)),
+			std::pair (std::pair (0, BrowserPanelType::FRONT_VIEW), X3D::Vector2i (1, 2)),
 			// y-plane
-			std::make_pair (std::make_pair (1, BrowserPanelType::TOP_VIEW),   X3D::Vector2i (0, 2)),
-			std::make_pair (std::make_pair (1, BrowserPanelType::RIGHT_VIEW), X3D::Vector2i (2, 1)),
-			std::make_pair (std::make_pair (1, BrowserPanelType::FRONT_VIEW), X3D::Vector2i (0, 1)),
+			std::pair (std::pair (1, BrowserPanelType::TOP_VIEW),   X3D::Vector2i (0, 2)),
+			std::pair (std::pair (1, BrowserPanelType::RIGHT_VIEW), X3D::Vector2i (2, 1)),
+			std::pair (std::pair (1, BrowserPanelType::FRONT_VIEW), X3D::Vector2i (0, 1)),
 			// z-plane
-			std::make_pair (std::make_pair (2, BrowserPanelType::TOP_VIEW),   X3D::Vector2i (0, 1)),
-			std::make_pair (std::make_pair (2, BrowserPanelType::RIGHT_VIEW), X3D::Vector2i (1, 2)),
-			std::make_pair (std::make_pair (2, BrowserPanelType::FRONT_VIEW), X3D::Vector2i (0, 2)),
+			std::pair (std::pair (2, BrowserPanelType::TOP_VIEW),   X3D::Vector2i (0, 1)),
+			std::pair (std::pair (2, BrowserPanelType::RIGHT_VIEW), X3D::Vector2i (1, 2)),
+			std::pair (std::pair (2, BrowserPanelType::FRONT_VIEW), X3D::Vector2i (0, 2)),
 			// x-plane
-			std::make_pair (std::make_pair (0, BrowserPanelType::BOTTOM_VIEW), X3D::Vector2i (1, 0)),
-			std::make_pair (std::make_pair (0, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (0, 2)),
-			std::make_pair (std::make_pair (0, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (1, 2)),
+			std::pair (std::pair (0, BrowserPanelType::BOTTOM_VIEW), X3D::Vector2i (1, 0)),
+			std::pair (std::pair (0, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (0, 2)),
+			std::pair (std::pair (0, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (1, 2)),
 			// y-plane
-			std::make_pair (std::make_pair (1, BrowserPanelType::BOTTOM_VIEW), X3D::Vector2i (0, 2)),
-			std::make_pair (std::make_pair (1, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (2, 1)),
-			std::make_pair (std::make_pair (1, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (0, 1)),
+			std::pair (std::pair (1, BrowserPanelType::BOTTOM_VIEW), X3D::Vector2i (0, 2)),
+			std::pair (std::pair (1, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (2, 1)),
+			std::pair (std::pair (1, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (0, 1)),
 			// z-plane
-			std::make_pair (std::make_pair (2, BrowserPanelType::BOTTOM_VIEW), X3D::Vector2i (0, 1)),
-			std::make_pair (std::make_pair (2, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (1, 2)),
-			std::make_pair (std::make_pair (2, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (0, 2)),
+			std::pair (std::pair (2, BrowserPanelType::BOTTOM_VIEW), X3D::Vector2i (0, 1)),
+			std::pair (std::pair (2, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (1, 2)),
+			std::pair (std::pair (2, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (0, 2)),
 		};
 	
 		if (getPage () -> getMainBrowser () not_eq getCurrentBrowser ())
@@ -822,7 +822,7 @@ X3DBrowserPanel::set_grid ()
 			else
 			{
 				const auto & tool    = getBrowserWindow () -> getGridTool () -> getTool ();
-				const auto   mapping = mappings .at (std::make_pair (plane, type));
+				const auto   mapping = mappings .at (std::pair (plane, type));
 				const auto   one     = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes .at (type), -axes .at (type)));
 
 				gridSwitch -> whichChoice () = 0;

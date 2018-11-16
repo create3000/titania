@@ -93,34 +93,34 @@ TextureCoordinateGenerator::initialize ()
 	set_mode ();
 }
 //	static const std::map <std::string, GLenum> modes = {
-//		std::make_pair ("SPHERE",                      GL_SPHERE_MAP),     // Ok
-//		std::make_pair ("SPHERE-LOCAL",                GL_SPHERE_MAP),     // Not supported
-//		std::make_pair ("SPHERE-REFLECT",              GL_REFLECTION_MAP), // Not supported
-//		std::make_pair ("SPHERE-REFLECT-LOCAL",        GL_REFLECTION_MAP), // Not supported
-//		std::make_pair ("CAMERASPACENORMAL",           GL_NORMAL_MAP),     // Ok
-//		std::make_pair ("CAMERASPACEPOSITION",         GL_EYE_LINEAR),     // Like COORD-EYE ???
-//		std::make_pair ("CAMERASPACEREFLECTIONVECTOR", GL_REFLECTION_MAP), // Ok
-//		std::make_pair ("COORD-EYE",                   GL_EYE_LINEAR),     // Ok
-//		std::make_pair ("COORD",                       GL_OBJECT_LINEAR),  // Ok
-//		std::make_pair ("NOISE-EYE",                   GL_SPHERE_MAP),     // Not supported
-//		std::make_pair ("NOISE",                       GL_SPHERE_MAP)      // Not supported
+//		std::pair ("SPHERE",                      GL_SPHERE_MAP),     // Ok
+//		std::pair ("SPHERE-LOCAL",                GL_SPHERE_MAP),     // Not supported
+//		std::pair ("SPHERE-REFLECT",              GL_REFLECTION_MAP), // Not supported
+//		std::pair ("SPHERE-REFLECT-LOCAL",        GL_REFLECTION_MAP), // Not supported
+//		std::pair ("CAMERASPACENORMAL",           GL_NORMAL_MAP),     // Ok
+//		std::pair ("CAMERASPACEPOSITION",         GL_EYE_LINEAR),     // Like COORD-EYE ???
+//		std::pair ("CAMERASPACEREFLECTIONVECTOR", GL_REFLECTION_MAP), // Ok
+//		std::pair ("COORD-EYE",                   GL_EYE_LINEAR),     // Ok
+//		std::pair ("COORD",                       GL_OBJECT_LINEAR),  // Ok
+//		std::pair ("NOISE-EYE",                   GL_SPHERE_MAP),     // Not supported
+//		std::pair ("NOISE",                       GL_SPHERE_MAP)      // Not supported
 //	};
 
 void
 TextureCoordinateGenerator::set_mode ()
 {
 	static const std::map <std::string, ModeType> modes = {
-		std::make_pair ("SPHERE",                      SPHERE),
-		std::make_pair ("SPHERE-LOCAL",                SPHERE_LOCAL),
-		std::make_pair ("SPHERE-REFLECT",              SPHERE_REFLECT),
-		std::make_pair ("SPHERE-REFLECT-LOCAL",        SPHERE_REFLECT_LOCAL),
-		std::make_pair ("CAMERASPACENORMAL",           CAMERASPACENORMAL),
-		std::make_pair ("CAMERASPACEPOSITION",         CAMERASPACEPOSITION),
-		std::make_pair ("CAMERASPACEREFLECTIONVECTOR", CAMERASPACEREFLECTIONVECTOR),
-		std::make_pair ("COORD-EYE",                   COORD_EYE),
-		std::make_pair ("COORD",                       COORD),
-		std::make_pair ("NOISE-EYE",                   NOISE_EYE),
-		std::make_pair ("NOISE",                       NOISE)
+		std::pair ("SPHERE",                      SPHERE),
+		std::pair ("SPHERE-LOCAL",                SPHERE_LOCAL),
+		std::pair ("SPHERE-REFLECT",              SPHERE_REFLECT),
+		std::pair ("SPHERE-REFLECT-LOCAL",        SPHERE_REFLECT_LOCAL),
+		std::pair ("CAMERASPACENORMAL",           CAMERASPACENORMAL),
+		std::pair ("CAMERASPACEPOSITION",         CAMERASPACEPOSITION),
+		std::pair ("CAMERASPACEREFLECTIONVECTOR", CAMERASPACEREFLECTIONVECTOR),
+		std::pair ("COORD-EYE",                   COORD_EYE),
+		std::pair ("COORD",                       COORD),
+		std::pair ("NOISE-EYE",                   NOISE_EYE),
+		std::pair ("NOISE",                       NOISE)
 	};
 
 	try

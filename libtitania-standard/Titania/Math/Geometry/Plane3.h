@@ -137,7 +137,7 @@ public:
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
 
-	///  Transform this line by @a matrix.
+	///  Transform this plane by @a matrix.
 	///  throws std::domain_error
 	plane3 &
 	operator *= (const matrix4 <Type> & matrix)
@@ -188,7 +188,7 @@ private:
 
 ///  @name Arithmetic operations
 
-///  Transform a plane by the given matrix
+///  Transform this plane by @a matrix.
 ///  throws std::domain_error
 template <class Type>
 void
@@ -215,7 +215,7 @@ plane3 <Type>::mult_right (const matrix4 <Type> & matrix)
 	*this = plane3 (point, newNormal);
 }
 
-///  Transform a plane by the given matrix
+///  Transform this plane by @a matrix.
 ///  throws std::domain_error
 template <class Type>
 void
@@ -273,19 +273,19 @@ plane3 <Type>::intersects (const line3 <Type> & line) const
 
 	// Plane and line are parallel.
 	if (theta == 0)
-		return std::make_pair (vector3 <Type> (), false);
+		return std::pair (vector3 <Type> (), false);
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
 	const auto t     = (distance_from_origin () - dot (normal (), line .point ())) / theta;
 	const auto point = line .point () + line .direction () * t;
 
-	return std::make_pair (point, true);
+	return std::pair (point, true);
 }
 
 ///  @relates plane3
 ///  @name Arithmetic operations
 
-///  Transform a plane by the given matrix
+///  Return new plane3 value @a plane transformed by @a matrix.
 ///  throws std::domain_error
 template <class Type>
 plane3 <Type>
@@ -296,7 +296,7 @@ operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
 	return result;
 }
 
-///  Transform a plane by the given matrix
+///  Return new plane3 value @a plane transformed by @a matrix.
 ///  throws std::domain_error
 template <class Type>
 plane3 <Type>

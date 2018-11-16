@@ -190,8 +190,8 @@ basic_string <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & istre
 	return static_cast <bool> (istream);
 }
 
-typedef basic_string <char>    string;
-typedef basic_string <wchar_t> wstring;
+using string  = basic_string <char>;
+using wstring = basic_string <wchar_t>;
 
 extern template class basic_string <char>;
 extern template class basic_string <wchar_t>;

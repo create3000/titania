@@ -64,39 +64,39 @@ namespace puck {
 // const auto iconNames = iconTheme -> list_icons (contexts [i]);
 
 const std::map <std::string, int32_t> ExternalToolsEditor::saveTypes = {
-	std::make_pair ("NOTHING",       0),
-	std::make_pair ("CURRENT_SCENE", 1),
-	std::make_pair ("ALL_SCENES",    2),
+	std::pair ("NOTHING",       0),
+	std::pair ("CURRENT_SCENE", 1),
+	std::pair ("ALL_SCENES",    2),
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::inputTypes = {
-	std::make_pair ("NOTHING",       0),
-	std::make_pair ("CURRENT_SCENE", 1),
-	std::make_pair ("SELECTION",     2),
+	std::pair ("NOTHING",       0),
+	std::pair ("CURRENT_SCENE", 1),
+	std::pair ("SELECTION",     2),
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::inputEncodings = {
-	std::make_pair ("XML",  0),
-	std::make_pair ("VRML", 1),
-	std::make_pair ("JSON", 2),
+	std::pair ("XML",  0),
+	std::pair ("VRML", 1),
+	std::pair ("JSON", 2),
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::outputTypes = {
-	std::make_pair ("NOTHING",                  0),
-	std::make_pair ("DISPLAY_IN_CONSOLE",       1),
-	std::make_pair ("CREATE_NEW_SCENE",         2),
-	std::make_pair ("REPLACE_CURRENT_SCENE",    3),
-	std::make_pair ("APPEND_TO_CURRENT_SCENE",  4),
-	std::make_pair ("APPEND_TO_CURRENT_LAYER",  5),
-	std::make_pair ("REPLACE_SELECTION",        6),
+	std::pair ("NOTHING",                  0),
+	std::pair ("DISPLAY_IN_CONSOLE",       1),
+	std::pair ("CREATE_NEW_SCENE",         2),
+	std::pair ("REPLACE_CURRENT_SCENE",    3),
+	std::pair ("APPEND_TO_CURRENT_SCENE",  4),
+	std::pair ("APPEND_TO_CURRENT_LAYER",  5),
+	std::pair ("REPLACE_SELECTION",        6),
 };
 
 const std::map <std::string, int32_t> ExternalToolsEditor::applicabilityTypes = {
-	std::make_pair ("ALWAYS_AVAILABLE",                0),
-	std::make_pair ("ALL_SCENES_EXCEPT_UNTITLED_ONES", 1),
-	std::make_pair ("LOCAL_FILES_ONLY",                2),
-	std::make_pair ("REMOTE_FILES_ONLY",               3),
-	std::make_pair ("UNTITLED_SCENS_ONLY",             4),
+	std::pair ("ALWAYS_AVAILABLE",                0),
+	std::pair ("ALL_SCENES_EXCEPT_UNTITLED_ONES", 1),
+	std::pair ("LOCAL_FILES_ONLY",                2),
+	std::pair ("REMOTE_FILES_ONLY",               3),
+	std::pair ("UNTITLED_SCENS_ONLY",             4),
 };
 
 ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :

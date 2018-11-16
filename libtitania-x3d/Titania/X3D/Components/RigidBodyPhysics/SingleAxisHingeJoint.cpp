@@ -180,10 +180,10 @@ void
 SingleAxisHingeJoint::set_forceOutput ()
 {
 	const std::map <std::string, OutputType> outputTypes = {
-		std::make_pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
-		std::make_pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
-		std::make_pair ("angle",            OutputType::angle),
-		std::make_pair ("angleRate",        OutputType::angleRate),
+		std::pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
+		std::pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
+		std::pair ("angle",            OutputType::angle),
+		std::pair ("angleRate",        OutputType::angleRate),
 	};
 
 	std::fill (outputs .begin (), outputs .end (), false);

@@ -184,25 +184,25 @@ Grammar::Number (std::istream & istream, Type & value)
 	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
 		istream .unget ();
 
-	if (PosInfinity (istream))
+	if (PosInfinity (istream) .second)
 	{
 		value = std::numeric_limits <Type>::infinity ();
 		return true;
 	}
 
-	if (NegInfinity (istream))
+	if (NegInfinity (istream) .second)
 	{
 		value = -std::numeric_limits <Type>::infinity ();
 		return true;
 	}
 
-	if (PosNaN (istream))
+	if (PosNaN (istream) .second)
 	{
 		value = std::numeric_limits <Type>::quiet_NaN ();
 		return true;
 	}
 
-	if (NegNaN (istream))
+	if (NegNaN (istream) .second)
 	{
 		value = -std::numeric_limits <Type>::quiet_NaN ();
 		return true;

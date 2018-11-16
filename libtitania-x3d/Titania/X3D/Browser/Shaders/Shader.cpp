@@ -79,16 +79,16 @@ Shader::getShaderType (const std::string & type)
 	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
 
 	static const std::map <std::string, GLenum> shaderTypes {
-		std::make_pair ("VERTEX",          GL_VERTEX_SHADER),
-		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER),
-		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER),
-		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER),
-		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER)
+		std::pair ("VERTEX",          GL_VERTEX_SHADER),
+		std::pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER),
+		std::pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER),
+		std::pair ("GEOMETRY",        GL_GEOMETRY_SHADER),
+		std::pair ("FRAGMENT",        GL_FRAGMENT_SHADER)
 
 		#ifdef GL_COMPUTE_SHADER
 		// Requires GL 4.3 or ARB_compute_shader
 
-		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER)
+		, std::pair ("COMPUTE", GL_COMPUTE_SHADER)
 
 		#endif
 	};
@@ -109,16 +109,16 @@ Shader::getProgramStageBit (const std::string & type)
 	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
 
 	static const std::map <std::string, GLenum> programStageBits = {
-		std::make_pair ("VERTEX",          GL_VERTEX_SHADER_BIT),
-		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER_BIT),
-		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER_BIT),
-		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER_BIT),
-		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER_BIT)
+		std::pair ("VERTEX",          GL_VERTEX_SHADER_BIT),
+		std::pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER_BIT),
+		std::pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER_BIT),
+		std::pair ("GEOMETRY",        GL_GEOMETRY_SHADER_BIT),
+		std::pair ("FRAGMENT",        GL_FRAGMENT_SHADER_BIT)
 
 		#ifdef GL_COMPUTE_SHADER_BIT
 		// Requires GL 4.3 or ARB_compute_shader
 
-		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER_BIT),
+		, std::pair ("COMPUTE", GL_COMPUTE_SHADER_BIT),
 
 		#endif
 	};

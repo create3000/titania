@@ -168,7 +168,7 @@ Grammar::Int32 (std::istream & istream, int32_t & value)
 bool
 Grammar::Hex (std::istream & istream, uint32_t & value)
 {
-	if (HEX (istream))
+	if (HEX (istream) .second)
 		return static_cast <bool> (istream >> std::hex >> value);
 
 	return false;

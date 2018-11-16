@@ -167,46 +167,46 @@ static constexpr size_t GRADIENT_WIDTH   = 256;
 static constexpr size_t GRADIENT_HEIGHT  = 256;
 
 const std::map <std::string, Parser::ElementsFunction> Parser::xmlElementsIndex = {
-	std::make_pair ("svg", std::mem_fn (&Parser::svgElement)),
+	std::pair ("svg", std::mem_fn (&Parser::svgElement)),
 };
 
 const std::map <std::string, Parser::ElementsFunction> Parser::elementsIndex = {
-	std::make_pair ("use",      std::mem_fn (&Parser::useElement)),
-	std::make_pair ("g",        std::mem_fn (&Parser::groupElement)),
-	std::make_pair ("switch",   std::mem_fn (&Parser::switchElement)),
-	std::make_pair ("a",        std::mem_fn (&Parser::aElement)),
-	std::make_pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
-	std::make_pair ("circle",   std::mem_fn (&Parser::circleElement)),
-	std::make_pair ("ellipse",  std::mem_fn (&Parser::ellipseElement)),
-	std::make_pair ("polygon",  std::mem_fn (&Parser::polygonElement)),
-	std::make_pair ("text",     std::mem_fn (&Parser::textElement)),
-	std::make_pair ("image",    std::mem_fn (&Parser::imageElement)),
-	std::make_pair ("polyline", std::mem_fn (&Parser::polylineElement)),
-	std::make_pair ("path",     std::mem_fn (&Parser::pathElement)),
+	std::pair ("use",      std::mem_fn (&Parser::useElement)),
+	std::pair ("g",        std::mem_fn (&Parser::groupElement)),
+	std::pair ("switch",   std::mem_fn (&Parser::switchElement)),
+	std::pair ("a",        std::mem_fn (&Parser::aElement)),
+	std::pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
+	std::pair ("circle",   std::mem_fn (&Parser::circleElement)),
+	std::pair ("ellipse",  std::mem_fn (&Parser::ellipseElement)),
+	std::pair ("polygon",  std::mem_fn (&Parser::polygonElement)),
+	std::pair ("text",     std::mem_fn (&Parser::textElement)),
+	std::pair ("image",    std::mem_fn (&Parser::imageElement)),
+	std::pair ("polyline", std::mem_fn (&Parser::polylineElement)),
+	std::pair ("path",     std::mem_fn (&Parser::pathElement)),
 };
 
 const std::map <std::string, Parser::PaintGradientFunction> Parser::paintGradientIndex = {
-	std::make_pair ("linearGradient", std::mem_fn (&Parser::paintLinearGradientElement)),
-	std::make_pair ("radialGradient", std::mem_fn (&Parser::paintRadialGradientElement)),
+	std::pair ("linearGradient", std::mem_fn (&Parser::paintLinearGradientElement)),
+	std::pair ("radialGradient", std::mem_fn (&Parser::paintRadialGradientElement)),
 };
 
 const std::map <std::string, Parser::GradientFunction> Parser::gradientIndex = {
-	std::make_pair ("linearGradient", std::mem_fn (&Parser::linearGradientElement)),
-	std::make_pair ("radialGradient", std::mem_fn (&Parser::radialGradientElement)),
+	std::pair ("linearGradient", std::mem_fn (&Parser::linearGradientElement)),
+	std::pair ("radialGradient", std::mem_fn (&Parser::radialGradientElement)),
 };
 
 const std::map <std::string, Parser::StyleFunction> Parser::styleIndex =
 {
-	std::make_pair ("display",        std::mem_fn (&Parser::displayStyle)),
-	std::make_pair ("fill",           std::mem_fn (&Parser::fillStyle)),
-	std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
-	std::make_pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
-	std::make_pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
-	std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
-	std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
-	std::make_pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
-	std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
-	std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
+	std::pair ("display",        std::mem_fn (&Parser::displayStyle)),
+	std::pair ("fill",           std::mem_fn (&Parser::fillStyle)),
+	std::pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
+	std::pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
+	std::pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
+	std::pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
+	std::pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
+	std::pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
+	std::pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
+	std::pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
 };
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :

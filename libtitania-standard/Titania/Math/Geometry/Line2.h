@@ -208,13 +208,13 @@ line2 <Type>::intersects (const line2 & line) const
 	const auto theta = dot (d1, d2); // angle between both lines
 
 	if (std::abs (theta) >= 1)
-		return std::make_pair (vector2 <Type> (), false);  // lines are parallel
+		return std::pair (vector2 <Type> (), false);  // lines are parallel
 
 	const auto u     = p2 - p1;
 	const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
 	const auto point = p1 + t * d1;
 
-	return std::make_pair (point, true);
+	return std::pair (point, true);
 }
 
 template <class Type>

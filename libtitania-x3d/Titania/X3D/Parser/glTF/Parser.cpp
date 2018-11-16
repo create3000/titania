@@ -102,20 +102,20 @@ const bool   Parser::USE_PROTOTYPES = false;
 const double Parser::EPSILON        = 0.000001;
 
 const std::map <Parser::ComponentType, size_t> Parser::componentSizes = {
-	std::make_pair (ComponentType::BYTE,           sizeof (int8_t)),
-	std::make_pair (ComponentType::UNSIGNED_BYTE,  sizeof (uint8_t)),
-	std::make_pair (ComponentType::SHORT,          sizeof (int16_t)),
-	std::make_pair (ComponentType::UNSIGNED_SHORT, sizeof (uint16_t)),
-	std::make_pair (ComponentType::UNSIGNED_INT,   sizeof (uint32_t)),
-	std::make_pair (ComponentType::FLOAT,          sizeof (float)),
+	std::pair (ComponentType::BYTE,           sizeof (int8_t)),
+	std::pair (ComponentType::UNSIGNED_BYTE,  sizeof (uint8_t)),
+	std::pair (ComponentType::SHORT,          sizeof (int16_t)),
+	std::pair (ComponentType::UNSIGNED_SHORT, sizeof (uint16_t)),
+	std::pair (ComponentType::UNSIGNED_INT,   sizeof (uint32_t)),
+	std::pair (ComponentType::FLOAT,          sizeof (float)),
 };
 
 const std::map <Parser::ComponentType, std::tuple <double, double, double, double>> Parser::normalizedRanges = {
-	std::make_pair (ComponentType::BYTE,           std::make_tuple (std::numeric_limits <int8_t>::min (),   std::numeric_limits <int8_t>::max (),  -1, 1)),
-	std::make_pair (ComponentType::UNSIGNED_BYTE,  std::make_tuple (std::numeric_limits <uint8_t>::min (),  std::numeric_limits <uint8_t>::max (),  0, 1)),
-	std::make_pair (ComponentType::SHORT,          std::make_tuple (std::numeric_limits <int16_t>::min (),  std::numeric_limits <int16_t>::max (), -1, 1)),
-	std::make_pair (ComponentType::UNSIGNED_SHORT, std::make_tuple (std::numeric_limits <uint16_t>::min (), std::numeric_limits <uint16_t>::max (), 0, 1)),
-	std::make_pair (ComponentType::UNSIGNED_INT,   std::make_tuple (std::numeric_limits <uint32_t>::min (), std::numeric_limits <uint32_t>::max (), 0, 1)),
+	std::pair (ComponentType::BYTE,           std::tuple (std::numeric_limits <int8_t>::min (),   std::numeric_limits <int8_t>::max (),  -1, 1)),
+	std::pair (ComponentType::UNSIGNED_BYTE,  std::tuple (std::numeric_limits <uint8_t>::min (),  std::numeric_limits <uint8_t>::max (),  0, 1)),
+	std::pair (ComponentType::SHORT,          std::tuple (std::numeric_limits <int16_t>::min (),  std::numeric_limits <int16_t>::max (), -1, 1)),
+	std::pair (ComponentType::UNSIGNED_SHORT, std::tuple (std::numeric_limits <uint16_t>::min (), std::numeric_limits <uint16_t>::max (), 0, 1)),
+	std::pair (ComponentType::UNSIGNED_INT,   std::tuple (std::numeric_limits <uint32_t>::min (), std::numeric_limits <uint32_t>::max (), 0, 1)),
 };
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
@@ -927,22 +927,22 @@ Parser::accessorValue (json_object* const jobj)
 		return nullptr;
 
 	static const std::map <std::string, AccessorType> types = {
-		std::make_pair ("SCALAR", AccessorType::SCALAR),
-		std::make_pair ("VEC2",   AccessorType::VEC2),
-		std::make_pair ("VEC3",   AccessorType::VEC3),
-		std::make_pair ("VEC4",   AccessorType::VEC4),
-		std::make_pair ("MAT2",   AccessorType::MAT2),
-		std::make_pair ("MAT3",   AccessorType::MAT3),
-		std::make_pair ("MAT4",   AccessorType::MAT4),
+		std::pair ("SCALAR", AccessorType::SCALAR),
+		std::pair ("VEC2",   AccessorType::VEC2),
+		std::pair ("VEC3",   AccessorType::VEC3),
+		std::pair ("VEC4",   AccessorType::VEC4),
+		std::pair ("MAT2",   AccessorType::MAT2),
+		std::pair ("MAT3",   AccessorType::MAT3),
+		std::pair ("MAT4",   AccessorType::MAT4),
 	};
 
 	static const std::map <int32_t, ComponentType> componentTypes = {
-		std::make_pair (5120, ComponentType::BYTE),
-		std::make_pair (5121, ComponentType::UNSIGNED_BYTE),
-		std::make_pair (5122, ComponentType::SHORT),
-		std::make_pair (5123, ComponentType::UNSIGNED_SHORT),
-		std::make_pair (5125, ComponentType::UNSIGNED_INT),
-		std::make_pair (5126, ComponentType::FLOAT),
+		std::pair (5120, ComponentType::BYTE),
+		std::pair (5121, ComponentType::UNSIGNED_BYTE),
+		std::pair (5122, ComponentType::SHORT),
+		std::pair (5123, ComponentType::UNSIGNED_SHORT),
+		std::pair (5125, ComponentType::UNSIGNED_INT),
+		std::pair (5126, ComponentType::FLOAT),
 	};
 
 	int32_t bufferView = -1;
@@ -1171,12 +1171,12 @@ Parser::samplerValue (json_object* const jobj)
 	// minFilter
 
 	static const std::map <int32_t, std::pair <std::string, bool>> minificationFilters = {
-		std::make_pair (9728, std::make_pair ("NEAREST_PIXEL",                false)),
-		std::make_pair (9729, std::make_pair ("AVG_PIXEL",                    false)),
-		std::make_pair (9984, std::make_pair ("NEAREST_PIXEL_NEAREST_MIPMAP", true)),
-		std::make_pair (9985, std::make_pair ("AVG_PIXEL_NEAREST_MIPMAP",     true)),
-		std::make_pair (9986, std::make_pair ("NEAREST_PIXEL_AVG_MIPMAP",     true)),
-		std::make_pair (9987, std::make_pair ("AVG_PIXEL_AVG_MIPMAP",         true)),
+		std::pair (9728, std::pair ("NEAREST_PIXEL",                false)),
+		std::pair (9729, std::pair ("AVG_PIXEL",                    false)),
+		std::pair (9984, std::pair ("NEAREST_PIXEL_NEAREST_MIPMAP", true)),
+		std::pair (9985, std::pair ("AVG_PIXEL_NEAREST_MIPMAP",     true)),
+		std::pair (9986, std::pair ("NEAREST_PIXEL_AVG_MIPMAP",     true)),
+		std::pair (9987, std::pair ("AVG_PIXEL_AVG_MIPMAP",         true)),
 	};
 
 	int32_t minFilter = -1;
@@ -1199,8 +1199,8 @@ Parser::samplerValue (json_object* const jobj)
 	// magFilter
 
 	static const std::map <int32_t, std::string> magnificationFilters = {
-		std::make_pair (9728, "NEAREST_PIXEL"),
-		std::make_pair (9729, "AVG_PIXEL"),
+		std::pair (9728, "NEAREST_PIXEL"),
+		std::pair (9729, "AVG_PIXEL"),
 	};
 
 	int32_t magFilter = -1;
@@ -1221,9 +1221,9 @@ Parser::samplerValue (json_object* const jobj)
 	// boundaryMode
 
 	static const std::map <int32_t, std::string> boundaryModes = {
-		std::make_pair (33071, "CLAMP_TO_EDGE"),
-		std::make_pair (33648, "MIRRORED_REPEAT"),
-		std::make_pair (10497, "REPEAT"),
+		std::pair (33071, "CLAMP_TO_EDGE"),
+		std::pair (33648, "MIRRORED_REPEAT"),
+		std::pair (10497, "REPEAT"),
 	};
 
 	// wrapS
@@ -2528,10 +2528,10 @@ Parser::animationTargetValue (json_object* const jobj)
 	// path
 
 	static const std::map <std::string, PathType> pathTypes = {
-		std::make_pair ("translation", PathType::TRANSLATION),
-		std::make_pair ("rotation",    PathType::ROTATION),
-		std::make_pair ("scale",       PathType::SCALE),
-		std::make_pair ("weights",     PathType::WEIGHTS),
+		std::pair ("translation", PathType::TRANSLATION),
+		std::pair ("rotation",    PathType::ROTATION),
+		std::pair ("scale",       PathType::SCALE),
+		std::pair ("weights",     PathType::WEIGHTS),
 	};
 
 	std::string path;
@@ -2626,9 +2626,9 @@ Parser::animationSamplerValue (json_object* const jobj)
 	// interpolation
 
 	static const std::map <std::string, InterpolationType> interpolationTypes = {
-		std::make_pair ("LINEAR",      InterpolationType::LINEAR),
-		std::make_pair ("STEP",        InterpolationType::STEP),
-		std::make_pair ("CUBICSPLINE", InterpolationType::CUBICSPLINE),
+		std::pair ("LINEAR",      InterpolationType::LINEAR),
+		std::pair ("STEP",        InterpolationType::STEP),
+		std::pair ("CUBICSPLINE", InterpolationType::CUBICSPLINE),
 	};
 
 	std::string interpolation = "LINEAR";

@@ -113,8 +113,8 @@ struct almost_less <vector3 <double>> :
 	{
 		using fvalue = fuzzy_value <double>;
 
-		return std::make_tuple (fvalue (lhs .x (), epsilon), fvalue (lhs .y (), epsilon), fvalue (lhs .z (), epsilon)) <
-		       std::make_tuple (fvalue (rhs .x (), epsilon), fvalue (rhs .y (), epsilon), fvalue (rhs .z (), epsilon));
+		return std::tuple (fvalue (lhs .x (), epsilon), fvalue (lhs .y (), epsilon), fvalue (lhs .z (), epsilon)) <
+		       std::tuple (fvalue (rhs .x (), epsilon), fvalue (rhs .y (), epsilon), fvalue (rhs .z (), epsilon));
 	}
 
 	const double epsilon;

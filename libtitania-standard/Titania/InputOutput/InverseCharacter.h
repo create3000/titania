@@ -121,8 +121,8 @@ basic_inverse_character <CharT, Traits>::operator () (std::basic_istream <CharT,
 	return false;
 }
 
-typedef basic_inverse_character <char>    inverse_character;
-typedef basic_inverse_character <wchar_t> winverse_character;
+using inverse_character  = basic_inverse_character <char>;
+using winverse_character = basic_inverse_character <wchar_t>;
 
 extern template class basic_inverse_character <char>;
 extern template class basic_inverse_character <wchar_t>;

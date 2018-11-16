@@ -105,7 +105,7 @@ TexCoordDamper2D::initialize ()
 
 	buffer .resize (getOrder () + 1);
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 	{
 		value .assign (initialValue () .cbegin (), initialValue () .cend ());
 		value .resize (initialDestination () .size ());
@@ -123,7 +123,7 @@ TexCoordDamper2D::initialize ()
 void
 TexCoordDamper2D::set_value_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value .assign (set_value () .begin (), set_value () .end ());
 
 	buffer [0] .resize (set_value () .size ());
@@ -136,7 +136,7 @@ TexCoordDamper2D::set_value_ ()
 void
 TexCoordDamper2D::set_destination_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value .resize (set_destination () .size ());
 
 	buffer [0] .assign (set_destination () .cbegin (), set_destination () .cend ());
@@ -181,7 +181,7 @@ TexCoordDamper2D::prepareEvents ()
 		order = 0;
 	}
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = buffer [order];
 
 	set_active (false);

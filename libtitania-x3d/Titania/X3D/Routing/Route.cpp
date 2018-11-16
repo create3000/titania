@@ -117,7 +117,7 @@ Route::initialize ()
 RouteId
 Route::getKey () const
 {
-	return std::make_pair (sourceField, destinationField);
+	return std::pair (sourceField, destinationField);
 }
 
 bool

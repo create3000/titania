@@ -305,7 +305,7 @@ PrototypeEditor::on_create_prototype_menu ()
 
 	std::sort (protoNodes .begin (), protoNodes .end (),
 	           [ ] (const X3D::X3DProtoDeclarationNodePtr & lhs, const X3D::X3DProtoDeclarationNodePtr & rhs)
-	           { return std::make_pair (not lhs -> isExternproto (), lhs -> getName ()) < std::make_pair (not rhs -> isExternproto (), rhs -> getName ()); });
+	           { return std::pair (not lhs -> isExternproto (), lhs -> getName ()) < std::pair (not rhs -> isExternproto (), rhs -> getName ()); });
 
 	// Remove all menu items
 

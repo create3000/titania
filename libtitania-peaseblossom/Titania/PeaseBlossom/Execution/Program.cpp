@@ -102,9 +102,9 @@ bool
 Program::resolve (const Identifier & identifier)
 {
 	static const std::map <pb::Identifier, StandardClassType> types = {
-		std::make_pair ("Array",  StandardClassType::Array),
-		std::make_pair ("Date",   StandardClassType::Date),
-		std::make_pair ("String", StandardClassType::String),
+		std::pair ("Array",  StandardClassType::Array),
+		std::pair ("Date",   StandardClassType::Date),
+		std::pair ("String", StandardClassType::String),
 	};
 
 	const auto iter = types .find (identifier);
@@ -123,9 +123,9 @@ Program::getStandardClass (const StandardClassType type) const
 	using Initialize = std::function <ptr <NativeFunction> (pbExecutionContext* const)>;
 
 	static const std::map <StandardClassType, Initialize> functions = {
-		std::make_pair (StandardClassType::Array,  Standard::Array::initialize),
-		std::make_pair (StandardClassType::Date,   Standard::Date::initialize),
-		std::make_pair (StandardClassType::String, Standard::String::initialize),
+		std::pair (StandardClassType::Array,  Standard::Array::initialize),
+		std::pair (StandardClassType::Date,   Standard::Date::initialize),
+		std::pair (StandardClassType::String, Standard::String::initialize),
 	};
 
 	auto & standardClass = standardClasses .at (size_t (type));

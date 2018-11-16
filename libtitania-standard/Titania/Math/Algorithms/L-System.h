@@ -182,7 +182,7 @@ lsystem <String>::lsystem (const size_type iterations,
 	for (const auto & constant : constants)
 		add_constant (constant);
 
-	for (const auto & rule : std::make_pair (first_rule, last_rule))
+	for (const auto & rule : std::pair (first_rule, last_rule))
 		add_rule (rule);
 
 	generate ();

@@ -63,39 +63,39 @@ using Geodetic                    = geospatial::geodetic <double>;
 using UniversalTransverseMercator = geospatial::universal_transverse_mercator <double>;
 
 const std::map <std::string, Geospatial::CoordinateSystemType> Geospatial::coordinateSystems = {
-	std::make_pair ("GD",  CoordinateSystemType::GD),
-	std::make_pair ("GDC", CoordinateSystemType::GD),
-	std::make_pair ("UTM", CoordinateSystemType::UTM),
-	std::make_pair ("GC",  CoordinateSystemType::GC),
-	std::make_pair ("GCC", CoordinateSystemType::GC),
-	std::make_pair ("GS",  CoordinateSystemType::GC)
+	std::pair ("GD",  CoordinateSystemType::GD),
+	std::pair ("GDC", CoordinateSystemType::GD),
+	std::pair ("UTM", CoordinateSystemType::UTM),
+	std::pair ("GC",  CoordinateSystemType::GC),
+	std::pair ("GCC", CoordinateSystemType::GC),
+	std::pair ("GS",  CoordinateSystemType::GC)
 
 };
 
 const std::map <std::string, Spheroid3d> Geospatial::ellipsoids = {
-	std::make_pair ("AA", geospatial::AA),
-	std::make_pair ("AM", geospatial::AM),
-	std::make_pair ("AN", geospatial::AN),
-	std::make_pair ("BN", geospatial::BN),
-	std::make_pair ("BR", geospatial::BR),
-	std::make_pair ("CC", geospatial::CC),
-	std::make_pair ("CD", geospatial::CD),
-	std::make_pair ("EA", geospatial::EA),
-	std::make_pair ("EB", geospatial::EB),
-	std::make_pair ("EC", geospatial::EC),
-	std::make_pair ("ED", geospatial::ED),
-	std::make_pair ("EE", geospatial::EE),
-	std::make_pair ("EF", geospatial::EF),
-	std::make_pair ("FA", geospatial::FA),
-	std::make_pair ("HE", geospatial::HE),
-	std::make_pair ("HO", geospatial::HO),
-	std::make_pair ("ID", geospatial::ID),
-	std::make_pair ("IN", geospatial::IN),
-	std::make_pair ("KA", geospatial::KA),
-	std::make_pair ("RF", geospatial::RF),
-	std::make_pair ("SA", geospatial::SA),
-	std::make_pair ("WD", geospatial::WD),
-	std::make_pair ("WE", geospatial::WE)
+	std::pair ("AA", geospatial::AA),
+	std::pair ("AM", geospatial::AM),
+	std::pair ("AN", geospatial::AN),
+	std::pair ("BN", geospatial::BN),
+	std::pair ("BR", geospatial::BR),
+	std::pair ("CC", geospatial::CC),
+	std::pair ("CD", geospatial::CD),
+	std::pair ("EA", geospatial::EA),
+	std::pair ("EB", geospatial::EB),
+	std::pair ("EC", geospatial::EC),
+	std::pair ("ED", geospatial::ED),
+	std::pair ("EE", geospatial::EE),
+	std::pair ("EF", geospatial::EF),
+	std::pair ("FA", geospatial::FA),
+	std::pair ("HE", geospatial::HE),
+	std::pair ("HO", geospatial::HO),
+	std::pair ("ID", geospatial::ID),
+	std::pair ("IN", geospatial::IN),
+	std::pair ("KA", geospatial::KA),
+	std::pair ("RF", geospatial::RF),
+	std::pair ("SA", geospatial::SA),
+	std::pair ("WD", geospatial::WD),
+	std::pair ("WE", geospatial::WE)
 
 };
 

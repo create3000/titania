@@ -68,11 +68,11 @@ namespace titania {
 namespace X3D {
 
 const std::map <std::string, JSONParser::ElementsFunction> JSONParser::objectsIndex = {
-	std::make_pair ("ExternProtoDeclare", std::mem_fn (&JSONParser::externProtoDeclareObject)),
-	std::make_pair ("ProtoDeclare",       std::mem_fn (&JSONParser::protoDeclareObject)),
-	std::make_pair ("ROUTE",              std::mem_fn (&JSONParser::routeObject)),
-	std::make_pair ("IMPORT",             std::mem_fn (&JSONParser::importObject)),
-	std::make_pair ("EXPORT",             std::mem_fn (&JSONParser::exportObject)),
+	std::pair ("ExternProtoDeclare", std::mem_fn (&JSONParser::externProtoDeclareObject)),
+	std::pair ("ProtoDeclare",       std::mem_fn (&JSONParser::protoDeclareObject)),
+	std::pair ("ROUTE",              std::mem_fn (&JSONParser::routeObject)),
+	std::pair ("IMPORT",             std::mem_fn (&JSONParser::importObject)),
+	std::pair ("EXPORT",             std::mem_fn (&JSONParser::exportObject)),
 };
 
 const std::string JSONParser::ProtoInstance = "ProtoInstance";

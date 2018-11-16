@@ -169,7 +169,7 @@ OutlineDragDrop::get_proto_limits (const Gtk::TreePath & path, X3D::ProtoDeclara
 	const auto first  = get_proto_first_limit  (path, prototype, prototypes);
 	const auto second = get_proto_second_limit (path, prototype, prototypes);
 
-	return std::make_pair (first, second);
+	return std::pair (first, second);
 }
 
 Gtk::TreePath

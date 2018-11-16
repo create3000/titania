@@ -161,8 +161,8 @@ private:
 
 };
 
-typedef basic_sequence <char>    sequence;
-typedef basic_sequence <wchar_t> wsequence;
+using sequence  = basic_sequence <char>;
+using wsequence = basic_sequence <wchar_t>;
 
 extern template class basic_sequence <char>;
 extern template class basic_sequence <wchar_t>;

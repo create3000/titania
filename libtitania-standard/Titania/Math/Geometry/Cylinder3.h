@@ -182,11 +182,11 @@ cylinder3 <Type>::intersects (const line3 <Type> & line) const
 		enter += axis () .point ();
 		exit  += axis () .point ();
 	
-		return std::make_tuple (enter, exit, true);
+		return std::tuple (enter, exit, true);
 	}
 	catch (const std::domain_error &)
 	{
-		return std::make_tuple (vector3 <Type> (), vector3 <Type> (), false);
+		return std::tuple (vector3 <Type> (), vector3 <Type> (), false);
 	}
 }
 
@@ -224,7 +224,7 @@ cylinder3 <Type>::unit_cylinder_intersects (const line3 <Type> & line) const
 
 	// if discriminant is negative, no intersection
 	if (discr < 0)
-		return std::make_tuple (vector3 <Type> (), vector3 <Type> (), false);
+		return std::tuple (vector3 <Type> (), vector3 <Type> (), false);
 
 	const Type sqroot = std::sqrt (discr);
 
@@ -243,7 +243,7 @@ cylinder3 <Type>::unit_cylinder_intersects (const line3 <Type> & line) const
 	const auto enter = pos + (dir * t0);
 	const auto exit  = pos + (dir * t1);
 
-	return std::make_tuple (enter, exit, true);
+	return std::tuple (enter, exit, true);
 }
 
 ///  @relates line3

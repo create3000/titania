@@ -188,8 +188,8 @@ void
 UniversalJoint::set_forceOutput ()
 {
 	const std::map <std::string, OutputType> outputTypes = {
-		std::make_pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
-		std::make_pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
+		std::pair ("body1AnchorPoint", OutputType::body1AnchorPoint),
+		std::pair ("body2AnchorPoint", OutputType::body2AnchorPoint),
 	};
 
 	std::fill (outputs .begin (), outputs .end (), false);

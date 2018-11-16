@@ -77,9 +77,9 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 	           mutex ()
 {
 	static const std::map <std::string, std::string> codecs = {
-		std::make_pair ("PNG",   "png"),
-		std::make_pair ("H.264", "libx264"),
-		std::make_pair ("Xvid",  "libxvid"),
+		std::pair ("PNG",   "png"),
+		std::pair ("H.264", "libx264"),
+		std::pair ("Xvid",  "libxvid"),
 	};
 
 	if (basic::toupper (codec, std::locale::classic ()) == "WEB")

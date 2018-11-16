@@ -187,7 +187,7 @@ CollisionSensor::update ()
 		const auto & bodyNode = collidableNode -> getBody ();
 
 		if (bodyNode)
-			bodyIndex .emplace (bodyNode -> getRigidBody () .get (), std::make_pair (bodyNode, collidableNode));
+			bodyIndex .emplace (bodyNode -> getRigidBody () .get (), std::pair (bodyNode, collidableNode));
 	}
 
 	// Check collisions and create Contact nodes.

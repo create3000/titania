@@ -755,7 +755,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				   {
 						const int32_t point0 = getVertexColorIndex (startEdge .index0);
 						const int32_t point1 = getVertexColorIndex (startEdge .index1);
-						const auto    iter   = colors .find (std::make_pair (sortedPoints, std::minmax (point0, point1)));
+						const auto    iter   = colors .find (std::pair (sortedPoints, std::minmax (point0, point1)));
 
 						if (iter == colors .end ())
 						{
@@ -771,7 +771,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 								startColor = getColor () -> getSize ();
 								getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
 		
-								colors .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startColor);
+								colors .emplace (std::pair (sortedPoints, std::minmax (point0, point1)), startColor);
 							}
 						}
 						else
@@ -785,7 +785,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				{
 					const int32_t point0 = getVertexTexCoordIndex (startEdge .index0);
 					const int32_t point1 = getVertexTexCoordIndex (startEdge .index1);
-					const auto    iter   = texCoords .find (std::make_pair (sortedPoints, std::minmax (point0, point1)));
+					const auto    iter   = texCoords .find (std::pair (sortedPoints, std::minmax (point0, point1)));
 
 					if (iter == texCoords .end ())
 					{
@@ -795,7 +795,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 						startTexCoord = getTexCoord () -> getSize ();
 						getTexCoord () -> set1Point (startTexCoord, lerp (texCoord0, texCoord1, t));
 	
-						texCoords .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startTexCoord);
+						texCoords .emplace (std::pair (sortedPoints, std::minmax (point0, point1)), startTexCoord);
 					}
 					else
 					{
@@ -809,7 +809,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				   {
 						const int32_t point0 = getVertexNormalIndex (startEdge .index0);
 						const int32_t point1 = getVertexNormalIndex (startEdge .index1);
-						const auto    iter   = normals .find (std::make_pair (sortedPoints, std::minmax (point0, point1)));
+						const auto    iter   = normals .find (std::pair (sortedPoints, std::minmax (point0, point1)));
 
 						if (iter == normals .end ())
 						{
@@ -825,7 +825,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 								startNormal = getNormal () -> getSize ();
 								getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
 	
-								normals .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), startNormal);
+								normals .emplace (std::pair (sortedPoints, std::minmax (point0, point1)), startNormal);
 							}
 						}
 						else
@@ -884,7 +884,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				   {
 						const int32_t point0 = getVertexColorIndex (endEdge .index0);
 						const int32_t point1 = getVertexColorIndex (endEdge .index1);
-						const auto    iter   = colors .find (std::make_pair (sortedPoints, std::minmax (point0, point1)));
+						const auto    iter   = colors .find (std::pair (sortedPoints, std::minmax (point0, point1)));
 
 						if (iter == colors .end ())
 						{
@@ -900,7 +900,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 								endColor = getColor () -> getSize ();
 								getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
 		
-								colors .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endColor);
+								colors .emplace (std::pair (sortedPoints, std::minmax (point0, point1)), endColor);
 							}
 						}
 						else
@@ -914,7 +914,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				{
 					const int32_t point0 = getVertexTexCoordIndex (endEdge .index0);
 					const int32_t point1 = getVertexTexCoordIndex (endEdge .index1);
-					const auto    iter   = texCoords .find (std::make_pair (sortedPoints, std::minmax (point0, point1)));
+					const auto    iter   = texCoords .find (std::pair (sortedPoints, std::minmax (point0, point1)));
 
 					if (iter == texCoords .end ())
 					{
@@ -924,7 +924,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 						endTexCoord = getTexCoord () -> getSize ();
 						getTexCoord () -> set1Point (endTexCoord, lerp (texCoord0, texCoord1, t));
 	
-						texCoords .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endTexCoord);
+						texCoords .emplace (std::pair (sortedPoints, std::minmax (point0, point1)), endTexCoord);
 					}
 					else
 					{
@@ -938,7 +938,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				   {
 						const int32_t point0 = getVertexNormalIndex (endEdge .index0);
 						const int32_t point1 = getVertexNormalIndex (endEdge .index1);
-						const auto    iter   = normals .find (std::make_pair (sortedPoints, std::minmax (point0, point1)));
+						const auto    iter   = normals .find (std::pair (sortedPoints, std::minmax (point0, point1)));
 
 						if (iter == normals .end ())
 						{
@@ -954,7 +954,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 								endNormal = getNormal () -> getSize ();
 								getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
 		
-								normals .emplace (std::make_pair (sortedPoints, std::minmax (point0, point1)), endNormal);
+								normals .emplace (std::pair (sortedPoints, std::minmax (point0, point1)), endNormal);
 							}
 						}
 						else

@@ -142,7 +142,7 @@ X3DOutput::eraseInterest (const void* const object, const void* const memberFunc
 		const auto requester = data -> requesterIndex .find (requesterPair);
 
 		// First and allways try to erase input, this output could be dispose.
-		data -> inputs .erase (std::make_pair (static_cast <const X3DInput*> (object), memberFunction));
+		data -> inputs .erase (std::pair (static_cast <const X3DInput*> (object), memberFunction));
 
 		if (requester not_eq data -> requesterIndex .end ())
 		{

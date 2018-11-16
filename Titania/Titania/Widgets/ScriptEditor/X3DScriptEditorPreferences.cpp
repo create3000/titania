@@ -209,10 +209,10 @@ void
 X3DScriptEditorPreferences::on_wrap_mode_changed ()
 {
 	static std::map <uint8_t, Gtk::WrapMode> wrapModes = {
-		std::make_pair (0, Gtk::WRAP_NONE),
-		std::make_pair (1, Gtk::WRAP_CHAR),
-		std::make_pair (2, Gtk::WRAP_WORD),
-		std::make_pair (3, Gtk::WRAP_WORD_CHAR),
+		std::pair (0, Gtk::WRAP_NONE),
+		std::pair (1, Gtk::WRAP_CHAR),
+		std::pair (2, Gtk::WRAP_WORD),
+		std::pair (3, Gtk::WRAP_WORD_CHAR),
 	};
 		
 	try

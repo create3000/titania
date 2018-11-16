@@ -68,10 +68,10 @@ static std::default_random_engine
 random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 const UnitIndex X3DScene::unitCategories = {
-	std::make_pair ("angle",  UnitCategory::ANGLE),
-	std::make_pair ("force",  UnitCategory::FORCE),
-	std::make_pair ("length", UnitCategory::LENGTH),
-	std::make_pair ("mass",   UnitCategory::MASS)
+	std::pair ("angle",  UnitCategory::ANGLE),
+	std::pair ("force",  UnitCategory::FORCE),
+	std::pair ("length", UnitCategory::LENGTH),
+	std::pair ("mass",   UnitCategory::MASS)
 
 };
 
@@ -173,11 +173,11 @@ void
 X3DScene::setSpecificationVersion (const std::string & value)
 {
 	static const std::map <std::string, SpecificationVersionType> specificationVersions = {
-		std::make_pair ("2.0", VRML_V2_0),
-		std::make_pair ("3.0",  X3D_V3_0),
-		std::make_pair ("3.1",  X3D_V3_1),
-		std::make_pair ("3.2",  X3D_V3_2),
-		std::make_pair ("3.3",  X3D_V3_3)
+		std::pair ("2.0", VRML_V2_0),
+		std::pair ("3.0",  X3D_V3_0),
+		std::pair ("3.1",  X3D_V3_1),
+		std::pair ("3.2",  X3D_V3_2),
+		std::pair ("3.3",  X3D_V3_3)
 	};
 
 	try

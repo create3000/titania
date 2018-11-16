@@ -130,8 +130,8 @@ void
 NotebookPage::setPanelType (const size_t id, const PanelType panelType)
 {
 	static const std::map <PanelType, std::string> panelTypes = {
-		std::make_pair (PanelType::BROWSER_PANEL, "BROWSER_PANEL"),
-		std::make_pair (PanelType::RENDER_PANEL,  "RENDER_PANEL"),
+		std::pair (PanelType::BROWSER_PANEL, "BROWSER_PANEL"),
+		std::pair (PanelType::RENDER_PANEL,  "RENDER_PANEL"),
 	};
 
 	auto panelsArray = createWorldInfo (getScene ()) -> getMetaData <X3D::MFString> ("/Titania/Page/panels");
@@ -154,8 +154,8 @@ NotebookPage::getPanelType (const size_t id) const
 	try
 	{
 		static const std::map <std::string, PanelType> panelTypes = {
-			std::make_pair ("BROWSER_PANEL", PanelType::BROWSER_PANEL),
-			std::make_pair ("RENDER_PANEL",  PanelType::RENDER_PANEL),
+			std::pair ("BROWSER_PANEL", PanelType::BROWSER_PANEL),
+			std::pair ("RENDER_PANEL",  PanelType::RENDER_PANEL),
 		};
 
 		const auto panelsArray = getWorldInfo (getScene ()) -> getMetaData <X3D::MFString> ("/Titania/Page/panels");

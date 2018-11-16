@@ -1033,7 +1033,7 @@ main (int argc, char** argv)
 	struct S { bool a; int b; };
 	auto s = S {true, 123};
 
-	const auto [t1, t2] = std::make_tuple (true, 1);
+	const auto [t1, t2] = std::tuple (true, 1);
 	[[maybe_unused]] const auto [it, inserted] = m .emplace ("foo", true);
 	const auto [a, b] = s;
 

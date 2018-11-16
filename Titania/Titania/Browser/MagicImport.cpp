@@ -74,16 +74,12 @@ using namespace std::placeholders;
 
 MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	 importFunctions1 ({
-	                  std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
-	                  std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)),
-						                  }),
-	 importFunctions2 ({
-	                  std::make_pair ("Background",     std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
-	                  std::make_pair ("Fog",            std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
-	                  std::make_pair ("NavigationInfo", std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
-	                  std::make_pair ("Viewpoint",      std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
-						                  }),
+	 importFunctions1 ({ std::pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
+	                     std::pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)) }),
+	 importFunctions2 ({ std::pair ("Background",     std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+	                     std::pair ("Fog",            std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+	                     std::pair ("NavigationInfo", std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+	                     std::pair ("Viewpoint",      std::bind (&MagicImport::bind, this, _1, _2, _3, _4)) }),
 	    frontMaterial (true)
 {
 	setup ();

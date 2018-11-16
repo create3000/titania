@@ -71,7 +71,7 @@ File::getContentType (const std::string & data)
 
 	const auto contentType = Gio::content_type_guess ("", (guchar*) &data [0], data .size (), resultUncertain);
 
-	return std::make_pair (contentType, resultUncertain);
+	return std::pair (contentType, resultUncertain);
 }
 
 std::string

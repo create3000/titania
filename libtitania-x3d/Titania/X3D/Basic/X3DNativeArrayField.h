@@ -821,7 +821,7 @@ X3DNativeArrayField <ValueType>::toStream (std::ostream & ostream) const
 
 			ostream << Generator::OpenBracket;
 
-			for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+			for (const auto & value : std::pair (cbegin (), cend () - 1))
 			{
 				VRMLGenerator::Encode (ostream, value, getUnit ());
 
@@ -853,7 +853,7 @@ X3DNativeArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 
 	Generator::PushUnitCategory (ostream, getUnit ());
 
-	for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+	for (const auto & value : std::pair (cbegin (), cend () - 1))
 	{
 		XMLGenerator::Encode (ostream, value, getUnit ());
 
@@ -887,7 +887,7 @@ X3DNativeArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 			<< Generator::ListBreak
 			<< Generator::IncIndent;
 
-		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+		for (const auto & value : std::pair (cbegin (), cend () - 1))
 		{
 			if (Generator::HasListBreak (ostream))
 				ostream << Generator::Indent;

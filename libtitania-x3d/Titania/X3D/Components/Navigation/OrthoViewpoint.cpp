@@ -180,7 +180,7 @@ OrthoViewpoint::getLookAtDistance (const Box3d & bbox) const
 	                              s1 / std::abs (getMaximumX () / fieldOfViewScale ()), 
 	                              s1 / std::abs (getMaximumY () / fieldOfViewScale ()) });
 
-	return std::make_pair (s + 10, fovs);
+	return std::pair (s + 10, fovs);
 }
 
 Matrix4d

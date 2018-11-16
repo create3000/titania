@@ -124,11 +124,11 @@ X3DPointingDeviceSensorContext::set_cursor ()
 	try
 	{
 		static const std::map <std::string, std::string> cursors = {
-			std::make_pair ("ARROW",    "default"),
-			std::make_pair ("GRAB",     "grab"),
-			std::make_pair ("GRABBING", "grabbing"),
-			std::make_pair ("MOVE",     "move"),
-			std::make_pair ("LOOK_AT",  "cell"),
+			std::pair ("ARROW",    "default"),
+			std::pair ("GRAB",     "grab"),
+			std::pair ("GRABBING", "grabbing"),
+			std::pair ("MOVE",     "move"),
+			std::pair ("LOOK_AT",  "cell"),
 		};
 
 		if (not getBrowser () -> get_mapped ())

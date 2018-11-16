@@ -484,10 +484,10 @@ const typename StringT::value_type basic_uri <StringT>::Signs::QuestionNumber [2
 
 template <class StringT>
 std::map <typename basic_uri <StringT>::string_type, typename basic_uri <StringT>::size_type> basic_uri <StringT>::well_known_ports = {
-	std::make_pair ("ftp",    21),
-	std::make_pair ("http",   80),
-	std::make_pair ("https", 443),
-	std::make_pair ("ftps",  990)
+	std::pair ("ftp",    21),
+	std::pair ("http",   80),
+	std::pair ("https", 443),
+	std::pair ("ftps",  990)
 
 };
 

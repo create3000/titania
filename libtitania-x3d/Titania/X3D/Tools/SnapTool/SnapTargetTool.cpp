@@ -541,7 +541,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 		snapped () = abs (snapTranslation) > 0.0001;
 
 		if (snapTranslation == Vector3d ())
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 
 		const auto aBefore = 2 * aAxes [0] [axis];
 		const auto aAfter  = aAxes [0] [axis] + snapTranslation [axis] + aAxes [0] [axis];
@@ -549,7 +549,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 		const auto aRatio  = aAfter / aBefore;
 
 		if (std::abs (aDelta) < MIN_DELTA or std::abs (aRatio) < MIN_RATIO or std::isnan (aRatio) or std::abs (aRatio) == infinity)
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 
 		auto snapScale = Vector3d (1, 1, 1);
 
@@ -561,7 +561,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 		snapMatrix *= getOffset (master, bbox, snapMatrix, axes [axis] * sgn);
 		snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
-		return std::make_pair (snapMatrix, true);
+		return std::pair (snapMatrix, true);
 	}
 	else
 	{
@@ -577,7 +577,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 		snapped () = abs (snapTranslation) > 0.0001;
 
 		if (snapTranslation == Vector3d ())
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 
 		const auto aSnapCenter = std::vector <Vector3d> ({ aCenters [0] + snapTranslation, aCenters [1] + snapTranslation });
 		const auto aAxis       = distance (aSnapCenter [0], absolutePosition) < distance (aSnapCenter [1], absolutePosition) ? 0 : 1;
@@ -587,7 +587,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 		const auto aRatio      = aAfter / aBefore;
 
 		if (std::abs (aDelta) < MIN_DELTA or std::abs (aRatio) < MIN_RATIO or std::isnan (aRatio) or std::abs (aRatio) == infinity)
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 
 		auto snapScale = Vector3d (1, 1, 1);
 
@@ -599,10 +599,10 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 		snapMatrix *= getOffset (master, bbox, snapMatrix, axes [axis] * sgn);
 		snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 
-		return std::make_pair (snapMatrix, true);
+		return std::pair (snapMatrix, true);
 	}
 
-	return std::make_pair (Matrix4d (), false);
+	return std::pair (Matrix4d (), false);
 }
 
 std::pair <Matrix4d, bool>
@@ -645,7 +645,7 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		if (snapTranslations .empty ())
 		{
 			snapped () = false;
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 		}
 
 		const auto minTranslation = std::min_element (snapTranslations .cbegin (), snapTranslations .cend (),
@@ -659,7 +659,7 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		snapped () = abs (snapTranslation) > 0.0001;
 
 		if (snapTranslation == Vector3d ())
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 
 		auto before = point - center;
 		auto after  = point + snapTranslation - center;
@@ -683,7 +683,7 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		if (min == 0 or min == infinity)
 		{
 			snapped () = false;
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 		}
 
 		auto snapMatrix = Matrix4d ();
@@ -693,7 +693,7 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		snapMatrix *= getOffset (master, bbox, snapMatrix, points [tool] - bbox .center ());
 		snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 	
-		return std::make_pair (snapMatrix, true);
+		return std::pair (snapMatrix, true);
 	}
 	else
 	{
@@ -747,7 +747,7 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		if (min == 0 or min == infinity)
 		{
 			snapped () = false;
-			return std::make_pair (Matrix4d (), false);
+			return std::pair (Matrix4d (), false);
 		}
 
 		snapped () = true;
@@ -759,10 +759,10 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 		snapMatrix *= getOffset (master, bbox, snapMatrix, points [tool] - bbox .center ());
 		snapMatrix  = absoluteMatrix * snapMatrix * inverse (master -> getModelMatrix ());
 	
-		return std::make_pair (snapMatrix, true);
+		return std::pair (snapMatrix, true);
 	}
 
-	return std::make_pair (Matrix4d (), false);
+	return std::pair (Matrix4d (), false);
 }
 
 Vector3d
@@ -773,9 +773,9 @@ SnapTargetTool::getConnectedAxes (const X3DWeakPtr <X3DTransformNodeTool> & mast
 		try
 		{
 			static const std::map <String::value_type, size_t> axes = {
-				std::make_pair ('x', 0),
-				std::make_pair ('y', 1),
-				std::make_pair ('z', 2),
+				std::pair ('x', 0),
+				std::pair ('y', 1),
+				std::pair ('z', 2),
 			};
 
 			const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));

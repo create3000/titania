@@ -59,8 +59,8 @@ namespace X3D {
 X3DScriptingContext::X3DScriptingContext () :
 	      X3DBaseNode (),
 	javaScriptEngines ({
-	                      std::make_pair ("javascript",   X3DPtr <X3DJavaScriptEngine> (new SpiderMonkey (getExecutionContext ()))),
-	                      std::make_pair ("peaseblossom", X3DPtr <X3DJavaScriptEngine> (new PeaseBlossom (getExecutionContext ()))),
+	                      std::pair ("javascript",   X3DPtr <X3DJavaScriptEngine> (new SpiderMonkey (getExecutionContext ()))),
+	                      std::pair ("peaseblossom", X3DPtr <X3DJavaScriptEngine> (new PeaseBlossom (getExecutionContext ()))),
 							 })
 {
 	for (auto & javaScriptEngine : javaScriptEngines)

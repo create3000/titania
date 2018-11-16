@@ -174,7 +174,7 @@ X3DEditorObject::refineName (const Glib::ustring & name) const
 	{
 		result += name .substr (0, 1) .uppercase ();
 
-		for (const auto c : std::make_pair (++ name .begin (), name .end ()))
+		for (const auto c : std::pair (++ name .begin (), name .end ()))
 		{
 			const Glib::ustring s (1, c);
 

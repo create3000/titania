@@ -185,7 +185,7 @@ public:
 				<< Generator::IncIndent
 				<< Generator::TidyBreak;
 
-			for (const auto & property : std::make_pair (sorted .begin (), -- sorted .end ()))
+			for (const auto & property : std::pair (sorted .begin (), -- sorted .end ()))
 			{
 				toStream (ostream, property .second);
 	
@@ -317,7 +317,7 @@ private:
 
 			if (not formalParameters .empty ())
 			{
-				for (const auto & parameter : std::make_pair (formalParameters .begin (), formalParameters .end () - 1))
+				for (const auto & parameter : std::pair (formalParameters .begin (), formalParameters .end () - 1))
 				{
 					ostream
 						<< parameter

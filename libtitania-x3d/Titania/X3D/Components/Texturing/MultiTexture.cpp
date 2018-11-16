@@ -169,26 +169,26 @@ void
 MultiTexture::set_mode ()
 {
 	static std::map <std::string, ModeType> map = {
-		std::make_pair ("REPLACE",                   ModeType::REPLACE),
-		std::make_pair ("MODULATE",                  ModeType::MODULATE),
-		std::make_pair ("MODULATE2X",                ModeType::MODULATE2X),
-		std::make_pair ("MODULATE4X",                ModeType::MODULATE4X),
-		std::make_pair ("ADD",                       ModeType::ADD),
-		std::make_pair ("ADDSIGNED",                 ModeType::ADDSIGNED),
-		std::make_pair ("ADDSIGNED2X",               ModeType::ADDSIGNED2X),
-		std::make_pair ("ADDSMOOTH",                 ModeType::ADDSMOOTH),
-		std::make_pair ("SUBTRACT",                  ModeType::SUBTRACT),
-		std::make_pair ("BLENDDIFFUSEALPHA",         ModeType::BLENDDIFFUSEALPHA),
-		std::make_pair ("BLENDTEXTUREALPHA",         ModeType::BLENDTEXTUREALPHA),
-		std::make_pair ("BLENDFACTORALPHA",          ModeType::BLENDFACTORALPHA),
-		std::make_pair ("BLENDCURRENTALPHA",         ModeType::BLENDCURRENTALPHA),
-		std::make_pair ("MODULATEALPHA_ADDCOLOR",    ModeType::MODULATEALPHA_ADDCOLOR),
-		std::make_pair ("MODULATEINVALPHA_ADDCOLOR", ModeType::MODULATEINVALPHA_ADDCOLOR),
-		std::make_pair ("MODULATEINVCOLOR_ADDALPHA", ModeType::MODULATEINVCOLOR_ADDALPHA),
-		std::make_pair ("DOTPRODUCT3",               ModeType::DOTPRODUCT3),
-		std::make_pair ("SELECTARG1",                ModeType::SELECTARG1),
-		std::make_pair ("SELECTARG2",                ModeType::SELECTARG2),
-		std::make_pair ("OFF",                       ModeType::OFF)
+		std::pair ("REPLACE",                   ModeType::REPLACE),
+		std::pair ("MODULATE",                  ModeType::MODULATE),
+		std::pair ("MODULATE2X",                ModeType::MODULATE2X),
+		std::pair ("MODULATE4X",                ModeType::MODULATE4X),
+		std::pair ("ADD",                       ModeType::ADD),
+		std::pair ("ADDSIGNED",                 ModeType::ADDSIGNED),
+		std::pair ("ADDSIGNED2X",               ModeType::ADDSIGNED2X),
+		std::pair ("ADDSMOOTH",                 ModeType::ADDSMOOTH),
+		std::pair ("SUBTRACT",                  ModeType::SUBTRACT),
+		std::pair ("BLENDDIFFUSEALPHA",         ModeType::BLENDDIFFUSEALPHA),
+		std::pair ("BLENDTEXTUREALPHA",         ModeType::BLENDTEXTUREALPHA),
+		std::pair ("BLENDFACTORALPHA",          ModeType::BLENDFACTORALPHA),
+		std::pair ("BLENDCURRENTALPHA",         ModeType::BLENDCURRENTALPHA),
+		std::pair ("MODULATEALPHA_ADDCOLOR",    ModeType::MODULATEALPHA_ADDCOLOR),
+		std::pair ("MODULATEINVALPHA_ADDCOLOR", ModeType::MODULATEINVALPHA_ADDCOLOR),
+		std::pair ("MODULATEINVCOLOR_ADDALPHA", ModeType::MODULATEINVCOLOR_ADDALPHA),
+		std::pair ("DOTPRODUCT3",               ModeType::DOTPRODUCT3),
+		std::pair ("SELECTARG1",                ModeType::SELECTARG1),
+		std::pair ("SELECTARG2",                ModeType::SELECTARG2),
+		std::pair ("OFF",                       ModeType::OFF)
 	};
 
 	modes .clear ();
@@ -234,9 +234,9 @@ void
 MultiTexture::set_source ()
 {
 	static std::map <std::string, SourceType> map = {
-		std::make_pair ("DIFFUSE",  SourceType::DIFFUSE),
-		std::make_pair ("SPECULAR", SourceType::SPECULAR),
-		std::make_pair ("FACTOR",   SourceType::FACTOR)
+		std::pair ("DIFFUSE",  SourceType::DIFFUSE),
+		std::pair ("SPECULAR", SourceType::SPECULAR),
+		std::pair ("FACTOR",   SourceType::FACTOR)
 	};
 
 	sources .clear ();
@@ -257,8 +257,8 @@ void
 MultiTexture::set_function ()
 {
 	static std::map <std::string, FunctionType> map = {
-		std::make_pair ("COMPLEMENT",     FunctionType::COMPLEMENT),
-		std::make_pair ("ALPHAREPLICATE", FunctionType::ALPHAREPLICATE)
+		std::pair ("COMPLEMENT",     FunctionType::COMPLEMENT),
+		std::pair ("ALPHAREPLICATE", FunctionType::ALPHAREPLICATE)
 	};
 
 	functions .clear ();

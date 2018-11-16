@@ -397,7 +397,7 @@ public:
 		auto min = this -> getVertex (*begin, 0);
 		auto max = min;
 
-		for (const auto & triangle : std::make_pair (begin, end))
+		for (const auto & triangle : std::pair (begin, end))
 		{
 			for (size_t i = 0; i < 3; ++ i)
 			{

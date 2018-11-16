@@ -69,7 +69,7 @@ public:
 	struct Edge
 	{
 		operator std::pair <size_t, size_t> () const
-		{ return std::make_pair (index0, index1); }
+		{ return std::pair (index0, index1); }
 
 		size_t index0;
 		size_t index1;

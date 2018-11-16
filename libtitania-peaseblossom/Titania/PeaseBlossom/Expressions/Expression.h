@@ -97,7 +97,7 @@ public:
 	CompletionType
 	getValue () const final override
 	{
-		for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+		for (const auto & expression : std::pair (expressions .begin (), expressions .end () - 1))
 			expression -> getValue ();
 
 		return expressions .back () -> getValue ();
@@ -113,7 +113,7 @@ public:
 		if (expressions .empty ())
 			return;
 
-		for (const auto & expression : std::make_pair (expressions .begin (), expressions .end () - 1))
+		for (const auto & expression : std::pair (expressions .begin (), expressions .end () - 1))
 		{
 			ostream
 				<< expression

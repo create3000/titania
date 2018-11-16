@@ -304,9 +304,9 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 				try
 				{
 					static const std::map <String::value_type, size_t> axes = {
-						std::make_pair ('x', 0),
-						std::make_pair ('y', 1),
-						std::make_pair ('z', 2),
+						std::pair ('x', 0),
+						std::pair ('y', 1),
+						std::pair ('z', 2),
 					};
 		
 					const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));
@@ -352,7 +352,7 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 void
 X3DTransformNodeTool::beginUndo ()
 {
-	undoMatrix = std::make_pair (getMatrix (), center () .getValue ());
+	undoMatrix = std::pair (getMatrix (), center () .getValue ());
 }
 
 void
@@ -385,9 +385,9 @@ void
 X3DTransformNodeTool::set_tools ()
 {
 	static const std::map <std::string, ToolType> toolTypes = {
-		std::make_pair ("TRANSLATE", ToolType::TRANSLATE),
-		std::make_pair ("ROTATE",    ToolType::ROTATE),
-		std::make_pair ("SCALE",     ToolType::SCALE),
+		std::pair ("TRANSLATE", ToolType::TRANSLATE),
+		std::pair ("ROTATE",    ToolType::ROTATE),
+		std::pair ("SCALE",     ToolType::SCALE),
 	};
 
 	availableTools .clear ();

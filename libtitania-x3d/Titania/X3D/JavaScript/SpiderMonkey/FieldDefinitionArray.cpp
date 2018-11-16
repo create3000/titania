@@ -89,7 +89,7 @@ public:
 	X3DConstArrayField (InputIterator first, InputIterator last) :
 		X3D::X3DField <internal_type> ()
 	{
-		for (const auto & field : std::make_pair (first, last))
+		for (const auto & field : std::pair (first, last))
 		{
 			get () .emplace_back (field);
 

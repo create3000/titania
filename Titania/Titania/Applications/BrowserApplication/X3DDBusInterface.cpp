@@ -140,10 +140,10 @@ X3DDBusInterface::on_method_call (const Glib::RefPtr <Gio::DBus::Connection> & c
 		using Method = std::function <void (const Glib::VariantContainerBase &, const Glib::RefPtr <Gio::DBus::MethodInvocation> &)>;
 
 		static const std::map <std::string, Method> functions = {
-			std::make_pair ("GetCurrentScene",  std::bind (&X3DDBusInterface::getCurrentScene,  this, _1, _2)),
-			std::make_pair ("GetSelection",     std::bind (&X3DDBusInterface::getSelection,     this, _1, _2)),
-			std::make_pair ("ReplaceSelection", std::bind (&X3DDBusInterface::replaceSelection, this, _1, _2)),
-			std::make_pair ("Open",             std::bind (&X3DDBusInterface::open,             this, _1, _2)),
+			std::pair ("GetCurrentScene",  std::bind (&X3DDBusInterface::getCurrentScene,  this, _1, _2)),
+			std::pair ("GetSelection",     std::bind (&X3DDBusInterface::getSelection,     this, _1, _2)),
+			std::pair ("ReplaceSelection", std::bind (&X3DDBusInterface::replaceSelection, this, _1, _2)),
+			std::pair ("Open",             std::bind (&X3DDBusInterface::open,             this, _1, _2)),
 		};
 
 		functions .at (method_name) (parameters, invocation);

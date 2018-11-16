@@ -908,7 +908,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 	comments ();
 
-	if (Grammar::inputOnly (istream))
+	if (Grammar::inputOnly (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -933,7 +933,7 @@ Parser::restrictedInterfaceDeclaration ()
 		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (Grammar::outputOnly (istream))
+	if (Grammar::outputOnly (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -958,7 +958,7 @@ Parser::restrictedInterfaceDeclaration ()
 		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (Grammar::initializeOnly (istream))
+	if (Grammar::initializeOnly (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -1006,7 +1006,7 @@ Parser::interfaceDeclaration ()
 
 	comments ();
 
-	if (Grammar::inputOutput (istream))
+	if (Grammar::inputOutput (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -1125,7 +1125,7 @@ Parser::externInterfaceDeclaration ()
 
 	comments ();
 
-	if (Grammar::inputOnly (istream))
+	if (Grammar::inputOnly (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -1150,7 +1150,7 @@ Parser::externInterfaceDeclaration ()
 		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (Grammar::outputOnly (istream))
+	if (Grammar::outputOnly (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -1175,7 +1175,7 @@ Parser::externInterfaceDeclaration ()
 		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (Grammar::initializeOnly (istream))
+	if (Grammar::initializeOnly (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -1200,7 +1200,7 @@ Parser::externInterfaceDeclaration ()
 		throw Error <INVALID_X3D> ("Unknown event or field type: '" + _fieldType + "'.");
 	}
 
-	if (Grammar::inputOutput (istream))
+	if (Grammar::inputOutput (istream) .second)
 	{
 		std::string _fieldType;
 
@@ -2017,13 +2017,13 @@ Parser::sfboolValue (SFBool* _field)
 
 	comments ();
 
-	if (Grammar::TRUE_ (istream))
+	if (Grammar::TRUE_ (istream) .second)
 	{
 		_field -> setValue (true);
 		return true;
 	}
 
-	if (Grammar::FALSE_ (istream))
+	if (Grammar::FALSE_ (istream) .second)
 	{
 		_field -> setValue (false);
 		return true;

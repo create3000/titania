@@ -54,7 +54,13 @@ namespace titania {
 namespace io {
 
 template <>
+const std::string basic_multi_string <std::string::value_type>::empty;
+
+template <>
 const std::string basic_multi_string <std::string::value_type>::delimiter = "|";
+
+template <>
+const std::wstring basic_multi_string <std::wstring::value_type>::empty;
 
 template <>
 const std::wstring basic_multi_string <std::wstring::value_type>::delimiter = L"|";

@@ -139,7 +139,7 @@ RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFCol
 		}	
 	}
 
-	return std::make_pair (position, color);
+	return std::pair (position, color);
 }
 
 RangeTool::~RangeTool ()

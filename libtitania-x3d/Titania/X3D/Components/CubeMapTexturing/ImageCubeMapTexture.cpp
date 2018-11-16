@@ -142,12 +142,12 @@ void
 ImageCubeMapTexture::set_loadState ()
 {
 	static const std::vector <std::pair <size_t, size_t>> offsets = {
-		std::make_pair (1, 1), // Front
-		std::make_pair (3, 1), // Back
-		std::make_pair (0, 1), // Left
-		std::make_pair (2, 1), // Right
-		std::make_pair (1, 2), // Top
-		std::make_pair (1, 0), // Bottom
+		std::pair (1, 1), // Front
+		std::pair (3, 1), // Back
+		std::pair (0, 1), // Left
+		std::pair (2, 1), // Right
+		std::pair (1, 2), // Top
+		std::pair (1, 0), // Bottom
 	
 	};
 

@@ -123,7 +123,7 @@ PositionDamper::equals (const Vector3f & lhs, const Vector3f & rhs, const float 
 void
 PositionDamper::set_value_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
 
 	value_changed () = set_value ();
@@ -173,7 +173,7 @@ PositionDamper::prepareEvents ()
 		order = 0;
 	}
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = buffer [order];
 
 	set_active (false);

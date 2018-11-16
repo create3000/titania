@@ -620,9 +620,9 @@ X3DGridTool::getConnectedAxes (const X3DWeakPtr <X3DTransformNodeTool> & master,
 		try
 		{
 			static const std::map <String::value_type, size_t> axes = {
-				std::make_pair ('x', 0),
-				std::make_pair ('y', 1),
-				std::make_pair ('z', 2),
+				std::pair ('x', 0),
+				std::pair ('y', 1),
+				std::pair ('z', 2),
 			};
 
 			const auto lhs = axes .at (std::tolower (connectedAxis .at (0)));

@@ -134,9 +134,9 @@ void
 GeneratedCubeMapTexture::set_update ()
 {
 	static const std::map <std::string, UpdateType> updateTypes = {
-		std::make_pair ("NONE",            UpdateType::NONE),
-		std::make_pair ("NEXT_FRAME_ONLY", UpdateType::NEXT_FRAME_ONLY),
-		std::make_pair ("ALWAYS",          UpdateType::ALWAYS),
+		std::pair ("NONE",            UpdateType::NONE),
+		std::pair ("NEXT_FRAME_ONLY", UpdateType::NEXT_FRAME_ONLY),
+		std::pair ("ALWAYS",          UpdateType::ALWAYS),
 	};
 
 	try

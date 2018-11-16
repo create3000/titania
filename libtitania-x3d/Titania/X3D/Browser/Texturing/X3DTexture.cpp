@@ -164,7 +164,7 @@ X3DTexture::refineImageFormats ()
 		}
 	}
 
-	for (auto & image : std::make_pair (++ images -> begin (), images -> end ()))
+	for (auto & image : std::pair (++ images -> begin (), images -> end ()))
 		image .magick (first .magick ());
 
 	// Convert to sRGB profile

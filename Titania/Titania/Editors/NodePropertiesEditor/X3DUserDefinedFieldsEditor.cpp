@@ -442,10 +442,10 @@ void
 X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 {
 	static const std::map <std::string, X3D::AccessType> accessTypes = {
-		std::make_pair ("initializeOnly", X3D::initializeOnly),
-		std::make_pair ("inputOnly",      X3D::inputOnly),
-		std::make_pair ("outputOnly",     X3D::outputOnly),
-		std::make_pair ("inputOutput",    X3D::inputOutput)
+		std::pair ("initializeOnly", X3D::initializeOnly),
+		std::pair ("inputOnly",      X3D::inputOnly),
+		std::pair ("outputOnly",     X3D::outputOnly),
+		std::pair ("inputOutput",    X3D::inputOutput)
 	};
 
 	try

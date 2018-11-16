@@ -277,7 +277,7 @@ noexcept (true)
 		bool
 		operator () (const PropertyDescriptorPtr & lhs, const PropertyDescriptorPtr & rhs) const
 		{
-			return std::make_pair (lhs -> getIndex (), lhs -> getCreationTime ()) < std::make_pair (rhs -> getIndex (), rhs -> getCreationTime ());
+			return std::pair (lhs -> getIndex (), lhs -> getCreationTime ()) < std::pair (rhs -> getIndex (), rhs -> getCreationTime ());
 		}
 
 	};

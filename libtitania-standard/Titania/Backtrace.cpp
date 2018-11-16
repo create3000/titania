@@ -70,14 +70,14 @@ backtrace_print (size_t size, int sig)
 {
 	// http://man7.org/linux/man-pages/man7/signal.7.html
 	static const std::map <int32_t, std::pair <std::string, std::string>> sigs = {
-		std::make_pair (SIGHUP,  std::make_pair ("SIGHUP",  "Hangup detected on controlling terminal or death of controlling process")),
-		std::make_pair (SIGILL,  std::make_pair ("SIGILL",  "Illegal Instruction")),
-		std::make_pair (SIGFPE,  std::make_pair ("SIGFPE",  "Floating-point exception")),
-		std::make_pair (SIGKILL, std::make_pair ("SIGKILL", "Kill signal")),
-		std::make_pair (SIGABRT, std::make_pair ("SIGABRT", "Abort signal from abort")),
-		std::make_pair (SIGSEGV, std::make_pair ("SIGSEGV", "Invalid memory reference")),
-		std::make_pair (SIGPIPE, std::make_pair ("SIGPIPE", "Broken pipe: write to pipe with no readers; see pipe")),
-		std::make_pair (SIGTERM, std::make_pair ("SIGTERM", "Termination signal")),
+		std::pair (SIGHUP,  std::pair ("SIGHUP",  "Hangup detected on controlling terminal or death of controlling process")),
+		std::pair (SIGILL,  std::pair ("SIGILL",  "Illegal Instruction")),
+		std::pair (SIGFPE,  std::pair ("SIGFPE",  "Floating-point exception")),
+		std::pair (SIGKILL, std::pair ("SIGKILL", "Kill signal")),
+		std::pair (SIGABRT, std::pair ("SIGABRT", "Abort signal from abort")),
+		std::pair (SIGSEGV, std::pair ("SIGSEGV", "Invalid memory reference")),
+		std::pair (SIGPIPE, std::pair ("SIGPIPE", "Broken pipe: write to pipe with no readers; see pipe")),
+		std::pair (SIGTERM, std::pair ("SIGTERM", "Termination signal")),
 	};
 
 	const auto iter = sigs .find (sig);

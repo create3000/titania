@@ -343,7 +343,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlatCopyTy
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
 
-	for (const auto & field : std::make_pair (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ()))
+	for (const auto & field : std::pair (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ()))
 		copy -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
 
 	copy -> assign (this);
@@ -792,7 +792,7 @@ X3DBaseNode::getPreDefinedFields () const
 {
 	FieldDefinitionArray predefinedFields;
 
-	for (const auto & field : std::make_pair (fieldDefinitions .cbegin (), fieldDefinitions .cend () - numUserDefinedFields))
+	for (const auto & field : std::pair (fieldDefinitions .cbegin (), fieldDefinitions .cend () - numUserDefinedFields))
 	{
 		try
 		{
@@ -836,7 +836,7 @@ X3DBaseNode::getChangedFields () const
 {
 	FieldDefinitionArray changedFields;
 
-	for (const auto & field : std::make_pair (fieldDefinitions .cbegin (), fieldDefinitions .cend () - numUserDefinedFields))
+	for (const auto & field : std::pair (fieldDefinitions .cbegin (), fieldDefinitions .cend () - numUserDefinedFields))
 	{
 		if (field -> getReferences () .empty ())
 		{
@@ -1080,7 +1080,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< getComments () .front ()
 			<< Generator::ForceBreak;
 
-		for (const auto & comment : std::make_pair (getComments () .cbegin () + 1, getComments () .cend ()))
+		for (const auto & comment : std::pair (getComments () .cbegin () + 1, getComments () .cend ()))
 		{
 			ostream
 				<< Generator::Indent
@@ -1140,7 +1140,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
-			for (const auto & field : std::make_pair (userDefinedFields .cbegin (), userDefinedFields .cend () - 1))
+			for (const auto & field : std::pair (userDefinedFields .cbegin (), userDefinedFields .cend () - 1))
 			{
 				toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
 				ostream << Generator::Break;
@@ -1171,7 +1171,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 		ostream << Generator::IncIndent;
 
-		for (const auto & field : std::make_pair (fields .cbegin (), fields .cend () - 1))
+		for (const auto & field : std::pair (fields .cbegin (), fields .cend () - 1))
 		{
 			if (not Generator::MetaData (ostream) and field -> getName () == "metadata")
 				continue;

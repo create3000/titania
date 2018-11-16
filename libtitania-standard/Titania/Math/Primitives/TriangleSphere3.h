@@ -222,7 +222,7 @@ triangle_sphere3 <Type>::add_point (const vector3 <Type> & point, const int32_t 
 		const auto index0 = indices [i0];
 		const auto index1 = indices [i1];
 		const auto weight = index0 < index1 ? axes [i0] : m_dimension - axes [i0];
-		const auto key    = std::make_pair (index0 < index1 ? std::make_pair (index0, index1) : std::make_pair (index1, index0), weight);
+		const auto key    = std::pair (index0 < index1 ? std::pair (index0, index1) : std::pair (index1, index0), weight);
 		const auto pair   = m_edge_point_cache .emplace (key, m_points .size ());
 
 		if (pair .second)
@@ -231,7 +231,7 @@ triangle_sphere3 <Type>::add_point (const vector3 <Type> & point, const int32_t 
 		return pair .first -> second;
 	}
 
-	const auto key  = std::make_tuple (p0, p1, p2, x, y, z);
+	const auto key  = std::tuple (p0, p1, p2, x, y, z);
 	const auto pair = m_point_cache .emplace (key, m_points .size ());
 
 	if (pair .second)

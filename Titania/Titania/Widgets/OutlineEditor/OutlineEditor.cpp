@@ -351,7 +351,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	const size_t index = i;
 
 	if (index == executionContexts .size ())
-	   return std::make_pair (scenes [index - 1] .second, index - 1);
+	   return std::pair (scenes [index - 1] .second, index - 1);
 
 	if (i < scenes .size ())
 	{
@@ -384,7 +384,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 
 		getSceneMenu () .append (*menuItem);
 
-		menuPair = std::make_pair (menuItem, i);
+		menuPair = std::pair (menuItem, i);
 	}
 
 	return menuPair;
@@ -1823,10 +1823,10 @@ OutlineEditor::restoreExpanded ()
 			try
 			{
 				static const std::map <std::string, OutlineExpanded> expandedTypes = {
-					std::make_pair ("0", OutlineExpanded::UNDEFINED),
-					std::make_pair ("1", OutlineExpanded::COLLAPSED),
-					std::make_pair ("2", OutlineExpanded::CHANGED),
-					std::make_pair ("3", OutlineExpanded::FULL),
+					std::pair ("0", OutlineExpanded::UNDEFINED),
+					std::pair ("1", OutlineExpanded::COLLAPSED),
+					std::pair ("2", OutlineExpanded::CHANGED),
+					std::pair ("3", OutlineExpanded::FULL),
 				};
 
 				expanded = expandedTypes .at (pair .at (1));

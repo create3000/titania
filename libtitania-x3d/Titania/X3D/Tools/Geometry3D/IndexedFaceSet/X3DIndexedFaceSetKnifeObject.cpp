@@ -421,7 +421,7 @@ X3DIndexedFaceSetKnifeObject::setStartMagicSelection ()
 	
 		// Hot edge and points for near point or face
 
-		setHotEdges ({ std::make_pair (edge .index0, edge .index1) });
+		setHotEdges ({ std::pair (edge .index0, edge .index1) });
 	
 		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 		{
@@ -443,7 +443,7 @@ X3DIndexedFaceSetKnifeObject::setStartMagicSelection ()
 		}
 
 		startPoints = getHotPoints ();
-		startEdge   = std::make_pair (edge .index0, edge .index1);
+		startEdge   = std::pair (edge .index0, edge .index1);
 	}
 
 	updateMagicSelection ();
@@ -494,7 +494,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 
 			// Hot edge and points for near point or face
 
-			setHotEdges ({ std::make_pair (edge .index0, edge .index1) });
+			setHotEdges ({ std::pair (edge .index0, edge .index1) });
 		
 			if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 			{
@@ -508,7 +508,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 			}
 
 			endPoints = getHotPoints ();
-			endEdge   = std::make_pair (edge .index0, edge .index1);
+			endEdge   = std::pair (edge .index0, edge .index1);
 		}
 
 		updateMagicSelection ();

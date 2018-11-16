@@ -116,8 +116,8 @@ basic_inverse_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, 
 	return false;
 }
 
-typedef basic_inverse_sequence <char>    inverse_sequence;
-typedef basic_inverse_sequence <wchar_t> winverse_sequence;
+using inverse_sequence  = basic_inverse_sequence <char>;
+using winverse_sequence = basic_inverse_sequence <wchar_t>;
 
 extern template class basic_inverse_sequence <char>;
 extern template class basic_inverse_sequence <wchar_t>;

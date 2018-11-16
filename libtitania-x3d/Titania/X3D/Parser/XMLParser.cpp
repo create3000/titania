@@ -81,10 +81,10 @@ public:
 const io::sequence XMLGrammar::WhiteSpaces ("\r\n \t,");
 
 const std::map <std::string, AccessType> XMLGrammar::AccessTypes = {
-	std::make_pair ("initializeOnly", initializeOnly),
-	std::make_pair ("inputOnly",      inputOnly),
-	std::make_pair ("outputOnly",     outputOnly),
-	std::make_pair ("inputOutput",    inputOutput),
+	std::pair ("initializeOnly", initializeOnly),
+	std::pair ("inputOnly",      inputOnly),
+	std::pair ("outputOnly",     outputOnly),
+	std::pair ("inputOutput",    inputOutput),
 };
 
 const io::number <int32_t>     XMLGrammar::IntegerValue;
@@ -92,34 +92,34 @@ const io::number <int32_t>     XMLGrammar::IntegerValue;
 // XMLParser
 
 const std::map <std::string, XMLParser::ElementsFunction> XMLParser::xmlElementIndex = {
-	std::make_pair ("X3D",                std::mem_fn (&XMLParser::x3dElement)),
-	std::make_pair ("Scene",              std::mem_fn (&XMLParser::sceneElement)),
-	std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
-	std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
-	std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
+	std::pair ("X3D",                std::mem_fn (&XMLParser::x3dElement)),
+	std::pair ("Scene",              std::mem_fn (&XMLParser::sceneElement)),
+	std::pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
+	std::pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+	std::pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
 };
 
 const std::map <std::string, XMLParser::ElementsFunction> XMLParser::x3dElementChildIndex = {
-	std::make_pair ("head",  std::mem_fn (&XMLParser::headElement)),
-	std::make_pair ("Scene", std::mem_fn (&XMLParser::sceneElement)),
+	std::pair ("head",  std::mem_fn (&XMLParser::headElement)),
+	std::pair ("Scene", std::mem_fn (&XMLParser::sceneElement)),
 };
 
 const std::map <std::string, XMLParser::ElementsFunction> XMLParser::headElementsIndex = {
-	std::make_pair ("component", std::mem_fn (&XMLParser::componentElement)),
-	std::make_pair ("unit",      std::mem_fn (&XMLParser::unitElement)),
-	std::make_pair ("meta",      std::mem_fn (&XMLParser::metaElement)),
+	std::pair ("component", std::mem_fn (&XMLParser::componentElement)),
+	std::pair ("unit",      std::mem_fn (&XMLParser::unitElement)),
+	std::pair ("meta",      std::mem_fn (&XMLParser::metaElement)),
 };
 
 const std::map <std::string, XMLParser::ElementsFunction> XMLParser::childElementIndex = {
-	std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
-	std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
-	std::make_pair ("IS",                 std::mem_fn (&XMLParser::isElement)),
-	std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
-	std::make_pair ("fieldValue",         std::mem_fn (&XMLParser::fieldValueElement)),
-	std::make_pair ("field",              std::mem_fn (&XMLParser::fieldElement)),
-	std::make_pair ("ROUTE",              std::mem_fn (&XMLParser::routeElement)),
-	std::make_pair ("IMPORT",             std::mem_fn (&XMLParser::importElement)),
-	std::make_pair ("EXPORT",             std::mem_fn (&XMLParser::exportElement)),
+	std::pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
+	std::pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+	std::pair ("IS",                 std::mem_fn (&XMLParser::isElement)),
+	std::pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
+	std::pair ("fieldValue",         std::mem_fn (&XMLParser::fieldValueElement)),
+	std::pair ("field",              std::mem_fn (&XMLParser::fieldElement)),
+	std::pair ("ROUTE",              std::mem_fn (&XMLParser::routeElement)),
+	std::pair ("IMPORT",             std::mem_fn (&XMLParser::importElement)),
+	std::pair ("EXPORT",             std::mem_fn (&XMLParser::exportElement)),
 };
 
 XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :

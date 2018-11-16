@@ -554,7 +554,7 @@ X3DBasePtrArray <ValueType>::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
-			for (const auto & field : std::make_pair (cbegin (), cend () - 1))
+			for (const auto & field : std::pair (cbegin (), cend () - 1))
 			{
 				ostream
 					<< Generator::Indent
@@ -585,7 +585,7 @@ X3DBasePtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 	{
 		Generator::EnterScope (ostream);
 
-		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+		for (const auto & value : std::pair (cbegin (), cend () - 1))
 		{
 			if (value)
 			{
@@ -636,7 +636,7 @@ X3DBasePtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
-		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+		for (const auto & value : std::pair (cbegin (), cend () - 1))
 		{
 			if (value)
 			{

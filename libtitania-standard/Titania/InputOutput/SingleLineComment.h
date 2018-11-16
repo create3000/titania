@@ -116,8 +116,8 @@ basic_single_line_comment <CharT, Traits>::operator () (std::basic_istream <Char
 	return false;
 }
 
-typedef basic_single_line_comment <char>    single_line_comment;
-typedef basic_single_line_comment <wchar_t> wsingle_line_comment;
+using single_line_comment  = basic_single_line_comment <char>;
+using wsingle_line_comment = basic_single_line_comment <wchar_t>;
 
 extern template class basic_single_line_comment <char>;
 extern template class basic_single_line_comment <wchar_t>;

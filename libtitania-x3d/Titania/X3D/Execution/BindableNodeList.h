@@ -122,7 +122,7 @@ public:
 			{
 				// Return first viewpoint with @name.
 
-				for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
+				for (const auto & node : std::pair (list .cbegin () + 1, list .cend ()))
 				{
 					if (not enableInlineBindables and node -> getScene () != masterScene)
 						continue;
@@ -134,7 +134,7 @@ public:
 
 			// Return first bound viewpoint in scene.
 
-			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
+			for (const auto & node : std::pair (list .cbegin () + 1, list .cend ()))
 			{
 				if (not enableInlineBindables and node -> getScene () != masterScene)
 					continue;
@@ -145,7 +145,7 @@ public:
 	
 			// Return first viewpoint in scene.
 	
-			for (const auto & node : std::make_pair (list .cbegin () + 1, list .cend ()))
+			for (const auto & node : std::pair (list .cbegin () + 1, list .cend ()))
 			{
 				if (not enableInlineBindables and node -> getScene () != masterScene)
 					continue;

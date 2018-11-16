@@ -66,14 +66,14 @@ namespace VRML1 {
 const io::string Parser::fields ("fields");
 
 const std::map <std::string, std::string> Parser::substitutions = {
-	std::make_pair ("SFBitMask", "SFString"),
-	std::make_pair ("SFEnum",    "SFString"),
-	std::make_pair ("SFLong",    "SFInt32"),
-	std::make_pair ("SFMatrix",  "SFMatrix4f"),
-	std::make_pair ("MFBitMask", "MFString"),
-	std::make_pair ("MFEnum",    "MFString"),
-	std::make_pair ("MFLong",    "MFInt32"),
-	std::make_pair ("MFMatrix",  "MFMatrix4f"),
+	std::pair ("SFBitMask", "SFString"),
+	std::pair ("SFEnum",    "SFString"),
+	std::pair ("SFLong",    "SFInt32"),
+	std::pair ("SFMatrix",  "SFMatrix4f"),
+	std::pair ("MFBitMask", "MFString"),
+	std::pair ("MFEnum",    "MFString"),
+	std::pair ("MFLong",    "MFInt32"),
+	std::pair ("MFMatrix",  "MFMatrix4f"),
 };
 
 const io::character Parser::VerticalBar ('|');

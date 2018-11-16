@@ -1302,7 +1302,7 @@ X3DNode::getMetadataSet (const std::vector <std::string> & names, const bool thr
 		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), metadata ());
 	}
 
-	for (const auto & name : std::make_pair (names .cbegin () + 2, names .cend () - 1))
+	for (const auto & name : std::pair (names .cbegin () + 2, names .cend () - 1))
 	{
 	   metadataSet = metadataSet -> getValue <MetadataSet> (name, throw_);
 	}
@@ -1359,7 +1359,7 @@ X3DNode::removeMetaData (const std::string & key)
 
 			try
 			{
-				for (const auto & name : std::make_pair (names .cbegin () + 2, names .cend () - 1))
+				for (const auto & name : std::pair (names .cbegin () + 2, names .cend () - 1))
 					metadataSets .emplace_back (metadataSets .back () -> getValue <MetadataSet> (name, true));
 			}
 			catch (const Error <INVALID_NAME> &)

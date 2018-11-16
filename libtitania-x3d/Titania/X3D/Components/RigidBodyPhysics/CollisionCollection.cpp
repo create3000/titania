@@ -131,15 +131,15 @@ void
 CollisionCollection::set_appliedParameters ()
 {
 	static const std::map <std::string, AppliedParametersType> appliedParametersIndex = {
-		std::make_pair ("BOUNCE",                 AppliedParametersType::BOUNCE),
-		std::make_pair ("USER_FRICTION",          AppliedParametersType::USER_FRICTION),
-		std::make_pair ("FRICTION_COEFFICIENT-2", AppliedParametersType::FRICTION_COEFFICIENT_2),
-		std::make_pair ("ERROR_REDUCTION",        AppliedParametersType::ERROR_REDUCTION),
-		std::make_pair ("CONSTANT_FORCE",         AppliedParametersType::CONSTANT_FORCE),
-		std::make_pair ("SPEED-1",                AppliedParametersType::SPEED_1),
-		std::make_pair ("SPEED-2",                AppliedParametersType::SPEED_2),
-		std::make_pair ("SLIP-1",                 AppliedParametersType::SLIP_1),
-		std::make_pair ("SLIP-2",                 AppliedParametersType::SLIP_2),
+		std::pair ("BOUNCE",                 AppliedParametersType::BOUNCE),
+		std::pair ("USER_FRICTION",          AppliedParametersType::USER_FRICTION),
+		std::pair ("FRICTION_COEFFICIENT-2", AppliedParametersType::FRICTION_COEFFICIENT_2),
+		std::pair ("ERROR_REDUCTION",        AppliedParametersType::ERROR_REDUCTION),
+		std::pair ("CONSTANT_FORCE",         AppliedParametersType::CONSTANT_FORCE),
+		std::pair ("SPEED-1",                AppliedParametersType::SPEED_1),
+		std::pair ("SPEED-2",                AppliedParametersType::SPEED_2),
+		std::pair ("SLIP-1",                 AppliedParametersType::SLIP_1),
+		std::pair ("SLIP-2",                 AppliedParametersType::SLIP_2),
 	};
 
 	appliedParametersTypes .clear ();

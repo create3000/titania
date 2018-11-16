@@ -153,13 +153,13 @@ sphere3 <Type>::intersects (const line3 <Type> & line) const
 
 	if (tca < 0)
 		// there is no intersection
-		return std::make_tuple (vector3 <Type> (), vector3 <Type> (), false);
+		return std::tuple (vector3 <Type> (), vector3 <Type> (), false);
 
 	const auto d2 = dot (L, L) - std::pow (tca, 2);
 	const auto r2 = std::pow (radius (), 2);
 
 	if (d2 > r2)
-		return std::make_tuple (vector3 <Type> (), vector3 <Type> (), false);
+		return std::tuple (vector3 <Type> (), vector3 <Type> (), false);
 
 	const Type thc = std::sqrt (r2 - d2);
 
@@ -169,7 +169,7 @@ sphere3 <Type>::intersects (const line3 <Type> & line) const
 	const auto enter = line .point () + line .direction () * t1;
 	const auto exit  = line .point () + line .direction () * t2;
 
-	return std::make_tuple (enter, exit, true);
+	return std::tuple (enter, exit, true);
 }
 
 // http://realtimecollisiondetection.net/blog/?p=103

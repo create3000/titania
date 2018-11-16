@@ -719,9 +719,9 @@ RouteGraphPage::on_export_page_activate ()
 	try
 	{
 		static const std::map <int32_t, std::string> magick = {
-			std::make_pair (1, "GRAY"),
-			std::make_pair (3, "RGB"),
-			std::make_pair (4, "RGBA"),
+			std::pair (1, "GRAY"),
+			std::pair (3, "RGB"),
+			std::pair (4, "RGBA"),
 		};
 
 		const auto scrollPosition = getScrollPosition ();

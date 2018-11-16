@@ -63,32 +63,32 @@ const std::string   BlendMode::containerField = "blendMode";
 
 const std::map <std::string, GLenum> BlendMode::blendTypes = {
 	// WebGL
-   std::make_pair ("ZERO",                     GL_ZERO ),
-   std::make_pair ("ONE",                      GL_ONE ),
-   std::make_pair ("SRC_COLOR",                GL_SRC_COLOR ),
-   std::make_pair ("ONE_MINUS_SRC_COLOR",      GL_ONE_MINUS_SRC_COLOR ),
-   std::make_pair ("DST_COLOR",                GL_DST_COLOR ),
-   std::make_pair ("ONE_MINUS_DST_COLOR",      GL_ONE_MINUS_DST_COLOR ),
-   std::make_pair ("SRC_ALPHA",                GL_SRC_ALPHA ),
-   std::make_pair ("ONE_MINUS_SRC_ALPHA",      GL_ONE_MINUS_SRC_ALPHA ),
-   std::make_pair ("DST_ALPHA",                GL_DST_ALPHA ),
-   std::make_pair ("ONE_MINUS_DST_ALPHA",      GL_ONE_MINUS_DST_ALPHA ),
-   std::make_pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
-   std::make_pair ("CONSTANT_COLOR",           GL_CONSTANT_COLOR  ),
-   std::make_pair ("ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR ),
-   std::make_pair ("CONSTANT_ALPHA",           GL_CONSTANT_ALPHA ),
-   std::make_pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA ),
+   std::pair ("ZERO",                     GL_ZERO ),
+   std::pair ("ONE",                      GL_ONE ),
+   std::pair ("SRC_COLOR",                GL_SRC_COLOR ),
+   std::pair ("ONE_MINUS_SRC_COLOR",      GL_ONE_MINUS_SRC_COLOR ),
+   std::pair ("DST_COLOR",                GL_DST_COLOR ),
+   std::pair ("ONE_MINUS_DST_COLOR",      GL_ONE_MINUS_DST_COLOR ),
+   std::pair ("SRC_ALPHA",                GL_SRC_ALPHA ),
+   std::pair ("ONE_MINUS_SRC_ALPHA",      GL_ONE_MINUS_SRC_ALPHA ),
+   std::pair ("DST_ALPHA",                GL_DST_ALPHA ),
+   std::pair ("ONE_MINUS_DST_ALPHA",      GL_ONE_MINUS_DST_ALPHA ),
+   std::pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
+   std::pair ("CONSTANT_COLOR",           GL_CONSTANT_COLOR  ),
+   std::pair ("ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR ),
+   std::pair ("CONSTANT_ALPHA",           GL_CONSTANT_ALPHA ),
+   std::pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA ),
 	// OpenGL
-   // std::make_pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
-   // std::make_pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
+   // std::pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
+   // std::pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
 };
 
 const std::map <std::string, GLenum> BlendMode::blendModes = {
-   std::make_pair ("FUNC_ADD",              GL_FUNC_ADD ),
-   std::make_pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT ),
-   std::make_pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT ),
-   std::make_pair ("MIN",                   GL_MIN ),
-   std::make_pair ("MAX",                   GL_MAX ),
+   std::pair ("FUNC_ADD",              GL_FUNC_ADD ),
+   std::pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT ),
+   std::pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT ),
+   std::pair ("MIN",                   GL_MIN ),
+   std::pair ("MAX",                   GL_MAX ),
 };
 
 BlendMode::Fields::Fields () :

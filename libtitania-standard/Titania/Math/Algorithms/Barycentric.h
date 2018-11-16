@@ -160,7 +160,7 @@ barycentric_triangle (const vector3 <Type> & barycentric)
 		C .z (1 - C .x () - C .y ());
 	}
 
-	return std::make_tuple (A, B, C);
+	return std::tuple (A, B, C);
 }
 
 template <class Type, class Vector>

@@ -123,7 +123,7 @@ PositionDamper2D::equals (const Vector2f & lhs, const Vector2f & rhs, const floa
 void
 PositionDamper2D::set_value_ ()
 {
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
 
 	value_changed () = set_value ();
@@ -173,7 +173,7 @@ PositionDamper2D::prepareEvents ()
 		order = 0;
 	}
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+	for (auto & value : std::pair (buffer .begin () + 1, buffer .end ()))
 		value = buffer [order];
 
 	set_active (false);

@@ -78,15 +78,15 @@ FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const s
 	using GeneratorCallback = std::function <bool (std::ostream &, const X3DScenePtr &)>;
 
 	static const std::map <std::string, GeneratorCallback> generators = {
-		std::make_pair (".x3d",   generate_x3d),
-		std::make_pair (".x3dz",  generate_x3d),
-		std::make_pair (".x3dj",  generate_x3dj),
-		std::make_pair (".x3dv",  generate_x3dv),
-		std::make_pair (".x3dvz", generate_x3dv),
-		std::make_pair (".wrl",   generate_wrl),
-		std::make_pair (".vrml",  generate_wrl),
-		std::make_pair (".vrm",   generate_wrl),
-		std::make_pair (".wrz",   generate_wrl),
+		std::pair (".x3d",   generate_x3d),
+		std::pair (".x3dz",  generate_x3d),
+		std::pair (".x3dj",  generate_x3dj),
+		std::pair (".x3dv",  generate_x3dv),
+		std::pair (".x3dvz", generate_x3dv),
+		std::pair (".wrl",   generate_wrl),
+		std::pair (".vrml",  generate_wrl),
+		std::pair (".vrm",   generate_wrl),
+		std::pair (".wrz",   generate_wrl),
 	};
 
 	Generator::Style    (ostream, outputStyle);
@@ -113,15 +113,15 @@ void
 FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle, const bool metadata)
 {
 	static const std::map <std::string, bool> compressed = {
-		std::make_pair (".x3d",   false),
-		std::make_pair (".x3dz",  true),
-		std::make_pair (".x3dj",  false),
-		std::make_pair (".x3dv",  false),
-		std::make_pair (".x3dvz", true),
-		std::make_pair (".wrl",   false),
-		std::make_pair (".vrml",  false),
-		std::make_pair (".vrm",   false),
-		std::make_pair (".wrz",   true),
+		std::pair (".x3d",   false),
+		std::pair (".x3dz",  true),
+		std::pair (".x3dj",  false),
+		std::pair (".x3dv",  false),
+		std::pair (".x3dvz", true),
+		std::pair (".wrl",   false),
+		std::pair (".vrml",  false),
+		std::pair (".vrm",   false),
+		std::pair (".wrz",   true),
 	};
 
 	if (worldURL .is_relative ())

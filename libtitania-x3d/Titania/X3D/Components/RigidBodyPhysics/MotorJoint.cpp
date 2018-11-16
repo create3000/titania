@@ -165,12 +165,12 @@ void
 MotorJoint::set_forceOutput ()
 {
 	const std::map <std::string, OutputType> outputTypes = {
-		std::make_pair ("motor1Angle",     OutputType::motor1Angle),
-		std::make_pair ("motor2Angle",     OutputType::motor2Angle),
-		std::make_pair ("motor3Angle",     OutputType::motor3Angle),
-		std::make_pair ("motor1AngleRate", OutputType::motor1AngleRate),
-		std::make_pair ("motor2AngleRate", OutputType::motor2AngleRate),
-		std::make_pair ("motor3AngleRate", OutputType::motor3AngleRate),
+		std::pair ("motor1Angle",     OutputType::motor1Angle),
+		std::pair ("motor2Angle",     OutputType::motor2Angle),
+		std::pair ("motor3Angle",     OutputType::motor3Angle),
+		std::pair ("motor1AngleRate", OutputType::motor1AngleRate),
+		std::pair ("motor2AngleRate", OutputType::motor2AngleRate),
+		std::pair ("motor3AngleRate", OutputType::motor3AngleRate),
 	};
 
 	std::fill (outputs .begin (), outputs .end (), false);

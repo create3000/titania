@@ -100,7 +100,7 @@ X3DNetworkingContext::initialize ()
 
 	downloadMutexes .resize (DOWNLOAD_THREADS_MAX);
 
-	for (auto & mutex : std::make_pair (downloadMutexes .begin () + 1, downloadMutexes .end ()))
+	for (auto & mutex : std::pair (downloadMutexes .begin () + 1, downloadMutexes .end ()))
 		mutex .reset (new std::mutex ());
 }
 

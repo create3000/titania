@@ -283,12 +283,12 @@ X3DEditorObject::getSelection (const X3D::X3DPtrArray <NodeType> & nodes, const 
 		const X3D::X3DPtr <FieldType> node (selection .back ());
 
 		if (node)
-			return std::make_tuple (node, SAME_NODE, false);
+			return std::tuple (node, SAME_NODE, false);
 	}
 
 	auto pair = getNode <FieldType, NodeType> (nodes, fieldName);
 
-	return std::make_tuple (std::move (pair .first), pair .second, pair .second not_eq -2);
+	return std::tuple (std::move (pair .first), pair .second, pair .second not_eq -2);
 }
 	
 /***
@@ -330,7 +330,7 @@ X3DEditorObject::getNode (const X3D::X3DPtrArray <NodeType> & nodes, const std::
 		{ }
 	}
 
-	return std::make_pair (std::move (found), active);
+	return std::pair (std::move (found), active);
 }
 
 /***
@@ -409,7 +409,7 @@ X3DEditorObject::getArray (const X3D::X3DPtrArray <NodeType> & nodes, const std:
 		{ }
 	}
 
-	return std::make_pair (std::move (found), active);
+	return std::pair (std::move (found), active);
 }
 
 template <class NodeType>

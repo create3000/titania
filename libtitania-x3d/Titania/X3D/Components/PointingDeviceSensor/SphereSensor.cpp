@@ -101,12 +101,12 @@ SphereSensor::getTrackPoint (const Line3d & hitRay, const bool behind) const
 	const auto & [enter, exit, intersected] = sphere .intersects (hitRay);
 
 	if (not intersected)
-		return std::make_pair (Vector3d (), false);
+		return std::pair (Vector3d (), false);
 
 	if ((abs (hitRay .point () - exit) < abs (hitRay .point () - enter)) - behind)
-		return std::make_pair (exit, true);
+		return std::pair (exit, true);
 
-	return std::make_pair (enter, true);
+	return std::pair (enter, true);
 }
 
 void

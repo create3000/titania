@@ -184,9 +184,9 @@ TransitionType
 NavigationInfo::getTransitionType () const
 {
 	static const std::map <std::string, TransitionType> transitionTypes = {
-		std::make_pair ("TELEPORT", TransitionType::TELEPORT),
-		std::make_pair ("LINEAR",   TransitionType::LINEAR),
-		std::make_pair ("ANIMATE",  TransitionType::ANIMATE)
+		std::pair ("TELEPORT", TransitionType::TELEPORT),
+		std::pair ("LINEAR",   TransitionType::LINEAR),
+		std::pair ("ANIMATE",  TransitionType::ANIMATE)
 	};
 
 	for (const auto & type : transitionType ())
@@ -206,15 +206,15 @@ void
 NavigationInfo::set_type ()
 {
 	static const std::map <std::string, X3DConstants::NodeType> viewerTypes = {
-		std::make_pair ("EXAMINE",               X3DConstants::ExamineViewer),
-		std::make_pair ("WALK",                  X3DConstants::WalkViewer),
-		std::make_pair ("FLY",                   X3DConstants::FlyViewer),
-		std::make_pair ("PLANE",                 X3DConstants::PlaneViewer),
-		std::make_pair ("PLANE_create3000.de",   X3DConstants::PlaneViewer),
-		std::make_pair ("PLANE3D",               X3DConstants::PlaneViewer3D),
-		std::make_pair ("PLANE3D_create3000.de", X3DConstants::PlaneViewer3D),
-		std::make_pair ("NONE",                  X3DConstants::NoneViewer),
-		std::make_pair ("LOOKAT",                X3DConstants::LookAtViewer)
+		std::pair ("EXAMINE",               X3DConstants::ExamineViewer),
+		std::pair ("WALK",                  X3DConstants::WalkViewer),
+		std::pair ("FLY",                   X3DConstants::FlyViewer),
+		std::pair ("PLANE",                 X3DConstants::PlaneViewer),
+		std::pair ("PLANE_create3000.de",   X3DConstants::PlaneViewer),
+		std::pair ("PLANE3D",               X3DConstants::PlaneViewer3D),
+		std::pair ("PLANE3D_create3000.de", X3DConstants::PlaneViewer3D),
+		std::pair ("NONE",                  X3DConstants::NoneViewer),
+		std::pair ("LOOKAT",                X3DConstants::LookAtViewer)
 	};
 
 	availableViewers .clear ();

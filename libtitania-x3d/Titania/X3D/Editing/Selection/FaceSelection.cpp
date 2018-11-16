@@ -562,7 +562,7 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 			const auto segment  = LineSegment3d (point0, point1);
 			const auto distance = segment .distance (hitPoint);
 
-			indices   .emplace_back (std::make_pair (i0, i1));
+			indices   .emplace_back (std::pair (i0, i1));
 			segments  .emplace_back (segment);
 			distances .emplace_back (distance);
 		}
@@ -615,8 +615,8 @@ FaceSelection::getClosestEdge (const LineSegment3d & cutSegment, const std::vect
 			if (not between)
 				continue;
 
-			distances .emplace (std::make_pair (getFaceDistance (cutSegment .point2 (), vertices), distance),
-			                    std::make_pair (Edge { i0, i1, segment, true }, face));
+			distances .emplace (std::pair (getFaceDistance (cutSegment .point2 (), vertices), distance),
+			                    std::pair (Edge { i0, i1, segment, true }, face));
 		}
 	}
 
