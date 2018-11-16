@@ -352,6 +352,7 @@ public:
 	///  @name Capacity
 
 	///  Checks whether the container is empty.
+	[[nodiscard]]
 	bool
 	empty () const
 	{ return getValue () .empty (); }

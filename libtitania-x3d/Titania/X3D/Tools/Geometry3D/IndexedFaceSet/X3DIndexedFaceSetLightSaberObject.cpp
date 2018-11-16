@@ -124,17 +124,17 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 
 			for (size_t k = 0, sizeK = screenPoints .size (); k < sizeK; ++ k)
 			{
-				const auto index1       = k;
-				const auto index2       = (k + 1) % sizeK;
-				const auto lineSegment  = LineSegment2d (screenPoints [index1], screenPoints [index2]);
-				const auto intersection = lineSegment .intersects (cutLine);
+				const auto   index1                      = k;
+				const auto   index2                      = (k + 1) % sizeK;
+				const auto   lineSegment                 = LineSegment2d (screenPoints [index1], screenPoints [index2]);
+				const auto & [intersection, intersected] = lineSegment .intersects (cutLine);
 
-				if (intersection .second)
+				if (intersected)
 				{
 					const auto point1   = coordIndex () .get1Value (vertices [index1]);
 					const auto point2   = coordIndex () .get1Value (vertices [index2]);
 					const auto line     = Line3d (getCoord () -> get1Point (point1), getCoord () -> get1Point (point2), points_type ());
-					const auto ray      = ViewVolume::unProjectRay (intersection .first, invModelViewProjection, viewport);
+					const auto ray      = ViewVolume::unProjectRay (intersection, invModelViewProjection, viewport);
 					const auto cutPoint = line .closest_point (ray) .first;
 
 					points .emplace_back (cutPoint);

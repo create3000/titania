@@ -77,7 +77,6 @@
     <None Include="Titania\Algorithm\Remove.h" />
     <None Include="Titania\Utility\Value.h" />
     <None Include="Titania\Utility\MemberValue.h" />
-    <None Include="Titania\Utility\Pass.h" />
     <None Include="Titania\Algorithm.h" />
     <None Include="Titania\String.h" />
     <None Include="Titania\Utility.h" />

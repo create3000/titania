@@ -90,6 +90,7 @@ ExternProtoDeclaration::create (X3DExecutionContext* const executionContext) con
 	return new ExternProtoDeclaration (executionContext);
 }
 
+///  throws Error <NOT_SUPPORTED>
 ExternProtoDeclaration*
 ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 {

@@ -98,13 +98,10 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 std::pair <Vector3d, bool>
 SphereSensor::getTrackPoint (const Line3d & hitRay, const bool behind) const
 {
-	const auto intersection = sphere .intersects (hitRay);
+	const auto & [enter, exit, intersected] = sphere .intersects (hitRay);
 
-	if (not std::get <2> (intersection))
+	if (not intersected)
 		return std::make_pair (Vector3d (), false);
-
-	const auto enter = std::get <0> (intersection);
-	const auto exit  = std::get <1> (intersection);
 
 	if ((abs (hitRay .point () - exit) < abs (hitRay .point () - enter)) - behind)
 		return std::make_pair (exit, true);
@@ -161,17 +158,17 @@ SphereSensor::set_motion (const HitPtr & hit,
 	{
 		X3DDragSensorNode::set_motion (hit, modelViewMatrix, projectionMatrix, viewport);
 
-		auto       hitRay       = hit -> getHitRay () * inverseModelViewMatrix;
-		const auto startPoint   = this -> startPoint * inverseModelViewMatrix;
-		const auto intersection = getTrackPoint (hitRay, behind);
+		auto         hitRay                      = hit -> getHitRay () * inverseModelViewMatrix;
+		const auto   startPoint                  = this -> startPoint * inverseModelViewMatrix;
+		const auto & [intersection, intersected] = getTrackPoint (hitRay, behind);
 
 		Vector3d trackPoint;
 
-		if (intersection .second)
+		if (intersected)
 		{
 			const auto zAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1))); // Camera direction
 
-			trackPoint = intersection .first;
+			trackPoint = intersection;
 			zPlane     = Plane3d (trackPoint, zAxis); // Screen aligned Z-plane
 		}
 		else
@@ -182,8 +179,7 @@ SphereSensor::set_motion (const HitPtr & hit,
 
 			hitRay = Line3d (tangentPoint, sphere .center (), points_type ());
 
-			const auto   intersection = getTrackPoint (hitRay);
-			const auto & trackPoint1  = intersection .first;
+			const auto & [trackPoint1, intersected] = getTrackPoint (hitRay);
 
 			// Find trackPoint behind sphere
 

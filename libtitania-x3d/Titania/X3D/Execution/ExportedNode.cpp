@@ -73,6 +73,8 @@ ExportedNode::ExportedNode (X3DScene* const scene,
 	addChildObjects (node);
 }
 
+///  throws Error <NOT_SUPPORTED>
+[[noreturn]]
 X3DBaseNode*
 ExportedNode::create (X3DExecutionContext* const executionContext) const
 {

@@ -75,11 +75,13 @@ public:
 	              const std::string & exportedName,
 	              const std::string & importedName);
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ImportedNode*
 	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ImportedNode*
 	copy (X3DExecutionContext* const executionContext, const CopyType type) const final override;
@@ -180,6 +182,8 @@ private:
 
 	///  @name Construction
 
+	///  throws Error <NOT_SUPPORTED>
+	[[noreturn]]
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final override;

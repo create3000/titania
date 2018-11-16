@@ -53,7 +53,6 @@
 
 #include "../Base/pbBase.h"
 
-#include <Titania/Utility/Pass.h>
 #include <cassert>
 #include <cstddef>
 #include <list>
@@ -120,18 +119,18 @@ protected:
 
 	///  @name Children handling
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	addChildren (Args & ... args)
-	{ basic::pass ((addChild (args), 1) ...); }
+	{ (addChild (args), ...); }
 
 	void
 	addChild (const pbChildObject & child);
 
-	//	template <typename ... Args>
+	//	template <class ... Args>
 	//	void
 	//	removeChildren (Args & ... args)
-	//	{ basic::pass ((removeChild (args), 1) ...); }
+	//	{ (removeChild (args), ...); }
 	//
 	//	void
 	//	removeChild (const std::set <pbChildObject*> & child);

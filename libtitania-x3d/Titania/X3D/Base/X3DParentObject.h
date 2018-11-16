@@ -55,8 +55,6 @@
 #include "../Routing/ChildrenList.h"
 #include "../Routing/ParentList.h"
 
-#include <Titania/Utility/Pass.h>
-
 #include <atomic>
 
 namespace titania {
@@ -146,10 +144,10 @@ protected:
 	///  @name Children handling
 
 	///  Add this node as parent to all @a children.  See addChild.
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	addChildObjects (Args & ... children)
-	{ basic::pass ((addChildObject (children), 1) ...); }
+	{ (addChildObject (children), ...); }
 
 	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
 	virtual
@@ -157,10 +155,10 @@ protected:
 	addChildObject (X3DChildObject & child);
 
 	///  Remove this node as parent from all @a children.  See removeChild.
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	removeChildObjects (Args & ... children)
-	{ basic::pass ((removeChildObject (children), 1) ...); }
+	{ (removeChildObject (children), ...); }
 
 	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
 	virtual

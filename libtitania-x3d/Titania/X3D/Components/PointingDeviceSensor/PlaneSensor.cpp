@@ -168,22 +168,22 @@ PlaneSensor::set_active (const bool active,
 
 			if (planeSensor)
 			{
-				const auto intersection = plane .intersects (hitRay);
+				const auto & [intersection, intersected] = plane .intersects (hitRay);
 
-				if (intersection .second)
+				if (intersected)
 				{
-					startPoint = intersection .first;
+					startPoint = intersection;
 
 					trackStart (startPoint);
 				}
 			}
 			else
 			{
-				const auto intersection = getLineTrackPoint (hit, line);
+				const auto & [intersection, intersected] = getLineTrackPoint (hit, line);
 
-				if (intersection .second)
+				if (intersected)
 				{
-					startPoint = intersection .first;
+					startPoint = intersection;
 
 					try
 					{
@@ -227,23 +227,23 @@ PlaneSensor::set_motion (const HitPtr & hit,
 
 		if (planeSensor)
 		{
-			const auto hitRay       = hit -> getHitRay () * inverseModelViewMatrix;
-			const auto intersection = plane .intersects (hitRay);
+			const auto hitRay = hit -> getHitRay () * inverseModelViewMatrix;
+			const auto & [intersection, intersected] = plane .intersects (hitRay);
 
-			if (intersection .second)
+			if (intersected)
 			{
-				track (intersection .first, intersection .first);
+				track (intersection, intersection);
 			}
 			else
 				throw std::domain_error ("Plane and line are parallel.");
 		}
 		else
 		{
-			const auto intersection = getLineTrackPoint (hit, line);
+			const auto & [intersection, intersected] = getLineTrackPoint (hit, line);
 
 			Vector3d trackPoint;
 
-			if (intersection .second)
+			if (intersected)
 			{
 				try
 				{
@@ -251,10 +251,10 @@ PlaneSensor::set_motion (const HitPtr & hit,
 				}
 				catch (const std::domain_error &)
 				{
-					trackPoint = intersection .first;
+					trackPoint = intersection;
 				}
 
-				track (intersection .first, trackPoint);
+				track (intersection, trackPoint);
 			}
 			else
 				throw std::domain_error ("Lines are parallel.");

@@ -77,12 +77,14 @@ ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
 	addChildObjects (inlineNode);
 }
 
+[[noreturn]]
 X3DBaseNode*
 ImportedNode::create (X3DExecutionContext* const executionContext) const
 {
 	throw Error <NOT_SUPPORTED> ("Fabricating imported nodes is not supported.");
 }
 
+///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 ImportedNode*
 ImportedNode::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 {

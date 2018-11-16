@@ -309,13 +309,13 @@ public:
 		const auto & b = this -> getVertex (triangle, 1);
 		const auto & c = this -> getVertex (triangle, 2);
 
-		const auto intersection = line .intersects (a, b, c);
+		const auto & [intersection, intersected] = line .intersects (a, b, c);
 
-		if (intersection .second)
+		if (intersected)
 		{
-			const auto u = intersection .first .x ();
-			const auto v = intersection .first .y ();
-			const auto t = intersection .first .z ();
+			const auto u = intersection .x ();
+			const auto v = intersection .y ();
+			const auto t = intersection .z ();
 
 			// Determine vectors for X3DPointingDeviceSensors.
 

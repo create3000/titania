@@ -81,6 +81,7 @@ public:
 	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ExternProtoDeclaration*
 	copy (X3DExecutionContext* const, const CopyType) const final override;

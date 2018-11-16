@@ -492,17 +492,17 @@ SnapTargetTool::getSnapTranslation (const Vector3d & position,
 
 	for (size_t i = 0; i < centers .size (); ++ i)
 	{
-		const auto & center        = centers [i];
-		const auto & axis          = axes [i];
-		const auto & normal        = normals [i];
-		const auto   positionPlane = Plane3d (position, normal);
-		const auto   axisLine      = Line3d (center, abs (axis) == 0 ? normal : normalize (axis));
-		const auto   intersection  = positionPlane .intersects (axisLine);
+		const auto & center                      = centers [i];
+		const auto & axis                        = axes [i];
+		const auto & normal                      = normals [i];
+		const auto   positionPlane               = Plane3d (position, normal);
+		const auto   axisLine                    = Line3d (center, abs (axis) == 0 ? normal : normalize (axis));
+		const auto & [intersection, intersected] = positionPlane .intersects (axisLine);
 
-		if (not intersection .second)
+		if (not intersected)
 			continue;
 
-		const auto translation = intersection .first - center;
+		const auto translation = intersection - center;
 
 		if (abs (translation) > snapDistance)
 			continue;
@@ -631,13 +631,13 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 
 		for (const auto & normal : normals)
 		{
-			const auto positionPlane = Plane3d (absolutePosition, normal);
-			const auto intersection  = positionPlane .intersects (pointLine);
+			const auto   positionPlane               = Plane3d (absolutePosition, normal);
+			const auto & [intersection, intersected] = positionPlane .intersects (pointLine);
 
-			if (not intersection .second)
+			if (not intersected)
 				continue;
 
-			snapTranslations .emplace_back (getSnapTranslation (intersection .first, pCenters, pAxes, pNormals, dynamicSnapDistance));
+			snapTranslations .emplace_back (getSnapTranslation (intersection, pCenters, pAxes, pNormals, dynamicSnapDistance));
 		}
 
 		snapTranslations .erase (std::remove (snapTranslations .begin (), snapTranslations .end (), Vector3d ()), snapTranslations .end ());
@@ -711,13 +711,13 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 	
 			for (const auto & normal : normals)
 			{
-				const auto positionPlane = Plane3d (absolutePosition, normal);
-				const auto intersection  = positionPlane .intersects (pointLine);
+				const auto   positionPlane               = Plane3d (absolutePosition, normal);
+				const auto & [intersection, intersected] = positionPlane .intersects (pointLine);
 	
-				if (not intersection .second)
+				if (not intersected)
 					continue;
-	
-				snapTranslations .emplace_back (getSnapTranslation (intersection .first, pCenters, pAxes, pNormals, dynamicSnapDistance));
+
+				snapTranslations .emplace_back (getSnapTranslation (intersection, pCenters, pAxes, pNormals, dynamicSnapDistance));
 			}
 
 			snapTranslations .erase (std::remove (snapTranslations .begin (), snapTranslations .end (), Vector3d ()), snapTranslations .end ());

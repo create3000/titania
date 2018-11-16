@@ -112,9 +112,9 @@ CylinderSensor::create (X3DExecutionContext* const executionContext) const
 bool
 CylinderSensor::isBehind (const Line3d & hitRay, const Vector3d & hitPoint) const
 {
-	const auto intersection = cylinder .intersects (hitRay);
+	const auto & [intersection1, intersection2, intersected] = cylinder .intersects (hitRay);
 
-	return abs (hitPoint - std::get <0> (intersection)) > abs (hitPoint - std::get <1> (intersection));
+	return abs (hitPoint - intersection1) > abs (hitPoint - intersection2);
 }
 
 Vector3d

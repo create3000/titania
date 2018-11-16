@@ -72,11 +72,13 @@ public:
 
 	///  NOT SUPPORTED
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ExportedNode*
 	copy (const CopyType type) const final override
 	{ return copy (getExecutionContext (), type); }
 
+	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	ExportedNode*
 	copy (X3DExecutionContext* const, const CopyType) const final override;
@@ -131,6 +133,8 @@ private:
 
 	///  @name Construction
 
+	///  throws Error <NOT_SUPPORTED>
+	[[noreturn]]
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final override;

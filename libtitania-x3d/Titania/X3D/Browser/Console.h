@@ -95,22 +95,22 @@ public:
 
 	///  @name Operations
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	print (Args && ... args)
 	{ append ("print", std::forward <Args> (args) ...); }
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	log (Args && ... args)
 	{ append ("log", std::forward <Args> (args) ...); }
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	warn (Args && ... args)
 	{ append ("warn", std::forward <Args> (args) ...); }
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	error (Args && ... args)
 	{ append ("error", std::forward <Args> (args) ...); }
@@ -126,17 +126,9 @@ private:
 
 	///  @name Operations
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	append (const std::string & tag, Args && ... args);
-
-	template <typename First, typename ... Args>
-	void
-	append (std::ostringstream & osstream, First && first, Args && ... args);
-
-	void
-	append (std::ostringstream & osstream)
-	{ }
 
 	void
 	push (const std::string & tag, const std::string & string);
@@ -160,7 +152,7 @@ private:
 
 };
 
-template <typename ... Args>
+template <class ... Args>
 inline
 void
 Console::append (const std::string & tag, Args && ... args)
@@ -169,18 +161,9 @@ Console::append (const std::string & tag, Args && ... args)
 
 	osstream .imbue (std::locale::classic ());
 
-	append (osstream, std::forward <Args> (args) ...);
+	(osstream << ... << std::forward <Args> (args));
+
 	push (tag, osstream .str ());
-}
-
-template <typename First, typename ... Args>
-inline
-void
-Console::append (std::ostringstream & osstream, First && first, Args && ... args)
-{
-	osstream << first;
-
-	append (osstream, std::forward <Args> (args) ...);
 }
 
 } // X3D

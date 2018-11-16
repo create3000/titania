@@ -292,12 +292,12 @@ X3DGeometryNode::intersects (const Line3d & line,
                              const Matrix4d & modelViewMatrix,
                              std::vector <IntersectionPtr> & intersections) const
 {
-	const auto intersection = line .intersects (vertices [i1], vertices [i2], vertices [i3]);
+	const auto & [intersection, intersected] = line .intersects (vertices [i1], vertices [i2], vertices [i3]);
 
-	if (not intersection .second)
+	if (not intersected)
 		return false;
 
-	const auto & uvt          = intersection .first;
+	const auto & uvt          = intersection;
 	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 	auto         texCoord     = Vector4f (0, 0, 0, 1);
 

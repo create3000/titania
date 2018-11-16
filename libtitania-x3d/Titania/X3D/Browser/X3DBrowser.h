@@ -209,13 +209,13 @@ public:
 	///  @name print
 
 	///  throws Error <DISPOSED>
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	print (Args && ... args)
 	{ getConsole () -> print (std::forward <Args> (args) ...); }
 
 	///  throws Error <DISPOSED>
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	println (Args && ... args)
 	{ getConsole () -> print (std::forward <Args> (args) ..., '\n'); }

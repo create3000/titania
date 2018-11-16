@@ -85,6 +85,7 @@ ProtoDeclaration::create (X3DExecutionContext* const executionContext) const
 	return new ProtoDeclaration (executionContext);
 }
 
+///  throws Error <NOT_SUPPORTED>
 ProtoDeclaration*
 ProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyType type) const
 {

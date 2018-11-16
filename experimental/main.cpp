@@ -982,6 +982,20 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector3 <Type> 
 } // math
 } // test
 
+template <class Type>
+void
+addChild (const Type & arg)
+{
+	__LOG__ << arg << std::endl;
+}
+
+template <class ... Args>
+void
+addChildren (const Args & ... args)
+{ (addChild (args), ...); }
+
+
+
 int
 main (int argc, char** argv)
 {
@@ -1020,7 +1034,7 @@ main (int argc, char** argv)
 	auto s = S {true, 123};
 
 	const auto [t1, t2] = std::make_tuple (true, 1);
-	const auto [it, inserted] = m .emplace ("foo", true);
+	[[maybe_unused]] const auto [it, inserted] = m .emplace ("foo", true);
 	const auto [a, b] = s;
 
 	__LOG__ << t1 << std::endl;
@@ -1028,6 +1042,11 @@ main (int argc, char** argv)
 	__LOG__ << inserted << std::endl;
 	__LOG__ << a << std::endl;
 	__LOG__ << b << std::endl;
+
+	addChildren (1,2,3,"a","b","c",true,false);
+
+	for ([[maybe_unused]] const auto & [k, v] : m)
+		__LOG__ << v << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

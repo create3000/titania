@@ -69,6 +69,8 @@ NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode 
 	addChildObjects (node);
 }
 
+///  throws Error <NOT_SUPPORTED>
+[[noreturn]]
 X3DBaseNode*
 NamedNode::create (X3DExecutionContext* const executionContext) const
 {
@@ -76,6 +78,7 @@ NamedNode::create (X3DExecutionContext* const executionContext) const
 }
 
 ///  throws Error <INVALID_NAME>, Error <DISPOSED>
+[[noreturn]]
 NamedNode*
 NamedNode::copy (X3DExecutionContext* const executionContext, const CopyType) const
 {

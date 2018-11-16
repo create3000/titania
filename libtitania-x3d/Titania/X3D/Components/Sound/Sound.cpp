@@ -297,10 +297,8 @@ Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const do
 	location .negate ();
 	location /= scale;
 
-	const auto   line          = Line3d (viewer, normalize (location - viewer));
-	const auto   intersections = sphere .intersects (line);
-	const auto & intersection1 = std::get <0> (intersections);
-	const auto & intersection2 = std::get <1> (intersections);
+	const auto   line                                        = Line3d (viewer, normalize (location - viewer));
+	const auto & [intersection1, intersection2, intersected] = sphere .intersects (line);
 
 	if (math::distance (viewer, intersection1) < math::distance (viewer, intersection2))
 		intersection = intersection1 * sphereMatrix;

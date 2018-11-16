@@ -72,8 +72,6 @@
 #include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
-#include <Titania/Utility/Pass.h>
-//#include <Titania/Stream/InputHTTPStream.h>
 
 namespace sfrdd {
 
