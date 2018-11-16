@@ -111,13 +111,13 @@ public:
 	{ }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <std::is_base_of <InternalType, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of_v <InternalType, Up>, bool> = false>
 	X3DPtr (const X3DPtr <Up> & other) :
 		X3DPtr (other .getValue ())
 	{ }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <not std::is_base_of <InternalType, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of_v <InternalType, Up>, bool> = true>
 	explicit
 	X3DPtr (const X3DPtr <Up> & other) :
 		X3DPtr (dynamic_cast <InternalType*> (other .getValue ()))
@@ -136,13 +136,13 @@ public:
 	{ moveObject (other); }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <std::is_base_of <InternalType, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of_v <InternalType, Up>, bool> = false>
 	X3DPtr (X3DPtr <Up> && other) :
 		X3DPtr ()
 	{ moveObject (other); }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <not std::is_base_of <InternalType, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of_v <InternalType, Up>, bool> = true>
 	explicit
 	X3DPtr (X3DPtr <Up> && other) :
 		X3DPtr ()

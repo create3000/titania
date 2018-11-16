@@ -132,13 +132,13 @@ getThis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & value)
 
 ///  throws pb::pbError
 template <class Class>
-typename std::enable_if <
-	not (std::is_integral <typename Class::internal_type::internal_type>::value or
-        std::is_floating_point <typename Class::internal_type::internal_type>::value or
-        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
-        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
+std::enable_if_t <
+	not (std::is_integral_v <typename Class::internal_type::internal_type> or
+	     std::is_floating_point_v <typename Class::internal_type::internal_type> or
+	     std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+	     std::is_same_v <typename Class::internal_type::internal_type, X3D::String>),
 	typename Class::internal_type*
->::type
+>
 get1Argument (const pb::var & value)
 {
 	try
@@ -161,13 +161,13 @@ get1Argument (const pb::var & value)
 ///  throws pb::pbError
 template <class Class>
 inline
-typename std::enable_if <
-	not (std::is_integral <typename Class::internal_type::internal_type>::value or
-        std::is_floating_point <typename Class::internal_type::internal_type>::value or
-        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
-        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
+std::enable_if_t <
+	not (std::is_integral_v <typename Class::internal_type::internal_type> or
+	     std::is_floating_point_v <typename Class::internal_type::internal_type> or
+	     std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+	     std::is_same_v <typename Class::internal_type::internal_type, X3D::String>),
 	typename Class::internal_type*
->::type
+>
 get1Argument (const std::vector <pb::var> & args, const size_t index)
 {
 	try
@@ -183,13 +183,13 @@ get1Argument (const std::vector <pb::var> & args, const size_t index)
 ///  throws pb::pbError
 template <class Type>
 inline
-typename std::enable_if <
-	std::is_integral <Type>::value or
-   std::is_floating_point <Type>::value or
-   std::is_same <Type, std::string>::value or
-   std::is_same <Type, X3D::String>::value,
+std::enable_if_t <
+	std::is_integral_v <Type> or
+	std::is_floating_point_v <Type> or
+	std::is_same_v <Type, std::string> or
+	std::is_same_v <Type, X3D::String>,
 	Type
->::type
+>
 get1Argument (const pb::var & value)
 {
 	throw pb::TypeError ("get1Argument");
@@ -261,13 +261,13 @@ get1Argument <X3D::String> (const pb::var & value)
 ///  throws pb::pbError
 template <class Type>
 inline
-typename std::enable_if <
-	std::is_integral <Type>::value or
-   std::is_floating_point <Type>::value or
-   std::is_same <Type, std::string>::value or
-   std::is_same <Type, X3D::String>::value,
+std::enable_if_t <
+	std::is_integral_v <Type> or
+	std::is_floating_point_v <Type> or
+	std::is_same_v <Type, std::string> or
+	std::is_same_v <Type, X3D::String>,
 	Type
->::type
+>
 get1Argument (const std::vector <pb::var> & args, const size_t index)
 {
 	return get1Argument <Type> (args [index]);

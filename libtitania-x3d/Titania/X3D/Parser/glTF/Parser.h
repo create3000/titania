@@ -685,7 +685,7 @@ template <class Type>
 std::vector <Type>
 Parser::getVectorArray (const AccessorPtr & accessor) const
 {
-	static constexpr size_t components = std::tuple_size <Type>::value;
+	static constexpr size_t components = std::tuple_size <Type> ();
 
 	std::vector <Type> array;
 

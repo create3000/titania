@@ -122,13 +122,13 @@ private:
 	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
-	typename std::enable_if <
-	   not (std::is_integral <typename Class::internal_type::internal_type>::value or
-	        std::is_floating_point <typename Class::internal_type::internal_type>::value or
-	        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
-	        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
-	   typename Class::internal_type &
-	   >::type
+	std::enable_if_t <
+		not (std::is_integral_v <typename Class::internal_type::internal_type> or
+		     std::is_floating_point_v <typename Class::internal_type::internal_type> or
+		     std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+		     std::is_same_v <typename Class::internal_type::internal_type, X3D::String>),
+		typename Class::internal_type &
+	>
 	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
 	{
 		return *spidermonkey::getArgument <Class> (cx, argv, index);
@@ -137,13 +137,13 @@ private:
 	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
-	typename std::enable_if <
-	   std::is_integral <typename Class::internal_type::internal_type>::value or
-	   std::is_floating_point <typename Class::internal_type::internal_type>::value or
-	   std::is_same <typename Class::internal_type::internal_type, std::string>::value or
-	   std::is_same <typename Class::internal_type::internal_type, X3D::String>::value,
-	   typename Class::internal_type::internal_type
-	   >::type
+	std::enable_if_t <
+		std::is_integral_v <typename Class::internal_type::internal_type> or
+		std::is_floating_point_v <typename Class::internal_type::internal_type> or
+		std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+		std::is_same_v <typename Class::internal_type::internal_type, X3D::String>,
+		typename Class::internal_type::internal_type
+	>
 	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
 	{
 		return spidermonkey::getArgument <typename Class::internal_type::internal_type> (cx, argv, index);
@@ -152,13 +152,13 @@ private:
 	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
-	typename std::enable_if <
-	   std::is_integral <typename Class::internal_type>::value or
-	   std::is_floating_point <typename Class::internal_type>::value or
-	   std::is_same <typename Class::internal_type, std::string>::value or
-	   std::is_same <typename Class::internal_type, X3D::String>::value,
-	   typename Class::internal_type
-	   >::type
+	std::enable_if_t <
+		std::is_integral_v <typename Class::internal_type> or
+		std::is_floating_point_v <typename Class::internal_type> or
+		std::is_same_v <typename Class::internal_type, std::string> or
+		std::is_same_v <typename Class::internal_type, X3D::String>,
+		typename Class::internal_type
+	>
 	getArgument (JSContext* const cx, jsval* const argv, const size_t index)
 	{
 		return spidermonkey::getArgument <typename Class::internal_type> (cx, argv, index);
@@ -166,13 +166,13 @@ private:
 
 	template <class Class>
 	static
-	typename std::enable_if <
-	   std::is_integral <Class>::value or
-	   std::is_floating_point <Class>::value or
-	   std::is_same <Class, X3D::String>::value or
-		std::is_base_of <X3D::X3DFieldDefinition, Class>::value,
+	std::enable_if_t <
+		std::is_integral_v <Class> or
+		std::is_floating_point_v <Class> or
+		std::is_same_v <Class, X3D::String> or
+		std::is_base_of_v <X3D::X3DFieldDefinition, Class>,
 		const Class &
-	>::type
+	>
 	getReference (JSContext* cx, InternalType* const array, const size_t index, const Class & value)
 	{
 		return value;
@@ -180,13 +180,13 @@ private:
 
 	template <class Class>
 	static
-	typename std::enable_if <
-	   not (std::is_integral <Class>::value or
-	        std::is_floating_point <Class>::value or
-	        std::is_same <Class, X3D::String>::value or
-		     std::is_base_of <X3D::X3DFieldDefinition, Class>::value),
+	std::enable_if_t <
+		not (std::is_integral_v <Class> or
+		     std::is_floating_point_v <Class> or
+		     std::is_same_v <Class, X3D::String> or
+		     std::is_base_of_v <X3D::X3DFieldDefinition, Class>),
 		const single_type &
-	>::type
+	>
 	getReference (JSContext* cx, InternalType* const array, const size_t index, const Class & value)
 	{
 		const auto reference = new NativeArrayReference <InternalType, single_type> (array, index, value);

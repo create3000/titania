@@ -106,14 +106,14 @@ public:
 	{ }
 
 	///  Constructs new X3DBasePtrArray.
-	template <class Up, std::enable_if_t <std::is_base_of <typename ValueType::value_type, typename Up::value_type>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of_v <typename ValueType::value_type, typename Up::value_type>, bool> = false>
 	X3DBasePtrArray (const X3DBasePtrArray <Up> & other) :
 		X3DArrayField <ValueType> (other .cbegin (), other .cend ()),
 		               cloneCount (0)
 	{ }
 
 	///  Constructs new X3DBasePtrArray.
-	template <class Up, std::enable_if_t <not std::is_base_of <typename ValueType::value_type, typename Up::value_type>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of_v <typename ValueType::value_type, typename Up::value_type>, bool> = true>
 	explicit
 	X3DBasePtrArray (const X3DBasePtrArray <Up> & other) :
 		X3DArrayField <ValueType> (other .cbegin (), other .cend ()),
@@ -121,14 +121,14 @@ public:
 	{ }
 
 	///  Constructs new X3DBasePtrArray.
-	template <class Up, std::enable_if_t <std::is_base_of <typename ValueType::value_type, typename Up::value_type>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of_v <typename ValueType::value_type, typename Up::value_type>, bool> = false>
 	X3DBasePtrArray (X3DBasePtrArray <Up> && other) :
 		X3DArrayField <ValueType> (),
 		               cloneCount (0)
 	{ *this = std::move (other); }
 
 	///  Constructs new X3DBasePtrArray.
-	template <class Up, std::enable_if_t <not std::is_base_of <typename ValueType::value_type, typename Up::value_type>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of_v <typename ValueType::value_type, typename Up::value_type>, bool> = true>
 	explicit
 	X3DBasePtrArray (X3DBasePtrArray <Up> && other) :
 		X3DArrayField <ValueType> (),

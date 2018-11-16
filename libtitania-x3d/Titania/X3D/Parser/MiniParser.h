@@ -393,7 +393,7 @@ public:
 
 	template <class Type>
 	static
-	std::enable_if_t <std::is_enum <Type>::value, bool>
+	std::enable_if_t <std::is_enum_v <Type>, bool>
 	Decode (std::istream & istream, Type & value)
 	{
 		int32_t tmp;

@@ -143,7 +143,7 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
-		std::is_arithmetic <T>::value,
+		std::is_arithmetic_v <T>,
 		InternalType
 	>
 	operator ++ ()
@@ -155,7 +155,7 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
-		std::is_arithmetic <T>::value,
+		std::is_arithmetic_v <T>,
 		InternalType
 	>
 	operator ++ (int)
@@ -168,7 +168,7 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
-		std::is_arithmetic <T>::value,
+		std::is_arithmetic_v <T>,
 		InternalType
 	>
 	operator -- ()
@@ -180,7 +180,7 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
-		std::is_arithmetic <T>::value,
+		std::is_arithmetic_v <T>,
 		InternalType
 	>
 	operator -- (int)
@@ -193,7 +193,7 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
-		std::is_integral <T>::value,
+		std::is_integral_v <T>,
 		X3DScalar &
 	>
 	operator <<= (const InternalType & value)
@@ -205,7 +205,7 @@ public:
 
 	template <class T = InternalType>
 	std::enable_if_t <
-		std::is_integral <T>::value,
+		std::is_integral_v <T>,
 		X3DScalar &
 	>
 	operator >>= (const InternalType & value)

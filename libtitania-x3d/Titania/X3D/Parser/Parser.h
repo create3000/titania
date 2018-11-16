@@ -98,6 +98,7 @@ public:
 
 	///  @name Operations
 
+	///  throws Error <INVALID_X3D>
 	virtual
 	void
 	parseIntoScene () final override;
@@ -126,6 +127,7 @@ private:
 	std::string
 	getline ();
 
+	///  throws std::out_of_range
 	std::string
 	rgetline ();
 

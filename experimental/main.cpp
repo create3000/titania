@@ -942,7 +942,7 @@ clamp (const vector3 <Type> & arg, const Type & min, const Type & max)
  */
 
 template <class Type>
-std::enable_if_t <std::is_floating_point <Type>::value, vector3 <Type>>
+std::enable_if_t <std::is_floating_point_v <Type>, vector3 <Type>>
 fract (const vector3 <Type> & arg)
 {
 	return vector3 <Type> (fract (arg .x ()),

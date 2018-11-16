@@ -140,13 +140,13 @@ private:
 	///  throws pb::pbError
 	template <class Class>
 	static
-	typename std::enable_if <
-	   not (std::is_integral <typename Class::internal_type::internal_type>::value or
-	        std::is_floating_point <typename Class::internal_type::internal_type>::value or
-	        std::is_same <typename Class::internal_type::internal_type, std::string>::value or
-	        std::is_same <typename Class::internal_type::internal_type, X3D::String>::value),
-	   typename Class::internal_type &
-	   >::type
+	typename std::enable_if_t <
+		not (std::is_integral_v <typename Class::internal_type::internal_type> or
+		     std::is_floating_point_v <typename Class::internal_type::internal_type> or
+		     std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+		     std::is_same_v <typename Class::internal_type::internal_type, X3D::String>),
+		typename Class::internal_type &
+	>
 	get1Argument (const pb::var & value)
 	{
 		return *peaseblossom::get1Argument <Class> (value);
@@ -155,13 +155,13 @@ private:
 	///  throws pb::pbError
 	template <class Class>
 	static
-	typename std::enable_if <
-	   std::is_integral <typename Class::internal_type::internal_type>::value or
-	   std::is_floating_point <typename Class::internal_type::internal_type>::value or
-	   std::is_same <typename Class::internal_type::internal_type, std::string>::value or
-	   std::is_same <typename Class::internal_type::internal_type, X3D::String>::value,
-	   typename Class::internal_type::internal_type
-	   >::type
+	typename std::enable_if_t <
+		std::is_integral_v <typename Class::internal_type::internal_type> or
+		std::is_floating_point_v <typename Class::internal_type::internal_type> or
+		std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+		std::is_same_v <typename Class::internal_type::internal_type, X3D::String>,
+		typename Class::internal_type::internal_type
+	>
 	get1Argument (const pb::var & value)
 	{
 		return peaseblossom::get1Argument <typename Class::internal_type::internal_type> (value);
@@ -170,13 +170,13 @@ private:
 	///  throws pb::pbError
 	template <class Class>
 	static
-	typename std::enable_if <
-	   std::is_integral <typename Class::internal_type>::value or
-	   std::is_floating_point <typename Class::internal_type>::value or
-	   std::is_same <typename Class::internal_type, std::string>::value or
-	   std::is_same <typename Class::internal_type, X3D::String>::value,
-	   typename Class::internal_type
-	   >::type
+	typename std::enable_if_t <
+		std::is_integral_v <typename Class::internal_type> or
+		std::is_floating_point_v <typename Class::internal_type> or
+		std::is_same_v <typename Class::internal_type, std::string> or
+		std::is_same_v <typename Class::internal_type, X3D::String>,
+		typename Class::internal_type
+	>
 	get1Argument (const pb::var & value)
 	{
 		return peaseblossom::get1Argument <typename Class::internal_type> (value);
@@ -184,13 +184,13 @@ private:
 	
 	template <class Class>
 	static
-	typename std::enable_if <
-	   std::is_integral <Class>::value or
-	   std::is_floating_point <Class>::value or
-	   std::is_same <Class, X3D::String>::value or
-		std::is_base_of <X3D::X3DFieldDefinition, Class>::value,
+	typename std::enable_if_t <
+		std::is_integral_v <Class> or
+		std::is_floating_point_v <Class> or
+		std::is_same_v <Class, X3D::String> or
+		std::is_base_of_v <X3D::X3DFieldDefinition, Class>,
 		const Class &
-	>::type
+	>
 	check (InternalType* const array, const size_t index, const Class & value)
 	{
 		return value;
@@ -198,13 +198,13 @@ private:
 
 	template <class Class>
 	static
-	typename std::enable_if <
-	   not (std::is_integral <Class>::value or
-	        std::is_floating_point <Class>::value or
-	        std::is_same <Class, X3D::String>::value or
-		     std::is_base_of <X3D::X3DFieldDefinition, Class>::value),
+	typename std::enable_if_t <
+		not (std::is_integral_v <Class> or
+		     std::is_floating_point_v <Class> or
+		     std::is_same_v <Class, X3D::String> or
+		     std::is_base_of_v <X3D::X3DFieldDefinition, Class>),
 		const single_type &
-	>::type
+	>
 	check (InternalType* const array, const size_t index, const Class & value)
 	{
 		const auto field = new single_type (value);

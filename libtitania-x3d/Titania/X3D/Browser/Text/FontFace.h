@@ -70,8 +70,8 @@ namespace X3D {
 
 class Font;
 
-using FTLibraryPtr = std::shared_ptr <std::remove_pointer <FT_Library>::type>;
-using FTFacePtr    = std::shared_ptr <std::remove_pointer <FT_Face>::type>;
+using FTLibraryPtr = std::shared_ptr <std::remove_pointer_t <FT_Library>>;
+using FTFacePtr    = std::shared_ptr <std::remove_pointer_t <FT_Face>>;
 
 struct FTLibraryDeleter
 {

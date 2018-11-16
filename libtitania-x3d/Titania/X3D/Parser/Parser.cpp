@@ -89,6 +89,8 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	    commentCharacters ()
 { }
 
+
+///  throws Error <INVALID_X3D>
 void
 Parser::parseIntoScene ()
 {
@@ -210,6 +212,7 @@ Parser::getline ()
 	return string;
 }
 
+///  throws std::out_of_range
 std::string
 Parser::rgetline ()
 {

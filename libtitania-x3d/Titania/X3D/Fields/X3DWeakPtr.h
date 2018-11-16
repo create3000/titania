@@ -97,13 +97,13 @@ public:
 	{ }
 
 	///  Constructs new X3DWeakPtr.
-	template <class Up, std::enable_if_t <std::is_base_of <InternalType, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of_v <InternalType, Up>, bool> = false>
 	X3DWeakPtr (const X3DWeakPtr <Up> & other) :
 		X3DWeakPtr (other .getValue ())
 	{ }
 
 	///  Constructs new X3DWeakPtr.
-	template <class Up, std::enable_if_t <not std::is_base_of <InternalType, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of_v <InternalType, Up>, bool> = true>
 	explicit
 	X3DWeakPtr (const X3DWeakPtr <Up> & other) :
 		X3DWeakPtr (dynamic_cast <InternalType*> (other .getValue ()))

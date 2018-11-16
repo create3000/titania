@@ -133,13 +133,13 @@ getThis (JSContext* const cx, JSObject* const obj)
 
 ///  throws std::invalid_argument, std::domain_error
 template <class Type>
-typename std::enable_if <
-   not (std::is_integral <Type>::value or
-        std::is_floating_point <Type>::value or
-        std::is_same <Type, std::string>::value or
-        std::is_same <Type, X3D::String>::value),
-   typename Type::internal_type*
-   >::type
+std::enable_if_t <
+	not (std::is_integral_v <Type> or
+	     std::is_floating_point_v <Type> or
+	     std::is_same_v <Type, std::string> or
+	     std::is_same_v <Type, X3D::String>),
+	typename Type::internal_type*
+>
 getArgument (JSContext* const cx, jsval* const argv, const size_t index)
 {
 	JSObject* obj = nullptr;
@@ -158,13 +158,13 @@ getArgument (JSContext* const cx, jsval* const argv, const size_t index)
 
 ///  throws std::invalid_argument, std::domain_error
 template <class Type>
-typename std::enable_if <
-   std::is_integral <Type>::value or
-   std::is_floating_point <Type>::value or
-   std::is_same <Type, std::string>::value or
-   std::is_same <Type, X3D::String>::value,
-   Type
-   >::type
+std::enable_if_t <
+	std::is_integral_v <Type> or
+	std::is_floating_point_v <Type> or
+	std::is_same_v <Type, std::string> or
+	std::is_same_v <Type, X3D::String>,
+	Type
+>
 getArgument (JSContext* const, jsval* const, const size_t)
 {
 	throw std::invalid_argument ("getArgument");

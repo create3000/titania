@@ -255,7 +255,7 @@ public:
 
 	template <class Type>
 	static
-	std::enable_if_t <std::is_enum <Type>::value, void>
+	std::enable_if_t <std::is_enum_v <Type>, void>
 	Encode (std::ostream & ostream, const Type value, const UnitCategory unitCategory)
 	{ VRMLGenerator::Encode (ostream, int32_t (value), unitCategory); }
 

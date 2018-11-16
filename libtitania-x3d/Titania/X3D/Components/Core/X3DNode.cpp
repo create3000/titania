@@ -71,19 +71,19 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, SFColor>::value or
-		std::is_same <Type, SFColorRGBA>::value or
-		std::is_same <Type, SFMatrix3d>::value or
-		std::is_same <Type, SFMatrix3f>::value or
-		std::is_same <Type, SFMatrix4d>::value or
-		std::is_same <Type, SFMatrix4f>::value or
-		std::is_same <Type, SFRotation>::value  or
-		std::is_same <Type, SFVec2d>::value or
-		std::is_same <Type, SFVec2f>::value or
-		std::is_same <Type, SFVec3d>::value or
-		std::is_same <Type, SFVec3f>::value or
-		std::is_same <Type, SFVec4d>::value or
-		std::is_same <Type, SFVec4f>::value,
+		std::is_same_v <Type, SFColor> or
+		std::is_same_v <Type, SFColorRGBA> or
+		std::is_same_v <Type, SFMatrix3d> or
+		std::is_same_v <Type, SFMatrix3f> or
+		std::is_same_v <Type, SFMatrix4d> or
+		std::is_same_v <Type, SFMatrix4f> or
+		std::is_same_v <Type, SFRotation>  or
+		std::is_same_v <Type, SFVec2d> or
+		std::is_same_v <Type, SFVec2f> or
+		std::is_same_v <Type, SFVec3d> or
+		std::is_same_v <Type, SFVec3f> or
+		std::is_same_v <Type, SFVec4d> or
+		std::is_same_v <Type, SFVec4f>,
 		void
 	>
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
@@ -109,12 +109,12 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, MFBool>::value or
-		std::is_same <Type, MFDouble>::value or
-		std::is_same <Type, MFFloat>::value or
-		std::is_same <Type, MFInt32>::value or
-		std::is_same <Type, MFNode>::value or
-		std::is_same <Type, MFString>::value,
+		std::is_same_v <Type, MFBool> or
+		std::is_same_v <Type, MFDouble> or
+		std::is_same_v <Type, MFFloat> or
+		std::is_same_v <Type, MFInt32> or
+		std::is_same_v <Type, MFNode> or
+		std::is_same_v <Type, MFString>,
 		void
 	>
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
@@ -131,15 +131,15 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, MFColor>::value or
-		std::is_same <Type, MFColorRGBA>::value or
-		std::is_same <Type, MFRotation>::value or
-		std::is_same <Type, MFVec2d>::value or
-		std::is_same <Type, MFVec2f>::value or
-		std::is_same <Type, MFVec3d>::value or
-		std::is_same <Type, MFVec3f>::value or
-		std::is_same <Type, MFVec4d>::value or
-		std::is_same <Type, MFVec4f>::value,
+		std::is_same_v <Type, MFColor> or
+		std::is_same_v <Type, MFColorRGBA> or
+		std::is_same_v <Type, MFRotation> or
+		std::is_same_v <Type, MFVec2d> or
+		std::is_same_v <Type, MFVec2f> or
+		std::is_same_v <Type, MFVec3d> or
+		std::is_same_v <Type, MFVec3f> or
+		std::is_same_v <Type, MFVec4d> or
+		std::is_same_v <Type, MFVec4f>,
 		void
 	>
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
@@ -165,10 +165,10 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, MFMatrix3d>::value or
-		std::is_same <Type, MFMatrix3f>::value or
-		std::is_same <Type, MFMatrix4d>::value or
-		std::is_same <Type, MFMatrix4f>::value,
+		std::is_same_v <Type, MFMatrix3d> or
+		std::is_same_v <Type, MFMatrix3f> or
+		std::is_same_v <Type, MFMatrix4d> or
+		std::is_same_v <Type, MFMatrix4f>,
 		void
 	>
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
@@ -197,12 +197,12 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, SFBool::internal_type>::value or
-		std::is_same <Type, SFDouble::internal_type>::value or
-		std::is_same <Type, SFFloat::internal_type>::value or
-		std::is_same <Type, SFInt32::internal_type>::value or
-		std::is_same <Type, SFNode>::value or
-		std::is_same <Type, SFString::internal_type>::value,
+		std::is_same_v <Type, SFBool::internal_type> or
+		std::is_same_v <Type, SFDouble::internal_type> or
+		std::is_same_v <Type, SFFloat::internal_type> or
+		std::is_same_v <Type, SFInt32::internal_type> or
+		std::is_same_v <Type, SFNode> or
+		std::is_same_v <Type, SFString::internal_type>,
 		Type
 	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
@@ -231,19 +231,19 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, SFColor>::value or
-		std::is_same <Type, SFColorRGBA>::value or
-		std::is_same <Type, SFMatrix3d>::value or
-		std::is_same <Type, SFMatrix3f>::value or
-		std::is_same <Type, SFMatrix4d>::value or
-		std::is_same <Type, SFMatrix4f>::value or
-		std::is_same <Type, SFRotation>::value  or
-		std::is_same <Type, SFVec2d>::value or
-		std::is_same <Type, SFVec2f>::value or
-		std::is_same <Type, SFVec3d>::value or
-		std::is_same <Type, SFVec3f>::value or
-		std::is_same <Type, SFVec4d>::value or
-		std::is_same <Type, SFVec4f>::value,
+		std::is_same_v <Type, SFColor> or
+		std::is_same_v <Type, SFColorRGBA> or
+		std::is_same_v <Type, SFMatrix3d> or
+		std::is_same_v <Type, SFMatrix3f> or
+		std::is_same_v <Type, SFMatrix4d> or
+		std::is_same_v <Type, SFMatrix4f> or
+		std::is_same_v <Type, SFRotation>  or
+		std::is_same_v <Type, SFVec2d> or
+		std::is_same_v <Type, SFVec2f> or
+		std::is_same_v <Type, SFVec3d> or
+		std::is_same_v <Type, SFVec3f> or
+		std::is_same_v <Type, SFVec4d> or
+		std::is_same_v <Type, SFVec4f>,
 		Type
 	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
@@ -282,12 +282,12 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, MFBool>::value or
-		std::is_same <Type, MFDouble>::value or
-		std::is_same <Type, MFFloat>::value or
-		std::is_same <Type, MFInt32>::value or
-		std::is_same <Type, MFNode>::value or
-		std::is_same <Type, MFString>::value,
+		std::is_same_v <Type, MFBool> or
+		std::is_same_v <Type, MFDouble> or
+		std::is_same_v <Type, MFFloat> or
+		std::is_same_v <Type, MFInt32> or
+		std::is_same_v <Type, MFNode> or
+		std::is_same_v <Type, MFString>,
 		Type
 	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
@@ -316,15 +316,15 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, MFColor>::value or
-		std::is_same <Type, MFColorRGBA>::value or
-		std::is_same <Type, MFRotation>::value or
-		std::is_same <Type, MFVec2d>::value or
-		std::is_same <Type, MFVec2f>::value or
-		std::is_same <Type, MFVec3d>::value or
-		std::is_same <Type, MFVec3f>::value or
-		std::is_same <Type, MFVec4d>::value or
-		std::is_same <Type, MFVec4f>::value,
+		std::is_same_v <Type, MFColor> or
+		std::is_same_v <Type, MFColorRGBA> or
+		std::is_same_v <Type, MFRotation> or
+		std::is_same_v <Type, MFVec2d> or
+		std::is_same_v <Type, MFVec2f> or
+		std::is_same_v <Type, MFVec3d> or
+		std::is_same_v <Type, MFVec3f> or
+		std::is_same_v <Type, MFVec4d> or
+		std::is_same_v <Type, MFVec4f>,
 		Type
 	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
@@ -367,10 +367,10 @@ public:
 	template <class Type, class Metadata>
 	static
 	std::enable_if_t <
-		std::is_same <Type, MFMatrix3d>::value or
-		std::is_same <Type, MFMatrix3f>::value or
-		std::is_same <Type, MFMatrix4d>::value or
-		std::is_same <Type, MFMatrix4f>::value,
+		std::is_same_v <Type, MFMatrix3d> or
+		std::is_same_v <Type, MFMatrix3f> or
+		std::is_same_v <Type, MFMatrix4d> or
+		std::is_same_v <Type, MFMatrix4f>,
 		Type
 	>
 	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
