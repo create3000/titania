@@ -73,7 +73,7 @@ const std::set <std::string> FileGenerator::knowFileTypes = {
 
 ///  throws Error <INVALID_URL> Error <NOT_SUPPORTED>, Error <DISPOSED> std::exception
 void
-FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle, const bool metadata)
+FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & extension, const std::string & outputStyle, const bool metadata)
 {
 	using GeneratorCallback = std::function <bool (std::ostream &, const X3DScenePtr &)>;
 
@@ -97,11 +97,11 @@ FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const s
 	try
 	{
 		if (ostream)
-			saved = generators .at (suffix) (ostream, scene);
+			saved = generators .at (extension) (ostream, scene);
 	}
 	catch (const std::out_of_range &)
 	{
-		throw Error <NOT_SUPPORTED> ("Invalid Type: Couldn't save scene as '" + suffix + "'.");
+		throw Error <NOT_SUPPORTED> ("Invalid Type: Couldn't save scene as '" + extension + "'.");
 	}
 
 	if (not saved)
@@ -134,22 +134,22 @@ FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std:
 	{
 		try
 		{
-			if (compressed .at (worldURL .suffix ()))
+			if (compressed .at (worldURL .extension ()))
 			{
 				basic::ogzstream ostream (worldURL .path ());
 		
-				write (ostream, scene, worldURL .suffix (), outputStyle, metadata);
+				write (ostream, scene, worldURL .extension (), outputStyle, metadata);
 			}
 			else
 			{
 				std::ofstream ostream (worldURL .path ());
 		
-				write (ostream, scene, worldURL .suffix (), outputStyle, metadata);
+				write (ostream, scene, worldURL .extension (), outputStyle, metadata);
 			}
 		}
 		catch (const std::out_of_range &)
 		{
-			throw Error <NOT_SUPPORTED> ("Invalid Type: Couldn't save scene as '" + worldURL .suffix () + "'.");
+			throw Error <NOT_SUPPORTED> ("Invalid Type: Couldn't save scene as '" + worldURL .extension () + "'.");
 		}
 	}
 	catch (const Error <INVALID_URL> &)

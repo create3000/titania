@@ -142,7 +142,7 @@ FileExportImageDialog::setFileFilter (const std::string & name)
 }
 
 std::string
-FileExportImageDialog::getSuffix () const
+FileExportImageDialog::getExtension () const
 {
 	if (getWindow () .get_filter () == getFileFilterImageXCF ())
 		return ".xcf";
@@ -203,7 +203,7 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 		getWindow () .set_current_folder (Glib::get_home_dir ());
 
 	if (basename .empty ())
-		getWindow () .set_current_name (worldURL .name () + ".png");
+		getWindow () .set_current_name (worldURL .stem () + ".png");
 	else
 		getWindow () .set_current_name (basename);
 
@@ -224,7 +224,7 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 
 		const auto gimp = Glib::find_program_in_path ("gimp");
 
-		if (url .suffix () == ".xcf" and not gimp .empty ())
+		if (url .extension () == ".xcf" and not gimp .empty ())
 		{
 			std::string pngFilename = "/tmp/titania-XXXXXX.png";
 

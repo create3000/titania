@@ -93,7 +93,7 @@ FileSaveVideoDialog::setFileFilter (const std::string & name)
 }
 
 std::string
-FileSaveVideoDialog::getSuffix () const
+FileSaveVideoDialog::getExtension () const
 {
 	if (getWindow () .get_filter () == getFileFilterVideoAVI ())
 		return ".avi";

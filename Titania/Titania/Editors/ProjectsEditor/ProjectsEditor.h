@@ -276,10 +276,10 @@ private:
 	canOpenFile (const Glib::RefPtr <Gio::File> & file);
 
 	std::string
-	getFileName (const std::string & filename, const std::string & suffix) const;
+	getFileName (const std::string & filename, const std::string & extension) const;
 	
 	std::string
-	getSuffix (const int32_t type) const;
+	getExtension (const int32_t type) const;
 
 	Gdk::Rectangle
 	getRectangle (const Gtk::TreePath & path) const;

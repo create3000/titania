@@ -100,10 +100,6 @@ private:
 	getPreviewUrl () const;
 
 	virtual
-	bool
-	on_preview_button_press_event (GdkEventButton* event) final override;
-
-	virtual
 	void
 	on_update_preview () final override;
 

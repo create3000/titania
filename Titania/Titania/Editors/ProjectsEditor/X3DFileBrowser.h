@@ -527,14 +527,14 @@ X3DFileBrowser <Type>::getTransferDestination (const TransferAction action, cons
 	if (action == TransferAction::COPY and source -> get_parent () -> get_uri () == folder -> get_uri ())
 	{
 		auto    basename = basic::uri (source -> get_basename ());
-		auto    name     = std::regex_replace (basename .name (), pattern, "");
-		auto    suffix   = basename .suffix ();
+		auto    name     = std::regex_replace (basename .stem (), pattern, "");
+		auto    extension   = basename .extension ();
 		int32_t copy     = 0;
 		auto    child    = Glib::RefPtr <Gio::File> ();
 	
 		do
 		{
-			child = folder -> get_child (name + getTransferCopyString (copy) + suffix);
+			child = folder -> get_child (name + getTransferCopyString (copy) + extension);
 			copy += 1;
 		}
 		while (child -> query_exists ());

@@ -69,11 +69,11 @@ X3DParser::X3DParser () :
 
 ///  throws Error <INVALID_X3D>
 std::string
-X3DParser::save (std::istream & istream, const std::string & suffix)
+X3DParser::save (std::istream & istream, const std::string & extension)
 {
 	// Create temp file
 
-	std::string filename = "/tmp/titania-XXXXXX" + suffix;
+	std::string filename = "/tmp/titania-XXXXXX" + extension;
 
 	::close (Glib::mkstemp (filename));
 

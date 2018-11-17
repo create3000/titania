@@ -88,7 +88,7 @@ protected:
 
 	virtual
 	std::string
-	getSuffix () const final override;
+	getExtension () const final override;
 
 	virtual
 	const std::set <std::string> &

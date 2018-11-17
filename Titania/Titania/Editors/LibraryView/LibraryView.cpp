@@ -167,7 +167,7 @@ LibraryView::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & 
 	{
 		const auto file         = getFile (child);
 		const auto directory    = file -> get_parent ();
-		const auto basename     = basic::uri (file -> get_path ()) .name ();
+		const auto basename     = basic::uri (file -> get_path ()) .stem ();
 		const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
 		const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
 		const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();

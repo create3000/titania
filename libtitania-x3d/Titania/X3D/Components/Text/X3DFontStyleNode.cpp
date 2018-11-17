@@ -646,8 +646,8 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 
 		if (file -> query_exists ())
 		{
-			const auto  suffix       = uri .suffix ();
-			std::string tempFilename = "/tmp/titania-XXXXXX" + suffix;
+			const auto  extension       = uri .extension ();
+			std::string tempFilename = "/tmp/titania-XXXXXX" + extension;
 
 			::close (Glib::mkstemp (tempFilename));
 
@@ -721,7 +721,7 @@ X3DFontStyleNode::transform (MFString & url, const basic::uri & oldWorldURL, con
 	{
 		const basic::uri URL (value .get ());
 
-		if (URL .name () == URL)
+		if (URL .stem () == URL)
 			continue;
 
 		if (URL .is_relative () and not URL .filename (true) .empty ())

@@ -91,7 +91,7 @@ protected:
 
 	///  throws Error <INVALID_X3D>
 	std::string
-	save (std::istream & istream, const std::string & suffix);
+	save (std::istream & istream, const std::string & extension);
 
 	long double
 	fromUnit (const UnitCategory unit, long double value) const;

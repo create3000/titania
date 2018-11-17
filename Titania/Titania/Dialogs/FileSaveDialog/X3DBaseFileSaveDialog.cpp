@@ -112,17 +112,17 @@ X3DBaseFileSaveDialog::getPreviewUrl () const
 }
 
 void
-X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
+X3DBaseFileSaveDialog::setExtension (const std::string & extension)
 {
 	const basic::uri basename (getWindow () .get_current_name ());
 
-	getWindow () .set_current_name (basename .name () + suffix);
+	getWindow () .set_current_name (basename .stem () + extension);
 }
 
 void
 X3DBaseFileSaveDialog::on_filter_changed ()
 {
-	setSuffix (getSuffix ());
+	setExtension (getExtension ());
 }
 
 void
@@ -133,18 +133,12 @@ X3DBaseFileSaveDialog::on_response (int responseId)
 
 	basic::uri name (getWindow () .get_current_name ());
 
-	if (getKnownFileTypes () .count (name .suffix ()))
+	if (getKnownFileTypes () .count (name .extension ()))
 		return;
 
-	name .suffix (getSuffix ());
+	name .extension (getExtension ());
 
 	getWindow () .set_current_name (name .str ());
-}
-
-bool
-X3DBaseFileSaveDialog::on_preview_button_press_event (GdkEventButton* event)
-{
-	return true;
 }
 
 void

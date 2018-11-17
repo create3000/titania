@@ -95,7 +95,7 @@ protected:
 
 	virtual
 	std::string
-	getSuffix () const = 0;
+	getExtension () const = 0;
 
 	virtual
 	const std::set <std::string> &
@@ -105,7 +105,7 @@ protected:
 private:
 
 	void
-	setSuffix (const std::string & suffix);
+	setExtension (const std::string & extension);
 
 	///  @name Event handlers
 
@@ -120,10 +120,6 @@ private:
 
 	basic::uri
 	getPreviewUrl () const;
-
-	virtual
-	bool
-	on_preview_button_press_event (GdkEventButton* event) final override;
 
 	virtual
 	void

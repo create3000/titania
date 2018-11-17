@@ -54,12 +54,6 @@ namespace titania {
 namespace basic {
 
 template <>
-const std::string basic_uri <std::string>::DataSchemeId = "data";
-
-template <>
-const std::string basic_uri <std::string>::FileSchemeId = "file";
-
-template <>
 const char basic_uri <std::string>::Signs::Zero = '0';
 template <>
 const char basic_uri <std::string>::Signs::Colon = ':';
@@ -71,12 +65,30 @@ template <>
 const char basic_uri <std::string>::Signs::NumberSign = '#';
 template <>
 const char basic_uri <std::string>::Signs::Dot = '.';
+template <>
+const std::string::value_type basic_uri <std::string>::Signs::SlashQuestionNumber [3] = { basic_uri <std::string>::Signs::Slash,
+	                                                                                       basic_uri <std::string>::Signs::QuestionMark,
+	                                                                                       basic_uri <std::string>::Signs::NumberSign };
+template <>
+const std::string::value_type basic_uri <std::string>::Signs::QuestionNumber [2] = { basic_uri <std::string>::Signs::QuestionMark,
+	                                                                                  basic_uri <std::string>::Signs::NumberSign };
+
+template <>
+const std::string basic_uri <std::string>::DataSchemeId = "data";
+template <>
+const std::string basic_uri <std::string>::FileSchemeId = "file";
+
+template <>
+std::map <std::string, std::string::size_type> basic_uri <std::string>::well_known_ports = {
+	std::pair ("ftp",    21),
+	std::pair ("http",   80),
+	std::pair ("https", 443),
+	std::pair ("ftps",  990)
+
+};
 
 //
 template class basic_uri <std::string>;
-
-//
-template std::ostream & operator << (std::ostream &, const uri &);
 
 } // X3D
 } // titania

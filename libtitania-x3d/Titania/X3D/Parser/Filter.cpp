@@ -81,7 +81,7 @@ GetDescription (const SFNode & node)
 std::string
 GetNameFromURI (const basic::uri & uri)
 {
-	return GetNameFromString (uri .name ());
+	return GetNameFromString (uri .stem ());
 }
 
 std::string

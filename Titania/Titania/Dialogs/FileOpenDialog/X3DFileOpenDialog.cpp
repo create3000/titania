@@ -123,12 +123,6 @@ X3DFileOpenDialog::run ()
 	return false;
 }
 
-bool
-X3DFileOpenDialog::on_preview_button_press_event (GdkEventButton* event)
-{
-	return true;
-}
-
 void
 X3DFileOpenDialog::on_update_preview ()
 {

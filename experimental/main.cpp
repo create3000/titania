@@ -1020,10 +1020,25 @@ main (int argc, char** argv)
 
 	using Vec3d = test::math::vector3 <double>;
 
-	auto u1 = basic::uri ("/usr/share/data/foo/");
-	auto u2 = basic::uri ("/usr/include/");
+	auto d1 = basic::uri ("/usr/share/data/foo/");
+	auto d2 = basic::uri ("/usr/include/");
+	auto f1 = basic::uri ("/usr/share/data/foo.html");
+	auto f2 = basic::uri ("foo.html");
+	auto f3 = basic::uri (".html");
 
-	__LOG__ << u2 .relative_path (u1) << std::endl;
+	__LOG__ << d2 .relative_path (d1) << std::endl;
+	__LOG__ << d1 .relative_path (d1) << std::endl;
+	__LOG__ << f1 .relative_path (f1) << std::endl;
+
+	auto m1 = std::move (f1);
+
+	__LOG__ << m1 << std::endl;
+	__LOG__ << f1 << std::endl;
+	__LOG__ << f2 .basename () << std::endl;
+	__LOG__ << f2 .extension () << std::endl;
+	__LOG__ << f3 .stem () << std::endl;
+	__LOG__ << f3 .extension () << std::endl;
+	
 
 	//namespace fs = std::filesystem;
 

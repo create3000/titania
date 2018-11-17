@@ -80,11 +80,11 @@ public:
 		const auto browser = X3D::getBrowser ();
 		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
 
-		if (outputFilename == "-" or outputFilename == outputFilename .suffix ())
+		if (outputFilename == "-" or outputFilename == outputFilename .extension ())
 		{
-			const auto suffix = outputFilename == "-" ? inputFilename .suffix () : outputFilename .suffix ();
+			const auto extension = outputFilename == "-" ? inputFilename .extension () : outputFilename .extension ();
 
-			X3D::FileGenerator::write (std::cout, scene, suffix, options .exportStyle, not options .exportRemoveMetadata);
+			X3D::FileGenerator::write (std::cout, scene, extension, options .exportStyle, not options .exportRemoveMetadata);
 		}
 		else
 		{

@@ -203,7 +203,7 @@ X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene, const bool creat
 	
 		auto worldInfo = scene -> createNode <X3D::WorldInfo> ();
 
-		worldInfo -> title () = scene-> getWorldURL () .name ();
+		worldInfo -> title () = scene-> getWorldURL () .stem ();
 
 		scene -> getRootNodes () .emplace_front (std::move (worldInfo));
 	}

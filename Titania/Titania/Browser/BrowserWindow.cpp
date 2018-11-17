@@ -736,7 +736,7 @@ BrowserWindow::on_save_activated ()
 {
 	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
-	if (worldURL .empty () or worldURL .is_network () or not X3D::FileGenerator::getKnownFileTypes () .count (worldURL .suffix ()))
+	if (worldURL .empty () or worldURL .is_network () or not X3D::FileGenerator::getKnownFileTypes () .count (worldURL .extension ()))
 	{
 		on_save_as_activated ();
 	}

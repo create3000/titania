@@ -110,121 +110,134 @@ class basic_uri
 {
 public:
 
+	///  @name Member types
+
+	///  String typedef.
 	using string_type = StringT;
+
+	///  Char typedef.
 	using char_type = typename StringT::value_type;
+
+	///  Size typedef.  Used for size and port number.
 	using size_type = size_t;
 
-	struct Value
-	{
-		bool local;
-		bool absolute;
-
-		string_type scheme;
-		string_type slashs;
-		string_type host;
-		size_type port;
-		string_type path;
-		string_type query;
-		string_type fragment;
-
-		string_type string;
-	};
-
-	using value_type = Value;
-
-	///  @name Constructors
+	///  @name Construction
 
 	///  Default constructor.
 	///  This constructs an URI with the empty URI ''.
-	constexpr
 	basic_uri () :
-		value ({ true, false, string_type (), string_type (), string_type (), 0 })
+		   m_local (true),
+		m_absolute (false),
+		  m_scheme (),
+		  m_slashs (),
+		    m_host (),
+		    m_port (0),
+		    m_path (),
+		   m_query (),
+		m_fragment (),
+		  m_string ()
 	{ }
 
 	///  Copy constructor.
-	constexpr
-	basic_uri (const basic_uri & uri) :
-		value (uri .value)
+	basic_uri (const basic_uri & other) :
+		   m_local (other .m_local),
+		m_absolute (other .m_absolute),
+		  m_scheme (other .m_scheme),
+		  m_slashs (other .m_slashs),
+		    m_host (other .m_host),
+		    m_port (other .m_port),
+		    m_path (other .m_path),
+		   m_query (other .m_query),
+		m_fragment (other .m_fragment),
+		  m_string (other .m_string)
 	{ }
 
 	///  Move constructor.
-	constexpr
-	basic_uri (basic_uri && uri) :
-		value (std::move (uri .value))
+	basic_uri (basic_uri && other) :
+		   m_local (std::exchange (other .m_local, true)),
+		m_absolute (std::exchange (other .m_absolute, false)),
+		  m_scheme (std::move (other .m_scheme)),
+		  m_slashs (std::move (other .m_slashs)),
+		    m_host (std::move (other .m_host)),
+		    m_port (std::exchange (other .m_port, 0)),
+		    m_path (std::move (other .m_path)),
+		   m_query (std::move (other .m_query)),
+		m_fragment (std::move (other .m_fragment)),
+		  m_string (std::move (other .m_string))
 	{ }
 
 	///  Construct a URI from @a string.
-	basic_uri (const string_type &);
+	basic_uri (const string_type & path);
 
 	///  Construct a URI from @a string.
-	basic_uri (const char_type*);
+	basic_uri (const char_type* path);
 
 	///  Construct a URI from @a uri and @a base uri.
-	basic_uri (const basic_uri &, const basic_uri &);
+	basic_uri (const basic_uri & base, const basic_uri & uri);
 
 	///  @name Assignment operator
 
 	///  Assign @a uri to this URI.
 	basic_uri &
-	operator = (const basic_uri &);
+	operator = (const basic_uri & other);
 
 	///  Assign @a uri to this URI by moving the contents.
 	basic_uri &
-	operator = (basic_uri &&);
+	operator = (basic_uri && other);
 
 	///  Assign @a uri to this URI.
 	basic_uri &
-	operator = (const string_type &);
+	operator = (const string_type & path);
 
 	///  Assign @a uri to this URI.
 	basic_uri &
-	operator = (const char_type*);
+	operator = (const char_type* path);
 
 	/// @name Capacity
 
 	///  Returns true if this uri is the empty uri ''.
-	constexpr bool
+	bool
 	empty () const
-	{ return value .string .empty (); }
+	{ return m_string .empty (); }
 
-	constexpr size_type
+	size_type
 	length () const
-	{ return value .string .length (); }
+	{ return m_string .length (); }
 
-	constexpr size_type
+	size_type
 	size () const
-	{ return value .string .size (); }
+	{ return m_string .size (); }
 
 	/// @name Filename Test
 
 	///  Returns true if this uri is relative otherwise false.
-	constexpr bool
+	bool
 	is_relative () const
 	{ return not is_absolute (); }
 
 	///  Returns true if this uri is an absolute uri otherwise false.
-	constexpr bool
+	bool
 	is_absolute () const
-	{ return value .absolute; }
+	{ return m_absolute; }
 
 	///  Returns true if this uri is local,
 	//// i.e. it has a 'file:' scheme or no scheme and no authority, otherwise false.
-	constexpr bool
+	bool
 	is_local () const
-	{ return value .local; }
+	{ return m_local; }
 
 	///  Returns true if this uri is a network address, i.e. if it is not local.
-	constexpr bool
+	bool
 	is_network () const
 	{ return not is_local (); }
 
 	///  Returns true if this uri looks like a directory, i.e. it ends with a '/', otherwise false.
-	constexpr bool
+	bool
 	is_directory () const
-	{ return path () .length () and path () .back () == '/'; }
+	{ return path () .length () and path () .back () == Signs::Slash; }
 
 	///  Returns true if this uri looks like a file, i.e. it is not a directory, otherwise false.
-	constexpr bool
+	bool
 	is_file () const
 	{ return not is_directory (); }
 
@@ -241,17 +254,17 @@ public:
 	///  Returns the scheme of this URI.
 	const string_type &
 	scheme () const
-	{ return value .scheme; }
+	{ return m_scheme; }
 
 	///  Returns the host of this URI.
 	const string_type &
 	host () const
-	{ return value .host; }
+	{ return m_host; }
 
 	///  Returns the port of this URI.
 	const size_type &
 	port () const
-	{ return value .port; }
+	{ return m_port; }
 
 	///  Returns the well_known_port of this URI.
 	size_type
@@ -259,56 +272,58 @@ public:
 
 	///  Returns the path of this URI.
 	string_type
-	path (const bool = false) const;
+	path (const bool query = false) const;
 
 	///  Set the query of this URI.
 	void
 	query (const string_type & query)
 	{
-		value .query  = query;
-		value .string = to_string ();
+		m_query  = query;
+		m_string = to_string ();
 	}
 
 	///  Returns the query of this URI.
 	const string_type &
 	query () const
-	{ return value .query; }
+	{ return m_query; }
 
 	///  Set the fragment of this URI.
 	void
 	fragment (const string_type & fragment)
 	{
-		value .fragment = fragment;
-		value .string   = to_string ();
+		m_fragment = fragment;
+		m_string   = to_string ();
 	}
 
 	///  Returns the fragment of this URI.
 	const string_type &
 	fragment () const
-	{ return value .fragment; }
+	{ return m_fragment; }
 
 	///  Returns the string representation of this URI.
 	const string_type &
 	str () const
-	{ return value .string; }
+	{ return m_string; }
 
 	///  Returns the string representation of this URI.
 	operator const string_type & () const
-	{ return value .string; }
+	{ return m_string; }
 
 	/// @name Path Operations
 
 	///  Returns the root directory of this URI.
-	constexpr basic_uri
+	basic_uri
 	root () const
 	{
-		return basic_uri ({ is_local (),
-		                    is_absolute (),
-		                    scheme (),
-		                    value .slashs,
-		                    host (),
-		                    port (),
-		                    is_local () ? string_type (1, Signs::Slash) : string_type () });
+		return basic_uri (is_local (),
+		                  is_absolute (),
+		                  scheme (),
+		                  m_slashs,
+		                  host (),
+		                  port (),
+		                  is_local () ? string_type (1, Signs::Slash) : string_type (),
+		                  "",
+		                  "");
 	}
 
 	///  Returns the base directory of this URI.
@@ -316,51 +331,53 @@ public:
 	base () const;
 
 	///  Returns the parent directory of this URI.
-	constexpr basic_uri
+	basic_uri
 	parent () const
 	{
-		return basic_uri ({ is_local (),
-		                    is_absolute (),
-		                    scheme (),
-		                    value .slashs,
-		                    host (),
-		                    port (),
-		                    path () .substr (0, path (). rfind (Signs::Slash) + 1) });
+		return basic_uri (is_local (),
+		                  is_absolute (),
+		                  scheme (),
+		                  m_slashs,
+		                  host (),
+		                  port (),
+		                  path () .substr (0, path (). rfind (Signs::Slash) + 1),
+		                  "",
+		                  "");
 	}
 
 	///  Transforms @a reference to this URI's base.
 	basic_uri
-	transform (const basic_uri &) const;
+	transform (const basic_uri & reference) const;
 
 	///  Returns a relative path, relative from base path.
 	basic_uri <StringT>
-	relative_path (const basic_uri &) const;
+	relative_path (const basic_uri & descendant) const;
 
 	/// @name Filename Operations
 
 	///  Returns the full basename of this URI with or without query. The default is without query.
 	basic_uri
-	filename (const bool = false) const;
+	filename (const bool query = false) const;
 
-	///  Returns the full basename of this URI with suffix.
+	///  Returns the full basename of this URI with extension.
 	string_type
 	basename () const;
 
-	///  Returns the basename of this URI without suffix.
+	///  Returns the basename of this URI without extension.
 	string_type
-	name () const;
+	stem () const;
 
 	///  Returns the basename of this URI stript of @a list of suffixes.
 	string_type
-	name (std::initializer_list <string_type> list) const;
+	stem (std::initializer_list <string_type> extension_list) const;
 
-	///  Adds @a value to basename.
+	///  Adds @a extension to basename.
 	void
-	suffix (const string_type & suffix);
+	extension (const string_type & extension);
 
-	///  Returns the suffix of this URI's filename.
+	///  Returns the extension of this URI's filename.
 	string_type
-	suffix () const;
+	extension () const;
 
 	///  Adds the file sheme if uri is local and absolute.
 	basic_uri
@@ -374,11 +391,23 @@ public:
 	basic_uri
 	unescape () const;
 
+	///  Swaps the contents.
+	void
+	swap (basic_uri & other);
+
 
 private:
 
 	///  Component constructor.
-	basic_uri (Value && value);
+	basic_uri (const bool local,
+	           const bool absolute,
+	           const string_type & scheme,
+	           const string_type & slashs,
+	           const string_type & host,
+	           const size_type port,
+	           const string_type & path,
+	           const string_type & query,
+	           const string_type & fragment);
 
 	///  Remove dot segments from path.
 	string_type
@@ -401,11 +430,10 @@ private:
 
 	private:
 
-		constexpr
 		parser (basic_uri & uri, const string_type & string) :
 			   uri (uri),
 			string (string)
-	      	{ }
+		{ }
 
 		void
 		uriString (size_type first) const;
@@ -435,6 +463,8 @@ private:
 		const string_type & string;
 	};
 
+	///  @name Static members
+
 	struct Signs
 	{
 		static const char_type Zero;
@@ -443,7 +473,6 @@ private:
 		static const char_type QuestionMark;
 		static const char_type NumberSign;
 		static const char_type Dot;
-		static const char_type DotSlash [2];
 		static const char_type SlashQuestionNumber [3];
 		static const char_type QuestionNumber [2];
 	};
@@ -452,53 +481,43 @@ private:
 	static const string_type                 FileSchemeId;
 	static std::map <string_type, size_type> well_known_ports;
 
-	Value value;
+	///  @name Members
 
-};
-
-template <class StringT>
-const StringT basic_uri <StringT>::FileSchemeId = "file";
-
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::Zero = '0';
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::Colon = ':';
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::Slash = '/';
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::QuestionMark = '?';
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::NumberSign = '#';
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::Dot = '.';
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::DotSlash [2] = { basic_uri <StringT>::Signs::Dot,
-	                                                                             basic_uri <StringT>::Signs::Slash };
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::SlashQuestionNumber [3] = { basic_uri <StringT>::Signs::Slash,
-	                                                                                        basic_uri <StringT>::Signs::QuestionMark,
-	                                                                                        basic_uri <StringT>::Signs::NumberSign };
-template <class StringT>
-const typename StringT::value_type basic_uri <StringT>::Signs::QuestionNumber [2] = { basic_uri <StringT>::Signs::QuestionMark,
-	                                                                                   basic_uri <StringT>::Signs::NumberSign };
-
-template <class StringT>
-std::map <typename basic_uri <StringT>::string_type, typename basic_uri <StringT>::size_type> basic_uri <StringT>::well_known_ports = {
-	std::pair ("ftp",    21),
-	std::pair ("http",   80),
-	std::pair ("https", 443),
-	std::pair ("ftps",  990)
+	bool        m_local;
+	bool        m_absolute;
+	string_type m_scheme;
+	string_type m_slashs;
+	string_type m_host;
+	size_type   m_port;
+	string_type m_path;
+	string_type m_query;
+	string_type m_fragment;
+	string_type m_string;
 
 };
 
 template <class StringT>
 inline
-basic_uri <StringT>::basic_uri (Value && value) :
-	value (std::move (value))
-{
-	if (value .string .empty ())
-		this -> value .string = to_string ();
-}
+basic_uri <StringT>::basic_uri (const bool local,
+                                const bool absolute,
+                                const string_type & scheme,
+                                const string_type & slashs,
+                                const string_type & host,
+                                const size_type port,
+                                const string_type & path,
+                                const string_type & query,
+                                const string_type & fragment) :
+	   m_local (local),
+	m_absolute (absolute),
+	  m_scheme (scheme),
+	  m_slashs (slashs),
+	    m_host (host),
+	    m_port (port),
+	    m_path (path),
+	   m_query (query),
+	m_fragment (fragment),
+	  m_string (to_string ())
+{ }
 
 template <class StringT>
 inline
@@ -526,18 +545,38 @@ basic_uri <StringT>::basic_uri (const basic_uri & base, const basic_uri & uri)
 template <class StringT>
 inline
 typename basic_uri <StringT>::basic_uri &
-basic_uri <StringT>::operator = (const basic_uri & uri)
+basic_uri <StringT>::operator = (const basic_uri & other)
 {
-	value = uri .value;
+	m_local    = other .m_local;
+	m_absolute = other .m_absolute;
+	m_scheme   = other .m_scheme;
+	m_slashs   = other .m_slashs;
+	m_host     = other .m_host;
+	m_port     = other .m_port;
+	m_path     = other .m_path;
+	m_query    = other .m_query;
+	m_fragment = other .m_fragment;
+	m_string   = other .m_string;
+
 	return *this;
 }
 
 template <class StringT>
 inline
 typename basic_uri <StringT>::basic_uri &
-basic_uri <StringT>::operator = (basic_uri && uri)
+basic_uri <StringT>::operator = (basic_uri && other)
 {
-	value = std::move (uri .value);
+	m_local    = std::exchange (other .m_local, true);
+	m_absolute = std::exchange (other .m_absolute, false);
+	m_scheme   = std::move (other .m_scheme);
+	m_slashs   = std::move (other .m_slashs);
+	m_host     = std::move (other .m_host);
+	m_port     = std::exchange (other .m_port, 0);
+	m_path     = std::move (other .m_path);
+	m_query    = std::move (other .m_query);
+	m_fragment = std::move (other .m_fragment);
+	m_string   = std::move (other .m_string);
+
 	return *this;
 }
 
@@ -563,7 +602,7 @@ basic_uri <StringT>::hierarchy () const
 {
 	string_type hierarchy;
 
-	hierarchy += value .slashs;
+	hierarchy += m_slashs;
 	hierarchy += authority ();
 	hierarchy += path ();
 
@@ -601,7 +640,7 @@ template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::path (const bool q) const
 {
-	auto string = value .path;
+	auto string = m_path;
 
 	if (q and query () .length ())
 	{
@@ -617,13 +656,15 @@ basic_uri <StringT>
 basic_uri <StringT>::base () const
 {
 	return is_directory ()
-	       ? basic_uri ({ is_local (),
-	                      is_absolute (),
-	                      scheme (),
-	                      value .slashs,
-	                      host (),
-	                      port (),
-	                      path () })
+	       ? basic_uri (is_local (),
+	                    is_absolute (),
+	                    scheme (),
+	                    m_slashs,
+	                    host (),
+	                    port (),
+	                    path (),
+	                    "",
+	                    "")
 			 : parent ();
 }
 
@@ -631,9 +672,8 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::transform (const basic_uri & reference) const
 {
-	bool T_local;
-	bool T_absolute;
-
+	bool        T_local;
+	bool        T_absolute;
 	string_type T_scheme;
 	string_type T_slashs;
 	string_type T_host;
@@ -647,7 +687,7 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 		T_local     = reference .is_local ();
 		T_absolute  = reference .is_absolute ();
 		T_scheme    = reference .scheme ();
-		T_slashs    = reference .value .slashs;
+		T_slashs    = reference .m_slashs;
 		T_host      = reference .host ();
 		T_port      = reference .port ();
 		T_path      = reference .path ();
@@ -705,20 +745,20 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 		}
 
 		T_scheme = scheme ();
-		T_slashs = value .slashs;
+		T_slashs = m_slashs;
 	}
 
 	T_fragment = reference .fragment ();
 
-	return basic_uri ({ T_local,
-	                    T_absolute,
-	                    T_scheme,
-	                    T_slashs,
-	                    T_host,
-	                    T_port,
-	                    remove_dot_segments (T_path),
-	                    T_query,
-	                    T_fragment });
+	return basic_uri (T_local,
+	                  T_absolute,
+	                  T_scheme,
+	                  T_slashs,
+	                  T_host,
+	                  T_port,
+	                  remove_dot_segments (T_path),
+	                  T_query,
+	                  T_fragment);
 }
 
 template <class StringT>
@@ -742,15 +782,15 @@ basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 	basic_path <string_type> uri_path        (path (),             string_type (1, Signs::Slash));
 	basic_path <string_type> descendant_path (descendant .path (), string_type (1, Signs::Slash));
 
-	return basic_uri ({ true,
-	                    false,
-	                    StringT (),
-	                    StringT (),
-	                    StringT (),
-	                    0,
-	                    uri_path .relative_path (descendant_path) .str (),
-	                    descendant .query (),
-	                    descendant .fragment () });
+	return basic_uri (true,
+	                  false,
+	                  StringT (),
+	                  StringT (),
+	                  StringT (),
+	                  0,
+	                  uri_path .relative_path (descendant_path) .str (),
+	                  descendant .query (),
+	                  descendant .fragment ());
 }
 
 // Filename operations
@@ -759,14 +799,15 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::filename (const bool q) const
 {
-	return basic_uri ({ is_local (),
-	                    is_absolute (),
-	                    scheme (),
-	                    value .slashs,
-	                    host (),
-	                    port (),
-	                    path (),
-	                    q ? query () : string_type () });
+	return basic_uri (is_local (),
+	                  is_absolute (),
+	                  scheme (),
+	                  m_slashs,
+	                  host (),
+	                  port (),
+	                  path (),
+	                  q ? query () : string_type (),
+	                  "");
 }
 
 template <class StringT>
@@ -774,50 +815,57 @@ typename basic_uri <StringT>::string_type
 basic_uri <StringT>::basename () const
 {
 	if (path () .length ())
-		return path () .substr (path (). rfind (Signs::Slash) + 1);
+		return path () .substr (path () .rfind (Signs::Slash) + 1);
 
 	return string_type ();
 }
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::name () const
+basic_uri <StringT>::stem () const
 {
-	return name ({ suffix () });
+	return stem ({ extension () });
 }
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::name (std::initializer_list <string_type> suffixes) const
+basic_uri <StringT>::stem (std::initializer_list <string_type> extension_list) const
 {
-	for (const auto & suffix : suffixes)
-	{
-		string_type basename = this -> basename ();
+	const auto basename = this -> basename ();
 
-		if (path () .length () and is_file () and path () .substr (path () .size () - suffix .length (), suffix .length ()) == suffix)
+	if (is_file ())
+	{
+		if (basename .length ())
 		{
-			return basename .substr (0, basename .size () - suffix .length ());
+			for (const auto & extension : extension_list)
+			{
+				if (basename != extension and basename .substr (basename .size () - extension .length (), extension .length ()) == extension)
+				{
+					return basename .substr (0, basename .size () - extension .length ());
+				}
+			}
 		}
 	}
 
-	return basename ();
+	return basename;
 }
 
 template <class StringT>
 void
-basic_uri <StringT>::suffix (const string_type & suffix)
+basic_uri <StringT>::extension (const string_type & extension)
 {
-	value .path  += suffix;
-	value .string = to_string ();
+	m_path  += extension;
+	m_string = to_string ();
 }
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::suffix () const
+basic_uri <StringT>::extension () const
 {
-	typename string_type::size_type dot = path () .find_last_of (Signs::DotSlash);
+	const auto basename = this -> basename ();
+	const auto dot      = basename .rfind (Signs::Dot);
 
-	if (dot not_eq string_type::npos and path () [dot] == Signs::Dot)
+	if (dot not_eq string_type::npos and dot not_eq 0)
 		return path () .substr (dot);
 
 	return string_type ();
@@ -829,15 +877,15 @@ basic_uri <StringT>::add_file_scheme () const
 {
 	if (is_local () and is_absolute ())
 	{
-		return basic_uri ({ is_local (),
-		                    is_absolute (),
-		                    FileSchemeId,
-		                    StringT (2, Signs::Slash),
-		                    host (),
-		                    port (),
-		                    path (),
-		                    query (),
-		                    fragment () });
+		return basic_uri (is_local (),
+		                  is_absolute (),
+		                  FileSchemeId,
+		                  StringT (2, Signs::Slash),
+		                  host (),
+		                  port (),
+		                  path (),
+		                  query (),
+		                  fragment ());
 	}
 
 	return *this;
@@ -847,30 +895,46 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::escape () const
 {
-	return basic_uri ({ is_local (),
-	                    is_absolute (),
-	                    scheme (),
-	                    value .slashs,
-	                    host (),
-	                    port (),
-	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
-	                    query (),
-	                    Glib::uri_escape_string (fragment ()) });
+	return basic_uri (is_local (),
+	                  is_absolute (),
+	                  scheme (),
+	                  m_slashs,
+	                  host (),
+	                  port (),
+	                  basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
+	                  query (),
+	                  Glib::uri_escape_string (fragment ()));
 }
 
 template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::unescape () const
 {
-	return basic_uri ({ is_local (),
-	                    is_absolute (),
-	                    scheme (),
-	                    value .slashs,
-	                    host (),
-	                    port (),
-	                    basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
-	                    query (),
-	                    Glib::uri_unescape_string (fragment ()) });
+	return basic_uri (is_local (),
+	                  is_absolute (),
+	                  scheme (),
+	                  m_slashs,
+	                  host (),
+	                  port (),
+	                  basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
+	                  query (),
+	                  Glib::uri_unescape_string (fragment ()));
+}
+
+template <class StringT>
+void
+basic_uri <StringT>::swap (basic_uri & other)
+{
+	std::swap (m_local,    other .m_local);
+	std::swap (m_absolute, other .m_absolute);
+	std::swap (m_scheme,   other .m_scheme);
+	std::swap (m_slashs,   other .m_slashs);
+	std::swap (m_host,     other .m_host);
+	std::swap (m_port,     other .m_port);
+	std::swap (m_path,     other .m_path);
+	std::swap (m_query,    other .m_query);
+	std::swap (m_fragment, other .m_fragment);
+	std::swap (m_string,   other .m_string);
 }
 
 // Private Funtions
@@ -905,13 +969,14 @@ basic_uri <StringT>::to_string () const
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::parse (basic_uri & uri, const string_type &string, const size_type first)
+basic_uri <StringT>::parser::parse (basic_uri & uri, const string_type & string, const size_type first)
 {
-	if (string .size ())
-	{
-		uri .value .string = string;
-		parser (uri, string) .uriString (first);
-	}
+	if (string .empty ())
+		return;
+
+	uri .m_string = string;
+
+	parser (uri, string) .uriString (first);
 }
 
 template <class StringT>
@@ -928,11 +993,11 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 	if (string [first] == Signs::Colon)
 	{
 		++ first;
-		uri .value .absolute = true;
+		uri .m_absolute = true;
 
-		if (uri .value .scheme == DataSchemeId)
+		if (uri .m_scheme == DataSchemeId)
 		{
-			uri .value .local = true;
+			uri .m_local = true;
 			return;
 		}
 	}
@@ -943,9 +1008,9 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 	{
 		if (string [begin ++] == Signs::Slash)
 		{
-			uri .value .absolute = true;
-			uri .value .slashs   = string_type (2, Signs::Slash);
-			first                = authority (begin);
+			uri .m_absolute = true;
+			uri .m_slashs   = string_type (2, Signs::Slash);
+			first           = authority (begin);
 		}
 	}
 
@@ -955,7 +1020,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 			break;
 		case Signs::Slash:
 			path (first);
-			uri .value .absolute = true;
+			uri .m_absolute = true;
 			break;
 		case Signs::QuestionMark:
 			query (first + 1);
@@ -968,8 +1033,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 			break;
 	}
 
-	uri .value .local = uri .value .scheme == FileSchemeId
-	                    or (not uri .value .scheme .length () and not (uri .value .host .length () || uri .value .port));
+	uri .m_local = uri .m_scheme == FileSchemeId or (not uri .m_scheme .length () and not (uri .m_host .length () || uri .m_port));
 }
 
 template <class StringT>
@@ -983,7 +1047,7 @@ basic_uri <StringT>::parser::scheme (const size_type first) const
 		if (last == string_type::npos)
 			return first;
 
-		uri .value .scheme = string .substr (first, last - first);
+		uri .m_scheme = string .substr (first, last - first);
 
 		return last;
 	}
@@ -1013,7 +1077,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 		port (authority, colon + 1, authority .length ());
 	}
 	else
-		uri .value .host = Glib::uri_unescape_string (authority);
+		uri .m_host = Glib::uri_unescape_string (authority);
 
 	return last;
 }
@@ -1023,7 +1087,7 @@ inline
 void
 basic_uri <StringT>::parser::host (const string_type & authority, const size_type first, const size_type last) const
 {
-	uri .value .host = Glib::uri_unescape_string (authority .substr (first, last - first));
+	uri .m_host = Glib::uri_unescape_string (authority .substr (first, last - first));
 }
 
 template <class StringT>
@@ -1036,13 +1100,13 @@ basic_uri <StringT>::parser::port (string_type & authority, const size_type firs
 
 	try
 	{
-		uri .value .port = std::stoul (portString, &pos);
+		uri .m_port = std::stoul (portString, &pos);
 	}
 	catch (...)
 	{
 		__LOG__ << "basic_uri parse error: Invalid port number." << std::endl;
 
-		uri .value .port = 0;
+		uri .m_port = 0;
 	}
 }
 
@@ -1055,7 +1119,7 @@ basic_uri <StringT>::parser::path (const size_type first) const
 	if (last == string_type::npos)
 		last = string .length ();
 
-	uri .value .path = Glib::uri_unescape_string (string .substr (first, last - first));
+	uri .m_path = Glib::uri_unescape_string (string .substr (first, last - first));
 
 	switch (string [last])
 	{
@@ -1077,7 +1141,7 @@ basic_uri <StringT>::parser::query (const size_type first) const
 	if (last == string_type::npos)
 		last = string .length ();
 
-	uri .value .query = string .substr (first, last - first);
+	uri .m_query = string .substr (first, last - first);
 
 	if (string [last] == Signs::NumberSign)
 		fragment (last + 1);
@@ -1088,7 +1152,7 @@ inline
 void
 basic_uri <StringT>::parser::fragment (const size_type first) const
 {
-	uri .value .fragment = Glib::uri_unescape_string (string .substr (first));
+	uri .m_fragment = Glib::uri_unescape_string (string .substr (first));
 }
 
 ///  @relates basic_uri
@@ -1098,7 +1162,7 @@ basic_uri <StringT>::parser::fragment (const size_type first) const
 ///  Return true if @a a is equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator == (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () == rhs .str ();
@@ -1108,7 +1172,7 @@ operator == (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator not_eq (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () not_eq rhs .str ();
@@ -1118,7 +1182,7 @@ operator not_eq (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rh
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator == (const basic_uri <StringT> & lhs, const StringT & rhs)
 {
 	return lhs .str () == rhs;
@@ -1128,7 +1192,7 @@ operator == (const basic_uri <StringT> & lhs, const StringT & rhs)
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator == (const StringT & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs == rhs .str ();
@@ -1138,7 +1202,7 @@ operator == (const StringT & lhs, const basic_uri <StringT> & rhs)
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator not_eq (const basic_uri <StringT> & lhs, const StringT & rhs)
 {
 	return not (lhs == rhs);
@@ -1148,7 +1212,7 @@ operator not_eq (const basic_uri <StringT> & lhs, const StringT & rhs)
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator not_eq (const StringT & lhs, const basic_uri <StringT> & rhs)
 {
 	return not (lhs == rhs);
@@ -1158,7 +1222,7 @@ operator not_eq (const StringT & lhs, const basic_uri <StringT> & rhs)
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator == (const basic_uri <StringT> & lhs, const typename StringT::value_type* rhs)
 {
 	return lhs .str () == rhs;
@@ -1168,7 +1232,7 @@ operator == (const basic_uri <StringT> & lhs, const typename StringT::value_type
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator == (const typename StringT::value_type* lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs == rhs .str ();
@@ -1178,7 +1242,7 @@ operator == (const typename StringT::value_type* lhs, const basic_uri <StringT> 
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator not_eq (const basic_uri <StringT> & lhs, const typename StringT::value_type* rhs)
 {
 	return not (lhs == rhs);
@@ -1188,7 +1252,7 @@ operator not_eq (const basic_uri <StringT> & lhs, const typename StringT::value_
 ///  Return false if URI @a a is not equal to @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator not_eq (const typename StringT::value_type* lhs, const basic_uri <StringT> & rhs)
 {
 	return not (lhs == rhs);
@@ -1197,7 +1261,7 @@ operator not_eq (const typename StringT::value_type* lhs, const basic_uri <Strin
 ///  Compares two basic_uri's.
 ///  Return true if URI @a a is less than @a b.
 template <class StringT>
-constexpr bool
+bool
 operator < (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () < rhs .str ();
@@ -1207,7 +1271,7 @@ operator < (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 ///  Return false if URI @a a is greater than @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator > (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () > rhs .str ();
@@ -1216,7 +1280,7 @@ operator > (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 ///  Compares two basic_uri's.
 ///  Return true if URI @a a is less equal than @a b.
 template <class StringT>
-constexpr bool
+bool
 operator <= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () <= rhs .str ();
@@ -1226,7 +1290,7 @@ operator <= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 ///  Return false if URI @a a is greater than equal @a b.
 template <class StringT>
 inline
-constexpr bool
+bool
 operator >= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () >= rhs .str ();
@@ -1235,11 +1299,10 @@ operator >= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 ///  @relates basic_uri
 ///  @name String concatanation
 
-///  Compares two basic_uri's.
 ///  Returns a string containing characters from @a uri followed by the characters from @a string.
 template <class StringT>
 inline
-constexpr StringT
+StringT
 operator + (const basic_uri <StringT> & uri, const StringT & string)
 {
 	return uri .str () + string;
@@ -1248,7 +1311,7 @@ operator + (const basic_uri <StringT> & uri, const StringT & string)
 ///  Returns a string containing characters from @a string followed by the characters from @a uri.
 template <class StringT>
 inline
-constexpr StringT
+StringT
 operator + (const StringT & string, const basic_uri <StringT> & uri)
 {
 	return string + uri .str ();
@@ -1257,7 +1320,7 @@ operator + (const StringT & string, const basic_uri <StringT> & uri)
 ///  Returns a string containing characters from @a uri followed by the characters from @a string.
 template <class StringT>
 inline
-constexpr StringT
+StringT
 operator + (const basic_uri <StringT> & uri, const typename StringT::value_type* string)
 {
 	return uri .str () + string;
@@ -1266,7 +1329,7 @@ operator + (const basic_uri <StringT> & uri, const typename StringT::value_type*
 ///  Returns a string containing characters from @a string followed by the characters from @a uri.
 template <class StringT>
 inline
-constexpr StringT
+StringT
 operator + (const typename StringT::value_type* string, const basic_uri <StringT> & uri)
 {
 	return string + uri .str ();
@@ -1291,9 +1354,6 @@ using uri = basic_uri <std::string>;
 //
 extern template class basic_uri <std::string>;
 
-//
-extern template std::ostream & operator << (std::ostream &, const uri &);
-
 } // basic
 } // titania
 
@@ -1311,6 +1371,15 @@ struct hash <titania::basic::uri>
 	hash <std::string> m_hash;
 
 };
+
+/// Specializes the std::swap algorithm for basic_path.
+template <class StringT>
+inline
+void
+swap (titania::basic::basic_uri <StringT> & lhs, titania::basic::basic_uri <StringT> & rhs)
+{
+	lhs .swap (rhs);
+}
 
 } // std
 

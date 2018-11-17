@@ -34,6 +34,11 @@
 
 /* Dialogs */
 
+.titania-header {
+	font-size: 120%;
+	font-weight: bold;
+}
+
 .titania-small {
 	font-size: 80%;
 	font-weight: bold;

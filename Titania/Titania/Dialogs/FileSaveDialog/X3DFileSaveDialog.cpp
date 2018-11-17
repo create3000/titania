@@ -196,7 +196,7 @@ X3DFileSaveDialog::setFileFilter (const std::string & name)
 }
 
 std::string
-X3DFileSaveDialog::getSuffix () const
+X3DFileSaveDialog::getExtension () const
 {
 	// X3D, VRML97
 

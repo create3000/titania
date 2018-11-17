@@ -101,7 +101,7 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 	try
 	{
 		static const auto contentTypes = getContentTypeFunctions ();
-		static const auto suffixes     = getSuffixes ();
+		static const auto extensions   = getExtensions ();
 
 		try
 		{
@@ -117,7 +117,7 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 			{
 				try
 				{
-					return suffixes .at (uri .suffix ()) (scene, uri, istream);
+					return extensions .at (uri .extension ()) (scene, uri, istream);
 				}
 				catch (const std::out_of_range &)
 				{
@@ -197,51 +197,51 @@ GoldenGate::getContentTypeFunctions ()
 }
 
 std::map <std::string, GoldenGate::GoldenFunction>
-GoldenGate::getSuffixes ()
+GoldenGate::getExtensions ()
 {
-	std::map <std::string, GoldenFunction> suffixes;
+	std::map <std::string, GoldenFunction> extensions;
 
 	// VRML
-	suffixes .emplace (".wrl",    &vrml);
-	suffixes .emplace (".wrz",    &vrml);
-	suffixes .emplace (".wrl.gz", &vrml); /// Todo: does not work with URI::suffix
-	suffixes .emplace (".vrml",   &vrml);
-	suffixes .emplace (".vrm",    &vrml);
+	extensions .emplace (".wrl",    &vrml);
+	extensions .emplace (".wrz",    &vrml);
+	extensions .emplace (".wrl.gz", &vrml); /// Todo: does not work with URI::extension
+	extensions .emplace (".vrml",   &vrml);
+	extensions .emplace (".vrm",    &vrml);
 
 	// X3D Vrml Classic Encoding 
-	suffixes .emplace (".x3dv",    &vrml);
-	suffixes .emplace (".x3dvz",   &vrml);
-	suffixes .emplace (".x3dv.gz", &vrml); /// Todo: does not work with URI::suffix
+	extensions .emplace (".x3dv",    &vrml);
+	extensions .emplace (".x3dvz",   &vrml);
+	extensions .emplace (".x3dv.gz", &vrml); /// Todo: does not work with URI::extension
 
 	// X3D XML Encoding 
-	suffixes .emplace (".x3d",    &GoldenParser::parse <XMLParser>);
-	suffixes .emplace (".x3dz",   &GoldenParser::parse <XMLParser>);
-	suffixes .emplace (".x3d.gz", &GoldenParser::parse <XMLParser>); /// Todo: does not work with URI::suffix
-	suffixes .emplace (".xml",    &GoldenParser::parse <XMLParser>);
+	extensions .emplace (".x3d",    &GoldenParser::parse <XMLParser>);
+	extensions .emplace (".x3dz",   &GoldenParser::parse <XMLParser>);
+	extensions .emplace (".x3d.gz", &GoldenParser::parse <XMLParser>); /// Todo: does not work with URI::extension
+	extensions .emplace (".xml",    &GoldenParser::parse <XMLParser>);
 
 	// X3D XML Encoding 
-	suffixes .emplace (".x3dj", &GoldenParser::parse <JSONParser>);
+	extensions .emplace (".x3dj", &GoldenParser::parse <JSONParser>);
 
 	// GLTF
-	suffixes .emplace (".gltf", &GoldenParser::parse <glTF::Parser>);
+	extensions .emplace (".gltf", &GoldenParser::parse <glTF::Parser>);
 
 	// Autodesk 3DS Max
-	suffixes .emplace (".3ds", &GoldenParser::parse <Autodesk::Parser>);
+	extensions .emplace (".3ds", &GoldenParser::parse <Autodesk::Parser>);
 
 	// Wavefront OBJ
-	suffixes .emplace (".obj", &GoldenParser::parse <Wavefront::Parser>);
+	extensions .emplace (".obj", &GoldenParser::parse <Wavefront::Parser>);
 
 	if (Glib::find_program_in_path ("inkscape") .size ())
 	{
 		// PDF
-		suffixes .emplace (".pdf", &GoldenParser::parse <PDF::Parser>);
+		extensions .emplace (".pdf", &GoldenParser::parse <PDF::Parser>);
 	}
 
 	// SVG
-	suffixes .emplace (".svg",  &GoldenParser::parse <SVG::Parser>);
-	suffixes .emplace (".svgz", &GoldenParser::parse <SVG::Parser>);
+	extensions .emplace (".svg",  &GoldenParser::parse <SVG::Parser>);
+	extensions .emplace (".svgz", &GoldenParser::parse <SVG::Parser>);
 
-	return suffixes;
+	return extensions;
 }
 
 void
@@ -343,7 +343,7 @@ GoldenGate::audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	std::string file = Glib::file_get_contents (os::find_data_file ("titania/goldengate/audio.x3dv"));
 
 	file = std::regex_replace (file, Name,        GetNameFromURI (uri));
-	file = std::regex_replace (file, Description, SFString (uri .name ()) .toString ());
+	file = std::regex_replace (file, Description, SFString (uri .stem ()) .toString ());
 	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
 
 	// Parse into scene.
@@ -368,7 +368,7 @@ GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	const auto height = mediaStream .getHeight () ? mediaStream .getHeight () / 72.0 * inch <double> : 1.0;
 
 	file = std::regex_replace (file, Name,        GetNameFromURI (uri));
-	file = std::regex_replace (file, Description, SFString (uri .name ()) .toString ());
+	file = std::regex_replace (file, Description, SFString (uri .stem ()) .toString ());
 	file = std::regex_replace (file, Width,       basic::to_string (width,  std::locale::classic ()));
 	file = std::regex_replace (file, Height,      basic::to_string (height, std::locale::classic ()));
 	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");

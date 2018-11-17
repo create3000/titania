@@ -200,7 +200,7 @@
 //		std::clog << "Basename: " << uri .basename () << std::endl;
 //		std::clog << "Basename: " << uri .basename (".html") << std::endl;
 //		std::clog << "Basename: " << uri .basename ({ ".wrl", ".html" }) << std::endl;
-//		std::clog << "Suffix:   " << uri .suffix () << std::endl;
+//		std::clog << "Suffix:   " << uri .extension () << std::endl;
 //	}
 //
 //};

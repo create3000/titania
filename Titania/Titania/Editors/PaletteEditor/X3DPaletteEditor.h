@@ -584,7 +584,7 @@ X3DPaletteEditor <Type>::set_over (const bool value, const size_t position)
 	overIndex = position;
 
 	if (over)
-		this -> getPalettePreviewBox () .set_tooltip_text (files [position] .name ());
+		this -> getPalettePreviewBox () .set_tooltip_text (files [position] .stem ());
 	else
 		this -> getPalettePreviewBox () .set_tooltip_text ("");
 }

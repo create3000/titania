@@ -451,8 +451,8 @@ basic_path <StringT>::relative_path (const basic_path & descendant) const
 
 	basic_path path ({ }, separator (), false, descendant .trailing_separator ());
 
-	auto base_path       = remove_dot_segments () .base ();
-	auto descendant_path = descendant .remove_dot_segments ();
+	const auto base_path       = remove_dot_segments () .base ();
+	const auto descendant_path = descendant .remove_dot_segments ();
 
 	size_t i = 0, j = 0, size = 0;
 
@@ -467,6 +467,9 @@ basic_path <StringT>::relative_path (const basic_path & descendant) const
 
 	for (j = i, size = descendant_path .size (); j < size; ++ j)
 		path .m_array .emplace_back (descendant_path [j]);
+
+	if (path .m_array .empty ())
+		path .m_array .emplace_back (dot);
 
 	return path;
 }

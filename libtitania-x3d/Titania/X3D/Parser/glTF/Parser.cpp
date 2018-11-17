@@ -264,7 +264,7 @@ Parser::assetObject (json_object* const jobj)
 
 	const auto worldInfoNode = scene -> createNode <X3D::WorldInfo> ();
 
-	worldInfoNode -> title () = scene -> getWorldURL () .name ();
+	worldInfoNode -> title () = scene -> getWorldURL () .stem ();
 
 	scene -> getRootNodes () .emplace_front (worldInfoNode);
 

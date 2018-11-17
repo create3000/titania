@@ -317,9 +317,9 @@ ProjectsEditor::on_create_file_key_press_event (GdkEventKey* event)
 Glib::RefPtr <Gio::File>
 ProjectsEditor::getNewFile () const
 {
-	const auto suffix = getSuffix (getCreateFileTypeButton () .get_active_row_number ());
-	const auto parent = getSelectedFiles () .front ();
-	const auto file   = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), suffix));
+	const auto extension = getExtension (getCreateFileTypeButton () .get_active_row_number ());
+	const auto parent    = getSelectedFiles () .front ();
+	const auto file      = parent -> get_child (getFileName (getCreateFileEntry () .get_text () .raw (), extension));
 
 	if (getCreateFileEntry () .get_text () .empty ())
 		throw std::invalid_argument ("getNewFile");
@@ -538,7 +538,7 @@ ProjectsEditor::on_rename_item_activate ()
 	const auto fileInfo  = file -> query_info ();
 	const auto directory = fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY;
 	const auto basename  = basic::uri (file -> get_basename ());
-	const auto name      = Glib::ustring (directory ? basename .basename () : basename .name ());
+	const auto name      = Glib::ustring (directory ? basename .basename () : basename .stem ());
 
 	getRenameItemLabel () .set_text (directory ? _ ("Folder Name") : _ ("File Name"));
 	getRenameItemEntry () .set_placeholder_text (directory ? _ ("Folder Name") : _ ("File Name"));
@@ -1001,15 +1001,15 @@ ProjectsEditor::canOpenFile (const Glib::RefPtr <Gio::File> & file)
 }
 
 std::string
-ProjectsEditor::getFileName (const std::string & filename, const std::string & suffix) const
+ProjectsEditor::getFileName (const std::string & filename, const std::string & extension) const
 {
 	static const std::regex pattern (R"/(\.(?:x3d|x3dv|wrl|x3dj|x3dz|x3dvz|wrz)$)/");
 
-	return std::regex_replace (filename, pattern, "") + suffix;
+	return std::regex_replace (filename, pattern, "") + extension;
 }
 
 std::string
-ProjectsEditor::getSuffix (const int32_t type) const
+ProjectsEditor::getExtension (const int32_t type) const
 {
 	switch (type)
 	{

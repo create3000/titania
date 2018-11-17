@@ -104,7 +104,7 @@ private:
 
 	static
 	std::map <std::string, GoldenGate::GoldenFunction>
-	getSuffixes ();
+	getExtensions ();
 
 	static
 	void
