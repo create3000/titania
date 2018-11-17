@@ -427,12 +427,11 @@ X3DBrowserNotebook::save (const X3D::X3DScenePtr & scene, const basic::uri & wor
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> ("Save A Copy Undo Step");
 
-		recentView -> loadPreview (scene -> getBrowser ());
-
 		if (getConfig () -> getItem <bool> ("addStandardMetaData"))
 			scene -> addStandardMetaData ();
 
 		setOutputStyle (scene, outputStyle);
+
 		X3D::X3DEditor::setWorldURL (scene, worldURL, undoStep);
 
 		X3D::FileGenerator::write (scene, worldURL, outputStyle, true);
@@ -441,6 +440,8 @@ X3DBrowserNotebook::save (const X3D::X3DScenePtr & scene, const basic::uri & wor
 			undoStep -> undo ();
 
 		worldURL_changed () .processInterests ();
+
+		recentView -> loadPreview (scene -> getBrowser ());
 
 		return true;
 	}
