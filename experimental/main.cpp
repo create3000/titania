@@ -1026,22 +1026,10 @@ main (int argc, char** argv)
 	auto f2 = basic::uri ("foo.html");
 	auto f3 = basic::uri (".html");
 
-	__LOG__ << d2 .relative_path (d1) << std::endl;
-	__LOG__ << d1 .relative_path (d1) << std::endl;
-	__LOG__ << f1 .relative_path (f1) << std::endl;
-
-	auto m1 = std::move (f1);
-
-	__LOG__ << m1 << std::endl;
 	__LOG__ << f1 << std::endl;
-	__LOG__ << f2 .basename () << std::endl;
-	__LOG__ << f2 .extension () << std::endl;
-	__LOG__ << f3 .stem () << std::endl;
-	__LOG__ << f3 .extension () << std::endl;
-	
-
-	//namespace fs = std::filesystem;
-
+	__LOG__ << f1 .basename () << std::endl;
+	__LOG__ << f1 .stem () << std::endl;
+	__LOG__ << f1 .extension () << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

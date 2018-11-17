@@ -367,7 +367,7 @@ public:
 	string_type
 	stem () const;
 
-	///  Returns the basename of this URI stript of @a list of suffixes.
+	///  Returns the basename of this URI stript of @a extension_list.
 	string_type
 	stem (std::initializer_list <string_type> extension_list) const;
 
@@ -866,7 +866,7 @@ basic_uri <StringT>::extension () const
 	const auto dot      = basename .rfind (Signs::Dot);
 
 	if (dot not_eq string_type::npos and dot not_eq 0)
-		return path () .substr (dot);
+		return basename .substr (dot);
 
 	return string_type ();
 }

@@ -206,8 +206,10 @@
       <object class="GtkLabel">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="halign">start</property>
         <property name="margin_top">8</property>
         <property name="label" translatable="yes">Preview</property>
+        <property name="ellipsize">middle</property>
         <style>
           <class name="titania-header"/>
         </style>
