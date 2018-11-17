@@ -1020,14 +1020,10 @@ main (int argc, char** argv)
 
 	using Vec3d = test::math::vector3 <double>;
 
-	constexpr auto v  = Vec3d ();
-	constexpr auto vc = Vec3d (1.0, 2.0, 3.0);
+	auto u1 = basic::uri ("/usr/share/data/foo/");
+	auto u2 = basic::uri ("/usr/include/");
 
-	auto v1 = Vec3d (1, 2, 3);
-	auto v2 = Vec3d (Vector2d (2.0, 3.0), Vector2d (2.0, 3.0));
-
-	__LOG__ << v1 << std::endl;
-	__LOG__ << v2 << std::endl;
+	__LOG__ << u2 .relative_path (u1) << std::endl;
 
 	//namespace fs = std::filesystem;
 

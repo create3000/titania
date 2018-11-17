@@ -54,13 +54,25 @@ namespace titania {
 namespace basic {
 
 template <>
-const std::wstring basic_path <std::wstring>::dot = L".";
+const std::string basic_path <std::string>::dot = ".";
+
+template <>
+const std::string basic_path <std::string>::dots = "..";
+
+//template <>
+//const std::wstring basic_path <std::wstring>::dot = L".";
+//
+//template <>
+//const std::wstring basic_path <std::wstring>::dots = L"..";
 
 //
 template class basic_path <std::string>;
+//template class basic_path <std::wstring>;
 
-//
-template std::ostream & operator << (std::ostream &, const path &);
+// to make wstring work specialize escape and unescape
+// g_utf8_to_utf16()
+// g_utf16_to_utf8()
+
 
 } // X3D
 } // titania
