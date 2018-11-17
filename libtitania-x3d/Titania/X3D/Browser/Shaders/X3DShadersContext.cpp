@@ -70,7 +70,7 @@ X3DShadersContext::X3DShadersContext () :
 	  maxVertexUniformVectors (0),
 	maxFragmentUniformVectors (0),
 	      maxVertexAttributes (0),
-	            fixedPipeline (true),
+	            fixedPipeline (false),
 	    fixedPipelineRequired (true),
 	              pointShader (),
 	          wireframeShader (),
