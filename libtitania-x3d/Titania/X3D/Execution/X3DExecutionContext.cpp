@@ -1045,6 +1045,29 @@ X3DExecutionContext::findProtoDeclarations () const
 
 // Root node handling
 
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+void
+X3DExecutionContext::addRootNode (const SFNode & value)
+{
+	const auto exists = std::any_of (rootNodes -> begin (), rootNodes -> end (),
+	[&value] (const SFNode & rootNode)
+	{
+		return rootNode == value;
+	});
+
+	if (exists)
+		return;
+
+	rootNodes -> emplace_back (value);
+}
+
+///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+void
+X3DExecutionContext::removeRootNode (const SFNode & value)
+{
+	rootNodes -> remove (value);
+}
+
 void
 X3DExecutionContext::set_sceneGraph ()
 {

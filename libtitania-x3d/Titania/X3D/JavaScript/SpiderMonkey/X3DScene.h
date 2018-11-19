@@ -114,6 +114,11 @@ private:
 	static JSBool updateExportedNode (JSContext *, uint32_t, jsval*);
 	static JSBool getExportedNode    (JSContext *, uint32_t, jsval*);
 
+	static JSBool addRootNode    (JSContext*, uint32_t, jsval*);
+	static JSBool removeRootNode (JSContext*, uint32_t, jsval*);
+	static JSBool setRootNodes   (JSContext*, uint32_t, jsval*);
+	static JSBool getRootNodes   (JSContext*, uint32_t, jsval*);
+
 	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
 	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
 

@@ -368,6 +368,19 @@ public:
 	///  @name Root node handling
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	void
+	addRootNode (const SFNode & value);
+
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	void
+	removeRootNode (const SFNode & value);
+
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	void
+	setRootNodes (const MFNode & value)
+	{ *rootNodes = value; }
+
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	MFNode &
 	getRootNodes ()
 	{ return *rootNodes; }

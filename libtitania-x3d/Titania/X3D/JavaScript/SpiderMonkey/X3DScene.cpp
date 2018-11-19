@@ -61,13 +61,14 @@ namespace spidermonkey {
 
 JSClass X3DScene::static_class = {
 	"X3DScene", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
+	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec X3DScene::properties [ ] = {
+	{ "length",    LENGTH,     JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, length,    length },
 	{ "rootNodes", ROOT_NODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
 };
@@ -83,6 +84,11 @@ JSFunctionSpec X3DScene::functions [ ] = {
 	{ "removeExportedNode", removeExportedNode, 1, 0 },
 	{ "updateExportedNode", updateExportedNode, 2, 0 },
 	{ "getExportedNode",    getExportedNode,    1, 0 },
+
+	{ "addRootNode",    addRootNode,    1, 0 },
+	{ "removeRootNode", removeRootNode, 1, 0 },
+	{ "setRootNodes",   setRootNodes,   1, 0 },
+	{ "getRootNodes",   getRootNodes,   0, 0 },
 
 	{ "toVRMLString", toVRMLString, 0, 0 },
 	{ "toXMLString",  toXMLString,  0, 0 },
@@ -346,6 +352,93 @@ X3DScene::getExportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 }
 
 JSBool
+X3DScene::addRootNode (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .addRootNode: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv     = JS_ARGV (cx, vp);
+		const auto scene    = getThis <X3DScene> (cx, vp);
+		const auto rootNode = getArgument <SFNode> (cx, argv, 0);
+
+		scene -> addRootNode (*rootNode);
+
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .addRootNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::removeRootNode (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .removeRootNode: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv     = JS_ARGV (cx, vp);
+		const auto scene    = getThis <X3DScene> (cx, vp);
+		const auto rootNode = getArgument <SFNode> (cx, argv, 0);
+
+		scene -> removeRootNode (*rootNode);
+
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .removeRootNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::setRootNodes (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .setRootNodes: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv  = JS_ARGV (cx, vp);
+		const auto scene = getThis <X3DScene> (cx, vp);
+		const auto value = getArgument <MFNode> (cx, argv, 0);
+
+		scene -> setRootNodes (*value);
+
+		JS_SET_RVAL (cx, vp, JSVAL_VOID);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .setRootNodes: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::getRootNodes (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getRootNodes: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto scene = getThis <X3DScene> (cx, vp);
+
+		return X3DField::get <MFNode> (cx, scene -> getRootNodes (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getRootNodes: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
 X3DScene::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
@@ -353,7 +446,7 @@ X3DScene::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
+		const auto scene = getThis <X3DScene> (cx, vp);
 
 		std::ostringstream osstream;
 
@@ -361,7 +454,7 @@ X3DScene::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 
 		Generator::NicestStyle (osstream);
 
-		executionContext -> toStream (osstream);
+		scene -> toStream (osstream);
 
 		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 	}
@@ -379,7 +472,7 @@ X3DScene::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
+		const auto scene = getThis <X3DScene> (cx, vp);
 
 		std::ostringstream osstream;
 
@@ -387,7 +480,7 @@ X3DScene::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 
 		Generator::NicestStyle (osstream);
 
-		executionContext -> toXMLStream (osstream);
+		scene -> toXMLStream (osstream);
 
 		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 	}

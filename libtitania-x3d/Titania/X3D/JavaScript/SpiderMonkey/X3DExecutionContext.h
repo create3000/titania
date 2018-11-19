@@ -99,6 +99,7 @@ protected:
 
 	enum Property
 	{
+		LENGTH,
 		SPECIFICATION_VERSION,
 		ENCODING,
 		WORLD_URL,
@@ -111,6 +112,11 @@ protected:
 	};
 
 	///  @name Properties
+
+	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool length    (JSContext*, JSObject*, jsid, JSBool, jsval*);
+	static JSBool length    (JSContext*, JSObject*, jsid, jsval*);
 
 	static JSBool specificationVersion (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool encoding             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
@@ -137,6 +143,8 @@ protected:
 	static JSBool removeImportedNode (JSContext*, uint32_t, jsval*);
 	static JSBool updateImportedNode (JSContext*, uint32_t, jsval*);
 	static JSBool getImportedNode    (JSContext*, uint32_t, jsval*);
+
+	static JSBool getRootNodes (JSContext*, uint32_t, jsval*);
 
 	static JSBool addRoute (JSContext*, uint32_t, jsval*);
 	static JSBool deleteRoute (JSContext*, uint32_t, jsval*);
