@@ -1223,9 +1223,30 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 			return;
 
 		case X3DConstants::MFString:
-			parser .sfstringValues (static_cast <MFString*> (field));
-			return;
+		{
+			static const io::inverse_character q ('"');
 
+			const auto mfstring = static_cast <MFString*> (field);
+
+			mfstring -> clear ();
+
+			std::string qs, string;
+
+			if (q (istream, qs))
+				istream .unget ();
+
+			while (Grammar::String (istream, string))
+			{
+				FilterBadUTF8Characters (string);
+
+				mfstring -> emplace_back (std::move (string));
+
+				if (q (istream, qs))
+					istream .unget ();
+			}
+
+			return;
+		}
 		case X3DConstants::MFTime:
 			parser .sftimeValues (static_cast <MFTime*> (field));
 			return;
