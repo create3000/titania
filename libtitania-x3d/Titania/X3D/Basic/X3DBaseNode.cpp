@@ -647,22 +647,29 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 X3DFieldDefinition*
 X3DBaseNode::getField (const std::string & name) const
 {
+	static const std::regex set_re     (R"/(^set_(.*?)$)/");
+	static const std::regex changed_re (R"/(^(.*?)_changed$)/");
+
 	const auto field = fields .find (getFieldName (name));
 
 	if (field not_eq fields .end ())
 		return field -> second;
 
-	if (name .substr (0, 4) == "set_")
+	std::smatch match1;
+
+	if (std::regex_match (name, match1, set_re))
 	{
-		const auto field = fields .find (getFieldName (name .substr (4)));
+		const auto field = fields .find (getFieldName (match1 .str (1)));
 
 		if (field not_eq fields .end () and field -> second -> getAccessType () == inputOutput)
 			return field -> second;
 	}
 
-	if (name .size () > 8 and name .substr (name .size () - 8) == "_changed")
+	std::smatch match2;
+
+	if (std::regex_match (name, match2, changed_re))
 	{
-		const auto field = fields .find (getFieldName (name .substr (0, name .size () - 8)));
+		const auto field = fields .find (getFieldName (match2 .str (1)));
 
 		if (field not_eq fields .end () and field -> second -> getAccessType () == inputOutput)
 			return field -> second;
@@ -1876,7 +1883,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 	if (sourceText)
 	{
-		static const std::regex ECMAScript (R"/(^\s*(?:vrmlscript|javascript|ecmascript)\:)/");
+		static const std::regex ECMAScript (R"/(^\s*(?:ecmascript|javascript|vrmlscript)\:)/");
 	
 		if (sourceText -> size () not_eq 1)
 			sourceText = nullptr;
