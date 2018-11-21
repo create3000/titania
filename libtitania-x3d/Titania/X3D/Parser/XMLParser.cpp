@@ -1223,30 +1223,9 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 			return;
 
 		case X3DConstants::MFString:
-		{
-			static const io::inverse_character q ('"');
-
-			const auto mfstring = static_cast <MFString*> (field);
-
-			mfstring -> clear ();
-
-			std::string qs, string;
-
-			if (q (istream, qs))
-				istream .unget ();
-
-			while (Grammar::String (istream, string))
-			{
-				FilterBadUTF8Characters (string);
-
-				mfstring -> emplace_back (std::move (string));
-
-				if (q (istream, qs))
-					istream .unget ();
-			}
-
+			sfstringValues (static_cast <MFString*> (field), istream);
 			return;
-		}
+
 		case X3DConstants::MFTime:
 			parser .sftimeValues (static_cast <MFTime*> (field));
 			return;
@@ -1274,6 +1253,29 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 		case X3DConstants::MFVec4f:
 			parser .sfvec4fValues (static_cast <MFVec4f*> (field));
 			return;
+	}
+}
+
+void
+XMLParser::sfstringValues (MFString* const field, std::istream & istream)
+{
+	static const io::inverse_character qq ('"');
+
+	field -> clear ();
+
+	std::string qs, string;
+
+	if (qq (istream, qs))
+		istream .unget ();
+
+	while (Grammar::String (istream, string))
+	{
+		FilterBadUTF8Characters (string);
+
+		field -> emplace_back (std::move (string));
+
+		if (qq (istream, qs))
+			istream .unget ();
 	}
 }
 

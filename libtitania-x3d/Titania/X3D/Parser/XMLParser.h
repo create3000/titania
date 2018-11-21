@@ -201,6 +201,9 @@ private:
 	fieldValue (X3DFieldDefinition* const field, const std::string & value);
 
 	void
+	sfstringValues (MFString* const field, std::istream & istream);
+
+	void
 	addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const node);
 
 	X3DBrowser*
