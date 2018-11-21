@@ -128,6 +128,9 @@ GeoLOD::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DGeospatialObject::initialize ();
 
+	if (rootNode () .empty () and children () .size ())
+		rootNode () = children ();
+
 	rootNode () .addInterest (rootGroup -> children ());
 
 	rootGroup -> setPrivate (true);
@@ -235,50 +238,55 @@ GeoLOD::set_childLoadState ()
 	if (level_changed () not_eq 1)
 		return;
 
+	MFNode nodes;
+
 	int32_t loaded = 0;
 
 	if (child1Inline -> checkLoadState () == COMPLETE_STATE)
 	{
-		children () .insert (children () .end (),
-		                     child1Inline -> getRootNodes () .cbegin (),
-		                     child1Inline -> getRootNodes () .cend ());
+		nodes .insert (nodes .end (),
+		               child1Inline -> getRootNodes () .cbegin (),
+		               child1Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
-	else if (child1Inline -> url () .empty ())
+	else if (child1Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
 	if (child2Inline -> checkLoadState () == COMPLETE_STATE)
 	{
-		children () .insert (children () .end (),
-		                     child2Inline -> getRootNodes () .cbegin (),
-		                     child2Inline -> getRootNodes () .cend ());
+		nodes .insert (nodes .end (),
+		               child2Inline -> getRootNodes () .cbegin (),
+		               child2Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
-	else if (child2Inline -> url () .empty ())
+	else if (child2Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
 	if (child3Inline -> checkLoadState () == COMPLETE_STATE)
 	{
-		children () .insert (children () .end (),
-		                     child3Inline -> getRootNodes () .cbegin (),
-		                     child3Inline -> getRootNodes () .cend ());
+		nodes .insert (nodes .end (),
+		               child3Inline -> getRootNodes () .cbegin (),
+		               child3Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
-	else if (child2Inline -> url () .empty ())
+	else if (child2Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
 	if (child4Inline -> checkLoadState () == COMPLETE_STATE)
 	{
-		children () .insert (children () .end (),
-		                     child4Inline -> getRootNodes () .cbegin (),
-		                     child4Inline -> getRootNodes () .cend ());
+		nodes .insert (nodes .end (),
+		               child4Inline -> getRootNodes () .cbegin (),
+		               child4Inline -> getRootNodes () .cend ());
 		++ loaded;
 	}
-	else if (child4Inline -> url () .empty ())
+	else if (child4Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
 	if (loaded == 4)
+	{
 		childrenLoaded = true;
+		children () = std::move (nodes);
+	}
 }
 
 size_t
