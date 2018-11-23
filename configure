@@ -17370,9 +17370,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-if test x$ax_cxx_compile_cxx11_required = xtrue; then
+if test x$ax_cxx_compile_cxx17_required = xtrue; then
 	if test x$ac_success = xno; then
-		as_fn_error $? "*** A compiler with support for C++11 language features is required." "$LINENO" 5
+		as_fn_error $? "*** A compiler with support for C++17 language features is required." "$LINENO" 5
 	fi
 fi
 

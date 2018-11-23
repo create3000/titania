@@ -74,9 +74,9 @@ dnl ***************************************************************************
 dnl Check for C++11 compiler support
 dnl ***************************************************************************
 
-if test x$ax_cxx_compile_cxx11_required = xtrue; then
+if test x$ax_cxx_compile_cxx17_required = xtrue; then
 	if test x$ac_success = xno; then
-		AC_MSG_ERROR([*** A compiler with support for C++11 language features is required.])
+		AC_MSG_ERROR([*** A compiler with support for C++17 language features is required.])
 	fi
 fi
 
