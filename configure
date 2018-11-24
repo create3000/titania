@@ -3892,7 +3892,7 @@ fi
 
 LDFLAGS="-rdynamic -latomic"
 
-
+gcc -v
 
 
 
