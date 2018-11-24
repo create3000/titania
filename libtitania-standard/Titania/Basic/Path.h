@@ -267,10 +267,6 @@ public:
 	///  @name Operations
 
 	///  Returns the root directory of this Path.
-	bool
-	is_relative () const;
-
-	///  Returns the root directory of this Path.
 	basic_path
 	root () const;
 
@@ -414,13 +410,6 @@ basic_path <StringT>::swap (basic_path & other)
 }
 
 template <class StringT>
-bool
-basic_path <StringT>::is_relative () const
-{
-	return m_array .empty () or m_array .front () == dots;
-}
-
-template <class StringT>
 basic_path <StringT>
 basic_path <StringT>::root () const
 {
@@ -511,7 +500,7 @@ template <class StringT>
 basic_path <StringT>
 basic_path <StringT>::relative_path (const basic_path & descendant) const
 {
-	if (descendant .is_relative ())
+	if (not descendant .leading_separator ())
 		return descendant;
 
 	basic_path path ({ }, separator (), false, descendant .trailing_separator ());
