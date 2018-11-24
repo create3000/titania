@@ -63,7 +63,6 @@ class CompletionType :
 {
 public:
 
-	constexpr
 	CompletionType () :
 		      var (),
 		statement (nullptr)

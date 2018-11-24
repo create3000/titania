@@ -79,7 +79,6 @@ public:
 	///  @name Construction
 
 	///  Constructs new var.
-	constexpr
 	var () :
 		pbOutputStreamObject (),
 		               value (),
