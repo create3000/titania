@@ -275,7 +275,8 @@ public:
 
 	///  Returns the path of this URI.
 	string_type
-	path (const bool query = false) const;
+	path () const
+	{ return m_path .str (); }
 
 	///  Set the query of this URI.
 	void
@@ -638,21 +639,6 @@ basic_uri <StringT>::well_known_port () const
 		return well_known_port -> second;
 
 	return 0;
-}
-
-template <class StringT>
-typename basic_uri <StringT>::string_type
-basic_uri <StringT>::path (const bool q) const
-{
-	auto string = m_path .str ();
-
-	if (q and query () .length ())
-	{
-		string += Signs::QuestionMark;
-		string += query ();
-	}
-
-	return string;
 }
 
 template <class StringT>
