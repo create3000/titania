@@ -53,8 +53,7 @@ fi
 
 LDFLAGS="-rdynamic -latomic"
 
-which gcc
-gcc -v
+
 
 dnl ***************************************************************************
 dnl Internationalization
