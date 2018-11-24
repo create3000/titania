@@ -112,6 +112,9 @@ public:
 
 	///  @name Member types
 
+	///  Path typedef.
+	using path_type = basic_path <StringT>;
+
 	///  String typedef.
 	using string_type = StringT;
 
@@ -132,7 +135,7 @@ public:
 		  m_slashs (),
 		    m_host (),
 		    m_port (0),
-		    m_path (),
+		    m_path ("", string_type (1, Signs::Slash)),
 		   m_query (),
 		m_fragment (),
 		  m_string ()
@@ -234,7 +237,7 @@ public:
 	///  Returns true if this uri looks like a directory, i.e. it ends with a '/', otherwise false.
 	bool
 	is_directory () const
-	{ return path () .length () and path () .back () == Signs::Slash; }
+	{ return m_path .trailing_separator (); }
 
 	///  Returns true if this uri looks like a file, i.e. it is not a directory, otherwise false.
 	bool
@@ -321,7 +324,7 @@ public:
 		                  m_slashs,
 		                  host (),
 		                  port (),
-		                  is_local () ? string_type (1, Signs::Slash) : string_type (),
+		                  path_type (string_type (1, Signs::Slash), string_type (1, Signs::Slash)),
 		                  "",
 		                  "");
 	}
@@ -340,7 +343,7 @@ public:
 		                  m_slashs,
 		                  host (),
 		                  port (),
-		                  path () .substr (0, path (). rfind (Signs::Slash) + 1),
+		                  m_path .parent (),
 		                  "",
 		                  "");
 	}
@@ -405,12 +408,12 @@ private:
 	           const string_type & slashs,
 	           const string_type & host,
 	           const size_type port,
-	           const string_type & path,
+	           const path_type & path,
 	           const string_type & query,
 	           const string_type & fragment);
 
 	///  Remove dot segments from path.
-	string_type
+	path_type
 	remove_dot_segments (const string_type &) const;
 
 	///  Composes a string from all values.
@@ -489,7 +492,7 @@ private:
 	string_type m_slashs;
 	string_type m_host;
 	size_type   m_port;
-	string_type m_path;
+	path_type   m_path;
 	string_type m_query;
 	string_type m_fragment;
 	string_type m_string;
@@ -504,7 +507,7 @@ basic_uri <StringT>::basic_uri (const bool local,
                                 const string_type & slashs,
                                 const string_type & host,
                                 const size_type port,
-                                const string_type & path,
+                                const path_type & path,
                                 const string_type & query,
                                 const string_type & fragment) :
 	   m_local (local),
@@ -537,7 +540,8 @@ basic_uri <StringT>::basic_uri (const char_type* string) :
 
 template <class StringT>
 inline
-basic_uri <StringT>::basic_uri (const basic_uri & base, const basic_uri & uri)
+basic_uri <StringT>::basic_uri (const basic_uri & base, const basic_uri & uri) :
+	basic_uri ()
 {
 	*this = base .transform (uri);
 }
@@ -640,7 +644,7 @@ template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::path (const bool q) const
 {
-	auto string = m_path;
+	auto string = m_path .str ();
 
 	if (q and query () .length ())
 	{
@@ -662,7 +666,7 @@ basic_uri <StringT>::base () const
 	                    m_slashs,
 	                    host (),
 	                    port (),
-	                    path (),
+	                    m_path,
 	                    "",
 	                    "")
 			 : parent ();
@@ -763,10 +767,10 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 
 template <class StringT>
 inline
-typename basic_uri <StringT>::string_type
+typename basic_uri <StringT>::path_type
 basic_uri <StringT>::remove_dot_segments (const string_type & path) const
 {
-	return basic_path <string_type> (path, string_type (1, Signs::Slash)) .remove_dot_segments () .str ();
+	return basic_path <string_type> (path, string_type (1, Signs::Slash)) .remove_dot_segments ();
 }
 
 template <class StringT>
@@ -779,16 +783,13 @@ basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 	if (authority () not_eq descendant .authority ())
 		return descendant;
 
-	basic_path <string_type> uri_path        (path (),             string_type (1, Signs::Slash));
-	basic_path <string_type> descendant_path (descendant .path (), string_type (1, Signs::Slash));
-
 	return basic_uri (true,
 	                  false,
-	                  StringT (),
-	                  StringT (),
-	                  StringT (),
+	                  string_type (),
+	                  string_type (),
+	                  string_type (),
 	                  0,
-	                  uri_path .relative_path (descendant_path) .str (),
+	                  m_path .relative_path (descendant .m_path),
 	                  descendant .query (),
 	                  descendant .fragment ());
 }
@@ -805,7 +806,7 @@ basic_uri <StringT>::filename (const bool q) const
 	                  m_slashs,
 	                  host (),
 	                  port (),
-	                  path (),
+	                  m_path,
 	                  q ? query () : string_type (),
 	                  "");
 }
@@ -814,10 +815,10 @@ template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::basename () const
 {
-	if (path () .length ())
-		return path () .substr (path () .rfind (Signs::Slash) + 1);
+	if (m_path .empty ())
+		return string_type ();
 
-	return string_type ();
+	return m_path .back ();
 }
 
 template <class StringT>
@@ -854,7 +855,7 @@ template <class StringT>
 void
 basic_uri <StringT>::extension (const string_type & extension)
 {
-	m_path  += extension;
+	m_path   = path_type (path () + extension, string_type (1, Signs::Slash));
 	m_string = to_string ();
 }
 
@@ -883,7 +884,7 @@ basic_uri <StringT>::add_file_scheme () const
 		                  StringT (2, Signs::Slash),
 		                  host (),
 		                  port (),
-		                  path (),
+		                  m_path,
 		                  query (),
 		                  fragment ());
 	}
@@ -901,7 +902,7 @@ basic_uri <StringT>::escape () const
 	                  m_slashs,
 	                  host (),
 	                  port (),
-	                  basic_path <string_type> (path (), string_type (1, Signs::Slash)) .escape () .str (),
+	                  m_path .escape (),
 	                  query (),
 	                  Glib::uri_escape_string (fragment ()));
 }
@@ -916,7 +917,7 @@ basic_uri <StringT>::unescape () const
 	                  m_slashs,
 	                  host (),
 	                  port (),
-	                  basic_path <string_type> (path (), string_type (1, Signs::Slash)) .unescape () .str (),
+	                  m_path .unescape (),
 	                  query (),
 	                  Glib::uri_unescape_string (fragment ()));
 }
@@ -1119,7 +1120,7 @@ basic_uri <StringT>::parser::path (const size_type first) const
 	if (last == string_type::npos)
 		last = string .length ();
 
-	uri .m_path = Glib::uri_unescape_string (string .substr (first, last - first));
+	uri .m_path = path_type (Glib::uri_unescape_string (string .substr (first, last - first)), string_type (1, Signs::Slash));
 
 	switch (string [last])
 	{
@@ -1372,7 +1373,7 @@ struct hash <titania::basic::uri>
 
 };
 
-/// Specializes the std::swap algorithm for basic_path.
+/// Specializes the std::swap algorithm for basic_uri.
 template <class StringT>
 inline
 void

@@ -177,7 +177,7 @@ SceneFuture::loadAsync (const MFString & url)
 		
 					if (externproto)
 					{
-						const auto & protoName = basic::uri (URL) .fragment ();
+						const auto protoName = basic::uri (URL) .fragment ();
 	
 						if (protoName .empty ())
 						{

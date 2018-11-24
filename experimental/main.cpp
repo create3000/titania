@@ -983,19 +983,31 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector3 <Type> 
 } // math
 } // test
 
-template <class Type>
 void
-addChild (const Type & arg)
+test_uri_output (const basic::uri & uri)
 {
-	__LOG__ << arg << std::endl;
+	__LOG__ << std::endl;
+	__LOG__ << uri << std::endl;
+	__LOG__ << uri .root () << std::endl;
+	__LOG__ << uri .base () << std::endl;
+	__LOG__ << uri .parent () << std::endl;
+	__LOG__ << uri .basename () << std::endl;
+	__LOG__ << uri .stem () << std::endl;
+	__LOG__ << uri .extension () << std::endl;
+
+	__LOG__ << basic::uri ("http://example.com/bah/foo.html") .transform (uri) << std::endl;
 }
 
-template <class ... Args>
 void
-addChildren (const Args & ... args)
-{ (addChild (args), ...); }
-
-
+test_uri ()
+{
+	test_uri_output (basic::uri ());
+	test_uri_output ("/usr/share/data/foo/");
+	test_uri_output ("/usr/include/");
+	test_uri_output ("/usr/share/data/foo.html");
+	test_uri_output ("foo.html");
+	test_uri_output ("/usr/share/data/.html");
+}
 
 int
 main (int argc, char** argv)
@@ -1020,16 +1032,7 @@ main (int argc, char** argv)
 
 	using Vec3d = test::math::vector3 <double>;
 
-	auto d1 = basic::uri ("/usr/share/data/foo/");
-	auto d2 = basic::uri ("/usr/include/");
-	auto f1 = basic::uri ("/usr/share/data/foo.html");
-	auto f2 = basic::uri ("foo.html");
-	auto f3 = basic::uri (".html");
-
-	__LOG__ << f1 << std::endl;
-	__LOG__ << f1 .basename () << std::endl;
-	__LOG__ << f1 .stem () << std::endl;
-	__LOG__ << f1 .extension () << std::endl;
+	test_uri ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

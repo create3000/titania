@@ -143,7 +143,7 @@ public:
 	{ }
 
 	///  Path constructor. Construct path from @a path and @a separator.
-	basic_path (const string_type & path, const StringT & separator);
+	basic_path (const string_type & path, const string_type & separator);
 
 	///  @name Assignment operator
 
@@ -282,9 +282,9 @@ public:
 	basic_path
 	parent () const;
 
-	///  Return relative path form this path to descendant.
+	///  Return relative path form this path to @a descendant.
 	basic_path
-	relative_path (const basic_path &) const;
+	relative_path (const basic_path & descendant) const;
 
 	///  Remove dot segments.
 	basic_path
@@ -336,7 +336,7 @@ private:
 };
 
 template <class StringT>
-basic_path <StringT>::basic_path (const StringT & path, const StringT & separator) :
+basic_path <StringT>::basic_path (const string_type & path, const string_type & separator) :
 		             m_array (),
 		         m_separator (separator),
 		 m_leading_separator (false),
