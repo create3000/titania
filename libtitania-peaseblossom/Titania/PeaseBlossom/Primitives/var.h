@@ -98,7 +98,6 @@ public:
 	}
 
 	///  Constructs new var.
-	constexpr
 	var (const UndefinedType &) :
 		pbOutputStreamObject (),
 		               value (),
@@ -106,7 +105,6 @@ public:
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const bool boolean) :
 		pbOutputStreamObject (),
 		               value ({ bool_ : boolean }),
@@ -114,13 +112,11 @@ public:
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const int32_t integer) :
 		var (double (integer))
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const uint32_t integer) :
 		var (double (integer))
 	{ }
@@ -132,13 +128,11 @@ public:
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const uint64_t integer) :
 		var (double (integer))
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const double number) :
 		pbOutputStreamObject (),
 		               value ({ number_ : number }),
@@ -146,7 +140,6 @@ public:
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const long double number) :
 		pbOutputStreamObject (),
 		               value ({ number_ : number }),
@@ -184,7 +177,6 @@ public:
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const std::nullptr_t) :
 		pbOutputStreamObject (),
 		               value (),
