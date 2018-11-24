@@ -353,7 +353,7 @@ basic_path <StringT>::basic_path (const string_type & path, const string_type & 
 		}
 	}
 
-	if (m_array .size () > 1)
+	if (m_array .size ())
 	{
 		if (m_array .back () .empty ())
 		{
@@ -569,6 +569,9 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 
 		ostream << path .back ();
 	}
+
+	if (path .leading_separator () and path .empty ())
+		return ostream;
 
 	if (path .trailing_separator ())
 		ostream << path .separator ();
