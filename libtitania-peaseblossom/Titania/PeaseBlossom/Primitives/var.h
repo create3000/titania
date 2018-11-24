@@ -122,7 +122,6 @@ public:
 	{ }
 
 	///  Constructs new var.
-	constexpr
 	var (const int64_t integer) :
 		var (double (integer))
 	{ }
