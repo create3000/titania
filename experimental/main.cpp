@@ -1042,6 +1042,19 @@ main (int argc, char** argv)
 
 	test_uri ();
 
+	auto p1 = basic::path ("/", "/");
+	auto p2 = basic::path ("//", "/");
+
+	__LOG__ << p1 << std::endl;
+	__LOG__ << p1 .remove_dot_segments () << std::endl;
+	__LOG__ << p1 .remove_dot_segments () .leading_separator () << std::endl;
+	__LOG__ << p1 .remove_dot_segments () .trailing_separator () << std::endl;
+
+	__LOG__ << p2 << std::endl;
+	__LOG__ << p2 .remove_dot_segments () << std::endl;
+	__LOG__ << p2 .remove_dot_segments () .leading_separator () << std::endl;
+	__LOG__ << p2 .remove_dot_segments () .trailing_separator () << std::endl;
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;

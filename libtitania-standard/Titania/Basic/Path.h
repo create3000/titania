@@ -486,9 +486,14 @@ basic_path <StringT>::remove_dot_segments () const
 
 		while (first not_eq end ())
 		{
-			if (*first == dot)
+			if (first -> empty ())
+			{
+				;
+			}
+			else if (*first == dot)
+			{
 				path .m_trailing_separator = true;
-
+			}
 			else if (*first == dots)
 			{
 				path .m_trailing_separator = true;
@@ -496,7 +501,6 @@ basic_path <StringT>::remove_dot_segments () const
 				if (path .size ())
 					path .m_array .pop_back ();
 			}
-
 			else
 			{
 				path .m_trailing_separator = false;
