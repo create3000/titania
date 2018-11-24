@@ -713,13 +713,13 @@ X3DExecutionContext::removeProtoDeclaration (const std::string & name)
 const ProtoDeclarationPtr &
 X3DExecutionContext::getProtoDeclaration (const std::string & name) const
 {
-	const auto iter = std::find_if (prototypes .cbegin (), prototypes .cend (),
+	const auto iter = std::find_if (prototypes .crbegin (), prototypes .crend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
 	});
 
-	if (iter == prototypes .end ())
+	if (iter == prototypes .crend ())
 		throw Error <INVALID_NAME> ("Proto declaration '" + name + "' not found.");
 
 	return *iter;
@@ -728,7 +728,7 @@ X3DExecutionContext::getProtoDeclaration (const std::string & name) const
 bool
 X3DExecutionContext::hasProtoDeclaration (const std::string & name) const
 {
-	return std::count_if (prototypes .cbegin (), prototypes .cend (),
+	return std::any_of (prototypes .cbegin (), prototypes .cend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
@@ -849,13 +849,13 @@ X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
 const ExternProtoDeclarationPtr &
 X3DExecutionContext::getExternProtoDeclaration (const std::string & name) const
 {
-	const auto iter = std::find_if (externProtos .cbegin (), externProtos .cend (),
+	const auto iter = std::find_if (externProtos .crbegin (), externProtos .crend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
 	});
 
-	if (iter == externProtos .end ())
+	if (iter == externProtos .crend ())
 		throw Error <INVALID_NAME> ("Extern proto declaration '" + name + "' not found.");
 
 	return *iter;
@@ -864,7 +864,7 @@ X3DExecutionContext::getExternProtoDeclaration (const std::string & name) const
 bool
 X3DExecutionContext::hasExternProtoDeclaration (const std::string & name) const
 {
-	return std::count_if (externProtos .cbegin (), externProtos .cend (),
+	return std::any_of (externProtos .cbegin (), externProtos .cend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
