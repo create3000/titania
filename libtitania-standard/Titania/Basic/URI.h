@@ -365,23 +365,23 @@ public:
 
 	///  Returns the full basename of this URI with extension.
 	string_type
-	basename () const;
+	basename () const
+	{ return m_path .basename (); }
 
 	///  Returns the basename of this URI without extension.
 	string_type
-	stem () const;
-
-	///  Returns the basename of this URI stript of @a extension_list.
-	string_type
-	stem (std::initializer_list <string_type> extension_list) const;
+	stem () const
+	{ return m_path .stem (); }
 
 	///  Adds @a extension to basename.
 	void
-	extension (const string_type & extension);
+	extension (const string_type & extension)
+	{ m_path .extension (extension); }
 
-	///  Returns the extension of this URI's filename.
+	///  Returns the extension of this URI's basename.
 	string_type
-	extension () const;
+	extension () const
+	{ return m_path .extension (); }
 
 	///  Adds the file sheme if uri is local and absolute.
 	basic_uri
@@ -798,67 +798,6 @@ basic_uri <StringT>::filename (const bool q) const
 }
 
 template <class StringT>
-typename basic_uri <StringT>::string_type
-basic_uri <StringT>::basename () const
-{
-	if (m_path .empty ())
-		return string_type ();
-
-	return m_path .back ();
-}
-
-template <class StringT>
-typename basic_uri <StringT>::string_type
-basic_uri <StringT>::stem () const
-{
-	return stem ({ extension () });
-}
-
-template <class StringT>
-typename basic_uri <StringT>::string_type
-basic_uri <StringT>::stem (std::initializer_list <string_type> extension_list) const
-{
-	const auto basename = this -> basename ();
-
-	if (is_file ())
-	{
-		if (basename .length ())
-		{
-			for (const auto & extension : extension_list)
-			{
-				if (basename != extension and basename .substr (basename .size () - extension .length (), extension .length ()) == extension)
-				{
-					return basename .substr (0, basename .size () - extension .length ());
-				}
-			}
-		}
-	}
-
-	return basename;
-}
-
-template <class StringT>
-void
-basic_uri <StringT>::extension (const string_type & extension)
-{
-	m_path   = path_type (path () + extension, string_type (1, Signs::Slash));
-	m_string = to_string ();
-}
-
-template <class StringT>
-typename basic_uri <StringT>::string_type
-basic_uri <StringT>::extension () const
-{
-	const auto basename = this -> basename ();
-	const auto dot      = basename .rfind (Signs::Dot);
-
-	if (dot not_eq string_type::npos and dot not_eq 0)
-		return basename .substr (dot);
-
-	return string_type ();
-}
-
-template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::add_file_scheme () const
 {
@@ -932,18 +871,18 @@ basic_uri <StringT>::to_string () const
 {
 	auto string = scheme ();
 
-	if (scheme () .length ())
+	if (scheme () .size ())
 		string += Signs::Colon;
 
 	string += hierarchy ();
 
-	if (query () .length ())
+	if (query () .size ())
 	{
 		string += Signs::QuestionMark;
 		string += query ();
 	}
 
-	if (fragment () .length ())
+	if (fragment () .size ())
 	{
 		string += Signs::NumberSign;
 		string += fragment ();
@@ -1020,7 +959,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 			break;
 	}
 
-	uri .m_local = uri .m_scheme == FileSchemeId or (not uri .m_scheme .length () and not (uri .m_host .length () || uri .m_port));
+	uri .m_local = uri .m_scheme == FileSchemeId or (not uri .m_scheme .size () and not (uri .m_host .size () || uri .m_port));
 }
 
 template <class StringT>
@@ -1053,7 +992,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 		return last;
 
 	if (last == string_type::npos)
-		last = string .length ();
+		last = string .size ();
 
 	auto       authority = string .substr (first, last - first);
 	const auto colon     = authority .find (Signs::Colon);
@@ -1061,7 +1000,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 	if (colon not_eq string_type::npos)
 	{
 		host (authority, 0, colon);
-		port (authority, colon + 1, authority .length ());
+		port (authority, colon + 1, authority .size ());
 	}
 	else
 		uri .m_host = Glib::uri_unescape_string (authority);
@@ -1104,7 +1043,7 @@ basic_uri <StringT>::parser::path (const size_type first) const
 	auto last = string .find_first_of (Signs::QuestionNumber, first, 2);
 
 	if (last == string_type::npos)
-		last = string .length ();
+		last = string .size ();
 
 	uri .m_path = path_type (Glib::uri_unescape_string (string .substr (first, last - first)), string_type (1, Signs::Slash));
 
@@ -1126,7 +1065,7 @@ basic_uri <StringT>::parser::query (const size_type first) const
 	auto last = string .find (Signs::NumberSign, first);
 
 	if (last == string_type::npos)
-		last = string .length ();
+		last = string .size ();
 
 	uri .m_query = string .substr (first, last - first);
 

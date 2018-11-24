@@ -986,35 +986,27 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector3 <Type> 
 void
 test_uri_output (const basic::uri & uri)
 {
-	__LOG__ << basic::uri ("http://a/b/c/d;p?q") .transform (uri) << std::endl;
+	__LOG__ << std::endl;
+	__LOG__ << uri << std::endl;
+	__LOG__ << uri .root () << std::endl;
+	__LOG__ << uri .base () << std::endl;
+	__LOG__ << uri .parent () << std::endl;
+	__LOG__ << uri .basename () << std::endl;
+	__LOG__ << uri .stem () << std::endl;
+	__LOG__ << uri .extension () << std::endl;
+
+	__LOG__ << basic::uri ("http://example.com/bah/foo.html") .transform (uri) << std::endl;
 }
 
 void
 test_uri ()
 {
-	test_uri_output ("g:h");
-	test_uri_output ("g");
-	test_uri_output ("./g");
-	test_uri_output ("g/");
-	test_uri_output ("/g");
-	test_uri_output ("//g");
-	test_uri_output ("?y");
-	test_uri_output ("g?y");
-	test_uri_output ("#s");
-	test_uri_output ("g#s");
-	test_uri_output ("g?y#s");
-	test_uri_output (";x");
-	test_uri_output ("g;x");
-	test_uri_output ("g;x?y#s");
-	test_uri_output ("");
-	test_uri_output (".");
-	test_uri_output ("./");
-	test_uri_output ("..");
-	test_uri_output ("../");
-	test_uri_output ("../g");
-	test_uri_output ("../..");
-	test_uri_output ("../../");
-	test_uri_output ("../../g");
+	test_uri_output (basic::uri ());
+	test_uri_output ("/usr/share/data/foo/");
+	test_uri_output ("/usr/include/");
+	test_uri_output ("/usr/share/data/foo.html");
+	test_uri_output ("foo.html");
+	test_uri_output ("/usr/share/data/.html");
 }
 
 int
@@ -1041,19 +1033,6 @@ main (int argc, char** argv)
 	using Vec3d = test::math::vector3 <double>;
 
 	test_uri ();
-
-	auto p1 = basic::path ("/", "/");
-	auto p2 = basic::path ("//", "/");
-
-	__LOG__ << p1 << std::endl;
-	__LOG__ << p1 .remove_dot_segments () << std::endl;
-	__LOG__ << p1 .remove_dot_segments () .leading_separator () << std::endl;
-	__LOG__ << p1 .remove_dot_segments () .trailing_separator () << std::endl;
-
-	__LOG__ << p2 << std::endl;
-	__LOG__ << p2 .remove_dot_segments () << std::endl;
-	__LOG__ << p2 .remove_dot_segments () .leading_separator () << std::endl;
-	__LOG__ << p2 .remove_dot_segments () .trailing_separator () << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

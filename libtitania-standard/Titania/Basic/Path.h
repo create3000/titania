@@ -282,6 +282,22 @@ public:
 	basic_path
 	parent () const;
 
+	///  Returns the full basename of this Path with extension.
+	string_type
+	basename () const;
+
+	///  Returns the basename of this Path without extension.
+	string_type
+	stem () const;
+
+	///  Adds @a extension to basename.
+	void
+	extension (const string_type & extension);
+
+	///  Returns the extension of this Path's basename.
+	string_type
+	extension () const;
+
 	///  Return relative path form this path to @a descendant.
 	basic_path
 	relative_path (const basic_path & descendant) const;
@@ -408,7 +424,7 @@ template <class StringT>
 basic_path <StringT>
 basic_path <StringT>::root () const
 {
-	return basic_path ({ }, separator (), true, false);
+	return basic_path ({ }, separator (), true, true);
 }
 
 template <class StringT>
@@ -440,6 +456,55 @@ basic_path <StringT>::parent () const
 			return basic_path (begin (), -- end (), separator (), leading_separator (), true);
 	}
 
+}
+
+template <class StringT>
+typename basic_path <StringT>::string_type
+basic_path <StringT>::basename () const
+{
+	if (empty ())
+		return string_type ();
+
+	return back ();
+}
+
+template <class StringT>
+typename basic_path <StringT>::string_type
+basic_path <StringT>::stem () const
+{
+	const auto basename = this -> basename ();
+
+	if (not trailing_separator () and basename .size ())
+	{
+		const auto extension = this -> extension ();
+
+		if (not extension .empty ())
+		{
+			return basename .substr (0, basename .size () - extension .size ());
+		}
+	}
+
+	return basename;
+}
+
+template <class StringT>
+void
+basic_path <StringT>::extension (const string_type & extension)
+{
+	*this = basic_path (str () + extension, separator ());
+}
+
+template <class StringT>
+typename basic_path <StringT>::string_type
+basic_path <StringT>::extension () const
+{
+	const auto basename = this -> basename ();
+	const auto dot      = basename .rfind (dots);
+
+	if (dot not_eq string_type::npos and dot not_eq 0)
+		return basename .substr (dot);
+
+	return string_type ();
 }
 
 template <class StringT>
