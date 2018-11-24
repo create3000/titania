@@ -417,7 +417,7 @@ X3DExecutionContext::isImportedNode (const SFNode & node) const
 
 	const auto count = std::count_if (importedNodes .cbegin (),
 	                                  importedNodes .cend (),
-	                                  [&] (const ImportedNodeIndex::value_type & pair)
+	[&] (const ImportedNodeIndex::value_type & pair)
 	{
 		try
 		{

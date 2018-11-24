@@ -237,7 +237,7 @@ public:
 	///  Returns true if this uri looks like a directory, i.e. it ends with a '/', otherwise false.
 	bool
 	is_directory () const
-	{ return m_path .trailing_separator (); }
+	{ return m_path .empty () ? is_network () : m_path .trailing_separator (); }
 
 	///  Returns true if this uri looks like a file, i.e. it is not a directory, otherwise false.
 	bool
