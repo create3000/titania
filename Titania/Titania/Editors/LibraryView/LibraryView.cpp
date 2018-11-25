@@ -108,8 +108,6 @@ LibraryView::configure ()
 void
 LibraryView::on_folder_clicked ()
 {
-	__LOG__ << std::endl;
-
 	getFoldersPopover () .popup ();
 }
 

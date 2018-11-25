@@ -93,12 +93,19 @@ ProtoDeclaration::copy (X3DExecutionContext* const executionContext, const CopyT
 	{
 		case CLONE:
 		{
-			ProtoDeclaration* const proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName (), AvailableType { }));
-
-			if (proto)
-				return proto;
-
-			[[fallthrough]];
+			try
+			{
+				ProtoDeclaration* const proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName (), AvailableType { }));
+	
+				if (proto)
+					return proto;
+			}
+			catch (const X3DError & error)
+			{
+				executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
+	
+				return const_cast <ProtoDeclaration*> (this);
+			}
 		}
 		case COPY_OR_CLONE:
 		{

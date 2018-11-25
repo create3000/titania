@@ -3186,6 +3186,7 @@
     <None Include="Titania\UserInterfaces\X3DPolygonColoringEditorInterface.h" />
     <None Include="Titania\Editors\PolygonColoringEditor\PolygonColoringEditor.h" />
     <None Include="share\titania\ui\Editors\PolygonColoringEditorPreview.x3dv" />
+    <None Include="share\titania\Library\Prototypes\Geometry2D\Star2D.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

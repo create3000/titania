@@ -98,12 +98,19 @@ ExternProtoDeclaration::copy (X3DExecutionContext* const executionContext, const
 	{
 		case CLONE:
 		{
-			ExternProtoDeclaration* const externproto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName (), AvailableType { }));
+			try
+			{
+				ExternProtoDeclaration* const externproto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName (), AvailableType { }));
+	
+				if (externproto)
+					return externproto;
+			}
+			catch (const X3DError & error)
+			{
+				executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
 
-			if (externproto)
-				return externproto;
-
-			[[fallthrough]];
+				return const_cast <ExternProtoDeclaration*> (this);
+			}
 		}
 		case COPY_OR_CLONE:
 		{
