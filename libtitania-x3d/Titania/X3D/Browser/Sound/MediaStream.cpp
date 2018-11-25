@@ -177,26 +177,26 @@ MediaStream::setUri (const basic::uri & uri)
 	{
 		basic::ifilestream istream (uri, 30'000);
 	
-		if (istream)
-		{
-			istream .send ();
+		if (not istream)
+			return;
+
+		istream .send ();
+
+		if (not istream)
+			return;
+
+		std::string tmpFilename = "/tmp/titania-XXXXXX" + uri .extension ();
+
+		::close (Glib::mkstemp (tmpFilename));
+
+		std::ofstream ofstream (tmpFilename);
+
+		ofstream << istream .rdbuf ();
 	
-			if (istream)
-			{
-				std::string tmpfilename = "/tmp/titania-XXXXXX.png";
-			
-				::close (Glib::mkstemp (tmpfilename));
+		player -> property_volume () = volume = 0;
+		player -> property_uri ()    = "file://" + tmpFilename;
 	
-				std::ofstream ofstream (tmpfilename);
-	
-				ofstream << istream .rdbuf ();
-			
-				player -> property_volume () = volume = 0;
-				player -> property_uri ()    = "file://" + tmpfilename;
-			
-				player -> set_state (Gst::STATE_PAUSED);
-			}
-		}
+		player -> set_state (Gst::STATE_PAUSED);
 	};
 
 	emitAudio     = true;

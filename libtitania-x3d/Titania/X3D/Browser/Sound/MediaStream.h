@@ -243,13 +243,13 @@ private:
 	std::shared_ptr <VideoFrame> currentFrame;
 	std::mutex                   frameMutex;
 
-	bool      emitAudio;
-	bool      emitVideo;
-	double    volume;
-	time_type speed;
-	bool      updateSpeed;
-	time_type duration;
-	bool      emitDuration;
+	std::atomic <bool>      emitAudio;
+	std::atomic <bool>      emitVideo;
+	std::atomic <double>    volume;
+	std::atomic <time_type> speed;
+	std::atomic <bool>      updateSpeed;
+	std::atomic <time_type> duration;
+	std::atomic <bool>      emitDuration;
 
 	Glib::Dispatcher audioChangedDispatcher;
 	Glib::Dispatcher videoChangedDispatcher;
