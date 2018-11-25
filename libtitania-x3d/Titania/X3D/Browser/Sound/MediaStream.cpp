@@ -576,6 +576,9 @@ MediaStream::flip (std::vector <uint8_t> & image, const int32_t width, const int
 
 MediaStream::~MediaStream ()
 {
+	if (thread)
+		thread -> join ();
+
 	player -> set_state (Gst::STATE_NULL);
 
 	if (xWindow)
