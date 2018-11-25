@@ -166,7 +166,7 @@ MediaStream::setup ()
 	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
 }
 
-bool
+void
 MediaStream::setUri (const basic::uri & uri)
 {
 	emitAudio     = true;
@@ -177,9 +177,8 @@ MediaStream::setUri (const basic::uri & uri)
 
 	player -> property_volume () = volume = 0;
 	player -> property_uri ()    = uri .str ();
-	player -> set_state (Gst::STATE_PAUSED);
 
-	return true;
+	player -> set_state (Gst::STATE_PAUSED);
 }
 
 basic::uri

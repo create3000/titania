@@ -106,7 +106,7 @@ public:
 
 	///  @name Member access
 
-	bool
+	void
 	setUri (const basic::uri & uri);
 
 	basic::uri
