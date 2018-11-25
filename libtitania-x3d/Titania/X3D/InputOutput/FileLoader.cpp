@@ -265,7 +265,7 @@ FileLoader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
 
 	const bool data = uri .scheme () == "data";
 
-	istream .open (data ? uri : referer .transform (uri), 30000);
+	istream .open (data ? uri : referer .transform (uri), 30'000);
 
 	if (istream)
 	{

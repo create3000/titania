@@ -67,6 +67,7 @@ extern "C"
 #include <X11/Xlib.h>
 }
 
+#include <thread>
 #include <atomic>
 #include <mutex>
 
@@ -234,6 +235,8 @@ private:
 
 	Glib::RefPtr <Player>    player;
 	Glib::RefPtr <VideoSink> vsink;
+
+	std::unique_ptr <std::thread> thread;
 
 	std::atomic <int32_t>        width;
 	std::atomic <int32_t>        height;

@@ -52,6 +52,9 @@
 
 #include "MediaStream.h"
 
+#include <Titania/Stream/InputFileStream.h>
+#include <glibmm.h>
+
 extern "C"
 {
 #include <gdk/gdkx.h>
@@ -75,6 +78,7 @@ MediaStream::MediaStream (const bool video) :
 	                  xWindow (0),
 	                   player (),
 	                    vsink (),
+	                   thread (),
 	                    width (-1),
 	                   height (-1),
 	             currentFrame (),
@@ -169,16 +173,42 @@ MediaStream::setup ()
 void
 MediaStream::setUri (const basic::uri & uri)
 {
+	const auto run = [&] (const basic::uri & uri)
+	{
+		basic::ifilestream istream (uri, 30'000);
+	
+		if (istream)
+		{
+			istream .send ();
+	
+			if (istream)
+			{
+				std::string tmpfilename = "/tmp/titania-XXXXXX.png";
+			
+				::close (Glib::mkstemp (tmpfilename));
+	
+				std::ofstream ofstream (tmpfilename);
+	
+				ofstream << istream .rdbuf ();
+			
+				player -> property_volume () = volume = 0;
+				player -> property_uri ()    = "file://" + tmpfilename;
+			
+				player -> set_state (Gst::STATE_PAUSED);
+			}
+		}
+	};
+
 	emitAudio     = true;
 	emitVideo     = true;
 	emitDuration  = true;
 
 	player -> set_state (Gst::STATE_NULL);
 
-	player -> property_volume () = volume = 0;
-	player -> property_uri ()    = uri .str ();
+	if (thread)
+		thread -> join ();
 
-	player -> set_state (Gst::STATE_PAUSED);
+	thread .reset (new std::thread (run, uri));
 }
 
 basic::uri
