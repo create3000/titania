@@ -335,8 +335,11 @@ private:
 
 	///  @name Static members
 
-	static const string_type dot;
-	static const string_type dots;
+	struct Signs
+	{
+		static const string_type Dot;
+		static const string_type Dots;
+	};
 
 	///  @name Members
 
@@ -438,7 +441,7 @@ basic_path <StringT>::parent () const
 			if (leading_separator ())
 				return root ();
 
-			return basic_path ({ dots }, separator (), false, false);
+			return basic_path ({ Signs::Dots }, separator (), false, false);
 		}
 
 		default:
@@ -488,7 +491,7 @@ typename basic_path <StringT>::string_type
 basic_path <StringT>::extension () const
 {
 	const auto basename = this -> basename ();
-	const auto dot      = basename .rfind (dots);
+	const auto dot      = basename .rfind (Signs::Dot);
 
 	if (dot not_eq string_type::npos and dot not_eq 0)
 		return basename .substr (dot);
@@ -517,13 +520,13 @@ basic_path <StringT>::relative_path (const basic_path & descendant) const
 	}
 
 	for (j = i, size = base_path .size (); j < size; ++ j)
-		path .m_array .emplace_back (dots);
+		path .m_array .emplace_back (Signs::Dots);
 
 	for (j = i, size = descendant_path .size (); j < size; ++ j)
 		path .m_array .emplace_back (descendant_path [j]);
 
 	if (path .m_array .empty ())
-		path .m_array .emplace_back (dot);
+		path .m_array .emplace_back (Signs::Dot);
 
 	return path;
 }
@@ -544,11 +547,11 @@ basic_path <StringT>::remove_dot_segments () const
 			{
 				;
 			}
-			else if (*first == dot)
+			else if (*first == Signs::Dot)
 			{
 				path .m_trailing_separator = true;
 			}
-			else if (*first == dots)
+			else if (*first == Signs::Dots)
 			{
 				path .m_trailing_separator = true;
 

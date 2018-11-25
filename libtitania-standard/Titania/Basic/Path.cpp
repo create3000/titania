@@ -54,10 +54,10 @@ namespace titania {
 namespace basic {
 
 template <>
-const std::string basic_path <std::string>::dot = ".";
+const std::string basic_path <std::string>::Signs::Dot = ".";
 
 template <>
-const std::string basic_path <std::string>::dots = "..";
+const std::string basic_path <std::string>::Signs::Dots = "..";
 
 //template <>
 //const std::wstring basic_path <std::wstring>::dot = L".";
