@@ -173,17 +173,20 @@ MediaStream::setup ()
 void
 MediaStream::setUri (const basic::uri & uri)
 {
-	const auto run = [&] (const basic::uri & uri)
+	const auto getTmpFileName = [ ] (const basic::uri & uri)
 	{
+		if (uri .is_local ())
+			return uri;
+
 		basic::ifilestream istream (uri, 30'000);
 	
 		if (not istream)
-			return;
+			return uri;
 
 		istream .send ();
 
 		if (not istream)
-			return;
+			return uri;
 
 		std::string tmpFilename = "/tmp/titania-XXXXXX" + uri .extension ();
 
@@ -192,23 +195,27 @@ MediaStream::setUri (const basic::uri & uri)
 		std::ofstream ofstream (tmpFilename);
 
 		ofstream << istream .rdbuf ();
-	
-		player -> property_volume () = volume = 0;
-		player -> property_uri ()    = "file://" + tmpFilename;
-	
-		player -> set_state (Gst::STATE_PAUSED);
+
+		return basic::uri ("file://" + tmpFilename);
 	};
 
-	emitAudio     = true;
-	emitVideo     = true;
-	emitDuration  = true;
+	emitAudio    = true;
+	emitVideo    = true;
+	emitDuration = true;
 
 	player -> set_state (Gst::STATE_NULL);
 
 	if (thread)
 		thread -> join ();
 
-	thread .reset (new std::thread (run, uri));
+	thread = std::make_unique <std::thread> ([&] (const basic::uri & uri)
+	{
+		player -> property_volume () = volume = 0;
+		player -> property_uri ()    = getTmpFileName (uri) .str ();
+
+		player -> set_state (Gst::STATE_PAUSED);
+	},
+	uri);
 }
 
 basic::uri
