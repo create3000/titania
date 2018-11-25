@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_SCENE_LOADER_H__
-#define __TITANIA_X3D_THREAD_SCENE_LOADER_H__
+#ifndef __TITANIA_X3D_THREAD_SCENE_FUTURE_H__
+#define __TITANIA_X3D_THREAD_SCENE_FUTURE_H__
 
 #include "../Fields.h"
 #include "../Types/Pointer.h"

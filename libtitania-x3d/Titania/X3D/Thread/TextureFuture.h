@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
-#define __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
+#ifndef __TITANIA_X3D_THREAD_TEXTURE_FUTURE_H__
+#define __TITANIA_X3D_THREAD_TEXTURE_FUTURE_H__
 
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/FileLoader.h"
