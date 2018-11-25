@@ -105,10 +105,10 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 
 		try
 		{
-			const std::string contentType = istream .response_headers () .at ("Content-Type");
+			const auto contentType = istream .response_headers () .at ("Content-Type");
 		
 			//__LOG__ << contentType << " : " << uri << std::endl;
-	
+
 			try
 			{
 				return contentTypes .at (contentType) (scene, uri, istream);

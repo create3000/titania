@@ -440,9 +440,9 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const M
 
 	// Convert to encoding.
 
-	basic::ifilestream stream (osstream .str ());
+	basic::ifilestream istream (osstream .str ());
 
-	const auto scene = browser -> createX3DFromStream (executionContext -> getWorldURL (), stream);
+	const auto scene = browser -> createX3DFromStream (executionContext -> getWorldURL (), istream);
 
 	return exportScene (scene, encoding);
 }
