@@ -89,7 +89,7 @@ public:
 		Glib::OptionEntry optionList;
 		Glib::OptionEntry optionHelp;
 
-		set_summary ("Titania is a X3D/VRML editor and browser for Ubuntu.");
+		set_summary ("Titania is a X3D/VRML editor and browser for the Linux operating system.");
 
 		Glib::OptionGroup mainGroup   ("common", "Common options",   "General options");
 		Glib::OptionGroup imageGroup  ("image",  "Image options",    "Image options");
