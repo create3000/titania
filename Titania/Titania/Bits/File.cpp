@@ -77,6 +77,15 @@ File::getContentType (const std::string & data)
 std::string
 File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName)
 {
+	static const std::map <std::string, std::string> titania = {
+		std::pair ("model-gltf+json",  "de.create3000.titania.model-gltf+json"),
+		std::pair ("model-vrml",       "de.create3000.titania.model-vrml"),
+		std::pair ("model-x3d+binary", "de.create3000.titania.model-x3d+binary"),
+		std::pair ("model-x3d+json",   "de.create3000.titania.model-x3d+json"),
+		std::pair ("model-x3d+vrml",   "de.create3000.titania.model-x3d+vrml"),
+		std::pair ("model-x3d+xml",    "de.create3000.titania.model-x3d+xml"),
+	};
+
 	const auto icon = Glib::RefPtr <Gio::ThemedIcon>::cast_dynamic (fileInfo -> get_icon ());
 
 	if (not icon)
@@ -90,7 +99,14 @@ File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::str
 	if (not names [0])
 		return defaultName;
 
-	return names [0];
+	try
+	{
+		return titania .at (names [0]);
+	}
+	catch (const std::out_of_range & error)
+	{
+		return names [0];
+	}
 }
 
 Glib::RefPtr <Gio::File>
