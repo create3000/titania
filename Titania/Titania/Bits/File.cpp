@@ -99,14 +99,12 @@ File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::str
 	if (not names [0])
 		return defaultName;
 
-	try
-	{
-		return titania .at (names [0]);
-	}
-	catch (const std::out_of_range & error)
-	{
-		return names [0];
-	}
+	const auto iter = titania .find (names [0]);
+
+	if (iter not_eq titania .end ())
+		return iter -> second;
+
+	return names [0];
 }
 
 Glib::RefPtr <Gio::File>
