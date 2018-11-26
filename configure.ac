@@ -71,7 +71,7 @@ LT_INIT
 
 
 dnl ***************************************************************************
-dnl Check for C++11 compiler support
+dnl Check for C++17 compiler support
 dnl ***************************************************************************
 
 if test x$ax_cxx_compile_cxx17_required = xtrue; then
