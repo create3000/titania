@@ -56,7 +56,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #pragma GCC diagnostic ignored "-Wignored-attributes"
-#include <jsapi.h>
+#include <js/jsapi.h>
 #pragma GCC diagnostic pop
 
 #include <iostream>

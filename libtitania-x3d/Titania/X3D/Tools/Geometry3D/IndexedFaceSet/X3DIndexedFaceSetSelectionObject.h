@@ -296,7 +296,7 @@ protected:
 	{
 
 		bool
-		operator () (const std::pair <size_t, size_t> & lhs, const std::pair <size_t, size_t> & rhs)
+		operator () (const std::pair <size_t, size_t> & lhs, const std::pair <size_t, size_t> & rhs) const
 		{
 			return std::minmax (lhs .first, lhs .second) < std::minmax (rhs .first, rhs .second);
 		}

@@ -709,7 +709,8 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \
-	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la
+	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la \
+	-lmozjs185
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_FTGL_CFLAGS) \
