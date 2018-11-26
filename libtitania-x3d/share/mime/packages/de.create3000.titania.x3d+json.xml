@@ -62,6 +62,9 @@
 		<expanded-acronym>Extensible 3D</expanded-acronym>
 		<generic-icon name="de.create3000.titania.model-x3d+json"/>
 		<sub-class-of type="application/json"/>
+		<magic priority="50">
+			<match type="string" offset="0:512" value="&quot;http://www.web3d.org/specifications/x3d-3.3-JSONSchema.json&quot;"/>
+		</magic>
 		<glob pattern="*.x3dj"/>
 	</mime-type>
 </mime-info>
