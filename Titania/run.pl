@@ -21,7 +21,8 @@ if (($min > 16 and $min < 20) or 0)
 	}
 }
 
-$ENV {PATH}            = "$SOLUTION_DIR/Titania/:$ENV{PATH}";
+$ENV {PATH}            = "$SOLUTION_DIR/Titania:$ENV{PATH}";
+$ENV {LD_LIBRARY_PATH} = "/usr/local/lib";
 $ENV {XDG_DATA_DIRS}   = "$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 $ENV {GDK_SYNCHRONIZE} = "1";
 
