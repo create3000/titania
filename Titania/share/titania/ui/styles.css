@@ -34,6 +34,10 @@
 
 /* Dialogs */
 
+box box headerbar {
+	border-radius: 0px;
+}
+
 .titania-header {
 	font-size: 120%;
 	font-weight: bold;

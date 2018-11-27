@@ -134,7 +134,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	{
 		Glib::RefPtr <Gtk::CssProvider> fileCssProvider = Gtk::CssProvider::create ();
 
-		fileCssProvider -> load_from_path (get_ui ("style.css"));
+		fileCssProvider -> load_from_path (get_ui ("styles.css"));
 
 		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), fileCssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 		Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider,     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
