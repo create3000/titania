@@ -256,10 +256,11 @@ private:
 
 	///  @name Members
 
+	static std::vector <Glib::RefPtr <Gio::File>>   clipboard;
+	static TransferAction                           clipboardAction;
+
 	std::set <std::string>                   rootFolders;
 	std::map <std::string, FolderElementPtr> folders;
-	std::vector <Glib::RefPtr <Gio::File>>   clipboard;
-	TransferAction                           clipboardAction;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
 
 };
@@ -273,12 +274,16 @@ public:
 };
 
 template <class Type>
+std::vector <Glib::RefPtr <Gio::File>> X3DFileBrowser <Type>::clipboard;
+
+template <class Type>
+typename X3DFileBrowser <Type>::TransferAction X3DFileBrowser <Type>::clipboardAction = TransferAction::COPY;
+
+template <class Type>
 X3DFileBrowser <Type>::X3DFileBrowser () :
 	           Type (),
 	    rootFolders (),
 	        folders (),
-	      clipboard (),
-	clipboardAction (TransferAction::COPY),
 	  scrollFreezer (new ScrollFreezer (getFileView ()))
 { }
 

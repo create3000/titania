@@ -186,10 +186,17 @@ Configuration::getString (const std::string & key) const
 }
 
 void
-Configuration::removeItem (const std::string & key) const
+Configuration::removeItem (const std::string & key)
 {
 	if (hasItem (key))
 		getKeyfile () -> remove_key (group, key);
+}
+
+void
+Configuration::remove ()
+{
+	if (getKeyfile () -> has_group (group))
+		getKeyfile () -> remove_group (group);
 }
 
 Configuration::~Configuration ()

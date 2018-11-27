@@ -372,6 +372,8 @@
     <Compile Include="Titania\Dialogs\FontChooserDialog\FontChooserDialog.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DPolygonColoringEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PolygonColoringEditor\PolygonColoringEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DProjectEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\ProjectsEditor\ProjectEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3187,6 +3189,9 @@
     <None Include="Titania\Editors\PolygonColoringEditor\PolygonColoringEditor.h" />
     <None Include="share\titania\ui\Editors\PolygonColoringEditorPreview.x3dv" />
     <None Include="share\titania\Library\Prototypes\Geometry2D\Star2D.x3dv" />
+    <None Include="Titania\UserInterfaces\X3DProjectEditorInterface.h" />
+    <None Include="Titania\Editors\ProjectsEditor\ProjectEditor.h" />
+    <None Include="share\titania\ui\Editors\ProjectEditor.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

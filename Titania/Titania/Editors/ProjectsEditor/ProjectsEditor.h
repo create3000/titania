@@ -52,17 +52,16 @@
 #define __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
 
 #include "../../UserInterfaces/X3DProjectsEditorInterface.h"
-#include "../../Editors/ProjectsEditor/X3DFileBrowser.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserWindow;
+class ProjectEditor;
 class ScrollFreezer;
 
 class ProjectsEditor :
-	virtual public X3DProjectsEditorInterface,
-	public X3DFileBrowser <X3DProjectsEditorInterface>
+	virtual public X3DProjectsEditorInterface
 {
 public:
 
@@ -92,197 +91,18 @@ private:
 
 	virtual
 	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	virtual
-	bool
-	on_focus_in_event (GdkEventFocus* event) final override;
-
-	virtual
-	bool
-	on_focus_out_event (GdkEventFocus* event) final override;
-
-	///  @name Project folders handling
-
-	virtual
-	void
 	on_add_project_clicked () final override;
-
-	virtual
-	void
-	on_remove_project_clicked () final override;
-
-	///  @name Menu handling
-
-	void
-	on_display_menu (GdkEventButton* event);
-
-	void
-	on_open_with_activate (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file);
-
-	///  @name Add file handling
-
-	virtual
-	void
-	on_import_activate () final override;
-
-	virtual
-	void
-	on_add_new_file_activate () final override;
-
-	virtual
-	void
-	on_create_file_changed () final override;
-
-	virtual
-	void
-	on_create_file_clicked () final override;
-
-	virtual
-	bool
-	on_create_file_key_press_event (GdkEventKey* event) final override;
-
-	Glib::RefPtr <Gio::File>
-	getNewFile () const;
-
-	virtual
-	void
-	on_add_files_activate () final override;
-
-	///  @name Add folder handling
-
-	virtual
-	void
-	on_add_new_folder_activate () final override;
-
-	virtual
-	void
-	on_create_folder_changed () final override;
-
-	virtual
-	void
-	on_create_folder_clicked () final override;
-
-	virtual
-	bool
-	on_create_folder_key_press_event (GdkEventKey* event) final override;
-
-	Glib::RefPtr <Gio::File>
-	getNewFolder () const;
-
-	virtual
-	void
-	on_add_existing_folder_activate () final override;
-
-	///  @name Rename item handling
-
-	virtual
-	void
-	on_rename_item_activate () final override;
-
-	virtual
-	void
-	on_rename_item_changed () final override;
-
-	virtual
-	void
-	on_rename_item_clicked () final override;
-
-	virtual
-	bool
-	on_rename_item_key_press_event (GdkEventKey* event) final override;
-
-	Glib::RefPtr <Gio::File>
-	getRenameDestination () const;
-
-	///  @name Clipboard handling
-
-	virtual
-	void
-	on_cut_item_activate () final override;
-
-	virtual
-	void
-	on_copy_item_activate () final override;
-
-	virtual
-	void
-	on_paste_into_folder_activate () final override;
-
-	///  @name Move to trash handling
-
-	virtual
-	void
-	on_move_to_trash_activate () final override;
-
-	void
-	on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file);
-
-	void
-	on_remove_file_activate (const Glib::RefPtr <Gio::File> & file);
-
-	///  @name Selection handling
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
-
-	virtual
-	void
-	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context,
-                     Gtk::SelectionData & selection_data,
-                     guint info,
-                     guint time) final override;
-
-	virtual
-	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-	                       int x, int y,
-	                       const Gtk::SelectionData & selection_data,
-	                       guint info,
-	                       guint time) final override;
-
-	void
-	on_drag_action_activate (const TransferAction action,
-	                         const std::vector <Glib::RefPtr <Gio::File>> & files,
-	                         const Glib::RefPtr <Gio::File> & folder);
-
-	TransferAction
-	getTransferAction (const Gdk::DragAction action);
-
-	virtual
-	void
-	on_selection_changed () final override;
-
-	void
-	set_execution_context ();
-
-	///  @name Misc operations
-
-	void
-	createOpenWithMenu (const Glib::RefPtr <Gio::File> & file);
-
-	void
-	createOpenWithMenuItem (const Glib::RefPtr <Gio::AppInfo> & appInfo, const Glib::RefPtr <Gio::File> & file);
-
-	void
-	launchFile (const Glib::RefPtr <Gio::File> & file);
-
-	bool
-	canOpenFile (const Glib::RefPtr <Gio::File> & file);
-
-	std::string
-	getFileName (const std::string & filename, const std::string & extension) const;
 	
-	std::string
-	getExtension (const int32_t type) const;
+	void
+	on_remove_project_clicked (const basic::uri & rootFolder);
 
-	Gdk::Rectangle
-	getRectangle (const Gtk::TreePath & path) const;
+	///  @name Operations
+
+	void
+	addRootFolder (const basic::uri & folder);
+
+	void
+	removeRootFolder (const basic::uri & folder);
 
 	///  @name Destruction
 
@@ -292,12 +112,8 @@ private:
 
 	///  @name Members
 
-	sigc::connection dragMoveConnection;
-	sigc::connection dragCopyConnection;
-	sigc::connection dragLinkConnection;
-
-	int32_t button;
-	bool    changing;
+	std::set <std::string>                                  rootFolders;
+	std::map <std::string, std::shared_ptr <ProjectEditor>> projectEditors;
 
 };
 

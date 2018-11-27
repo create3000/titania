@@ -177,6 +177,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \
 	Titania/Editors/ProjectsEditor/FileView.cpp \
+	Titania/Editors/ProjectsEditor/ProjectEditor.cpp \
 	Titania/Editors/ProjectsEditor/ProjectsEditor.cpp \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
@@ -262,6 +263,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DPanelMenuInterface.cpp \
 	Titania/UserInterfaces/X3DPolygonColoringEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrecisionPlacementPanelInterface.cpp \
+	Titania/UserInterfaces/X3DProjectEditorInterface.cpp \
 	Titania/UserInterfaces/X3DProjectsEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DRenderPanelInterface.cpp \

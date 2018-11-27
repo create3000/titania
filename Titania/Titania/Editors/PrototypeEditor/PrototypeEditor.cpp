@@ -92,8 +92,6 @@ PrototypeEditor::PrototypeEditor (X3DBrowserWindow* const browserWindow) :
 	urlNode -> hasEvents (false);
 	urlNode -> setup ();
 
-	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
-
 	setup ();
 }
 
@@ -112,6 +110,7 @@ PrototypeEditor::initialize ()
 
 	nodeIndex -> reparent (getInstancesBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
+	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
 
 	// 
 

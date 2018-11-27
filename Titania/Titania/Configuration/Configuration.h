@@ -83,10 +83,13 @@ public:
 	Type
 	getItem (const std::string & key, const Type & defaultValue = Type ()) const;
 
-	/// @name Remove configuration value
+	/// @name Remove group or configuration value
 
 	void
-	removeItem (const std::string & key) const;
+	removeItem (const std::string & key);
+
+	void
+	remove ();
 
 	///  @name Destruction
 

@@ -148,8 +148,6 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	getCopyButton ()  .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_C, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 	getPasteButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_V, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
-	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
-
 	setup ();
 }
 
@@ -172,6 +170,7 @@ AnimationEditor::initialize ()
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setAnimations ();
+	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
 
 	set_animation (nullptr);
 }

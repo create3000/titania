@@ -53,8 +53,6 @@
 
 #include "../Base/X3DEditorInterface.h"
 
-#include "../Editors/ProjectsEditor/FileView.h"
-
 #include <gtkmm.h>
 #include <string>
 
@@ -91,114 +89,6 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
-	const Glib::RefPtr <Gtk::AccelGroup> &
-	getAccelGroup () const
-	{ return m_AccelGroup; }
-
-	const Glib::RefPtr <Gtk::TreeStore> &
-	getFileStore () const
-	{ return m_FileStore; }
-
-	const Glib::RefPtr <Gtk::TreeSelection> &
-	getFileSelection () const
-	{ return m_FileSelection; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getFileColumn () const
-	{ return m_FileColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getIconRenderer () const
-	{ return m_IconRenderer; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getNameRenderer () const
-	{ return m_NameRenderer; }
-
-	Gtk::Dialog &
-	getAddFilesDialog () const
-	{ return *m_AddFilesDialog; }
-
-	Gtk::Button &
-	getCancelButton1 () const
-	{ return *m_CancelButton1; }
-
-	Gtk::Button &
-	getOkButton1 () const
-	{ return *m_OkButton1; }
-
-	Gtk::HeaderBar &
-	getAddFilesHeaderBar () const
-	{ return *m_AddFilesHeaderBar; }
-
-	Gtk::Label &
-	getCopyFilesLabel () const
-	{ return *m_CopyFilesLabel; }
-
-	Gtk::RadioButton &
-	getCopyFilesButton () const
-	{ return *m_CopyFilesButton; }
-
-	Gtk::RadioButton &
-	getMoveFilesButton () const
-	{ return *m_MoveFilesButton; }
-
-	Gtk::RadioButton &
-	getLinkFilesButton () const
-	{ return *m_LinkFilesButton; }
-
-	Gtk::Dialog &
-	getAddFolderDialog () const
-	{ return *m_AddFolderDialog; }
-
-	Gtk::Button &
-	getCancelButton () const
-	{ return *m_CancelButton; }
-
-	Gtk::Button &
-	getOkButton () const
-	{ return *m_OkButton; }
-
-	Gtk::HeaderBar &
-	getAddFolderHeaderBar () const
-	{ return *m_AddFolderHeaderBar; }
-
-	Gtk::Label &
-	getCopyFolderLabel () const
-	{ return *m_CopyFolderLabel; }
-
-	Gtk::RadioButton &
-	getCopyFolderButton () const
-	{ return *m_CopyFolderButton; }
-
-	Gtk::RadioButton &
-	getMoveFolderButton () const
-	{ return *m_MoveFolderButton; }
-
-	Gtk::RadioButton &
-	getLinkFolderButton () const
-	{ return *m_LinkFolderButton; }
-
-	Gtk::Menu &
-	getDragActionMenu () const
-	{ return *m_DragActionMenu; }
-
-	Gtk::MenuItem &
-	getDragMoveMenuItem () const
-	{ return *m_DragMoveMenuItem; }
-
-	Gtk::MenuItem &
-	getDragCopyMenuItem () const
-	{ return *m_DragCopyMenuItem; }
-
-	Gtk::MenuItem &
-	getDragLinkMenuItem () const
-	{ return *m_DragLinkMenuItem; }
-
-	Gtk::MenuItem &
-	getDragCancelMenuItem () const
-	{ return *m_DragCancelMenuItem; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -219,10 +109,6 @@ public:
 	getAddProjectButton () const
 	{ return *m_AddProjectButton; }
 
-	Gtk::Button &
-	getRemoveProjectButton () const
-	{ return *m_RemoveProjectButton; }
-
 	Gtk::Box &
 	getFilesBox () const
 	{ return *m_FilesBox; }
@@ -231,235 +117,15 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	FileView &
-	getFileView () const
-	{ return *m_FileView; }
-
-	Gtk::Popover &
-	getCreateFilePopover () const
-	{ return *m_CreateFilePopover; }
-
-	Gtk::ComboBoxText &
-	getCreateFileTypeButton () const
-	{ return *m_CreateFileTypeButton; }
-
-	Gtk::Entry &
-	getCreateFileEntry () const
-	{ return *m_CreateFileEntry; }
-
-	Gtk::Button &
-	getCreateFileButton () const
-	{ return *m_CreateFileButton; }
-
-	Gtk::Popover &
-	getCreateFolderPopover () const
-	{ return *m_CreateFolderPopover; }
-
-	Gtk::Entry &
-	getCreateFolderEntry () const
-	{ return *m_CreateFolderEntry; }
-
-	Gtk::Button &
-	getCreateFolderButton () const
-	{ return *m_CreateFolderButton; }
-
-	Gtk::Popover &
-	getRenameItemPopover () const
-	{ return *m_RenameItemPopover; }
-
-	Gtk::Label &
-	getRenameItemLabel () const
-	{ return *m_RenameItemLabel; }
-
-	Gtk::Entry &
-	getRenameItemEntry () const
-	{ return *m_RenameItemEntry; }
-
-	Gtk::Button &
-	getRenameItemButton () const
-	{ return *m_RenameItemButton; }
-
-	Gtk::Menu &
-	getContextMenu () const
-	{ return *m_ContextMenu; }
-
-	Gtk::ImageMenuItem &
-	getOpenWithMenuItem () const
-	{ return *m_OpenWithMenuItem; }
-
-	Gtk::Menu &
-	getOpenWithMenu () const
-	{ return *m_OpenWithMenu; }
-
-	Gtk::ImageMenuItem &
-	getImportMenuItem () const
-	{ return *m_ImportMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getAddItemMenuItem () const
-	{ return *m_AddItemMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getAddNewFileMenuItem () const
-	{ return *m_AddNewFileMenuItem; }
-
-	Gtk::MenuItem &
-	getAddFilesMenuItem () const
-	{ return *m_AddFilesMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getAddNewFolderMenuItem () const
-	{ return *m_AddNewFolderMenuItem; }
-
-	Gtk::MenuItem &
-	getAddExistingFolderMenuItem () const
-	{ return *m_AddExistingFolderMenuItem; }
-
-	Gtk::SeparatorMenuItem &
-	getFileSeparatorMenuItem () const
-	{ return *m_FileSeparatorMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getRenameItemMenuItem () const
-	{ return *m_RenameItemMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getCutItemMenuItem () const
-	{ return *m_CutItemMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getCopyItemMenuItem () const
-	{ return *m_CopyItemMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getPasteIntoFolderMenuItem () const
-	{ return *m_PasteIntoFolderMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getMoveToTrashMenuItem () const
-	{ return *m_MoveToTrashMenuItem; }
+	Gtk::Box &
+	getProjectsBox () const
+	{ return *m_ProjectsBox; }
 
 	///  @name Signal handlers
 
 	virtual
 	void
-	on_map () = 0;
-
-	virtual
-	void
-	on_unmap () = 0;
-
-	virtual
-	void
 	on_add_project_clicked () = 0;
-
-	virtual
-	void
-	on_remove_project_clicked () = 0;
-
-	virtual
-	void
-	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context, Gtk::SelectionData & selection_data, guint info, guint time) = 0;
-
-	virtual
-	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const Gtk::SelectionData & selection_data, guint info, guint time) = 0;
-
-	virtual
-	bool
-	on_focus_in_event (GdkEventFocus* focus_event) = 0;
-
-	virtual
-	bool
-	on_focus_out_event (GdkEventFocus* gdk_event) = 0;
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
-
-	virtual
-	bool
-	on_test_expand_row (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) = 0;
-
-	virtual
-	void
-	on_selection_changed () = 0;
-
-	virtual
-	void
-	on_create_file_changed () = 0;
-
-	virtual
-	bool
-	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_create_file_clicked () = 0;
-
-	virtual
-	void
-	on_create_folder_changed () = 0;
-
-	virtual
-	bool
-	on_create_folder_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_create_folder_clicked () = 0;
-
-	virtual
-	void
-	on_rename_item_changed () = 0;
-
-	virtual
-	bool
-	on_rename_item_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_rename_item_clicked () = 0;
-
-	virtual
-	void
-	on_import_activate () = 0;
-
-	virtual
-	void
-	on_add_new_file_activate () = 0;
-
-	virtual
-	void
-	on_add_files_activate () = 0;
-
-	virtual
-	void
-	on_add_new_folder_activate () = 0;
-
-	virtual
-	void
-	on_add_existing_folder_activate () = 0;
-
-	virtual
-	void
-	on_rename_item_activate () = 0;
-
-	virtual
-	void
-	on_cut_item_activate () = 0;
-
-	virtual
-	void
-	on_copy_item_activate () = 0;
-
-	virtual
-	void
-	on_paste_into_folder_activate () = 0;
-
-	virtual
-	void
-	on_move_to_trash_activate () = 0;
 
 	///  @name Destruction
 
@@ -485,68 +151,14 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
-	Glib::RefPtr <Gtk::TreeStore> m_FileStore;
-	Glib::RefPtr <Gtk::TreeSelection> m_FileSelection;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_FileColumn;
-	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
-	Glib::RefPtr <Gtk::CellRendererText> m_NameRenderer;
-	Gtk::Dialog* m_AddFilesDialog;
-	Gtk::Button* m_CancelButton1;
-	Gtk::Button* m_OkButton1;
-	Gtk::HeaderBar* m_AddFilesHeaderBar;
-	Gtk::Label* m_CopyFilesLabel;
-	Gtk::RadioButton* m_CopyFilesButton;
-	Gtk::RadioButton* m_MoveFilesButton;
-	Gtk::RadioButton* m_LinkFilesButton;
-	Gtk::Dialog* m_AddFolderDialog;
-	Gtk::Button* m_CancelButton;
-	Gtk::Button* m_OkButton;
-	Gtk::HeaderBar* m_AddFolderHeaderBar;
-	Gtk::Label* m_CopyFolderLabel;
-	Gtk::RadioButton* m_CopyFolderButton;
-	Gtk::RadioButton* m_MoveFolderButton;
-	Gtk::RadioButton* m_LinkFolderButton;
-	Gtk::Menu* m_DragActionMenu;
-	Gtk::MenuItem* m_DragMoveMenuItem;
-	Gtk::MenuItem* m_DragCopyMenuItem;
-	Gtk::MenuItem* m_DragLinkMenuItem;
-	Gtk::MenuItem* m_DragCancelMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_ButtonBox;
 	Gtk::Button* m_AddProjectButton;
-	Gtk::Button* m_RemoveProjectButton;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	FileView* m_FileView;
-	Gtk::Popover* m_CreateFilePopover;
-	Gtk::ComboBoxText* m_CreateFileTypeButton;
-	Gtk::Entry* m_CreateFileEntry;
-	Gtk::Button* m_CreateFileButton;
-	Gtk::Popover* m_CreateFolderPopover;
-	Gtk::Entry* m_CreateFolderEntry;
-	Gtk::Button* m_CreateFolderButton;
-	Gtk::Popover* m_RenameItemPopover;
-	Gtk::Label* m_RenameItemLabel;
-	Gtk::Entry* m_RenameItemEntry;
-	Gtk::Button* m_RenameItemButton;
-	Gtk::Menu* m_ContextMenu;
-	Gtk::ImageMenuItem* m_OpenWithMenuItem;
-	Gtk::Menu* m_OpenWithMenu;
-	Gtk::ImageMenuItem* m_ImportMenuItem;
-	Gtk::ImageMenuItem* m_AddItemMenuItem;
-	Gtk::ImageMenuItem* m_AddNewFileMenuItem;
-	Gtk::MenuItem* m_AddFilesMenuItem;
-	Gtk::ImageMenuItem* m_AddNewFolderMenuItem;
-	Gtk::MenuItem* m_AddExistingFolderMenuItem;
-	Gtk::SeparatorMenuItem* m_FileSeparatorMenuItem;
-	Gtk::ImageMenuItem* m_RenameItemMenuItem;
-	Gtk::ImageMenuItem* m_CutItemMenuItem;
-	Gtk::ImageMenuItem* m_CopyItemMenuItem;
-	Gtk::ImageMenuItem* m_PasteIntoFolderMenuItem;
-	Gtk::ImageMenuItem* m_MoveToTrashMenuItem;
+	Gtk::Box* m_ProjectsBox;
 
 };
 
