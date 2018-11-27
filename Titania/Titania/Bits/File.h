@@ -74,7 +74,7 @@ public:
 
 	static
 	std::string
-	getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName);
+	getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo);
 
 	static
 	bool

@@ -51,6 +51,7 @@
 #include "File.h"
 
 #include <Titania/String.h>
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
@@ -75,36 +76,13 @@ File::getContentType (const std::string & data)
 }
 
 std::string
-File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo, const std::string & defaultName)
+File::getIconName (const Glib::RefPtr <Gio::FileInfo> & fileInfo)
 {
-	static const std::map <std::string, std::string> titania = {
-		std::pair ("model-gltf+json",  "de.create3000.titania.model-gltf+json"),
-		std::pair ("model-vrml",       "de.create3000.titania.model-vrml"),
-		std::pair ("model-x3d+binary", "de.create3000.titania.model-x3d+binary"),
-		std::pair ("model-x3d+json",   "de.create3000.titania.model-x3d+json"),
-		std::pair ("model-x3d+vrml",   "de.create3000.titania.model-x3d+vrml"),
-		std::pair ("model-x3d+xml",    "de.create3000.titania.model-x3d+xml"),
-	};
+	const auto iconInfo = Gtk::IconTheme::get_default () -> lookup_icon (fileInfo -> get_icon (), 16);
+   const auto filename = basic::uri (iconInfo .get_filename ());
+	const auto iconName = filename .stem ();
 
-	const auto icon = Glib::RefPtr <Gio::ThemedIcon>::cast_dynamic (fileInfo -> get_icon ());
-
-	if (not icon)
-		return defaultName;
-
-	const auto names = g_themed_icon_get_names (icon -> gobj ());
-
-	if (not names)
-		return defaultName;
-
-	if (not names [0])
-		return defaultName;
-
-	const auto iter = titania .find (names [0]);
-
-	if (iter not_eq titania .end ())
-		return iter -> second;
-
-	return names [0];
+	return iconName;
 }
 
 Glib::RefPtr <Gio::File>

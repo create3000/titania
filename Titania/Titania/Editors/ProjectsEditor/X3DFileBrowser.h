@@ -238,7 +238,7 @@ private:
 	addChildren (const Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & folder);
 
 	void
-	addChild (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon);
+	addChild (const Gtk::TreeModel::iterator & iter, const Glib::RefPtr <Gio::File> & file);
 
 	void
 	removeChildren (const Gtk::TreeIter & iter);
@@ -722,7 +722,7 @@ X3DFileBrowser <Type>::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
 					const auto child = folder -> get_child (fileInfo -> get_name ());
 					const auto iter  = getFileStore () -> append ();
 	
-					addChild (iter, child, "gtk-file");
+					addChild (iter, child);
 					continue;
 				}
 				default:
@@ -780,7 +780,7 @@ void
 X3DFileBrowser <Type>::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder)
 {
 	addFolder (folder);
-	addChild (iter, folder, "gtk-directory");
+	addChild (iter, folder);
 
 	if (File::hasChildren (folder))
 		getFileStore () -> append (iter -> children ());
@@ -830,7 +830,7 @@ X3DFileBrowser <Type>::addChildren (const Gtk::TreeIter & parentIter, const Glib
 					const auto child = folder -> get_child (fileInfo -> get_name ());
 					const auto iter  = getFileStore () -> append (parentIter -> children ());
 
-					addChild (iter, child, "gtk-file");
+					addChild (iter, child);
 					continue;
 				}
 				default:
@@ -846,7 +846,7 @@ X3DFileBrowser <Type>::addChildren (const Gtk::TreeIter & parentIter, const Glib
 
 template <class Type>
 void
-X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file, const std::string & defaultIcon)
+X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
 {
 	const auto fileInfo = file -> query_info ();
 	const auto uri      = basic::uri (file -> get_uri ());
@@ -854,7 +854,7 @@ X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr 
 	if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY and not uri .is_local ())
 		iter -> set_value (Columns::ICON, std::string ("folder-remote"));
 	else
-		iter -> set_value (Columns::ICON, File::getIconName (file -> query_info (), defaultIcon));
+		iter -> set_value (Columns::ICON, File::getIconName (fileInfo));
 
 	if (uri .is_local () or not rootFolders .count (file -> get_path ()))
 		iter -> set_value (Columns::NAME, file -> get_basename ());

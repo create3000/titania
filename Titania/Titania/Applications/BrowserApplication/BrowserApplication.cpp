@@ -76,6 +76,8 @@ BrowserApplication::main (int argc, char** argv)
 		<< std::endl;
 	#endif
 
+	//Glib::setenv ("GTK_THEME", "Adwaita:dark");
+
 	{ BrowserApplication (argc, argv) .run (); }
 
 	#ifdef TITANIA_DEBUG

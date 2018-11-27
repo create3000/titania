@@ -168,7 +168,7 @@ X3DBaseFileSaveDialog::on_update_preview ()
 		{
 			const auto url = getPreviewUrl ();
 
-			getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info (), "gtk-file"), iconSize);
+			getPreviewImage () .set_from_icon_name (File::getIconName (file -> query_info ()), iconSize);
 			getPreviewName () .set_text (url .basename ());
 		}
 		else
