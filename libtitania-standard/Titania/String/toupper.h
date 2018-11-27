@@ -58,7 +58,7 @@ namespace basic {
 
 template <class CharT, class Traits = std::char_traits <CharT>> 
 std::basic_string <CharT>
-toupper (const std::basic_string <CharT> & string, const std::locale & locale)
+toupper (const std::basic_string <CharT> & string, const std::locale & locale = std::locale (""))
 {
 	auto result = string;
 

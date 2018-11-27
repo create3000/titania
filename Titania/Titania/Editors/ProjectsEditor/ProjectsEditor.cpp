@@ -87,9 +87,15 @@ ProjectsEditor::configure ()
 {
 	X3DProjectsEditorInterface::configure ();
 
-	const auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
+	auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
-	for (const auto & folder : projects)
+	std::sort (projects .begin (), projects .end (),
+	[ ] (const X3D::String & lhs, const X3D::String & rhs)
+	{
+		return basic::tolower (basic::uri (lhs) .basename ()) < basic::tolower (basic::uri (rhs) .basename ());
+	});
+
+	for (const auto & folder : basic::make_const_range (projects))
 		addRootFolder (folder .raw ());
 }
 
