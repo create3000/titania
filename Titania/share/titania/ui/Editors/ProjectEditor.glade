@@ -373,9 +373,172 @@
       <action-widget response="-5">OkButton</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkMenu" id="DragActionMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="DragMoveMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Move Here</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="DragCopyMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Copy Here</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="DragLinkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Link Here</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separator">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="DragCancelMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Cancel</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkTreeStore" id="FileStore">
+    <columns>
+      <!-- column-name Icon -->
+      <column type="gchararray"/>
+      <!-- column-name Name -->
+      <column type="gchararray"/>
+      <!-- column-name Path -->
+      <column type="gchararray"/>
+      <!-- column-name Sensitive -->
+      <column type="gboolean"/>
+    </columns>
+  </object>
+  <object class="GtkWindow" id="Window">
+    <property name="can_focus">False</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox" id="Widget">
+        <property name="name">ProjectEditor</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
+        <child>
+          <object class="GtkHeaderBar" id="HeaderBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_subtitle">False</property>
+            <child>
+              <object class="GtkLabel" id="Title">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">folder</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="RemoveProjectButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Remove project from Projects Editor.</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-remove</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkTreeView" id="FileView.FileView">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="model">FileStore</property>
+            <property name="headers_visible">False</property>
+            <property name="headers_clickable">False</property>
+            <property name="rules_hint">True</property>
+            <property name="search_column">1</property>
+            <signal name="drag-data-get" handler="on_drag_data_get" swapped="no"/>
+            <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="row-activated" handler="on_row_activated" swapped="no"/>
+            <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="FileSelection">
+                <property name="mode">multiple</property>
+                <signal name="changed" handler="on_selection_changed" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="FileColumn">
+                <property name="resizable">True</property>
+                <property name="sizing">autosize</property>
+                <property name="title" translatable="yes">File</property>
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
+                  <attributes>
+                    <attribute name="sensitive">3</attribute>
+                    <attribute name="icon-name">0</attribute>
+                  </attributes>
+                </child>
+                <child>
+                  <object class="GtkCellRendererText" id="NameRenderer"/>
+                  <attributes>
+                    <attribute name="sensitive">3</attribute>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkPopover" id="CreateFilePopover">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
+    <property name="relative_to">FileView.FileView</property>
     <property name="position">left</property>
     <property name="constrain_to">none</property>
     <child>
@@ -469,6 +632,7 @@
   <object class="GtkPopover" id="CreateFolderPopover">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
+    <property name="relative_to">FileView.FileView</property>
     <property name="position">left</property>
     <property name="constrain_to">none</property>
     <child>
@@ -539,172 +703,10 @@
       </object>
     </child>
   </object>
-  <object class="GtkMenu" id="DragActionMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="DragMoveMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Move Here</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="DragCopyMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Copy Here</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="DragLinkMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Link Here</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="separator">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="DragCancelMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Cancel</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-  </object>
-  <object class="GtkTreeStore" id="FileStore">
-    <columns>
-      <!-- column-name Icon -->
-      <column type="gchararray"/>
-      <!-- column-name Name -->
-      <column type="gchararray"/>
-      <!-- column-name Path -->
-      <column type="gchararray"/>
-      <!-- column-name Sensitive -->
-      <column type="gboolean"/>
-    </columns>
-  </object>
-  <object class="GtkWindow" id="Window">
-    <property name="can_focus">False</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <object class="GtkBox" id="Widget">
-        <property name="name">ProjectEditor</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <signal name="map" handler="on_map" swapped="no"/>
-        <signal name="unmap" handler="on_unmap" swapped="no"/>
-        <child>
-          <object class="GtkHeaderBar" id="HeaderBar">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="has_subtitle">False</property>
-            <child>
-              <object class="GtkLabel" id="Title">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">folder</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="RemoveProjectButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Remove project from Projects Editor.</property>
-                <signal name="clicked" handler="on_remove_project_clicked" swapped="no"/>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="stock">gtk-remove</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkTreeView" id="FileView.FileView">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="model">FileStore</property>
-            <property name="headers_visible">False</property>
-            <property name="headers_clickable">False</property>
-            <property name="rules_hint">True</property>
-            <property name="search_column">1</property>
-            <signal name="drag-data-get" handler="on_drag_data_get" swapped="no"/>
-            <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
-            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-            <signal name="row-activated" handler="on_row_activated" swapped="no"/>
-            <signal name="test-expand-row" handler="on_test_expand_row" swapped="no"/>
-            <child internal-child="selection">
-              <object class="GtkTreeSelection" id="FileSelection">
-                <property name="mode">multiple</property>
-                <signal name="changed" handler="on_selection_changed" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="FileColumn">
-                <property name="resizable">True</property>
-                <property name="sizing">autosize</property>
-                <property name="title" translatable="yes">File</property>
-                <child>
-                  <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
-                  <attributes>
-                    <attribute name="sensitive">3</attribute>
-                    <attribute name="icon-name">0</attribute>
-                  </attributes>
-                </child>
-                <child>
-                  <object class="GtkCellRendererText" id="NameRenderer"/>
-                  <attributes>
-                    <attribute name="sensitive">3</attribute>
-                    <attribute name="text">1</attribute>
-                  </attributes>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkPopover" id="RenameItemPopover">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
+    <property name="relative_to">FileView.FileView</property>
     <property name="position">left</property>
     <property name="constrain_to">none</property>
     <child>
