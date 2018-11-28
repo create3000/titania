@@ -95,12 +95,6 @@ private:
 	void
 	on_window_removed (Gtk::Window* window) final override;
 
-	void
-	set_python_path ();
-
-	std::string
-	execute (const std::string & command) const;
-
 };
 
 } // puck

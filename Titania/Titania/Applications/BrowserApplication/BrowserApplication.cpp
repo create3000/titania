@@ -65,8 +65,6 @@ BrowserApplication::BrowserApplication (int & argc, char** & argv) :
 	     X3DDBusInterface ()
 {
 	Glib::set_application_name ("Titania");
-
-	set_python_path ();
 }
 
 int
@@ -117,27 +115,6 @@ void
 BrowserApplication::on_window_removed (Gtk::Window* window)
 {
 	quit ();
-}
-
-void
-BrowserApplication::set_python_path ()
-{
-	auto pythonpath = Glib::getenv ("PYTHONPATH");
-
-	if (pythonpath .size ())
-		pythonpath = ':' + pythonpath;
-
-	Glib::setenv ("PYTHONPATH", basic::trim (execute ("python3 -m site --user-site")) + pythonpath);
-}
-
-std::string
-BrowserApplication::execute (const std::string & command)
-{
-	std::string stdout;
-
-	Glib::spawn_command_line_sync (command, &stdout);
-
-	return stdout;
 }
 
 BrowserApplication::~BrowserApplication ()
