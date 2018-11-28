@@ -54,8 +54,6 @@
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/String.h>
-
 namespace titania {
 namespace puck {
 
