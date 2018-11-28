@@ -388,7 +388,6 @@
     <None Include="Titania\UserInterfaces\X3DConsoleInterface.h" />
     <None Include="Titania\UserInterfaces\X3DMotionBlurEditorInterface.h" />
     <None Include="Titania\UserInterfaces\X3DOutlineEditorInterface.h" />
-    <None Include="config\history.db" />
     <None Include="Titania\Browser\X3DBrowserEditor.h" />
     <None Include="share\titania\ui\icons\FlyViewer.svg" />
     <None Include="share\titania\ui\icons\WalkViewer.svg" />
@@ -900,8 +899,6 @@
     <None Include="share\titania\Library\Prototypes\Fields\SFVec3f.x3dv" />
     <None Include="share\titania\Library\Prototypes\Fields\SFVec4d.x3dv" />
     <None Include="share\titania\Library\Prototypes\Fields\SFVec4f.x3dv" />
-    <None Include="scripts\Components.pl" />
-    <None Include="scripts\Materials.pl" />
     <None Include="share\titania\Library\Prototypes\Navigation\TrackingViewpoint.x3dv" />
     <None Include="share\titania\Library\Prototypes\Widgets\Button.x3dv" />
     <None Include="share\titania\Library\Prototypes\Widgets\CheckButton.x3dv" />
@@ -1285,7 +1282,6 @@
     <None Include="share\titania\ui\icons\MustEvaluate.svg" />
     <None Include="share\titania\ui\icons\FragmentShader.svg" />
     <None Include="share\titania\ui\icons\VertexShader.svg" />
-    <None Include="scripts\ConvertPrototypes.pl" />
     <None Include="share\titania\Prototypes\0.1\Engines\Rotor.x3d" />
     <None Include="share\titania\Prototypes\0.1\Fields\MFBool.x3d" />
     <None Include="share\titania\Prototypes\0.1\Fields\MFColor.x3d" />
@@ -1449,10 +1445,8 @@
     <None Include="share\titania\ui\Editors\TextureEditor.glade" />
     <None Include="share\titania\ui\Editors\ViewpointEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.h" />
-    <None Include="scripts\LibraryURLs.pl" />
     <None Include="share\titania\Library\CubeMapTextures\LostValley.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\CloudySky.x3dv" />
-    <None Include="scripts\Library\Textures.pl" />
     <None Include="share\titania\Library\Textures\Animal\barkbase.x3dv" />
     <None Include="share\titania\Library\Textures\Animal\bear.x3dv" />
     <None Include="share\titania\Library\Textures\Animal\beastfur.x3dv" />
@@ -1724,9 +1718,6 @@
     <None Include="share\titania\Library\Textures\Textiles\weave.bw.x3dv" />
     <None Include="share\titania\Library\Textures\Textiles\wool.bw.x3dv" />
     <None Include="share\titania\Library\Textures\Textiles\wooly.bw.x3dv" />
-    <None Include="scripts\Library\Models.pl" />
-    <None Include="scripts\Library\CubeMapTextures.pl" />
-    <None Include="scripts\Library\CubeMapTextures-Geometry.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\SpaceSky.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-back.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-bottom.x3dv" />
@@ -1734,7 +1725,6 @@
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-left.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-right.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-top.x3dv" />
-    <None Include="scripts\Library\Fields.pl" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.h" />
     <None Include="share\titania\Library\CubeMapTextures\WideOcean.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\Interstellar.x3dv" />
@@ -2210,7 +2200,6 @@
     <None Include="share\titania\Library\Components\Texturing3D\.Titania\TextureTransformMatrix3D" />
     <None Include="share\titania\Library\Components\Time\TimeSensor.x3dv" />
     <None Include="share\titania\Library\Components\Time\.Titania\TimeSensor" />
-    <None Include="scripts\Library\Components.pl" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\ImageCubeMapTexture" />
     <None Include="share\titania\Library\Components\Grouping\.Titania\TransformMatrix3D" />
     <None Include="share\titania\Library\Components\ParticleSystems\.Titania\BoundedPhysicsModel" />
@@ -2330,7 +2319,6 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DHeightMapEditor.h" />
     <None Include="share\titania\ui\icons\Rought.svg" />
     <None Include="share\titania\ui\icons\Smooth.svg" />
-    <None Include="scripts\Library\Tools.pl" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsPatchSurfaceEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsTrimmedSurfaceEditor.h" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPatchSurface" />
@@ -3192,6 +3180,7 @@
     <None Include="Titania\UserInterfaces\X3DProjectEditorInterface.h" />
     <None Include="Titania\Editors\ProjectsEditor\ProjectEditor.h" />
     <None Include="share\titania\ui\Editors\ProjectEditor.glade" />
+    <None Include="assets\colors.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3208,7 +3197,6 @@
     <Folder Include="share\pixmaps\" />
     <Folder Include="share\menu\" />
     <Folder Include="Titania\" />
-    <Folder Include="config\" />
     <Folder Include="share\titania\Library\" />
     <Folder Include="share\titania\Library\Materials\Artdeco\" />
     <Folder Include="share\titania\Library\Materials\Autumn\" />
@@ -3229,7 +3217,6 @@
     <Folder Include="share\titania\fonts\pt-sans\" />
     <Folder Include="share\titania\Library\Prototypes\Geometry2D\" />
     <Folder Include="share\titania\ui\icons\unused\" />
-    <Folder Include="scripts\" />
     <Folder Include="share\titania\ui\Dialogs\" />
     <Folder Include="share\titania\Library\Prototypes\Grouping\" />
     <Folder Include="share\titania\Library\Prototypes\Fields\" />
@@ -3259,7 +3246,6 @@
     <Folder Include="share\titania\units\" />
     <Folder Include="share\titania\ui\icons\Faenza\22\" />
     <Folder Include="Titania\Editors\PrototypeEditor\" />
-    <Folder Include="scripts\Library\" />
     <Folder Include="share\titania\Library\Textures\" />
     <Folder Include="share\titania\Library\CubeMapTextures\" />
     <Folder Include="share\titania\Library\Backgrounds\" />
@@ -3365,6 +3351,7 @@
     <Folder Include="Titania\Dialogs\FontChooserDialog\" />
     <Folder Include="share\titania\Library\Primitives\Geospatial\" />
     <Folder Include="Titania\Editors\PolygonColoringEditor\" />
+    <Folder Include="assets\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

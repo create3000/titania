@@ -81,48 +81,28 @@ protected:
 
 	///  @name Operations
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	print (Args && ... args)
 	{ append ({ }, std::forward <Args> (args) ...); }
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	log (Args && ... args)
 	{ append ({ "blue" }, std::forward <Args> (args) ...); }
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	warn (Args && ... args)
 	{ append ({ "yellow" }, std::forward <Args> (args) ...); }
 
-	template <typename ... Args>
+	template <class ... Args>
 	void
 	error (Args && ... args)
 	{ append ({ "red" }, std::forward <Args> (args) ...); }
 
 
 private:
-
-	///  @name Operations
-
-	template <typename ... Args>
-	void
-	append (const std::vector <Glib::ustring> & tags, Args && ... args);
-
-	template <typename First, typename ... Args>
-	void
-	append (std::ostringstream & osstream, First && first, Args && ... args);
-
-	void
-	append (std::ostringstream & osstream)
-	{ }
-
-	void
-	push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string);
-
-	Gdk::Color
-	getColor (const std::string & value) const;
 
 	///  @name Event handlers
 
@@ -136,14 +116,22 @@ private:
 	void
 	on_vadjustment_value_changed ();
 
+	///  @name Operations
+
+	template <class ... Args>
+	void
+	append (const std::vector <Glib::ustring> & tags, Args && ... args);
+
+	void
+	push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string);
+
 	///  @name Members
 
 	bool scrollToEnd;
 
 };
 
-template <typename ... Args>
-inline
+template <class ... Args>
 void
 X3DConsole::append (const std::vector <Glib::ustring> & tags, Args && ... args)
 {
@@ -151,18 +139,9 @@ X3DConsole::append (const std::vector <Glib::ustring> & tags, Args && ... args)
 
 	osstream .imbue (std::locale::classic ());
 
-	append (osstream, std::forward <Args> (args) ...);
-	push (tags, Glib::ustring (osstream .str ()));
-}
+	(osstream << ... << std::forward <Args> (args));
 
-template <typename First, typename ... Args>
-inline
-void
-X3DConsole::append (std::ostringstream & osstream, First && first, Args && ... args)
-{
-	osstream << first;
-
-	append (osstream, std::forward <Args> (args) ...);
+	push (tags, osstream .str ());
 }
 
 } // puck

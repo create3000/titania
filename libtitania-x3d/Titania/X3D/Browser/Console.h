@@ -153,7 +153,6 @@ private:
 };
 
 template <class ... Args>
-inline
 void
 Console::append (const std::string & tag, Args && ... args)
 {

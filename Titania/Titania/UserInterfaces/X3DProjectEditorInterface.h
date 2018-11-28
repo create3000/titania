@@ -179,34 +179,6 @@ public:
 	getLinkFolderButton () const
 	{ return *m_LinkFolderButton; }
 
-	Gtk::Popover &
-	getCreateFilePopover () const
-	{ return *m_CreateFilePopover; }
-
-	Gtk::ComboBoxText &
-	getCreateFileTypeButton () const
-	{ return *m_CreateFileTypeButton; }
-
-	Gtk::Entry &
-	getCreateFileEntry () const
-	{ return *m_CreateFileEntry; }
-
-	Gtk::Button &
-	getCreateFileButton () const
-	{ return *m_CreateFileButton; }
-
-	Gtk::Popover &
-	getCreateFolderPopover () const
-	{ return *m_CreateFolderPopover; }
-
-	Gtk::Entry &
-	getCreateFolderEntry () const
-	{ return *m_CreateFolderEntry; }
-
-	Gtk::Button &
-	getCreateFolderButton () const
-	{ return *m_CreateFolderButton; }
-
 	Gtk::Menu &
 	getDragActionMenu () const
 	{ return *m_DragActionMenu; }
@@ -250,6 +222,34 @@ public:
 	FileView &
 	getFileView () const
 	{ return *m_FileView; }
+
+	Gtk::Popover &
+	getCreateFilePopover () const
+	{ return *m_CreateFilePopover; }
+
+	Gtk::ComboBoxText &
+	getCreateFileTypeButton () const
+	{ return *m_CreateFileTypeButton; }
+
+	Gtk::Entry &
+	getCreateFileEntry () const
+	{ return *m_CreateFileEntry; }
+
+	Gtk::Button &
+	getCreateFileButton () const
+	{ return *m_CreateFileButton; }
+
+	Gtk::Popover &
+	getCreateFolderPopover () const
+	{ return *m_CreateFolderPopover; }
+
+	Gtk::Entry &
+	getCreateFolderEntry () const
+	{ return *m_CreateFolderEntry; }
+
+	Gtk::Button &
+	getCreateFolderButton () const
+	{ return *m_CreateFolderButton; }
 
 	Gtk::Popover &
 	getRenameItemPopover () const
@@ -331,30 +331,6 @@ public:
 
 	virtual
 	void
-	on_create_file_changed () = 0;
-
-	virtual
-	bool
-	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_create_file_clicked () = 0;
-
-	virtual
-	void
-	on_create_folder_changed () = 0;
-
-	virtual
-	bool
-	on_create_folder_key_press_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_create_folder_clicked () = 0;
-
-	virtual
-	void
 	on_map () = 0;
 
 	virtual
@@ -392,6 +368,30 @@ public:
 	virtual
 	void
 	on_selection_changed () = 0;
+
+	virtual
+	void
+	on_create_file_changed () = 0;
+
+	virtual
+	bool
+	on_create_file_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_create_file_clicked () = 0;
+
+	virtual
+	void
+	on_create_folder_changed () = 0;
+
+	virtual
+	bool
+	on_create_folder_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_create_folder_clicked () = 0;
 
 	virtual
 	void
@@ -491,13 +491,6 @@ private:
 	Gtk::RadioButton* m_CopyFolderButton;
 	Gtk::RadioButton* m_MoveFolderButton;
 	Gtk::RadioButton* m_LinkFolderButton;
-	Gtk::Popover* m_CreateFilePopover;
-	Gtk::ComboBoxText* m_CreateFileTypeButton;
-	Gtk::Entry* m_CreateFileEntry;
-	Gtk::Button* m_CreateFileButton;
-	Gtk::Popover* m_CreateFolderPopover;
-	Gtk::Entry* m_CreateFolderEntry;
-	Gtk::Button* m_CreateFolderButton;
 	Gtk::Menu* m_DragActionMenu;
 	Gtk::MenuItem* m_DragMoveMenuItem;
 	Gtk::MenuItem* m_DragCopyMenuItem;
@@ -509,6 +502,13 @@ private:
 	Gtk::Label* m_Title;
 	Gtk::Button* m_RemoveProjectButton;
 	FileView* m_FileView;
+	Gtk::Popover* m_CreateFilePopover;
+	Gtk::ComboBoxText* m_CreateFileTypeButton;
+	Gtk::Entry* m_CreateFileEntry;
+	Gtk::Button* m_CreateFileButton;
+	Gtk::Popover* m_CreateFolderPopover;
+	Gtk::Entry* m_CreateFolderEntry;
+	Gtk::Button* m_CreateFolderButton;
 	Gtk::Popover* m_RenameItemPopover;
 	Gtk::Label* m_RenameItemLabel;
 	Gtk::Entry* m_RenameItemEntry;

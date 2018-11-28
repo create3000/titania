@@ -102,13 +102,6 @@ X3DProjectEditorInterface::create ()
 	m_builder -> get_widget ("CopyFolderButton", m_CopyFolderButton);
 	m_builder -> get_widget ("MoveFolderButton", m_MoveFolderButton);
 	m_builder -> get_widget ("LinkFolderButton", m_LinkFolderButton);
-	m_builder -> get_widget ("CreateFilePopover", m_CreateFilePopover);
-	m_builder -> get_widget ("CreateFileTypeButton", m_CreateFileTypeButton);
-	m_builder -> get_widget ("CreateFileEntry", m_CreateFileEntry);
-	m_builder -> get_widget ("CreateFileButton", m_CreateFileButton);
-	m_builder -> get_widget ("CreateFolderPopover", m_CreateFolderPopover);
-	m_builder -> get_widget ("CreateFolderEntry", m_CreateFolderEntry);
-	m_builder -> get_widget ("CreateFolderButton", m_CreateFolderButton);
 	m_builder -> get_widget ("DragActionMenu", m_DragActionMenu);
 	m_builder -> get_widget ("DragMoveMenuItem", m_DragMoveMenuItem);
 	m_builder -> get_widget ("DragCopyMenuItem", m_DragCopyMenuItem);
@@ -120,6 +113,13 @@ X3DProjectEditorInterface::create ()
 	m_builder -> get_widget ("Title", m_Title);
 	m_builder -> get_widget ("RemoveProjectButton", m_RemoveProjectButton);
 	m_builder -> get_widget_derived ("FileView.FileView", m_FileView);
+	m_builder -> get_widget ("CreateFilePopover", m_CreateFilePopover);
+	m_builder -> get_widget ("CreateFileTypeButton", m_CreateFileTypeButton);
+	m_builder -> get_widget ("CreateFileEntry", m_CreateFileEntry);
+	m_builder -> get_widget ("CreateFileButton", m_CreateFileButton);
+	m_builder -> get_widget ("CreateFolderPopover", m_CreateFolderPopover);
+	m_builder -> get_widget ("CreateFolderEntry", m_CreateFolderEntry);
+	m_builder -> get_widget ("CreateFolderButton", m_CreateFolderButton);
 	m_builder -> get_widget ("RenameItemPopover", m_RenameItemPopover);
 	m_builder -> get_widget ("RenameItemLabel", m_RenameItemLabel);
 	m_builder -> get_widget ("RenameItemEntry", m_RenameItemEntry);
@@ -140,20 +140,6 @@ X3DProjectEditorInterface::create ()
 	m_builder -> get_widget ("PasteIntoFolderMenuItem", m_PasteIntoFolderMenuItem);
 	m_builder -> get_widget ("MoveToTrashMenuItem", m_MoveToTrashMenuItem);
 
-	// Connect object Gtk::Entry with id 'CreateFileEntry'.
-	m_CreateFileEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_file_changed));
-	m_CreateFileEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_file_key_press_event), false);
-
-	// Connect object Gtk::Button with id 'CreateFileButton'.
-	m_CreateFileButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_file_clicked));
-
-	// Connect object Gtk::Entry with id 'CreateFolderEntry'.
-	m_CreateFolderEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_folder_changed));
-	m_CreateFolderEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_folder_key_press_event), false);
-
-	// Connect object Gtk::Button with id 'CreateFolderButton'.
-	m_CreateFolderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_folder_clicked));
-
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_unmap));
@@ -171,6 +157,20 @@ X3DProjectEditorInterface::create ()
 
 	// Connect object Gtk::TreeSelection with id 'FileSelection'.
 	m_FileSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_selection_changed));
+
+	// Connect object Gtk::Entry with id 'CreateFileEntry'.
+	m_CreateFileEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_file_changed));
+	m_CreateFileEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_file_key_press_event), false);
+
+	// Connect object Gtk::Button with id 'CreateFileButton'.
+	m_CreateFileButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_file_clicked));
+
+	// Connect object Gtk::Entry with id 'CreateFolderEntry'.
+	m_CreateFolderEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_folder_changed));
+	m_CreateFolderEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_folder_key_press_event), false);
+
+	// Connect object Gtk::Button with id 'CreateFolderButton'.
+	m_CreateFolderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_create_folder_clicked));
 
 	// Connect object Gtk::Entry with id 'RenameItemEntry'.
 	m_RenameItemEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DProjectEditorInterface::on_rename_item_changed));

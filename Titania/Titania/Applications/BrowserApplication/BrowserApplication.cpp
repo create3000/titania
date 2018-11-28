@@ -54,6 +54,8 @@
 #include "../../Browser/BrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/String.h>
+
 namespace titania {
 namespace puck {
 
@@ -63,6 +65,8 @@ BrowserApplication::BrowserApplication (int & argc, char** & argv) :
 	     X3DDBusInterface ()
 {
 	Glib::set_application_name ("Titania");
+
+	set_python_path ();
 }
 
 int
@@ -75,8 +79,6 @@ BrowserApplication::main (int argc, char** argv)
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;
 	#endif
-
-	//Glib::setenv ("GTK_THEME", "Adwaita:dark");
 
 	{ BrowserApplication (argc, argv) .run (); }
 
@@ -115,6 +117,27 @@ void
 BrowserApplication::on_window_removed (Gtk::Window* window)
 {
 	quit ();
+}
+
+void
+BrowserApplication::set_python_path ()
+{
+	auto pythonpath = Glib::getenv ("PYTHONPATH");
+
+	if (pythonpath .size ())
+		pythonpath = ':' + pythonpath;
+
+	Glib::setenv ("PYTHONPATH", basic::trim (execute ("python3 -m site --user-site")) + pythonpath);
+}
+
+std::string
+BrowserApplication::execute (const std::string & command)
+{
+	std::string stdout;
+
+	Glib::spawn_command_line_sync (command, &stdout);
+
+	return stdout;
 }
 
 BrowserApplication::~BrowserApplication ()

@@ -1020,3 +1020,5 @@ Image::query_tooltip
   virtual bool on_query_tooltip(int x, int y, bool keyboard_mode, const Glib::RefPtr<Gtk::Tooltip>& tooltip);
 FileChooserDialog::update_preview
   virtual void on_update_preview();
+TextView::style_updated
+  virtual void on_style_updated();

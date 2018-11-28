@@ -463,6 +463,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Remove project from Projects Editor.</property>
+                <signal name="clicked" handler="on_remove_project_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>

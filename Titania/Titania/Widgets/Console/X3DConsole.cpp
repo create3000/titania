@@ -77,42 +77,14 @@ X3DConsole::setup ()
 	const auto greenTag  = getTextBuffer () -> create_tag ("green");
 
 	redTag    -> property_foreground_set () = true;
-	redTag    -> property_foreground_gdk () = getColor ("#e06c75");
 	yellowTag -> property_foreground_set () = true;
-	yellowTag -> property_foreground_gdk () = getColor ("#e5c07b");
 	blueTag   -> property_foreground_set () = true;
-	blueTag   -> property_foreground_gdk () = getColor ("#61afef");
 	greenTag  -> property_foreground_set () = true;
-	greenTag  -> property_foreground_gdk () = getColor ("#98c379");
-}
 
-void
-X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string)
-{
-	// Append.
-
-	getTextBuffer () -> insert_with_tags_by_name (getTextBuffer () -> end (), string, tags);
-
-	// Erase.
-
-	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
-	{
-		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
-
-		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
-	}
-
-	on_scroll_to_end ();
-}
-
-Gdk::Color
-X3DConsole::getColor (const std::string & value) const
-{
-	auto color = Gdk::Color ();
-
-	color .set (value);
-
-	return color;
+	redTag    -> property_foreground_gdk () = Gdk::Color ("#e06c75");
+	yellowTag -> property_foreground_gdk () = Gdk::Color ("#e5c07b");
+	blueTag   -> property_foreground_gdk () = Gdk::Color ("#61afef");
+	greenTag  -> property_foreground_gdk () = Gdk::Color ("#98c379");
 }
 
 void
@@ -153,6 +125,25 @@ X3DConsole::on_vadjustment_value_changed ()
 	{
 		scrollToEnd = false;
 	}
+}
+
+void
+X3DConsole::push (const std::vector <Glib::ustring> & tags, const Glib::ustring & string)
+{
+	// Append.
+
+	getTextBuffer () -> insert_with_tags_by_name (getTextBuffer () -> end (), string, tags);
+
+	// Erase.
+
+	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
+	{
+		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
+
+		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
+	}
+
+	on_scroll_to_end ();
 }
 
 X3DConsole::~X3DConsole ()
