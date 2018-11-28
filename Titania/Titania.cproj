@@ -3181,6 +3181,7 @@
     <None Include="Titania\Editors\ProjectsEditor\ProjectEditor.h" />
     <None Include="share\titania\ui\Editors\ProjectEditor.glade" />
     <None Include="assets\colors.svg" />
+    <None Include="Titania\Bits\Colors.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

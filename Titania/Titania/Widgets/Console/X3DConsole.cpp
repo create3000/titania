@@ -50,6 +50,8 @@
 
 #include "Console.h"
 
+#include "../../Bits/Colors.h"
+
 #include <Titania/String.h>
 
 namespace titania {
@@ -81,10 +83,10 @@ X3DConsole::setup ()
 	blueTag   -> property_foreground_set () = true;
 	greenTag  -> property_foreground_set () = true;
 
-	redTag    -> property_foreground_gdk () = Gdk::Color ("#e06c75");
-	yellowTag -> property_foreground_gdk () = Gdk::Color ("#e5c07b");
-	blueTag   -> property_foreground_gdk () = Gdk::Color ("#61afef");
-	greenTag  -> property_foreground_gdk () = Gdk::Color ("#98c379");
+	redTag    -> property_foreground () = Colors::red;
+	yellowTag -> property_foreground () = Colors::yellow;
+	blueTag   -> property_foreground () = Colors::blue;
+	greenTag  -> property_foreground () = Colors::green;
 }
 
 void

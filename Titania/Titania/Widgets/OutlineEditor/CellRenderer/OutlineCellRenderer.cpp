@@ -50,6 +50,7 @@
 
 #include "OutlineCellRenderer.h"
 
+#include "../../../Bits/Colors.h"
 #include "../../../Browser/IconFactory.h"
 #include "../../../Browser/X3DBrowserWindow.h"
 #include "../../../Configuration/config.h"
@@ -1184,6 +1185,29 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		{
 			x     += NAME_X_PAD;
 			width -= NAME_X_PAD;
+
+			if (treeView -> get_colorize_tree_view ())
+			{
+				if (property_foreground_set ())
+				{
+					property_foreground_rgba () = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+				}
+				else
+				{
+					switch (data_type)
+					{
+						case OutlineIterType::X3DFieldValue:
+							property_foreground_rgba () = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+							break;
+						case OutlineIterType::X3DField:
+							property_foreground () = Colors::orange;
+							break;
+						default:
+							property_foreground () = Colors::blue;
+							break;
+					}
+				}
+			}
 
 			const Gdk::Rectangle cell_area (x, y, width, height);
 			Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);

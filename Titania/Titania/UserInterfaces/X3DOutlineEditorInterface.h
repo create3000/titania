@@ -382,6 +382,10 @@ public:
 	{ return *m_ExpandInlineNodesMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getColorizeTreeViewMenuItem () const
+	{ return *m_ColorizeTreeViewMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getUseLocaleMenuItem () const
 	{ return *m_UseLocaleMenuItem; }
 
@@ -577,6 +581,10 @@ public:
 
 	virtual
 	void
+	on_colorize_tree_view_menu_item_toggled () = 0;
+
+	virtual
+	void
 	on_use_locale_menu_item_toggled () = 0;
 
 	///  @name Destruction
@@ -676,6 +684,7 @@ private:
 	Gtk::CheckMenuItem* m_ExpandExternProtosMenuItem;
 	Gtk::CheckMenuItem* m_ExpandPrototypeInstancesMenuItem;
 	Gtk::CheckMenuItem* m_ExpandInlineNodesMenuItem;
+	Gtk::CheckMenuItem* m_ColorizeTreeViewMenuItem;
 	Gtk::CheckMenuItem* m_UseLocaleMenuItem;
 
 };

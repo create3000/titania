@@ -337,6 +337,10 @@ private:
 
 	virtual
 	void
+	on_colorize_tree_view_menu_item_toggled () final override;
+
+	virtual
+	void
 	on_use_locale_menu_item_toggled () final override;
 
 	///  @name Operations

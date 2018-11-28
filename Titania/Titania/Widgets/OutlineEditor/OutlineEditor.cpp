@@ -123,7 +123,8 @@ OutlineEditor::initialize ()
 	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () -> getItem <bool> ("expandPrototypeInstances", true));
 	getExpandInlineNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("expandInlineNodes",        true));
 
-	getUseLocaleMenuItem () .set_active (getConfig () -> getItem <bool> ("useLocale", true));
+	getColorizeTreeViewMenuItem () .set_active (getConfig () -> getItem <bool> ("colorizeTreeView", true));
+	getUseLocaleMenuItem ()        .set_active (getConfig () -> getItem <bool> ("useLocale",        true));
 
 	getCurrentScene ()   .addInterest (&OutlineEditor::set_scene, this);
 	getCurrentContext () .addInterest (&OutlineEditor::set_executionContext, this);
@@ -1446,6 +1447,13 @@ OutlineEditor::on_expand_inline_nodes_toggled ()
 	getConfig () -> setItem ("expandInlineNodes", getExpandInlineNodesMenuItem () .get_active ());
 	treeView -> set_expand_inline_nodes (getExpandInlineNodesMenuItem () .get_active ());
 	set_executionContext ();
+}
+
+void
+OutlineEditor::on_colorize_tree_view_menu_item_toggled ()
+{
+	getConfig () -> setItem ("colorizeTreeView", getColorizeTreeViewMenuItem () .get_active ());
+	treeView -> set_colorize_tree_view (getColorizeTreeViewMenuItem () .get_active ());
 }
 
 void

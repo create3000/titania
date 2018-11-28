@@ -153,6 +153,7 @@ X3DOutlineEditorInterface::create ()
 	m_builder -> get_widget ("ExpandExternProtosMenuItem", m_ExpandExternProtosMenuItem);
 	m_builder -> get_widget ("ExpandPrototypeInstancesMenuItem", m_ExpandPrototypeInstancesMenuItem);
 	m_builder -> get_widget ("ExpandInlineNodesMenuItem", m_ExpandInlineNodesMenuItem);
+	m_builder -> get_widget ("ColorizeTreeViewMenuItem", m_ColorizeTreeViewMenuItem);
 	m_builder -> get_widget ("UseLocaleMenuItem", m_UseLocaleMenuItem);
 
 	// Connect object Gtk::Box with id 'Widget'.
@@ -217,6 +218,7 @@ X3DOutlineEditorInterface::create ()
 	m_ExpandExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_expand_extern_protos_toggled));
 	m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled));
 	m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled));
+	m_ColorizeTreeViewMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_colorize_tree_view_menu_item_toggled));
 	m_UseLocaleMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_use_locale_menu_item_toggled));
 }
 

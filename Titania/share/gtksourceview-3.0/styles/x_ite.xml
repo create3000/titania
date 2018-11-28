@@ -32,11 +32,11 @@
   <!-- Palette -->
   <color name="black"      value="#000000"/>
   <color name="white"      value="#abb2bf"/>
-  <color name="blue"       value="#61afef"/>
+  <color name="blue"       value="#4ba4ed"/>
   <color name="red"        value="#e06c75"/>
   <color name="cyan"       value="#6ce0dd"/>
   <color name="green"      value="#98c379"/>
-  <color name="orange"     value="#d19a66"/>
+  <color name="orange"     value="#c88648"/>
   <color name="magenta"    value="#ba32a2"/>
   <color name="yellow"     value="#e5c07b"/>
   <color name="violet"     value="#c678dd"/>

@@ -827,6 +827,16 @@
               </object>
             </child>
             <child>
+              <object class="GtkCheckMenuItem" id="ColorizeTreeViewMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Colorize Tree View</property>
+                <property name="use_underline">True</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="on_colorize_tree_view_menu_item_toggled" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkCheckMenuItem" id="UseLocaleMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

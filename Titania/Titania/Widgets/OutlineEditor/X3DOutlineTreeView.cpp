@@ -93,6 +93,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	      expandExternProtos (false),
 	expandPrototypeInstances (false),
 	       expandInlineNodes (false),
+	        colorizeTreeView (true),
 	               useLocale (true),
 	           scrollFreezer (new ScrollFreezer (this)),
 	         rootNodesBuffer ()
@@ -150,12 +151,18 @@ X3DOutlineTreeView::on_style_updated ()
 	const auto selectedForegroundColor = get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 	const auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
-	cellrenderer -> property_foreground_rgba ()      = selectedForegroundColor;
-	cellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
-
+	cellrenderer    -> property_foreground_rgba ()      = selectedForegroundColor;
+	cellrenderer    -> property_cell_background_rgba () = selectedBackgroundColor;
 	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DOutlineTreeView::queue_draw));
+}
+
+void
+X3DOutlineTreeView::set_colorize_tree_view (const bool value)
+{
+	colorizeTreeView = value;
+	queue_draw ();
 }
 
 void

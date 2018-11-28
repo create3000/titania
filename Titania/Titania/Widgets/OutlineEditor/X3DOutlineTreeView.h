@@ -155,7 +155,14 @@ public:
 	{ return expandInlineNodes; }
 
 	void
-	set_use_locale (const bool);
+	set_colorize_tree_view (const bool value);
+
+	bool
+	get_colorize_tree_view () const
+	{ return colorizeTreeView; }
+
+	void
+	set_use_locale (const bool value);
 
 	bool
 	get_use_locale () const
@@ -353,6 +360,7 @@ private:
 	bool expandExternProtos;
 	bool expandPrototypeInstances;
 	bool expandInlineNodes;
+	bool colorizeTreeView;
 	bool useLocale;
 
 	std::unique_ptr <ScrollFreezer> scrollFreezer;
