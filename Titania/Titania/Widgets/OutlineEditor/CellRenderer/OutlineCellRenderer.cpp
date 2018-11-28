@@ -1442,7 +1442,8 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 	{
 		Gdk::Rectangle cell_area (x, y, width - RIGHT_PAD, height);
-		render_routes (context, widget, background_area, cell_area, minimum_height, flags);
+		render_routes (context, widget, background_area, cell_area, minimum_height, flags, false);
+		render_routes (context, widget, background_area, cell_area, minimum_height, flags, true);
 	}
 }
 
@@ -1452,7 +1453,8 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
                                     const Gdk::Rectangle & background_area,
                                     const Gdk::Rectangle & cell_area,
                                     int minimum_height,
-                                    Gtk::CellRendererState flags)
+                                    Gtk::CellRendererState flags,
+                                    const bool selected)
 {
 	const int32_t x      = cell_area .get_x ();
 	const int32_t y      = background_area .get_y ();
@@ -1495,41 +1497,52 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto selected_above = have_selected_routes (data -> get_inputs_above ());
 		const auto selected_below = have_selected_routes (data -> get_inputs_below ());
 
-		const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
-		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+		// Horizontal line
 
-		context -> move_to (input_x, input_y);
-		context -> line_to (input_x + input_w, input_y);
-		context -> stroke ();
+		if (selected_above or selected_below == selected)
+		{
+			const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+			context -> move_to (input_x, input_y);
+			context -> line_to (input_x + input_w, input_y);
+			context -> stroke ();
+		}
 
 		// Arc up
 
 		if (not data -> get_inputs_above () .empty ())
 		{
-			const auto & c = selected_above ? selectedColor : foregroundColor;
-			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-
-			context -> begin_new_sub_path ();
-			context -> arc (input_x + input_w, input_y - radius, radius, 0, pi_2 <double>);
-
-			context -> move_to (connector_x, y);
-			context -> line_to (connector_x, input_y - radius);
-			context -> stroke ();
+			if (selected_above == selected)
+			{
+				const auto & c = selected_above ? selectedColor : foregroundColor;
+				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+				context -> begin_new_sub_path ();
+				context -> arc (input_x + input_w, input_y - radius, radius, 0, pi_2 <double>);
+	
+				context -> move_to (connector_x, y);
+				context -> line_to (connector_x, input_y - radius);
+				context -> stroke ();
+			}
 		}
 
 		// Arc down
 
 		if (not data -> get_inputs_below () .empty ())
 		{
-			const auto & c = selected_below ? selectedColor : foregroundColor;
-			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-
-			context -> begin_new_sub_path ();
-			context -> arc (input_x + input_w, input_y + radius, radius, pi3_2 <double>, pi2 <double>);
-
-			context -> move_to (connector_x, input_y + radius);
-			context -> line_to (connector_x, y + height);
-			context -> stroke ();
+			if (selected_below == selected)
+			{
+				const auto & c = selected_below ? selectedColor : foregroundColor;
+				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+				context -> begin_new_sub_path ();
+				context -> arc (input_x + input_w, input_y + radius, radius, pi3_2 <double>, pi2 <double>);
+	
+				context -> move_to (connector_x, input_y + radius);
+				context -> line_to (connector_x, y + height);
+				context -> stroke ();
+			}
 		}
 	}
 
@@ -1540,41 +1553,52 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		const auto selected_above = have_selected_routes (data -> get_outputs_above ());
 		const auto selected_below = have_selected_routes (data -> get_outputs_below ());
 
-		const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
-		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+		// Horizontal line
 
-		context -> move_to (output_x, output_y);
-		context -> line_to (output_x + output_w, output_y);
-		context -> stroke ();
+		if (selected_above or selected_below == selected)
+		{
+			const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+			context -> move_to (output_x, output_y);
+			context -> line_to (output_x + output_w, output_y);
+			context -> stroke ();
+		}
 
 		// Arc up
 
 		if (not data -> get_outputs_above () .empty ())
 		{
-			const auto & c = selected_above ? selectedColor : foregroundColor;
-			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-
-			context -> begin_new_sub_path ();
-			context -> arc (output_x + output_w, output_y - radius, radius, 0, pi_2 <double>);
-
-			context -> move_to (connector_x, y);
-			context -> line_to (connector_x, output_y - radius);
-			context -> stroke ();
+			if (selected_above == selected)
+			{
+				const auto & c = selected_above ? selectedColor : foregroundColor;
+				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+				context -> begin_new_sub_path ();
+				context -> arc (output_x + output_w, output_y - radius, radius, 0, pi_2 <double>);
+	
+				context -> move_to (connector_x, y);
+				context -> line_to (connector_x, output_y - radius);
+				context -> stroke ();
+			}
 		}
 
 		// Arc down
 
 		if (not data -> get_outputs_below () .empty ())
 		{
-			const auto & c = selected_below ? selectedColor : foregroundColor;
-			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-
-			context -> begin_new_sub_path ();
-			context -> arc (output_x + output_w, output_y + radius, radius, pi3_2 <double>, pi2 <double>);
-
-			context -> move_to (connector_x, output_y + radius);
-			context -> line_to (connector_x, y + height);
-			context -> stroke ();
+			if (selected_below == selected)
+			{
+				const auto & c = selected_below ? selectedColor : foregroundColor;
+				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+				context -> begin_new_sub_path ();
+				context -> arc (output_x + output_w, output_y + radius, radius, pi3_2 <double>, pi2 <double>);
+	
+				context -> move_to (connector_x, output_y + radius);
+				context -> line_to (connector_x, y + height);
+				context -> stroke ();
+			}
 		}
 	}
 
@@ -1582,29 +1606,37 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (data -> get_self_connection ())
 	{
-		const double cy     = (input_y + output_y) / 2;
-		const double radius = (input_y + output_y) / 2 - input_y;
-
-		context -> set_source_rgba (selectedColor .get_red (), selectedColor .get_green (), selectedColor .get_blue (), selectedColor .get_alpha ());
-
-		context -> move_to (input_x, input_y);
-		context -> line_to (output_x, input_y);
-
-		context -> begin_new_sub_path ();
-		context -> arc (output_x, cy, radius, pi3_2 <double>, pi_2 <double>);
-		context -> stroke ();
+		if (selected)
+		{
+			const double cy     = (input_y + output_y) / 2;
+			const double radius = (input_y + output_y) / 2 - input_y;
+	
+			context -> set_source_rgba (selectedColor .get_red (), selectedColor .get_green (), selectedColor .get_blue (), selectedColor .get_alpha ());
+	
+			context -> move_to (input_x, input_y);
+			context -> line_to (output_x, input_y);
+	
+			context -> begin_new_sub_path ();
+			context -> arc (output_x, cy, radius, pi3_2 <double>, pi_2 <double>);
+			context -> stroke ();
+		}
 	}
 
-	// Connections
+	// Connections, vertical line
 
 	if (not data -> get_connections () .empty ())
 	{
-		const auto & c = have_selected_routes (data -> get_connections ()) ? selectedColor : foregroundColor;
-		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+		const auto selected_routed = have_selected_routes (data -> get_connections ());
 
-		context -> move_to (connector_x, y);
-		context -> line_to (connector_x, y + height);
-		context -> stroke ();
+		if (selected_routed == selected)
+		{
+			const auto & c = selected_routed ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+	
+			context -> move_to (connector_x, y - 2 * selected);
+			context -> line_to (connector_x, y + height);
+			context -> stroke ();
+		}
 	}
 }
 

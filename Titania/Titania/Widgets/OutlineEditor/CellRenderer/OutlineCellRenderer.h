@@ -187,7 +187,7 @@ private:
 	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
 
 	void
-	render_routes (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, int, Gtk::CellRendererState);
+	render_routes (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, int, Gtk::CellRendererState, const bool);
 
 	bool
 	have_selected_routes (const OutlineRoutes &);

@@ -109,37 +109,33 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	Gtk::TreeView::get_selection () -> set_mode (Gtk::SELECTION_NONE);
 
 	// Columns
-
-	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn (_ ("Scene")));
-	treeviewcolumn_name -> set_expand (false);
-
 	// CellRenderer
 
+	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn (_ ("Scene")));
+
+	treeviewcolumn_name -> set_expand (false);
 	treeviewcolumn_name -> pack_start (*cellrenderer, false);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "tree-data",           OutlineTreeModel::DATA_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "foreground-set",      OutlineTreeModel::SELECTED_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
 
-	column = treeviewcolumn_name;
-
-	// Append column
-
 	append_column (*treeviewcolumn_name);
+
+	column = treeviewcolumn_name;
 
 	// Pad column
 
 	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
-	treeviewcolumn_pad -> set_expand (true);
 
+	treeviewcolumn_pad -> set_expand (true);
 	treeviewcolumn_pad -> pack_start (*padCellrenderer, true);
 	treeviewcolumn_pad -> add_attribute (*padCellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
 
 	append_column (*treeviewcolumn_pad);
 
-	on_style_updated ();
-
 	//
 
+	on_style_updated ();
 	set_execution_context (executionContext);
 }
 
