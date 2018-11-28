@@ -50,3 +50,6 @@ Documentation/Titania/html
 *.tmp
 
 titania_*.snap
+
+.vs
+.vscode
