@@ -109,6 +109,22 @@ public:
 	getDragCancelMenuItem () const
 	{ return *m_DragCancelMenuItem; }
 
+	Gtk::Popover &
+	getRenamePopover () const
+	{ return *m_RenamePopover; }
+
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
+
 	Gtk::Menu &
 	getSceneMenu () const
 	{ return *m_SceneMenu; }
@@ -120,6 +136,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderbar () const
+	{ return *m_Headerbar; }
 
 	Gtk::Box &
 	getSceneMenuBox () const
@@ -148,22 +168,6 @@ public:
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
-
-	Gtk::Popover &
-	getRenamePopover () const
-	{ return *m_RenamePopover; }
-
-	Gtk::Box &
-	getNameBox () const
-	{ return *m_NameBox; }
-
-	Gtk::Entry &
-	getNameEntry () const
-	{ return *m_NameEntry; }
-
-	Gtk::Button &
-	getRenameButton () const
-	{ return *m_RenameButton; }
 
 	Gtk::Menu &
 	getContextMenu () const
@@ -616,9 +620,14 @@ private:
 	Gtk::MenuItem* m_DragCopyMenuItem;
 	Gtk::MenuItem* m_DragLinkMenuItem;
 	Gtk::MenuItem* m_DragCancelMenuItem;
+	Gtk::Popover* m_RenamePopover;
+	Gtk::Box* m_NameBox;
+	Gtk::Entry* m_NameEntry;
+	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_SceneMenu;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_Headerbar;
 	Gtk::Box* m_SceneMenuBox;
 	Gtk::MenuButton* m_SceneMenuButton;
 	Gtk::Image* m_SceneImage;
@@ -626,10 +635,6 @@ private:
 	Gtk::Button* m_PreviousSceneButton;
 	Gtk::Button* m_NextSceneButton;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::Popover* m_RenamePopover;
-	Gtk::Box* m_NameBox;
-	Gtk::Entry* m_NameEntry;
-	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_ContextMenu;
 	Gtk::ImageMenuItem* m_RenameMenuItem;
 	Gtk::SeparatorMenuItem* m_CommonSeparator;
