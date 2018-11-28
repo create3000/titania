@@ -315,6 +315,7 @@
         <property name="use_stock">True</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_cut_activate" swapped="no"/>
+        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
       </object>
     </child>
     <child>
@@ -326,6 +327,7 @@
         <property name="use_stock">True</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_copy_activate" swapped="no"/>
+        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
       </object>
     </child>
     <child>
@@ -338,6 +340,7 @@
         <property name="use_stock">True</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_paste_activate" swapped="no"/>
+        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
       </object>
     </child>
     <child>
