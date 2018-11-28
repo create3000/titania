@@ -127,6 +127,8 @@ OpenEditorsEditor::set_pages ()
 	
 			for (const basic::uri rootFolder : projectsEditor -> getRootFolders ())
 			{
+				const auto projectFolder = Gio::File::create_for_path (rootFolder .path ());
+	
 				if (File::isSubfolder (folder, projectFolder))
 				{
 					found = true;
@@ -147,7 +149,7 @@ OpenEditorsEditor::set_pages ()
 				}
 				else
 				{
-					row -> set_value (Columns::FOLDER, std::regex_replace (path .str (), std::regex ("/$"), ""));
+					row -> set_value (Columns::FOLDER, std::regex_replace (path, std::regex ("/$"), ""));
 				}
 			}
 		}
