@@ -127,8 +127,6 @@ OpenEditorsEditor::set_pages ()
 	
 			for (const basic::uri rootFolder : projectsEditor -> getRootFolders ())
 			{
-				const auto projectFolder = Gio::File::create_for_path (rootFolder .path ());
-	
 				if (File::isSubfolder (folder, projectFolder))
 				{
 					found = true;
@@ -139,9 +137,18 @@ OpenEditorsEditor::set_pages ()
 	
 			if (not found)
 			{
-				const basic::uri home = Glib::get_home_dir () + "/";
+				const auto homeFolder = Gio::File::create_for_path (Glib::get_home_dir ());
 	
-				row -> set_value (Columns::FOLDER, "~/" + std::regex_replace (home .relative_path (path) .str (), std::regex ("/$"), ""));
+				if (File::isSubfolder (folder, homeFolder))
+				{
+					const basic::uri home = Glib::get_home_dir () + "/";
+
+					row -> set_value (Columns::FOLDER, "~/" + std::regex_replace (home .relative_path (path) .str (), std::regex ("/$"), ""));
+				}
+				else
+				{
+					row -> set_value (Columns::FOLDER, std::regex_replace (path .str (), std::regex ("/$"), ""));
+				}
 			}
 		}
 		else
