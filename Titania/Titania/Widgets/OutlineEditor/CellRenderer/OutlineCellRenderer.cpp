@@ -180,10 +180,10 @@ OutlineCellRenderer::on_data ()
 			{
 				const auto route  = static_cast <X3D::Route*> (get_object ());
 				const auto source = route -> getSourceNode ();
+				auto       name   = X3D::GetDisplayName (source);
 
-				const std::string name = source -> getName () .empty ()
-				                         ? _ ("<unnamed>")
-												 : source -> getName ();
+				if (name .empty ())
+					name = _ ("<unnamed>");
 
 				property_text () = _ ("Route from ") + name + "." + route -> getSourceField ();
 			}
@@ -202,10 +202,10 @@ OutlineCellRenderer::on_data ()
 			{
 				const auto route       = static_cast <X3D::Route*> (get_object ());
 				const auto destination = route -> getDestinationNode ();
+				auto       name        = X3D::GetDisplayName (destination);
 
-				const std::string name = destination -> getName () .empty ()
-				                         ? _ ("<unnamed>")
-												 : destination -> getName ();
+				if (name .empty ())
+					name = _ ("<unnamed>");
 
 				property_text () = _ ("Route to ") + name + "." + route -> getDestinationField ();
 			}

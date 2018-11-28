@@ -70,7 +70,7 @@ GetDisplayName (const SFNode & node)
 std::string
 GetDescription (const SFNode & node)
 {
-	std::string name = GetDisplayName (node);
+	auto name = GetDisplayName (node);
 
 	if (not name .empty ())
 		name = " »" + name + "«";
