@@ -134,7 +134,17 @@ OpenEditorsEditor::set_pages ()
 				if (File::isSubfolder (folder, projectFolder))
 				{
 					found = true;
-					row -> set_value (Columns::FOLDER, rootFolder .basename () + " • " + std::regex_replace (rootFolder .relative_path (path) .str (), std::regex ("/$"), ""));
+					
+					const auto releativePath = rootFolder .relative_path (path);
+					auto       string        = rootFolder .basename ();
+
+					if (releativePath not_eq "./")
+					{
+						string += " • ";
+						string += std::regex_replace (releativePath .str (), std::regex ("/$"), "");
+					}
+
+					row -> set_value (Columns::FOLDER, string);
 					break;
 				}
 			}
@@ -145,9 +155,17 @@ OpenEditorsEditor::set_pages ()
 	
 				if (File::isSubfolder (folder, homeFolder))
 				{
-					const basic::uri home = Glib::get_home_dir () + "/";
+					const auto  home          = basic::uri (Glib::get_home_dir () + "/");
+					const auto  releativePath = home .relative_path (path);
+					std::string string        = "~";
 
-					row -> set_value (Columns::FOLDER, "~/" + std::regex_replace (home .relative_path (path) .str (), std::regex ("/$"), ""));
+					if (releativePath not_eq "./")
+					{
+						string += "/";
+						string += std::regex_replace (releativePath .str (), std::regex ("/$"), "");
+					}
+
+					row -> set_value (Columns::FOLDER, string);
 				}
 				else
 				{
