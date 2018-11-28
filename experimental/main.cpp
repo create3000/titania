@@ -986,8 +986,7 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector3 <Type> 
 void
 test_uri_output (const basic::uri & uri)
 {
-	__LOG__ << uri << std::endl;
-	__LOG__ << uri .basename () << std::endl;
+	__LOG__ << basic::uri ("/usr/share") .relative_path (uri) << std::endl;
 }
 
 void

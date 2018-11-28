@@ -272,6 +272,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.$(OBJEXT) \
 	Titania/Editors/ProjectsEditor/FileView.$(OBJEXT) \
+	Titania/Editors/ProjectsEditor/OpenEditorsEditor.$(OBJEXT) \
 	Titania/Editors/ProjectsEditor/ProjectEditor.$(OBJEXT) \
 	Titania/Editors/ProjectsEditor/ProjectsEditor.$(OBJEXT) \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.$(OBJEXT) \
@@ -353,6 +354,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/UserInterfaces/X3DNodeIndexInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DNotebookPageInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DOpenEditorsEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DPanelMenuInterface.$(OBJEXT) \
@@ -606,6 +608,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeEditor.Po \
 	Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeInterface.Po \
 	Titania/Editors/ProjectsEditor/$(DEPDIR)/FileView.Po \
+	Titania/Editors/ProjectsEditor/$(DEPDIR)/OpenEditorsEditor.Po \
 	Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectEditor.Po \
 	Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectsEditor.Po \
 	Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po \
@@ -687,6 +690,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/UserInterfaces/$(DEPDIR)/X3DNodeIndexInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DNodePropertiesEditorInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DNotebookPageInterface.Po \
+	Titania/UserInterfaces/$(DEPDIR)/X3DOpenEditorsEditorInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DOpenLocationDialogInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DOutlineEditorInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DPanelMenuInterface.Po \
@@ -1130,6 +1134,7 @@ titania_SOURCES = \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \
 	Titania/Editors/ProjectsEditor/FileView.cpp \
+	Titania/Editors/ProjectsEditor/OpenEditorsEditor.cpp \
 	Titania/Editors/ProjectsEditor/ProjectEditor.cpp \
 	Titania/Editors/ProjectsEditor/ProjectsEditor.cpp \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
@@ -1211,6 +1216,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DNodeIndexInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNotebookPageInterface.cpp \
+	Titania/UserInterfaces/X3DOpenEditorsEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPanelMenuInterface.cpp \
@@ -2149,6 +2155,9 @@ Titania/Editors/ProjectsEditor/$(DEPDIR)/$(am__dirstamp):
 Titania/Editors/ProjectsEditor/FileView.$(OBJEXT):  \
 	Titania/Editors/ProjectsEditor/$(am__dirstamp) \
 	Titania/Editors/ProjectsEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/ProjectsEditor/OpenEditorsEditor.$(OBJEXT):  \
+	Titania/Editors/ProjectsEditor/$(am__dirstamp) \
+	Titania/Editors/ProjectsEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/ProjectsEditor/ProjectEditor.$(OBJEXT):  \
 	Titania/Editors/ProjectsEditor/$(am__dirstamp) \
 	Titania/Editors/ProjectsEditor/$(DEPDIR)/$(am__dirstamp)
@@ -2456,6 +2465,9 @@ Titania/UserInterfaces/X3DNodePropertiesEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DNotebookPageInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DOpenEditorsEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DOpenLocationDialogInterface.$(OBJEXT):  \
@@ -2916,6 +2928,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ProjectsEditor/$(DEPDIR)/FileView.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ProjectsEditor/$(DEPDIR)/OpenEditorsEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectsEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po@am__quote@ # am--include-marker
@@ -2997,6 +3010,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DNodeIndexInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DNodePropertiesEditorInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DNotebookPageInterface.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DOpenEditorsEditorInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DOpenLocationDialogInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DOutlineEditorInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DPanelMenuInterface.Po@am__quote@ # am--include-marker
@@ -3522,6 +3536,7 @@ distclean: distclean-am
 	-rm -f Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeEditor.Po
 	-rm -f Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeInterface.Po
 	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/FileView.Po
+	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/OpenEditorsEditor.Po
 	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectEditor.Po
 	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectsEditor.Po
 	-rm -f Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po
@@ -3603,6 +3618,7 @@ distclean: distclean-am
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DNodeIndexInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DNodePropertiesEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DNotebookPageInterface.Po
+	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DOpenEditorsEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DOpenLocationDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DOutlineEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DPanelMenuInterface.Po
@@ -3874,6 +3890,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeEditor.Po
 	-rm -f Titania/Editors/PrecisionPlacementPanel/ParticleSystem/$(DEPDIR)/X3DParticlePhysicsModelNodeInterface.Po
 	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/FileView.Po
+	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/OpenEditorsEditor.Po
 	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectEditor.Po
 	-rm -f Titania/Editors/ProjectsEditor/$(DEPDIR)/ProjectsEditor.Po
 	-rm -f Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po
@@ -3955,6 +3972,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DNodeIndexInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DNodePropertiesEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DNotebookPageInterface.Po
+	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DOpenEditorsEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DOpenLocationDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DOutlineEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DPanelMenuInterface.Po

@@ -58,6 +58,7 @@
 #include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 #include "../../Dialogs/FileOpenDialog/OpenFolderDialog.h"
+#include "../../Editors/ProjectsEditor/OpenEditorsEditor.h"
 #include "../../Editors/ProjectsEditor/ProjectEditor.h"
 
 #include <Titania/X3D/InputOutput/GoldenGate.h>
@@ -71,7 +72,8 @@ ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
 	               rootFolders (),
-	            projectEditors ()
+	            projectEditors (),
+	         openEditorsEditor (new OpenEditorsEditor (browserWindow, this))
 {
 	setup ();
 }
@@ -86,6 +88,12 @@ void
 ProjectsEditor::configure ()
 {
 	X3DProjectsEditorInterface::configure ();
+
+	// Open Editors
+
+	openEditorsEditor -> reparent (getProjectsBox (), getWindow ());
+
+	// Projects
 
 	auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
@@ -102,14 +110,14 @@ ProjectsEditor::configure ()
 void
 ProjectsEditor::on_add_project_clicked ()
 {
-	const auto openDirectoryDialog = createDialog <OpenFolderDialog> ("OpenFolderDialog");
+	const auto openFolderDialog = createDialog <OpenFolderDialog> ("OpenFolderDialog");
 
-	if (not openDirectoryDialog -> run ())
+	if (not openFolderDialog -> run ())
 		return;
 
 	// Create root folder.
 
-	addRootFolder (openDirectoryDialog -> getUrl () .path ());
+	addRootFolder (openFolderDialog -> getUrl () .path ());
 
 	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (rootFolders.begin (), rootFolders .end ()));
 }
@@ -134,7 +142,7 @@ ProjectsEditor::addRootFolder (const basic::uri & rootFolder)
 
 	unparent (projectEditor -> getWidget ());
 
-	getProjectsBox () .pack_start (projectEditor -> getWidget (), true, false);
+	getProjectsBox () .pack_start (projectEditor -> getWidget (), true, true);
 
 	projectEditors .emplace (rootFolder, projectEditor);
 }

@@ -85,10 +85,6 @@ X3DOutlineEditorInterface::create ()
 	m_builder -> get_widget ("DragCopyMenuItem", m_DragCopyMenuItem);
 	m_builder -> get_widget ("DragLinkMenuItem", m_DragLinkMenuItem);
 	m_builder -> get_widget ("DragCancelMenuItem", m_DragCancelMenuItem);
-	m_builder -> get_widget ("RenamePopover", m_RenamePopover);
-	m_builder -> get_widget ("NameBox", m_NameBox);
-	m_builder -> get_widget ("NameEntry", m_NameEntry);
-	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("SceneMenu", m_SceneMenu);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -100,6 +96,10 @@ X3DOutlineEditorInterface::create ()
 	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);
 	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("RenamePopover", m_RenamePopover);
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
 	m_builder -> get_widget ("RenameMenuItem", m_RenameMenuItem);
 	m_builder -> get_widget ("CommonSeparator", m_CommonSeparator);

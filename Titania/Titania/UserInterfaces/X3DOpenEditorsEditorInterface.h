@@ -48,80 +48,130 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
-#define __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_OPEN_EDITORS_EDITOR_H__
+#define __TMP_GLAD2CPP_OPEN_EDITORS_EDITOR_H__
 
-#include "../../UserInterfaces/X3DProjectsEditorInterface.h"
+#include "../Base/X3DEditorInterface.h"
+
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-class OpenEditorsEditor;
-class ProjectEditor;
-class ScrollFreezer;
-
-class ProjectsEditor :
-	virtual public X3DProjectsEditorInterface
+/**
+ *  Gtk Interface for OpenEditorsEditor.
+ */
+class X3DOpenEditorsEditorInterface :
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	ProjectsEditor (X3DBrowserWindow* const browserWindow);
+	X3DOpenEditorsEditorInterface () :
+		X3DEditorInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DOpenEditorsEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DOpenEditorsEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filenames); }
 
 	///  @name Member access
 
-	const std::set <std::string> &
-	getRootFolders () const
-	{ return rootFolders; }
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getListStore () const
+	{ return m_ListStore; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getIconColumn () const
+	{ return m_IconColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getNameColumn () const
+	{ return m_NameColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFolderColumn () const
+	{ return m_FolderColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getCloseColumn () const
+	{ return m_CloseColumn; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_TreeView; }
+
+	///  @name Signal handlers
+
+	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* release_event) = 0;
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
 
 	///  @name Destruction
 
 	virtual
-	~ProjectsEditor () final override;
+	~X3DOpenEditorsEditorInterface () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
 	void
-	initialize () final override;
-
-	virtual
-	void
-	configure () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_add_project_clicked () final override;
-	
-	void
-	on_remove_project_clicked (const basic::uri & rootFolder);
-
-	///  @name Operations
+	create (const std::string &);
 
 	void
-	addRootFolder (const basic::uri & folder);
+	create (std::initializer_list <std::string>);
 
 	void
-	removeRootFolder (const basic::uri & folder);
+	create ();
 
-	///  @name Destruction
-
-	virtual
-	void
-	store () final override;
+	///  @name Static members
 
 	///  @name Members
 
-	std::set <std::string>                                  rootFolders;
-	std::map <std::string, std::shared_ptr <ProjectEditor>> projectEditors;
-	std::shared_ptr <OpenEditorsEditor>                     openEditorsEditor;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_IconColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_FolderColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_CloseColumn;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::TreeView* m_TreeView;
 
 };
 

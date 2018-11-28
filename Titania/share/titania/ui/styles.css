@@ -95,18 +95,21 @@ expander.titania-expander-first-child > title > label {
 #SceneMenuButton {
 	margin: 0px;
 	border: 0px;
+	border-radius: 0px;
 	padding: 0px;
 }
 
 #PreviousSceneButton {
 	margin: 0px;
 	border: 0px;
+	border-radius: 0px;
 	padding: 0px 2px 0px 4px;
 }
 
 #NextSceneButton {
 	margin: 0px;
 	border: 0px;
+	border-radius: 0px;
 	padding: 0px 4px 0px 2px;
 }
 

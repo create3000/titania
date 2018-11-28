@@ -48,84 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
-#define __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
-
-#include "../../UserInterfaces/X3DProjectsEditorInterface.h"
+#include "X3DOpenEditorsEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-class OpenEditorsEditor;
-class ProjectEditor;
-class ScrollFreezer;
-
-class ProjectsEditor :
-	virtual public X3DProjectsEditorInterface
+void
+X3DOpenEditorsEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Construction
+	create ();
+}
 
-	ProjectsEditor (X3DBrowserWindow* const browserWindow);
+void
+X3DOpenEditorsEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
 
-	///  @name Member access
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
 
-	const std::set <std::string> &
-	getRootFolders () const
-	{ return rootFolders; }
+	create ();
+}
 
-	///  @name Destruction
+void
+X3DOpenEditorsEditorInterface::create ()
+{
+	// Get objects.
+	m_ListStore    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_IconColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("IconColumn"));
+	m_NameColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_FolderColumn = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FolderColumn"));
+	m_CloseColumn  = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("CloseColumn"));
 
-	virtual
-	~ProjectsEditor () final override;
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("TreeView", m_TreeView);
 
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_map));
 
-private:
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_button_release_event));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_row_activated));
+}
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	configure () final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_add_project_clicked () final override;
-	
-	void
-	on_remove_project_clicked (const basic::uri & rootFolder);
-
-	///  @name Operations
-
-	void
-	addRootFolder (const basic::uri & folder);
-
-	void
-	removeRootFolder (const basic::uri & folder);
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () final override;
-
-	///  @name Members
-
-	std::set <std::string>                                  rootFolders;
-	std::map <std::string, std::shared_ptr <ProjectEditor>> projectEditors;
-	std::shared_ptr <OpenEditorsEditor>                     openEditorsEditor;
-
-};
+X3DOpenEditorsEditorInterface::~X3DOpenEditorsEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

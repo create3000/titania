@@ -506,7 +506,10 @@ X3DBrowserNotebook::getOutputStyle (const X3D::X3DScenePtr & scene) const
 void
 X3DBrowserNotebook::reload ()
 {
-	load (getCurrentScene () -> getWorldURL ());
+	if (getCurrentScene () -> getWorldURL () .empty ())
+		load (getCurrentPage () -> getWorldURL ());
+	else
+		load (getCurrentScene () -> getWorldURL ());
 }
 
 void

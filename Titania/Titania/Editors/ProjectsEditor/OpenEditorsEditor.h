@@ -48,41 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
-#define __TITANIA_EDITORS_PROJECTS_EDITOR_PROJECTS_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PROJECTS_EDITOR_OPEN_EDITORS_EDITOR_H__
+#define __TITANIA_EDITORS_PROJECTS_EDITOR_OPEN_EDITORS_EDITOR_H__
 
-#include "../../UserInterfaces/X3DProjectsEditorInterface.h"
+#include "../../UserInterfaces/X3DOpenEditorsEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserWindow;
-class OpenEditorsEditor;
-class ProjectEditor;
-class ScrollFreezer;
+class ProjectsEditor;
 
-class ProjectsEditor :
-	virtual public X3DProjectsEditorInterface
+class OpenEditorsEditor :
+	virtual public X3DOpenEditorsEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	ProjectsEditor (X3DBrowserWindow* const browserWindow);
-
-	///  @name Member access
-
-	const std::set <std::string> &
-	getRootFolders () const
-	{ return rootFolders; }
+	OpenEditorsEditor (X3DBrowserWindow* const browserWindow, ProjectsEditor* const projectsEditor);
 
 	///  @name Destruction
 
 	virtual
-	~ProjectsEditor () final override;
+	~OpenEditorsEditor () final override;
 
 
 private:
+
+	///  @name Member types;
+
+	struct Columns;
 
 	///  @name Construction
 
@@ -90,39 +86,32 @@ private:
 	void
 	initialize () final override;
 
-	virtual
-	void
-	configure () final override;
-
 	///  @name Event handlers
 
 	virtual
 	void
-	on_add_project_clicked () final override;
-	
-	void
-	on_remove_project_clicked (const basic::uri & rootFolder);
-
-	///  @name Operations
+	on_map () final override;
 
 	void
-	addRootFolder (const basic::uri & folder);
+	on_notebook_changed (Gtk::Widget* widget, guint pageNumber);
 
 	void
-	removeRootFolder (const basic::uri & folder);
+	set_pages ();
 
-	///  @name Destruction
+	void
+	on_switch_page (Gtk::Widget*, guint pageNumber);
 
 	virtual
 	void
-	store () final override;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) final override;
 
 	///  @name Members
 
-	std::set <std::string>                                  rootFolders;
-	std::map <std::string, std::shared_ptr <ProjectEditor>> projectEditors;
-	std::shared_ptr <OpenEditorsEditor>                     openEditorsEditor;
-
+	ProjectsEditor* const projectsEditor;
 };
 
 } // puck

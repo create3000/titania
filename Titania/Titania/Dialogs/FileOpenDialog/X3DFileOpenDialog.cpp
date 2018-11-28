@@ -77,7 +77,10 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 basic::uri
 X3DFileOpenDialog::getUrl () const
 {
-	const basic::uri url = getWindow () .get_file () -> get_path ();
+	basic::uri url = getWindow () .get_file () -> get_path ();
+
+	if (not url .is_directory () and Glib::file_test (url, Glib::FILE_TEST_IS_DIR))
+		url = url + "/";
 
 	return url .add_file_scheme ();
 }

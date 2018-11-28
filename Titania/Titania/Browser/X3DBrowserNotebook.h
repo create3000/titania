@@ -251,17 +251,17 @@ private:
 
 	///  @name Members
 
-	NotebookPagePtr                 page;
-	NotebookPagePtrArray            pages;
-	NotebookPagePtrArray            recentPages;
-	X3D::BrowserPtr                 masterBrowser;
-	X3D::BrowserPtr                 browser;
-	X3D::X3DScenePtr                scene;
-	X3D::X3DExecutionContextPtr     executionContext;
-	X3D::Output                     worldURLOutput;
-	std::unique_ptr <IconFactory>   iconFactory;
-	std::unique_ptr <RecentView>    recentView;
-	std::unique_ptr <History>       history;
+	NotebookPagePtr               page;
+	NotebookPagePtrArray          pages;
+	NotebookPagePtrArray          recentPages;
+	X3D::BrowserPtr               masterBrowser;
+	X3D::BrowserPtr               browser;
+	X3D::X3DScenePtr              scene;
+	X3D::X3DExecutionContextPtr   executionContext;
+	X3D::Output                   worldURLOutput;
+	std::unique_ptr <IconFactory> iconFactory;
+	std::unique_ptr <RecentView>  recentView;
+	std::unique_ptr <History>     history;
 
 };
 

@@ -177,6 +177,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \
 	Titania/Editors/ProjectsEditor/FileView.cpp \
+	Titania/Editors/ProjectsEditor/OpenEditorsEditor.cpp \
 	Titania/Editors/ProjectsEditor/ProjectEditor.cpp \
 	Titania/Editors/ProjectsEditor/ProjectsEditor.cpp \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
@@ -258,6 +259,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DNodeIndexInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNotebookPageInterface.cpp \
+	Titania/UserInterfaces/X3DOpenEditorsEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPanelMenuInterface.cpp \
