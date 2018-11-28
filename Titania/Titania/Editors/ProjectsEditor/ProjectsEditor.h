@@ -76,6 +76,10 @@ public:
 	getRootFolders () const
 	{ return rootFolders; }
 
+	const X3D::SFTime &
+	rootFolders_changed () const
+	{ return rootFoldersOutput; }
+
 	///  @name Destruction
 
 	virtual
@@ -119,6 +123,7 @@ private:
 
 	///  @name Members
 
+	X3D::SFTime                                             rootFoldersOutput;
 	std::set <std::string>                                  rootFolders;
 	std::map <std::string, std::shared_ptr <ProjectEditor>> projectEditors;
 	std::shared_ptr <OpenEditorsEditor>                     openEditorsEditor;

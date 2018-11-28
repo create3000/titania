@@ -81,6 +81,8 @@ OpenEditorsEditor::initialize ()
 {
 	X3DOpenEditorsEditorInterface::initialize ();
 
+	projectsEditor -> rootFolders_changed () .addInterest (this, &OpenEditorsEditor::set_pages);
+
 	getBrowserWindow () -> getBrowserNotebook () .signal_page_reordered () .connect (sigc::mem_fun (this, &OpenEditorsEditor::on_notebook_changed));
 	getBrowserWindow () -> getBrowserNotebook () .signal_page_removed ()   .connect (sigc::mem_fun (this, &OpenEditorsEditor::on_notebook_changed));
 	getBrowserWindow () -> getBrowserNotebook () .signal_page_added ()     .connect (sigc::mem_fun (this, &OpenEditorsEditor::on_notebook_changed));

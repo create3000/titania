@@ -71,10 +71,13 @@ namespace puck {
 ProjectsEditor::ProjectsEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DProjectsEditorInterface (get_ui ("Editors/ProjectsEditor.glade")),
+	         rootFoldersOutput (),
 	               rootFolders (),
 	            projectEditors (),
 	         openEditorsEditor (new OpenEditorsEditor (browserWindow, this))
 {
+	addChildObject (rootFoldersOutput);
+
 	setup ();
 }
 
@@ -145,13 +148,17 @@ ProjectsEditor::addRootFolder (const basic::uri & rootFolder)
 	getProjectsBox () .pack_start (projectEditor -> getWidget (), true, true);
 
 	projectEditors .emplace (rootFolder, projectEditor);
+
+	rootFoldersOutput = getCurrentBrowser () -> getCurrentTime ();
 }
 
 void
 ProjectsEditor::removeRootFolder (const basic::uri & rootFolder)
 {
-	rootFolders .erase (rootFolder);
+	rootFolders    .erase (rootFolder);
 	projectEditors .erase (rootFolder);
+
+	rootFoldersOutput = getCurrentBrowser () -> getCurrentTime ();
 }
 
 void
