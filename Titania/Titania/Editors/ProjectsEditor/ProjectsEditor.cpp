@@ -101,9 +101,9 @@ ProjectsEditor::configure ()
 	auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
 	std::sort (projects .begin (), projects .end (),
-	[ ] (const X3D::String & lhs, const X3D::String & rhs)
+	[ ] (const Glib::ustring & lhs, const Glib::ustring & rhs)
 	{
-		return basic::tolower (basic::uri (lhs) .basename ()) < basic::tolower (basic::uri (rhs) .basename ());
+		return Glib::ustring (basic::uri (lhs) .basename ()) .lowercase () < Glib::ustring (basic::uri (rhs) .basename ()) .lowercase ();
 	});
 
 	for (const auto & folder : basic::make_const_range (projects))

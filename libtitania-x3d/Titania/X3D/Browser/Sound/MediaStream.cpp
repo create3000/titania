@@ -188,9 +188,6 @@ MediaStream::setUri (const basic::uri & uri)
 		if (not istream)
 			return uri;
 
-__LOG__ << uri << std::endl;
-__LOG__ << uri .extension () << std::endl;
-
 		std::string tmpFilename = "/tmp/titania-XXXXXX" + uri .extension ();
 
 		::close (Glib::mkstemp (tmpFilename));
