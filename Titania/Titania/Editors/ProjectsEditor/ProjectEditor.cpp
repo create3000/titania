@@ -885,7 +885,7 @@ ProjectEditor::set_execution_context ()
 	if (getCurrentContext () -> getWorldURL () .is_local ())
 	{
 		unselectAll ();
-		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()), true);
+		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()));
 	}
 }
 
