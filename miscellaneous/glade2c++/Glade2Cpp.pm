@@ -1022,3 +1022,9 @@ FileChooserDialog::update_preview
   virtual void on_update_preview();
 TextView::style_updated
   virtual void on_style_updated();
+TreeView::leave_notify_event
+  virtual bool on_leave_notify_event(GdkEventCrossing* crossing_event);
+TreeView::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
+Box::leave_notify_event
+  virtual bool on_leave_notify_event(GdkEventCrossing* crossing_event);

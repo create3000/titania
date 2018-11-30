@@ -78,11 +78,12 @@ void
 X3DOpenEditorsEditorInterface::create ()
 {
 	// Get objects.
-	m_ListStore    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
-	m_IconColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("IconColumn"));
-	m_NameColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
-	m_FolderColumn = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FolderColumn"));
-	m_CloseColumn  = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("CloseColumn"));
+	m_ListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_TreeViewSelection = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("TreeViewSelection"));
+	m_CloseColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("CloseColumn"));
+	m_IconColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("IconColumn"));
+	m_NameColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_FolderColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FolderColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -95,7 +96,12 @@ X3DOpenEditorsEditorInterface::create ()
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_button_release_event));
+	m_TreeView -> signal_leave_notify_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_leave_notify_event));
+	m_TreeView -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_motion_notify_event));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_row_activated));
+
+	// Connect object Gtk::TreeSelection with id 'TreeViewSelection'.
+	m_TreeViewSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_selection_changed));
 }
 
 X3DOpenEditorsEditorInterface::~X3DOpenEditorsEditorInterface ()

@@ -10,6 +10,8 @@
       <column type="gchararray"/>
       <!-- column-name folder -->
       <column type="gchararray"/>
+      <!-- column-name close -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="Window">
@@ -39,12 +41,28 @@
           <object class="GtkTreeView" id="TreeView">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="events">GDK_LEAVE_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
             <property name="model">ListStore</property>
             <property name="headers_visible">False</property>
             <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
+            <signal name="leave-notify-event" handler="on_leave_notify_event" swapped="no"/>
+            <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
             <signal name="row-activated" handler="on_row_activated" swapped="no"/>
             <child internal-child="selection">
-              <object class="GtkTreeSelection"/>
+              <object class="GtkTreeSelection" id="TreeViewSelection">
+                <signal name="changed" handler="on_selection_changed" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="CloseColumn">
+                <property name="title" translatable="yes">Close</property>
+                <child>
+                  <object class="GtkCellRendererPixbuf"/>
+                  <attributes>
+                    <attribute name="stock-id">3</attribute>
+                  </attributes>
+                </child>
+              </object>
             </child>
             <child>
               <object class="GtkTreeViewColumn" id="IconColumn">
@@ -79,16 +97,6 @@
                   <attributes>
                     <attribute name="text">2</attribute>
                   </attributes>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="CloseColumn">
-                <property name="title" translatable="yes">Close</property>
-                <child>
-                  <object class="GtkCellRendererPixbuf">
-                    <property name="stock_id">gtk-close</property>
-                  </object>
                 </child>
               </object>
             </child>

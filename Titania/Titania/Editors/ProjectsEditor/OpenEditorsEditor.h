@@ -103,11 +103,23 @@ private:
 
 	virtual
 	void
+	on_selection_changed () final override;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	virtual
 	bool
 	on_button_release_event (GdkEventButton* event) final override;
+
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion* event) final override;
+
+	virtual
+	bool
+	on_leave_notify_event (GdkEventCrossing* event) final override;
 
 	///  @name Members
 

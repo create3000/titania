@@ -93,6 +93,14 @@ public:
 	getListStore () const
 	{ return m_ListStore; }
 
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getTreeViewSelection () const
+	{ return m_TreeViewSelection; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getCloseColumn () const
+	{ return m_CloseColumn; }
+
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getIconColumn () const
 	{ return m_IconColumn; }
@@ -104,10 +112,6 @@ public:
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getFolderColumn () const
 	{ return m_FolderColumn; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getCloseColumn () const
-	{ return m_CloseColumn; }
 
 	Gtk::Window &
 	getWindow () const
@@ -136,8 +140,20 @@ public:
 	on_button_release_event (GdkEventButton* release_event) = 0;
 
 	virtual
+	bool
+	on_leave_notify_event (GdkEventCrossing* crossing_event) = 0;
+
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion* motion_event) = 0;
+
+	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) = 0;
+
+	virtual
+	void
+	on_selection_changed () = 0;
 
 	///  @name Destruction
 
@@ -164,10 +180,11 @@ private:
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Glib::RefPtr <Gtk::TreeSelection> m_TreeViewSelection;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_CloseColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_IconColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FolderColumn;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_CloseColumn;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;

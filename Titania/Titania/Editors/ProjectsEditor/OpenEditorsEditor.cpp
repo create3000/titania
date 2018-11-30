@@ -66,6 +66,7 @@ struct OpenEditorsEditor::Columns
 	static constexpr int32_t ICON   = 0;
 	static constexpr int32_t NAME   = 1;
 	static constexpr int32_t FOLDER = 2;
+	static constexpr int32_t CLOSE  = 3;
 };
 
 OpenEditorsEditor::OpenEditorsEditor (X3DBrowserWindow* const browserWindow, ProjectsEditor* const projectsEditor) :
@@ -191,6 +192,17 @@ OpenEditorsEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
 }
 
 void
+OpenEditorsEditor::on_selection_changed ()
+{
+	const auto selected = getTreeView () .get_selection () -> get_selected ();
+
+	for (const auto & row : getListStore () -> children ())
+		row -> set_value (Columns::CLOSE, std::string ());
+
+	selected -> set_value (Columns::CLOSE, std::string ("gtk-close"));
+}
+
+void
 OpenEditorsEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
 	try
@@ -210,7 +222,7 @@ OpenEditorsEditor::on_button_release_event (GdkEventButton* event)
 {
 	try
 	{
-		Gtk::TreeModel::Path path;
+		Gtk::TreePath        path;
 		Gtk::TreeViewColumn* column = nullptr;
 		int                  cell_x = 0;
 		int                  cell_y = 0;
@@ -234,6 +246,35 @@ OpenEditorsEditor::on_button_release_event (GdkEventButton* event)
 		__LOG__ << error .what () << std::endl;
 		return true;
 	}
+}
+
+bool
+OpenEditorsEditor::on_motion_notify_event (GdkEventMotion* event)
+{
+	Gtk::TreePath        path;
+	Gtk::TreeViewColumn* column = nullptr;
+	int                  cell_x = 0;
+	int                  cell_y = 0;
+
+	getTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
+
+	if (not path .size ())
+		return false;
+
+	const auto row = getListStore () -> get_iter (path);
+
+	on_selection_changed ();
+
+	row -> set_value (Columns::CLOSE, std::string ("gtk-close"));
+
+	return true;
+}
+
+bool
+OpenEditorsEditor::on_leave_notify_event (GdkEventCrossing* event)
+{
+	on_selection_changed ();
+	return false;
 }
 
 OpenEditorsEditor::~OpenEditorsEditor ()
