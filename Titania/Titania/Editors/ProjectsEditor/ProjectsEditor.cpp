@@ -103,6 +103,9 @@ ProjectsEditor::configure ()
 
 	// Projects
 
+	for (const auto & widget : getProjectsBox () .get_children ())
+		getProjectsBox () .remove (*widget);
+
 	auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
 	std::sort (projects .begin (), projects .end (), FolderCompare ());
