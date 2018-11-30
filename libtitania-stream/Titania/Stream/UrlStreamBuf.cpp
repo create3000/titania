@@ -99,7 +99,7 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 	curl_easy_setopt (easy_handle, CURLOPT_HEADER,                false);
 	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,        true);
 	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,            0);    // Timeout for the ENTIRE request
-	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS,     timeout ()); // Timeout for wait
+	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS,     1000); // Timeout for wait
 	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,      timeout ());
 	curl_easy_setopt (easy_handle, CURLOPT_EXPECT_100_TIMEOUT_MS, timeout ());
 	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,       "");
