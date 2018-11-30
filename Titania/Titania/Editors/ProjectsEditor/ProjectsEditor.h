@@ -66,13 +66,24 @@ class ProjectsEditor :
 {
 public:
 
+	///  @name Member types
+
+	struct FolderCompare
+	{
+		bool
+		operator () (const Glib::ustring & lhs, const Glib::ustring & rhs) const
+		{
+			return Glib::ustring (basic::uri (lhs) .basename ()) .lowercase () < Glib::ustring (basic::uri (rhs) .basename ()) .lowercase ();
+		}
+	};
+
 	///  @name Construction
 
 	ProjectsEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Member access
 
-	const std::set <std::string> &
+	const std::set <std::string, FolderCompare> &
 	getRootFolders () const
 	{ return rootFolders; }
 
@@ -137,10 +148,10 @@ private:
 
 	///  @name Members
 
-	X3D::SFTime                                             rootFoldersOutput;
-	std::set <std::string>                                  rootFolders;
-	std::map <std::string, std::shared_ptr <ProjectEditor>> projectEditors;
-	std::shared_ptr <OpenEditorsEditor>                     openEditorsEditor;
+	X3D::SFTime                                                            rootFoldersOutput;
+	std::set <std::string, FolderCompare>                                  rootFolders;
+	std::map <std::string, std::shared_ptr <ProjectEditor>, FolderCompare> projectEditors;
+	std::shared_ptr <OpenEditorsEditor>                                    openEditorsEditor;
 
 };
 

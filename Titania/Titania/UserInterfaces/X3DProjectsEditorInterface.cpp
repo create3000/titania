@@ -85,6 +85,8 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("ButtonBox", m_ButtonBox);
 	m_builder -> get_widget ("AddProjectButton", m_AddProjectButton);
+	m_builder -> get_widget ("OpenEditorsPaned", m_OpenEditorsPaned);
+	m_builder -> get_widget ("OpenEditorsBox", m_OpenEditorsBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("ProjectsBox", m_ProjectsBox);
 

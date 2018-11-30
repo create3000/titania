@@ -85,6 +85,10 @@ void
 ProjectsEditor::initialize ()
 {
 	X3DProjectsEditorInterface::initialize ();
+
+	// Open Editors
+
+	openEditorsEditor -> reparent (getOpenEditorsBox (), getWindow ());
 }
 
 void
@@ -92,19 +96,16 @@ ProjectsEditor::configure ()
 {
 	X3DProjectsEditorInterface::configure ();
 
-	// Open Editors
+	// OpenEditors Paned
 
-	openEditorsEditor -> reparent (getProjectsBox (), getWindow ());
+	if (getConfig () -> hasItem ("openEditorsPaned"))
+		getOpenEditorsPaned () .set_position (getConfig () -> getItem <int32_t> ("openEditorsPaned"));
 
 	// Projects
 
 	auto projects = getConfig () -> getItem <X3D::MFString> ("projects");
 
-	std::sort (projects .begin (), projects .end (),
-	[ ] (const Glib::ustring & lhs, const Glib::ustring & rhs)
-	{
-		return Glib::ustring (basic::uri (lhs) .basename ()) .lowercase () < Glib::ustring (basic::uri (rhs) .basename ()) .lowercase ();
-	});
+	std::sort (projects .begin (), projects .end (), FolderCompare ());
 
 	for (const auto & folder : basic::make_const_range (projects))
 		addRootFolder (folder .raw ());
@@ -195,7 +196,7 @@ ProjectsEditor::removeRootFolder (const basic::uri & rootFolder)
 void
 ProjectsEditor::scrollToFile (const Glib::RefPtr <Gio::File> & file)
 {
-	int32_t y = openEditorsEditor -> getWidget () .get_height ();
+	int32_t y = 0;
 
 	for (const auto & [rootFolder, projectEditor] : projectEditors)
 	{
@@ -222,6 +223,8 @@ ProjectsEditor::scrollToFile (const Glib::RefPtr <Gio::File> & file)
 void
 ProjectsEditor::store ()
 {
+	getConfig () -> setItem <int32_t> ("openEditorsPaned", getOpenEditorsPaned () .get_position ());
+
 	X3DProjectsEditorInterface::store ();
 }
 
