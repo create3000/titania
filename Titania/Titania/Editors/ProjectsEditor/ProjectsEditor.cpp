@@ -212,8 +212,9 @@ ProjectsEditor::scrollToFile (const Glib::RefPtr <Gio::File> & file)
 		projectEditor -> getFileView () .get_cell_area (path, *projectEditor -> getFileColumn () .operator -> (), rectangle);
 
 		y -= projectEditor -> getFileView () .get_height () - rectangle .get_y ();
+		y -= getScrolledWindow () .get_height () * (2 - math::phi <double>);
 
-		getScrolledWindow () .get_vadjustment () -> set_value (std::max <int32_t> (0, y - getScrolledWindow () .get_height () * (2 - math::phi <double>)));
+		getScrolledWindow () .get_vadjustment () -> set_value (std::max (0, y));
 	}
 }
 
