@@ -220,14 +220,11 @@ urlstreambuf::wait ()
 	// get file descriptors from the transfers
 	const CURLMcode retcode = curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
 
-	// In a real-world program you OF COURSE check the return code of the
-	// function calls.  On success, the value of maxfd is guaranteed to be
-	// greater or equal than -1.  We call select(maxfd + 1, ...), specially in
-	// case of (maxfd == -1), we call select(0, ...), which is basically equal
-	// to sleep.
-
 	if (retcode not_eq CURLM_OK)
 		return -1;
+
+	if (maxfd == -1)
+		return 0;
 
 	return select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
 }
