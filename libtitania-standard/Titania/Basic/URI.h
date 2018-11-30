@@ -959,7 +959,8 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 			break;
 	}
 
-	uri .m_local = uri .m_scheme == FileSchemeId or (not uri .m_scheme .size () and not (uri .m_host .size () || uri .m_port));
+	uri .m_local  = uri .m_scheme == FileSchemeId or (not uri .m_scheme .size () and not (uri .m_host .size () || uri .m_port));
+	uri .m_string = uri .to_string ();
 }
 
 template <class StringT>

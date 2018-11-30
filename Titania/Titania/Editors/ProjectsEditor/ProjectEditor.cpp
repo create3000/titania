@@ -960,7 +960,7 @@ ProjectEditor::launchFile (const Glib::RefPtr <Gio::File> & file)
 {
 	if (canOpenFile (file))
 	{
-		getBrowserWindow () -> open ("file://" + file -> get_path ());
+		getBrowserWindow () -> open ("file://" + basic::path (file -> get_path (), "/") .escape () .str ());
 	}
 	else
 	{

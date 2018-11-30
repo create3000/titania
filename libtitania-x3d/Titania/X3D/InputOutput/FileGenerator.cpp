@@ -125,7 +125,7 @@ FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std:
 	};
 
 	if (worldURL .is_relative ())
-		worldURL = basic::uri ("file://" + Glib::get_current_dir () + "/") .transform (worldURL);
+		worldURL = basic::uri ("file://" + basic::path (Glib::get_current_dir (), "/") .escape () .str () + "/") .transform (worldURL);
 
 	if (not worldURL .is_local ())
 		throw Error <INVALID_URL> ("Invalid URL: URL is not local.");

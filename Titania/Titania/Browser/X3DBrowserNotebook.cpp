@@ -370,7 +370,7 @@ X3DBrowserNotebook::open (const basic::uri & URL_)
 	auto URL = URL_;
 
 	if (URL .is_relative ())
-		URL = basic::uri (Glib::get_current_dir () + "/") .transform (URL);
+		URL = basic::uri ("file://" + basic::path (Glib::get_current_dir (), "/") .escape () .str () + "/") .transform (URL);
 
 	try
 	{
@@ -415,7 +415,7 @@ X3DBrowserNotebook::load (const basic::uri & URL)
 	if (URL .empty ())
 		return;
 
-	getCurrentBrowser () -> loadURL ({ URL .str () }, { });
+	getCurrentBrowser () -> loadURL ({ URL .escape () .str () }, { });
 }
 
 bool

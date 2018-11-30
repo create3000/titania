@@ -328,7 +328,7 @@ GoldenGate::image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	file = std::regex_replace (file, Name,   GetNameFromURI (uri));
 	file = std::regex_replace (file, Width,  basic::to_string (width,  std::locale::classic ()));
 	file = std::regex_replace (file, Height, basic::to_string (height, std::locale::classic ()));
-	file = std::regex_replace (file, URL,    "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
+	file = std::regex_replace (file, URL,    "[ " + SFString (uri .escape () .basename ()) .toString () + ", " + SFString (uri .escape () .str ()) .toString () + " ]");
 
 	// Parse into scene.
 
@@ -344,7 +344,7 @@ GoldenGate::audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 
 	file = std::regex_replace (file, Name,        GetNameFromURI (uri));
 	file = std::regex_replace (file, Description, SFString (uri .stem ()) .toString ());
-	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
+	file = std::regex_replace (file, URL,         "[ " + SFString (uri .escape ()  .basename ()) .toString () + ", " + SFString (uri .escape ()  .str ()) .toString () + " ]");
 
 	// Parse into scene.
 
@@ -371,7 +371,7 @@ GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	file = std::regex_replace (file, Description, SFString (uri .stem ()) .toString ());
 	file = std::regex_replace (file, Width,       basic::to_string (width,  std::locale::classic ()));
 	file = std::regex_replace (file, Height,      basic::to_string (height, std::locale::classic ()));
-	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
+	file = std::regex_replace (file, URL,         "[ " + SFString (uri .escape ()  .basename ()) .toString () + ", " + SFString (uri .escape ()  .str ()) .toString () + " ]");
 
 	// Parse into scene.
 

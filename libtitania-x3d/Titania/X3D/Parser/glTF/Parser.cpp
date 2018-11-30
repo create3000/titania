@@ -1313,7 +1313,7 @@ Parser::imageValue (json_object* const jobj)
 
 	if (stringValue (json_object_object_get (jobj, "uri"), uriCharacters))
 	{
-		image -> uri = uriCharacters;
+		image -> uri = basic::path (uriCharacters, "/") .escape () .str ();
 	}
 
 	return image;

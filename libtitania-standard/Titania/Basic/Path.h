@@ -314,6 +314,10 @@ public:
 	string_type
 	str () const;
 
+	///  Returns the string representation of this URI.
+	operator string_type () const
+	{ return str (); }
+
 
 private:
 

@@ -117,7 +117,7 @@ MFStringURLEntry::on_open_dialog_clicked (Gtk::Entry* const entry)
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 
-		entry -> set_text (URL .str ());
+		entry -> set_text (URL .escape () .str ());
 	}
 
 	fileOpenDialog -> quit ();

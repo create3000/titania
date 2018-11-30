@@ -208,7 +208,7 @@ Parser::texture (const Lib3dsTextureMap & textureMap)
 {
 	// Determit texture path.
 
-	std::string basename = textureMap .name;
+	std::string basename = basic::path (textureMap .name, "/") .escape () .str ();
 
 	if (basename .empty ())
 	{

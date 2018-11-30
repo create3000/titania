@@ -51,6 +51,7 @@
 #ifndef __TITANIA_EDITORS_HISTORY_EDITOR_HISTORY_H__
 #define __TITANIA_EDITORS_HISTORY_EDITOR_HISTORY_H__
 
+#include <Titania/Basic/URI.h>
 #include <Titania/SQL/SQLite3.h>
 #include <Titania/X3D/Base/Output.h>
 #include <giomm.h>
@@ -85,23 +86,23 @@ public:
 
 	///  throws std::out_of_range, std::invalid_argument
 	std::string
-	getId (const std::string & worldURL) const;
+	getId (const basic::uri & worldURL) const;
 
 	void
-	setPreview (const std::string & worldURL, const std::string & image);
+	setPreview (const basic::uri & worldURL, const std::string & image);
 
 	///  throws std::invalid_argument
 	std::string
 	getPreview (const std::string & id) const;
 
 	void
-	setContextPath (const std::string & worldURL, const std::string & contextPath);
+	setContextPath (const basic::uri & worldURL, const std::string & contextPath);
 
 	std::string
-	getContextPath (const std::string & worldURL) const;
+	getContextPath (const basic::uri & worldURL) const;
 
 	void
-	setItem (const std::string & title, const std::string & worldURL);
+	setItem (const std::string & title, const basic::uri & worldURL);
 
 	sql::sqlite3::assoc_row_type
 	getItem (const std::string & id) const;

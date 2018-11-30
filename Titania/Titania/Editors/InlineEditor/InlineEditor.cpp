@@ -177,7 +177,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 		const auto worldURL   = fileExportDialog -> getUrl ();
 		const auto name       = X3D::GetNameFromURI (worldURL);
 		const auto inlineNode = executionContext -> createNode <X3D::Inline> ();
-		const auto url        = X3D::MFString ({ executionContext -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () });
+		const auto url        = X3D::MFString ({ executionContext -> getWorldURL () .relative_path (worldURL) .escape () .str (), worldURL .escape () .str () });
 
 		inlineNode -> url () = url;
 

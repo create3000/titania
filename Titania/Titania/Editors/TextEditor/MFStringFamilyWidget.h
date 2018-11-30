@@ -125,7 +125,7 @@ MFStringFamilyWidget::MFStringFamilyWidget (X3DUserInterface* const userInterfac
 	  fontChooserColumn (fontChooserColumn),
 	  fileChooserColumn (fileChooserColumn),
 	  fontChooserDialog (),
-	   fileOpenDialog ()
+	     fileOpenDialog ()
 {
 	treeView .signal_button_release_event () .connect (sigc::mem_fun (this, &MFStringFamilyWidget::on_button_release_event));
 

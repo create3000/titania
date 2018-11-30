@@ -68,7 +68,7 @@ namespace puck {
 
 X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
-	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { startUrl .str () })),
+	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { startUrl .escape () .str () })),
 	             masterScene (mainBrowser -> getExecutionContext ()),
 	                   scene (mainBrowser -> getExecutionContext ()),
 	        executionContext (mainBrowser -> getExecutionContext ()),
@@ -476,7 +476,7 @@ X3DNotebookPage::on_file_changed ()
 
 	reset ();
 
-	mainBrowser -> loadURL ({ getScene () -> getWorldURL () .str () }, { });
+	mainBrowser -> loadURL ({ getScene () -> getWorldURL () .escape () .str () }, { });
 }
 
 void

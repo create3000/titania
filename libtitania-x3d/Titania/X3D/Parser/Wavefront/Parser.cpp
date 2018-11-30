@@ -588,7 +588,7 @@ MaterialParser::map_Kd ()
 				if (not url .empty ())
 				{
 					const auto texture       = scene -> createNode <X3D::ImageTexture> ();
-					const auto normalizedURL = std::regex_replace (url .back (), backslash, "/");
+					const auto normalizedURL = basic::path (std::regex_replace (url .back (), backslash, "/"), "/") .escape () .str ();
 
 					texture -> url () = {
 						normalizedURL,

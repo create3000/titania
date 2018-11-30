@@ -140,7 +140,7 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 		URL .fragment (fragment);
 
-		set1Value (path .front (), URL .str ());
+		set1Value (path .front (), URL .escape () .str ());
 	}
 
 	fileOpenDialog -> quit ();

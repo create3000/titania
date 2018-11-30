@@ -172,10 +172,10 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 
 ///  throws std::out_of_range, std::invalid_argument
 std::string
-History::getId (const std::string & worldURL) const
+History::getId (const basic::uri & worldURL) const
 {
 	const auto & result = database .query_array ("SELECT id FROM History WHERE "
-	                                             "worldURL = " + database .quote (worldURL));
+	                                             "worldURL = " + database .quote (worldURL .escape () .str ()));
 
 	return result .at (0) .at (0);
 }
@@ -199,11 +199,11 @@ History::getId (const std::string & worldURL) const
 //}
 
 void
-History::setPreview (const std::string & worldURL, const std::string & image)
+History::setPreview (const basic::uri & worldURL, const std::string & image)
 {
 	try
 	{
-		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL), image);
+		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL .escape () .str ()), image);
 	}
 	catch (const std::exception & error)
 	{
@@ -223,14 +223,14 @@ History::getPreview (const std::string & id) const
 }
 
 void
-History::setContextPath (const std::string & worldURL, const std::string & contextPath)
+History::setContextPath (const basic::uri & worldURL, const std::string & contextPath)
 {
 	try
 	{
 		database .query ("UPDATE History "
 		                 "SET "
 		                 "contextPath = " + database .quote (contextPath) + " "
-		                 "WHERE worldURL = " + database .quote (worldURL));
+		                 "WHERE worldURL = " + database .quote (worldURL .escape () .str ()));
 	}
 	catch (const std::exception & error)
 	{
@@ -239,11 +239,11 @@ History::setContextPath (const std::string & worldURL, const std::string & conte
 }
 
 std::string
-History::getContextPath (const std::string & worldURL) const
+History::getContextPath (const basic::uri & worldURL) const
 {
 	try
 	{
-		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL));
+		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL .escape () .str ()));
 
 		return items .at (0) .at ("contextPath");
 	}
@@ -254,17 +254,17 @@ History::getContextPath (const std::string & worldURL) const
 }
 
 void
-History::setItem (const std::string & title, const std::string & worldURL)
+History::setItem (const std::string & title, const basic::uri & worldURL)
 {
 	try
 	{
 		try
 		{
-			update (getId (worldURL), title);
+			update (getId (worldURL .escape () .str ()), title);
 		}
 		catch (const std::out_of_range &)
 		{
-			insert (title, worldURL);
+			insert (title, worldURL .escape () .str ());
 		}
 	}
 	catch (const std::exception & error)

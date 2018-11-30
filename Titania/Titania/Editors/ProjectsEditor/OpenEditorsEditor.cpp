@@ -158,7 +158,7 @@ OpenEditorsEditor::set_pages ()
 	
 				if (File::isSubfolder (folder, homeFolder))
 				{
-					const auto  home          = basic::uri (Glib::get_home_dir () + "/");
+					const auto  home          = basic::uri (basic::path (Glib::get_home_dir (), "/") .escape () .str () + "/");
 					const auto  releativePath = home .relative_path (path);
 					std::string string        = "~";
 
