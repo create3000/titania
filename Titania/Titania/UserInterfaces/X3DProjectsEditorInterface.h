@@ -109,10 +109,6 @@ public:
 	getAddProjectButton () const
 	{ return *m_AddProjectButton; }
 
-	Gtk::Box &
-	getFilesBox () const
-	{ return *m_FilesBox; }
-
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
@@ -164,7 +160,6 @@ private:
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_ButtonBox;
 	Gtk::Button* m_AddProjectButton;
-	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::Box* m_ProjectsBox;
 

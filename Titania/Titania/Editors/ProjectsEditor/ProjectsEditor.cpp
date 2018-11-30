@@ -215,6 +215,7 @@ ProjectsEditor::scrollToFile (const Glib::RefPtr <Gio::File> & file)
 		y -= getScrolledWindow () .get_height () * (2 - math::phi <double>);
 
 		getScrolledWindow () .get_vadjustment () -> set_value (std::max (0, y));
+		break;
 	}
 }
 
