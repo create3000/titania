@@ -169,6 +169,14 @@ protected:
 	Glib::RefPtr <Gio::File>
 	getFile (const Gtk::TreeIter & iter) const;
 
+	void
+	setRestoreAdjustments (const bool value)
+	{ restoreAdjustemts = value; }
+
+	bool
+	getRestoreAdjustments () const
+	{ return restoreAdjustemts; }
+
 	///  @name Event handler
 
 	virtual
@@ -262,6 +270,7 @@ private:
 	std::set <std::string>                   rootFolders;
 	std::map <std::string, FolderElementPtr> folders;
 	std::unique_ptr <ScrollFreezer>          scrollFreezer;
+	bool                                     restoreAdjustemts;
 
 };
 
@@ -281,10 +290,11 @@ typename X3DFileBrowser <Type>::TransferAction X3DFileBrowser <Type>::clipboardA
 
 template <class Type>
 X3DFileBrowser <Type>::X3DFileBrowser () :
-	           Type (),
-	    rootFolders (),
-	        folders (),
-	  scrollFreezer (new ScrollFreezer (getFileView ()))
+	             Type (),
+	      rootFolders (),
+	          folders (),
+	    scrollFreezer (new ScrollFreezer (getFileView ())),
+	restoreAdjustemts (true)
 { }
 
 template <class Type>
@@ -992,8 +1002,11 @@ X3DFileBrowser <Type>::restoreExpanded (std::string id)
 		getFileView () .expand_row (getFileStore () -> get_path (iter), false);
 	}
 
-	scrollFreezer -> restore (getConfig () -> template getItem <double> ("hadjustment"),
-	                          getConfig () -> template getItem <double> ("vadjustment"));
+	if (restoreAdjustemts)
+	{
+		scrollFreezer -> restore (getConfig () -> template getItem <double> ("hadjustment"),
+		                          getConfig () -> template getItem <double> ("vadjustment"));
+	}
 }
 
 template <class Type>
@@ -1008,8 +1021,12 @@ X3DFileBrowser <Type>::saveExpanded (std::string id)
 	getExpanded (getFileStore () -> children (), folders);
 
 	getConfig () -> template setItem <X3D::MFString> ("expanded" + id, folders);
-	getConfig () -> template setItem <double> ("hadjustment", getFileView () .get_hadjustment () -> get_value ());
-	getConfig () -> template setItem <double> ("vadjustment", getFileView () .get_vadjustment () -> get_value ());
+
+	if (restoreAdjustemts)
+	{
+		getConfig () -> template setItem <double> ("hadjustment", getFileView () .get_hadjustment () -> get_value ());
+		getConfig () -> template setItem <double> ("vadjustment", getFileView () .get_vadjustment () -> get_value ());
+	}
 }
 
 template <class Type>

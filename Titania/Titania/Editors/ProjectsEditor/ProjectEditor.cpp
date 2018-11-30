@@ -79,6 +79,7 @@ ProjectEditor::ProjectEditor (X3DBrowserWindow* const browserWindow, const basic
 {
 	setName (getWidget () .get_name () + "." + basic::to_string (std::hash <std::string> () (folder), std::locale::classic ()));
 
+	setRestoreAdjustments (false);
 	getFileView () .signal_display_menu () .connect (sigc::mem_fun (this, &ProjectEditor::on_display_menu));
 
 	getFileView () .enable_model_drag_source ({
