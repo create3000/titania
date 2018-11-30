@@ -38,65 +38,70 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTreeView" id="TreeView">
+          <object class="GtkEventBox" id="EventBox">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="events">GDK_LEAVE_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
-            <property name="model">ListStore</property>
-            <property name="headers_visible">False</property>
-            <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
+            <property name="can_focus">False</property>
             <signal name="leave-notify-event" handler="on_leave_notify_event" swapped="no"/>
-            <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
-            <signal name="row-activated" handler="on_row_activated" swapped="no"/>
-            <child internal-child="selection">
-              <object class="GtkTreeSelection" id="TreeViewSelection">
-                <signal name="changed" handler="on_selection_changed" swapped="no"/>
-              </object>
-            </child>
             <child>
-              <object class="GtkTreeViewColumn" id="CloseColumn">
-                <property name="title" translatable="yes">Close</property>
-                <child>
-                  <object class="GtkCellRendererPixbuf"/>
-                  <attributes>
-                    <attribute name="stock-id">3</attribute>
-                  </attributes>
+              <object class="GtkTreeView" id="TreeView">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">ListStore</property>
+                <property name="headers_visible">False</property>
+                <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
+                <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
+                <signal name="row-activated" handler="on_row_activated" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="TreeViewSelection">
+                    <signal name="changed" handler="on_selection_changed" swapped="no"/>
+                  </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="IconColumn">
-                <property name="title" translatable="yes">Icon</property>
                 <child>
-                  <object class="GtkCellRendererPixbuf"/>
-                  <attributes>
-                    <attribute name="stock-id">0</attribute>
-                  </attributes>
+                  <object class="GtkTreeViewColumn" id="CloseColumn">
+                    <property name="title" translatable="yes">Close</property>
+                    <child>
+                      <object class="GtkCellRendererPixbuf"/>
+                      <attributes>
+                        <attribute name="stock-id">3</attribute>
+                      </attributes>
+                    </child>
+                  </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="NameColumn">
-                <property name="sizing">autosize</property>
-                <property name="title" translatable="yes">Name</property>
                 <child>
-                  <object class="GtkCellRendererText"/>
-                  <attributes>
-                    <attribute name="text">1</attribute>
-                  </attributes>
+                  <object class="GtkTreeViewColumn" id="IconColumn">
+                    <property name="title" translatable="yes">Icon</property>
+                    <child>
+                      <object class="GtkCellRendererPixbuf"/>
+                      <attributes>
+                        <attribute name="stock-id">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="FolderColumn">
-                <property name="sizing">autosize</property>
-                <property name="title" translatable="yes">Folder</property>
-                <property name="expand">True</property>
                 <child>
-                  <object class="GtkCellRendererText"/>
-                  <attributes>
-                    <attribute name="text">2</attribute>
-                  </attributes>
+                  <object class="GtkTreeViewColumn" id="NameColumn">
+                    <property name="sizing">autosize</property>
+                    <property name="title" translatable="yes">Name</property>
+                    <child>
+                      <object class="GtkCellRendererText"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="FolderColumn">
+                    <property name="sizing">autosize</property>
+                    <property name="title" translatable="yes">Folder</property>
+                    <property name="expand">True</property>
+                    <child>
+                      <object class="GtkCellRendererText"/>
+                      <attributes>
+                        <attribute name="text">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
                 </child>
               </object>
             </child>

@@ -1028,3 +1028,5 @@ TreeView::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* motion_event);
 Box::leave_notify_event
   virtual bool on_leave_notify_event(GdkEventCrossing* crossing_event);
+EventBox::leave_notify_event
+  virtual bool on_leave_notify_event(GdkEventCrossing* crossing_event);

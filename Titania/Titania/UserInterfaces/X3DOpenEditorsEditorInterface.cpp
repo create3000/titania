@@ -89,14 +89,17 @@ X3DOpenEditorsEditorInterface::create ()
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("EventBox", m_EventBox);
 	m_builder -> get_widget ("TreeView", m_TreeView);
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_map));
 
+	// Connect object Gtk::EventBox with id 'EventBox'.
+	m_EventBox -> signal_leave_notify_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_leave_notify_event));
+
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_button_release_event));
-	m_TreeView -> signal_leave_notify_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_leave_notify_event));
 	m_TreeView -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_motion_notify_event));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DOpenEditorsEditorInterface::on_row_activated));
 

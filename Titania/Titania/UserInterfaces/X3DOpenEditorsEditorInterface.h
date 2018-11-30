@@ -125,6 +125,10 @@ public:
 	getHeaderBar () const
 	{ return *m_HeaderBar; }
 
+	Gtk::EventBox &
+	getEventBox () const
+	{ return *m_EventBox; }
+
 	Gtk::TreeView &
 	getTreeView () const
 	{ return *m_TreeView; }
@@ -137,11 +141,11 @@ public:
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton* release_event) = 0;
+	on_leave_notify_event (GdkEventCrossing* crossing_event) = 0;
 
 	virtual
 	bool
-	on_leave_notify_event (GdkEventCrossing* crossing_event) = 0;
+	on_button_release_event (GdkEventButton* release_event) = 0;
 
 	virtual
 	bool
@@ -188,6 +192,7 @@ private:
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::EventBox* m_EventBox;
 	Gtk::TreeView* m_TreeView;
 
 };

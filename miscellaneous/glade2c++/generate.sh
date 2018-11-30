@@ -14,18 +14,6 @@ echo "\nUserInterfaces\n";
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -maxdepth 1 -name \*.glade;`
 
-echo "\nApplications\n";
-
-/home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
--e \
--v \
--n titania -n puck \
--p X3D \
--s Interface \
--b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DApplicationInterface.h \
--o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
-`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/ -maxdepth 1 -name \*.glade;`
-
 echo "\nDialogs\n";
 
 /home/holger/Projekte/Titania/miscellaneous/glade2c++/glade2c++.pl \
