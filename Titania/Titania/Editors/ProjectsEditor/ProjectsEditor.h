@@ -102,10 +102,21 @@ private:
 
 	virtual
 	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
+	virtual
+	void
 	on_add_project_clicked () final override;
 	
 	void
 	on_remove_project_clicked (const basic::uri & rootFolder);
+	
+	void
+	set_execution_context ();
 
 	///  @name Operations
 
@@ -114,6 +125,9 @@ private:
 
 	void
 	removeRootFolder (const basic::uri & folder);
+
+	void
+	scrollToFile (const Glib::RefPtr <Gio::File> & file);
 
 	///  @name Destruction
 

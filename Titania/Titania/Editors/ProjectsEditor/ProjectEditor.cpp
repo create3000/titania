@@ -883,11 +883,15 @@ ProjectEditor::on_selection_changed ()
 void
 ProjectEditor::set_execution_context ()
 {
-	if (getCurrentContext () -> getWorldURL () .is_local ())
-	{
-		unselectAll ();
-		selectFile (Gio::File::create_for_path (getCurrentContext () -> getWorldURL () .path ()));
-	}
+	// Select current file.
+
+	const auto & worldURL = getCurrentContext () -> getWorldURL ();
+
+	if (worldURL .is_network ())
+		return;
+
+	unselectAll ();
+	selectFile (Gio::File::create_for_path (worldURL .path ()));
 }
 
 void

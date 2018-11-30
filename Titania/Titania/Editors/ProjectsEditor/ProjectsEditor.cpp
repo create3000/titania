@@ -108,6 +108,22 @@ ProjectsEditor::configure ()
 
 	for (const auto & folder : basic::make_const_range (projects))
 		addRootFolder (folder .raw ());
+
+	set_execution_context ();
+}
+
+void
+ProjectsEditor::on_map ()
+{
+	getCurrentContext () .addInterest (&ProjectsEditor::set_execution_context, this);
+
+	set_execution_context ();
+}
+
+void
+ProjectsEditor::on_unmap ()
+{
+	getCurrentContext () .removeInterest (&ProjectsEditor::set_execution_context, this);
 }
 
 void
@@ -131,6 +147,21 @@ ProjectsEditor::on_remove_project_clicked (const basic::uri & rootFolder)
 	removeRootFolder (rootFolder);
 
 	getConfig () -> setItem <X3D::MFString> ("projects", X3D::MFString (rootFolders.begin (), rootFolders .end ()));
+}
+
+void
+ProjectsEditor::set_execution_context ()
+{
+	// Scroll to current file.
+
+	const auto & worldURL = getCurrentContext () -> getWorldURL ();
+
+	if (worldURL .is_network ())
+		return;
+
+	const auto file = Gio::File::create_for_path (worldURL .path ());
+
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ProjectsEditor::scrollToFile), file));
 }
 
 void
@@ -159,6 +190,31 @@ ProjectsEditor::removeRootFolder (const basic::uri & rootFolder)
 	projectEditors .erase (rootFolder);
 
 	rootFoldersOutput = getCurrentBrowser () -> getCurrentTime ();
+}
+
+void
+ProjectsEditor::scrollToFile (const Glib::RefPtr <Gio::File> & file)
+{
+	int32_t y = openEditorsEditor -> getWidget () .get_height ();
+
+	for (const auto & [rootFolder, projectEditor] : projectEditors)
+	{
+		const auto iter = projectEditor -> getIter (file);
+
+		y += projectEditor -> getWidget () .get_height ();
+
+		if (not projectEditor -> getFileStore () -> iter_is_valid (iter))
+			continue;
+
+		const auto path      = projectEditor -> getFileStore () -> get_path (iter);
+		auto       rectangle = Gdk::Rectangle ();
+
+		projectEditor -> getFileView () .get_cell_area (path, *projectEditor -> getFileColumn () .operator -> (), rectangle);
+
+		y -= projectEditor -> getFileView () .get_height () - rectangle .get_y ();
+
+		getScrolledWindow () .get_vadjustment () -> set_value (std::max <int32_t> (0, y - getScrolledWindow () .get_height () * (2 - math::phi <double>)));
+	}
 }
 
 void

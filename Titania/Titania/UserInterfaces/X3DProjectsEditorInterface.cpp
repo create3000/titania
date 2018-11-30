@@ -88,6 +88,12 @@ X3DProjectsEditorInterface::create ()
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("ProjectsBox", m_ProjectsBox);
+
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_unmap));
+
+	// Connect object Gtk::Button with id 'AddProjectButton'.
 	m_AddProjectButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DProjectsEditorInterface::on_add_project_clicked));
 }
 

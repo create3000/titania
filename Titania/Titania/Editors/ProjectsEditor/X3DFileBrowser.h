@@ -72,6 +72,18 @@ public:
 	using Type::getConfig;
 	using Type::createDialog;
 
+	///  @name Folder handling
+
+	const std::set <std::string> &
+	getRootFolders () const
+	{ return rootFolders; }
+
+	Gtk::TreeIter
+	getIter (const Glib::RefPtr <Gio::File> & file) const;
+
+	Glib::RefPtr <Gio::File>
+	getFile (const Gtk::TreeIter & iter) const;
+
 	///  @name Destruction
 
 	virtual
@@ -100,6 +112,25 @@ protected:
 	virtual
 	void
 	configure () override;
+
+	///  @name Folder handling
+
+	void
+	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	addRootFolder (const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	removeRootFolder (const Glib::RefPtr <Gio::File> & folder);
+
+	void
+	setRestoreAdjustments (const bool value)
+	{ restoreAdjustemts = value; }
+
+	bool
+	getRestoreAdjustments () const
+	{ return restoreAdjustemts; }
 
 	///  @name File operations
 
@@ -147,35 +178,6 @@ protected:
 
 	bool
 	expandTo (const Glib::RefPtr <Gio::File> & file);
-
-	///  @name Folder handling
-
-	void
-	setRootFolder (const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	addRootFolder (const Glib::RefPtr <Gio::File> & folder);
-
-	void
-	removeRootFolder (const Glib::RefPtr <Gio::File> & folder);
-
-	const std::set <std::string> &
-	getRootFolders () const
-	{ return rootFolders; }
-
-	Gtk::TreeIter
-	getIter (const Glib::RefPtr <Gio::File> & file) const;
-
-	Glib::RefPtr <Gio::File>
-	getFile (const Gtk::TreeIter & iter) const;
-
-	void
-	setRestoreAdjustments (const bool value)
-	{ restoreAdjustemts = value; }
-
-	bool
-	getRestoreAdjustments () const
-	{ return restoreAdjustemts; }
 
 	///  @name Event handler
 
@@ -226,14 +228,6 @@ private:
 	void
 	on_file_changed_update_tree_view (const Glib::RefPtr <Gio::File> & file);
 
-	///  @name Clipboard handling
-
-	Glib::RefPtr <Gio::File>
-	getTransferDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
-
-	std::string
-	getTransferCopyString (const int32_t count) const;
-
 	///  @name Folder handling
 
 	void
@@ -256,6 +250,14 @@ private:
 	
 	bool
 	getIter (const Gtk::TreeIter & iter, const std::string & path, Gtk::TreeIter & result) const;
+
+	///  @name Clipboard handling
+
+	Glib::RefPtr <Gio::File>
+	getTransferDestination (const TransferAction action, const Glib::RefPtr <Gio::File> & source, const Glib::RefPtr <Gio::File> & folder) const;
+
+	std::string
+	getTransferCopyString (const int32_t count) const;
 
 	///  @name Expanded handling
 
@@ -386,6 +388,282 @@ X3DFileBrowser <Type>::on_file_changed_update_tree_view (const Glib::RefPtr <Gio
 	getFileStore () -> insert_after (iter);
 	removeChild (iter);
 	addFolder (getFileStore () -> get_iter (path), folder);
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
+{
+	try
+	{
+		getFileStore () -> clear ();
+		rootFolders .clear ();
+		folders .clear ();
+
+		rootFolders .emplace (folder -> get_path ());
+
+		for (const auto & fileInfo : File::getChildren (folder))
+		{
+			switch (fileInfo -> get_file_type ())
+			{
+				case Gio::FILE_TYPE_DIRECTORY:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getFileStore () -> append ();
+	
+					addFolder (iter, child);
+					continue;
+				}
+				case Gio::FILE_TYPE_REGULAR:
+				case Gio::FILE_TYPE_SYMBOLIC_LINK:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getFileStore () -> append ();
+	
+					addChild (iter, child);
+					continue;
+				}
+				default:
+					continue;
+			}
+		}
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
+{
+	try
+	{
+		if (not rootFolders .emplace (folder -> get_path ()) .second)
+			return;
+
+		const auto iter = getFileStore () -> append ();
+
+		if (folder -> query_exists () and folder -> query_info () -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
+		{
+			addFolder (iter, folder);
+		}
+		else
+		{
+			const auto uri = basic::uri (folder -> get_uri ());
+
+			if (uri .is_local ())
+			{
+				iter -> set_value (Columns::ICON, std::string ("folder-symbolic"));
+				iter -> set_value (Columns::NAME, folder -> get_basename ());
+			}
+			else
+			{
+				iter -> set_value (Columns::ICON, std::string ("folder-remote-symbolic"));
+				iter -> set_value (Columns::NAME, folder -> get_basename () + " (" + uri .authority () + ")");
+			}
+
+			iter -> set_value (Columns::PATH, folder -> get_path ());
+		}
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder)
+{
+	addFolder (folder);
+	addChild (iter, folder);
+
+	if (File::hasChildren (folder))
+		getFileStore () -> append (iter -> children ());
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::addFolder (const Glib::RefPtr <Gio::File> & folder)
+{
+	try
+	{
+		const auto fileElement = std::make_shared <FolderElement> ();
+	
+		folders .emplace (folder -> get_path (), fileElement);
+	
+		fileElement -> fileMonitor = folder -> monitor_directory (Gio::FILE_MONITOR_WATCH_MOVES);
+	
+		fileElement -> fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &X3DFileBrowser::on_file_changed));
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder)
+{
+	try
+	{
+		for (const auto & fileInfo : File::getChildren (folder))
+		{
+			switch (fileInfo -> get_file_type ())
+			{
+				case Gio::FILE_TYPE_DIRECTORY:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getFileStore () -> append (parentIter -> children ());
+
+					addFolder (iter, child);
+					continue;
+				}
+				case Gio::FILE_TYPE_REGULAR:
+				case Gio::FILE_TYPE_SYMBOLIC_LINK:
+				{
+					const auto child = folder -> get_child (fileInfo -> get_name ());
+					const auto iter  = getFileStore () -> append (parentIter -> children ());
+
+					addChild (iter, child);
+					continue;
+				}
+				default:
+					continue;
+			}
+		}
+	}
+	catch (const Glib::Error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
+{
+	const auto fileInfo = file -> query_info ();
+	const auto uri      = basic::uri (file -> get_uri ());
+
+	if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY and not uri .is_local ())
+		iter -> set_value (Columns::ICON, std::string ("folder-remote"));
+	else
+		iter -> set_value (Columns::ICON, File::getIconName (fileInfo));
+
+	if (uri .is_local () or not rootFolders .count (file -> get_path ()))
+		iter -> set_value (Columns::NAME, file -> get_basename ());
+	else
+		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + uri .authority () + ")");
+
+	iter -> set_value (Columns::PATH,      file -> get_path ());
+	iter -> set_value (Columns::SENSITIVE, true);
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::removeRootFolder (const Glib::RefPtr <Gio::File> & folder)
+{
+	if (rootFolders .erase (folder -> get_path ()))
+		removeChild (getIter (folder));
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::removeChildren (const Gtk::TreeIter & iter)
+{
+	std::vector <Gtk::TreePath> children;
+
+	for (const auto & child : iter -> children ())
+		children .emplace_back (getFileStore () -> get_path (child));
+
+	for (const auto & child : basic::make_reverse_range (children))
+		removeChild (getFileStore () -> get_iter (child));
+}
+
+template <class Type>
+void
+X3DFileBrowser <Type>::removeChild (const Gtk::TreeIter & iter)
+{
+	const auto child = getFile (iter);
+
+	getFileStore () -> erase (iter);
+
+	if (child -> get_path () .empty ())
+		return;
+
+	// Remove project and subfolders if path is a folder.
+
+	const auto fileInfo = child -> query_info ();
+
+	if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
+		return;
+
+	// Remove subfolders.
+
+	std::vector <std::string> subfolders;
+
+	for (const auto & pair : folders)
+	{
+		if (File::isSubfolder (Gio::File::create_for_path (pair .first), child))
+			subfolders .emplace_back (pair .first);
+	}
+
+	for (const auto & subfolder : subfolders)
+		folders .erase (subfolder);
+}
+
+template <class Type>
+Gtk::TreeIter
+X3DFileBrowser <Type>::getIter (const Glib::RefPtr <Gio::File> & file) const
+{
+	Gtk::TreeIter result;
+
+	for (const auto & childIter : getFileStore () -> children ())
+	{
+		if (getIter (childIter, file -> get_path (), result))
+			break;
+	}
+
+	return result;
+}
+
+template <class Type>
+bool
+X3DFileBrowser <Type>::getIter (const Gtk::TreeIter & iter, const std::string & path, Gtk::TreeIter & result) const
+{
+	const auto parent = getFile (iter) -> get_path ();
+
+	if (parent == path)
+	{
+		result = iter;
+		return true;
+	}
+
+	if (path .find (parent) not_eq 0)
+		return false;
+
+	for (const auto & childIter : iter -> children ())
+	{
+		if (getIter (childIter, path, result))
+			return true;
+	}
+
+	return false;
+}
+
+template <class Type>
+Glib::RefPtr <Gio::File>
+X3DFileBrowser <Type>::getFile (const Gtk::TreeIter & iter) const
+{
+	std::string path;
+
+	iter -> get_value (Columns::PATH, path);
+
+	return Gio::File::create_for_path (path);
 }
 
 template <class Type>
@@ -705,282 +983,6 @@ X3DFileBrowser <Type>::expandTo (const Glib::RefPtr <Gio::File> & file)
 	}
 
 	return false;
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::setRootFolder (const Glib::RefPtr <Gio::File> & folder)
-{
-	try
-	{
-		getFileStore () -> clear ();
-		rootFolders .clear ();
-		folders .clear ();
-
-		rootFolders .emplace (folder -> get_path ());
-
-		for (const auto & fileInfo : File::getChildren (folder))
-		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_DIRECTORY:
-				{
-					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getFileStore () -> append ();
-	
-					addFolder (iter, child);
-					continue;
-				}
-				case Gio::FILE_TYPE_REGULAR:
-				case Gio::FILE_TYPE_SYMBOLIC_LINK:
-				{
-					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getFileStore () -> append ();
-	
-					addChild (iter, child);
-					continue;
-				}
-				default:
-					continue;
-			}
-		}
-	}
-	catch (const Glib::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::addRootFolder (const Glib::RefPtr <Gio::File> & folder)
-{
-	try
-	{
-		if (not rootFolders .emplace (folder -> get_path ()) .second)
-			return;
-
-		const auto iter = getFileStore () -> append ();
-
-		if (folder -> query_exists () and folder -> query_info () -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-		{
-			addFolder (iter, folder);
-		}
-		else
-		{
-			const auto uri = basic::uri (folder -> get_uri ());
-
-			if (uri .is_local ())
-			{
-				iter -> set_value (Columns::ICON, std::string ("folder-symbolic"));
-				iter -> set_value (Columns::NAME, folder -> get_basename ());
-			}
-			else
-			{
-				iter -> set_value (Columns::ICON, std::string ("folder-remote-symbolic"));
-				iter -> set_value (Columns::NAME, folder -> get_basename () + " (" + uri .authority () + ")");
-			}
-
-			iter -> set_value (Columns::PATH, folder -> get_path ());
-		}
-	}
-	catch (const Glib::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::addFolder (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & folder)
-{
-	addFolder (folder);
-	addChild (iter, folder);
-
-	if (File::hasChildren (folder))
-		getFileStore () -> append (iter -> children ());
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::addFolder (const Glib::RefPtr <Gio::File> & folder)
-{
-	try
-	{
-		const auto fileElement = std::make_shared <FolderElement> ();
-	
-		folders .emplace (folder -> get_path (), fileElement);
-	
-		fileElement -> fileMonitor = folder -> monitor_directory (Gio::FILE_MONITOR_WATCH_MOVES);
-	
-		fileElement -> fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &X3DFileBrowser::on_file_changed));
-	}
-	catch (const Glib::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::addChildren (const Gtk::TreeIter & parentIter, const Glib::RefPtr <Gio::File> & folder)
-{
-	try
-	{
-		for (const auto & fileInfo : File::getChildren (folder))
-		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_DIRECTORY:
-				{
-					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getFileStore () -> append (parentIter -> children ());
-
-					addFolder (iter, child);
-					continue;
-				}
-				case Gio::FILE_TYPE_REGULAR:
-				case Gio::FILE_TYPE_SYMBOLIC_LINK:
-				{
-					const auto child = folder -> get_child (fileInfo -> get_name ());
-					const auto iter  = getFileStore () -> append (parentIter -> children ());
-
-					addChild (iter, child);
-					continue;
-				}
-				default:
-					continue;
-			}
-		}
-	}
-	catch (const Glib::Error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::addChild (const Gtk::TreeIter & iter, const Glib::RefPtr <Gio::File> & file)
-{
-	const auto fileInfo = file -> query_info ();
-	const auto uri      = basic::uri (file -> get_uri ());
-
-	if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY and not uri .is_local ())
-		iter -> set_value (Columns::ICON, std::string ("folder-remote"));
-	else
-		iter -> set_value (Columns::ICON, File::getIconName (fileInfo));
-
-	if (uri .is_local () or not rootFolders .count (file -> get_path ()))
-		iter -> set_value (Columns::NAME, file -> get_basename ());
-	else
-		iter -> set_value (Columns::NAME, file -> get_basename () + " (" + uri .authority () + ")");
-
-	iter -> set_value (Columns::PATH,      file -> get_path ());
-	iter -> set_value (Columns::SENSITIVE, true);
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::removeRootFolder (const Glib::RefPtr <Gio::File> & folder)
-{
-	if (rootFolders .erase (folder -> get_path ()))
-		removeChild (getIter (folder));
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::removeChildren (const Gtk::TreeIter & iter)
-{
-	std::vector <Gtk::TreePath> children;
-
-	for (const auto & child : iter -> children ())
-		children .emplace_back (getFileStore () -> get_path (child));
-
-	for (const auto & child : basic::make_reverse_range (children))
-		removeChild (getFileStore () -> get_iter (child));
-}
-
-template <class Type>
-void
-X3DFileBrowser <Type>::removeChild (const Gtk::TreeIter & iter)
-{
-	const auto child = getFile (iter);
-
-	getFileStore () -> erase (iter);
-
-	if (child -> get_path () .empty ())
-		return;
-
-	// Remove project and subfolders if path is a folder.
-
-	const auto fileInfo = child -> query_info ();
-
-	if (fileInfo -> get_file_type () not_eq Gio::FILE_TYPE_DIRECTORY)
-		return;
-
-	// Remove subfolders.
-
-	std::vector <std::string> subfolders;
-
-	for (const auto & pair : folders)
-	{
-		if (File::isSubfolder (Gio::File::create_for_path (pair .first), child))
-			subfolders .emplace_back (pair .first);
-	}
-
-	for (const auto & subfolder : subfolders)
-		folders .erase (subfolder);
-}
-
-template <class Type>
-Gtk::TreeIter
-X3DFileBrowser <Type>::getIter (const Glib::RefPtr <Gio::File> & file) const
-{
-	Gtk::TreeIter result;
-
-	for (const auto & childIter : getFileStore () -> children ())
-	{
-		if (getIter (childIter, file -> get_path (), result))
-			break;
-	}
-
-	return result;
-}
-
-template <class Type>
-bool
-X3DFileBrowser <Type>::getIter (const Gtk::TreeIter & iter, const std::string & path, Gtk::TreeIter & result) const
-{
-	const auto parent = getFile (iter) -> get_path ();
-
-	if (parent == path)
-	{
-		result = iter;
-		return true;
-	}
-
-	if (path .find (parent) not_eq 0)
-		return false;
-
-	for (const auto & childIter : iter -> children ())
-	{
-		if (getIter (childIter, path, result))
-			return true;
-	}
-
-	return false;
-}
-
-template <class Type>
-Glib::RefPtr <Gio::File>
-X3DFileBrowser <Type>::getFile (const Gtk::TreeIter & iter) const
-{
-	std::string path;
-
-	iter -> get_value (Columns::PATH, path);
-
-	return Gio::File::create_for_path (path);
 }
 
 template <class Type>

@@ -125,6 +125,14 @@ public:
 
 	virtual
 	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
 	on_add_project_clicked () = 0;
 
 	///  @name Destruction
