@@ -167,7 +167,7 @@ BackgroundImageEditor::on_image_set ()
 	if (changing)
 		return;
 
-	const basic::uri path        = getImageChooserButton () .get_file () -> get_path ();
+	const basic::uri path        = basic::path (getImageChooserButton () .get_file () -> get_path ()) .escape ();
 	const basic::uri URL         = path .add_file_scheme ();
 	const basic::uri relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 	const auto       url         = X3D::MFString ({ relativeURL .str (), URL .str () });
