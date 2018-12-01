@@ -68,7 +68,7 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
-		getWindow () .set_uri (worldURL .filename () .str ());
+		getWindow () .set_uri (worldURL .filename () .escape () .str ());
 
 	else
 		getWindow () .set_filename (Glib::get_home_dir () + "/" + _ ("scene.x3d"));

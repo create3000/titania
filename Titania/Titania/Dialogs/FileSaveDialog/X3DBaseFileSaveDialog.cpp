@@ -86,7 +86,7 @@ X3DBaseFileSaveDialog::run ()
 void
 X3DBaseFileSaveDialog::setUrl (const basic::uri & url) const
 {
-	getWindow () .set_uri (url .str ());
+	getWindow () .set_uri (url .escape () .str ());
 	getWindow () .set_current_name (url .basename ());
 }
 
@@ -114,7 +114,7 @@ X3DBaseFileSaveDialog::getPreviewUrl () const
 void
 X3DBaseFileSaveDialog::setExtension (const std::string & extension)
 {
-	const basic::uri basename = basic::path (getWindow () .get_current_name ()) .escape ();
+	const auto basename = basic::path (getWindow () .get_current_name ());
 
 	getWindow () .set_current_name (basename .stem () + extension);
 }
@@ -131,7 +131,7 @@ X3DBaseFileSaveDialog::on_response (int responseId)
 	if (responseId not_eq Gtk::RESPONSE_OK)
 		return;
 
-	basic::uri name (getWindow () .get_current_name ());
+	auto name = basic::path (getWindow () .get_current_name ());
 
 	if (getKnownFileTypes () .count (name .extension ()))
 		return;

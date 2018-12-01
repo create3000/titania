@@ -114,7 +114,7 @@ X3DFileSaveDialog::run (const basic::uri & url)
 		}
 		else
 		{
-			getWindow () .set_uri (url .filename () .str ());
+			getWindow () .set_uri (url .filename () .escape () .str ());
 			getWindow () .set_current_name (url .basename ());
 		}
 	}
