@@ -114,19 +114,20 @@ OpenEditorsEditor::set_pages ()
 
 	for (const auto & page : getBrowserWindow () -> getPages ())
 	{
-		const auto & browser = page -> getMainBrowser ();
-		const auto   row     = getListStore () -> append ();
+		const auto & browser  = page -> getMainBrowser ();
+		const auto & worldURL = page -> getWorldURL ();
+		const auto   row      = getListStore () -> append ();
 
 		browser -> initialized () .addInterest (this, &OpenEditorsEditor::set_pages);
 
 		row -> set_value (Columns::ICON, page -> getMasterSceneURL () .filename () .str ());
-		row -> set_value (Columns::NAME, page -> getWorldURL () .basename ());
+		row -> set_value (Columns::NAME, worldURL .is_local () ? worldURL .basename () : worldURL .escape (" ") .basename ());
 
 		// Folder
 
-		if (page -> getWorldURL () .is_local ())
+		if (worldURL .is_local ())
 		{
-			const auto path   = page -> getWorldURL () .parent () .path ();
+			const auto path   = worldURL .parent () .path ();
 			const auto folder = Gio::File::create_for_path (path);
 			auto       found  = false;
 	
@@ -178,7 +179,7 @@ OpenEditorsEditor::set_pages ()
 		}
 		else
 		{
-			row -> set_value (Columns::FOLDER, std::regex_replace (page -> getWorldURL () .parent () .str (), std::regex ("/$"), ""));
+			row -> set_value (Columns::FOLDER, std::regex_replace (worldURL .parent () .escape () .str (), std::regex ("/$"), ""));
 		}
 	}
 

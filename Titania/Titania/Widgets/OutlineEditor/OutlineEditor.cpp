@@ -320,7 +320,7 @@ OutlineEditor::set_scenes_menu ()
 		if (menuItem -> get_active ())
 		{
 			getSceneLabel () .set_markup (getSceneLabelText (currentScene));
-			getSceneMenuButton () .set_tooltip_text (currentScene  -> getWorldURL () .str ());
+			getSceneMenuButton () .set_tooltip_text (currentScene  -> getWorldURL () .escape (" ") .str ());
 		}
 	}
 }
@@ -394,7 +394,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 std::string
 OutlineEditor::getSceneLabelText (const X3D::X3DExecutionContextPtr & scene) const
 {
-	const auto basename = scene -> getWorldURL () .basename ();
+	const auto basename = scene -> getWorldURL () .escape (" ") .basename ();
 	const auto child    = getSceneMenuLabelText (scene, true);
 
 	return "<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>" +
@@ -406,7 +406,7 @@ OutlineEditor::getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene,
 {
 	if (markup)
 	{
-		const auto basename = scene -> getWorldURL () .basename ();
+		const auto basename = scene -> getWorldURL () .escape (" ") .basename ();
 
 		return scene -> isType ({ X3D::X3DConstants::ProtoDeclaration, X3D::X3DConstants::X3DPrototypeInstance })
 		       ? "<b>" + scene -> getTypeName () + "</b> " + scene -> getName ()
@@ -414,7 +414,7 @@ OutlineEditor::getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene,
 	}
 	else
 	{
-		const auto basename = scene -> getWorldURL () .basename ();
+		const auto basename = scene -> getWorldURL () .escape (" ") .basename ();
 
 		return scene -> isType ({ X3D::X3DConstants::ProtoDeclaration, X3D::X3DConstants::X3DPrototypeInstance })
 		       ? scene -> getTypeName () + " " + scene -> getName ()
