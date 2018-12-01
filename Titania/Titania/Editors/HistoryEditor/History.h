@@ -104,6 +104,9 @@ public:
 	void
 	setItem (const std::string & title, const basic::uri & worldURL);
 
+	void
+	setItem (const basic::uri & worldURL);
+
 	sql::sqlite3::assoc_row_type
 	getItem (const std::string & id) const;
 
@@ -147,7 +150,7 @@ private:
 	getLimit (const size_t offset, const size_t size) const;
 
 	void
-	insert (const std::string & title, const std::string & worldURL);
+	insert (const std::string & title, const basic::uri & worldURL);
 
 	void
 	update (const std::string & id, const std::string & title);

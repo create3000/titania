@@ -175,7 +175,7 @@ std::string
 History::getId (const basic::uri & worldURL) const
 {
 	const auto & result = database .query_array ("SELECT id FROM History WHERE "
-	                                             "worldURL = " + database .quote (worldURL .escape () .str ()));
+	                                             "worldURL = " + database .quote (worldURL .escape ()));
 
 	return result .at (0) .at (0);
 }
@@ -203,7 +203,7 @@ History::setPreview (const basic::uri & worldURL, const std::string & image)
 {
 	try
 	{
-		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL .escape () .str ()), image);
+		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL), image);
 	}
 	catch (const std::exception & error)
 	{
@@ -230,7 +230,7 @@ History::setContextPath (const basic::uri & worldURL, const std::string & contex
 		database .query ("UPDATE History "
 		                 "SET "
 		                 "contextPath = " + database .quote (contextPath) + " "
-		                 "WHERE worldURL = " + database .quote (worldURL .escape () .str ()));
+		                 "WHERE worldURL = " + database .quote (worldURL .escape ()));
 	}
 	catch (const std::exception & error)
 	{
@@ -243,7 +243,7 @@ History::getContextPath (const basic::uri & worldURL) const
 {
 	try
 	{
-		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL .escape () .str ()));
+		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL .escape ()));
 
 		return items .at (0) .at ("contextPath");
 	}
@@ -260,11 +260,31 @@ History::setItem (const std::string & title, const basic::uri & worldURL)
 	{
 		try
 		{
-			update (getId (worldURL .escape () .str ()), title);
+			update (getId (worldURL), title);
 		}
 		catch (const std::out_of_range &)
 		{
-			insert (title, worldURL .escape () .str ());
+			insert (title, worldURL);
+		}
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+History::setItem (const basic::uri & worldURL)
+{
+	try
+	{
+		try
+		{
+			update (getId (worldURL), worldURL .escape (" ") .basename ());
+		}
+		catch (const std::out_of_range &)
+		{
+			insert (worldURL .escape (" ") .basename (), worldURL);
 		}
 	}
 	catch (const std::exception & error)
@@ -429,13 +449,13 @@ History::getLimit (const size_t offset, const size_t size) const
 }
 
 void
-History::insert (const std::string & title, const std::string & worldURL)
+History::insert (const std::string & title, const basic::uri & worldURL)
 {
 	database .query ("INSERT INTO History "
 	                 "(title, worldURL)"
 	                 "VALUES ("
 	                 + database .quote (title) + ","
-	                 + database .quote (worldURL)
+	                 + database .quote (worldURL .escape ())
 	                 + ")");
 }
 

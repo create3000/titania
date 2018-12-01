@@ -583,7 +583,7 @@ X3DBrowserNotebook::quit ()
 		const auto URL = page -> getMasterSceneURL ();
 
 		if (not URL .empty ())
-			worldURLs .emplace_back (URL);
+			worldURLs .emplace_back (URL .escape ());
 
 		page -> shutdown ();
 	}
@@ -686,7 +686,7 @@ X3DBrowserNotebook::set_history ()
 
 	// Update history.
 
-	getHistory () -> setItem (worldURL .basename (), worldURL .filename ());
+	getHistory () -> setItem (worldURL .filename ());
 }
 
 void

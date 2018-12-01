@@ -248,23 +248,25 @@ X3DNotebookPage::updateTitle ()
 
 	getTabImage () .set (Gtk::StockID (getMasterSceneURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_LARGE_TOOLBAR));
 	getTabLabel () .set_text (title);
-	getTabLabel () .set_tooltip_text (getMasterSceneURL () .str ());
+	getTabLabel () .set_tooltip_text (getMasterSceneURL () .escape (" ") .str ());
 
 	if (mainBrowser -> getExecutionContext () == getCurrentContext ())
 	{
-		getBrowserWindow () -> getHeaderBar () .set_title (title
-		                                                   + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
-		                                                   + " · "
-		                                                   + mainBrowser -> getName ());
+		auto & headerBar = getBrowserWindow () -> getHeaderBar ();
 
-		getBrowserWindow () -> getHeaderBar () .set_subtitle (mainBrowser -> getExecutionContext () -> getWorldURL () .filename () .str ());
+		headerBar .set_title (title
+		                      + (protoPath .empty () ? "" : " • " + basic::join (protoPath .begin (), protoPath .end (), "."))
+		                      + " • "
+		                      + mainBrowser -> getName ());
+
+		headerBar .set_subtitle (mainBrowser -> getExecutionContext () -> getWorldURL () .filename () .escape (" ") .str ());
 	}
 }
 
 std::string
 X3DNotebookPage::getTitle () const
 {
-	auto title = getWorldURL () .basename ();
+	auto title = getWorldURL () .escape (" ") .basename ();
 
 	if (title .empty ())
 		title = _ ("New Scene");

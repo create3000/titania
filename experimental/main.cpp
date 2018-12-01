@@ -986,18 +986,17 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector3 <Type> 
 void
 test_uri_output (const basic::uri & uri)
 {
-	__LOG__ << basic::uri ("/usr/share") .relative_path (uri) << std::endl;
+	__LOG__ << uri << std::endl;
+	__LOG__ << uri .path () << std::endl;
+	__LOG__ << uri .basename () << std::endl;
+	__LOG__ << uri .escape () << std::endl;
+	__LOG__ << uri .escape (" ") << std::endl;
 }
 
 void
 test_uri ()
 {
-	test_uri_output (basic::uri ());
-	test_uri_output ("/usr/share/data/foo/");
-	test_uri_output ("/usr/include/");
-	test_uri_output ("/usr/share/data/foo.html");
-	test_uri_output ("foo.html");
-	test_uri_output ("/usr/share/data/.html");
+	test_uri_output (basic::path ("/usr/share/data/foo/bah%20bah foo.foo") .escape ());
 }
 
 int

@@ -309,7 +309,7 @@ public:
 
 	///  Returns an escaped path.
 	basic_path
-	escape () const;
+	escape (const string_type & reserved_chars = string_type ()) const;
 
 	///  Returns an unescaped path.
 	basic_path
@@ -585,12 +585,12 @@ basic_path <StringT>::remove_dot_segments () const
 
 template <class StringT>
 basic_path <StringT>
-basic_path <StringT>::escape () const
+basic_path <StringT>::escape (const string_type & reserved_chars) const
 {
 	basic_path path (*this);
 
 	for (auto & segment : path .m_array)
-		segment = Glib::uri_escape_string (segment);
+		segment = Glib::uri_escape_string (segment, reserved_chars);
 
 	return path;
 }

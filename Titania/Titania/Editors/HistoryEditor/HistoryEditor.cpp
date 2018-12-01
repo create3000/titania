@@ -122,7 +122,7 @@ HistoryEditor::configure ()
 	}
 
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
-		getBrowserWindow () -> getIconFactory () -> createIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getPreview (item .at ("id")));
+		getBrowserWindow () -> getIconFactory () -> createIcon (basic::uri (item .at ("worldURL")), getBrowserWindow () -> getHistory () -> getPreview (item .at ("id")));
 
 	if (getConfig () -> hasItem ("titleColumnSize"))
 		getTitleColumn () -> set_fixed_width (getConfig () -> getItem <int32_t> ("titleColumnSize"));
@@ -174,10 +174,9 @@ HistoryEditor::set_history ()
 		iter -> set_value (Columns::ID,               item .at ("id"));
 		iter -> set_value (Columns::ICON,             worldURL .filename () .str ());
 		iter -> set_value (Columns::TITLE,            item .at ("title"));
-		iter -> set_value (Columns::WORLD_URL,        worldURL .str ());
+		iter -> set_value (Columns::WORLD_URL,        worldURL .escape (" ") .str ());
 		iter -> set_value (Columns::LAST_ACCESS,      osstream .str ());
 		iter -> set_value (Columns::LAST_ACCESS_TIME, std::strtod (item .at ("lastAccess") .c_str (), nullptr));
-		iter -> set_value (Columns::ICON,             worldURL .filename () .str ());
 	}
 
 	getTreeView () .set_model (getTreeModelSort ());

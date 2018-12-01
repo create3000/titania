@@ -177,10 +177,10 @@ public:
 		  m_slashs (),
 		    m_host (),
 		    m_port (0),
-		    m_path (path),
+		    m_path (path .unescape ()),
 		   m_query (),
 		m_fragment (),
-		  m_string ()
+		  m_string (to_string ())
 	{ }
 
 	///  Construct a URI from @a string.
@@ -403,7 +403,7 @@ public:
 
 	///  Escapes the uri.
 	basic_uri
-	escape () const;
+	escape (const string_type & reserved_chars = string_type ()) const;
 
 	///  Unescapes the uri.
 	basic_uri
@@ -833,7 +833,7 @@ basic_uri <StringT>::add_file_scheme () const
 
 template <class StringT>
 basic_uri <StringT>
-basic_uri <StringT>::escape () const
+basic_uri <StringT>::escape (const string_type & reserved_chars) const
 {
 	return basic_uri (is_local (),
 	                  is_absolute (),
@@ -841,9 +841,9 @@ basic_uri <StringT>::escape () const
 	                  m_slashs,
 	                  host (),
 	                  port (),
-	                  m_path .escape (),
+	                  m_path .escape (reserved_chars),
 	                  query (),
-	                  Glib::uri_escape_string (fragment ()));
+	                  Glib::uri_escape_string (fragment (), reserved_chars));
 }
 
 template <class StringT>

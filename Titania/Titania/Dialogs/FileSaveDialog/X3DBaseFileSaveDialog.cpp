@@ -114,7 +114,7 @@ X3DBaseFileSaveDialog::getPreviewUrl () const
 void
 X3DBaseFileSaveDialog::setExtension (const std::string & extension)
 {
-	const basic::uri basename (getWindow () .get_current_name ());
+	const basic::uri basename = basic::path (getWindow () .get_current_name ()) .escape ();
 
 	getWindow () .set_current_name (basename .stem () + extension);
 }
