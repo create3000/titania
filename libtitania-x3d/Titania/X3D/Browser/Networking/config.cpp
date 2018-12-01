@@ -60,31 +60,31 @@ static const std::string TITANIA_DATA_DIR = "titania/";
 basic::uri
 get_page (const std::string & filename)
 {
-	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "pages/" + filename);
+	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + "pages/" + filename)) .escape ();
 }
 
 basic::uri
 get_ui (const std::string & filename)
 {
-	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "ui/" + filename);
+	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + "ui/" + filename)) .escape ();
 }
 
 basic::uri
 get_shader (const std::string & filename)
 {
-	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "shaders/" + filename);
+	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + "shaders/" + filename)) .escape ();
 }
 
 basic::uri
 get_tool (const std::string & filename)
 {
-	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "tools/" + filename);
+	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + "tools/" + filename)) .escape ();
 }
 
 basic::uri
 get_data (const std::string & filename)
 {
-	return "file://" + os::find_data_file (TITANIA_DATA_DIR + filename);
+	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + filename)) .escape ();
 }
 
 } // X3D

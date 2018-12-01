@@ -135,7 +135,7 @@ public:
 		  m_slashs (),
 		    m_host (),
 		    m_port (0),
-		    m_path ("", string_type (1, Signs::Slash)),
+		    m_path (""),
 		   m_query (),
 		m_fragment (),
 		  m_string ()
@@ -167,6 +167,20 @@ public:
 		   m_query (std::move (other .m_query)),
 		m_fragment (std::move (other .m_fragment)),
 		  m_string (std::move (other .m_string))
+	{ }
+
+	///  Construct a URI from @a path.
+	basic_uri (const path_type & path) :
+		   m_local (true),
+		m_absolute (path .leading_separator ()),
+		  m_scheme (),
+		  m_slashs (),
+		    m_host (),
+		    m_port (0),
+		    m_path (path),
+		   m_query (),
+		m_fragment (),
+		  m_string ()
 	{ }
 
 	///  Construct a URI from @a string.
@@ -325,7 +339,7 @@ public:
 		                  m_slashs,
 		                  host (),
 		                  port (),
-		                  path_type (string_type (1, Signs::Slash), string_type (1, Signs::Slash)),
+		                  path_type (string_type (1, Signs::Slash)),
 		                  "",
 		                  "");
 	}
@@ -756,7 +770,7 @@ inline
 typename basic_uri <StringT>::path_type
 basic_uri <StringT>::remove_dot_segments (const string_type & path) const
 {
-	return basic_path <string_type> (path, string_type (1, Signs::Slash)) .remove_dot_segments ();
+	return path_type (path) .remove_dot_segments ();
 }
 
 template <class StringT>
@@ -1046,7 +1060,7 @@ basic_uri <StringT>::parser::path (const size_type first) const
 	if (last == string_type::npos)
 		last = string .size ();
 
-	uri .m_path = path_type (Glib::uri_unescape_string (string .substr (first, last - first)), string_type (1, Signs::Slash));
+	uri .m_path = path_type (Glib::uri_unescape_string (string .substr (first, last - first)));
 
 	switch (string [last])
 	{

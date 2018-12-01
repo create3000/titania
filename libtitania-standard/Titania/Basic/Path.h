@@ -142,6 +142,11 @@ public:
 		m_trailing_separator (std::exchange (other .m_trailing_separator, false))
 	{ }
 
+	///  Path constructor. Construct path from @a path and with "/" as separator.
+	basic_path (const string_type & path) :
+		basic_path (path, Signs::Slash)
+	{ }
+
 	///  Path constructor. Construct path from @a path and @a separator.
 	basic_path (const string_type & path, const string_type & separator);
 
@@ -343,6 +348,7 @@ private:
 	{
 		static const string_type Dot;
 		static const string_type Dots;
+		static const string_type Slash;
 	};
 
 	///  @name Members
@@ -610,6 +616,186 @@ basic_path <StringT>::str () const
 	osstream << *this;
 
 	return osstream .str ();
+}
+
+///  @relates basic_path
+///  @name Comparision operations
+
+///  Compares two basic_path's.
+///  Return true if @a a is equal to @a b.
+template <class StringT>
+inline
+bool
+operator == (const basic_path <StringT> & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs .str () == rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator not_eq (const basic_path <StringT> & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs .str () not_eq rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator == (const basic_path <StringT> & lhs, const StringT & rhs)
+{
+	return lhs .str () == rhs;
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator == (const StringT & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs == rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator not_eq (const basic_path <StringT> & lhs, const StringT & rhs)
+{
+	return not (lhs == rhs);
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator not_eq (const StringT & lhs, const basic_path <StringT> & rhs)
+{
+	return not (lhs == rhs);
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator == (const basic_path <StringT> & lhs, const typename StringT::value_type* rhs)
+{
+	return lhs .str () == rhs;
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator == (const typename StringT::value_type* lhs, const basic_path <StringT> & rhs)
+{
+	return lhs == rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator not_eq (const basic_path <StringT> & lhs, const typename StringT::value_type* rhs)
+{
+	return not (lhs == rhs);
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is not equal to @a b.
+template <class StringT>
+inline
+bool
+operator not_eq (const typename StringT::value_type* lhs, const basic_path <StringT> & rhs)
+{
+	return not (lhs == rhs);
+}
+
+///  Compares two basic_path's.
+///  Return true if URI @a a is less than @a b.
+template <class StringT>
+bool
+operator < (const basic_path <StringT> & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs .str () < rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is greater than @a b.
+template <class StringT>
+inline
+bool
+operator > (const basic_path <StringT> & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs .str () > rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return true if URI @a a is less equal than @a b.
+template <class StringT>
+bool
+operator <= (const basic_path <StringT> & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs .str () <= rhs .str ();
+}
+
+///  Compares two basic_path's.
+///  Return false if URI @a a is greater than equal @a b.
+template <class StringT>
+inline
+bool
+operator >= (const basic_path <StringT> & lhs, const basic_path <StringT> & rhs)
+{
+	return lhs .str () >= rhs .str ();
+}
+
+///  @relates basic_path
+///  @name String concatanation
+
+///  Returns a string containing characters from @a uri followed by the characters from @a string.
+template <class StringT>
+inline
+StringT
+operator + (const basic_path <StringT> & uri, const StringT & string)
+{
+	return uri .str () + string;
+}
+
+///  Returns a string containing characters from @a string followed by the characters from @a uri.
+template <class StringT>
+inline
+StringT
+operator + (const StringT & string, const basic_path <StringT> & uri)
+{
+	return string + uri .str ();
+}
+
+///  Returns a string containing characters from @a uri followed by the characters from @a string.
+template <class StringT>
+inline
+StringT
+operator + (const basic_path <StringT> & uri, const typename StringT::value_type* string)
+{
+	return uri .str () + string;
+}
+
+///  Returns a string containing characters from @a string followed by the characters from @a uri.
+template <class StringT>
+inline
+StringT
+operator + (const typename StringT::value_type* string, const basic_path <StringT> & uri)
+{
+	return string + uri .str ();
 }
 
 ///  @relates basic_path

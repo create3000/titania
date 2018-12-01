@@ -370,7 +370,7 @@ X3DBrowserNotebook::open (const basic::uri & URL_)
 	auto URL = URL_;
 
 	if (URL .is_relative ())
-		URL = basic::uri ("file://" + basic::path (Glib::get_current_dir (), "/") .escape () .str () + "/") .transform (URL);
+		URL = basic::uri ("file://" + basic::path (Glib::get_current_dir ()) .escape () + "/") .transform (URL);
 
 	try
 	{

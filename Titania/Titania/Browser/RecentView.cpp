@@ -257,7 +257,7 @@ RecentView::set_url (const X3D::SFString & url)
 	basic::uri URL = url .str ();
 
 	if (URL .is_relative ())
-		URL = basic::uri ("file://" + basic::path (Glib::get_current_dir (), "/") .escape () .str () + "/") .transform (URL);
+		URL = basic::uri ("file://" + basic::path (Glib::get_current_dir ()) .escape () + "/") .transform (URL);
 
 	try
 	{

@@ -208,20 +208,20 @@ Parser::texture (const Lib3dsTextureMap & textureMap)
 {
 	// Determit texture path.
 
-	std::string basename = basic::path (textureMap .name, "/") .escape () .str ();
+	std::string path = basic::path (textureMap .name) .escape ();
 
-	if (basename .empty ())
+	if (path .empty ())
 	{
 		textureTransformNodes .emplace_back ();
 		textureNodes          .emplace_back ();
 		return;
 	}
 
-	auto URL = uri .transform (basename);
+	auto URL = uri .transform (path);
 
 	if (not Glib::file_test (URL .path (), Glib::FILE_TEST_EXISTS))
 	{
-		URL = uri .transform (basic::tolower (basename, std::locale::classic ()));
+		URL = uri .transform (basic::tolower (path, std::locale::classic ()));
 		
 		// We do not check further if the file does exists, the user can then check and refine the model.
 	}

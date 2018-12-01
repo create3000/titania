@@ -75,7 +75,7 @@ public:
 		basic::uri outputFilename (options .exportFilename);
 
 		if (inputFilename .is_relative ())
-			inputFilename = basic::uri ("file://" + basic::path (Glib::get_current_dir (), "/") .escape () .str () + "/") .transform (inputFilename);
+			inputFilename = basic::uri ("file://" + basic::path (Glib::get_current_dir ()) .escape () + "/") .transform (inputFilename);
 
 		const auto browser = X3D::getBrowser ();
 		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
@@ -89,7 +89,7 @@ public:
 		else
 		{
 			if (outputFilename .is_relative ())
-				outputFilename = basic::uri ("file://" + basic::path (Glib::get_current_dir (), "/") .escape () .str () + "/") .transform (outputFilename);
+				outputFilename = basic::uri ("file://" + basic::path (Glib::get_current_dir ()) .escape () + "/") .transform (outputFilename);
 
 			X3D::FileGenerator::write (scene, outputFilename, options .exportStyle, not options .exportRemoveMetadata);
 		}

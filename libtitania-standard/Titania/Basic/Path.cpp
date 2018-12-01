@@ -59,6 +59,9 @@ const std::string basic_path <std::string>::Signs::Dot = ".";
 template <>
 const std::string basic_path <std::string>::Signs::Dots = "..";
 
+template <>
+const std::string basic_path <std::string>::Signs::Slash = "/";
+
 //template <>
 //const std::wstring basic_path <std::wstring>::dot = L".";
 //

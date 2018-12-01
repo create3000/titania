@@ -73,7 +73,7 @@ config_dir (const std::string & filename)
 basic::uri
 get_page (const std::string & filename)
 {
-	return "file://" + basic::path (find_data_file ("pages/" + filename), "/") .escape () .str ();
+	return "file://" + basic::path (find_data_file ("pages/" + filename)) .escape ();
 }
 
 std::string

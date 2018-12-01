@@ -581,18 +581,18 @@ MaterialParser::map_Kd ()
 		{
 			if (not string .empty () and not name .empty ())
 			{
-				auto url = std::vector <std::string> ();
+				auto paths = std::vector <std::string> ();
 
-				basic::split (std::back_inserter (url), basic::trim (string), " ");
+				basic::split (std::back_inserter (paths), basic::trim (string), " ");
 				
-				if (not url .empty ())
+				if (not paths .empty ())
 				{
-					const auto texture       = scene -> createNode <X3D::ImageTexture> ();
-					const auto normalizedURL = basic::path (std::regex_replace (url .back (), backslash, "/"), "/") .escape () .str ();
+					const auto texture = scene -> createNode <X3D::ImageTexture> ();
+					const auto path    = basic::path (std::regex_replace (paths .back (), backslash, "/")) .escape ();
 
 					texture -> url () = {
-						normalizedURL,
-						scene -> getWorldURL () .transform (normalizedURL) .str ()
+						path .str (),
+						scene -> getWorldURL () .transform (path) .str ()
 					};
 
 					textures [name] = texture;
