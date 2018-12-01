@@ -151,7 +151,7 @@ OutlineEditor::set_executionContext ()
 	menuItem .first -> set_active (true);
 
 	getSceneLabel () .set_markup (getSceneLabelText (getCurrentContext ()));
-	getSceneMenuButton () .set_tooltip_text (getCurrentContext () -> getWorldURL () .str ());
+	getSceneMenuButton () .set_tooltip_text (getCurrentContext () -> getWorldURL () .escape (" ") .str ());
 
 	// Scene menu
 
