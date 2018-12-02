@@ -137,22 +137,6 @@ degrees (const Type & value)
 	return value * Type (180 / pi <Type>);
 }
 
-inline
-constexpr
-long double
-operator "" _deg (const long double value)
-{
-	return radians (value);
-}
-
-inline
-constexpr
-long double
-operator "" _rad (const long double value)
-{
-	return degrees (value);
-}
-
 template <class Type>
 inline
 constexpr
@@ -341,6 +325,28 @@ max (std::initializer_list <Type> list)
 }
 
 } // math
+} // titania
+
+namespace titania {
+namespace math_literals {
+
+inline
+constexpr
+long double
+operator ""_deg (const long double value)
+{
+	return math::radians (value);
+}
+
+inline
+constexpr
+long double
+operator ""_rad (const long double value)
+{
+	return math::degrees (value);
+}
+
+} // math_literals
 } // titania
 
 #endif

@@ -193,6 +193,8 @@ urlstreambuf::limit_connections () const
 int
 urlstreambuf::wait ()
 {
+	using namespace std::chrono_literals;
+
 	fd_set fdread;
 	fd_set fdwrite;
 	fd_set fdexcep;
@@ -224,7 +226,10 @@ urlstreambuf::wait ()
 		return -1;
 
 	if (maxfd == -1)
+	{
+		std::this_thread::sleep_for (100ms);
 		return 0;
+	}
 
 	return select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
 }
