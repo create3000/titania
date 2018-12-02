@@ -58,12 +58,14 @@
 namespace titania {
 namespace X3D {
 
+using namespace math_literals;
+
 const ComponentType AxonometricGridTool::component      = ComponentType::TITANIA;
 const std::string   AxonometricGridTool::typeName       = "AxonometricGridTool";
 const std::string   AxonometricGridTool::containerField = "grid";
 
 AxonometricGridTool::Fields::Fields () :
-  angle (new SFVec2d (radians (60.0), radians (60.0)))
+	angle (new SFVec2d (60.0_deg, 60.0_deg))
 { }
 
 AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionContext) :

@@ -1022,6 +1022,10 @@ main (int argc, char** argv)
 
 	using Vec3d = test::math::vector3 <double>;
 
+	using namespace titania::math_literals;
+
+	std::cout << 90.0_deg << std::endl;
+	std::cout << radians (90.0) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

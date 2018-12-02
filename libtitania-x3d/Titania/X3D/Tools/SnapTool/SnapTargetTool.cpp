@@ -286,6 +286,8 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
+		using namespace math_literals;
+
 		// If Shift-key or Ctrl-key is pressed disable snapping.
 		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and not getBrowser () -> getShiftKey ()))
 			return;
@@ -321,7 +323,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		// center to the position of this SnapTarget is used.
 
 		const auto center     = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
-		const auto useNormal  = std::abs (dot (absoluteNormal, axis0)) < std::cos (radians (10.0));
+		const auto useNormal  = std::abs (dot (absoluteNormal, axis0)) < std::cos (10.0_deg);
 		const auto snapVector = normalize (cross (cross (axis0, useNormal ? absoluteNormal : absolutePosition - center), axis0));
 
 		// Determine snap point onto plane and axes points onto plane with same distance to center as snap point.
