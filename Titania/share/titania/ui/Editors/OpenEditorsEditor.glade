@@ -53,6 +53,7 @@
                     <property name="can_focus">True</property>
                     <property name="model">ListStore</property>
                     <property name="headers_visible">False</property>
+                    <property name="rules_hint">True</property>
                     <signal name="button-release-event" handler="on_button_release_event" swapped="no"/>
                     <signal name="motion-notify-event" handler="on_motion_notify_event" swapped="no"/>
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
