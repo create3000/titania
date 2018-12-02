@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkAccelGroup" id="AccelGroup"/>
@@ -100,6 +100,9 @@
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="name">ScriptEditor</property>
@@ -605,6 +608,9 @@
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
     <signal name="delete-event" handler="on_preferences_delete_event" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox1">
         <property name="can_focus">False</property>
@@ -987,6 +993,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="model">ColorThemeListStore</property>
                                 <property name="headers_visible">False</property>
+                                <property name="rules_hint">True</property>
                                 <signal name="row-activated" handler="on_color_theme_activated" swapped="no"/>
                                 <child internal-child="selection">
                                   <object class="GtkTreeSelection" id="treeview-selection1"/>
@@ -1387,6 +1394,9 @@
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkRevealer" id="SearchRevealer">
         <property name="visible">True</property>
