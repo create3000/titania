@@ -190,6 +190,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 	try
 	{
 		using namespace std::placeholders;
+		using namespace math_literals;
 
 		// Negated normals of the point light cube.
 
@@ -232,7 +233,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 		{
 			const auto & v                = viewports [i];
 			const auto   viewport         = Vector4i (v [0] * shadowMapSize, v [1] * shadowMapSize, v [2] * shadowMapSize, v [3] * shadowMapSize);
-			const auto   projectionMatrix = camera <double>::perspective2 (radians (90.0), 0.125, 10000, viewport [2], viewport [3]);
+			const auto   projectionMatrix = camera <double>::perspective2 (90.0_deg, 0.125, 10000, viewport [2], viewport [3]);
 
 			shadowTextureBuffer -> bind ();
 

@@ -199,6 +199,7 @@ void
 GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, const TraverseFunction & traverse)
 {
 	using namespace std::placeholders;
+	using namespace math_literals;
 
 	// Negated normals of the texture cube.
 
@@ -232,7 +233,7 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 	const auto & viewpoint        = renderer -> getViewpoint ();
 	const auto   nearValue        = navigationInfo -> getNearValue ();
 	const auto   farValue         = navigationInfo -> getFarValue (viewpoint);
-	const auto   projectionMatrix = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
+	const auto   projectionMatrix = camera <double>::perspective (90.0_deg, nearValue, farValue, 1, 1);
 
 	transparent = background -> isTransparent ();
 
