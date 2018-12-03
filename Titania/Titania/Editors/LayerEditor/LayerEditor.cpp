@@ -78,10 +78,9 @@ struct LayerEditor::Columns
 
 struct LayerEditor::Weight
 {
-	static constexpr int NORMAL = 400;
-	static constexpr int BOLD   = 700;
+	static constexpr int32_t NORMAL = 400;
+	static constexpr int32_t BOLD   = 700;
 };
-
 
 LayerEditor::LayerEditor (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
