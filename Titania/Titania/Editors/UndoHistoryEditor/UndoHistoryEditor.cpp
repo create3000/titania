@@ -58,15 +58,14 @@
 namespace titania {
 namespace puck {
 
-namespace Columns {
-
-static constexpr int NUMBER      = 0;
-static constexpr int DESCRIPTION = 1;
-static constexpr int SENSITIVE   = 2;
-static constexpr int TIME        = 3;
-static constexpr int TIME_VALUE  = 4;
-
-}
+struct UndoHistoryEditor::Columns
+{
+	static constexpr int NUMBER      = 0;
+	static constexpr int DESCRIPTION = 1;
+	static constexpr int SENSITIVE   = 2;
+	static constexpr int TIME        = 3;
+	static constexpr int TIME_VALUE  = 4;
+};
 
 UndoHistoryEditor::UndoHistoryEditor (X3DBrowserWindow* const browserWindow) :
 	             X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),

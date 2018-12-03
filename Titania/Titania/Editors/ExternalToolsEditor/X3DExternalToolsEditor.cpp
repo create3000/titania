@@ -64,9 +64,8 @@
 namespace titania {
 namespace puck {
 
-class X3DExternalToolsEditor::Columns {
-public:
-
+struct X3DExternalToolsEditor::Columns
+{
 	static constexpr size_t ID             = 0;
 	static constexpr size_t NAME           = 1;
 	static constexpr size_t MASK           = 2;
@@ -78,7 +77,6 @@ public:
 	static constexpr size_t INPUT_ENCODING = 8;
 	static constexpr size_t EXPANDED       = 9;
 	static constexpr size_t SHORTCUT_KEY   = 10;
-
 };
 
 std::map <ExternalTool*, std::unique_ptr <ExternalTool>> X3DExternalToolsEditor::externalTools;

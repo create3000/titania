@@ -107,6 +107,25 @@ public:
 
 private:
 
+	///  @name Member types
+
+	struct Columns
+	{
+		static constexpr int32_t INDEX       = 0;
+		static constexpr int32_t NAME        = 1;
+		static constexpr int32_t DESCRIPTION = 2;
+		static constexpr int32_t TYPE_NAME   = 3;
+		static constexpr int32_t WEIGHT      = 4;
+		static constexpr int32_t STYLE       = 5;
+		static constexpr int32_t BIND        = 6;
+	};
+
+	struct Weight
+	{
+		static const int32_t NORMAL;
+		static const int32_t BOLD;
+	};
+
 	///  @name Construction
 
 	virtual
@@ -162,27 +181,6 @@ private:
 
 	void
 	on_bind_toggled (const Gtk::TreePath & path);
-
-	///  @name Constants
-
-	struct Columns
-	{
-		static constexpr int32_t INDEX       = 0;
-		static constexpr int32_t NAME        = 1;
-		static constexpr int32_t DESCRIPTION = 2;
-		static constexpr int32_t TYPE_NAME   = 3;
-		static constexpr int32_t WEIGHT      = 4;
-		static constexpr int32_t STYLE       = 5;
-		static constexpr int32_t BIND        = 6;
-
-	};
-
-	struct Weight
-	{
-		static const int32_t NORMAL;
-		static const int32_t BOLD;
-
-	};
 
 	///  @name Static members
 

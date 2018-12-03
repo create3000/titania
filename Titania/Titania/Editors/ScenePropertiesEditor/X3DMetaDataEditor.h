@@ -91,6 +91,10 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	struct Columns;
+
 	///  @name Event handlers
 
 	void

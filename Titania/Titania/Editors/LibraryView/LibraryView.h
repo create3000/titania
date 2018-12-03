@@ -100,7 +100,7 @@ private:
 
 	///  Member types
 
-	class Columns;
+	struct Columns;
 
 	///  @name Event handlers
 

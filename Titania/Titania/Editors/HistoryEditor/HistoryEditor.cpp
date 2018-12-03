@@ -58,14 +58,15 @@
 namespace titania {
 namespace puck {
 
-namespace Columns {
+struct HistoryEditor::Columns
+{
 	static constexpr int ICON             = 0;
 	static constexpr int TITLE            = 1;
 	static constexpr int WORLD_URL        = 2;
 	static constexpr int LAST_ACCESS      = 3;
 	static constexpr int LAST_ACCESS_TIME = 4;
 	static constexpr int ID               = 5;
-}
+};
 
 HistoryEditor::HistoryEditor (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),

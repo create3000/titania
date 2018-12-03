@@ -143,12 +143,12 @@ private:
 			add (visible);
 		}
 
-		Gtk::TreeModelColumn <size_t> id;
+		Gtk::TreeModelColumn <size_t>                      id;
 		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
-		Gtk::TreeModelColumn <std::string> name;
+		Gtk::TreeModelColumn <std::string>                 name;
 		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
-		Gtk::TreeModelColumn <bool> tainted;
-		Gtk::TreeModelColumn <bool> visible;
+		Gtk::TreeModelColumn <bool>                        tainted;
+		Gtk::TreeModelColumn <bool>                        visible;
 
 	};
 

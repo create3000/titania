@@ -204,7 +204,7 @@ private:
 
 	///  @name Member types
 
-	class Columns;
+	struct Columns;
 
 	///  @name Member access
 

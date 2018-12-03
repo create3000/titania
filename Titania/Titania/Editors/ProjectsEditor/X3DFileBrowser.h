@@ -214,15 +214,12 @@ private:
 
 	using FolderElementPtr = std::shared_ptr <FolderElement>;
 
-	class Columns
+	struct Columns
 	{
-	public:
-	
 		static constexpr int ICON      = 0;
 		static constexpr int NAME      = 1;
 		static constexpr int PATH      = 2;
 		static constexpr int SENSITIVE = 3;
-	
 	};
 
 	void

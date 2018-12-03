@@ -66,6 +66,8 @@ class NodeIndex :
 {
 public:
 
+	///  @name Member types
+
 	struct Columns
 	{
 		static constexpr int IMAGE          = 0;
@@ -75,7 +77,6 @@ public:
 		static constexpr int EXPORTED_NODES = 4;
 		static constexpr int INDEX          = 5;
 		static constexpr int PROTO          = 6;
-
 	};
 
 	///  @name Construction
@@ -142,6 +143,8 @@ public:
 
 private:
 
+	///  @name Member types
+
 	enum IndexType
 	{
 		NAMED_NODES_INDEX,
@@ -149,6 +152,8 @@ private:
 		ANIMATION_INDEX,
 		PROTO_INDEX
 	};
+
+	struct Search;
 
 	///  @name Construction
 

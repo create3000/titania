@@ -76,6 +76,11 @@ public:
 
 private:
 
+	///  @name Member types
+
+	struct Columns;
+	struct Weight;
+
 	///  @name Construction
 
 	virtual

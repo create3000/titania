@@ -68,10 +68,9 @@
 namespace titania {
 namespace puck {
 
-namespace Search {
-
-static constexpr int TYPE_NAME = 0;
-
+struct NodeIndex::Search
+{
+	static constexpr int TYPE_NAME = 0;
 };
 
 NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :

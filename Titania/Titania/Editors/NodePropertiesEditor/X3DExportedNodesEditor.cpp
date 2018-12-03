@@ -55,10 +55,9 @@
 namespace titania {
 namespace puck {
 
-enum Columns
+struct X3DExportedNodesEditor::Columns
 {
-	EXPORTED_NAME
-
+	static constexpr int32_t EXPORTED_NAME = 0;
 };
 
 X3DExportedNodesEditor::X3DExportedNodesEditor () :
@@ -107,7 +106,7 @@ X3DExportedNodesEditor::on_exported_node_activated (const Gtk::TreeModel::Path &
 	const auto iter = getExportedNodesListStore () -> get_iter (path);
 
 	std::string exportedName;
-	iter -> get_value (EXPORTED_NAME, exportedName);
+	iter -> get_value (Columns::EXPORTED_NAME, exportedName);
 
 	getExportedNameEntry () .set_text (exportedName);
 	on_exported_name_changed ();
@@ -136,7 +135,7 @@ X3DExportedNodesEditor::on_remove_exported_node ()
 	// Remove exported node.
 
 	std::string exportedName;
-	selected -> get_value (EXPORTED_NAME, exportedName);
+	selected -> get_value (Columns::EXPORTED_NAME, exportedName);
 
 	// Erase from list store.
 
@@ -192,8 +191,8 @@ X3DExportedNodesEditor::on_exported_node_ok_clicked ()
 		const auto iter = getExportedNodesListStore () -> get_iter (selectedPath);
 
 		std::string oldExportedName;
-		iter -> get_value (EXPORTED_NAME, oldExportedName);
-		iter -> set_value (EXPORTED_NAME, exportedName);
+		iter -> get_value (Columns::EXPORTED_NAME, oldExportedName);
+		iter -> set_value (Columns::EXPORTED_NAME, exportedName);
 
 		// Remove old exported node.
 
@@ -204,7 +203,7 @@ X3DExportedNodesEditor::on_exported_node_ok_clicked ()
 		// Update ListStore.
 
 		const auto iter = getExportedNodesListStore () -> append ();
-		iter -> set_value (EXPORTED_NAME, exportedName);
+		iter -> set_value (Columns::EXPORTED_NAME, exportedName);
 	}
 
 	// Update exported node.
@@ -239,7 +238,7 @@ X3DExportedNodesEditor::set_exportedNodes ()
 			if (exportedNode .second -> getLocalNode () == node)
 			{
 				const auto iter = getExportedNodesListStore () -> append ();
-				iter -> set_value (EXPORTED_NAME, exportedNode .first);
+				iter -> set_value (Columns::EXPORTED_NAME, exportedNode .first);
 			}
 		}
 		catch (...)

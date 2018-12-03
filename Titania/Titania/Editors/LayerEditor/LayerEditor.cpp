@@ -62,26 +62,24 @@
 namespace titania {
 namespace puck {
 
-namespace Columns {
-
-static constexpr int VISIBLE            = 0;
-static constexpr int TYPE_NAME          = 1;
-static constexpr int NAME               = 2;
-static constexpr int WEIGHT             = 3;
-static constexpr int STYLE              = 4;
-static constexpr int INDEX              = 5;
-static constexpr int PICKABLE           = 6;
-static constexpr int EYE                = 7;
-static constexpr int ACTIVE_LAYER       = 8;
-static constexpr int ACTIVE_LAYER_IMAGE = 9;
-
+struct LayerEditor::Columns
+{
+	static constexpr int VISIBLE            = 0;
+	static constexpr int TYPE_NAME          = 1;
+	static constexpr int NAME               = 2;
+	static constexpr int WEIGHT             = 3;
+	static constexpr int STYLE              = 4;
+	static constexpr int INDEX              = 5;
+	static constexpr int PICKABLE           = 6;
+	static constexpr int EYE                = 7;
+	static constexpr int ACTIVE_LAYER       = 8;
+	static constexpr int ACTIVE_LAYER_IMAGE = 9;
 };
 
-namespace Weight {
-
-static constexpr int NORMAL = 400;
-static constexpr int BOLD   = 700;
-
+struct LayerEditor::Weight
+{
+	static constexpr int NORMAL = 400;
+	static constexpr int BOLD   = 700;
 };
 
 

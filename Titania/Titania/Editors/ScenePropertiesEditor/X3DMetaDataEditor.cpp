@@ -55,11 +55,10 @@
 namespace titania {
 namespace puck {
 
-enum Columns
+struct X3DMetaDataEditor::Columns
 {
-	NAME,
-	CONTENT
-
+	static constexpr int32_t NAME    = 0;
+	static constexpr int32_t CONTENT = 1;
 };
 
 X3DMetaDataEditor::X3DMetaDataEditor () :
@@ -108,8 +107,8 @@ X3DMetaDataEditor::set_meta_data ()
 	{
 		const auto iter = getMetaDataListStore () -> append ();
 
-		iter -> set_value (NAME,    metaData .first);
-		iter -> set_value (CONTENT, metaData .second);
+		iter -> set_value (Columns::NAME,    metaData .first);
+		iter -> set_value (Columns::CONTENT, metaData .second);
 	}
 }
 
@@ -173,8 +172,8 @@ X3DMetaDataEditor::on_add_meta_data_ok_clicked ()
 
 	const auto iter = getMetaDataListStore () -> append ();
 
-	iter -> set_value (NAME,    name);
-	iter -> set_value (CONTENT, content);
+	iter -> set_value (Columns::NAME,    name);
+	iter -> set_value (Columns::CONTENT, content);
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Add Meta Data »%s«"), name .c_str ()));
 
@@ -203,8 +202,8 @@ X3DMetaDataEditor::on_remove_meta_data_clicked ()
 	std::string name;
 	std::string content;
 
-	selected -> get_value (NAME, name);
-	selected -> get_value (CONTENT, content);
+	selected -> get_value (Columns::NAME, name);
+	selected -> get_value (Columns::CONTENT, content);
 
 	getMetaDataListStore () -> erase (selected);
 
@@ -232,9 +231,9 @@ X3DMetaDataEditor::on_meta_data_name_edited (const Glib::ustring & path, const G
 
 	const auto iter = getMetaDataListStore () -> get_iter (path);
 
-	iter -> get_value (NAME,    name);
-	iter -> get_value (CONTENT, content);
-	iter -> set_value (NAME,    new_text);
+	iter -> get_value (Columns::NAME,    name);
+	iter -> get_value (Columns::CONTENT, content);
+	iter -> set_value (Columns::NAME,    new_text);
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Meta Data »%s«"), name .c_str ()));
 
@@ -260,9 +259,9 @@ X3DMetaDataEditor::on_meta_data_content_edited (const Glib::ustring & path, cons
 
 	const auto iter = getMetaDataListStore () -> get_iter (path);
 
-	iter -> get_value (NAME,    name);
-	iter -> get_value (CONTENT, content);
-	iter -> set_value (CONTENT, new_text);
+	iter -> get_value (Columns::NAME,    name);
+	iter -> get_value (Columns::CONTENT, content);
+	iter -> set_value (Columns::CONTENT, new_text);
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Meta Data »%s«"), name .c_str ()));
 
