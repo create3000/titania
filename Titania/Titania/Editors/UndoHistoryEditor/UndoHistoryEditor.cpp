@@ -60,11 +60,11 @@ namespace puck {
 
 struct UndoHistoryEditor::Columns
 {
-	static constexpr int NUMBER      = 0;
-	static constexpr int DESCRIPTION = 1;
-	static constexpr int SENSITIVE   = 2;
-	static constexpr int TIME        = 3;
-	static constexpr int TIME_VALUE  = 4;
+	static constexpr int32_t NUMBER      = 0;
+	static constexpr int32_t DESCRIPTION = 1;
+	static constexpr int32_t SENSITIVE   = 2;
+	static constexpr int32_t TIME        = 3;
+	static constexpr int32_t TIME_VALUE  = 4;
 };
 
 UndoHistoryEditor::UndoHistoryEditor (X3DBrowserWindow* const browserWindow) :

@@ -70,7 +70,7 @@ namespace puck {
 
 struct NodeIndex::Search
 {
-	static constexpr int TYPE_NAME = 0;
+	static constexpr int32_t TYPE_NAME = 0;
 };
 
 NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :

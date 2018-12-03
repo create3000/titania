@@ -60,12 +60,12 @@ namespace puck {
 
 struct HistoryEditor::Columns
 {
-	static constexpr int ICON             = 0;
-	static constexpr int TITLE            = 1;
-	static constexpr int WORLD_URL        = 2;
-	static constexpr int LAST_ACCESS      = 3;
-	static constexpr int LAST_ACCESS_TIME = 4;
-	static constexpr int ID               = 5;
+	static constexpr int32_t ICON             = 0;
+	static constexpr int32_t TITLE            = 1;
+	static constexpr int32_t WORLD_URL        = 2;
+	static constexpr int32_t LAST_ACCESS      = 3;
+	static constexpr int32_t LAST_ACCESS_TIME = 4;
+	static constexpr int32_t ID               = 5;
 };
 
 HistoryEditor::HistoryEditor (X3DBrowserWindow* const browserWindow) :

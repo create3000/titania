@@ -59,9 +59,9 @@ namespace puck {
 
 struct LibraryView::Columns
 {
-	static constexpr int TITANIA      = 4;
-	static constexpr int X_ITE        = 5;
-	static constexpr int EXPERIMENTAL = 6;
+	static constexpr int32_t TITANIA      = 4;
+	static constexpr int32_t X_ITE        = 5;
+	static constexpr int32_t EXPERIMENTAL = 6;
 };
 
 LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :

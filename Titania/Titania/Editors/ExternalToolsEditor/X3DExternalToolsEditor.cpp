@@ -66,17 +66,17 @@ namespace puck {
 
 struct X3DExternalToolsEditor::Columns
 {
-	static constexpr size_t ID             = 0;
-	static constexpr size_t NAME           = 1;
-	static constexpr size_t MASK           = 2;
-	static constexpr size_t KEY            = 3;
-	static constexpr size_t SAVE_TYPE      = 4;
-	static constexpr size_t INPUT_TYPE     = 5;
-	static constexpr size_t OUTPUT_TYPE    = 6;
-	static constexpr size_t APPLICABILITY  = 7;
-	static constexpr size_t INPUT_ENCODING = 8;
-	static constexpr size_t EXPANDED       = 9;
-	static constexpr size_t SHORTCUT_KEY   = 10;
+	static constexpr int32_t ID             = 0;
+	static constexpr int32_t NAME           = 1;
+	static constexpr int32_t MASK           = 2;
+	static constexpr int32_t KEY            = 3;
+	static constexpr int32_t SAVE_TYPE      = 4;
+	static constexpr int32_t INPUT_TYPE     = 5;
+	static constexpr int32_t OUTPUT_TYPE    = 6;
+	static constexpr int32_t APPLICABILITY  = 7;
+	static constexpr int32_t INPUT_ENCODING = 8;
+	static constexpr int32_t EXPANDED       = 9;
+	static constexpr int32_t SHORTCUT_KEY   = 10;
 };
 
 std::map <ExternalTool*, std::unique_ptr <ExternalTool>> X3DExternalToolsEditor::externalTools;

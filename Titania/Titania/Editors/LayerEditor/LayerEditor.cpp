@@ -64,16 +64,16 @@ namespace puck {
 
 struct LayerEditor::Columns
 {
-	static constexpr int VISIBLE            = 0;
-	static constexpr int TYPE_NAME          = 1;
-	static constexpr int NAME               = 2;
-	static constexpr int WEIGHT             = 3;
-	static constexpr int STYLE              = 4;
-	static constexpr int INDEX              = 5;
-	static constexpr int PICKABLE           = 6;
-	static constexpr int EYE                = 7;
-	static constexpr int ACTIVE_LAYER       = 8;
-	static constexpr int ACTIVE_LAYER_IMAGE = 9;
+	static constexpr int32_t VISIBLE            = 0;
+	static constexpr int32_t TYPE_NAME          = 1;
+	static constexpr int32_t NAME               = 2;
+	static constexpr int32_t WEIGHT             = 3;
+	static constexpr int32_t STYLE              = 4;
+	static constexpr int32_t INDEX              = 5;
+	static constexpr int32_t PICKABLE           = 6;
+	static constexpr int32_t EYE                = 7;
+	static constexpr int32_t ACTIVE_LAYER       = 8;
+	static constexpr int32_t ACTIVE_LAYER_IMAGE = 9;
 };
 
 struct LayerEditor::Weight
