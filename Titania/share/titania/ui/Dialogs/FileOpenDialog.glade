@@ -11,6 +11,15 @@
     <mime-types>
       <mime-type>audio/*</mime-type>
     </mime-types>
+    <patterns>
+      <pattern>*.aac</pattern>
+      <pattern>*.flac</pattern>
+      <pattern>*.mp3</pattern>
+      <pattern>*.oga</pattern>
+      <pattern>*.ogg</pattern>
+      <pattern>*.wav</pattern>
+      <pattern>*.webm</pattern>
+    </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterAutodesk3DSMax">
     <mime-types>
@@ -59,8 +68,8 @@
       <mime-type>application/x-font-type1</mime-type>
     </mime-types>
     <patterns>
-      <pattern>*.ttf</pattern>
       <pattern>*.otf</pattern>
+      <pattern>*.ttf</pattern>
     </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterGLTF">
@@ -75,6 +84,13 @@
     <mime-types>
       <mime-type>image/*</mime-type>
     </mime-types>
+    <patterns>
+      <pattern>*.gif</pattern>
+      <pattern>*.jpeg</pattern>
+      <pattern>*.jpg</pattern>
+      <pattern>*.png</pattern>
+      <pattern>*.tiff</pattern>
+    </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterPDF">
     <mime-types>
@@ -99,6 +115,13 @@
     <mime-types>
       <mime-type>video/*</mime-type>
     </mime-types>
+    <patterns>
+      <pattern>*.avi</pattern>
+      <pattern>*.mp4</pattern>
+      <pattern>*.ogg</pattern>
+      <pattern>*.ogv</pattern>
+      <pattern>*.webm</pattern>
+    </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterVrmlEncoding">
     <mime-types>
