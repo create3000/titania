@@ -318,7 +318,7 @@ X3DTextGeometry::vertical ()
 		const double padding    = (spacing - size .x ()) / 2;
 
 		double charSpacing = 0;
-		auto   lineBound   = Vector2d (l == 0 ? spacing - padding : spacing, size .y ()) * scale;
+		auto   lineBound   = Vector2d (l == 0 ? spacing - padding : spacing, line .empty () ? 0 : size .y ()) * scale;
 		double length      = text -> getLength (l);
 
 		if (maxExtent)
