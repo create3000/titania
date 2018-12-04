@@ -357,7 +357,10 @@ X3DTextGeometry::vertical ()
 			{
 				// This is needed to make maxExtend and charSpacing work.
 				Vector2d glyphMin, v;
-				getGlyphExtents (line [topToBottom ? numChars - 1 : 0], glyphMin, v);	
+
+				if (not line .empty ())
+					getGlyphExtents (line [topToBottom ? numChars - 1 : 0], glyphMin, v);
+
 				translation = Vector2d (lineNumber * spacing, size .y () - max .y () + glyphMin .y ());
 				break;
 			}
