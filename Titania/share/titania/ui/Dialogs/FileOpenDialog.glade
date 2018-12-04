@@ -58,6 +58,10 @@
       <mime-type>application/font-sfnt</mime-type>
       <mime-type>application/x-font-type1</mime-type>
     </mime-types>
+    <patterns>
+      <pattern>*.ttf</pattern>
+      <pattern>*.otf</pattern>
+    </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterGLTF">
     <mime-types>
