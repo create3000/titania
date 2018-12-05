@@ -219,6 +219,9 @@ public:
 	InternalType
 	normalize () const;
 
+	InternalType
+	lerp (const InternalType & dest, const value_type & t) const;
+
 	value_type
 	length () const;
 
@@ -474,6 +477,14 @@ InternalType
 SFVec3 <InternalType>::normalize () const
 {
 	return math::normalize (getValue ());
+}
+
+template <class InternalType>
+inline
+InternalType
+SFVec3 <InternalType>::lerp (const InternalType & dest, const value_type & t) const
+{
+	return math::lerp (getValue (), dest, t);
 }
 
 template <class InternalType>

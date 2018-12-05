@@ -115,6 +115,7 @@ private:
 	static JSBool divVec    (JSContext*, uint32_t, jsval*);
 	static JSBool dot       (JSContext*, uint32_t, jsval*);
 	static JSBool normalize (JSContext*, uint32_t, jsval*);
+	static JSBool lerp      (JSContext*, uint32_t, jsval*);
 	static JSBool length    (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
@@ -141,16 +142,17 @@ JSPropertySpec SFVec4 <InternalType>::properties [ ] = {
 
 template <class InternalType>
 JSFunctionSpec SFVec4 <InternalType>::functions [ ] = {
-	{ "negate",      negate,      0, 0 },
-	{ "add",         add,         1, 0 },
-	{ "subtract",    subtract,    1, 0 },
-	{ "multiply",    multiply,    1, 0 },
-	{ "multVec",     multVec,     1, 0 },
-	{ "divide",      divide,      1, 0 },
-	{ "divVec",      divVec,      1, 0 },
-	{ "normalize",   normalize,   0, 0 },
-	{ "dot",         dot,         1, 0 },
-	{ "length",      length,      0, 0 },
+	{ "negate",    negate,    0, 0 },
+	{ "add",       add,       1, 0 },
+	{ "subtract",  subtract,  1, 0 },
+	{ "multiply",  multiply,  1, 0 },
+	{ "multVec",   multVec,   1, 0 },
+	{ "divide",    divide,    1, 0 },
+	{ "divVec",    divVec,    1, 0 },
+	{ "normalize", normalize, 0, 0 },
+	{ "dot",       dot,       1, 0 },
+	{ "lerp",      lerp,      2, 0 },
+	{ "length",    length,    0, 0 },
 
 	{ 0 }
 
@@ -473,6 +475,28 @@ SFVec4 <InternalType>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .normalize: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class InternalType>
+JSBool
+SFVec4 <InternalType>::lerp (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .lerp: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv        = JS_ARGV (cx, vp);
+		const auto source      = getThis <SFVec4> (cx, vp);
+		const auto destination = getArgument <SFVec4> (cx, argv, 0);
+		const auto t           = getArgument <value_type> (cx, argv, 1);
+
+		return create <SFVec4> (cx, new InternalType (source -> lerp (*destination, t)), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .lerp: %s.", getClass () -> name, error .what ());
 	}
 }
 
