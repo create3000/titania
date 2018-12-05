@@ -106,17 +106,18 @@ private:
 
 	///  @name Functions
 
-	static JSBool negate    (JSContext*, uint32_t, jsval*);
 	static JSBool add       (JSContext*, uint32_t, jsval*);
-	static JSBool subtract  (JSContext*, uint32_t, jsval*);
-	static JSBool multiply  (JSContext*, uint32_t, jsval*);
-	static JSBool multVec   (JSContext*, uint32_t, jsval*);
+	static JSBool distance  (JSContext*, uint32_t, jsval*);
 	static JSBool divide    (JSContext*, uint32_t, jsval*);
 	static JSBool divVec    (JSContext*, uint32_t, jsval*);
 	static JSBool dot       (JSContext*, uint32_t, jsval*);
-	static JSBool normalize (JSContext*, uint32_t, jsval*);
-	static JSBool lerp      (JSContext*, uint32_t, jsval*);
 	static JSBool length    (JSContext*, uint32_t, jsval*);
+	static JSBool lerp      (JSContext*, uint32_t, jsval*);
+	static JSBool multiply  (JSContext*, uint32_t, jsval*);
+	static JSBool multVec   (JSContext*, uint32_t, jsval*);
+	static JSBool negate    (JSContext*, uint32_t, jsval*);
+	static JSBool normalize (JSContext*, uint32_t, jsval*);
+	static JSBool subtract  (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 
@@ -142,17 +143,18 @@ JSPropertySpec SFVec4 <InternalType>::properties [ ] = {
 
 template <class InternalType>
 JSFunctionSpec SFVec4 <InternalType>::functions [ ] = {
-	{ "negate",    negate,    0, 0 },
 	{ "add",       add,       1, 0 },
-	{ "subtract",  subtract,  1, 0 },
-	{ "multiply",  multiply,  1, 0 },
-	{ "multVec",   multVec,   1, 0 },
+	{ "distance",  distance,  1, 0 },
 	{ "divide",    divide,    1, 0 },
 	{ "divVec",    divVec,    1, 0 },
-	{ "normalize", normalize, 0, 0 },
 	{ "dot",       dot,       1, 0 },
-	{ "lerp",      lerp,      2, 0 },
 	{ "length",    length,    0, 0 },
+	{ "lerp",      lerp,      2, 0 },
+	{ "multiply",  multiply,  1, 0 },
+	{ "multVec",   multVec,   1, 0 },
+	{ "negate",    negate,    0, 0 },
+	{ "normalize", normalize, 0, 0 },
+	{ "subtract",  subtract,  1, 0 },
 
 	{ 0 }
 
@@ -295,25 +297,6 @@ SFVec4 <InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* 
 
 template <class InternalType>
 JSBool
-SFVec4 <InternalType>::negate (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 0)
-		return ThrowException (cx, "%s .negate: wrong number of arguments.", getClass () -> name);
-
-	try
-	{
-		const auto lhs = getThis <SFVec4> (cx, vp);
-
-		return create <SFVec4> (cx, new InternalType (lhs -> negate ()), &JS_RVAL (cx, vp));
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .negate: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class InternalType>
-JSBool
 SFVec4 <InternalType>::add (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
@@ -335,10 +318,10 @@ SFVec4 <InternalType>::add (JSContext* cx, uint32_t argc, jsval* vp)
 
 template <class InternalType>
 JSBool
-SFVec4 <InternalType>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec4 <InternalType>::distance (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
-		return ThrowException (cx, "%s .subtract: wrong number of arguments.", getClass () -> name);
+		return ThrowException (cx, "%s .distance: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
@@ -346,53 +329,11 @@ SFVec4 <InternalType>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec4> (cx, vp);
 		const auto rhs  = getArgument <SFVec4> (cx, argv, 0);
 
-		return create <SFVec4> (cx, new InternalType (lhs -> subtract (*rhs)), &JS_RVAL (cx, vp));
+		return JS_NewNumberValue (cx, lhs -> distance (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .subtract: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class InternalType>
-JSBool
-SFVec4 <InternalType>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 1)
-		return ThrowException (cx, "%s .multiply: wrong number of arguments.", getClass () -> name);
-
-	try
-	{
-		const auto argv = JS_ARGV (cx, vp);
-		const auto lhs  = getThis <SFVec4> (cx, vp);
-		const auto rhs  = getArgument <value_type> (cx, argv, 0);
-
-		return create <SFVec4> (cx, new InternalType (lhs -> multiply (rhs)), &JS_RVAL (cx, vp));
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .multiply: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class InternalType>
-JSBool
-SFVec4 <InternalType>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
-{
-	if (argc not_eq 1)
-		return ThrowException (cx, "%s .multVec: wrong number of arguments.", getClass () -> name);
-
-	try
-	{
-		const auto argv = JS_ARGV (cx, vp);
-		const auto lhs  = getThis <SFVec4> (cx, vp);
-		const auto rhs  = getArgument <SFVec4> (cx, argv, 0);
-
-		return create <SFVec4> (cx, new InternalType (lhs -> multiply (*rhs)), &JS_RVAL (cx, vp));
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .multVec: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .distance: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -461,20 +402,20 @@ SFVec4 <InternalType>::dot (JSContext* cx, uint32_t argc, jsval* vp)
 
 template <class InternalType>
 JSBool
-SFVec4 <InternalType>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec4 <InternalType>::length (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
-		return ThrowException (cx, "%s .normalize: wrong number of arguments.", getClass () -> name);
+		return ThrowException (cx, "%s .length: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
 		const auto lhs = getThis <SFVec4> (cx, vp);
 
-		return create <SFVec4> (cx, new InternalType (lhs -> normalize ()), &JS_RVAL (cx, vp));
+		return JS_NewNumberValue (cx, lhs -> length (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .normalize: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .length: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -502,20 +443,102 @@ SFVec4 <InternalType>::lerp (JSContext* cx, uint32_t argc, jsval* vp)
 
 template <class InternalType>
 JSBool
-SFVec4 <InternalType>::length (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec4 <InternalType>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multiply: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <SFVec4> (cx, vp);
+		const auto rhs  = getArgument <value_type> (cx, argv, 0);
+
+		return create <SFVec4> (cx, new InternalType (lhs -> multiply (rhs)), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multiply: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class InternalType>
+JSBool
+SFVec4 <InternalType>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .multVec: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <SFVec4> (cx, vp);
+		const auto rhs  = getArgument <SFVec4> (cx, argv, 0);
+
+		return create <SFVec4> (cx, new InternalType (lhs -> multiply (*rhs)), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .multVec: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class InternalType>
+JSBool
+SFVec4 <InternalType>::negate (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
-		return ThrowException (cx, "%s .length: wrong number of arguments.", getClass () -> name);
+		return ThrowException (cx, "%s .negate: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
 		const auto lhs = getThis <SFVec4> (cx, vp);
 
-		return JS_NewNumberValue (cx, lhs -> length (), &JS_RVAL (cx, vp));
+		return create <SFVec4> (cx, new InternalType (lhs -> negate ()), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .length: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .negate: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class InternalType>
+JSBool
+SFVec4 <InternalType>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .normalize: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <SFVec4> (cx, vp);
+
+		return create <SFVec4> (cx, new InternalType (lhs -> normalize ()), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .normalize: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class InternalType>
+JSBool
+SFVec4 <InternalType>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .subtract: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <SFVec4> (cx, vp);
+		const auto rhs  = getArgument <SFVec4> (cx, argv, 0);
+
+		return create <SFVec4> (cx, new InternalType (lhs -> subtract (*rhs)), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .subtract: %s.", getClass () -> name, error .what ());
 	}
 }
 

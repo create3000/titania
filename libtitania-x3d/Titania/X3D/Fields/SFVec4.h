@@ -184,49 +184,52 @@ public:
 	operator -= (const InternalType & vector);
 
 	SFVec4 &
+	operator *= (const value_type & value);
+
+	SFVec4 &
 	operator *= (const InternalType & vector);
 
 	SFVec4 &
-	operator *= (const value_type & vector);
+	operator /= (const value_type & value);
 
 	SFVec4 &
 	operator /= (const InternalType & vector);
 
-	SFVec4 &
-	operator /= (const value_type & vector);
-
-	InternalType
-	negate () const;
-
 	InternalType
 	add (const InternalType & vector) const;
 
-	InternalType
-	subtract (const InternalType & vector) const;
+	value_type
+	distance (const InternalType & vector) const;
 
 	InternalType
-	multiply (const InternalType & vector) const;
+	divide (const value_type & value) const;
+
+	InternalType
+	divide (const InternalType & vector) const;
+
+	value_type
+	dot (const InternalType & vector) const;
+
+	value_type
+	length () const;
+
+	InternalType
+	lerp (const InternalType & dest, const value_type & t) const;
 
 	InternalType
 	multiply (const value_type & value) const;
 
 	InternalType
-	divide (const InternalType & vector) const;
+	multiply (const InternalType & vector) const;
 
 	InternalType
-	divide (const value_type & value) const;
-
-	value_type
-	dot (const InternalType & vector) const;
+	negate () const;
 
 	InternalType
 	normalize () const;
 
 	InternalType
-	lerp (const InternalType & dest, const value_type & t) const;
-
-	value_type
-	length () const;
+	subtract (const InternalType & vector) const;
 
 	///  @name Input/Output
 
@@ -381,16 +384,6 @@ SFVec4 <InternalType>::operator -= (const InternalType & vector)
 template <class InternalType>
 inline
 SFVec4 <InternalType> &
-SFVec4 <InternalType>::operator *= (const InternalType & vector)
-{
-	get () *= vector;
-	addEvent ();
-	return *this;
-}
-
-template <class InternalType>
-inline
-SFVec4 <InternalType> &
 SFVec4 <InternalType>::operator *= (const value_type & value)
 {
 	get () *= value;
@@ -401,9 +394,9 @@ SFVec4 <InternalType>::operator *= (const value_type & value)
 template <class InternalType>
 inline
 SFVec4 <InternalType> &
-SFVec4 <InternalType>::operator /= (const InternalType & vector)
+SFVec4 <InternalType>::operator *= (const InternalType & vector)
 {
-	get () /= vector;
+	get () *= vector;
 	addEvent ();
 	return *this;
 }
@@ -420,10 +413,12 @@ SFVec4 <InternalType>::operator /= (const value_type & value)
 
 template <class InternalType>
 inline
-InternalType
-SFVec4 <InternalType>::negate () const
+SFVec4 <InternalType> &
+SFVec4 <InternalType>::operator /= (const InternalType & vector)
 {
-	return math::negate (getValue ());
+	get () /= vector;
+	addEvent ();
+	return *this;
 }
 
 template <class InternalType>
@@ -436,10 +431,56 @@ SFVec4 <InternalType>::add (const InternalType & vector) const
 
 template <class InternalType>
 inline
-InternalType
-SFVec4 <InternalType>::subtract (const InternalType & vector) const
+typename SFVec4 <InternalType>::value_type
+SFVec4 <InternalType>::distance (const InternalType & vector) const
 {
-	return getValue () - vector;
+	return math::distance (getValue (), vector);
+}
+
+template <class InternalType>
+InternalType
+SFVec4 <InternalType>::divide (const value_type & value) const
+{
+	return getValue () / value;
+}
+
+template <class InternalType>
+InternalType
+SFVec4 <InternalType>::divide (const InternalType & vector) const
+{
+	return getValue () / vector;
+}
+
+template <class InternalType>
+inline
+typename SFVec4 <InternalType>::value_type
+SFVec4 <InternalType>::dot (const InternalType & vector) const
+{
+	return math::dot (getValue (), vector);
+}
+
+template <class InternalType>
+inline
+typename SFVec4 <InternalType>::value_type
+SFVec4 <InternalType>::length () const
+{
+	return abs (getValue ());
+}
+
+template <class InternalType>
+inline
+InternalType
+SFVec4 <InternalType>::lerp (const InternalType & dest, const value_type & t) const
+{
+	return math::lerp (getValue (), dest, t);
+}
+
+template <class InternalType>
+inline
+InternalType
+SFVec4 <InternalType>::multiply (const value_type & value) const
+{
+	return getValue () * value;
 }
 
 template <class InternalType>
@@ -453,31 +494,9 @@ SFVec4 <InternalType>::multiply (const InternalType & vector) const
 template <class InternalType>
 inline
 InternalType
-SFVec4 <InternalType>::multiply (const value_type & value) const
+SFVec4 <InternalType>::negate () const
 {
-	return getValue () * value;
-}
-
-template <class InternalType>
-InternalType
-SFVec4 <InternalType>::divide (const InternalType & vector) const
-{
-	return getValue () / vector;
-}
-
-template <class InternalType>
-InternalType
-SFVec4 <InternalType>::divide (const value_type & value) const
-{
-	return getValue () / value;
-}
-
-template <class InternalType>
-inline
-typename SFVec4 <InternalType>::value_type
-SFVec4 <InternalType>::dot (const InternalType & vector) const
-{
-	return math::dot (getValue (), vector);
+	return math::negate (getValue ());
 }
 
 template <class InternalType>
@@ -491,17 +510,9 @@ SFVec4 <InternalType>::normalize () const
 template <class InternalType>
 inline
 InternalType
-SFVec4 <InternalType>::lerp (const InternalType & dest, const value_type & t) const
+SFVec4 <InternalType>::subtract (const InternalType & vector) const
 {
-	return math::lerp (getValue (), dest, t);
-}
-
-template <class InternalType>
-inline
-typename SFVec4 <InternalType>::value_type
-SFVec4 <InternalType>::length () const
-{
-	return abs (getValue ());
+	return getValue () - vector;
 }
 
 template <class InternalType>
