@@ -123,7 +123,6 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	             objects (),
 	          references (),
 	               files (),
-	       callbackTimes (),
 	              future (),
 	               frame (0)
 {
@@ -621,11 +620,6 @@ Context::prepareEvents ()
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const jsval & function)
 {
-	if (callbackTimes [field] == getCurrentTime ())
-		return; // Event loop detected.
-	else
-		callbackTimes [field] = getCurrentTime ();
-
 	field -> setTainted (true);
 
 	jsval argv [2];

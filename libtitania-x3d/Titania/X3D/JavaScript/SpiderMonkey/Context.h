@@ -256,7 +256,6 @@ private:
 	std::map <size_t, JSObject*>                                    objects;
 	std::map <std::pair <size_t, size_t>, X3D::X3DFieldDefinition*> references;
 	std::map <basic::uri, jsval>                                    files;
-	std::map <X3D::X3DFieldDefinition*, time_type>                  callbackTimes;
 
 	X3DPtr <X3D::SceneFuture> future;
 
