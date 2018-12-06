@@ -128,9 +128,6 @@ GeoLOD::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	if (rootNode () .empty () and children () .size ())
-		rootNode () = children ();
-
 	rootNode () .addInterest (rootGroup -> children ());
 
 	rootGroup -> setPrivate (true);

@@ -1063,7 +1063,8 @@ XMLParser::nodeAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & n
 	{
 		const auto field = node -> getField (xmlAttribute -> get_name ());
 
-		fieldValue (field, xmlAttribute -> get_value ());
+		if (field -> getAccessType () & initializeOnly)
+			fieldValue (field, xmlAttribute -> get_value ());
 	}
 	catch (const X3DError & error)
 	{
