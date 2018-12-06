@@ -61,14 +61,13 @@ namespace spidermonkey {
 
 JSClass X3DScene::static_class = {
 	"X3DScene", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, set1Value,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec X3DScene::properties [ ] = {
-	{ "length",    LENGTH,     JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, length,    length },
 	{ "rootNodes", ROOT_NODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
 };

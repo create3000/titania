@@ -113,11 +113,6 @@ protected:
 
 	///  @name Properties
 
-	static JSBool set1Value (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	static JSBool get1Value (JSContext*, JSObject*, jsid, jsval*);
-	static JSBool length    (JSContext*, JSObject*, jsid, JSBool, jsval*);
-	static JSBool length    (JSContext*, JSObject*, jsid, jsval*);
-
 	static JSBool specificationVersion (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool encoding             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);
 	static JSBool worldURL             (JSContext* cx, JSObject* obj, jsid id, jsval* vp);

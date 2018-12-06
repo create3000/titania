@@ -71,15 +71,13 @@ namespace spidermonkey {
 
 JSClass X3DExecutionContext::static_class = {
 	"X3DExecutionContext", JSCLASS_HAS_PRIVATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
+	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
 JSPropertySpec X3DExecutionContext::properties [ ] = {
-	{ "length",               LENGTH,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length,               nullptr },
-
 	{ "specificationVersion", SPECIFICATION_VERSION, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, specificationVersion, nullptr },
 	{ "encoding",             ENCODING,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, encoding,             nullptr },
 	{ "worldURL",             WORLD_URL,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, worldURL,             nullptr },
@@ -155,98 +153,6 @@ X3DExecutionContext::create (JSContext* const cx, X3D::X3DExecutionContext* cons
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return true;
-}
-
-JSBool
-X3DExecutionContext::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	try
-	{
-		if (not JSID_IS_INT (id))
-			return true;
-
-		const auto executionContext = getThis <X3DExecutionContext> (cx, obj);
-		const auto index            = JSID_TO_INT (id);
-
-		if (index < 0)
-			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
-
-		executionContext -> getRootNodes () .set1Value (index, *getArgument <SFNode> (cx, vp, 0));
-
-		*vp = JSVAL_VOID;
-		return true;
-	}
-	catch (const std::bad_alloc &)
-	{
-		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
-	}
-}
-
-JSBool
-X3DExecutionContext::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
-{
-	try
-	{
-		if (not JSID_IS_INT (id))
-			return true;
-
-		const auto executionContext = getThis <X3DExecutionContext> (cx, obj);
-		const auto index            = JSID_TO_INT (id);
-
-		if (index < 0)
-			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
-
-		return X3DField::get <SFNode> (cx, executionContext -> getRootNodes () .get1Value (index), vp);
-	}
-	catch (const std::bad_alloc &)
-	{
-		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
-	}
-}
-
-JSBool
-X3DExecutionContext::length (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
-{
-	try
-	{
-		const auto scene = getThis <X3DExecutionContext> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
-
-		scene -> getRootNodes () .resize (value);
-
-		return true;
-	}
-	catch (const std::bad_alloc &)
-	{
-		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
-	}
-}
-
-JSBool
-X3DExecutionContext::length (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
-{
-	try
-	{
-		const auto executionContext = getThis <X3DExecutionContext> (cx, obj);
-
-		return JS_NewNumberValue (cx, executionContext -> getRootNodes () .size (), vp);
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .specificationVersion: %s.", getClass () -> name, error .what ());
-	}
 }
 
 // Properties
