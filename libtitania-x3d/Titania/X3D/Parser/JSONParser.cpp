@@ -78,10 +78,10 @@ const std::map <std::string, JSONParser::ElementsFunction> JSONParser::objectsIn
 const std::string JSONParser::ProtoInstance = "ProtoInstance";
 
 JSONParser::JSONParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	            X3DParser (),
-	                scene (scene),
-	                  uri (uri),
-	              istream (istream)
+	X3DParser (),
+	    scene (scene),
+	      uri (uri),
+	  istream (istream)
 { }
 
 void
@@ -696,7 +696,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 	{
 		const auto metadata = node -> getField ("metadata");
 
-		if (metadata -> getType () == X3DConstants::SFNode)
+		if (metadata -> isInitializable () and metadata -> getType () == X3DConstants::SFNode)
 			fieldValueValue (json_object_object_get (jobj, "-metadata"), metadata);
 
 		fieldValueArray (json_object_object_get (jobj, "fieldValue"), node);
@@ -723,6 +723,9 @@ JSONParser::nodeFieldsObject (json_object* const jobj, const SFNode & node)
 {
 	for (const auto & field : node -> getPreDefinedFields ())
 	{
+		if (not field -> isInitializable ())
+			continue;
+
 		switch (field -> getType ())
 		{
 			case X3DConstants::SFNode:
