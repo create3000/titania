@@ -63,6 +63,7 @@ namespace titania {
 namespace X3D {
 
 class ShapeContainer;
+class SoftParticle;
 
 class X3DProgrammableShaderObject :
 	virtual public X3DBaseNode
@@ -391,7 +392,7 @@ public:
 
 	virtual
 	void
-	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix);
+	setParticle (const size_t id, const SoftParticle & particle, const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix);
 
 
 protected:
@@ -528,6 +529,11 @@ private:
 	GLint x3d_TexCoord;
 	GLint x3d_Normal;
 	GLint x3d_Vertex;
+
+	GLint x3d_ParticleId;
+	GLint x3d_ParticleLife;
+	GLint x3d_ParticleElapsedTime;
+	GLint x3d_ParticlePosition;
 
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;

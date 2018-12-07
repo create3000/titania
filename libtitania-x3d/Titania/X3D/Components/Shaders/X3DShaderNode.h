@@ -57,6 +57,7 @@ namespace titania {
 namespace X3D {
 
 class ShapeContainer;
+class SoftParticle;
 
 class X3DShaderNode :
 	public X3DAppearanceChildNode
@@ -192,7 +193,7 @@ public:
 
 	virtual
 	void
-	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) = 0;
+	setParticle (const size_t id, const SoftParticle & particle, const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) = 0;
 
 	virtual
 	void

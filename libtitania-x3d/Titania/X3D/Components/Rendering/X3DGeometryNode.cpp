@@ -1238,10 +1238,12 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		{
 			for (size_t p = 0; p < numParticles; ++ p)
 			{
-				modelViewMatrix .origin (origin);
-				modelViewMatrix .translate (particles [p] .position);
+				const auto & particle = particles [p];
 
-				shaderNode -> setMatrices (inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
+				modelViewMatrix .origin (origin);
+				modelViewMatrix .translate (particle .position);
+
+				shaderNode -> setParticle (p, particle, inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
 
 				glEnable (GL_CULL_FACE);
 				glCullFace (GL_FRONT);
@@ -1268,10 +1270,12 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 			for (size_t p = 0; p < numParticles; ++ p)
 			{
-				modelViewMatrix .origin (origin);
-				modelViewMatrix .translate (particles [p] .position);
+				const auto & particle = particles [p];
 
-				shaderNode -> setMatrices (inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
+				modelViewMatrix .origin (origin);
+				modelViewMatrix .translate (particle .position);
+
+				shaderNode -> setParticle (p, particle, inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
 
 				for (const auto & element : elements)
 				{

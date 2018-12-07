@@ -229,8 +229,8 @@ public:
 
 	virtual
 	void
-	setMatrices (const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) final override
-	{ X3DProgrammableShaderObject::setMatrices (normalMatrix, modelViewMatrix); }
+	setParticle (const size_t id, const SoftParticle & particle, const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix) final override
+	{ X3DProgrammableShaderObject::setParticle (id, particle, normalMatrix, modelViewMatrix); }
 
 	///  @name Destruction
 

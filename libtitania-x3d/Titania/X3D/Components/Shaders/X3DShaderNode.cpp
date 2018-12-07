@@ -50,6 +50,7 @@
 
 #include "X3DShaderNode.h"
 
+#include "../../Browser/ParticleSystems/SoftParticle.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/X3DRenderObject.h"
 
