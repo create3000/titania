@@ -135,7 +135,6 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	             x3d_ParticleId (-1),
 	           x3d_ParticleLife (-1),
 	    x3d_ParticleElapsedTime (-1),
-	       x3d_ParticlePosition (-1),
 	     extensionGPUShaderFP64 (false),
 	  transformFeedbackVaryings (),
 	            numGlobalLights (0),
@@ -275,6 +274,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_Normal   = glGetAttribLocation (program, "x3d_Normal");
 	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
 
+	x3d_ParticleId          = glGetUniformLocation (program, "x3d_Particle.id");
+	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
+	x3d_ParticleElapsedTime = glGetUniformLocation (program, "x3d_Particle.elapsedTime");
+
 	static const auto textureType    = std::vector <int32_t> ({ 0 });
 	static const auto texture2D      = std::vector <int32_t> ({ 2 });
 	static const auto cubeMapTexture = std::vector <int32_t> ({ 4 });
@@ -285,11 +288,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	glUniform1iv (x3d_Texture2D,            texture2D      .size (), texture2D      .data ()); // Set texture to active texture unit 2.
 	glUniform1iv (x3d_CubeMapTexture,       cubeMapTexture .size (), cubeMapTexture .data ()); // Set cube map texture to active texture unit 4.
 	glUniform1iv (glGetUniformLocation (program, "x3d_ShadowMap"), shadowMap .size (), shadowMap .data ()); // Set cube map texture to active texture unit 5
-
-	x3d_ParticleId          = glGetUniformLocation (program, "x3d_Particle.id");
-	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
-	x3d_ParticleElapsedTime = glGetUniformLocation (program, "x3d_Particle.elapsedTime");
-	x3d_ParticlePosition    = glGetUniformLocation (program, "x3d_Particle.position");
 }
 
 GLint
@@ -1414,12 +1412,9 @@ X3DProgrammableShaderObject::setParticle (const size_t id, const SoftParticle & 
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .front () .data ());
 	}
 
-	const auto & position = particle .position;
-
 	glUniform1i (x3d_ParticleId,          id);
 	glUniform1i (x3d_ParticleLife,        particle .life);
 	glUniform1f (x3d_ParticleElapsedTime, particle .elapsedTime / particle .lifetime);
-	glUniform4f (x3d_ParticlePosition,    position .x (), position .y (), position .z (), 1);
 }
 
 /*

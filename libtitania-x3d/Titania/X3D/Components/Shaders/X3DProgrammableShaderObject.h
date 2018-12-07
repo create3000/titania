@@ -533,7 +533,6 @@ private:
 	GLint x3d_ParticleId;
 	GLint x3d_ParticleLife;
 	GLint x3d_ParticleElapsedTime;
-	GLint x3d_ParticlePosition;
 
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
