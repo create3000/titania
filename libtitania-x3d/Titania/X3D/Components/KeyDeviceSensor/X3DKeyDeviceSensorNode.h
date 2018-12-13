@@ -71,19 +71,19 @@ public:
 
 	virtual
 	void
-	setActionKeyPressEvent (const int32_t) = 0;
+	setActionKeyPressEvent (const int32_t keyval) = 0;
 
 	virtual
 	void
-	setActionKeyReleaseEvent (const int32_t) = 0;
+	setActionKeyReleaseEvent (const int32_t keyval) = 0;
 
 	virtual
 	void
-	setKeyPressEvent (const String &) = 0;
+	setKeyPressEvent (const String & key) = 0;
 
 	virtual
 	void
-	setKeyReleaseEvent (const String &) = 0;
+	setKeyReleaseEvent (const String & key) = 0;
 
 	virtual
 	void
@@ -100,6 +100,15 @@ protected:
 	void
 	initialize () final override;
 
+	///  @name Event handler
+
+	virtual
+	void
+	setActive (const bool value);
+
+
+private:
+
 	///  @name Operations
 
 	void
@@ -115,6 +124,10 @@ protected:
 
 	void
 	set_enabled ();
+
+	///  @name Members
+
+	bool active;
 
 };
 

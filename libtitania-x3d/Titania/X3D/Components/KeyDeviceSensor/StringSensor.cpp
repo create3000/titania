@@ -89,30 +89,61 @@ StringSensor::create (X3DExecutionContext* const executionContext) const
 void
 StringSensor::setActionKeyPressEvent (const int32_t keyval)
 {
+	switch (keyval)
+	{
+		case GDK_KEY_BackSpace:
+		{
+			if (isActive ())
+			{
+				if (deletionAllowed ())
+				{
+					if (enteredText () .length ())
+						enteredText () = enteredText () .getValue () .substr (0, enteredText () .length () - 1);
+				}
+			}
 
-}
+			break;
+		}
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			if (isActive ())
+			{
+				finalText () = enteredText ();
+				isActive ()  = false;
 
-void
-StringSensor::setActionKeyReleaseEvent (const int32_t keyval)
-{
+				enteredText () .set ("");
+			}
 
+			break;
+		}
+		case GDK_KEY_Escape:
+		{
+			if (isActive ())
+			{
+				enteredText () = "";
+				isActive ()    = false;
+			}
+
+			break;
+		}
+		case GDK_KEY_Tab:
+		{
+			break;
+		}
+	}
 }
 
 void
 StringSensor::setKeyPressEvent (const String & key)
 {
+	if (not isActive ())
+	{
+		isActive ()    = true;
+		enteredText () = "";
+	}
 
-}
-
-void
-StringSensor::setKeyReleaseEvent (const String & key)
-{
-
-}
-
-void
-StringSensor::setKeyReleaseEvent ()
-{
+	enteredText () = enteredText () + key;
 }
 
 } // X3D

@@ -469,5 +469,14 @@ KeySensor::setKeyReleaseEvent ()
 		altKey () = false;
 }
 
+void
+KeySensor::setActive (const bool value)
+{
+	X3DKeyDeviceSensorNode::setActive (value);
+
+	if (value != isActive ())
+		isActive () = value;
+}
+
 } // X3D
 } // titania
