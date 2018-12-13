@@ -128,6 +128,8 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 void
 KeySensor::setActionKeyPressEvent (const int32_t keyval)
 {
+	isActive () = true;
+
 	switch (keyval)
 	{
 		// Special keys
@@ -439,11 +441,14 @@ KeySensor::setActionKeyReleaseEvent (const int32_t keyval)
 			break;
 		}
 	}
+
+	isActive () = false;
 }
 
 void
 KeySensor::setKeyPressEvent (const String & key)
 {
+	isActive () = true;
 	keyPress () = key;
 }
 
@@ -451,6 +456,7 @@ void
 KeySensor::setKeyReleaseEvent (const String & key)
 {
 	keyRelease () = key;
+	isActive ()   = false;
 }
 
 void
@@ -467,15 +473,6 @@ KeySensor::setKeyReleaseEvent ()
 
 	if (altKey ())
 		altKey () = false;
-}
-
-void
-KeySensor::setActive (const bool value)
-{
-	X3DKeyDeviceSensorNode::setActive (value);
-
-	if (value != isActive ())
-		isActive () = value;
 }
 
 } // X3D

@@ -169,9 +169,6 @@ public:
 
 protected:
 
-	virtual
-	void
-	setActive (const bool value) final override;
 
 private:
 

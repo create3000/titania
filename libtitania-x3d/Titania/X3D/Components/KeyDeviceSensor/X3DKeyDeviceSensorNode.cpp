@@ -108,12 +108,12 @@ X3DKeyDeviceSensorNode::enable ()
 	if (keyDeviceSensorNode)
 	{
 		keyDeviceSensorNode -> enabled () = false;
-		keyDeviceSensorNode -> setActive (false);
+		keyDeviceSensorNode -> active     = false;
 	}
 
 	getBrowser () -> setKeyDeviceSensor (this);
 
-	setActive (true);
+	active = true;
 }
 
 void
@@ -125,13 +125,7 @@ X3DKeyDeviceSensorNode::disable ()
 	getBrowser () -> setKeyDeviceSensor (nullptr);
 
 	setKeyReleaseEvent ();
-	setActive (false);
-}
-
-void
-X3DKeyDeviceSensorNode::setActive (const bool value)
-{
-	active = value;
+	active = false;
 }
 
 void

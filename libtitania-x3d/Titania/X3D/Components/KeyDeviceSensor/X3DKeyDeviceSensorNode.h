@@ -100,12 +100,6 @@ protected:
 	void
 	initialize () final override;
 
-	///  @name Event handler
-
-	virtual
-	void
-	setActive (const bool value);
-
 
 private:
 
