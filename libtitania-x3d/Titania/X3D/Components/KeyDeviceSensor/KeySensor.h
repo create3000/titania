@@ -144,6 +144,9 @@ public:
 	keyRelease () const
 	{ return *fields .keyRelease; }
 
+
+protected:
+
 	///  @name Event handlers
 
 	virtual
@@ -165,9 +168,6 @@ public:
 	virtual
 	void
 	setKeyReleaseEvent () final override;
-
-
-protected:
 
 
 private:

@@ -67,6 +67,30 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DKeyDeviceSensorNode () override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class KeyDevice;
+
+	///  @name Construction
+
+	X3DKeyDeviceSensorNode ();
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Event handler
 
 	virtual
@@ -88,17 +112,6 @@ public:
 	virtual
 	void
 	setKeyReleaseEvent () = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DKeyDeviceSensorNode ();
-
-	virtual
-	void
-	initialize () final override;
 
 
 private:

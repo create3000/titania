@@ -112,6 +112,9 @@ public:
 	finalText () const
 	{ return *fields . finalText; }
 
+
+protected:
+
 	///  @name Event handlers
 
 	virtual

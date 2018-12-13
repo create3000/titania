@@ -60,7 +60,7 @@ namespace X3D {
 X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	              X3DBaseNode (),
 	                keyDevice (new KeyDevice (getBrowser ())),
-	      keyDeviceSensorNode (nullptr),
+	     keyDeviceSensorNodes (),
 	               controlKey (),
 	                 shiftKey (),
 	                   altKey (),
@@ -70,7 +70,7 @@ X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	             externalKeys ()
 {
 	addChildObjects (keyDevice,
-	                 keyDeviceSensorNode,
+	                 keyDeviceSensorNodes,
 	                 controlKey,
 	                 shiftKey,
 	                 altKey);
@@ -83,9 +83,15 @@ X3DKeyDeviceSensorContext::initialize ()
 }
 
 void
-X3DKeyDeviceSensorContext::setKeyDeviceSensor (X3DKeyDeviceSensorNode* const value)
+X3DKeyDeviceSensorContext::addKeyDeviceSensor (X3DKeyDeviceSensorNode* const keyDeviceSensorNode)
 {
-	keyDeviceSensorNode .setValue (value);
+	keyDeviceSensorNodes .emplace_back (keyDeviceSensorNode);
+}
+
+void
+X3DKeyDeviceSensorContext::removeKeyDeviceSensor (X3DKeyDeviceSensorNode* const keyDeviceSensorNode)
+{
+	keyDeviceSensorNodes .remove (X3DWeakPtr <X3DKeyDeviceSensorNode> (keyDeviceSensorNode));
 }
 
 void

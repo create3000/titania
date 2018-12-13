@@ -68,21 +68,21 @@ public:
 	///  @name Member access
 
 	void
-	setControlKey (const bool);
+	setControlKey (const bool value);
 
 	const SFBool &
 	getControlKey () const
 	{ return controlKey; }
 
 	void
-	setShiftKey (const bool);
+	setShiftKey (const bool value);
 
 	const SFBool &
 	getShiftKey () const
 	{ return shiftKey; }
 
 	void
-	setAltKey (const bool);
+	setAltKey (const bool value);
 
 	const SFBool &
 	getAltKey () const
@@ -128,11 +128,14 @@ protected:
 	///  @name Member access
 
 	void
-	setKeyDeviceSensor (X3DKeyDeviceSensorNode* const);
+	addKeyDeviceSensor (X3DKeyDeviceSensorNode* const keyDeviceSensorNode);
 
-	const X3DWeakPtr <X3DKeyDeviceSensorNode> &
-	getKeyDeviceSensor () const
-	{ return keyDeviceSensorNode; }
+	void
+	removeKeyDeviceSensor (X3DKeyDeviceSensorNode* const keyDeviceSensorNode);
+
+	const X3DWeakPtrArray <X3DKeyDeviceSensorNode> &
+	getKeyDeviceSensors () const
+	{ return keyDeviceSensorNodes; }
 
 
 private:
@@ -144,15 +147,15 @@ private:
 
 	///  @name Members
 
-	X3DPtr <KeyDevice>                  keyDevice;
-	X3DWeakPtr <X3DKeyDeviceSensorNode> keyDeviceSensorNode;
-	SFBool                              controlKey;
-	SFBool                              shiftKey;
-	SFBool                              altKey;
-	bool                                internalControlKey;
-	bool                                internalShiftKey;
-	bool                                internalAltKey;
-	Keys                                externalKeys;
+	X3DPtr <KeyDevice>                       keyDevice;
+	X3DWeakPtrArray <X3DKeyDeviceSensorNode> keyDeviceSensorNodes;
+	SFBool                                   controlKey;
+	SFBool                                   shiftKey;
+	SFBool                                   altKey;
+	bool                                     internalControlKey;
+	bool                                     internalShiftKey;
+	bool                                     internalAltKey;
+	Keys                                     externalKeys;
 
 };
 
