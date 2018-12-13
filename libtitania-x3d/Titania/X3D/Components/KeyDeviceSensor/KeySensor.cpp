@@ -128,7 +128,8 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 void
 KeySensor::setActionKeyPressEvent (const int32_t keyval)
 {
-	isActive () = true;
+	if (not isActive ())
+		isActive () = true;
 
 	switch (keyval)
 	{
@@ -442,7 +443,8 @@ KeySensor::setActionKeyReleaseEvent (const int32_t keyval)
 		}
 	}
 
-	isActive () = false;
+	if (isActive ())
+		isActive () = false;
 }
 
 void
