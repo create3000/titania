@@ -3187,6 +3187,8 @@
     <None Include="share\titania\ui\Editors\OpenEditorsEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DOpenEditorsEditorInterface.h" />
     <None Include="Titania\Editors\ProjectsEditor\OpenEditorsEditor.h" />
+    <None Include="share\titania\Library\Components\KeyDeviceSensor\.Titania\StringSensor" />
+    <None Include="share\titania\Library\Components\KeyDeviceSensor\.X_ITE\StringSensor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

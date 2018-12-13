@@ -56,8 +56,7 @@ namespace titania {
 namespace X3D {
 
 X3DKeyDeviceSensorNode::X3DKeyDeviceSensorNode () :
-	X3DSensorNode (),
-	      active (false)
+	X3DSensorNode ()
 {
 	addType (X3DConstants::X3DKeyDeviceSensorNode);
 }
@@ -80,11 +79,8 @@ X3DKeyDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executio
 	{
 		getExecutionContext () -> isLive () .removeInterest (&X3DKeyDeviceSensorNode::set_live, this);
 	
-		if (executionContext -> getBrowser () not_eq getBrowser ())
-		{
-			if (active)
-				getBrowser () -> setKeyDeviceSensor (this);
-		}
+		if (enabled ())
+			getBrowser () -> setKeyDeviceSensor (nullptr);
 	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
@@ -95,37 +91,6 @@ X3DKeyDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executio
 
 		set_live ();
 	}
-}
-
-void
-X3DKeyDeviceSensorNode::enable ()
-{
-	if (active)
-		return;
-
-	X3DKeyDeviceSensorNode* const keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensor ();
-
-	if (keyDeviceSensorNode)
-	{
-		keyDeviceSensorNode -> enabled () = false;
-		keyDeviceSensorNode -> active     = false;
-	}
-
-	getBrowser () -> setKeyDeviceSensor (this);
-
-	active = true;
-}
-
-void
-X3DKeyDeviceSensorNode::disable ()
-{
-	if (active)
-		return;
-
-	getBrowser () -> setKeyDeviceSensor (nullptr);
-
-	setKeyReleaseEvent ();
-	active = false;
 }
 
 void
@@ -152,9 +117,27 @@ X3DKeyDeviceSensorNode::set_enabled ()
 {
 	if (enabled ())
 		enable ();
-
 	else
 		disable ();
+}
+
+void
+X3DKeyDeviceSensorNode::enable ()
+{
+	X3DKeyDeviceSensorNode* const keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensor ();
+
+	if (keyDeviceSensorNode and keyDeviceSensorNode not_eq this)
+		keyDeviceSensorNode -> enabled () = false;
+
+	getBrowser () -> setKeyDeviceSensor (this);
+}
+
+void
+X3DKeyDeviceSensorNode::disable ()
+{
+	getBrowser () -> setKeyDeviceSensor (nullptr);
+
+	setKeyReleaseEvent ();
 }
 
 } // X3D

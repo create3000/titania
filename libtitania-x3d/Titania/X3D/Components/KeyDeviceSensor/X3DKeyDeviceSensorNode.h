@@ -103,14 +103,6 @@ protected:
 
 private:
 
-	///  @name Operations
-
-	void
-	enable ();
-
-	void
-	disable ();
-
 	///  @name Event handler
 
 	void
@@ -119,9 +111,13 @@ private:
 	void
 	set_enabled ();
 
-	///  @name Members
+	///  @name Operations
 
-	bool active;
+	void
+	enable ();
+
+	void
+	disable ();
 
 };
 
