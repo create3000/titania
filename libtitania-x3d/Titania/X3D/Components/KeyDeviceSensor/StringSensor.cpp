@@ -107,23 +107,21 @@ StringSensor::setActionKeyPressEvent (const int32_t keyval)
 		case GDK_KEY_Return:
 		case GDK_KEY_KP_Enter:
 		{
-			if (isActive ())
-			{
-				finalText () = enteredText ();
-				isActive ()  = false;
+			finalText () = enteredText ();
 
-				enteredText () .set ("");
-			}
+			enteredText () .set ("");
+
+			if (isActive ())
+				isActive () = false;
 
 			break;
 		}
 		case GDK_KEY_Escape:
 		{
+			enteredText () .set ("");
+
 			if (isActive ())
-			{
-				enteredText () = "";
-				isActive ()    = false;
-			}
+				isActive () = false;
 
 			break;
 		}
