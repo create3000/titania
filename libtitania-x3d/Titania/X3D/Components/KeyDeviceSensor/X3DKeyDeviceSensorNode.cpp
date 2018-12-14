@@ -106,8 +106,7 @@ X3DKeyDeviceSensorNode::set_live ()
 	{
 		enabled () .removeInterest (&X3DKeyDeviceSensorNode::set_enabled, this);
 
-		if (enabled ())
-			disable ();
+		disable ();
 	}
 }
 
