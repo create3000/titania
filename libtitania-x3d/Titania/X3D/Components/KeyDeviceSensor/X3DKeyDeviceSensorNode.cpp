@@ -79,8 +79,7 @@ X3DKeyDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executio
 	{
 		getExecutionContext () -> isLive () .removeInterest (&X3DKeyDeviceSensorNode::set_live, this);
 	
-		if (enabled ())
-			getBrowser () -> removeKeyDeviceSensor (this);
+		getBrowser () -> removeKeyDeviceSensor (this);
 	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
@@ -107,8 +106,7 @@ X3DKeyDeviceSensorNode::set_live ()
 	{
 		enabled () .removeInterest (&X3DKeyDeviceSensorNode::set_enabled, this);
 
-		if (enabled ())
-			disable ();
+		disable ();
 	}
 }
 
