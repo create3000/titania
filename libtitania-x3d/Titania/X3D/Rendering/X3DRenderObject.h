@@ -56,7 +56,6 @@
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
 #include "../Rendering/CollisionContainer.h"
-#include "../Rendering/FogContainer.h"
 #include "../Rendering/LightContainer.h"
 #include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolumeStack.h"
@@ -78,7 +77,7 @@ class X3DLayoutNode;
 class X3DShaderNode;
 
 using ShadowStack                = std::stack <bool>;
-using LocalFogStack              = std::vector <FogContainerPtr>;
+using LocalFogStack              = std::vector <LocalFog*>;
 using LayoutStack                = std::vector <X3DLayoutNode*>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
 using ShaderSet                  = std::set <X3DShaderNode*>;

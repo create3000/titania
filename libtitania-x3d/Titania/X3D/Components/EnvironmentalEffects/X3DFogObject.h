@@ -102,12 +102,13 @@ public:
 	isHidden () const
 	{ return hidden; }	
 
-	float
-	getVisibilityRange () const;
+	///  @name Operations
 
-	size_t
-	getMode () const
-	{ return mode; }
+	void
+	enable ();
+
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject);
 
 	///  @name Destruction
 
@@ -133,6 +134,15 @@ private:
 
 	void
 	set_fogType ();
+
+	float
+	getVisibilityRange () const;
+
+	GLenum
+	getMode () const;
+
+	float
+	getDensitiy (const float visibilityRange) const;
 
 	///  @name Members
 

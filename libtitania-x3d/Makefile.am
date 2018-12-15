@@ -597,7 +597,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/DependentRenderer.cpp \
 	Titania/X3D/Rendering/DepthTestContainer.cpp \
-	Titania/X3D/Rendering/FogContainer.cpp \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \

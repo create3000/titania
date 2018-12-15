@@ -85,6 +85,17 @@ X3DFogObject::initialize ()
 }
 
 void
+X3DFogObject::set_fogType ()
+{
+	if (fogType () == "EXPONENTIAL2")
+		mode = 3;
+	else if (fogType () == "EXPONENTIAL")
+		mode = 2;
+	else  // LINEAR
+		mode = 1;
+}
+
+void
 X3DFogObject::isHidden (const bool value)
 {
 	if (value not_eq hidden)
@@ -101,15 +112,75 @@ X3DFogObject::getVisibilityRange () const
 	return std::max <float> (0, this -> visibilityRange ());
 }
 
-void
-X3DFogObject::set_fogType ()
+GLenum
+X3DFogObject::getMode () const
 {
-	if (fogType () == "EXPONENTIAL2")
-		mode = 3;
-	else if (fogType () == "EXPONENTIAL")
-		mode = 2;
-	else  // LINEAR
-		mode = 1;
+	switch (mode)
+	{
+		case 1:
+			return GL_LINEAR;
+		case 2:
+			return GL_EXP;
+		case 3:
+			return GL_EXP2;
+	}
+
+	return GL_LINEAR;
+}
+
+float
+X3DFogObject::getDensitiy (const float visibilityRange) const
+{
+	switch (getMode ())
+	{
+		case 1:
+			return 1;
+		case 2:
+			return 2 / visibilityRange;
+		case 3:
+			return 4 / visibilityRange;
+	}
+
+	return 1;
+}
+
+void
+X3DFogObject::enable ()
+{
+	const float visibilityRange = getVisibilityRange ();
+	const float density         = getDensitiy (visibilityRange);
+
+	GLfloat glColor [4];
+
+	glColor [0] = color () .getRed ();
+	glColor [1] = color () .getGreen ();
+	glColor [2] = color () .getBlue ();
+	glColor [3] = hidden or visibilityRange == 0 ? 0 : 1;
+
+	glEnable (GL_FOG);
+
+	glFogi  (GL_FOG_MODE,    getMode ());
+	glFogf  (GL_FOG_DENSITY, density);
+	glFogf  (GL_FOG_START,   0);
+	glFogf  (GL_FOG_END,     visibilityRange);
+	glFogfv (GL_FOG_COLOR,   glColor);
+}
+
+void
+X3DFogObject::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
+{
+	const auto visibilityRange = getVisibilityRange ();
+
+	if (hidden or visibilityRange == 0)
+	{
+		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
+	}
+	else
+	{
+		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            mode);
+		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, color () .getValue () .data ());
+		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), visibilityRange);
+	}
 }
 
 void

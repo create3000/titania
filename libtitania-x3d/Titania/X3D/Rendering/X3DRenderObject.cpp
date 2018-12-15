@@ -53,6 +53,7 @@
 #include "../Browser/Core/BrowserOptions.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/CubeMapTexturing/GeneratedCubeMapTexture.h"
+#include "../Components/EnvironmentalEffects/LocalFog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -387,7 +388,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	context -> setScissor (viewVolume .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shapeNode);
-	context -> setFog (getLocalFogs () .empty () ? std::make_shared <FogContainer> (getFog ()) : getLocalFogs () .back ());
+	context -> setFog (getLocalFogs () .empty () ? getFog () : getLocalFogs () .back ());
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 	context -> setLocalLights (getLocalLights ());
