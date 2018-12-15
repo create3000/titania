@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	FogContainer (X3DFogObject* const node, const Matrix4d & modelViewMatrix);
+	FogContainer (X3DFogObject* const node);
 
 	///  @name Operations
 
@@ -96,7 +96,6 @@ private:
 	///  @name Members
 
 	X3DFogObject* const node;
-	Vector3f            center;
 
 };
 

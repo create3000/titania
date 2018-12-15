@@ -56,9 +56,8 @@
 namespace titania {
 namespace X3D {
 
-FogContainer::FogContainer (X3DFogObject* const node, const Matrix4d & modelViewMatrix) :
-	  node (node),
-	center (modelViewMatrix .origin ())
+FogContainer::FogContainer (X3DFogObject* const node) :
+	node (node)
 { }
 
 GLenum
@@ -128,7 +127,6 @@ FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject
 	{
 		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            node -> getMode ());
 		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, node -> color () .getValue () .data ());
-		glUniform3fv (shaderObject -> getFogCenterUniformLocation (),          1, center .data ());
 		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), visibilityRange);
 	}
 }
