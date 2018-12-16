@@ -274,7 +274,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 }
 
 void
-PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix, const Matrix3d & lightMatrix)
 {
 	const auto worldLocation = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));
 
@@ -285,6 +285,11 @@ PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, 
 	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
 	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], getRadius ());
+
+	if (shaderObject -> isExtensionGPUShaderFP64Available ())
+		glUniformMatrix3dv (shaderObject -> getLightMatrixUniformLocation () [i], 1, false, lightMatrix .front () .data ());
+	else
+		glUniformMatrix3fv (shaderObject -> getLightMatrixUniformLocation () [i], 1, false, Matrix3f (lightMatrix) .front () .data ());
 }
 
 } // X3D

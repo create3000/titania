@@ -99,6 +99,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	         x3d_LightBeamWidth (getBrowser () -> getMaxLights (), -1),
 	       x3d_LightCutOffAngle (getBrowser () -> getMaxLights (), -1),
 	            x3d_LightRadius (getBrowser () -> getMaxLights (), -1),
+	            x3d_LightMatrix (getBrowser () -> getMaxLights (), -1),
 	            x3d_ShadowColor (getBrowser () -> getMaxLights (), -1),
 	        x3d_ShadowIntensity (getBrowser () -> getMaxLights (), -1),
 	             x3d_ShadowBias (getBrowser () -> getMaxLights (), -1),
@@ -190,6 +191,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_LightBeamWidth        .clear ();
 	x3d_LightCutOffAngle      .clear ();
 	x3d_LightRadius           .clear ();
+	x3d_LightMatrix           .clear ();
 	x3d_ShadowColor           .clear ();
 	x3d_ShadowIntensity       .clear ();
 	x3d_ShadowBias            .clear ();
@@ -232,6 +234,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_LightBeamWidth        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].beamWidth",        "x3d_LightBeamWidth[" + is + "]"));
 		x3d_LightCutOffAngle      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]"));
 		x3d_LightRadius           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]"));
+		x3d_LightMatrix           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].matrix",           "x3d_LightMatrix[" + is + "]"));
 
 		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowColor") .c_str ()));
 		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowIntensity") .c_str ()));

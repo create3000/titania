@@ -299,7 +299,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 }
 
 void
-SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix, const Matrix3d & lightMatrix)
 {
 	const auto worldLocation  = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));
 	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
@@ -314,6 +314,11 @@ SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 	glUniform1f  (shaderObject -> getLightBeamWidthUniformLocation        () [i], getBeamWidth ());
 	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], getCutOffAngle ());
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], getRadius ());
+
+	if (shaderObject -> isExtensionGPUShaderFP64Available ())
+		glUniformMatrix3dv (shaderObject -> getLightMatrixUniformLocation () [i], 1, false, lightMatrix .front () .data ());
+	else
+		glUniformMatrix3fv (shaderObject -> getLightMatrixUniformLocation () [i], 1, false, Matrix3f (lightMatrix) .front () .data ());
 }
 
 } // X3D

@@ -66,11 +66,19 @@ LightContainer::LightContainer (X3DBrowser* const browser, X3DLightNode* const n
 	                node (node),
 	               group (group),
 	     modelViewMatrix ({ modelViewMatrix }),
+	         lightMatrix (),
 	        shadowMatrix (),
 	 shadowTextureBuffer (),
 	         textureUnit (0),
 	             lightId (0)
 {
+	try
+	{
+		lightMatrix = inverse (modelViewMatrix .submatrix ());
+	}
+	catch (const std::domain_error & error)
+	{ }
+
 	try
 	{
 		if (node -> getShadowIntensity () > 0 and node -> getShadowMapSize () > 0 and not browser -> getFixedPipelineRequired ())
@@ -149,7 +157,7 @@ LightContainer::disable ()
 void
 LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .get ());
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .get (), lightMatrix);
 
 	if (textureUnit)
 	{

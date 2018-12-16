@@ -131,6 +131,7 @@ private:
 	X3DLightNode* const             node;
 	X3DGroupingNode* const          group;
 	Matrix4dStack                   modelViewMatrix;
+	Matrix3d                        lightMatrix;
 	Matrix4d                        shadowMatrix;
 	std::unique_ptr <TextureBuffer> shadowTextureBuffer;
 	size_t                          textureUnit;
