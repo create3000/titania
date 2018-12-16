@@ -336,6 +336,9 @@ X3DBrowserContext::update ()
 		currentTime = SFTime::now ();
 		getClock () -> advance ();
 
+		if (dependentContext)
+			dependentContext -> prepareEvents () .processInterests ();
+
 		prepareEvents () .processInterests ();
 		getRouter () -> processEvents ();
 
