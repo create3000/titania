@@ -122,7 +122,7 @@ public:
 	{ return renderObject -> getBackground (); }
 
 	virtual
-	X3DFogObject*
+	Fog*
 	getFog () const final override
 	{ return renderObject -> getFog (); }
 

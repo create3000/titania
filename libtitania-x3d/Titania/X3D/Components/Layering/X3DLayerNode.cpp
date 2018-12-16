@@ -58,7 +58,6 @@
 
 #include "../EnvironmentalEffects/Background.h"
 #include "../EnvironmentalEffects/Fog.h"
-#include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
 #include "../Navigation/NavigationInfo.h"
@@ -221,7 +220,7 @@ X3DLayerNode::getBackground () const
 	return backgroundStack -> getTop ();
 }
 
-X3DFogObject*
+Fog*
 X3DLayerNode::getFog () const
 {
 	return fogStack -> getTop ();

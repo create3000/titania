@@ -87,6 +87,12 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Member access
+
+	const Matrix4d &
+	getModelMatrix () const
+	{ return modelMatrix; }
+
 	///  @name Operations
 
 	void
@@ -136,6 +142,9 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
+	///  @name Members
+
+	Matrix4d modelMatrix;
 
 };
 

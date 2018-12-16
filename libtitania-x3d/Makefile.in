@@ -712,6 +712,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Rendering/CollisionContainer.lo \
 	Titania/X3D/Rendering/DependentRenderer.lo \
 	Titania/X3D/Rendering/DepthTestContainer.lo \
+	Titania/X3D/Rendering/FogContainer.lo \
 	Titania/X3D/Rendering/FrameBuffer.lo \
 	Titania/X3D/Rendering/LightContainer.lo \
 	Titania/X3D/Rendering/PolygonModeContainer.lo \
@@ -1426,6 +1427,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo \
 	Titania/X3D/Rendering/$(DEPDIR)/DependentRenderer.Plo \
 	Titania/X3D/Rendering/$(DEPDIR)/DepthTestContainer.Plo \
+	Titania/X3D/Rendering/$(DEPDIR)/FogContainer.Plo \
 	Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo \
 	Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo \
 	Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo \
@@ -2360,6 +2362,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/DependentRenderer.cpp \
 	Titania/X3D/Rendering/DepthTestContainer.cpp \
+	Titania/X3D/Rendering/FogContainer.cpp \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \
@@ -4799,6 +4802,9 @@ Titania/X3D/Rendering/DependentRenderer.lo:  \
 Titania/X3D/Rendering/DepthTestContainer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Rendering/FogContainer.lo:  \
+	Titania/X3D/Rendering/$(am__dirstamp) \
+	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Rendering/FrameBuffer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -6111,6 +6117,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/DependentRenderer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/DepthTestContainer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/FogContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo@am__quote@ # am--include-marker
@@ -7340,6 +7347,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/DependentRenderer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/DepthTestContainer.Plo
+	-rm -f Titania/X3D/Rendering/$(DEPDIR)/FogContainer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo
@@ -8081,6 +8089,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/DependentRenderer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/DepthTestContainer.Plo
+	-rm -f Titania/X3D/Rendering/$(DEPDIR)/FogContainer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo
 	-rm -f Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo

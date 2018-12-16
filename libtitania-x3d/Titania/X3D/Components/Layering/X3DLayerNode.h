@@ -150,6 +150,10 @@ public:
 	X3DBackgroundNode*
 	getBackground () const final override;
 
+	virtual
+	Fog*
+	getFog () const final override;
+
 	///  @name X3DBindableNode stack handling
 
 	const NavigationInfoStackPtr &
@@ -240,10 +244,6 @@ protected:
 	const X3DPtr <X3DGroupingNode> &
 	getGroup () const
 	{ return groupNode; }
-
-	virtual
-	X3DFogObject*
-	getFog () const final override;
 
 
 private:

@@ -48,93 +48,104 @@
  *
  ******************************************************************************/
 
-#include "Fog.h"
+#include "FogContainer.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/BindableNodeList.h"
-#include "../../Execution/BindableNodeStack.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/X3DRenderObject.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../Components/EnvironmentalEffects/X3DFogObject.h"
+#include "../Components/Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType Fog::component      = ComponentType::ENVIRONMENTAL_EFFECTS;
-const std::string   Fog::typeName       = "Fog";
-const std::string   Fog::containerField = "children";
-
-Fog::Fog (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DBindableNode (),
-	   X3DFogObject (),
-	    modelMatrix ()
+FogContainer::FogContainer (X3DFogObject* const node, const Matrix4d & modelViewMatrix) :
+	  node (node),
+	matrix ()
 {
-	addType (X3DConstants::Fog);
-
-	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOnly,   "set_bind",        set_bind ());
-	addField (inputOutput, "fogType",         fogType ());
-	addField (inputOutput, "color",           color ());
-	addField (inputOutput, "visibilityRange", visibilityRange ());
-	addField (outputOnly,  "isBound",         isBound ());
-	addField (outputOnly,  "bindTime",        bindTime ());
-}
-
-X3DBaseNode*
-Fog::create (X3DExecutionContext* const executionContext) const
-{
-	return new Fog (executionContext);
-}
-
-void
-Fog::initialize ()
-{
-	X3DBindableNode::initialize ();
-	X3DFogObject::initialize ();
-}
-
-void
-Fog::bindToLayer (X3DLayerNode* const layer)
-{
-	layer -> getFogStack () -> pushOnTop (this);
-}
-
-void
-Fog::unbindFromLayer (X3DLayerNode* const layer)
-{
-	layer -> getFogStack () -> pop (this);
-}
-
-void
-Fog::removeFromLayer (X3DLayerNode* const layer)
-{
-	layer -> getFogStack () -> erase (this);
-}
-
-void
-Fog::traverse (const TraverseType type, X3DRenderObject* const renderObject)
-{
-	switch (type)
+	try
 	{
-		case TraverseType::CAMERA:
-		{
-			renderObject -> getLayer () -> getFogs () -> pushBack (this);
+		matrix = inverse (modelViewMatrix .submatrix ());
+	}
+	catch (const std::domain_error & error)
+	{ }
+}
 
-			modelMatrix = renderObject -> getModelViewMatrix () .get  ();
-			break;
-		}
-		default:
-			break;
+GLenum
+FogContainer::getMode () const
+{
+	switch (node -> getMode ())
+	{
+		case 1:
+			return GL_LINEAR;
+		case 2:
+			return GL_EXP;
+		case 3:
+			return GL_EXP2;
+	}
+
+	return GL_LINEAR;
+}
+
+float
+FogContainer::getDensitiy (const float visibilityRange) const
+{
+	switch (node -> getMode ())
+	{
+		case 1:
+			return 1;
+		case 2:
+			return 2 / visibilityRange;
+		case 3:
+			return 4 / visibilityRange;
+	}
+
+	return 1;
+}
+
+void
+FogContainer::enable ()
+{
+	const float glVisibilityRange = node -> getVisibilityRange ();
+	const float glDensity         = getDensitiy (glVisibilityRange);
+
+	GLfloat glColor [4];
+
+	glColor [0] = node -> color () .getRed ();
+	glColor [1] = node -> color () .getGreen ();
+	glColor [2] = node -> color () .getBlue ();
+	glColor [3] = node -> isHidden () or glVisibilityRange == 0 ? 0 : 1;
+
+	glEnable (GL_FOG);
+
+	glFogi  (GL_FOG_MODE,    getMode ());
+	glFogf  (GL_FOG_DENSITY, glDensity);
+	glFogf  (GL_FOG_START,   0);
+	glFogf  (GL_FOG_END,     glVisibilityRange);
+	glFogfv (GL_FOG_COLOR,   glColor);
+}
+
+void
+FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
+{
+	const auto visibilityRange = node -> getVisibilityRange ();
+
+	if (node -> isHidden () or visibilityRange == 0)
+	{
+		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
+	}
+	else
+	{
+		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            node -> getMode ());
+		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, node -> color () .getValue () .data ());
+		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), visibilityRange);
+
+		if (shaderObject -> isExtensionGPUShaderFP64Available ())
+			glUniformMatrix3dv (shaderObject -> getFogMatrixUniformLocation (), 1, false, matrix .front () .data ());
+		else
+			glUniformMatrix3fv (shaderObject -> getFogMatrixUniformLocation (), 1, false, Matrix3f (matrix) .front () .data ());
 	}
 }
 
-void
-Fog::dispose ()
-{
-	X3DFogObject::dispose ();
-	X3DBindableNode::dispose ();
-}
+FogContainer::~FogContainer ()
+{ }
 
 } // X3D
 } // titania

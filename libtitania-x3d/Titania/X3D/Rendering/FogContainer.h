@@ -48,109 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DFOG_OBJECT_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DFOG_OBJECT_H__
+#ifndef __TITANIA_X3D_RENDERING_FOG_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_FOG_CONTAINER_H__
 
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Bits/X3DConstants.h"
-#include "../../Fields.h"
+#include "../Rendering/OpenGL.h"
+#include "../Types/Numbers.h"
 
-#include "../../Rendering/OpenGL.h"
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-class ShapeContainer;
+class X3DFogObject;
+class X3DProgrammableShaderObject;
 
-class X3DFogObject :
-	virtual public X3DBaseNode
+class FogContainer
 {
 public:
 
-	///  @name Fields
+	///  @name Construction
 
-	SFColor &
-	color ()
-	{ return *fields .color; }
+	FogContainer (X3DFogObject* const node, const Matrix4d & modelViewMatrix);
 
-	const SFColor &
-	color () const
-	{ return *fields .color; }
+	///  @name Operations
 
-	SFString &
-	fogType ()
-	{ return *fields .fogType; }
-
-	const SFString &
-	fogType () const
-	{ return *fields .fogType; }
-
-	SFFloat &
-	visibilityRange ()
-	{ return *fields .visibilityRange; }
-
-	const SFFloat &
-	visibilityRange () const
-	{ return *fields .visibilityRange; }
-
-	///  @name Member access
-	
 	void
-	isHidden (const bool value);
+	enable ();
 
-	bool
-	isHidden () const
-	{ return hidden; }	
-
-	float
-	getVisibilityRange () const;
-
-	size_t
-	getMode () const
-	{ return mode; }
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject);
 
 	///  @name Destruction
 
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DFogObject ();
-
-	virtual
-	void
-	initialize () override;
+	~FogContainer ();
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Member access
 
-	void
-	set_fogType ();
+	GLenum
+	getMode () const;
+
+	float
+	getDensitiy (const float visibilityRange) const;
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFColor* const color;
-		SFString* const fogType;
-		SFFloat* const visibilityRange;
-	};
-
-	Fields fields;
-
-	bool    hidden;
-	size_t  mode;
+	X3DFogObject* const node;
+	Matrix3d            matrix;
 
 };
+
+using FogContainerPtr = std::shared_ptr <FogContainer>;
 
 } // X3D
 } // titania

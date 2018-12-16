@@ -53,7 +53,7 @@
 #include "../Browser/Core/BrowserOptions.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/CubeMapTexturing/GeneratedCubeMapTexture.h"
-#include "../Components/EnvironmentalEffects/LocalFog.h"
+#include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
@@ -92,7 +92,7 @@ X3DRenderObject::X3DRenderObject () :
 	            globalLights (),
 	            localObjects (),
 	              clipPlanes (),
-	               localFogs (),
+	               localFogs (1),
 	             localLights (),
 	                  lights (),
 	              lightIndex (0),
@@ -132,6 +132,12 @@ X3DRenderObject::setExecutionContext (X3DExecutionContext* const executionContex
 
 	if (isInitialized ())
 		depthBuffer -> setup (); // Throws a runtime error.
+}
+
+void
+X3DRenderObject::setGlobalFog (Fog* const fog)
+{
+	localFogs [0] = std::make_shared <FogContainer> (getFog (), getFog () -> getModelMatrix () * getInverseCameraSpaceMatrix () .get ());
 }
 
 ///  Contrains @a translation to a possible value the avatar can move.  If the avatar reaches and intersects with an
@@ -280,6 +286,8 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 			numOpaqueShapes      = 0;
 			numTransparentShapes = 0;
 
+			setGlobalFog (getFog ());
+
 			traverse (type, this);
 			draw (traverse);
 			break;
@@ -388,7 +396,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	context -> setScissor (viewVolume .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shapeNode);
-	context -> setFog (getLocalFogs () .empty () ? getFog () : getLocalFogs () .back ());
+	context -> setFog (getLocalFogs () .back ());
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 	context -> setLocalLights (getLocalLights ());

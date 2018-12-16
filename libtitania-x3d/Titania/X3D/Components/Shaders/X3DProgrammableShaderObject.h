@@ -117,6 +117,10 @@ public:
 	getFogVisibilityRangeUniformLocation () const
 	{ return x3d_FogVisibilityRange; }
 
+	GLint
+	getFogMatrixUniformLocation () const
+	{ return x3d_FogMatrix; }
+
 	///  @name Uniform location access line properties
 
 	GLint
@@ -467,6 +471,7 @@ private:
 	GLint x3d_FogType;
 	GLint x3d_FogColor;
 	GLint x3d_FogVisibilityRange;
+	GLint x3d_FogMatrix;
 
 	GLint x3d_LinewidthScaleFactor;
 

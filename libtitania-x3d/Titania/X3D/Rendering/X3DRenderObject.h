@@ -56,6 +56,7 @@
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
 #include "../Rendering/CollisionContainer.h"
+#include "../Rendering/FogContainer.h"
 #include "../Rendering/LightContainer.h"
 #include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolumeStack.h"
@@ -69,6 +70,7 @@ namespace titania {
 namespace X3D {
 
 class GeneratedCubeMapTexture;
+class Fog;
 class FrameBuffer;
 class LocalFog;
 class X3DFogObject;
@@ -77,7 +79,7 @@ class X3DLayoutNode;
 class X3DShaderNode;
 
 using ShadowStack                = std::stack <bool>;
-using LocalFogStack              = std::vector <LocalFog*>;
+using LocalFogStack              = std::vector <FogContainerPtr>;
 using LayoutStack                = std::vector <X3DLayoutNode*>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
 using ShaderSet                  = std::set <X3DShaderNode*>;
@@ -120,7 +122,7 @@ public:
 	getBackground () const = 0;
 
 	virtual
-	X3DFogObject*
+	Fog*
 	getFog () const = 0;
 
 	///  @name Flags
@@ -303,6 +305,9 @@ protected:
 private:
 
 	///  @name Operations
+
+	void
+	setGlobalFog (Fog* const fog);
 
 	double
 	getDistance (const Vector3d &) const;

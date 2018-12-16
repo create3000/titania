@@ -1006,6 +1006,7 @@
     <None Include="Titania\X3D\Tools\SnapTool\SnapTargetTool.h" />
     <None Include="share\titania\tools\SnapTool.x3dv" />
     <None Include="Titania\X3D\Tools\SnapTool\SnapSourceTool.h" />
+    <None Include="Titania\X3D\Rendering\FogContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1703,6 +1704,7 @@
     <Compile Include="Titania\X3D\Tools\SnapTool\X3DSnapTool.cpp" />
     <Compile Include="Titania\X3D\Tools\SnapTool\SnapTargetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\SnapTool\SnapSourceTool.cpp" />
+    <Compile Include="Titania\X3D\Rendering\FogContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

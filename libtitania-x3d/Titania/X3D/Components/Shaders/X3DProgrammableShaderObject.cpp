@@ -84,6 +84,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                x3d_FogType (-1),
 	               x3d_FogColor (-1),
 	     x3d_FogVisibilityRange (-1),
+	              x3d_FogMatrix (-1),
 	   x3d_LinewidthScaleFactor (-1),
 	               x3d_Lighting (-1),
 	          x3d_ColorMaterial (-1),
@@ -209,6 +210,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_FogType            = getUniformLocation (program, "x3d_Fog.type",            "x3d_FogType");
 	x3d_FogColor           = getUniformLocation (program, "x3d_Fog.color",           "x3d_FogColor");
 	x3d_FogVisibilityRange = getUniformLocation (program, "x3d_Fog.visibilityRange", "x3d_FogVisibilityRange");
+	x3d_FogMatrix          = getUniformLocation (program, "x3d_Fog.matrix",          "x3d_FogMatrix");
 
 	x3d_LinewidthScaleFactor = glGetUniformLocation (program, "x3d_LinewidthScaleFactor");
 
