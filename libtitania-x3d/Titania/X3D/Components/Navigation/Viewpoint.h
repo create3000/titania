@@ -142,7 +142,11 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (const Vector3d &, const Vector4i &) const override;
+	getScreenScale (const Vector3d & point, const Vector4i & viewport) const override;
+
+	virtual
+	Vector2d
+	getViewportSize (const Vector4i & viewport, const double nearValue) const override;
 
 	virtual
 	Matrix4d

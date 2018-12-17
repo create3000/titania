@@ -154,8 +154,9 @@ OrthoViewpoint::getScreenScale (const Vector3d &, const Vector4i & viewport) con
 	return Vector3d (s, s, s);
 }
 
+///  Returns viewport size in meters.
 Vector2d
-OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
+OrthoViewpoint::getViewportSize (const Vector4i & viewport, const double nearValue) const
 {
 	const double width  = viewport [2];
 	const double height = viewport [3];

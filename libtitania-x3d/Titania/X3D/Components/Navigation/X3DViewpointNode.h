@@ -227,6 +227,10 @@ public:
 	getScreenScale (const Vector3d & point, const Vector4i & viewport) const = 0;
 
 	virtual
+	Vector2d
+	getViewportSize (const Vector4i & viewport, const double nearValue) const = 0;
+
+	virtual
 	void
 	setAnimate (const bool value)
 	{ animate = value; }

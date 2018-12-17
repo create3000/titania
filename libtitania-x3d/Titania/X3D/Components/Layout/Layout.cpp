@@ -53,7 +53,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../Navigation/OrthoViewpoint.h"
+#include "../Navigation/NavigationInfo.h"
+#include "../Navigation/X3DViewpointNode.h"
 
 #include <Titania/Math/Functional.h>
 
@@ -427,187 +428,181 @@ Layout::transform (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	parent = renderObject -> getParentLayout ();
 
-	// OrthoViewpoint
+	// Calculate rectangleSize
 
-	const auto viewpoint = dynamic_cast <OrthoViewpoint*> (renderObject -> getViewpoint ());
+	const auto       viewpoint           = renderObject -> getViewpoint ();
+	const auto       nearValue           = renderObject -> getNavigationInfo () -> getNearValue ();   // in meter
+	const auto &     viewport            = renderObject -> getViewVolumes () .back () .getScissor (); // in pixel
+	const auto       viewportPixel       = Vector2i (viewport [2], viewport [3]);                     // in pixel
+	const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport, nearValue);        // in meter
+	const Vector2d & parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter;    // in meter
+	const Vector2d   pixelSize           = viewportMeter / Vector2d (viewportPixel);                  // size of one pixel in meter
 
-	if (viewpoint)
+	switch (getSizeUnitX ())
 	{
-		// Calculate rectangleSize
+		case SizeUnitType::FRACTION:
+			rectangleSize .x (sizeX * parentRectangleSize .x ());
+			break;
+		case SizeUnitType::PIXEL:
+			rectangleSize .x (sizeX * pixelSize .x ());
+			break;
+		default:
+			break;
+	}
 
-		const auto & viewport      = renderObject -> getViewVolumes () .back () .getScissor ();  // in pixel
-		const auto   viewportPixel = Vector2i (viewport [2], viewport [3]);                                 // in pixel
+	switch (getSizeUnitY ())
+	{
+		case SizeUnitType::FRACTION:
+			rectangleSize .y (sizeY * parentRectangleSize .y ());
+			break;
+		case SizeUnitType::PIXEL:
+			rectangleSize .y (sizeY * pixelSize .y ());
+			break;
+		default:
+			break;
+	}
 
-		const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport);                     // in meter
-		const Vector2d & parentRectangleSize = parent ? parent -> getRectangleSize () : viewportMeter;      // in meter
-		const Vector2d   pixelSize           = viewportMeter / Vector2d (viewportPixel);                    // size of one pixel in meter
+	// Calculate translation
 
-		switch (getSizeUnitX ())
+	Vector3d translation;
+
+	switch (getAlignX ())
+	{
+		case HorizontalAlignType::LEFT:
+			translation .x (-(parentRectangleSize .x () - rectangleSize .x ()) / 2);
+			break;
+		case HorizontalAlignType::CENTER:
+
+			if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportPixel .x ()))
+				translation .x (-pixelSize .x () / 2);
+
+			break;
+		case HorizontalAlignType::RIGHT:
+			translation .x ((parentRectangleSize .x () - rectangleSize .x ()) / 2);
+			break;
+	}
+
+	switch (getAlignY ())
+	{
+		case VerticalAlignType::BOTTOM:
+			translation .y (-(parentRectangleSize .y () - rectangleSize .y ()) / 2);
+			break;
+		case VerticalAlignType::CENTER:
+
+			if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportPixel .y ()))
+				translation .y (-pixelSize .y () / 2);
+
+			break;
+		case VerticalAlignType::TOP:
+			translation .y ((parentRectangleSize .y () - rectangleSize .y ()) / 2);
+			break;
+	}
+
+	// Calculate offset
+
+	Vector3d offset;
+
+	switch (getOffsetUnitX ())
+	{
+		case SizeUnitType::FRACTION:
+			offset .x (offsetX * parentRectangleSize .x ());
+			break;
+		case SizeUnitType::PIXEL:
+			offset .x (offsetX * viewportMeter .x () / viewportPixel .x ());
+			break;
+		default:
+			break;
+	}
+
+	switch (getOffsetUnitY ())
+	{
+		case SizeUnitType::FRACTION:
+			offset .y (offsetY * parentRectangleSize .y ());
+			break;
+		case SizeUnitType::PIXEL:
+			offset .y (offsetY * viewportMeter .y () / viewportPixel .y ());
+			break;
+		default:
+			break;
+	}
+
+	// Calculate scale
+
+	Vector3d scale (1, 1, 1);
+
+	Vector3d   currentTranslation, currentScale;
+	Rotation4d currentRotation;
+
+	const Matrix4d modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+	modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
+
+	switch (getScaleModeX ())
+	{
+		case ScaleModeType::NONE:
+			scale .x (currentScale .x ());
+			break;
+		case ScaleModeType::FRACTION:
+			scale .x (rectangleSize .x ());
+			break;
+		case ScaleModeType::STRETCH:
+			break;
+		case ScaleModeType::PIXEL:
+			scale .x (viewportMeter .x () / viewportPixel .x ());
+			break;
+	}
+
+	switch (getScaleModeY ())
+	{
+		case ScaleModeType::NONE:
+			scale .y (currentScale .y ());
+			break;
+		case ScaleModeType::FRACTION:
+			scale .y (rectangleSize .y ());
+			break;
+		case ScaleModeType::STRETCH:
+			break;
+		case ScaleModeType::PIXEL:
+			scale .y (viewportMeter .y () / viewportPixel .y ());
+			break;
+	}
+
+	// Calculate scale for scaleMode STRETCH
+
+	if (getScaleModeX () == ScaleModeType::STRETCH)
+	{
+		if (getScaleModeY () == ScaleModeType::STRETCH)
 		{
-			case SizeUnitType::FRACTION:
-				rectangleSize .x (sizeX * parentRectangleSize .x ());
-				break;
-			case SizeUnitType::PIXEL:
-				rectangleSize .x (sizeX * pixelSize .x ());
-				break;
-			default:
-				break;
-		}
-
-		switch (getSizeUnitY ())
-		{
-			case SizeUnitType::FRACTION:
-				rectangleSize .y (sizeY * parentRectangleSize .y ());
-				break;
-			case SizeUnitType::PIXEL:
-				rectangleSize .y (sizeY * pixelSize .y ());
-				break;
-			default:
-				break;
-		}
-
-		// Calculate translation
-
-		Vector3d translation;
-
-		switch (getAlignX ())
-		{
-			case HorizontalAlignType::LEFT:
-				translation .x (-(parentRectangleSize .x () - rectangleSize .x ()) / 2);
-				break;
-			case HorizontalAlignType::CENTER:
-
-				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportPixel .x ()))
-					translation .x (-pixelSize .x () / 2);
-
-				break;
-			case HorizontalAlignType::RIGHT:
-				translation .x ((parentRectangleSize .x () - rectangleSize .x ()) / 2);
-				break;
-		}
-
-		switch (getAlignY ())
-		{
-			case VerticalAlignType::BOTTOM:
-				translation .y (-(parentRectangleSize .y () - rectangleSize .y ()) / 2);
-				break;
-			case VerticalAlignType::CENTER:
-
-				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportPixel .y ()))
-					translation .y (-pixelSize .y () / 2);
-
-				break;
-			case VerticalAlignType::TOP:
-				translation .y ((parentRectangleSize .y () - rectangleSize .y ()) / 2);
-				break;
-		}
-
-		// Calculate offset
-
-		Vector3d offset;
-
-		switch (getOffsetUnitX ())
-		{
-			case SizeUnitType::FRACTION:
-				offset .x (offsetX * parentRectangleSize .x ());
-				break;
-			case SizeUnitType::PIXEL:
-				offset .x (offsetX * viewportMeter .x () / viewportPixel .x ());
-				break;
-			default:
-				break;
-		}
-
-		switch (getOffsetUnitY ())
-		{
-			case SizeUnitType::FRACTION:
-				offset .y (offsetY * parentRectangleSize .y ());
-				break;
-			case SizeUnitType::PIXEL:
-				offset .y (offsetY * viewportMeter .y () / viewportPixel .y ());
-				break;
-			default:
-				break;
-		}
-
-		// Calculate scale
-
-		Vector3d scale (1, 1, 1);
-
-		Vector3d   currentTranslation, currentScale;
-		Rotation4d currentRotation;
-
-		const Matrix4d modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
-		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
-
-		switch (getScaleModeX ())
-		{
-			case ScaleModeType::NONE:
-				scale .x (currentScale .x ());
-				break;
-			case ScaleModeType::FRACTION:
-				scale .x (rectangleSize .x ());
-				break;
-			case ScaleModeType::STRETCH:
-				break;
-			case ScaleModeType::PIXEL:
-				scale .x (viewportMeter .x () / viewportPixel .x ());
-				break;
-		}
-
-		switch (getScaleModeY ())
-		{
-			case ScaleModeType::NONE:
-				scale .y (currentScale .y ());
-				break;
-			case ScaleModeType::FRACTION:
-				scale .y (rectangleSize .y ());
-				break;
-			case ScaleModeType::STRETCH:
-				break;
-			case ScaleModeType::PIXEL:
-				scale .y (viewportMeter .y () / viewportPixel .y ());
-				break;
-		}
-
-		// Calculate scale for scaleMode STRETCH
-
-		if (getScaleModeX () == ScaleModeType::STRETCH)
-		{
-			if (getScaleModeY () == ScaleModeType::STRETCH)
+			if (rectangleSize .x () > rectangleSize .y ())
 			{
-				if (rectangleSize .x () > rectangleSize .y ())
-				{
-					scale .x (rectangleSize .x ());
-					scale .y (scale .x ());
-				}
-				else
-				{
-					scale .y (rectangleSize .y ());
-					scale .x (scale .y ());
-				}
+				scale .x (rectangleSize .x ());
+				scale .y (scale .x ());
 			}
 			else
+			{
+				scale .y (rectangleSize .y ());
 				scale .x (scale .y ());
+			}
 		}
-		else if (getScaleModeY () == ScaleModeType::STRETCH)
-			scale .y (scale .x ());
-
-		// Transform
-
-		const auto position = translation + offset;
-
-		rectangleCenter .x (position .x ());
-		rectangleCenter .y (position .y ());
-
-		matrix .set (currentTranslation, currentRotation);
-		matrix .translate (translation + offset);
-		matrix .scale (scale);
-
-		//__LOG__ << this << " : " << rectangleSize << std::endl;
-		//__LOG__ << this << " : " << scale << std::endl;
-		//__LOG__ << matrix << std::endl;
+		else
+			scale .x (scale .y ());
 	}
+	else if (getScaleModeY () == ScaleModeType::STRETCH)
+		scale .y (scale .x ());
+
+	// Transform
+
+	const auto position = translation + offset;
+
+	rectangleCenter .x (position .x ());
+	rectangleCenter .y (position .y ());
+
+	matrix .set (currentTranslation, currentRotation);
+	matrix .translate (translation + offset);
+	matrix .scale (scale);
+
+	//__LOG__ << this << " : " << rectangleSize << std::endl;
+	//__LOG__ << this << " : " << scale << std::endl;
+	//__LOG__ << matrix << std::endl;
 
 	return matrix;
 }

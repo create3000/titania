@@ -125,6 +125,21 @@ Viewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) co
 	return Vector3d (size, size, size);
 }
 
+///  Returns viewport size in meters.
+Vector2d
+Viewpoint::getViewportSize (const Vector4i & viewport, const double nearValue) const
+{
+	const double width  = viewport [2];
+	const double height = viewport [3];
+	const double size   = nearValue * std::tan (getFieldOfView () / 2) * 2;
+	const double aspect = width / height;
+
+	if (aspect > 1)
+		return Vector2d (size * aspect, size);
+
+	return Vector2d (size, size / aspect);
+}
+
 std::pair <double, double>
 Viewpoint::getLookAtDistance (const Box3d & bbox) const
 {

@@ -131,6 +131,11 @@ public:
 	getScreenScale (const Vector3d & point, const Vector4i & viewport) const final override
 	{ return getNode <GeoViewpoint> () -> getScreenScale (point, viewport); }
 
+	virtual
+	Vector2d
+	getViewportSize (const Vector4i & viewport, const double nearValue) const final override
+	{ return getNode <GeoViewpoint> () -> getViewportSize (viewport, nearValue); }
+
 	///  @name Operations
 
 	virtual
