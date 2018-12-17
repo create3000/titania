@@ -107,6 +107,7 @@ Viewpoint::getFieldOfView () const
 	return fov > 0 and fov < pi <double> ? fov : pi <double> / 4;
 }
 
+///  Returns size of one pixel in meters.
 Vector3d
 Viewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) const
 {

@@ -245,7 +245,7 @@ GeoViewpoint::getSpeedFactor () const
 	return (std::max (elevation, 0.0) + 10) / 10 * speedFactor ();
 }
 
-///  Same as in Viewpoint
+///  Returns size of one pixel in meters.
 Vector3d
 GeoViewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) const
 {

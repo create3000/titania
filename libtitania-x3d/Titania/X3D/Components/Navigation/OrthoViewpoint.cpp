@@ -133,6 +133,7 @@ OrthoViewpoint::getSizeY () const
 	return getMaximumY () - getMinimumY ();
 }
 
+///  Returns size of one pixel in meters.
 Vector3d
 OrthoViewpoint::getScreenScale (const Vector3d &, const Vector4i & viewport) const
 {
