@@ -91,7 +91,7 @@ namespace X3D {
 // MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1).
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
-// LogarithmicDepthBuffer  Boolean                                  True                         Whether to use a logarithmic depth buffer. It may be neccesary to use this if dealing with huge differences in scale in a single scene.
+// LogarithmicDepthBuffer  Boolean                                  False                        Whether to use a logarithmic depth buffer. It may be neccesary to use this if dealing with huge differences in scale in a single scene.
 
 const ComponentType BrowserOptions::component      = ComponentType::TITANIA;
 const std::string   BrowserOptions::typeName       = "BrowserOptions";
