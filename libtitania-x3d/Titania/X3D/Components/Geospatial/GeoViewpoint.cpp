@@ -251,9 +251,7 @@ GeoViewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport)
 {
 	const int32_t width  = viewport [2];
 	const int32_t height = viewport [3];
-	double        size   = abs (point) * std::tan (getFieldOfView () / 2) * 2;
-
-	size *= std::abs (dot (normalize (point), Vector3d (0, 0, 1)));
+	double        size   = abs (point .z ()) * std::tan (getFieldOfView () / 2) * 2;
 
 	if (width > height)
 		size /= height;
