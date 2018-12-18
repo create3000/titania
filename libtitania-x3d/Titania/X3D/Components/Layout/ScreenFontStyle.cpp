@@ -112,7 +112,7 @@ ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 	context -> set_font_size (fontStyle -> getSize ());
 
 	Cairo::FontOptions options;
-	options .set_hint_style (Cairo::HINT_STYLE_MEDIUM);
+	options .set_hint_style (Cairo::HINT_STYLE_NONE);
 
 	context -> set_font_options (options);
 }
