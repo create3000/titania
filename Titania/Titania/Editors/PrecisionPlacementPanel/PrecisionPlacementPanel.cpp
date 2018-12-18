@@ -86,6 +86,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                                     getBBoxCenterZAdjustment (),
 	                                     getBBoxCenterBox (),
 	                                     "bboxCenter"),
+	                              scene (browserWindow -> getCurrentScene ()),
 	                   executionContext (browserWindow -> getCurrentContext ()),
 	                      boundedObject (),
 	                       geometryNode ()
@@ -130,15 +131,28 @@ PrecisionPlacementPanel::configure ()
 void
 PrecisionPlacementPanel::on_map ()
 {
+	getCurrentScene ()   .addInterest (&PrecisionPlacementPanel::set_scene,             this);
 	getCurrentContext () .addInterest (&PrecisionPlacementPanel::set_execution_context, this);
 
+	set_scene ();
 	set_execution_context ();
 }
 
 void
 PrecisionPlacementPanel::on_unmap ()
 {
+	getCurrentScene ()   .removeInterest (&PrecisionPlacementPanel::set_scene,             this);
 	getCurrentContext () .removeInterest (&PrecisionPlacementPanel::set_execution_context, this);
+}
+
+void
+PrecisionPlacementPanel::set_scene ()
+{
+	scene -> units_changed () .removeInterest (&PrecisionPlacementPanel::set_bbox, this);
+
+	scene = getCurrentScene ();
+
+	scene -> units_changed () .addInterest (&PrecisionPlacementPanel::set_bbox, this);
 }
 
 void

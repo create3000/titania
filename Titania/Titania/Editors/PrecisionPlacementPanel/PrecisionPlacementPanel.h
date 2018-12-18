@@ -119,6 +119,9 @@ private:
 	on_unmap () final override;
 
 	void
+	set_scene ();
+
+	void
 	set_execution_context ();
 
 	virtual
@@ -152,6 +155,7 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
+	X3D::X3DScenePtr                    scene;
 	X3D::X3DExecutionContextPtr         executionContext;
 	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
 	X3D::X3DPtr <X3D::X3DGeometryNode>  geometryNode;
