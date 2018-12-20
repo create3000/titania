@@ -76,7 +76,6 @@ protected:
 
 	///  @name Friends
 
-	friend class BrowserOptions;
 	friend class X3DBackgroundNode;
 
 	///  @name Construction

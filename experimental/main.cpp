@@ -1020,12 +1020,21 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	using Vec3d = test::math::vector3 <double>;
+	const auto m1 = Matrix4d (Vector3d (1,2,3), Rotation4d (1,2,3,4), Vector3d (1,2,3), Rotation4d (1,2,3,4));
+	const auto n1 = transpose (inverse (m1 .submatrix ()));
+	auto       n2 = m1 .submatrix ();
 
-	using namespace titania::math_literals;
+	n2 [0] .normalize ();
+	n2 [1] .normalize ();
+	n2 [2] .normalize ();
 
-	std::cout << 90.0_deg << std::endl;
-	std::cout << radians (90.0) << std::endl;
+	n2 .inverse ();
+	n2 .transpose ();
+
+	const auto v1 = Vector3d (1,0,0);
+
+	__LOG__ << normalize (v1 * n1) << std::endl;
+	__LOG__ << normalize (v1 * n2) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
