@@ -1067,7 +1067,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & textureNode          = browser -> getTexture ();
 	const auto & textureTransformNode = browser -> getTextureTransform ();
 	const auto & modelViewMatrix      = context -> getModelViewMatrix ();
-	const auto   normalMatrix         = inverse (modelViewMatrix .submatrix ()); // Transposed when uniform is set.
+	const auto   normalMatrix         = getNormalMatrix (modelViewMatrix); // Transposed when uniform is set.
 
 	// Geometry type
 
@@ -1131,6 +1131,25 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	{
 		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix)    .front () .data ());
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .front () .data ());
+	}
+}
+
+Matrix3d
+X3DProgrammableShaderObject::getNormalMatrix (const Matrix4d & modelViewMatrix) const
+{
+	try
+	{
+		auto normalMatrix = modelViewMatrix .submatrix ();
+	
+		normalMatrix [0] .normalize ();
+		normalMatrix [1] .normalize ();
+		normalMatrix [2] .normalize ();
+	
+		return inverse (normalMatrix);
+	}
+	catch (const std::domain_error & error)
+	{
+		return Matrix3f ();
 	}
 }
 

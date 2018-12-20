@@ -442,6 +442,9 @@ private:
 	GLint
 	getUniformLocation (GLuint program, const std::string & name, const std::string & depreciated) const;
 
+	Matrix3d
+	getNormalMatrix (const Matrix4d & modelViewMatrix) const;
+
 	///  @name Event handlers
 	
 	void
