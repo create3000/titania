@@ -429,6 +429,9 @@ BrowserOptions::set_LogarithmicDepthBuffer ()
 
 	// Recompile shaders.
 
+	getBrowser () -> getBackgroundSphereShader () -> parts () [0] -> getField ("url") -> addEvent ();
+	getBrowser () -> getBackgroundSphereShader () -> parts () [1] -> getField ("url") -> addEvent ();
+
 	getBrowser () -> getPointShader () -> parts () [0] -> getField ("url") -> addEvent ();
 	getBrowser () -> getPointShader () -> parts () [1] -> getField ("url") -> addEvent ();
 

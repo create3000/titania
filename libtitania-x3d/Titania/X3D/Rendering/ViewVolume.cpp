@@ -83,19 +83,18 @@ ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & view
 {
 	try
 	{
-		const int32_t x1 = scissor [0];
-		const int32_t x2 = scissor [0] + scissor [2];
-		const int32_t y1 = scissor [1];
-		const int32_t y2 = scissor [1] + scissor [3];
+		const double x1     = scissor [0];
+		const double x2     = scissor [0] + scissor [2];
+		const double y1     = scissor [1];
+		const double y2     = scissor [1] + scissor [3];
+		const auto   matrix = inverse (projectionMatrix);
 
-		const Matrix4d matrix = inverse (projectionMatrix);
-
-		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
-		Vector3f p2 = unProjectPoint (x1, y1, 1, matrix, viewport);
-		Vector3f p3 = unProjectPoint (x1, y1, 0, matrix, viewport);
-		Vector3f p4 = unProjectPoint (x2, y1, 0, matrix, viewport);
-		Vector3f p5 = unProjectPoint (x2, y2, 0, matrix, viewport);
-		Vector3f p6 = unProjectPoint (x2, y2, 1, matrix, viewport);
+		const auto p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
+		const auto p2 = unProjectPoint (x1, y1, 1, matrix, viewport);
+		const auto p3 = unProjectPoint (x1, y1, 0, matrix, viewport);
+		const auto p4 = unProjectPoint (x2, y1, 0, matrix, viewport);
+		const auto p5 = unProjectPoint (x2, y2, 0, matrix, viewport);
+		const auto p6 = unProjectPoint (x2, y2, 1, matrix, viewport);
 
 		planes .reserve (6);
 		planes .emplace_back (p4, Triangle3d (p3, p4, p5) .normal ());  // front
