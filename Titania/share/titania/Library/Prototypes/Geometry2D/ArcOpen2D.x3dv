@@ -9,10 +9,10 @@ EXTERNPROTO ArcOpen2D [
   initializeOnly SFBool  solid
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.9/Prototypes/Geometry2D/ArcOpen2D.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.9/Prototypes/Geometry2D/ArcOpen2D.x3d",
-  "https://rawgit.com/create3000/Library/1.0.9/Prototypes/Geometry2D/ArcOpen2D.x3d",
-  "http://rawgit.com/create3000/Library/1.0.9/Prototypes/Geometry2D/ArcOpen2D.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/ArcOpen2D.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/ArcOpen2D.x3d",
+  "https://rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/ArcOpen2D.x3d",
+  "http://rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/ArcOpen2D.x3d"
 ]
 
 DEF ArcOpen2D Transform {

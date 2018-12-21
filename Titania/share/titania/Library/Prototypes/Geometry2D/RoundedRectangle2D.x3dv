@@ -6,10 +6,10 @@ EXTERNPROTO RoundedRectangle2D [
   initializeOnly SFBool  solid
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.7/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.7/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
-  "https://rawgit.com/create3000/Library/1.0.7/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
-  "http://rawgit.com/create3000/Library/1.0.7/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
+  "https://cdn.rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
+  "https://rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
+  "http://rawgit.com/create3000/Library/1.0.10/Prototypes/Geometry2D/RoundedRectangle2D.x3d",
 ]
 
 DEF RoundedRectangle2D Transform {
