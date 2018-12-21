@@ -3189,6 +3189,7 @@
     <None Include="Titania\Editors\ProjectsEditor\OpenEditorsEditor.h" />
     <None Include="share\titania\Library\Components\KeyDeviceSensor\.Titania\StringSensor" />
     <None Include="share\titania\Library\Components\KeyDeviceSensor\.X_ITE\StringSensor" />
+    <None Include="share\titania\Library\Prototypes\Geometry2D\ArcOpen2D.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

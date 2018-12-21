@@ -194,7 +194,7 @@ Arc2D::build ()
 
 	const double sweepAngle = getSweepAngle ();
 	const auto   circle     = sweepAngle == pi2 <double>;
-	int32_t      steps      = sweepAngle * optionsNode -> dimension () / (2 * pi <double>);
+	int32_t      steps      = sweepAngle * optionsNode -> dimension () / pi2 <double>;
 	GLenum       vertexMode = GL_LINE_LOOP;
 
 	steps = std::max (3, steps);

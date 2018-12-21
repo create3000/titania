@@ -1,0 +1,25 @@
+#X3D V3.3 utf8 Titania V4.3.6
+
+EXTERNPROTO ArcOpen2D [
+  inputOutput    SFInt32 dimension
+  inputOutput    SFFloat startAngle
+  inputOutput    SFFloat endAngle
+  inputOutput    SFFloat innerRadius
+  inputOutput    SFFloat outerRadius
+  initializeOnly SFBool  solid
+]
+[
+  "https://cdn.rawgit.com/create3000/Library/1.0.8/Prototypes/Geometry2D/ArcOpen2D.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.8/Prototypes/Geometry2D/ArcOpen2D.x3d",
+  "https://rawgit.com/create3000/Library/1.0.8/Prototypes/Geometry2D/ArcOpen2D.x3d",
+  "http://rawgit.com/create3000/Library/1.0.8/Prototypes/Geometry2D/ArcOpen2D.x3d"
+]
+
+DEF ArcOpen2D Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry ArcOpen2D { }
+  }
+}
