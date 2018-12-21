@@ -98,8 +98,8 @@ protected:
 	 * @return  An FT****Glyph or <code>null</code> on failure.
 	 */
 	virtual
-	Glyph*
-	makeGlyph (FT_GlyphSlot slot) final override;
+	std::shared_ptr <Glyph>
+	makeGlyph (FT_GlyphSlot slot) const final override;
 
 
 private:

@@ -53,10 +53,10 @@ PolygonFont::PolygonFont (const uint8_t* pBufferBytes,
 	setGlyphLoadFlags (FT_LOAD_NO_HINTING);
 }
 
-Glyph*
-PolygonFont::makeGlyph (FT_GlyphSlot ftGlyph)
+std::shared_ptr <Glyph>
+PolygonFont::makeGlyph (FT_GlyphSlot ftGlyph) const
 {
-	return new PolygonGlyph (ftGlyph, outset, bezierSteps);
+	return std::make_shared <PolygonGlyph> (ftGlyph, outset, bezierSteps);
 }
 
 PolygonFont::~PolygonFont ()

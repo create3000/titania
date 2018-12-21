@@ -32,6 +32,7 @@
 #include <Titania/Math/Mesh/Tessellator.h>
 
 #include <list>
+#include <memory>
 #include <vector>
 
 namespace titania {
@@ -82,7 +83,6 @@ public:
 	triangulate (const double zNormal,
 	             const int32_t outsetType,
 	             const double outsetSize,
-	             const Vector3d & offset,
 	             std::vector <size_t> & indices,
 	             std::vector <Vector3d> & points);
 
@@ -123,7 +123,7 @@ private:
 	 *
 	 * @return the number of contours
 	 */
-	const Contour* const
+	std::shared_ptr <Contour>
 	getContour (size_t index) const;
 
 	/**
@@ -164,7 +164,7 @@ private:
 	/**
 	 * The list of contours in the glyph
 	 */
-	Contour** contourList;
+	std::vector <std::shared_ptr <Contour>> contourList;
 
 	/**
 	 * The number of contours reported by Freetype

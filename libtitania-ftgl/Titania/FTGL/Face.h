@@ -34,6 +34,7 @@
 #include FT_GLYPH_H
 
 #include <memory>
+#include <vector>
 
 namespace titania {
 namespace FTGL {
@@ -191,7 +192,7 @@ private:
 
 	static constexpr uint32_t MAX_PRECOMPUTED = 128;
 
-	double* kerningCache;
+	std::vector <double> kerningCache;
 
 	/**
 	 * Current error code. Zero means no error.

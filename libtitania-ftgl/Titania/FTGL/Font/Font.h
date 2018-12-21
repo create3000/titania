@@ -313,8 +313,8 @@ protected:
 	 * @return  An FT****Glyph or <code>null</code> on failure.
 	 */
 	virtual
-	Glyph*
-	makeGlyph (FT_GlyphSlot slot) = 0;
+	std::shared_ptr <Glyph>
+	makeGlyph (FT_GlyphSlot slot) const = 0;
 
 
 private:

@@ -29,6 +29,8 @@
 #include "../GlyphContainer.h"
 #include "../Unicode.h"
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace FTGL {
 
@@ -285,7 +287,7 @@ Font::checkGlyph (const uint32_t characterCode) const
 		return false;
 	}
 
-	Glyph* tempGlyph = const_cast <Font*> (this) -> makeGlyph (ftSlot);
+	const auto tempGlyph = makeGlyph (ftSlot);
 
 	if (not tempGlyph)
 	{

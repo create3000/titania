@@ -59,14 +59,14 @@ GlyphContainer::getFontIndex (const uint32_t charCode) const
 }
 
 void
-GlyphContainer::add (Glyph* tempGlyph, const uint32_t charCode)
+GlyphContainer::add (const std::shared_ptr <Glyph> & tempGlyph, const uint32_t charCode)
 {
 	charMap -> setInsertIndex (charCode, glyphs .size ());
 
 	glyphs .emplace_back (tempGlyph);
 }
 
-const Glyph* const
+std::shared_ptr <Glyph>
 GlyphContainer::getGlyph (const uint32_t charCode) const
 {
 	const uint32_t index = charMap -> getGlyphListIndex (charCode);
@@ -108,14 +108,7 @@ GlyphContainer::triangulate (const uint32_t charCode,
 }
 
 GlyphContainer::~GlyphContainer ()
-{
-	GlyphVector::iterator it;
-
-	for (const auto glyph : glyphs)
-		delete glyph;
-
-	glyphs .clear ();
-}
+{ }
 
 } // FTGL
 } // titania

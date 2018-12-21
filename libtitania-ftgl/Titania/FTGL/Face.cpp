@@ -36,7 +36,7 @@ namespace FTGL {
 Face::Face (const char* fontFilePath, bool precomputeKerning) :
 	       numGlyphs (0),
 	fontEncodingList (0),
-	    kerningCache (0),
+	    kerningCache (),
 	           error (0)
 {
 	const FT_Long DEFAULT_FACE_INDEX = 0;
@@ -152,8 +152,7 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 		return Vector3d (0, 0, 0);
 	}
 
-	if (kerningCache and index1 < Face::MAX_PRECOMPUTED
-	    and index2 < Face::MAX_PRECOMPUTED)
+	if (kerningCache .size () and index1 < Face::MAX_PRECOMPUTED and index2 < Face::MAX_PRECOMPUTED)
 	{
 		x = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1)];
 		y = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1) + 1];
@@ -196,8 +195,8 @@ Face::buildKerningCache ()
 
 	kernAdvance .x = 0;
 	kernAdvance .y = 0;
-	kerningCache   = new double [Face::MAX_PRECOMPUTED
-	                             * Face::MAX_PRECOMPUTED * 2];
+
+	kerningCache .resize (Face::MAX_PRECOMPUTED * Face::MAX_PRECOMPUTED * 2);
 
 	for (uint32_t j = 0; j < Face::MAX_PRECOMPUTED; j ++)
 	{
@@ -207,8 +206,7 @@ Face::buildKerningCache ()
 
 			if (error)
 			{
-				delete [ ] kerningCache;
-				kerningCache = nullptr;
+				kerningCache .clear ();
 				return;
 			}
 
@@ -220,11 +218,6 @@ Face::buildKerningCache ()
 
 Face::~Face ()
 {
-	if (kerningCache)
-	{
-		delete [ ] kerningCache;
-	}
-
 	if (ftFace)
 	{
 		FT_Done_Face (*ftFace);

@@ -31,7 +31,7 @@ namespace titania {
 namespace FTGL {
 
 Vectorizer::Vectorizer (const FT_GlyphSlot glyph, const size_t bezierSteps) :
-	   contourList (nullptr),
+	   contourList (),
 	ftContourCount (0),
 	   contourFlag (0),
 	       outline ()
@@ -60,7 +60,7 @@ Vectorizer::getPointCount () const
 	return s;
 }
 
-const Contour* const
+std::shared_ptr <Contour>
 Vectorizer::getContour (size_t index) const
 {
 	return (index < getContourCount ()) ? contourList [index] : nullptr;
@@ -73,7 +73,7 @@ Vectorizer::processContours (const size_t bezierSteps)
 	short startIndex    = 0;
 	short endIndex      = 0;
 
-	contourList = new Contour* [ftContourCount];
+	contourList .resize (ftContourCount);
 
 	for (int32_t i = 0; i < ftContourCount; ++ i)
 	{
@@ -83,9 +83,7 @@ Vectorizer::processContours (const size_t bezierSteps)
 		endIndex      = outline .contours [i];
 		contourLength = (endIndex - startIndex) + 1;
 
-		Contour* contour = new Contour (pointList, tagList, contourLength, bezierSteps);
-
-		contourList [i] = contour;
+		contourList [i] = std::make_shared <Contour> (pointList, tagList, contourLength, bezierSteps);
 
 		startIndex = endIndex + 1;
 	}
@@ -94,7 +92,7 @@ Vectorizer::processContours (const size_t bezierSteps)
 	// can do it for us.
 	for (int32_t i = 0; i < ftContourCount; i ++)
 	{
-		Contour* c1 = contourList [i];
+		const auto c1 = contourList [i];
 
 		// 1. Find the leftmost point.
 		Vector3d leftmost (65536, 0, 0);
@@ -120,7 +118,7 @@ Vectorizer::processContours (const size_t bezierSteps)
 				continue;
 			}
 
-			Contour* c2 = contourList [j];
+			const auto c2 = contourList [j];
 
 			for (size_t n = 0; n < c2 -> getPointCount (); n ++)
 			{
@@ -160,7 +158,6 @@ void
 Vectorizer::triangulate (const double zNormal,
                          const int32_t outsetType,
                          const double outsetSize,
-                         const Vector3d & offset,
                          std::vector <size_t> & indices,
                          std::vector <Vector3d> & points)
 {
@@ -191,14 +188,14 @@ Vectorizer::triangulate (const double zNormal,
 
 	for (size_t c = 0; c < getContourCount (); ++ c)
 	{
+		const auto contour = contourList [c];
+
 		// Build the outsetType
 		switch (outsetType)
 		{
-			case 1: contourList [c] -> buildFrontOutset (outsetSize); break;
-			case 2: contourList [c] -> buildBackOutset  (outsetSize); break;
+			case 1: contour -> buildFrontOutset (outsetSize); break;
+			case 2: contour -> buildBackOutset  (outsetSize); break;
 		}
-
-		const Contour* contour = contourList [c];
 
 		tessellator .begin_contour ();
 
@@ -208,9 +205,9 @@ Vectorizer::triangulate (const double zNormal,
 
 			switch (outsetType)
 			{
-				case 1:          points .emplace_back (contour -> getFrontPoint (p) / 64.0 + offset); break;
-				case 2:          points .emplace_back (contour -> getBackPoint  (p) / 64.0 + offset); break;
-				case 0: default: points .emplace_back (contour -> getPoint      (p) / 64.0 + offset); break;
+				case 1:          points .emplace_back (contour -> getFrontPoint (p) / 64.0); break;
+				case 2:          points .emplace_back (contour -> getBackPoint  (p) / 64.0); break;
+				case 0: default: points .emplace_back (contour -> getPoint      (p) / 64.0); break;
 			}
 
 			tessellator .add_vertex (points .back (), index);
@@ -236,14 +233,7 @@ Vectorizer::combine (std::vector <Vector3d> & points, const Vector3d & coord) co
 }
 
 Vectorizer::~Vectorizer ()
-{
-	for (size_t c = 0; c < getContourCount (); ++ c)
-	{
-		delete contourList [c];
-	}
-
-	delete [ ] contourList;
-}
+{ }
 
 } // FTGL
 } // titania

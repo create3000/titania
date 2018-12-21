@@ -86,7 +86,7 @@ public:
 	 * @param characterCode The char code of the glyph NOT the glyph index.
 	 */
 	void
-	add (Glyph* glyph, const uint32_t characterCode);
+	add (const std::shared_ptr <Glyph> & glyph, const uint32_t characterCode);
 
 	/**
 	 * Get a glyph from the glyph list
@@ -95,7 +95,7 @@ public:
 	 * @return              An Glyph or <code>null</code> is it hasn't been
 	 * loaded.
 	 */
-	const Glyph* const
+	std::shared_ptr <Glyph>
 	getGlyph (const uint32_t characterCode) const;
 
 	/**
@@ -149,7 +149,7 @@ public:
 
 private:
 
-	using GlyphVector = std::vector <Glyph*>;
+	using GlyphVector = std::vector <std::shared_ptr <Glyph>>;
 
 	/**
 	 * The FTGL face

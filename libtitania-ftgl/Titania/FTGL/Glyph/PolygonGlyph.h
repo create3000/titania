@@ -56,7 +56,7 @@ public:
 	 * @param outset        The outset distance
 	 * @param bezierSteps   Number of bezier steps
 	 */
-	PolygonGlyph (FT_GlyphSlot glyph, const double outset, const size_t bezierSteps);
+	PolygonGlyph (FT_GlyphSlot glyph, const double outsetSize, const size_t bezierSteps);
 
 	///  @name Operations
 
@@ -70,7 +70,7 @@ public:
 	 */
 	virtual
 	const Vector3d &
-	triangulate (const Vector3d & pen,
+	triangulate (const Vector3d & offset,
 	             std::vector <size_t> & indices,
 	             std::vector <Vector3d> & points) const final override;
 
@@ -90,8 +90,9 @@ private:
 	/**
 	 * Private rendering variables.
 	 */
-	std::unique_ptr <Vectorizer> vectoriser;
-	double                       outset;
+
+	std::vector <size_t>   indices;
+	std::vector <Vector3d> points;
 
 };
 

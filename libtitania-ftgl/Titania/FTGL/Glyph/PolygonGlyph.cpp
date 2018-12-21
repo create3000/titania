@@ -36,25 +36,35 @@ namespace FTGL {
 //  PolygonGlyph
 //
 
-PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, const double outset, const size_t bezierSteps) :
-	     Glyph (glyph),
-	vectoriser (new Vectorizer (glyph, bezierSteps)),
-	    outset (outset)
+PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, const double outsetSize, const size_t bezierSteps) :
+	  Glyph (glyph),
+	indices (),
+	 points ()
 {
 	if (glyph -> format not_eq ft_glyph_format_outline)
 	{
 		setError (0x14); // Invalid_Outline
 		return;
 	}
+
+	Vectorizer vectoriser (glyph, bezierSteps);
+
+	vectoriser .triangulate (1, 1, outsetSize, indices, points);
 }
 
 const Vector3d &
-PolygonGlyph::triangulate (const Vector3d & pen,
+PolygonGlyph::triangulate (const Vector3d & offset,
                            std::vector <size_t> & indices,
                            std::vector <Vector3d> & points) const
 {
-	vectoriser -> triangulate (1, 1, outset, pen, indices, points);
+	const auto first = points .size ();
 
+	for (const auto & index : this -> indices)
+		indices .emplace_back (index + first);
+
+	for (const auto & point : this -> points)
+		points .emplace_back (point + offset);
+	
 	return getAdvance ();
 }
 
