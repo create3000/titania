@@ -754,6 +754,8 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							}
 							else
 							{
+								Generator::PushContainerField (ostream, field);
+
 								ostream
 									<< ">"
 									<< Generator::TidyBreak
@@ -764,6 +766,8 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 									<< Generator::Indent
 									<< "</fieldValue>"
 									<< Generator::TidyBreak;
+
+								Generator::PopContainerField (ostream);
 							}
 	
 							break;
@@ -774,6 +778,8 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	
 							if (not field -> equals (null_))
 							{
+								Generator::PushContainerField (ostream, field);
+
 								ostream
 									<< Generator::Indent
 									<< "<fieldValue"
@@ -790,6 +796,8 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 									<< Generator::Indent
 									<< "</fieldValue>"
 									<< Generator::TidyBreak;
+
+								Generator::PopContainerField (ostream);
 	
 								break;
 							}

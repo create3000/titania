@@ -1660,7 +1660,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 							case X3DConstants::SFNode:
 							case X3DConstants::MFNode:
 							{
-								Generator::PushContainerField (ostream, nullptr);
+								Generator::PushContainerField (ostream, field);
 
 								ostream
 									<< ">"
