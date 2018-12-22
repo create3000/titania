@@ -396,7 +396,7 @@ public:
 
 	virtual
 	void
-	setParticle (const size_t id, const SoftParticle & particle, const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix);
+	setParticle (const size_t id, const SoftParticle & particle, const Matrix4d & modelViewMatrix);
 
 
 protected:

@@ -205,7 +205,7 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 			modelViewMatrix .origin (origin);
 			modelViewMatrix .translate (particle .position);
 
-			shaderNode -> setParticle (p, particle, inverse (modelViewMatrix .submatrix ()), modelViewMatrix);
+			shaderNode -> setParticle (p, particle, modelViewMatrix);
 
 			// Wireframes are always solid so only one drawing call is needed.
 		

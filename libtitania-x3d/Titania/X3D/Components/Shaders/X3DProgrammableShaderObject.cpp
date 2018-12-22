@@ -1421,16 +1421,18 @@ X3DProgrammableShaderObject::disableVertexAttrib ()
 }
 
 void
-X3DProgrammableShaderObject::setParticle (const size_t id, const SoftParticle & particle, const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix)
+X3DProgrammableShaderObject::setParticle (const size_t id, const SoftParticle & particle, const Matrix4d & modelViewMatrix)
 {
-	glUniformMatrix3fv (x3d_NormalMatrix, 1, true, normalMatrix .front () .data ());
+	const auto normalMatrix = getNormalMatrix (modelViewMatrix);
 
 	if (extensionGPUShaderFP64)
 	{
+		glUniformMatrix3dv (x3d_NormalMatrix,    1, true,  normalMatrix    .front () .data ());
 		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .front () .data ());
 	}
 	else
 	{
+		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix)    .front () .data ());
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .front () .data ());
 	}
 

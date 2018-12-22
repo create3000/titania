@@ -366,10 +366,10 @@ ProgramShader::disableVertexAttrib ()
 }
 
 void
-ProgramShader::setParticle (const size_t id, const SoftParticle & particle, const Matrix3f & normalMatrix, const Matrix4d & modelViewMatrix)
+ProgramShader::setParticle (const size_t id, const SoftParticle & particle, const Matrix4d & modelViewMatrix)
 {
 	for (const auto & programNode : programNodes)
-		programNode -> setParticle (id, particle, normalMatrix, modelViewMatrix);
+		programNode -> setParticle (id, particle, modelViewMatrix);
 }
 
 void

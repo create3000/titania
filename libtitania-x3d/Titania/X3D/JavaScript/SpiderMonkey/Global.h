@@ -81,13 +81,6 @@ private:
 	static JSBool print   (JSContext *, uint32_t, jsval*);
 	static JSBool require (JSContext *, uint32_t, jsval*);
 
-	static JSBool SFBool   (JSContext *, uint32_t, jsval*);
-	static JSBool SFDouble (JSContext *, uint32_t, jsval*);
-	static JSBool SFFloat  (JSContext *, uint32_t, jsval*);
-	static JSBool SFInt32  (JSContext *, uint32_t, jsval*);
-	static JSBool SFString (JSContext *, uint32_t, jsval*);
-	static JSBool SFTime   (JSContext *, uint32_t, jsval*);
-
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
 
