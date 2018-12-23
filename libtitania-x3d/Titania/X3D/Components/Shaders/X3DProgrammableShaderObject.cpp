@@ -1139,13 +1139,8 @@ X3DProgrammableShaderObject::getNormalMatrix (const Matrix4d & modelViewMatrix) 
 {
 	try
 	{
-		auto normalMatrix = modelViewMatrix .submatrix ();
-	
-		normalMatrix [0] .normalize ();
-		normalMatrix [1] .normalize ();
-		normalMatrix [2] .normalize ();
-	
-		return inverse (normalMatrix);
+		// Transposed when uniform is set.
+		return inverse (modelViewMatrix .submatrix ());
 	}
 	catch (const std::domain_error & error)
 	{
