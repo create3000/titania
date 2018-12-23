@@ -133,27 +133,14 @@ X3DSoundSourceNode::setMedia ()
 	{
 		if (isPaused ())
 		{
-			if (loop ())
-			{
-				do_stop ();
-				do_pause ();
-			}
-			else
-			{
-				do_stop ();
-			}
+			do_stop ();
+			do_start ();
+			do_pause ();
 		}
 		else
 		{
-			if (loop ())
-			{
-				do_stop ();
-				do_start ();
-			}
-			else
-			{
-				do_stop ();
-			}
+			do_stop ();
+			do_start ();
 		}
 	}
 	else
