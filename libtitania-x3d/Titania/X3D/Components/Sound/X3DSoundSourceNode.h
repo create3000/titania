@@ -158,7 +158,7 @@ protected:
 	getStream () const;
 
 	void
-	setMedia ();
+	setMedia (const bool value);
 	
 	///  @name Event handlers
 
@@ -220,6 +220,7 @@ private:
 
 	SFTime                        end;
 	std::unique_ptr <MediaStream> mediaStream;
+	bool                          media;
 	const bool                    video;
 
 };

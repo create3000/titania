@@ -153,6 +153,7 @@ MovieTexture::set_buffer ()
 {
 	urlStack = url ();
 
+	setMedia (false);
 	load ();
 }
 
@@ -161,7 +162,7 @@ MovieTexture::load ()
 {
 	if (urlStack .empty ())
 	{
-		do_stop ();
+		stop ();
 		duration_changed () = -1;
 		components ()       = 0;
 
@@ -183,7 +184,7 @@ MovieTexture::on_video_changed ()
 {
 	components () = 3;
 
-	setMedia ();
+	setMedia (true);
 	setLoadState (COMPLETE_STATE);
 	setLoadedUrl (getStream () -> getUri ());
 }

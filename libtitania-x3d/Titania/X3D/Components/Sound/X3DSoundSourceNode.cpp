@@ -71,6 +71,7 @@ X3DSoundSourceNode::X3DSoundSourceNode (const bool video) :
 	              fields (),
 	                 end (),
 	         mediaStream (),
+	               media (false),
 	               video (video)
 {
 	addType (X3DConstants::X3DSoundSourceNode);
@@ -111,6 +112,9 @@ X3DSoundSourceNode::setExecutionContext (X3DExecutionContext* const executionCon
 void
 X3DSoundSourceNode::setVolume (const float value)
 {
+	if (not media)
+		return;
+
 	const auto mute      = getBrowser () -> getMute ();
 	const auto intensity = std::clamp <float> (getBrowser () -> getVolume (), 0, 1);
 	const auto volume    = std::clamp <float> (value, 0, 1);
@@ -125,27 +129,27 @@ X3DSoundSourceNode::getStream () const
 }
 
 void
-X3DSoundSourceNode::setMedia ()
+X3DSoundSourceNode::setMedia (const bool value)
 {
-	setVolume (0);
+	media = value;
 
-	if (isActive ())
+	if (media)
 	{
-		if (isPaused ())
+		if (isActive ())
 		{
-			do_stop ();
-			do_start ();
-			do_pause ();
+			if (isPaused ())
+			{
+				set_pause ();
+			}
+			else
+			{
+				set_start ();
+			}
 		}
 		else
 		{
-			do_stop ();
-			do_start ();
+			set_stop ();
 		}
-	}
-	else
-	{
-		set_stop ();
 	}
 }
 
@@ -178,62 +182,73 @@ X3DSoundSourceNode::set_pitch ()
 void
 X3DSoundSourceNode::set_start ()
 {
-	if (speed () == 0.0f)
+	if (media)
 	{
-		mediaStream -> pause ();
+		if (speed () == 0.0f)
+		{
+			mediaStream -> pause ();
+		}
+		else
+		{
+			mediaStream -> stop ();
+			mediaStream -> play ();
+		}
 	}
-	else
-	{
-		mediaStream -> stop ();
-		mediaStream -> play ();
-	}
-}
-
-void
-X3DSoundSourceNode::set_resume (const time_type)
-{
-	if (speed () == 0.0f)
-		return;
-
-	mediaStream -> play ();
 }
 
 void
 X3DSoundSourceNode::set_pause ()
 {
-	mediaStream -> pause ();
+	if (media)
+		mediaStream -> pause ();
+}
+
+void
+X3DSoundSourceNode::set_resume (const time_type)
+{
+	if (media)
+	{
+		if (speed () == 0.0f)
+			return;
+	
+		mediaStream -> play ();
+	}
 }
 
 void
 X3DSoundSourceNode::set_stop ()
 {
-	mediaStream -> pause ();
+	if (media)
+		mediaStream -> pause ();
 }
 
 void
 X3DSoundSourceNode::set_end ()
 {
-	if (loop ())
+	if (media)
 	{
-		if (speed () > 0)
+		if (loop ())
 		{
-			mediaStream -> stop ();
-			mediaStream -> play ();
+			if (speed () > 0)
+			{
+				mediaStream -> stop ();
+				mediaStream -> play ();
+			}
+			else if (speed () < 0)
+			{
+				mediaStream -> seek (duration_changed ());
+				mediaStream -> play ();
+			}
+	
+			// The event order below is very important.
+	
+			elapsedTime () = getElapsedTime ();
+			cycleTime ()   = getCurrentTime ();
 		}
-		else if (speed () < 0)
+		else
 		{
-			mediaStream -> seek (duration_changed ());
-			mediaStream -> play ();
+			stop ();
 		}
-
-		// The event order below is very important.
-
-		elapsedTime () = getElapsedTime ();
-		cycleTime ()   = getCurrentTime ();
-	}
-	else
-	{
-		stop ();
 	}
 }
 

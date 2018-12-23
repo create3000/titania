@@ -140,6 +140,7 @@ AudioClip::set_buffer ()
 {
 	urlStack = url ();
 
+	setMedia (false);
 	load ();
 }
 
@@ -148,7 +149,7 @@ AudioClip::load ()
 {
 	if (urlStack .empty ())
 	{
-		do_stop ();
+		stop ();
 		duration_changed () = -1;
 
 		setLoadState (FAILED_STATE);
@@ -165,7 +166,7 @@ AudioClip::load ()
 void
 AudioClip::on_audio_changed ()
 {
-	setMedia ();
+	setMedia (true);
 	setLoadState (COMPLETE_STATE);
 	setLoadedUrl (getStream () -> getUri ());
 }
