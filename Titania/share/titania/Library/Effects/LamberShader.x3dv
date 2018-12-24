@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/LamberShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 06:31:54 GMT"
+META "modified" "Mon, 24 Dec 2018 11:01:34 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -51,9 +51,11 @@ WorldInfo {
 precision mediump float;
 precision mediump int;
 
-uniform x3d_MaterialParameters x3d_FrontMaterial;
-uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
 uniform int x3d_NumLights;
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+uniform bool x3d_SeparateBackColor;
+uniform x3d_MaterialParameters x3d_FrontMaterial;  
+uniform x3d_MaterialParameters x3d_BackMaterial;        
 
 varying vec3 position;
 varying vec3 normal;
@@ -68,20 +70,28 @@ lambert (vec3 N, x3d_LightSourceParameters light)
 	return light .color * max (dotNL, 0.0);
 }
 
-void
-main ()
+vec4
+getMaterialColor (const in x3d_MaterialParameters material)
 {
-	vec3 lightColor = vec3 (0.0, 0.0, 0.0);
+	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
 
 	for (int i = 0; i < x3d_MaxLights; i ++)
 	{
 		if (i == x3d_NumLights)
 			break;
 
-		lightColor += lambert (normalize (normal), x3d_LightSource [i]);
+		finalColor += lambert (normalize (normal), x3d_LightSource [i]);
 	}
 
-	gl_FragColor = vec4 (x3d_FrontMaterial .diffuseColor * lightColor, 1.0 - x3d_FrontMaterial .transparency);
+	return vec4 (material .diffuseColor * finalColor, 1.0 - material .transparency);
+}
+
+void
+main ()
+{
+	bool frontColor = gl_FrontFacing || ! x3d_SeparateBackColor;
+
+	gl_FragColor = getMaterialColor (frontColor ? x3d_FrontMaterial : x3d_BackMaterial);
 }"
             }
           }
