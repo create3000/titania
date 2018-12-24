@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V4.3.7
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Mon, 24 Dec 2018 13:19:41 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.7, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/ToonShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 13:33:32 GMT"
+META "modified" "Mon, 24 Dec 2018 15:04:58 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -216,10 +216,10 @@ DEF ToonShader_14 Transform {
         shininess 0.959184
       }
       shaders DEF ToonShader ComposedShader {
-        inputOutput SFColor color1 1 0.5 0.5
-        inputOutput SFColor color2 0.6 0.3 0.3
-        inputOutput SFColor color3 0.4 0.2 0.2
-        inputOutput SFColor color4 0.2 0.1 0.1
+        inputOutput SFColor color1 1 0.512374 0.512374
+        inputOutput SFColor color2 1 0 0
+        inputOutput SFColor color3 0.449681 0 0
+        inputOutput SFColor color4 0.133771 0 0
         inputOutput SFFloat intensity1 0.95
         inputOutput SFFloat intensity2 0.5
         inputOutput SFFloat intensity3 0.25
