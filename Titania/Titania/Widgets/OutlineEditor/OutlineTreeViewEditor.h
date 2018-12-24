@@ -128,6 +128,9 @@ private:
 	set_color_node_live (const bool value);
 
 	void
+	on_color_selection_unmap ();
+
+	void
 	on_color_changed ();
 
 	void

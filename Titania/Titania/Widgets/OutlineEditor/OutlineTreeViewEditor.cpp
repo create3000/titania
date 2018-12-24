@@ -115,6 +115,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 
+	colorSelectionDialog .signal_unmap () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_color_selection_unmap));
 	colorSelectionDialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_color_changed));
 	colorSelectionDialog .get_color_selection () -> set_has_palette (true);
 
@@ -793,8 +794,23 @@ OutlineTreeViewEditor::select_color (const double x, const double y)
 void
 OutlineTreeViewEditor::set_color_node_live (const bool value)
 {
-	if (not value)
-		colorSelectionDialog .set_visible (false);
+	if (value)
+		return
+
+	colorSelectionDialog .set_visible (false);
+}
+
+void
+OutlineTreeViewEditor::on_color_selection_unmap ()
+{
+	if (colorNode)
+		colorNode -> isLive () .removeInterest (&OutlineTreeViewEditor::set_color_node_live, this);
+
+	if (colorField)
+		colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+
+	colorNode .setValue (nullptr);
+	colorField .setValue (nullptr);
 }
 
 void
