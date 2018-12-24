@@ -1,0 +1,284 @@
+#X3D V3.3 utf8 Titania V4.3.7
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.3.7, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Schreibtisch/lambert.x3dv"
+META "modified" "Mon, 24 Dec 2018 06:05:03 GMT"
+META "titania-output-style" "Nicest"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF FragmentShader ShaderPart {
+              type "FRAGMENT"
+              url "data:x-shader/x-fragment,
+
+precision mediump float;
+
+uniform x3d_MaterialParameters x3d_FrontMaterial;
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+
+varying vec3 position;
+varying vec3 normal;
+
+vec3
+lambert (vec3 N, x3d_LightSourceParameters light)
+{
+	vec3 L = light .type == x3d_DirectionalLight ? -light .direction : normalize (light .location - position);
+
+	float dotNL = dot (N, L);
+ 
+	return light .color * max (dotNL, 0.0);
+}
+
+void
+main ()
+{
+	vec3 lightColor = lambert (normalize (normal), x3d_LightSource [0]);
+
+	gl_FragColor = vec4 (x3d_FrontMaterial .diffuseColor * lightColor, 1.0 - x3d_FrontMaterial .transparency);
+}"
+            }
+          }
+        ]
+      }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value [
+          DEF type_2 MetadataString {
+            name "type"
+            reference "http://titania.create3000.de"
+            value [
+              "TOP_VIEW",
+              "MAIN_VIEW",
+              "PERSPECTIVE_VIEW",
+              "FRONT_VIEW"
+            ]
+          }
+          DEF viewpoints MetadataSet {
+            name "viewpoints"
+            reference "http://titania.create3000.de"
+            value [
+              DEF PerspectiveViewpoint MetadataSet {
+                name "PerspectiveViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_3 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      5.87788534164429,
+                      6.46984958648682,
+                      13.8524446487427
+                    ]
+                  }
+                  DEF orientation_4 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.704047462871212,
+                      0.695566762376517,
+                      0.143192350010952,
+                      0.568941727555854
+                    ]
+                  }
+                  DEF centerOfRotation_5 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1
+                  }
+                ]
+              }
+              DEF TopViewpoint MetadataSet {
+                name "TopViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_6 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      10000,
+                      0
+                    ]
+                  }
+                  DEF orientation_7 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      1,
+                      0,
+                      0,
+                      4.71238898038469
+                    ]
+                  }
+                  DEF centerOfRotation_8 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.0320612526145463,
+                      0,
+                      0.0937320149966475
+                    ]
+                  }
+                  DEF fieldOfViewScale_9 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1.21023944190259
+                  }
+                ]
+              }
+              DEF FrontViewpoint MetadataSet {
+                name "FrontViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_10 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      10000
+                    ]
+                  }
+                  DEF orientation_11 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                  DEF centerOfRotation_12 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      -0.00884759203065143,
+                      0.0177734813359099,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale_13 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1.212467484375
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+    ]
+  }
+}
+
+DEF Shader Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        ambientIntensity 0.174575
+        diffuseColor 0.685208 0.0893143 0.027172
+        specularColor 0.913265 0.373179 0.373179
+        shininess 0.959184
+      }
+      shaders DEF ComposedShader ComposedShader {
+        language "GLSL"
+        parts [
+          DEF VertexShader ShaderPart {
+            url "data:x-shader/x-vertex,
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat3 x3d_NormalMatrix;
+
+attribute vec4 x3d_Vertex;
+attribute vec3 x3d_Normal;
+
+varying vec3 position;
+varying vec3 normal;
+
+void
+main ()
+{
+	vec4 p = x3d_ModelViewMatrix * x3d_Vertex;
+
+	position = vec3 (p);
+	normal   = x3d_NormalMatrix * x3d_Normal;
+
+	gl_Position = x3d_ProjectionMatrix * p;
+}"
+          }
+          USE FragmentShader
+        ]
+      }
+    }
+    geometry Box { }
+  }
+}
