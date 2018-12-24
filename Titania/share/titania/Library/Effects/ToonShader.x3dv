@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 13:19:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/ToonShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 15:04:58 GMT"
+META "modified" "Mon, 24 Dec 2018 15:29:11 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -44,6 +44,66 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF ToonFragmentShader ShaderPart {
+              type "FRAGMENT"
+              url "data:x-shader/x-fragment,
+
+precision mediump float;
+
+uniform int x3d_NumLights;
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+uniform x3d_MaterialParameters x3d_FrontMaterial;     
+
+uniform vec3 color1;
+uniform vec3 color2;
+uniform vec3 color3;
+uniform vec3 color4;
+
+uniform float angle1;
+uniform float angle2;
+uniform float angle3;
+
+varying vec3 position;
+varying vec3 normal;
+
+vec4
+getMaterialColor (x3d_MaterialParameters material)
+{
+	vec3 N          = normalize (normal);
+	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
+
+	for (int i = 0; i < x3d_MaxLights; i ++)
+	{
+		if (i == x3d_NumLights)
+			break;
+
+		x3d_LightSourceParameters light = x3d_LightSource [i];
+		
+		vec3 L = light .type == x3d_DirectionalLight ? -light .direction : normalize (light .location - position);
+
+		float dotNL = dot (N, L);
+
+		if (dotNL > angle1)
+			finalColor += color1;
+		else if (dotNL > angle2)
+			finalColor += color2;
+		else if (dotNL > angle3)
+			finalColor += color3;
+		else
+			finalColor += color4;
+	}
+
+	return vec4 (finalColor, 1.0 - material .transparency);
+}
+
+void
+main ()
+{
+	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
+
+	gl_FragColor = getMaterialColor (x3d_FrontMaterial);
+}"
+            }
           }
         ]
       }
@@ -220,9 +280,9 @@ DEF ToonShader_14 Transform {
         inputOutput SFColor color2 1 0 0
         inputOutput SFColor color3 0.449681 0 0
         inputOutput SFColor color4 0.133771 0 0
-        inputOutput SFFloat intensity1 0.95
-        inputOutput SFFloat intensity2 0.5
-        inputOutput SFFloat intensity3 0.25
+        inputOutput SFFloat angle1 0.95
+        inputOutput SFFloat angle2 0.5
+        inputOutput SFFloat angle3 0.25
 
         language "GLSL"
         parts [
@@ -252,66 +312,7 @@ main ()
 	gl_Position = x3d_ProjectionMatrix * p;
 }"
           }
-          DEF ToonFragmentShader ShaderPart {
-            type "FRAGMENT"
-            url "data:x-shader/x-fragment,
-
-precision mediump float;
-
-uniform int x3d_NumLights;
-uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
-uniform x3d_MaterialParameters x3d_FrontMaterial;     
-
-uniform vec3 color1;
-uniform vec3 color2;
-uniform vec3 color3;
-uniform vec3 color4;
-
-uniform float intensity1;
-uniform float intensity2;
-uniform float intensity3;
-
-varying vec3 position;
-varying vec3 normal;
-
-vec4
-getMaterialColor (x3d_MaterialParameters material)
-{
-	vec3 N          = normalize (normal);
-	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
-
-	for (int i = 0; i < x3d_MaxLights; i ++)
-	{
-		if (i == x3d_NumLights)
-			break;
-
-		x3d_LightSourceParameters light = x3d_LightSource [i];
-		
-		vec3 L = light .type == x3d_DirectionalLight ? -light .direction : normalize (light .location - position);
-
-		float intensity = dot (N, L);
-
-		if (intensity > intensity1)
-			finalColor += color1;
-		else if (intensity > intensity2)
-			finalColor += color2;
-		else if (intensity > intensity3)
-			finalColor += color3;
-		else
-			finalColor += color4;
-	}
-
-	return vec4 (finalColor, 1.0 - material .transparency);
-}
-
-void
-main ()
-{
-	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
-
-	gl_FragColor = getMaterialColor (x3d_FrontMaterial);
-}"
-          }
+          USE ToonFragmentShader
         ]
       }
     }
