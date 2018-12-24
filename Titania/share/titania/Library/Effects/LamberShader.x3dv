@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/LamberShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 06:10:04 GMT"
+META "modified" "Mon, 24 Dec 2018 06:11:40 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -44,7 +44,7 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF FragmentShader ShaderPart {
+            value DEF LambertFragmentShader ShaderPart {
               type "FRAGMENT"
               url "data:x-shader/x-fragment,
 
@@ -255,10 +255,10 @@ DEF Shader Transform {
         specularColor 0.913265 0.373179 0.373179
         shininess 0.959184
       }
-      shaders DEF ComposedShader ComposedShader {
+      shaders DEF LambertShader ComposedShader {
         language "GLSL"
         parts [
-          DEF VertexShader ShaderPart {
+          DEF LambertVertexShader ShaderPart {
             url "data:x-shader/x-vertex,
 
 precision mediump float;
@@ -284,7 +284,7 @@ main ()
 	gl_Position = x3d_ProjectionMatrix * p;
 }"
           }
-          USE FragmentShader
+          USE LambertFragmentShader
         ]
       }
     }
