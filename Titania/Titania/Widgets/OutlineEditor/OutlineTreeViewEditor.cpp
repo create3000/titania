@@ -119,7 +119,8 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	colorSelectionDialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_color_changed));
 	colorSelectionDialog .get_color_selection () -> set_has_palette (true);
 
-	colorSelectionDialog .property_ok_button ()     .get_value () -> hide ();
+	colorSelectionDialog .set_transient_for (getBrowserWindow () -> getWindow ());
+	colorSelectionDialog .property_ok_button () .get_value () -> hide ();
 	colorSelectionDialog .property_cancel_button () .get_value () -> hide ();
 
 	setup ();

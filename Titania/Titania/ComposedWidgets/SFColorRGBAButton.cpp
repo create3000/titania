@@ -102,6 +102,7 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 
 	// Dialog
 
+	dialog .set_transient_for (getBrowserWindow () -> getWindow ());
 	dialog .set_title (refineName (name));
 	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (this, &SFColorRGBAButton::on_color_changed));
 	dialog .get_color_selection () -> set_has_opacity_control (true);
