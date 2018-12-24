@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/LamberShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 11:01:34 GMT"
+META "modified" "Mon, 24 Dec 2018 11:31:02 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -67,7 +67,7 @@ lambert (vec3 N, x3d_LightSourceParameters light)
 
 	float dotNL = dot (N, L);
  
-	return light .color * max (dotNL, 0.0);
+	return light .color * light .intensity * max (dotNL, 0.0);
 }
 
 vec4
@@ -132,10 +132,10 @@ main ()
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
-                      -0.704047462871213,
-                      0.695566762376518,
-                      0.143192350010952,
-                      0.568941727555854
+                      -0.704047470638803,
+                      0.695566759649916,
+                      0.143192325063944,
+                      0.568941725407221
                     ]
                   }
                   DEF centerOfRotation_5 MetadataDouble {
