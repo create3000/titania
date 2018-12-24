@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 02:30:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/AnisotropicMaterial.x3dv"
-META "modified" "Mon, 24 Dec 2018 11:30:56 GMT"
+META "modified" "Mon, 24 Dec 2018 13:24:10 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -44,91 +44,39 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF AnisotropicFragmentShader ShaderPart {
-              type "FRAGMENT"
-              url "data:x-shader/x-fragment,
+            value DEF AnisotropicVertexShader ShaderPart {
+              url "data:x-shader/x-vertex,
 
 precision mediump float;
 
-uniform int x3d_NumLights;
-uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
-uniform x3d_MaterialParameters x3d_FrontMaterial;
+uniform mat4 x3d_CameraSpaceMatrix;
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat3 x3d_NormalMatrix;
 
-uniform float alphaX;
-uniform float alphaY;
+attribute vec3 x3d_Normal;
+attribute vec4 x3d_Vertex;
 
-varying vec4 position;
+varying vec3 position;
 varying vec3 normal;
 varying vec3 tangent;
 
-vec4
-getMaterialColor (x3d_MaterialParameters material)
+vec3
+getTangent (vec3 position)
 {
-	vec3 normalDirection  = normalize (normal);
-	vec3 tangentDirection = normalize (tangent);
-	vec3 viewDirection    = normalize (vec3 (-position));
-
-	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
-
-	for (int i = 0; i < x3d_MaxLights; i ++)
-	{
-		if (i == x3d_NumLights)
-			break;
-
-		x3d_LightSourceParameters light = x3d_LightSource [i];
-
-		vec3  lightDirection = vec3 (0.0);
-		float attenuation    = 0.0;
-
-		if (light .type == x3d_DirectionalLight) // directional light?
-		{
-			attenuation    = 1.0; // no attenuation
-			lightDirection = -light .direction;
-		} 
-		else // point or spot light
-		{
-			vec3  vertexToLightSource = vec3 (-position);
-			float distance            = length (vertexToLightSource);
-			
-			attenuation    = 1.0 / distance; // linear attenuation 
-			lightDirection = normalize (vertexToLightSource);
-		}
-
-		vec3  halfwayVector     = normalize (lightDirection + viewDirection);
-		vec3  binormalDirection = cross (normalDirection, tangentDirection);
-		float dotLN             = dot (lightDirection, normalDirection); 
-		// compute this dot product only once
-
-		vec3 diffuseReflection  = attenuation * light .color * light .intensity * material .diffuseColor * max (0.0, dotLN);
-		vec3 specularReflection = vec3 (0.0, 0.0, 0.0);
-
-		if (dotLN < 0.0) // light source on the wrong side?
-		{
-			specularReflection = vec3 (0.0, 0.0, 0.0); 
-			// no specular reflection
-		}
-		else // light source on the right side
-		{
-			float dotHN       = dot (halfwayVector, normalDirection);
-			float dotVN       = dot (viewDirection, normalDirection);
-			float dotHTAlphaX = dot (halfwayVector, tangentDirection) / alphaX;
-			float dotHBAlphaY = dot (halfwayVector, binormalDirection) / alphaY;
-
-			specularReflection = attenuation * material .specularColor
-				* sqrt (max (0.0, dotLN / dotVN)) 
-				* exp (-2.0 * (dotHTAlphaX * dotHTAlphaX + dotHBAlphaY * dotHBAlphaY) / (1.0 + dotHN));
-		}
-		
-		finalColor += diffuseReflection + specularReflection;
-	}
-	
-	return vec4 (finalColor, 1.0 - material .transparency);
+	return cross (position .xyz, vec3 (0.0, 0.0, 1.0));
 }
 
 void
 main ()
 {
-	gl_FragColor = getMaterialColor (x3d_FrontMaterial);
+	vec4 p = x3d_ModelViewMatrix * x3d_Vertex;
+	
+	position = vec3 (p);
+	normal   = x3d_NormalMatrix * x3d_Normal;
+	tangent  = vec3 (x3d_CameraSpaceMatrix * x3d_ModelViewMatrix * vec4 (getTangent (position), 0.0));
+
+	gl_Position = x3d_ProjectionMatrix * p;
 }
 "
             }
@@ -170,10 +118,10 @@ main ()
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
-                      -0.704047467428155,
-                      0.695566760771478,
-                      0.14319233540198,
-                      0.568941726291042
+                      -0.704047459676966,
+                      0.695566763479169,
+                      0.143192360360206,
+                      0.568941728424774
                     ]
                   }
                   DEF centerOfRotation_5 MetadataDouble {
@@ -319,41 +267,95 @@ DEF AnisotropicMaterial Transform {
 
         language "GLSL"
         parts [
-          DEF AnisotropicVertexShader ShaderPart {
-            url "data:x-shader/x-vertex,
+          USE AnisotropicVertexShader
+          DEF AnisotropicFragmentShader ShaderPart {
+            type "FRAGMENT"
+            url "data:x-shader/x-fragment,
 
 precision mediump float;
 
-uniform mat4 x3d_CameraSpaceMatrix;
-uniform mat4 x3d_ProjectionMatrix;
-uniform mat4 x3d_ModelViewMatrix;
-uniform mat3 x3d_NormalMatrix;
+uniform int x3d_NumLights;
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+uniform x3d_MaterialParameters x3d_FrontMaterial;
 
-attribute vec3 x3d_Normal;
-attribute vec4 x3d_Vertex;
+uniform float alphaX;
+uniform float alphaY;
 
-varying vec4 position;
+varying vec3 position;
 varying vec3 normal;
 varying vec3 tangent;
 
-vec3
-getTangent (vec4 position)
+vec4
+getMaterialColor (x3d_MaterialParameters material)
 {
-	return cross (position .xyz, vec3 (0.0, 0.0, 1.0));
+	vec3 normalDirection  = normalize (normal);
+	vec3 tangentDirection = normalize (tangent);
+	vec3 viewDirection    = normalize (-position);
+
+	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
+
+	for (int i = 0; i < x3d_MaxLights; i ++)
+	{
+		if (i == x3d_NumLights)
+			break;
+
+		x3d_LightSourceParameters light = x3d_LightSource [i];
+
+		vec3  lightDirection = vec3 (0.0);
+		float attenuation    = 0.0;
+
+		if (light .type == x3d_DirectionalLight) // directional light?
+		{
+			attenuation    = 1.0; // no attenuation
+			lightDirection = -light .direction;
+		} 
+		else // point or spot light
+		{
+			vec3  vertexToLightSource = light .location - position;
+			float distance            = length (vertexToLightSource);
+			
+			attenuation    = 1.0 / distance; // linear attenuation 
+			lightDirection = normalize (vertexToLightSource);
+		}
+
+		vec3  halfwayVector     = normalize (lightDirection + viewDirection);
+		vec3  binormalDirection = cross (normalDirection, tangentDirection);
+		float dotLN             = dot (lightDirection, normalDirection); 
+		// compute this dot product only once
+
+		vec3 diffuseReflection  = attenuation * light .color * light .intensity * material .diffuseColor * max (0.0, dotLN);
+		vec3 specularReflection = vec3 (0.0, 0.0, 0.0);
+
+		if (dotLN < 0.0) // light source on the wrong side?
+		{
+			specularReflection = vec3 (0.0, 0.0, 0.0); 
+			// no specular reflection
+		}
+		else // light source on the right side
+		{
+			float dotHN       = dot (halfwayVector, normalDirection);
+			float dotVN       = dot (viewDirection, normalDirection);
+			float dotHTAlphaX = dot (halfwayVector, tangentDirection) / alphaX;
+			float dotHBAlphaY = dot (halfwayVector, binormalDirection) / alphaY;
+
+			specularReflection = attenuation * material .specularColor
+				* sqrt (max (0.0, dotLN / dotVN)) 
+				* exp (-2.0 * (dotHTAlphaX * dotHTAlphaX + dotHBAlphaY * dotHBAlphaY) / (1.0 + dotHN));
+		}
+		
+		finalColor += diffuseReflection + specularReflection;
+	}
+	
+	return vec4 (finalColor, 1.0 - material .transparency);
 }
 
 void
 main ()
-{				
-	position = x3d_ModelViewMatrix * x3d_Vertex;
-	normal   = x3d_NormalMatrix * x3d_Normal;
-	tangent  = vec3 (x3d_CameraSpaceMatrix * x3d_ModelViewMatrix * vec4 (getTangent (position), 0.0));
-
-	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
+{
+	gl_FragColor = getMaterialColor (x3d_FrontMaterial);
 }
 "
           }
-          USE AnisotropicFragmentShader
         ]
       }
     }

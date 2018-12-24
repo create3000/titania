@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/LamberShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 11:31:02 GMT"
+META "modified" "Mon, 24 Dec 2018 13:31:16 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -44,56 +44,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF LambertFragmentShader ShaderPart {
-              type "FRAGMENT"
-              url "data:x-shader/x-fragment,
-
-precision mediump float;
-precision mediump int;
-
-uniform int x3d_NumLights;
-uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
-uniform bool x3d_SeparateBackColor;
-uniform x3d_MaterialParameters x3d_FrontMaterial;  
-uniform x3d_MaterialParameters x3d_BackMaterial;        
-
-varying vec3 position;
-varying vec3 normal;
-
-vec3
-lambert (vec3 N, x3d_LightSourceParameters light)
-{
-	vec3 L = light .type == x3d_DirectionalLight ? -light .direction : normalize (light .location - position);
-
-	float dotNL = dot (N, L);
- 
-	return light .color * light .intensity * max (dotNL, 0.0);
-}
-
-vec4
-getMaterialColor (const in x3d_MaterialParameters material)
-{
-	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
-
-	for (int i = 0; i < x3d_MaxLights; i ++)
-	{
-		if (i == x3d_NumLights)
-			break;
-
-		finalColor += lambert (normalize (normal), x3d_LightSource [i]);
-	}
-
-	return vec4 (material .diffuseColor * finalColor, 1.0 - material .transparency);
-}
-
-void
-main ()
-{
-	bool frontColor = gl_FrontFacing || ! x3d_SeparateBackColor;
-
-	gl_FragColor = getMaterialColor (frontColor ? x3d_FrontMaterial : x3d_BackMaterial);
-}"
-            }
           }
         ]
       }
@@ -135,7 +85,7 @@ main ()
                       -0.704047470638803,
                       0.695566759649916,
                       0.143192325063944,
-                      0.568941725407221
+                      0.568941725407222
                     ]
                   }
                   DEF centerOfRotation_5 MetadataDouble {
@@ -294,7 +244,56 @@ main ()
 	gl_Position = x3d_ProjectionMatrix * p;
 }"
           }
-          USE LambertFragmentShader
+          DEF LambertFragmentShader ShaderPart {
+            type "FRAGMENT"
+            url "data:x-shader/x-fragment,
+
+precision mediump float;
+precision mediump int;
+
+uniform int x3d_NumLights;
+uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
+uniform bool x3d_SeparateBackColor;
+uniform x3d_MaterialParameters x3d_FrontMaterial;  
+uniform x3d_MaterialParameters x3d_BackMaterial;        
+
+varying vec3 position;
+varying vec3 normal;
+
+vec3
+lambert (vec3 N, x3d_LightSourceParameters light)
+{
+	vec3 L = light .type == x3d_DirectionalLight ? -light .direction : normalize (light .location - position);
+
+	float dotNL = dot (N, L);
+ 
+	return light .color * light .intensity * max (dotNL, 0.0);
+}
+
+vec4
+getMaterialColor (const in x3d_MaterialParameters material)
+{
+	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
+
+	for (int i = 0; i < x3d_MaxLights; i ++)
+	{
+		if (i == x3d_NumLights)
+			break;
+
+		finalColor += lambert (normalize (normal), x3d_LightSource [i]);
+	}
+
+	return vec4 (material .diffuseColor * finalColor, 1.0 - material .transparency);
+}
+
+void
+main ()
+{
+	bool frontColor = gl_FrontFacing || ! x3d_SeparateBackColor;
+
+	gl_FragColor = getMaterialColor (frontColor ? x3d_FrontMaterial : x3d_BackMaterial);
+}"
+          }
         ]
       }
     }
