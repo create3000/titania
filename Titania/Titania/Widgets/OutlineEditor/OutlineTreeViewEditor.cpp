@@ -81,6 +81,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
+	         X3DEditorObject (),
 	                dragDrop (new OutlineDragDrop (outlineEditor, this)),
 	            overUserData (new UserData ()),
 	        selectedUserData (new UserData ()),
@@ -93,9 +94,17 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	         destinationPath (),
 	         destinationNode (),
 	        destinationField (),
+	               colorNode (),
+	              colorField (),
+	    colorSelectionDialog (),
+	           colorUndoStep (),
+	                changing (false),
 	motion_notify_connection ()
 {
-	addChildObjects (sourceNode, destinationNode);
+	addChildObjects (sourceNode,
+	                 destinationNode,
+	                 colorNode,
+	                 colorField);
 
 	set_name ("OutlineTreeViewEditor");
 
@@ -105,6 +114,12 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	signal_query_tooltip () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_query_tooltip));
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
+
+	colorSelectionDialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_color_changed));
+	colorSelectionDialog .get_color_selection () -> set_has_palette (true);
+
+	colorSelectionDialog .property_ok_button ()     .get_value () -> hide ();
+	colorSelectionDialog .property_cancel_button () .get_value () -> hide ();
 
 	setup ();
 }
@@ -144,6 +159,9 @@ OutlineTreeViewEditor::on_button_release_event (GdkEventButton* event)
 	{
 		case 1:
 		{
+			if (select_color (event -> x, event -> y))
+				return true;
+
 			if (select_access_type (event -> x, event -> y))
 				return true;
 
@@ -651,6 +669,228 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 	}
 
 	return false;
+}
+
+bool
+OutlineTreeViewEditor::select_color (const double x, const double y)
+{
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreePath        path   = get_path_at_position (x, y, column);
+
+	if (column != getColumn ())
+		return false;
+
+	if (path .empty ())
+		return false;
+
+	const auto iter = get_model () -> get_iter (path);
+	const auto data = get_model () -> get_data (iter);
+
+	switch (data -> get_type ())
+	{
+		case OutlineIterType::X3DField:
+		{
+			Gdk::Rectangle cell_area;
+			get_cell_area (path, *column, cell_area);
+			get_cellrenderer () -> property_data () .set_value (data);
+
+			switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+			{
+				case OutlineCellContent::COLOR:
+				{
+					if (not path .up ())
+						return false;
+
+					const auto parent = get_model () -> get_iter (path);
+					const auto node   = static_cast <X3D::SFNode*> (get_model () -> get_object (parent));
+					const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_model () -> get_object (iter));
+
+					switch (field -> getType ())
+					{
+						case X3D::X3DConstants::SFColor:
+						{
+							changing = true;
+
+							const auto color = static_cast <X3D::SFColor*> (field);
+
+							if (colorNode)
+								colorNode -> isLive () .removeInterest (&OutlineTreeViewEditor::set_color_node_live, this);
+
+							if (colorField)
+								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+
+							colorNode .setValue (*node);
+							colorField .setValue (color);
+							colorUndoStep .reset ();
+
+							colorNode -> isLive () .addInterest (&OutlineTreeViewEditor::set_color_node_live, this);
+							color -> addInterest (&OutlineTreeViewEditor::set_color, this);
+
+							colorSelectionDialog .set_title (color -> getName ());
+							colorSelectionDialog .get_color_selection () -> set_has_opacity_control (false);
+
+							Gdk::RGBA rgba;
+							rgba .set_rgba (color -> getRed (), color -> getGreen (), color -> getBlue (), 1);
+							colorSelectionDialog .get_color_selection () -> set_current_rgba (rgba);
+							colorSelectionDialog .get_color_selection () -> set_previous_rgba (rgba);
+
+							colorSelectionDialog .present ();
+
+							changing = false;
+							return true;
+						}
+						case X3D::X3DConstants::SFColorRGBA:
+						{
+							changing = true;
+
+							const auto color = static_cast <X3D::SFColorRGBA*> (field);
+
+							if (colorNode)
+								colorNode -> isLive () .removeInterest (&OutlineTreeViewEditor::set_color_node_live, this);
+
+							if (colorField)
+								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+
+							colorNode .setValue (*node);
+							colorField .setValue (color);
+							colorUndoStep .reset ();
+
+							colorNode -> isLive () .addInterest (&OutlineTreeViewEditor::set_color_node_live, this);
+							color -> addInterest (&OutlineTreeViewEditor::set_color, this);
+
+							colorSelectionDialog .set_title (color -> getName ());
+							colorSelectionDialog .get_color_selection () -> set_has_opacity_control (true);
+
+							Gdk::RGBA rgba;
+							rgba .set_rgba (color -> getRed (), color -> getGreen (), color -> getBlue (), color -> getAlpha ());
+							colorSelectionDialog .get_color_selection () -> set_current_rgba (rgba);
+							colorSelectionDialog .get_color_selection () -> set_previous_rgba (rgba);
+
+							colorSelectionDialog .present ();
+
+							changing = false;
+							return true;
+						}
+						default:
+							return false;
+					}
+
+					return false;
+				}
+				default:
+					break;
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+OutlineTreeViewEditor::set_color_node_live (const bool value)
+{
+	if (not value)
+		colorSelectionDialog .set_visible (false);
+}
+
+void
+OutlineTreeViewEditor::on_color_changed ()
+{
+	if (changing)
+		return;
+
+	const auto rgba  = colorSelectionDialog .get_color_selection () -> get_current_rgba ();
+	const auto field = colorField .getValue ();
+
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFColor:
+		{
+			const auto color = static_cast <X3D::SFColor*> (field);
+			const auto value = X3D::Color3f (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
+
+			addUndoFunction (colorNode, *color, colorUndoStep);
+
+			color -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+			color -> addInterest (&OutlineTreeViewEditor::connectColor, this);
+
+			color -> setValue (value);
+
+			addRedoFunction (colorNode, *color, colorUndoStep);
+			break;
+		}
+		case X3D::X3DConstants::SFColorRGBA:
+		{
+			const auto color = static_cast <X3D::SFColorRGBA*> (field);
+			const auto value = X3D::Color4f (rgba .get_red (), rgba .get_green (), rgba .get_blue (), rgba .get_alpha ());
+
+			addUndoFunction (colorNode, *color, colorUndoStep);
+
+			color -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+			color -> addInterest (&OutlineTreeViewEditor::connectColor, this);
+
+			color -> setValue (value);
+
+			addRedoFunction (colorNode, *color, colorUndoStep);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+OutlineTreeViewEditor::set_color ()
+{
+	if (not colorField)
+		return;
+
+	const auto field = colorField .getValue ();
+
+	colorUndoStep .reset ();
+
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFColor:
+		{
+			changing = true;
+
+			const auto color = static_cast <X3D::SFColor*> (field);
+
+			Gdk::RGBA rgba;
+			rgba .set_rgba (color -> getRed (), color -> getGreen (), color -> getBlue (), 1);
+			colorSelectionDialog .get_color_selection () -> set_current_rgba (rgba);
+
+			changing = false;
+			break;
+		}
+		case X3D::X3DConstants::SFColorRGBA:
+		{
+			changing = true;
+
+			const auto color = static_cast <X3D::SFColorRGBA*> (field);
+
+			Gdk::RGBA rgba;
+			rgba .set_rgba (color -> getRed (), color -> getGreen (), color -> getBlue (), color -> getAlpha ());
+			colorSelectionDialog .get_color_selection () -> set_current_rgba (rgba);
+
+			changing = false;
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+OutlineTreeViewEditor::connectColor ()
+{
+	colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::connectColor,  this);
+	colorField .getValue () -> addInterest (&OutlineTreeViewEditor::set_color, this);
 }
 
 bool

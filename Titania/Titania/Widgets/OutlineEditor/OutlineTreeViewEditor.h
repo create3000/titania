@@ -52,6 +52,7 @@
 #define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
 
 #include "X3DOutlineTreeView.h"
+#include "../../Base/X3DEditorObject.h"
 
 namespace titania {
 namespace puck {
@@ -60,7 +61,8 @@ class OutlineEditor;
 class OutlineDragDrop;
 
 class OutlineTreeViewEditor :
-	public X3DOutlineTreeView
+	public X3DOutlineTreeView,
+	public X3DEditorObject
 {
 public:
 
@@ -114,13 +116,28 @@ private:
 	on_edited (const Glib::ustring &, const Glib::ustring &);
 
 	bool
-	hover_icon (const double, const double);
+	hover_icon (const double x, const double y);
 
 	bool
-	hover_access_type (const double, const double);
+	hover_access_type (const double x, const double y);
 
 	bool
-	select_access_type (const double, const double);
+	select_color (const double x, const double y);
+
+	void
+	set_color_node_live (const bool value);
+
+	void
+	on_color_changed ();
+
+	void
+	set_color ();
+
+	void
+	connectColor ();
+
+	bool
+	select_access_type (const double x, const double y);
 
 	X3D::SFNode
 	get_node (OutlineTreeData* const) const;
@@ -162,6 +179,12 @@ private:
 	Gtk::TreePath destinationPath;
 	X3D::SFNode destinationNode;
 	std::string destinationField;
+
+	X3D::SFNode                           colorNode;
+	X3D::X3DPtr <X3D::X3DFieldDefinition> colorField;
+	Gtk::ColorSelectionDialog             colorSelectionDialog;
+	std::shared_ptr <X3D::UndoStep>       colorUndoStep;
+	bool                                  changing;
 
 	sigc::connection motion_notify_connection;
 
