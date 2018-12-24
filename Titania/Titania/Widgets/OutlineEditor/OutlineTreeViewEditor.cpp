@@ -127,6 +127,14 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 }
 
 void
+OutlineTreeViewEditor::on_unmap ()
+{
+	colorSelectionDialog .set_visible (false);
+
+	X3DOutlineTreeView::on_unmap ();
+}
+
+void
 OutlineTreeViewEditor::watch_motion (const bool value)
 {
 	motion_notify_connection .disconnect ();

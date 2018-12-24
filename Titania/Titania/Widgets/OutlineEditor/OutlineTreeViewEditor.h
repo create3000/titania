@@ -80,6 +80,10 @@ private:
 
 	///  @name Operations
 
+	virtual
+	void
+	on_unmap () final override;
+
 	void
 	watch_motion (const bool);
 
