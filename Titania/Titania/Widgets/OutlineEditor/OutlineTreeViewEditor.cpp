@@ -795,7 +795,7 @@ void
 OutlineTreeViewEditor::set_color_node_live (const bool value)
 {
 	if (value)
-		return
+		return;
 
 	colorSelectionDialog .set_visible (false);
 }
