@@ -123,7 +123,8 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	colorSelectionDialog .property_ok_button () .get_value () -> hide ();
 	colorSelectionDialog .property_cancel_button () .get_value () -> hide ();
 
-	setup ();
+	X3DOutlineTreeView::setup ();
+	X3DEditorObject::setup ();
 }
 
 void
@@ -1555,7 +1556,8 @@ OutlineTreeViewEditor::clear_routes ()
 
 OutlineTreeViewEditor::~OutlineTreeViewEditor ()
 {
-	dispose ();
+	X3DEditorObject::dispose ();
+	X3DOutlineTreeView::dispose ();
 }
 
 } // puck
