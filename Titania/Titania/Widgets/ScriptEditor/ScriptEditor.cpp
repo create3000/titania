@@ -71,7 +71,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DShaderEditor (),
 	     X3DScriptEditorSearch (),
 	X3DScriptEditorPreferences (),
-	                      page (browserWindow -> getCurrentPage ()),
+	                      page (browserWindow -> getCurrentPage () .get ()),
 	                  modified (false),
 	                 nodeIndex (new NodeIndex (browserWindow)),
 	                   console (new Console (browserWindow)),

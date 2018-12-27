@@ -184,7 +184,7 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <NotebookPage>               page;
+	NotebookPage*                                page;
 	bool                                         modified;
 	std::unique_ptr <NodeIndex>                  nodeIndex;
 	std::unique_ptr <Console>                    console;

@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/LamberShader.x3dv"
-META "modified" "Thu, 27 Dec 2018 09:16:03 GMT"
+META "modified" "Thu, 27 Dec 2018 10:28:11 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -273,6 +273,7 @@ lambert (vec3 N, x3d_LightSourceParameters light)
 vec4
 getMaterialColor (const in x3d_MaterialParameters material)
 {
+	vec3 N          = normalize (normal);
 	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
 
 	for (int i = 0; i < x3d_MaxLights; i ++)
@@ -280,7 +281,7 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		if (i == x3d_NumLights)
 			break;
 
-		finalColor += lambert (normalize (normal), x3d_LightSource [i]);
+		finalColor += lambert (N, x3d_LightSource [i]);
 	}
 
 	return vec4 (material .diffuseColor * finalColor, 1.0 - material .transparency);
