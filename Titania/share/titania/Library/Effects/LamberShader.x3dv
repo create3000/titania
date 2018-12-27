@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V4.3.7
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Mon, 24 Dec 2018 05:45:50 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.7, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/LamberShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 13:31:16 GMT"
+META "modified" "Thu, 27 Dec 2018 09:16:03 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {

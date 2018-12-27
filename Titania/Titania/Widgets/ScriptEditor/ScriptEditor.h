@@ -64,6 +64,7 @@ namespace puck {
 
 class BrowserWindow;
 class NodeIndex;
+class NotebookPage;
 class Console;
 
 class ScriptEditor :
@@ -183,6 +184,7 @@ private:
 
 	///  @name Members
 
+	std::shared_ptr <NotebookPage>               page;
 	bool                                         modified;
 	std::unique_ptr <NodeIndex>                  nodeIndex;
 	std::unique_ptr <Console>                    console;

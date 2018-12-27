@@ -7,7 +7,7 @@ META "created" "Mon, 24 Dec 2018 13:19:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/ToonShader.x3dv"
-META "modified" "Mon, 24 Dec 2018 15:29:11 GMT"
+META "modified" "Thu, 27 Dec 2018 09:16:08 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -142,10 +142,10 @@ main ()
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
-                      -0.704047459676963,
-                      0.695566763479169,
-                      0.143192360360206,
-                      0.568941728424774
+                      -0.704047467428155,
+                      0.695566760771478,
+                      0.14319233540198,
+                      0.568941726291042
                     ]
                   }
                   DEF centerOfRotation_5 MetadataDouble {

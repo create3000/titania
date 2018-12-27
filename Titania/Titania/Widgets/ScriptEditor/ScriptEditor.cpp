@@ -71,6 +71,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DShaderEditor (),
 	     X3DScriptEditorSearch (),
 	X3DScriptEditorPreferences (),
+	                      page (browserWindow -> getCurrentPage ()),
 	                  modified (false),
 	                 nodeIndex (new NodeIndex (browserWindow)),
 	                   console (new Console (browserWindow)),
@@ -134,7 +135,7 @@ ScriptEditor::initialize ()
 
 	// Observe context change.
 
-	getCurrentContext () .addInterest (&ScriptEditor::set_executionContext, this);
+	page -> getExecutionContext () .addInterest (&ScriptEditor::set_executionContext, this);
 
 	set_executionContext ();
 
@@ -204,19 +205,17 @@ ScriptEditor::set_executionContext ()
 {
 	try
 	{
-		save ();
-
 		ScriptEditorDatabase database;
 
-		const auto item     = database .getItem (getCurrentContext () -> getWorldURL () .filename ());
+		const auto item     = database .getItem (page -> getExecutionContext () -> getWorldURL () .filename ());
 		const auto nodePath = std::get <0> (item);
 		const auto node     = getNodeFromPath (nodePath);
 
 		if (nodeTypes .count (node -> getType () .back ()))
 		{
+			set_node (node);
 			nodeIndex -> setSelection (node);
-
-			return set_node (node);
+			return;
 		}
 	}
 	catch (const std::exception & error)
@@ -233,9 +232,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 {
 	if (value == node)
 		return;
-
-	X3DScriptNodeEditor::set_node (value);
-	X3DShaderEditor::set_node (value);
 
 	if (node)
 	{
@@ -262,8 +258,10 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		getTextBuffer () -> end_not_undoable_action ();
 	}
 
-	node = value;
+	X3DScriptNodeEditor::set_node (value);
+	X3DShaderEditor::set_node (value);
 
+	node = value;
 	nodeName .setNode (node);
 
 	getScriptEditorBox () .set_sensitive (node);
@@ -368,7 +366,7 @@ ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 
 	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 
-	getCurrentBrowser () -> getConsole () -> log (basic::sprintf (_ ("%s : %s »%s« is build.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
+	page -> getMainBrowser () -> getConsole () -> log (basic::sprintf (_ ("%s : %s »%s« is build.\n"), X3D::SFTime (X3D::SFTime::now ()) .toUTCString () .c_str (), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
 	setModified (false);
 }
@@ -395,7 +393,7 @@ ScriptEditor::on_can_undo_changed ()
 		if (node)
 		{
 			setModified (true);
-			getBrowserWindow () -> getCurrentPage () -> setModified (true);
+			page -> setModified (true);
 		}
 	}
 }
@@ -514,7 +512,7 @@ ScriptEditor::save ()
 X3D::SFNode
 ScriptEditor::getNodeFromPath (const std::string & nodePath)
 {
-	X3D::X3DExecutionContext* executionContext = getCurrentScene ();
+	X3D::X3DExecutionContext* executionContext = page -> getScene ();
 	auto path                                  = std::deque <std::string> ();
 
 	basic::split (std::back_inserter (path), nodePath, ".");
