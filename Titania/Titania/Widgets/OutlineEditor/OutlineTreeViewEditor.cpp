@@ -127,6 +127,14 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 }
 
 void
+OutlineTreeViewEditor::set_execution_context (const X3D::X3DExecutionContextPtr & value)
+{
+	colorSelectionDialog .set_visible (false);
+
+	X3DOutlineTreeView::set_execution_context (value);
+}
+
+void
 OutlineTreeViewEditor::on_unmap ()
 {
 	colorSelectionDialog .set_visible (false);

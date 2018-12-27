@@ -92,6 +92,7 @@ public:
 	getScrollFreezer () const
 	{ return scrollFreezer; }
 
+	virtual
 	void
 	set_execution_context (const X3D::X3DExecutionContextPtr & value);
 

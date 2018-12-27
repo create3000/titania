@@ -70,6 +70,12 @@ public:
 
 	OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor);
 
+	///  @name Member access
+
+	virtual
+	void
+	set_execution_context (const X3D::X3DExecutionContextPtr & value) final override;
+
 	///  @name Destruction
 
 	virtual
