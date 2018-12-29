@@ -1,5 +1,5 @@
 Name: libtitania-stream
 Description: 
 Version: 0.3
-Libs: -L"/home/holger/Projekte/Titania/libtitania-stream/bin/Release" -ltitania-stream
-Cflags: -I"/home/holger/Projekte/Titania/libtitania-stream/Titania/Stream" -I"/home/holger/Projekte/Titania/libtitania-stream/Titania/Stream/GzStream"
+Libs: -L"/home/holger/Projekte/Titania/libtitania-stream/bin/Debug" -ltitania-stream
+Cflags: -I"/home/holger/Projekte/Titania/libtitania-stream/Titania/Stream"

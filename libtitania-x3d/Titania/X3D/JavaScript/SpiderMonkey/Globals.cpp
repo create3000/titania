@@ -48,29 +48,48 @@
  *
  ******************************************************************************/
 
-#include "SFVec3.h"
+#include "Globals.h"
+
+#include "../../Browser/X3DBrowser.h"
+
+#include "Arguments.h"
+#include "Context.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <>
-JSClass SFVec3d::static_class = {
-	"SFVec3d", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFVec3d>,
-	JSCLASS_NO_OPTIONAL_MEMBERS
-
+JSPropertySpec Globals::properties [ ] = {
+	JS_PS_END
 };
 
-template <>
-JSClass SFVec3f::static_class = {
-	"SFVec3f", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize <SFVec3f>,
-	JSCLASS_NO_OPTIONAL_MEMBERS
-
+JSFunctionSpec Globals::functions [ ] = {
+	JS_FS ("print",   Globals::print,   0, JSPROP_PERMANENT), // VRML 2.0
+	JS_FS_END
 };
+
+void
+Globals::init (JSContext* const cx, const JS::HandleObject & global)
+{
+	JS_DefineProperties (cx, global, properties);
+	JS_DefineFunctions (cx, global, functions);
+}
+
+bool
+Globals::print (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args    = JS::CallArgsFromVp (argc, vp);
+	const auto browser = getContext (cx) -> getBrowser ();
+
+	for (unsigned i = 0; i < argc; ++ i)
+		browser -> print (to_string (cx, args [i]));
+
+	browser -> print ('\n');
+
+	args .rval () .setUndefined ();
+	return true;
+}
 
 } // spidermonkey
 } // X3D

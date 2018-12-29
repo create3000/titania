@@ -184,7 +184,7 @@ private:
 
 	///  @name Members
 
-	NotebookPage*                                page;
+	NotebookPage* const                          page;
 	bool                                         modified;
 	std::unique_ptr <NodeIndex>                  nodeIndex;
 	std::unique_ptr <Console>                    console;

@@ -48,21 +48,37 @@
  *
  ******************************************************************************/
 
-#include "ProtoDeclarationArray.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_GLOBALS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_GLOBALS_H__
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <>
-JSClass ProtoDeclarationArray::static_class = {
-	"ProtoDeclarationArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
-	JSCLASS_NO_OPTIONAL_MEMBERS
+class Globals
+{
+public:
+
+	static
+	void
+	init (JSContext* const cx, const JS::HandleObject & global);
+
+
+private:
+
+	static bool print (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Static members
+
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
 
 };
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif

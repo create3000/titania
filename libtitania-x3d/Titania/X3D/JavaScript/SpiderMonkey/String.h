@@ -51,32 +51,23 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_STRING_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_STRING_H__
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmisleading-indentation"
-#pragma GCC diagnostic ignored "-Wignored-attributes"
-#include <js/jsapi.h>
-#pragma GCC diagnostic pop
-
+#include <jsapi.h>
 #include <string>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-JSBool
-JS_NewStringValue (JSContext* const, const std::string &, jsval*);
+bool
+JS_NewStringValue (JSContext* const cx, const std::string & string, JS::Value & vp);
 
 // to_string
 
 std::string
-to_string (JSContext* const, JSString* const);
+to_string (JSContext* const cx, JSString* const);
 
-inline
 std::string
-to_string (JSContext* const cx, jsval & value)
-{
-	return to_string (cx, JS_ValueToString (cx, value));
-}
+to_string (JSContext* const cx, const JS::HandleValue & value);
 
 inline
 std::string

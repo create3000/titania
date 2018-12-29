@@ -53,6 +53,8 @@
 
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
+#include <jsapi.h>
+
 namespace titania {
 namespace X3D {
 
@@ -111,6 +113,15 @@ public:
 	void
 	toStream (std::ostream &) const final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~SpiderMonkey () final override;
+
 
 private:
 
@@ -123,6 +134,13 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	static
+	JSContext*
+	createContext ();
+
+	JSContext*
+	getContext () const;
 
 	///  @name Static members
 

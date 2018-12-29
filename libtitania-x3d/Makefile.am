@@ -475,39 +475,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Browser.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/ExternProtoDeclarationArray.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/FieldDefinitionArray.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix3.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix4.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFRotation.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/Global.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfo.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfoArray.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/ProtoDeclarationArray.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/RouteArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Globals.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/String.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/value.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DConstants.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DExecutionContext.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DExternProtoDeclaration.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DField.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DFieldDefinition.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DProtoDeclaration.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DRoute.cpp \
-	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.c \
@@ -709,8 +679,7 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \
-	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la \
-	-lmozjs185
+	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_FTGL_CFLAGS) \

@@ -48,214 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ARGUMENTS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ARGUMENTS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ARGUMENTS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ARGUMENTS_H__
 
-#include "Context.h"
-#include "String.h"
-
-#include "../../Types/String.h"
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmisleading-indentation"
-#pragma GCC diagnostic ignored "-Wignored-attributes"
-#include <js/jsapi.h>
-#pragma GCC diagnostic pop
-
-#include <string>
-#include <type_traits>
-#include <stdexcept>
-#include <string>
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class Type>
+class Context;
+
 inline
-bool
-instanceOf (JSContext* const cx, JSObject* const obj)
+Context*
+getContext (JSContext* cx)
 {
-	const auto context     = getContext (cx);
-	const auto proto       = context -> getProto (Type::getId ());
-	const auto constructor = JS_GetConstructor (cx, proto);
-	jsval      value       = OBJECT_TO_JSVAL (obj);
-	JSBool     boolean     = false;
-
-	if (JS_HasInstance (cx, constructor, value, &boolean))
-		return boolean;
-
-	return false;
-}
-
-template <class Type>
-inline
-Type
-getObject (JSContext* const cx, JSObject* const obj)
-{
-	return static_cast <Type> (JS_GetPrivate (cx, obj));
-}
-
-// Version for functions.
-///  throws std::invalid_argument
-template <class Type>
-inline
-typename Type::internal_type*
-getThis (JSContext* const cx, jsval* const vp)
-{
-	const auto self = JS_THIS_OBJECT (cx, vp);
-
-	if (self and instanceOf <Type> (cx, self))
-	{
-		const auto object = getObject <typename Type::internal_type*> (cx, self);
-
-		if (object)
-			return object;
-	}
-
-	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
-}
-
-// Version for properties.
-///  throws std::invalid_argument
-template <class Type>
-inline
-typename Type::internal_type*
-getThis (JSContext* const cx, JSObject* const obj)
-{
-	const auto object = getObject <typename Type::internal_type*> (cx, obj);
-
-	if (object)
-		return object;
-
-	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <class Type>
-std::enable_if_t <
-	not (std::is_integral_v <Type> or
-	     std::is_floating_point_v <Type> or
-	     std::is_same_v <Type, std::string> or
-	     std::is_same_v <Type, X3D::String>),
-	typename Type::internal_type*
->
-getArgument (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	JSObject* obj = nullptr;
-
-	if (JS_ValueToObject (cx, argv [index], &obj))
-	{
-		if (not obj)
-			throw std::domain_error ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "' but is null");
-	
-		if (instanceOf <Type> (cx, obj))
-			return getObject <typename Type::internal_type*> (cx, obj);
-	}
-
-	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <class Type>
-std::enable_if_t <
-	std::is_integral_v <Type> or
-	std::is_floating_point_v <Type> or
-	std::is_same_v <Type, std::string> or
-	std::is_same_v <Type, X3D::String>,
-	Type
->
-getArgument (JSContext* const, jsval* const, const size_t)
-{
-	throw std::invalid_argument ("getArgument");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-bool
-getArgument <bool> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	JSBool boolean = false;
-
-	if (JS_ValueToBoolean (cx, argv [index], &boolean))
-		return boolean;
-
-	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Boolean'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-double
-getArgument <double> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	double number = 0;
-
-	if (JS_ValueToNumber (cx, argv [index], &number))
-		return number;
-
-	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-float
-getArgument <float> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	double number = 0;
-
-	if (JS_ValueToNumber (cx, argv [index], &number))
-		return number;
-
-	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-int32_t
-getArgument <int32_t> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	int32_t number = 0;
-
-	if (JS_ValueToECMAInt32 (cx, argv [index], &number))
-		return number;
-
-	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-uint32_t
-getArgument <uint32_t> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	uint32_t number = 0;
-
-	if (JS_ValueToECMAUint32 (cx, argv [index], &number))
-		return number;
-
-	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-std::string
-getArgument <std::string> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	return to_string (cx, argv [index]);
-}
-
-///  throws std::invalid_argument, std::domain_error
-template <>
-inline
-X3D::String
-getArgument <X3D::String> (JSContext* const cx, jsval* const argv, const size_t index)
-{
-	return to_string (cx, argv [index]);
+	return static_cast <Context*> (JS_GetContextPrivate (cx));
 }
 
 } // spidermonkey

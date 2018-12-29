@@ -51,6 +51,7 @@
 #include "X3D.h"
 
 #include <gtkmm/main.h>
+#include <js/Initialization.h>
 
 namespace titania {
 namespace X3D {
@@ -66,6 +67,9 @@ Init (int argc, char** argv)
 
 	// Replace the C++ global locale as well as the C locale with the user-preferred locale.
 	std::locale::global (std::locale (""));
+
+	// Initialize SpiderMonkey
+	JS_Init ();
 
 //	// Initialize Gtk
 //	const bool success = gtk_init_check (&argc, &argv);

@@ -48,21 +48,26 @@
  *
  ******************************************************************************/
 
-#include "ExternProtoDeclarationArray.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_MEMORY_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_MEMORY_H__
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <>
-JSClass ExternProtoDeclarationArray::static_class = {
-	"ExternProtoDeclarationArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
-	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
-	JSCLASS_NO_OPTIONAL_MEMBERS
-
+struct ContextDeleter
+{
+	void
+	operator () (JSContext* const cx) const
+	{
+		JS_DestroyContext (cx);
+	}
 };
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif

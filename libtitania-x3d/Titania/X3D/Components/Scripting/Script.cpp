@@ -219,18 +219,7 @@ Script::set_buffer ()
 	}
 
 	if (not javaScript)
-	{
-		try
-		{
-			// Assign an empty script if no working script is found.
-			javaScript .set (getBrowser () -> getJavaScriptEngine ("peaseblossom") -> createContext (this, "", ""));
-			javaScript -> setup ();
-		}
-		catch (const std::invalid_argument & error)
-		{ }
-
 		setLoadState (FAILED_STATE);
-	}
 }
 
 } // X3D

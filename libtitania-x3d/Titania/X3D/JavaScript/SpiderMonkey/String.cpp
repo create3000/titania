@@ -50,15 +50,17 @@
 
 #include "String.h"
 
-#include <Titania/LOG.h>
+#include <js/Conversions.h>
+
 #include <glibmm/main.h>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-JSBool
-JS_NewStringValue (JSContext* const cx, const std::string & string, jsval* const vp)
+bool
+JS_NewStringValue (JSContext* const cx, const std::string & string, JS::Value & vp)
 {
 	glong   items_read    = 0;
 	glong   items_written = 0;
@@ -72,14 +74,13 @@ JS_NewStringValue (JSContext* const cx, const std::string & string, jsval* const
 		return false;
 	}
 
-	JSString* const result = JS_NewUCStringCopyN (cx, utf16_string, items_written);
+	JSString* const result = JS_NewUCStringCopyN (cx, (char16_t*) utf16_string, items_written);
 
 	g_free (utf16_string);
 
 	if (result)
 	{
-		*vp = STRING_TO_JSVAL (result);
-
+		vp .setString (result);
 		return true;
 	}
 
@@ -89,32 +90,27 @@ JS_NewStringValue (JSContext* const cx, const std::string & string, jsval* const
 std::string
 to_string (JSContext* const cx, JSString* const jsstring)
 {
-	if (jsstring)
-	{
-		size_t utf16_length = 0;
+	if (not jsstring)
+		return "";
 
-		const jschar* utf16_string = JS_GetStringCharsAndLength (cx, jsstring, &utf16_length);
+	JS::RootedString str (cx, jsstring);
 
-		glong   items_read    = 0;
-		glong   items_written = 0;
-		GError* error         = nullptr;
+	JSAutoByteString bytes;
 
-		char* const utf8_string = g_utf16_to_utf8 (utf16_string, utf16_length, &items_read, &items_written, &error);
+	const auto utf8_string = bytes .encodeUtf8 (cx, str);
 
-		if (error)
-		{
-			__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
-			return "";
-		}
+	if (not utf8_string)
+		return "";
 
-		std::string string (utf8_string, items_written);
+	const std::string string (utf8_string);
 
-		g_free (utf8_string);
+	return string;
+}
 
-		return string;
-	}
-
-	return "";
+std::string
+to_string (JSContext* const cx, const JS::HandleValue & value)
+{
+	return to_string (cx, JS::ToString (cx, value));
 }
 
 } // spidermonkey

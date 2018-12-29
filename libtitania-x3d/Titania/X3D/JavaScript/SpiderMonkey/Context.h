@@ -48,38 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_CONTEXT_H__
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wignored-attributes"
-
-#include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
-#include "ObjectType.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmisleading-indentation"
-#pragma GCC diagnostic ignored "-Wignored-attributes"
-#include <js/jsapi.h>
-#pragma GCC diagnostic pop
+#include "Memory.h"
 
-#include <map>
-#include <mutex>
+#include <jsapi.h>
+#include <thread>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
 class Context :
-	public X3DJavaScriptContext
+	public X3D::X3DJavaScriptContext
 {
 public:
 
 	///  @name Construction
 
-	Context (X3D::Script* const, const std::string &, const basic::uri &);
+	///  throws std::exception
+	Context (JSContext* const cx, X3D::Script* const, const std::string &, const basic::uri &);
 
 	virtual
 	X3DBaseNode*
@@ -91,8 +83,9 @@ public:
 
 	///  @name Common members
 
+	///  throws Error <DISPOSED>
 	virtual
-	ComponentType
+	X3D::ComponentType
 	getComponent () const final override
 	{ return component; }
 
@@ -107,41 +100,7 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-
-	JSObject*
-	getGlobal () const
-	{ return global; }
-
-	JSObject*
-	getProto (const ObjectType type) const
-	{ return protos [size_t (type)]; }
-
-	void
-	addObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const object);
-
-	void
-	removeObject (X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field);
-
-	JSObject*
-	getObject (X3D::X3DChildObject* const key) const;
-
-	void
-	setReference (X3D::X3DFieldDefinition* const array, const size_t index, X3D::X3DFieldDefinition* const reference);
-
-	void
-	removeReference (X3D::X3DFieldDefinition* const array, const size_t index);
-
-	X3D::X3DFieldDefinition*
-	getReference (X3D::X3DFieldDefinition* const array, const size_t index);
-
-	X3DPtr <X3D::SceneFuture> &
-	getFuture ()
-	{ return future; }
-
-	///  @name Functions
-
-	JSBool
-	require (const basic::uri &, jsval &);
+	
 
 	///  @name Destruction
 
@@ -153,83 +112,53 @@ public:
 	~Context () final override;
 
 
-private:
-
-	///  throws std::runtime_error
-	void
-	addClasses ();
-
-	void
-	addProto (const ObjectType type, JSObject* const proto)
-	{ protos [size_t (type)] = proto; }
-
-	void
-	addUserDefinedFields ();
-
-	void
-	addUserDefinedField (X3D::X3DFieldDefinition* const);
-
-	void
-	defineProperty (JSObject* const, X3D::X3DFieldDefinition* const, const std::string &, const uint32_t);
-
-	JSBool
-	evaluate (const std::string &, const std::string &);
-
-	JSBool
-	evaluate (const std::string &, const std::string &, jsval &);
-
-	static
-	JSBool
-	setProperty (JSContext*, JSObject*, jsid, JSBool, jsval*);
-
-	static
-	JSBool
-	getBuildInProperty (JSContext*, JSObject*, jsid, jsval*);
-
-	static
-	JSBool
-	getProperty (JSContext*, JSObject*, jsid, jsval*);
+protected:
 
 	virtual
 	void
 	initialize () final override;
 
+
+private:
+
+	///  @name Operations
+
 	void
-	setEventHandler ();
+	addClasses ();
+	
+	void
+	addUserDefinedFields ();
+
+	bool
+	evaluate (const std::string & string, const std::string & filename);
+
+	void
+	call (const std::string & value);
+
+	void
+	call (JS::MutableHandleValue value);
+
+	bool
+	getFunction (const std::string & name, JS::MutableHandleValue value) const;
 
 	void
 	set_live ();
 
 	void
-	prepareEvents ();
+	prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & value);
 
 	void
-	set_field (X3D::X3DFieldDefinition* const, const jsval &);
-
-	void
-	eventsProcessed ();
-
-	void
-	set_shutdown ();
+	eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & value);
 
 	void
 	finish ();
 
-	jsval
-	getFunction (const std::string &) const;
-
 	void
-	callFunction (const std::string &) const;
-
-	void
-	callFunction (jsval) const;
-
-	void
-	connectEventsProcessed ();
+	set_shutdown ();
 
 	static
 	void
-	error (JSContext*, const char*, JSErrorReport*);
+	error (JSContext* cx, JSErrorReport* const report);
 
 	///  @name Static members
 
@@ -237,43 +166,19 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	static JSClass globalClass;
+	static const JSClassOps globalOps;
+	static const JSClass    globalClass;
 
 	///  @name Members
 
-	JSRuntime*               rt;
-	JSContext*               cx;
-	JSObject*                global;
-	std::vector <basic::uri> worldURL;
-
-	jsval initializeFn;
-	jsval prepareEventsFn;
-	jsval eventsProcessedFn;
-
-	std::vector <JSObject*>                                         protos;
-	std::map <std::string, jsval>                                   fields;
-	std::map <X3D::X3DFieldDefinition*, jsval>                      functions;
-	std::map <size_t, JSObject*>                                    objects;
-	std::map <std::pair <size_t, size_t>, X3D::X3DFieldDefinition*> references;
-	std::map <basic::uri, jsval>                                    files;
-
-	X3DPtr <X3D::SceneFuture> future;
-
-	size_t frame;
+	basic::uri                                         worldURL;
+	JSContext* const                                   cx;
+	std::unique_ptr <JS::PersistentRooted <JSObject*>> global;
 
 };
-
-inline
-Context*
-getContext (JSContext* const cx)
-{
-	return static_cast <Context*> (JS_GetContextPrivate (cx));
-}
 
 } // spidermonkey
 } // X3D
 } // titania
-
-#pragma GCC diagnostic pop
 
 #endif

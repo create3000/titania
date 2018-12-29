@@ -455,7 +455,7 @@ public:
 	dispose () final override
 	{
 		removeObject (getValue ());
-
+	
 		X3DField <InternalType*>::dispose ();
 	}
 

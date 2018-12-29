@@ -52,6 +52,10 @@
 
 #include "../Execution/X3DExecutionContext.h"
 #include "SpiderMonkey/Context.h"
+#include "SpiderMonkey/Memory.h"
+
+#include <jsapi.h>
+#include <js/Initialization.h>
 
 namespace titania {
 namespace X3D {
@@ -59,6 +63,7 @@ namespace X3D {
 const ComponentType SpiderMonkey::component      = ComponentType::TITANIA;
 const std::string   SpiderMonkey::typeName       = "SpiderMonkey";
 const std::string   SpiderMonkey::containerField = "javaScript";
+
 
 SpiderMonkey::SpiderMonkey (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
@@ -81,30 +86,36 @@ SpiderMonkey::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
 
-	JSRuntime* const runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
+	description = JS_GetImplementationVersion ();
+	version     = JS_VersionToString (JSVERSION_LATEST);
+}
 
-	if (runtime)
-	{
-		JSContext* const context = JS_NewContext (runtime, 1024);
+JSContext*
+SpiderMonkey::createContext ()
+{
+	const auto cx = JS_NewContext (2048L * 1024 * 1024);
 
-		if (context)
-		{
-			JS_SetVersion (context, JSVERSION_LATEST);
+	if (not cx)
+		return nullptr;
 
-			description = JS_GetImplementationVersion ();
-			version     = JS_VersionToString (JS_GetVersion (context));
+	if (not JS::InitSelfHostedCode (cx))
+		return nullptr;
 
-			JS_DestroyContext (context);
-		}
+	return cx;
+}
 
-		JS_DestroyRuntime (runtime);
-	}
+JSContext*
+SpiderMonkey::getContext () const
+{
+	static const auto cx = createContext ();
+
+	return cx;
 }
 
 X3DPtr <X3DJavaScriptContext>
 SpiderMonkey::createContext (Script* const script, const std::string & ecmascript, const basic::uri & uri)
 {
-	return X3DPtr <X3DJavaScriptContext> (new spidermonkey::Context (script, ecmascript, uri));
+	return X3DPtr <X3DJavaScriptContext> (new spidermonkey::Context (getContext (), script, ecmascript, uri));
 }
 
 void
@@ -116,6 +127,15 @@ SpiderMonkey::toStream (std::ostream & stream) const
 		<< "\t\tDescription: " << description << std::endl
 		<< "\t\tVersion: " << version;
 }
+
+void
+SpiderMonkey::dispose ()
+{
+	X3DJavaScriptEngine::dispose ();
+}
+
+SpiderMonkey::~SpiderMonkey ()
+{ }
 
 } // X3D
 } // titania

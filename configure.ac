@@ -102,17 +102,11 @@ dnl ***************************************************************************
 dnl Check required libraries that do not have a pkgconfig
 dnl ***************************************************************************
 
-#USE_MOZJS185="no"
-#AC_CHECK_LIB(mozjs185, _init, [USE_MOZJS185="yes"]) 
-#if test "$USE_MOZJS185" = "no"; then
-#	AC_MSG_ERROR([*** Please install mozjs185 library.])
-#fi
-
-#USE_CGAL="no"
-#AC_CHECK_LIB(CGAL, _init, [USE_CGAL="yes"])
-#if test "$USE_CGAL" = "no"; then
-#	AC_MSG_ERROR([*** Please install CGAL library.])
-#fi
+USE_CGAL="no"
+AC_CHECK_LIB(CGAL, _init, [USE_CGAL="yes"])
+if test "$USE_CGAL" = "no"; then
+	AC_MSG_ERROR([*** Please install CGAL library.])
+fi
 
 
 
@@ -131,6 +125,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
+mozjs-52
 libxml++-2.6
 json-c
 ImageMagick++
