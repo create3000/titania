@@ -136,7 +136,7 @@ private:
 	call (const std::string & value);
 
 	void
-	call (JS::MutableHandleValue value);
+	call (JS::HandleValue value);
 
 	bool
 	getFunction (const std::string & name, JS::MutableHandleValue value) const;
@@ -145,10 +145,13 @@ private:
 	set_live ();
 
 	void
-	prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & value);
+	prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue);
 
 	void
-	eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & value);
+	set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr <JS::PersistentRooted <JS::Value>> & inputFunction);
+
+	void
+	eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue);
 
 	void
 	finish ();

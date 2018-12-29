@@ -167,11 +167,11 @@ Context::call (const std::string & value)
 	JS::RootedValue fval (cx);
 
 	if (getFunction (value, &fval))
-		call (&fval);
+		call (fval);
 }
 
 void
-Context::call (JS::MutableHandleValue value)
+Context::call (JS::HandleValue value)
 {
 	JS::RootedValue rval (cx);
 
@@ -238,35 +238,86 @@ Context::set_live ()
 			getScriptNode () -> addInterest (&Context::eventsProcessed, this, eventsProcessed);
 
 		getScriptNode () -> addInterest (&Context::finish, this);
+
+		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+		{
+			switch (field -> getAccessType ())
+			{
+				case inputOnly:
+				{
+					const auto inputFunction = std::make_shared <JS::PersistentRooted <JS::Value>> (cx);
+
+					if (getFunction (field -> getName (), inputFunction .get ()))
+						field -> addInterest (&Context::set_field, this, field, inputFunction);
+
+					break;
+				}
+				case inputOutput:
+				{
+					const auto inputFunction = std::make_shared <JS::PersistentRooted <JS::Value>> (cx);
+
+					if (getFunction ("set_" + field -> getName (), inputFunction .get ()))
+						field -> addInterest (&Context::set_field, this, field, inputFunction);
+
+					break;
+				}
+				default:
+					break;
+			}
+		}
 	}
 	else
 	{
 		getBrowser () -> prepareEvents () .removeInterest (&Context::prepareEvents, this);
 		getScriptNode () -> removeInterest (&Context::eventsProcessed, this);
 		getScriptNode () -> removeInterest (&Context::finish, this);
+
+		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+			field -> removeInterest (&Context::set_field, this);
 	}
 }
 
 void
-Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & value)
+Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue)
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
 	JS_SetContextPrivate (cx, this);
 
-	call (value .get ());
+	call (*functionValue);
 }
 
 void
-Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & value)
+Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr <JS::PersistentRooted <JS::Value>> & inputFunction)
+{
+	const JSAutoRequest ar (cx);
+	const JSAutoCompartment ac (cx, *global);
+
+	field -> setTainted (true);
+
+	JS_SetContextPrivate (cx, this);
+
+	JS::RootedValue     rval (cx);
+	JS::AutoValueVector args (cx);
+
+	args .append (JS::NullValue ());
+	args .append (JS::DoubleValue (getCurrentTime ()));
+
+	JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
+
+	field -> setTainted (false);
+}
+
+void
+Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue)
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
 	JS_SetContextPrivate (cx, this);
 
-	call (value .get ());
+	call (*functionValue);
 }
 
 void
@@ -294,6 +345,8 @@ Context::set_shutdown ()
 void
 Context::error (JSContext* cx, JSErrorReport* const report)
 {
+__LOG__ << std::endl;
+
 	const auto context = getContext (cx);
 
 	glong   items_read    = 0;

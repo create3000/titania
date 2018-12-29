@@ -68,6 +68,10 @@ public:
 
 private:
 
+	static bool null_  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool false_ (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool true_  (JSContext* cx, unsigned argc, JS::Value* vp);
+
 	static bool print (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Static members

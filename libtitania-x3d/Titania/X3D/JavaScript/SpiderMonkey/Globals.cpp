@@ -61,11 +61,15 @@ namespace X3D {
 namespace spidermonkey {
 
 JSPropertySpec Globals::properties [ ] = {
+	JS_PSG ("NULL",  null_,  JSPROP_ENUMERATE | JSPROP_PERMANENT),
+	JS_PSG ("FALSE", false_, JSPROP_ENUMERATE | JSPROP_PERMANENT),
+	JS_PSG ("TRUE",  true_,  JSPROP_ENUMERATE | JSPROP_PERMANENT),
 	JS_PS_END
 };
 
 JSFunctionSpec Globals::functions [ ] = {
-	JS_FS ("print",   Globals::print,   0, JSPROP_PERMANENT), // VRML 2.0
+	JS_FS ("print", Globals::print, 0, JSPROP_PERMANENT), // VRML 2.0
+	JS_FS ("trace", Globals::print, 0, JSPROP_PERMANENT), // Non standard
 	JS_FS_END
 };
 
@@ -74,6 +78,27 @@ Globals::init (JSContext* const cx, const JS::HandleObject & global)
 {
 	JS_DefineProperties (cx, global, properties);
 	JS_DefineFunctions (cx, global, functions);
+}
+
+bool
+Globals::null_ (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	vp -> setNull ();
+	return true;
+}
+
+bool
+Globals::false_ (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	vp -> setBoolean (false);
+	return true;
+}
+
+bool
+Globals::true_ (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	vp -> setBoolean (true);
+	return true;
 }
 
 bool
