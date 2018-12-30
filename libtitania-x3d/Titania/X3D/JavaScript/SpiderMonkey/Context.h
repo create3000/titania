@@ -180,6 +180,9 @@ private:
 	void
 	set_shutdown ();
 
+	void
+	exception ();
+
 	static
 	void
 	error (JSContext* cx, JSErrorReport* const report);

@@ -278,15 +278,15 @@ bool
 Context::evaluate (const std::string & string, const std::string & filename)
 {
 	JS::CompileOptions options (cx, JSVERSION_LATEST);
+	JS::RootedScript   script (cx);
 
 	options .setUTF8 (true);
+	options .werrorOption = true;
 
-	JS::RootedScript        rootedScript (cx);
-	JS::MutableHandleScript script (&rootedScript);
-
-	if (JS_CompileScript (cx, string .c_str (), string .length (), options, script))
+	if (JS_CompileScript (cx, string .c_str (), string .length (), options, &script))
 		return JS_ExecuteScript (cx, script);
 
+	exception ();
 	return false;
 }
 
@@ -305,6 +305,8 @@ Context::call (JS::HandleValue value)
 	JS::RootedValue rval (cx);
 
 	JS_CallFunctionValue (cx, *global, value, JS::HandleValueArray::empty (), &rval);
+
+	exception ();
 }
 
 bool
@@ -331,6 +333,7 @@ Context::initialize ()
 
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState es (cx);
 
 	JS_SetContextPrivate (cx, this);
 
@@ -411,6 +414,7 @@ Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>>
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState es (cx);
 
 	JS_SetContextPrivate (cx, this);
 
@@ -422,6 +426,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr 
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState es (cx);
 
 	field -> setTainted (true);
 
@@ -443,6 +448,7 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState es (cx);
 
 	JS_SetContextPrivate (cx, this);
 
@@ -465,6 +471,7 @@ Context::set_shutdown ()
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState es (cx);
 
 	JS_SetContextPrivate (cx, this);
 
@@ -472,10 +479,31 @@ Context::set_shutdown ()
 }
 
 void
+Context::exception ()
+{
+	if (not JS_IsExceptionPending (cx))
+		return;
+
+	JS::RootedValue value (cx);
+	
+	if (not JS_GetPendingException (cx, &value))
+		return;
+
+	JS_ClearPendingException (cx);
+
+	JS::HandleValue exception (&value);
+
+	if (exception .isObject ())
+	{
+		JS::RootedObject object (cx, &exception .toObject ());
+
+		error (cx, JS_ErrorFromException (cx, object));
+	}
+}
+
+void
 Context::error (JSContext* cx, JSErrorReport* const report)
 {
-__LOG__ << std::endl;
-
 	const auto context = getContext (cx);
 
 	glong   items_read    = 0;
