@@ -58,8 +58,8 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-bool
-JS_NewStringValue (JSContext* const cx, const std::string & string, JS::Value & vp);
+JS::Value
+StringValue (JSContext* const cx, const std::string & string);
 
 // to_string
 

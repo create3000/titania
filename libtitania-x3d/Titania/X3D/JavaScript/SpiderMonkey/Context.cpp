@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 
 #include "Arguments.h"
+#include "field.h"
 #include "Globals.h"
 
 #include <cassert>
@@ -301,7 +302,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr 
 	JS::RootedValue     rval (cx);
 	JS::AutoValueVector args (cx);
 
-	args .append (JS::NullValue ());
+	args .append (getValue (cx, field));
 	args .append (JS::DoubleValue (getCurrentTime ()));
 
 	JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);

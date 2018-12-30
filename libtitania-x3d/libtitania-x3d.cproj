@@ -970,6 +970,9 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Arguments.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Globals.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\String.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\X3DScalar.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\field.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1638,6 +1641,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Context.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Globals.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\String.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\field.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1745,6 +1749,7 @@
     <Folder Include="share\mime\packages\" />
     <Folder Include="Titania\X3D\Tools\SnapTool\" />
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
+    <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

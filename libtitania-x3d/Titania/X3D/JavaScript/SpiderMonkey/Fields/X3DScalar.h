@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
@@ -48,68 +48,97 @@
  *
  ******************************************************************************/
 
-#include "String.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_X3DSCALAR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_X3DSCALAR_H__
 
-#include <js/Conversions.h>
-
-#include <glibmm/main.h>
-#include <Titania/LOG.h>
+#include "../../../Fields/SFString.h"
+#include "../../../Fields/SFTime.h"
+#include "../../../Fields/X3DScalar.h"
+#include "../String.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-JS::Value
-StringValue (JSContext* const cx, const std::string & string)
+// Template class for JavaScript build-in field types.
+
+template <class Type>
+class X3DScalar
 {
-	glong   items_read    = 0;
-	glong   items_written = 0;
-	GError* error         = nullptr;
+public:
 
-	gunichar2* const utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
+	///  @name Member types
 
-	if (error)
+	using internal_type = Type;
+
+	///  @name Construction
+
+	static
+	JS::Value
+	create (JSContext* const cx, const internal_type* const field)
 	{
-		__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
-		return JS::UndefinedValue ();
+		throw std::runtime_error ("X3DScalar::create");
 	}
 
-	JSString* const jsstring = JS_NewUCStringCopyN (cx, (char16_t*) utf16_string, items_written);
+};
 
-	g_free (utf16_string);
-
-	if (jsstring)
-		return JS::StringValue (jsstring);
-
-	return JS::UndefinedValue ();
-}
-
-std::string
-to_string (JSContext* const cx, JSString* const jsstring)
+template <>
+inline
+JS::Value
+X3DScalar <X3D::SFBool>::create (JSContext* const cx, const internal_type* const field)
 {
-	if (not jsstring)
-		return "";
-
-	JS::RootedString str (cx, jsstring);
-
-	JSAutoByteString bytes;
-
-	const auto utf8_string = bytes .encodeUtf8 (cx, str);
-
-	if (not utf8_string)
-		return "";
-
-	const std::string string (utf8_string);
-
-	return string;
+	return JS::BooleanValue (field -> getValue ());
 }
 
-std::string
-to_string (JSContext* const cx, const JS::HandleValue & value)
+template <>
+inline
+JS::Value
+X3DScalar <X3D::SFDouble>::create (JSContext* const cx, const internal_type* const field)
 {
-	return to_string (cx, JS::ToString (cx, value));
+	return JS::DoubleValue (field -> getValue ());
 }
+
+template <>
+inline
+JS::Value
+X3DScalar <X3D::SFFloat>::create (JSContext* const cx, const internal_type* const field)
+{
+	return JS::DoubleValue (field -> getValue ());
+}
+
+template <>
+inline
+JS::Value
+X3DScalar <X3D::SFInt32>::create (JSContext* const cx, const internal_type* const field)
+{
+	return JS::Int32Value (field -> getValue ());
+}
+
+template <>
+inline
+JS::Value
+X3DScalar <X3D::SFString>::create (JSContext* const cx, const internal_type* const field)
+{
+	return StringValue (cx, field -> getValue ());
+}
+
+template <>
+inline
+JS::Value
+X3DScalar <X3D::SFTime>::create (JSContext* const cx, const internal_type* const field)
+{
+	return JS::DoubleValue (field -> getValue ());
+}
+
+using SFBool   = X3DScalar <X3D::SFBool>;
+using SFDouble = X3DScalar <X3D::SFDouble>;
+using SFFloat  = X3DScalar <X3D::SFFloat>;
+using SFInt32  = X3DScalar <X3D::SFInt32>;
+using SFString = X3DScalar <X3D::SFString>;
+using SFTime   = X3DScalar <X3D::SFTime>;
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif

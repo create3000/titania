@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
@@ -48,68 +48,25 @@
  *
  ******************************************************************************/
 
-#include "String.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELD_H__
 
-#include <js/Conversions.h>
+#include "../../Basic/X3DFieldDefinition.h"
 
-#include <glibmm/main.h>
-#include <Titania/LOG.h>
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
+void
+setValue (JSContext* const, X3DFieldDefinition* const, const JS::Value &);
+
 JS::Value
-StringValue (JSContext* const cx, const std::string & string)
-{
-	glong   items_read    = 0;
-	glong   items_written = 0;
-	GError* error         = nullptr;
-
-	gunichar2* const utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
-
-	if (error)
-	{
-		__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
-		return JS::UndefinedValue ();
-	}
-
-	JSString* const jsstring = JS_NewUCStringCopyN (cx, (char16_t*) utf16_string, items_written);
-
-	g_free (utf16_string);
-
-	if (jsstring)
-		return JS::StringValue (jsstring);
-
-	return JS::UndefinedValue ();
-}
-
-std::string
-to_string (JSContext* const cx, JSString* const jsstring)
-{
-	if (not jsstring)
-		return "";
-
-	JS::RootedString str (cx, jsstring);
-
-	JSAutoByteString bytes;
-
-	const auto utf8_string = bytes .encodeUtf8 (cx, str);
-
-	if (not utf8_string)
-		return "";
-
-	const std::string string (utf8_string);
-
-	return string;
-}
-
-std::string
-to_string (JSContext* const cx, const JS::HandleValue & value)
-{
-	return to_string (cx, JS::ToString (cx, value));
-}
+getValue (JSContext* const, X3DFieldDefinition* const);
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif
