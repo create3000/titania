@@ -54,8 +54,10 @@
 #include "../../Execution/X3DExecutionContext.h"
 
 #include "Arguments.h"
+#include "Error.h"
 #include "field.h"
 #include "Globals.h"
+#include "String.h"
 
 #include <cassert>
 
@@ -94,7 +96,8 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	X3D::X3DJavaScriptContext (script, ecmascript),
 	                 worldURL (uri),
 	                       cx (cx),
-	                   global ()
+	                   global (),
+	                   fields ()
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
@@ -143,7 +146,132 @@ Context::addClasses ()
 void
 Context::addUserDefinedFields ()
 {
+	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
+	{
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFBool:
+			case X3D::X3DConstants::SFDouble:
+			case X3D::X3DConstants::SFFloat:
+			case X3D::X3DConstants::SFInt32:
+			case X3D::X3DConstants::SFString:
+			case X3D::X3DConstants::SFTime:
+			{
+				break;
+			}
+			default:
+			{
+				fields .emplace (field -> getName (), std::make_unique <JS::PersistentRooted <JS::Value>> (cx, getValue (cx, field)));
+				break;
+			}
+		}
 
+		switch (field -> getAccessType ())
+		{
+			case X3D::initializeOnly:
+			case X3D::outputOnly:
+			{
+				defineProperty (*global, field, field -> getName (), JSPROP_ENUMERATE);
+				break;
+			}
+			case X3D::inputOnly:
+				break;
+			case X3D::inputOutput:
+			{
+				defineProperty (*global, field, field -> getName (),              JSPROP_ENUMERATE);
+				defineProperty (*global, field, field -> getName () + "_changed", 0);
+				break;
+			}
+		}
+	}
+}
+
+void
+Context::defineProperty (JS::HandleObject obj,
+                         X3D::X3DFieldDefinition* const field,
+                         const std::string & name,
+                         const uint32_t attrs)
+{
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFBool:
+		case X3D::X3DConstants::SFDouble:
+		case X3D::X3DConstants::SFFloat:
+		case X3D::X3DConstants::SFInt32:
+		case X3D::X3DConstants::SFNode:
+		case X3D::X3DConstants::SFString:
+		case X3D::X3DConstants::SFTime:
+		{
+			JS_DefineProperty (cx,
+			                   obj,
+			                   name .c_str (),
+			                   JS::UndefinedHandleValue,
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_SHARED | attrs,
+			                   JS_PROPERTYOP_GETTER (&Context::getBuildInProperty),
+			                   JS_PROPERTYOP_SETTER (&Context::setProperty));
+			break;
+		}
+		default:
+		{
+			JS_DefineProperty (cx,
+			                   obj,
+			                   name .c_str (),
+			                   JS::UndefinedHandleValue,
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_SHARED | attrs,
+			                   JS_PROPERTYOP_GETTER (&Context::getProperty),
+			                   JS_PROPERTYOP_SETTER (&Context::setProperty));
+			break;
+		}
+	}
+}
+
+bool
+Context::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
+{
+	try
+	{
+		const auto & script = getContext (cx) -> getScriptNode ();
+		const auto   field  = script -> getField (to_string (cx, id));
+
+		setValue (cx, field, vp);
+		result .succeed ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "Couldn't assing value to user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+	}
+}
+
+bool
+Context::getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+{
+	try
+	{
+		const auto & script = getContext (cx) -> getScriptNode ();
+		const auto   field  = script -> getField (to_string (cx, id));
+
+		vp .set (getValue (cx, field));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+	}
+}
+
+bool
+Context::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+{
+	try
+	{
+		vp .set (*getContext (cx) -> fields .at (to_string (cx, id)));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+	}
 }
 
 bool

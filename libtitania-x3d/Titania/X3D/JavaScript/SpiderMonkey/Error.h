@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
@@ -48,32 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_STRING_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_STRING_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ERROR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ERROR_H__
 
 #include <jsapi.h>
-#include <string>
+#include <utility>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-JS::Value
-StringValue (JSContext* const cx, const std::string & string);
-
-// to_string
-
-std::string
-to_string (JSContext* const cx, JSString* const);
-
-std::string
-to_string (JSContext* const cx, const JS::HandleValue & value);
-
+template <class ... Args>
 inline
-std::string
-to_string (JSContext* const cx, JS::HandleId value)
+bool
+ThrowException (JSContext* const cx, const char* format, Args && ... args)
 {
-	return to_string (cx, JSID_TO_STRING (value));
+	JS_ReportWarningUTF8 (cx, format, std::forward <Args> (args) ...);
+	return false;
 }
 
 } // spidermonkey

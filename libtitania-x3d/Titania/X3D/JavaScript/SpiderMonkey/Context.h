@@ -101,6 +101,9 @@ public:
 
 	///  @name Member access
 	
+	JS::HandleObject
+	getGlobal () const
+	{ return *global; }
 
 	///  @name Destruction
 
@@ -128,6 +131,24 @@ private:
 	
 	void
 	addUserDefinedFields ();
+
+	void
+	defineProperty (JS::HandleObject obj,
+	                X3D::X3DFieldDefinition* const field,
+	                const std::string & name,
+	                const uint32_t attrs);
+	
+	static
+	bool
+	setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult& result);
+
+	static
+	bool
+	getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+	
+	static
+	bool
+	getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
 
 	bool
 	evaluate (const std::string & string, const std::string & filename);
@@ -174,9 +195,10 @@ private:
 
 	///  @name Members
 
-	basic::uri                                         worldURL;
-	JSContext* const                                   cx;
-	std::unique_ptr <JS::PersistentRooted <JSObject*>> global;
+	basic::uri                                                                 worldURL;
+	JSContext* const                                                           cx;
+	std::unique_ptr <JS::PersistentRooted <JSObject*>>                         global;
+	std::map <std::string, std::unique_ptr <JS::PersistentRooted <JS::Value>>> fields;
 
 };
 

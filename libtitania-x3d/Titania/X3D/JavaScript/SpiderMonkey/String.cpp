@@ -99,9 +99,7 @@ to_string (JSContext* const cx, JSString* const jsstring)
 	if (not utf8_string)
 		return "";
 
-	const std::string string (utf8_string);
-
-	return string;
+	return std::string (utf8_string);
 }
 
 std::string
