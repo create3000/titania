@@ -50,14 +50,14 @@
 
 #include "Context.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
-
 #include "Arguments.h"
 #include "Error.h"
 #include "field.h"
 #include "Globals.h"
 #include "String.h"
+
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 #include <cassert>
 
@@ -97,7 +97,8 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                 worldURL (uri),
 	                       cx (cx),
 	                   global (),
-	                   fields ()
+	                   fields (),
+	                   protos ()
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");

@@ -48,74 +48,83 @@
  *
  ******************************************************************************/
 
-#include "Globals.h"
-
-#include "Arguments.h"
-#include "Context.h"
-#include "String.h"
-
-#include "../../Browser/X3DBrowser.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_OBJECT_TYPE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_OBJECT_TYPE_H__
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-JSPropertySpec Globals::properties [ ] = {
-	JS_PSG ("NULL",  null_,  JSPROP_ENUMERATE | JSPROP_PERMANENT),
-	JS_PSG ("FALSE", false_, JSPROP_ENUMERATE | JSPROP_PERMANENT),
-	JS_PSG ("TRUE",  true_,  JSPROP_ENUMERATE | JSPROP_PERMANENT),
-	JS_PS_END
+enum class ObjectType
+{
+	X3DConstants,
+
+	Browser,
+	X3DExecutionContext,
+	X3DScene,
+
+	ComponentInfo,
+	ProfileInfo,
+	X3DFieldDefinition,
+	X3DExternProtoDeclaration,
+	X3DProtoDeclaration,
+	X3DRoute,
+
+	FieldDefinitionArray,
+	ComponentInfoArray,
+	ProfileInfoArray,
+	ExternProtoDeclarationArray,
+	ProtoDeclarationArray,
+	RouteArray,
+
+	X3DField,
+	X3DArrayField,
+
+	SFColor,
+	SFColorRGBA,
+	SFImage,
+	SFMatrix3d,
+	SFMatrix3f,
+	SFMatrix4d,
+	SFMatrix4f,
+	SFNode,
+	SFRotation,
+	SFVec2d,
+	SFVec2f,
+	SFVec3d,
+	SFVec3f,
+	SFVec4d,
+	SFVec4f,
+	VrmlMatrix,
+
+	MFBool,
+	MFColor,
+	MFColorRGBA,
+	MFDouble,
+	MFFloat,
+	MFImage,
+	MFInt32,
+	MFMatrix3d,
+	MFMatrix3f,
+	MFMatrix4d,
+	MFMatrix4f,
+	MFNode,
+	MFRotation,
+	MFString,
+	MFTime,
+	MFVec2d,
+	MFVec2f,
+	MFVec3d,
+	MFVec3f,
+	MFVec4d,
+	MFVec4f,
+
+	SIZE
+
 };
-
-JSFunctionSpec Globals::functions [ ] = {
-	JS_FS ("print", Globals::print, 0, JSPROP_PERMANENT), // VRML 2.0
-	JS_FS ("trace", Globals::print, 0, JSPROP_PERMANENT), // Non standard
-	JS_FS_END
-};
-
-void
-Globals::init (JSContext* const cx, const JS::HandleObject & global)
-{
-	JS_DefineProperties (cx, global, properties);
-	JS_DefineFunctions (cx, global, functions);
-}
-
-bool
-Globals::null_ (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	vp -> setNull ();
-	return true;
-}
-
-bool
-Globals::false_ (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	vp -> setBoolean (false);
-	return true;
-}
-
-bool
-Globals::true_ (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	vp -> setBoolean (true);
-	return true;
-}
-
-bool
-Globals::print (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	const auto args    = JS::CallArgsFromVp (argc, vp);
-	const auto browser = getContext (cx) -> getBrowser ();
-
-	for (unsigned i = 0; i < argc; ++ i)
-		browser -> print (to_string (cx, args [i]));
-
-	browser -> print ('\n');
-
-	args .rval () .setUndefined ();
-	return true;
-}
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif

@@ -51,19 +51,186 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ARGUMENTS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ARGUMENTS_H__
 
+#include "String.h"
+
+#include "Context.h"
+
+#include "../../Types/String.h"
+
 #include <jsapi.h>
+#include <js/Conversions.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
-
-class Context;
 
 inline
 Context*
 getContext (JSContext* cx)
 {
 	return static_cast <Context*> (JS_GetContextPrivate (cx));
+}
+
+template <class Type>
+bool
+instanceOf (JSContext* const cx, JSObject* const obj)
+{
+	const auto context     = getContext (cx);
+	const auto proto       = context -> getProto (Type::getId ());
+	const auto constructor = JS_GetConstructor (cx, proto);
+	bool       boolean     = false;
+
+	if (JS_HasInstance (cx, constructor, obj, &boolean))
+		return boolean;
+
+	return false;
+}
+
+template <class Type>
+inline
+Type
+getObject (JSObject* const obj)
+{
+	return static_cast <Type> (JS_GetPrivate (obj));
+}
+
+template <class Type>
+std::enable_if_t <
+	not (std::is_integral_v <Type> or
+	     std::is_floating_point_v <Type> or
+	     std::is_same_v <Type, std::string> or
+	     std::is_same_v <Type, X3D::String>),
+	typename Type::internal_type*
+>
+getArgument (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	if (value .isObjectOrNull ())
+	{
+		const auto obj = value .toObjectOrNull ();
+
+		if (not obj)
+			throw std::domain_error ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "' but is null");
+
+		if (instanceOf <Type> (cx, obj))
+			return getObject <typename Type::internal_type*> (obj);
+	}
+
+	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "'");
+}
+
+template <class Type>
+std::enable_if_t <
+	not (std::is_integral_v <Type> or
+	     std::is_floating_point_v <Type> or
+	     std::is_same_v <Type, std::string> or
+	     std::is_same_v <Type, X3D::String>),
+	typename Type::internal_type*
+>
+getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
+{
+	return getArgument <Type> (cx, args [index], index);
+}
+
+template <class Type>
+std::enable_if_t <
+	std::is_integral_v <Type> or
+	std::is_floating_point_v <Type> or
+	std::is_same_v <Type, std::string> or
+	std::is_same_v <Type, X3D::String>,
+	Type
+>
+getArgument (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	throw std::invalid_argument ("getArgument");
+}
+
+template <>
+inline
+bool
+getArgument <bool> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	return JS::ToBoolean (value);
+}
+
+template <>
+inline
+double
+getArgument <double> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	double number = 0;
+
+	if (JS::ToNumber (cx, value, &number))
+		return number;
+
+	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
+}
+
+template <>
+inline
+float
+getArgument <float> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	double number = 0;
+
+	if (JS::ToNumber (cx, value, &number))
+		return number;
+
+	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Number'");
+}
+
+template <>
+inline
+int32_t
+getArgument <int32_t> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	int32_t number = 0;
+
+	if (JS::ToInt32 (cx, value, &number))
+		return number;
+
+	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
+}
+
+template <>
+inline
+uint32_t
+getArgument <uint32_t> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	uint32_t number = 0;
+
+	if (JS::ToUint32 (cx, value, &number))
+		return number;
+
+	throw std::invalid_argument ("type of argument " + std::to_string (index + 1) + " is invalid, must be a 'Integer'");
+}
+
+template <>
+inline
+std::string
+getArgument <std::string> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	return to_string (cx, value);
+}
+
+template <>
+inline
+X3D::String
+getArgument <X3D::String> (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+{
+	return to_string (cx, value);
+}
+
+template <class Type>
+std::enable_if_t <
+	std::is_integral_v <Type> or
+	std::is_floating_point_v <Type> or
+	std::is_same_v <Type, std::string> or
+	std::is_same_v <Type, X3D::String>,
+	Type
+>
+getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
+{
+	return getArgument <Type> (cx, args [index], index);
 }
 
 } // spidermonkey

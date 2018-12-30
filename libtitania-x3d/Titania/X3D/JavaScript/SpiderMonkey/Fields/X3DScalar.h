@@ -51,10 +51,11 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_X3DSCALAR_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_X3DSCALAR_H__
 
+#include "../String.h"
+
 #include "../../../Fields/SFString.h"
 #include "../../../Fields/SFTime.h"
 #include "../../../Fields/X3DScalar.h"
-#include "../String.h"
 
 namespace titania {
 namespace X3D {

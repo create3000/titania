@@ -60,10 +60,10 @@ namespace X3D {
 namespace spidermonkey {
 
 void
-setValue (JSContext* const, X3DFieldDefinition* const, const JS::Value &);
+setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::HandleValue & value);
 
 JS::Value
-getValue (JSContext* const, X3DFieldDefinition* const);
+getValue (JSContext* const cx, X3DFieldDefinition* const field);
 
 } // spidermonkey
 } // X3D

@@ -66,22 +66,19 @@ StringValue (JSContext* const cx, const std::string & string)
 	glong   items_written = 0;
 	GError* error         = nullptr;
 
-	gunichar2* const utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
+	const auto utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
 
 	if (error)
-	{
-		__LOG__ << g_quark_to_string (error -> domain) << ": " << error -> code << ": " << error -> message << std::endl;
-		return JS::UndefinedValue ();
-	}
+		throw std::invalid_argument (error -> message);
 
-	JSString* const jsstring = JS_NewUCStringCopyN (cx, (char16_t*) utf16_string, items_written);
+	const auto jsstring = JS_NewUCStringCopyN (cx, (char16_t*) utf16_string, items_written);
 
 	g_free (utf16_string);
 
 	if (jsstring)
 		return JS::StringValue (jsstring);
 
-	return JS::UndefinedValue ();
+	throw std::invalid_argument ("out of memory");
 }
 
 std::string

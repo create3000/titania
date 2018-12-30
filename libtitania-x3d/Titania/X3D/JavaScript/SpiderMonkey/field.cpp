@@ -50,6 +50,7 @@
 
 #include "field.h"
 
+#include "Arguments.h"
 #include "Fields.h"
 
 namespace titania {
@@ -57,15 +58,15 @@ namespace X3D {
 namespace spidermonkey {
 
 void
-setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Value & value)
+setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::HandleValue & value)
 {
 	switch (field -> getType ())
 	{
-//		case X3DConstants::SFBool:
-//		{
-//			*static_cast <X3D::SFBool*> (field) = getArgument <bool> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFBool:
+		{
+			*static_cast <X3D::SFBool*> (field) = getArgument <bool> (cx, value, 0);
+			break;
+		}
 //		case X3DConstants::SFColor:
 //		{
 //			*static_cast <X3D::SFColor*> (field) = *getArgument <SFColor> (cx, value, 0);
@@ -76,21 +77,21 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Value 
 //			*static_cast <X3D::SFColorRGBA*> (field) = *getArgument <SFColorRGBA> (cx, value, 0);
 //			break;
 //		}
-//		case X3DConstants::SFDouble:
-//		{
-//			*static_cast <X3D::SFDouble*> (field) = getArgument <double> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFFloat:
-//		{
-//			*static_cast <X3D::SFFloat*> (field) = getArgument <double> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFInt32:
-//		{
-//			*static_cast <X3D::SFInt32*> (field) = getArgument <int32_t> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFDouble:
+		{
+			*static_cast <X3D::SFDouble*> (field) = getArgument <double> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFFloat:
+		{
+			*static_cast <X3D::SFFloat*> (field) = getArgument <double> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFInt32:
+		{
+			*static_cast <X3D::SFInt32*> (field) = getArgument <int32_t> (cx, value, 0);
+			break;
+		}
 //		case X3DConstants::SFImage:
 //		{
 //			*static_cast <X3D::SFImage*> (field) = *getArgument <SFImage> (cx, value, 0);
@@ -134,16 +135,16 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Value 
 //			*static_cast <X3D::SFRotation*> (field) = *getArgument <SFRotation> (cx, value, 0);
 //			break;
 //		}
-//		case X3DConstants::SFString:
-//		{
-//			*static_cast <X3D::SFString*> (field) = getArgument <SFString> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFTime:
-//		{
-//			*static_cast <X3D::SFTime*> (field) = getArgument <double> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFString:
+		{
+			*static_cast <X3D::SFString*> (field) = getArgument <std::string> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFTime:
+		{
+			*static_cast <X3D::SFTime*> (field) = getArgument <double> (cx, value, 0);
+			break;
+		}
 //		case X3DConstants::SFVec2d:
 //		{
 //			*static_cast <X3D::SFVec2d*> (field) = *getArgument <SFVec2d> (cx, value, 0);

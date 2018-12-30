@@ -53,6 +53,7 @@
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
+#include "ObjectType.h"
 
 #include <jsapi.h>
 #include <thread>
@@ -102,6 +103,10 @@ public:
 	JS::HandleObject
 	getGlobal () const
 	{ return *global; }
+
+	JSObject*
+	getProto (const ObjectType type) const
+	{ return protos [size_t (type)]; }
 
 	///  @name Destruction
 
@@ -200,6 +205,7 @@ private:
 	JSContext* const                                                           cx;
 	std::unique_ptr <JS::PersistentRooted <JSObject*>>                         global;
 	std::map <std::string, std::unique_ptr <JS::PersistentRooted <JS::Value>>> fields;
+	std::vector <JSObject*>                                                    protos;
 
 };
 
