@@ -487,17 +487,17 @@ Context::exception ()
 		return;
 
 	JS::RootedValue value (cx);
-	
+
 	if (not JS_GetPendingException (cx, &value))
 		return;
 
 	JS_ClearPendingException (cx);
 
-	JS::HandleValue exception (&value);
+	const JS::HandleValue exception (&value);
 
 	if (exception .isObject ())
 	{
-		JS::RootedObject object (cx, &exception .toObject ());
+		const JS::RootedObject object (cx, &exception .toObject ());
 
 		error (cx, JS_ErrorFromException (cx, object));
 	}

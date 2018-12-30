@@ -54,8 +54,6 @@
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
 
-#include "Memory.h"
-
 #include <jsapi.h>
 #include <thread>
 

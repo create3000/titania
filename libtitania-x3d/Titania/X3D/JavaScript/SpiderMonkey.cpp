@@ -52,7 +52,6 @@
 
 #include "../Execution/X3DExecutionContext.h"
 #include "SpiderMonkey/Context.h"
-#include "SpiderMonkey/Memory.h"
 
 #include <jsapi.h>
 #include <js/Initialization.h>

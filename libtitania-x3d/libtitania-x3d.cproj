@@ -966,7 +966,6 @@
     <None Include="Titania\X3D\Tools\SnapTool\SnapSourceTool.h" />
     <None Include="Titania\X3D\Rendering\FogContainer.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Context.h" />
-    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Memory.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Arguments.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Globals.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\String.h" />
