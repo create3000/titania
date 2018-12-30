@@ -281,10 +281,12 @@ Context::evaluate (const std::string & string, const std::string & filename)
 	JS::RootedScript   script (cx);
 
 	options .setUTF8 (true);
-	options .werrorOption = true;
 
 	if (JS_CompileScript (cx, string .c_str (), string .length (), options, &script))
-		return JS_ExecuteScript (cx, script);
+	{
+		if (JS_ExecuteScript (cx, script))
+			return true;
+	}
 
 	exception ();
 	return false;

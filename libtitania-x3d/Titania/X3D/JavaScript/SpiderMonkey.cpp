@@ -101,14 +101,6 @@ SpiderMonkey::createContext ()
 	if (not JS::InitSelfHostedCode (cx))
 		return nullptr;
 
-	auto & options = JS::ContextOptionsRef (cx);
-
-	options .setExtraWarnings (true);
-	options .setWerror (true);
-
-	__LOG__ << options .extraWarnings () << std::endl;
-	__LOG__ << options .werror () << std::endl;
-
 	return cx;
 }
 
