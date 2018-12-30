@@ -500,8 +500,16 @@ Context::exception ()
 	{
 		const JS::RootedObject object (cx, &exception .toObject ());
 
-		error (cx, JS_ErrorFromException (cx, object));
+		const auto report = JS_ErrorFromException (cx, object);
+
+		if (report)
+		{
+			error (cx, report);
+			return;
+		}
 	}
+
+	setError (to_string (cx, exception) .c_str (), worldURL .size () ? worldURL : "<inline>", 0, 0, "");
 }
 
 void
