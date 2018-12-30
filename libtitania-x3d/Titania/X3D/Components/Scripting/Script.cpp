@@ -121,7 +121,10 @@ Script::addUserDefinedField (const AccessType accessType, const std::string & na
 	X3DScriptNode::addUserDefinedField (accessType, name, field);
 	
 	if (isInitialized ())
-		url () .addEvent ();
+	{
+		setLoadState (NOT_STARTED_STATE);
+		requestImmediateLoad ();
+	}
 }
 
 ///  throws Error <DISPOSED>
@@ -131,7 +134,10 @@ Script::removeUserDefinedField (const std::string & name)
 	X3DScriptNode::removeUserDefinedField (name);
 
 	if (isInitialized ())
-		url () .addEvent ();
+	{
+		setLoadState (NOT_STARTED_STATE);
+		requestImmediateLoad ();
+	}
 }
 
 bool

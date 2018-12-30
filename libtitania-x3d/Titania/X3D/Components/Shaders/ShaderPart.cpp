@@ -98,10 +98,9 @@ ShaderPart::initialize ()
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	type () .addInterest (&ShaderPart::set_url, this);
-	url ()  .addInterest (&ShaderPart::set_url, this);
-
-	buffer .addInterest (&ShaderPart::set_buffer, this);
+	type () .addInterest (&ShaderPart::set_url,    this);
+	url ()  .addInterest (&ShaderPart::set_url,    this);
+	buffer  .addInterest (&ShaderPart::set_buffer, this);
 
 	set_url ();
 }
@@ -124,6 +123,20 @@ ShaderPart::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	buffer .addEvent ();	
+}
+
+void
+ShaderPart::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	buffer .addEvent ();
+}
+
+void
+ShaderPart::set_buffer ()
+{
 	valid = false;
 
 	for (const auto & URL : basic::make_const_range (url ()))
@@ -163,20 +176,6 @@ ShaderPart::requestImmediateLoad ()
 	}
 
 	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);
-}
-
-void
-ShaderPart::set_url ()
-{
-	buffer .addEvent ();
-}
-
-void
-ShaderPart::set_buffer ()
-{
-	setLoadState (NOT_STARTED_STATE);
-
-	requestImmediateLoad ();
 }
 
 void

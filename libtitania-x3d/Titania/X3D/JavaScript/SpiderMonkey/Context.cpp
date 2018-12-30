@@ -511,6 +511,7 @@ Context::dispose ()
 {
 	const JSAutoRequest ar (cx);
 
+	fields .clear ();
 	global .reset ();
 
 	X3D::X3DJavaScriptContext::dispose ();

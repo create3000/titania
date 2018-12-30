@@ -100,10 +100,9 @@ ShaderProgram::initialize ()
 	X3DUrlObject::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	type () .addInterest (&ShaderProgram::set_url, this);
-	url ()  .addInterest (&ShaderProgram::set_url, this);
-
-	buffer .addInterest (&ShaderProgram::set_buffer, this);
+	type () .addInterest (&ShaderProgram::set_url,    this);
+	url ()  .addInterest (&ShaderProgram::set_url,    this);
+	buffer  .addInterest (&ShaderProgram::set_buffer, this);
 
 	set_url ();
 }
@@ -122,7 +121,10 @@ ShaderProgram::addUserDefinedField (const AccessType accessType, const std::stri
 	X3DProgrammableShaderObject::addUserDefinedField (accessType, name, field);
 
 	if (isInitialized ())
-		url () .addEvent ();
+	{
+		setLoadState (NOT_STARTED_STATE);
+		requestImmediateLoad ();
+	}
 }
 
 ///  throws Error <DISPOSED>
@@ -132,7 +134,10 @@ ShaderProgram::removeUserDefinedField (const std::string & name)
 	X3DProgrammableShaderObject::removeUserDefinedField (name);
 
 	if (isInitialized ())
-		url () .addEvent ();
+	{
+		setLoadState (NOT_STARTED_STATE);
+		requestImmediateLoad ();
+	}
 }
 
 void
@@ -141,17 +146,31 @@ ShaderProgram::requestImmediateLoad ()
 	if (not getBrowser () -> getLoadUrlObjects ())
 		return;
 
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
 	if (not getBrowser () -> getExtension ("GL_ARB_separate_shader_objects"))
 	{
 		setLoadState (FAILED_STATE);
 		return;
 	}
 
-	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-		return;
-
 	setLoadState (IN_PROGRESS_STATE);
 
+	buffer .addEvent ();	
+}
+
+void
+ShaderProgram::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
+}
+
+void
+ShaderProgram::set_buffer ()
+{
 	valid = false;
 
 	for (const auto & URL : basic::make_const_range (url ()))
@@ -245,20 +264,6 @@ void
 ShaderProgram::disable ()
 {
 	X3DProgrammableShaderObject::disable ();
-}
-
-void
-ShaderProgram::set_url ()
-{
-	buffer .addEvent ();
-}
-
-void
-ShaderProgram::set_buffer ()
-{
-	setLoadState (NOT_STARTED_STATE);
-
-	requestImmediateLoad ();
 }
 
 void
