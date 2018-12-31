@@ -379,7 +379,7 @@ Context::initialize ()
 
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState es (cx);
+	const JS::AutoSaveExceptionState ases (cx);
 
 	if (not evaluate (getECMAScript (), worldURL))
 		throw std::invalid_argument ("Couldn't evaluate script.");
@@ -458,7 +458,7 @@ Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>>
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState es (cx);
+	const JS::AutoSaveExceptionState ases (cx);
 
 	call (*functionValue);
 }
@@ -470,7 +470,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr 
 	{
 		const JSAutoRequest ar (cx);
 		const JSAutoCompartment ac (cx, *global);
-		const JS::AutoSaveExceptionState es (cx);
+		const JS::AutoSaveExceptionState ases (cx);
 	
 		field -> setTainted (true);
 	
@@ -495,7 +495,7 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState es (cx);
+	const JS::AutoSaveExceptionState ases (cx);
 
 	call (*functionValue);
 }
@@ -514,7 +514,7 @@ Context::set_shutdown ()
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState es (cx);
+	const JS::AutoSaveExceptionState ases (cx);
 
 	call ("shutdown");
 }
