@@ -120,6 +120,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
 
 	JS::SetWarningReporter (cx, &Context::reportError);
+	JS_SetContextPrivate (cx, this);
 
 	addClasses ();
 	addUserDefinedFields ();

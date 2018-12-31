@@ -80,17 +80,27 @@ public:
 	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
 
 	static
-	const JSClass*
+	const
+	JSClass*
 	getClass ()
 	{ return &static_class; }
 
 	static
-	constexpr ObjectType
+	constexpr
+	ObjectType
 	getId ()
 	{ return ObjectType::X3DField; }
 
 
 protected:
+
+	///  @name Member type
+
+	enum SlotsType
+	{
+		SLOT_CONTEXT,
+		SLOTS_SIZE
+	};
 
 	///  @name Construction
 
@@ -98,11 +108,6 @@ protected:
 	static
 	JS::Value
 	create (JSContext* const cx, const JSClass* const static_class, ObjectType id, InternalType* const field);
-
-//	template <size_t Size>
-//	static
-//	bool
-//	enumerate (JSContext* cx, JS::HandleObject obj, JSIterateOp enum_op, JS::MutableHandleValue statep, JS::MutableHandleId idp);
 
 	///  @name Destruction
 
@@ -148,64 +153,19 @@ X3DField::create (JSContext* const cx, const JSClass* const static_class, Object
 	}
 	catch (const std::out_of_range & error)
 	{
-		const auto result = JS_NewObjectWithGivenProto (cx, static_class, context -> getProto (id));
+		const auto object = JS_NewObjectWithGivenProto (cx, static_class, context -> getProto (id));
 
-		if (result == nullptr)
-			throw std::invalid_argument ("out of memory");
+		if (object == nullptr)
+			throw std::runtime_error ("out of memory");
 
-		JS_SetPrivate (result, field);
+		JS_SetPrivate (object, field);
+		JS_SetReservedSlot (object, SLOT_CONTEXT, JS::PrivateValue (context));
 
-		context -> addObject (field, result);
+		context -> addObject (field, object);
 
-		return JS::ObjectValue (*result);
+		return JS::ObjectValue (*object);
 	}
 }
-
-//template <size_t Size>
-//bool
-//X3DField::enumerate (JSContext* cx, JS::HandleObject obj, JSIterateOp enum_op, JS::MutableHandleValue statep, JS::MutableHandleId idp)
-//{
-//	if (not JS_GetPrivate (obj))
-//	{
-//		statep .setNull ();
-//		return true;
-//	}
-//
-//	size_t* index = nullptr;
-//
-//	switch (enum_op)
-//	{
-//		case JSENUMERATE_INIT:
-//		case JSENUMERATE_INIT_ALL:
-//		{
-//			index = new size_t (0);
-//			statep .set (PRIVATE_TO_JSVAL (index));
-//			idp .set (INT_TO_JSID (Size));
-//			break;
-//		}
-//		case JSENUMERATE_NEXT:
-//		{
-//			index = (size_t*) JSVAL_TO_PRIVATE (statep);
-//
-//			if (*index < Size)
-//			{
-//				idp .set (INT_TO_JSID (*index));
-//				*index = *index + 1;
-//				break;
-//			}
-//
-//			//else done -- cleanup.
-//		}
-//		case JSENUMERATE_DESTROY:
-//		{
-//			index = (size_t*) JSVAL_TO_PRIVATE (statep);
-//			delete index;
-//			statep .setNull ();
-//		}
-//	}
-//
-//	return true;
-//}
 
 } // spidermonkey
 } // X3D

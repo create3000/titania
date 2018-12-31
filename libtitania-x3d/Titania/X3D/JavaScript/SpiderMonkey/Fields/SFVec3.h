@@ -81,12 +81,14 @@ public:
 	create (JSContext* const cx, Type* const field);
 
 	static
-	const JSClass*
+	const
+	JSClass*
 	getClass ()
 	{ return &static_class; }
 
 	static
-	constexpr ObjectType
+	constexpr
+	ObjectType
 	getId ()
 	{ throw std::runtime_error ("getId"); }
 
@@ -129,7 +131,7 @@ private:
 
 	///  @name Static members
 
-	static constexpr size_t size = 3;
+	static constexpr size_t Size = 3;
 
 	static const JSClassOps     class_ops;
 	static const JSClass        static_class;
@@ -199,7 +201,7 @@ SFVec3 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new Type ()));
 				return true;
 			}
-			case size:
+			case Size:
 			{
 				const auto args = JS::CallArgsFromVp (argc, vp);
 				const auto x    = getArgument <typename Type::value_type> (cx, args, X);
@@ -543,14 +545,16 @@ SFVec3 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 template <>
-constexpr ObjectType
+constexpr
+ObjectType
 SFVec3 <X3D::SFVec3d>::getId ()
 {
 	return ObjectType::SFVec3d;
 }
 
 template <>
-constexpr ObjectType
+constexpr
+ObjectType
 SFVec3 <X3D::SFVec3f>::getId ()
 {
 	return ObjectType::SFVec3f;
