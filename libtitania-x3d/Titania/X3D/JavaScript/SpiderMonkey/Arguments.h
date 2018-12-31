@@ -54,6 +54,7 @@
 #include "String.h"
 
 #include "Context.h"
+#include "SlotType.h"
 
 #include "../../Types/String.h"
 
@@ -64,19 +65,26 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
+inline
+Context*
+getContext (JSContext* cx)
+{
+	return static_cast <Context*> (JS_GetPrivate (JS::CurrentGlobalOrNull (cx)));
+}
+
+inline
+Context*
+getContext (JSObject* const obj)
+{
+	return static_cast <Context*> (JS_GetReservedSlot (obj, SlotType::CONTEXT) .toPrivate ());
+}
+
 template <class Type>
 inline
 Type
 getObject (JSObject* const obj)
 {
 	return static_cast <Type> (JS_GetPrivate (obj));
-}
-
-inline
-Context*
-getContext (JSContext* cx)
-{
-	return getObject <Context*> (JS::CurrentGlobalOrNull (cx));
 }
 
 template <class Type>

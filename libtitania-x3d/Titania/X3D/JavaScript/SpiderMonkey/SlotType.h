@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
@@ -48,61 +48,22 @@
  *
  ******************************************************************************/
 
-#include "SFVec3.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_SLOT_TYPE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_SLOT_TYPE_H__
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <>
-const JSClassOps SFVec3 <X3D::SFVec3d>::class_ops = {
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr
-};
+enum SlotType
+{
+	CONTEXT,
 
-template <>
-const JSClass SFVec3 <X3D::SFVec3d>::static_class = {
-	"SFVec3d",
-	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (SlotType::SIZE) | JSCLASS_FOREGROUND_FINALIZE,
-	&class_ops
+	SIZE
 };
-
-template <>
-const JSClassOps SFVec3 <X3D::SFVec3f>::class_ops = {
-	nullptr, // addProperty
-	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate
-	nullptr, // resolve
-	nullptr, // mayResolve
-	&finalize, // finalize
-	nullptr, // call
-	nullptr, // hasInstance
-	nullptr, // construct
-	nullptr, // trace
-};
-
-template <>
-const JSClass SFVec3 <X3D::SFVec3f>::static_class = {
-	"SFVec3f",
-	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (SlotType::SIZE) | JSCLASS_FOREGROUND_FINALIZE,
-	&class_ops,
-};
-
-template class SFVec3 <X3D::SFVec3f>;
-template class SFVec3 <X3D::SFVec3d>;
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif

@@ -976,6 +976,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\ObjectType.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec3.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DField.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\SlotType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

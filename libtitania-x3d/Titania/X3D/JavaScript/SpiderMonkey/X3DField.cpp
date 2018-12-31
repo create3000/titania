@@ -73,7 +73,7 @@ const JSClassOps X3DField::class_ops = {
 
 const JSClass X3DField::static_class = {
 	"X3DField",
-	JSCLASS_FOREGROUND_FINALIZE,
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (SlotType::SIZE) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
 };
 
@@ -235,7 +235,7 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 void
 X3DField::finalize (JSFreeOp* fop, JSObject* obj)
 {
-	const auto context = static_cast <Context*> (JS_GetReservedSlot (obj, SLOT_CONTEXT) .toPrivate ());
+	const auto context = getContext (obj);
 	const auto field   = getObject <X3D::X3DFieldDefinition*> (obj);
 
 	// Proto objects have no private.

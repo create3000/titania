@@ -55,6 +55,7 @@
 #include "Context.h"
 #include "Error.h"
 #include "ObjectType.h"
+#include "SlotType.h"
 #include "String.h"
 
 #include <jsapi.h>
@@ -93,14 +94,6 @@ public:
 
 
 protected:
-
-	///  @name Member type
-
-	enum SlotsType
-	{
-		SLOT_CONTEXT,
-		SLOTS_SIZE
-	};
 
 	///  @name Construction
 
@@ -159,7 +152,7 @@ X3DField::create (JSContext* const cx, const JSClass* const static_class, Object
 			throw std::runtime_error ("out of memory");
 
 		JS_SetPrivate (object, field);
-		JS_SetReservedSlot (object, SLOT_CONTEXT, JS::PrivateValue (context));
+		JS_SetReservedSlot (object, SlotType::CONTEXT, JS::PrivateValue (context));
 
 		context -> addObject (field, object);
 

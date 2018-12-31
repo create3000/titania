@@ -587,7 +587,7 @@ Context::dispose ()
 
 	// finalize is not called for global values, probably the global objects is not disposed.
 
-	for (const auto & [field, object] : objects)
+	for (const auto [field, object] : objects)
 	{
 		JS_SetPrivate (object, nullptr);
 		removeObject (field);
