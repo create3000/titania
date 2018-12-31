@@ -73,7 +73,7 @@ const JSClassOps X3DField::class_ops = {
 
 const JSClass X3DField::static_class = {
 	"X3DField",
-	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (SLOTS_SIZE) | JSCLASS_FOREGROUND_FINALIZE,
+	JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
 };
 
