@@ -56,18 +56,18 @@ namespace spidermonkey {
 
 template <>
 const JSClassOps SFVec3 <X3D::SFVec3d>::class_ops = {
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	&finalize, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
 };
 
 template <>
