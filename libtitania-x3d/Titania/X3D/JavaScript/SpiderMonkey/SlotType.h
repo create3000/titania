@@ -55,7 +55,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-enum SlotType
+enum class SlotType
 {
 	CONTEXT,
 

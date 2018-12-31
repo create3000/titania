@@ -118,7 +118,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 
 	const JSAutoCompartment ac (cx, *global);
 
-	JS_SetPrivate (global .get () -> get (), this);
+	setObject (global .get () -> get (), this);
 
 	if (not JS_InitStandardClasses (cx, *global))
 		throw std::runtime_error ("Couldn't create JavaScript standard classes.");

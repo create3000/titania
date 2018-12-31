@@ -151,8 +151,8 @@ X3DField::create (JSContext* const cx, const JSClass* const static_class, Object
 		if (object == nullptr)
 			throw std::runtime_error ("out of memory");
 
-		JS_SetPrivate (object, field);
-		JS_SetReservedSlot (object, SlotType::CONTEXT, JS::PrivateValue (context));
+		setObject (object, field);
+		setContext (object, context);
 
 		context -> addObject (field, object);
 

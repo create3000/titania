@@ -73,10 +73,25 @@ getContext (JSContext* cx)
 }
 
 inline
+void
+setContext (JSObject* const obj, Context* const context)
+{
+	JS_SetReservedSlot (obj, size_t (SlotType::CONTEXT), JS::PrivateValue (context));
+}
+
+inline
 Context*
 getContext (JSObject* const obj)
 {
-	return static_cast <Context*> (JS_GetReservedSlot (obj, SlotType::CONTEXT) .toPrivate ());
+	return static_cast <Context*> (JS_GetReservedSlot (obj, size_t (SlotType::CONTEXT)) .toPrivate ());
+}
+
+template <class Type>
+inline
+void
+setObject (JSObject* const obj, Type* const object)
+{
+	JS_SetPrivate (obj, object);
 }
 
 template <class Type>

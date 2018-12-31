@@ -73,7 +73,7 @@ const JSClassOps SFVec3 <X3D::SFVec3d>::class_ops = {
 template <>
 const JSClass SFVec3 <X3D::SFVec3d>::static_class = {
 	"SFVec3d",
-	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (SlotType::SIZE) | JSCLASS_FOREGROUND_FINALIZE,
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
 };
 
@@ -96,7 +96,7 @@ const JSClassOps SFVec3 <X3D::SFVec3f>::class_ops = {
 template <>
 const JSClass SFVec3 <X3D::SFVec3f>::static_class = {
 	"SFVec3f",
-	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (SlotType::SIZE) | JSCLASS_FOREGROUND_FINALIZE,
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops,
 };
 
