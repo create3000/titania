@@ -585,7 +585,13 @@ Context::dispose ()
 
 	JS_GC (cx);
 
-	__LOG__ << objects .size () << std::endl;
+	// finalize is not called for global values, probably the global objects is not disposed.
+
+	for (const auto & [field, object] : objects)
+	{
+		JS_SetPrivate (object, nullptr);
+		removeObject (field);
+	}
 
 	X3D::X3DJavaScriptContext::dispose ();
 }

@@ -238,9 +238,9 @@ X3DField::finalize (JSFreeOp* fop, JSObject* obj)
 	const auto context = static_cast <Context*> (JS_GetReservedSlot (obj, SLOT_CONTEXT) .toPrivate ());
 	const auto field   = getObject <X3D::X3DFieldDefinition*> (obj);
 
-	// Proto objects have no private
+	// Proto objects have no private.
 
-	if (context and field)
+	if (field)
 		context -> removeObject (field);
 }
 
