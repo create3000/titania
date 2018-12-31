@@ -257,7 +257,7 @@ Context::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "Couldn't assing value to user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't assing value to user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
 	}
 }
 
@@ -274,7 +274,7 @@ Context::getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId i
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
 	}
 }
 
@@ -288,7 +288,7 @@ Context::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
 	}
 }
 

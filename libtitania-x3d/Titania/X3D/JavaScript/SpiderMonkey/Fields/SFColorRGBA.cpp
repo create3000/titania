@@ -135,12 +135,12 @@ SFColorRGBA::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				return true;
 			}
 			default:
-				return ThrowException (cx, "new %s: wrong number of arguments.", getClass () -> name);
+				return ThrowException <JSProto_Error> (cx, "new %s: wrong number of arguments.", getClass () -> name);
 		}
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "new %s: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -159,7 +159,7 @@ SFColorRGBA::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
 	}
 }
 
@@ -177,7 +177,7 @@ SFColorRGBA::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
 	}
 }
 
@@ -187,7 +187,7 @@ SFColorRGBA::getHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .getHSVA: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSVA: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColorRGBA> (cx, args);
@@ -203,14 +203,14 @@ SFColorRGBA::getHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto result = JS_NewArrayObject (cx, array);
 
 		if (not result)
-			return ThrowException (cx, "%s .prototype .getHSVA: out of memory", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSVA: out of memory", getClass () -> name);
 
 		args .rval () .setObjectOrNull (result);
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .getHSVA: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSVA: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -220,7 +220,7 @@ SFColorRGBA::setHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 4)
-			return ThrowException (cx, "%s .prototype .setHSVA: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSVA: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColorRGBA> (cx, args);
@@ -236,7 +236,7 @@ SFColorRGBA::setHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .setHSVA: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSVA: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -246,7 +246,7 @@ SFColorRGBA::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 2)
-			return ThrowException (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColorRGBA> (cx, args);
@@ -258,7 +258,7 @@ SFColorRGBA::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .lerp: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: %s.", getClass () -> name, error .what ());
 	}
 }
 

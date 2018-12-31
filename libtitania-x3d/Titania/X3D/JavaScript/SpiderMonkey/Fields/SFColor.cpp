@@ -132,12 +132,12 @@ SFColor::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				return true;
 			}
 			default:
-				return ThrowException (cx, "new %s: wrong number of arguments.", getClass () -> name);
+				return ThrowException <JSProto_Error> (cx, "new %s: wrong number of arguments.", getClass () -> name);
 		}
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "new %s: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -156,7 +156,7 @@ SFColor::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
 	}
 }
 
@@ -174,7 +174,7 @@ SFColor::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
 	}
 }
 
@@ -184,7 +184,7 @@ SFColor::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .getHSV: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSV: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColor> (cx, args);
@@ -199,14 +199,14 @@ SFColor::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto result = JS_NewArrayObject (cx, array);
 
 		if (not result)
-			return ThrowException (cx, "%s .prototype .getHSV: out of memory", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSV: out of memory", getClass () -> name);
 
 		args .rval () .setObjectOrNull (result);
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .getHSV: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSV: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -216,7 +216,7 @@ SFColor::setHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 3)
-			return ThrowException (cx, "%s .prototype .setHSV: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSV: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColor> (cx, args);
@@ -231,7 +231,7 @@ SFColor::setHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .setHSV: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSV: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -241,7 +241,7 @@ SFColor::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 2)
-			return ThrowException (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColor> (cx, args);
@@ -253,7 +253,7 @@ SFColor::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .lerp: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: %s.", getClass () -> name, error .what ());
 	}
 }
 

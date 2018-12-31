@@ -51,6 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ERROR_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_ERROR_H__
 
+#include "String.h"
+#include <Titania/String/sprintf.h>
+
 #include <jsapi.h>
 #include <utility>
 
@@ -58,12 +61,31 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class ... Args>
+template <JSProtoKey ErrorKind, class ... Args>
 inline
 bool
 ThrowException (JSContext* const cx, const char* format, Args && ... args)
 {
-	JS_ReportWarningUTF8 (cx, format, std::forward <Args> (args) ...);
+	const auto message = basic::sprintf (format, std::forward <Args> (args) ...);
+
+	JS::RootedObject constructor (cx);
+
+	if (JS_GetClassObject (cx, ErrorKind, &constructor))
+	{
+		JS::AutoValueVector args (cx);
+
+		args .append (StringValue (cx, message));
+
+		const auto error = JS_New (cx, constructor, args);
+
+		if (error)
+		{
+			JS_SetPendingException (cx, JS::RootedValue (cx, JS::ObjectOrNullValue (error)));
+			return false;
+		}
+	}
+
+	JS_ReportWarningUTF8 (cx, "Failed to throw exception '%s'", message .c_str ());
 	return false;
 }
 

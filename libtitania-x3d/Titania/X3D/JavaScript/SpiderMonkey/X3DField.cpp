@@ -102,7 +102,7 @@ X3DField::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject p
 bool
 X3DField::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	return ThrowException (cx, "new %s: %s.", getClass () -> name, "object is not constructable");
+	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructable");
 }
 
 bool
@@ -111,7 +111,7 @@ X3DField::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .getName: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getName: wrong number of arguments.", getClass () -> name);
 	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto field = getThis <X3DField> (cx, args);
@@ -121,7 +121,7 @@ X3DField::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .getName: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getName: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -131,7 +131,7 @@ X3DField::getTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .getTypeName: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getTypeName: wrong number of arguments.", getClass () -> name);
 	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto field = getThis <X3DField> (cx, args);
@@ -141,7 +141,7 @@ X3DField::getTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .getTypeName: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getTypeName: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -151,7 +151,7 @@ X3DField::getType (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .getType: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getType: wrong number of arguments.", getClass () -> name);
 	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto field = getThis <X3DField> (cx, args);
@@ -161,7 +161,7 @@ X3DField::getType (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .getType: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getType: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -171,7 +171,7 @@ X3DField::isReadable (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .isReadable: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .isReadable: wrong number of arguments.", getClass () -> name);
 	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto field = getThis <X3DField> (cx, args);
@@ -181,7 +181,7 @@ X3DField::isReadable (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .isReadable: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .isReadable: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -191,7 +191,7 @@ X3DField::isWritable (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .isWritable: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .isWritable: wrong number of arguments.", getClass () -> name);
 	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto field = getThis <X3DField> (cx, args);
@@ -201,7 +201,7 @@ X3DField::isWritable (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .isWritable: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .isWritable: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -211,7 +211,7 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
 	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto field = getThis <X3DField> (cx, args);
@@ -229,7 +229,7 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .prototype .toString: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: %s.", getClass () -> name, error .what ());
 	}
 }
 
