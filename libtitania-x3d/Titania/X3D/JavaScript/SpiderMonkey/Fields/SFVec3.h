@@ -212,12 +212,12 @@ SFVec3 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				return true;
 			}
 			default:
-				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
+				return ThrowException (cx, "new %s: wrong number of arguments.", getClass () -> name);
 		}
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .new: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "new %s: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -237,7 +237,7 @@ SFVec3 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
 	}
 }
 
@@ -256,7 +256,7 @@ SFVec3 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .x: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s [%d]: %s.", getClass () -> name, Index, error .what ());
 	}
 }
 
@@ -267,7 +267,7 @@ SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .negate: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .negate: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -277,7 +277,7 @@ SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .negate: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .negate: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -288,7 +288,7 @@ SFVec3 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .add: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .add: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -299,7 +299,7 @@ SFVec3 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .add: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .add: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -310,7 +310,7 @@ SFVec3 <Type>::cross (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .cross: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .cross: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -321,7 +321,7 @@ SFVec3 <Type>::cross (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .cross: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .cross: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -332,7 +332,7 @@ SFVec3 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .distance: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .distance: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -343,7 +343,7 @@ SFVec3 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .distance: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .distance: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -354,7 +354,7 @@ SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .divide: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .divide: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -365,7 +365,7 @@ SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .divide: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .divide: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -376,7 +376,7 @@ SFVec3 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .divVec: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .divVec: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -387,7 +387,7 @@ SFVec3 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .divVec: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .divVec: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -398,7 +398,7 @@ SFVec3 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .dot: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .dot: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -409,7 +409,7 @@ SFVec3 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .dot: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .dot: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -420,7 +420,7 @@ SFVec3 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .length: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .length: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -430,7 +430,7 @@ SFVec3 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .length: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .length: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -441,7 +441,7 @@ SFVec3 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 2)
-			return ThrowException (cx, "%s .lerp: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -453,7 +453,7 @@ SFVec3 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .lerp: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .lerp: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -464,7 +464,7 @@ SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .multiply: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .multiply: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -475,7 +475,7 @@ SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .multiply: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .multiply: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -486,7 +486,7 @@ SFVec3 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .multVec: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .multVec: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -497,7 +497,7 @@ SFVec3 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .multVec: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .multVec: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -508,7 +508,7 @@ SFVec3 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-			return ThrowException (cx, "%s .normalize: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .normalize: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -518,7 +518,7 @@ SFVec3 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .normalize: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .normalize: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -529,7 +529,7 @@ SFVec3 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 1)
-			return ThrowException (cx, "%s .subtract: wrong number of arguments.", getClass () -> name);
+			return ThrowException (cx, "%s .prototype .subtract: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
@@ -540,7 +540,7 @@ SFVec3 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .subtract: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .prototype .subtract: %s.", getClass () -> name, error .what ());
 	}
 }
 
