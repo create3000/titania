@@ -145,16 +145,16 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 			*static_cast <X3D::SFTime*> (field) = getArgument <double> (cx, value, 0);
 			break;
 		}
-//		case X3DConstants::SFVec2d:
-//		{
-//			*static_cast <X3D::SFVec2d*> (field) = *getArgument <SFVec2d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFVec2f:
-//		{
-//			*static_cast <X3D::SFVec2f*> (field) = *getArgument <SFVec2f> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFVec2d:
+		{
+			*static_cast <X3D::SFVec2d*> (field) = *getArgument <SFVec2d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFVec2f:
+		{
+			*static_cast <X3D::SFVec2f*> (field) = *getArgument <SFVec2f> (cx, value, 0);
+			break;
+		}
 		case X3DConstants::SFVec3d:
 		{
 			*static_cast <X3D::SFVec3d*> (field) = *getArgument <SFVec3d> (cx, value, 0);
@@ -165,16 +165,16 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 			*static_cast <X3D::SFVec3f*> (field) = *getArgument <SFVec3f> (cx, value, 0);
 			break;
 		}
-//		case X3DConstants::SFVec4d:
-//		{
-//			*static_cast <X3D::SFVec4d*> (field) = *getArgument <SFVec4d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFVec4f:
-//		{
-//			*static_cast <X3D::SFVec4f*> (field) = *getArgument <SFVec4f> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFVec4d:
+		{
+			*static_cast <X3D::SFVec4d*> (field) = *getArgument <SFVec4d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFVec4f:
+		{
+			*static_cast <X3D::SFVec4f*> (field) = *getArgument <SFVec4f> (cx, value, 0);
+			break;
+		}
 //		case X3DConstants::MFBool:
 //		{
 //			*static_cast <X3D::MFBool*> (field) = *getArgument <MFBool> (cx, value, 0);
@@ -335,11 +335,11 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 		case X3DConstants::SFTime:
 			return SFTime::create (cx, static_cast <X3D::SFTime*> (field));
 
-//		case X3DConstants::SFVec2d:
-//			return SFVec2d::create (cx, static_cast <X3D::SFVec2d*> (field));
-//
-//		case X3DConstants::SFVec2f:
-//			return SFVec2f::create (cx, static_cast <X3D::SFVec2f*> (field));
+		case X3DConstants::SFVec2d:
+			return SFVec2d::create (cx, static_cast <X3D::SFVec2d*> (field));
+
+		case X3DConstants::SFVec2f:
+			return SFVec2f::create (cx, static_cast <X3D::SFVec2f*> (field));
 
 		case X3DConstants::SFVec3d:
 			return SFVec3d::create (cx, static_cast <X3D::SFVec3d*> (field));
@@ -347,12 +347,12 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 		case X3DConstants::SFVec3f:
 			return SFVec3f::create (cx, static_cast <X3D::SFVec3f*> (field));
 
-//		case X3DConstants::SFVec4d:
-//			return SFVec4d::create (cx, static_cast <X3D::SFVec4d*> (field));
-//
-//		case X3DConstants::SFVec4f:
-//			return SFVec4f::create (cx, static_cast <X3D::SFVec4f*> (field));
-//
+		case X3DConstants::SFVec4d:
+			return SFVec4d::create (cx, static_cast <X3D::SFVec4d*> (field));
+
+		case X3DConstants::SFVec4f:
+			return SFVec4f::create (cx, static_cast <X3D::SFVec4f*> (field));
+
 //		case X3DConstants::MFBool:
 //			return MFBool::create (cx, static_cast <X3D::MFBool*> (field));
 //

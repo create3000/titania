@@ -977,6 +977,8 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec3.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DField.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\SlotType.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec4.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1648,6 +1650,8 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\field.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec3.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DField.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec4.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

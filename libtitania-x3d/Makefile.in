@@ -595,7 +595,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/SpiderMonkey.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/field.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Globals.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/String.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DField.lo \
@@ -1285,7 +1287,9 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/field.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec3.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec4.Plo \
 	Titania/X3D/Parser/$(DEPDIR)/Colors.Plo \
 	Titania/X3D/Parser/$(DEPDIR)/Filter.Plo \
 	Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo \
@@ -2188,7 +2192,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/field.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Globals.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/String.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DField.cpp \
@@ -4302,7 +4308,13 @@ Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp):
 Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)
 	@: > Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Globals.lo:  \
@@ -5839,7 +5851,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/field.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec4.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Colors.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Filter.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo@am__quote@ # am--include-marker
@@ -7042,7 +7056,9 @@ distclean: distclean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/field.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec3.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec4.Plo
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/Colors.Plo
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/Filter.Plo
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo
@@ -7757,7 +7773,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/field.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec3.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec4.Plo
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/Colors.Plo
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/Filter.Plo
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo

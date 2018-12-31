@@ -151,8 +151,12 @@ Context::addClasses ()
 
 	addProto (X3DField::getId (), X3DField::init (cx, *global, nullptr));
 
+	addProto (SFVec2d::getId (),     SFVec2d::init     (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFVec2f::getId (),     SFVec2f::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFVec3d::getId (),     SFVec3d::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFVec3f::getId (),     SFVec3f::init     (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFVec4d::getId (),     SFVec4d::init     (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFVec4f::getId (),     SFVec4f::init     (cx, *global, getProto (X3DField::getId ())));
 }
 
 void

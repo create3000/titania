@@ -48,19 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFVEC3_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFVEC3_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFVEC2_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFVEC2_H__
 
 #include "../X3DField.h"
 
-#include "../../../Fields/SFVec3.h"
+#include "../../../Fields/SFVec2.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
 template <class Type>
-class SFVec3 :
+class SFVec2 :
 	public X3DField
 {
 public:
@@ -96,7 +96,7 @@ private:
 
 	///  @name Member types
 
-	enum Property {X, Y, Z};
+	enum Property {X, Y};
 
 	///  @name Construction
 
@@ -130,7 +130,7 @@ private:
 
 	///  @name Static members
 
-	static constexpr size_t Size = std::tuple_size <typename Type::internal_type> ();;
+	static constexpr size_t Size = std::tuple_size <typename Type::internal_type> ();
 
 	static const JSClassOps     class_ops;
 	static const JSClass        static_class;
@@ -140,20 +140,17 @@ private:
 };
 
 template <class Type>
-const JSPropertySpec SFVec3 <Type>::properties [ ] = {
+const JSPropertySpec SFVec2 <Type>::properties [ ] = {
 	JS_PSGS ("x", getProperty <X>, setProperty <X>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("y", getProperty <Y>, setProperty <Y>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("z", getProperty <Z>, setProperty <Z>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("0", getProperty <X>, setProperty <X>, JSPROP_PERMANENT),
 	JS_PSGS ("1", getProperty <Y>, setProperty <Y>, JSPROP_PERMANENT),
-	JS_PSGS ("2", getProperty <Z>, setProperty <Z>, JSPROP_PERMANENT),
 	JS_PS_END
 };
 
 template <class Type>
-const JSFunctionSpec SFVec3 <Type>::functions [ ] = {
+const JSFunctionSpec SFVec2 <Type>::functions [ ] = {
 	JS_FS ("add",       add,       1, JSPROP_PERMANENT),
-	JS_FS ("cross",     cross,     1, JSPROP_PERMANENT),
 	JS_FS ("distance",  distance,  1, JSPROP_PERMANENT),
 	JS_FS ("divide",    divide,    1, JSPROP_PERMANENT),
 	JS_FS ("divVec",    divVec,    1, JSPROP_PERMANENT),
@@ -170,7 +167,7 @@ const JSFunctionSpec SFVec3 <Type>::functions [ ] = {
 
 template <class Type>
 JSObject*
-SFVec3 <Type>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
+SFVec2 <Type>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -182,14 +179,14 @@ SFVec3 <Type>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObj
 
 template <class Type>
 JS::Value
-SFVec3 <Type>::create (JSContext* const cx, Type* const field)
+SFVec2 <Type>::create (JSContext* const cx, Type* const field)
 {
 	return X3DField::create (cx, &static_class, getId (), field);
 }
 
 template <class Type>
 bool
-SFVec3 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -205,9 +202,8 @@ SFVec3 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				const auto args = JS::CallArgsFromVp (argc, vp);
 				const auto x    = getArgument <typename Type::value_type> (cx, args, X);
 				const auto y    = getArgument <typename Type::value_type> (cx, args, Y);
-				const auto z    = getArgument <typename Type::value_type> (cx, args, Z);
 
-				args .rval () .set (create (cx, new Type (x, y, z)));
+				args .rval () .set (create (cx, new Type (x, y)));
 				return true;
 			}
 			default:
@@ -223,12 +219,12 @@ SFVec3 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 template <class Type>
 template <size_t Index>
 bool
-SFVec3 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
 
 		lhs -> set1Value (Index, rhs);
@@ -243,12 +239,12 @@ SFVec3 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 template <class Type>
 template <size_t Index>
 bool
-SFVec3 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 
 		args .rval () .setDouble (lhs -> get1Value (Index));
 		return true;
@@ -261,7 +257,7 @@ SFVec3 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -269,7 +265,7 @@ SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .negate: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 
 		args .rval () .set (create (cx, new Type (lhs -> negate ())));
 		return true;
@@ -282,7 +278,7 @@ SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -290,8 +286,8 @@ SFVec3 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .add: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> add (*rhs))));
 		return true;
@@ -304,29 +300,7 @@ SFVec3 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::cross (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		if (argc not_eq 1)
-			return ThrowException (cx, "%s .prototype .cross: wrong number of arguments.", getClass () -> name);
-	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
-
-		args .rval () .set (create (cx, new Type (lhs -> cross (*rhs))));
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .prototype .cross: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class Type>
-bool
-SFVec3 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -334,8 +308,8 @@ SFVec3 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .distance: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 
 		args .rval () .setDouble (lhs -> distance (*rhs));
 		return true;
@@ -348,7 +322,7 @@ SFVec3 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -356,7 +330,7 @@ SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .divide: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> divide (rhs))));
@@ -370,7 +344,7 @@ SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -378,8 +352,8 @@ SFVec3 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .divVec: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> divide (*rhs))));
 		return true;
@@ -392,7 +366,7 @@ SFVec3 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -400,8 +374,8 @@ SFVec3 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .dot: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 
 		args .rval () .setDouble (lhs -> dot (*rhs));
 		return true;
@@ -414,7 +388,7 @@ SFVec3 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -422,7 +396,7 @@ SFVec3 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .length: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 
 		args .rval () .setDouble (lhs -> length ());
 		return true;
@@ -435,7 +409,7 @@ SFVec3 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -443,8 +417,8 @@ SFVec3 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 		const auto t    = getArgument <typename Type::value_type> (cx, args, 1);
 
 		args .rval () .set (create (cx, new Type (lhs -> lerp (*rhs, t))));
@@ -458,7 +432,7 @@ SFVec3 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -466,7 +440,7 @@ SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .multiply: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> multiply (rhs))));
@@ -480,7 +454,7 @@ SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -488,8 +462,8 @@ SFVec3 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .multVec: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> multiply (*rhs))));
 		return true;
@@ -502,7 +476,7 @@ SFVec3 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -510,7 +484,7 @@ SFVec3 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .normalize: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto lhs  = getThis <SFVec2> (cx, args);
 
 		args .rval () .set (create (cx, new Type (lhs -> normalize ())));
 		return true;
@@ -523,7 +497,7 @@ SFVec3 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec2 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -531,8 +505,8 @@ SFVec3 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException (cx, "%s .prototype .subtract: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> subtract (*rhs))));
 		return true;
@@ -546,24 +520,24 @@ SFVec3 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 template <>
 constexpr
 ObjectType
-SFVec3 <X3D::SFVec3d>::getId ()
+SFVec2 <X3D::SFVec2d>::getId ()
 {
-	return ObjectType::SFVec3d;
+	return ObjectType::SFVec2d;
 }
 
 template <>
 constexpr
 ObjectType
-SFVec3 <X3D::SFVec3f>::getId ()
+SFVec2 <X3D::SFVec2f>::getId ()
 {
-	return ObjectType::SFVec3f;
+	return ObjectType::SFVec2f;
 }
 
-using SFVec3d = SFVec3 <X3D::SFVec3d>;
-using SFVec3f = SFVec3 <X3D::SFVec3f>;
+using SFVec2d = SFVec2 <X3D::SFVec2d>;
+using SFVec2f = SFVec2 <X3D::SFVec2f>;
 
-extern template class SFVec3 <X3D::SFVec3d>;
-extern template class SFVec3 <X3D::SFVec3f>;
+extern template class SFVec2 <X3D::SFVec2d>;
+extern template class SFVec2 <X3D::SFVec2f>;
 
 } // spidermonkey
 } // X3D
