@@ -261,27 +261,6 @@ SFVec3 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
-SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	try
-	{
-		if (argc not_eq 0)
-			return ThrowException (cx, "%s .prototype .negate: wrong number of arguments.", getClass () -> name);
-	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec3> (cx, args);
-
-		args .rval () .set (create (cx, new Type (lhs -> negate ())));
-		return true;
-	}
-	catch (const std::exception & error)
-	{
-		return ThrowException (cx, "%s .prototype .negate: %s.", getClass () -> name, error .what ());
-	}
-}
-
-template <class Type>
-bool
 SFVec3 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
@@ -497,6 +476,27 @@ SFVec3 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .prototype .multVec: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type>
+bool
+SFVec3 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException (cx, "%s .prototype .negate: wrong number of arguments.", getClass () -> name);
+	
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <SFVec3> (cx, args);
+
+		args .rval () .set (create (cx, new Type (lhs -> negate ())));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .prototype .negate: %s.", getClass () -> name, error .what ());
 	}
 }
 

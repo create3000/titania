@@ -67,16 +67,16 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 			*static_cast <X3D::SFBool*> (field) = getArgument <bool> (cx, value, 0);
 			break;
 		}
-//		case X3DConstants::SFColor:
-//		{
-//			*static_cast <X3D::SFColor*> (field) = *getArgument <SFColor> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFColorRGBA:
-//		{
-//			*static_cast <X3D::SFColorRGBA*> (field) = *getArgument <SFColorRGBA> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFColor:
+		{
+			*static_cast <X3D::SFColor*> (field) = *getArgument <SFColor> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFColorRGBA:
+		{
+			*static_cast <X3D::SFColorRGBA*> (field) = *getArgument <SFColorRGBA> (cx, value, 0);
+			break;
+		}
 		case X3DConstants::SFDouble:
 		{
 			*static_cast <X3D::SFDouble*> (field) = getArgument <double> (cx, value, 0);
@@ -293,11 +293,11 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 		case X3DConstants::SFBool:
 			return SFBool::create (cx, static_cast <X3D::SFBool*> (field));
 
-//		case X3DConstants::SFColor:
-//			return SFColor::create (cx, static_cast <X3D::SFColor*> (field));
-//
-//		case X3DConstants::SFColorRGBA:
-//			return SFColorRGBA::create (cx, static_cast <X3D::SFColorRGBA*> (field));
+		case X3DConstants::SFColor:
+			return SFColor::create (cx, static_cast <X3D::SFColor*> (field));
+
+		case X3DConstants::SFColorRGBA:
+			return SFColorRGBA::create (cx, static_cast <X3D::SFColorRGBA*> (field));
 
 		case X3DConstants::SFDouble:
 			return SFDouble::create (cx, static_cast <X3D::SFDouble*> (field));
