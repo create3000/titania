@@ -113,17 +113,19 @@ private:
 
 	///  @name Functions
 
-	static bool negate    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool add       (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool subtract  (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool multiply  (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool multVec   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool cross     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool distance  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool divide    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool divVec    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool dot       (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool cross     (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool normalize (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool length    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool lerp      (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool multiply  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool multVec   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool negate    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool normalize (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool subtract  (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Static members
 
@@ -151,10 +153,12 @@ template <class Type>
 const JSFunctionSpec SFVec3 <Type>::functions [ ] = {
 	JS_FS ("add",       add,       1, JSPROP_PERMANENT),
 	JS_FS ("cross",     cross,     1, JSPROP_PERMANENT),
+	JS_FS ("distance",  distance,  1, JSPROP_PERMANENT),
 	JS_FS ("divide",    divide,    1, JSPROP_PERMANENT),
 	JS_FS ("divVec",    divVec,    1, JSPROP_PERMANENT),
 	JS_FS ("dot",       dot,       1, JSPROP_PERMANENT),
 	JS_FS ("length",    length,    0, JSPROP_PERMANENT),
+	JS_FS ("lerp",      lerp,      2, JSPROP_PERMANENT),
 	JS_FS ("multiply",  multiply,  1, JSPROP_PERMANENT),
 	JS_FS ("multVec",   multVec,   1, JSPROP_PERMANENT),
 	JS_FS ("negate",    negate,    0, JSPROP_PERMANENT),
@@ -198,9 +202,9 @@ SFVec3 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 			case size:
 			{
 				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto x    = getArgument <double> (cx, args, X);
-				const auto y    = getArgument <double> (cx, args, Y);
-				const auto z    = getArgument <double> (cx, args, Z);
+				const auto x    = getArgument <typename Type::value_type> (cx, args, X);
+				const auto y    = getArgument <typename Type::value_type> (cx, args, Y);
+				const auto z    = getArgument <typename Type::value_type> (cx, args, Z);
 
 				args .rval () .set (create (cx, new Type (x, y, z)));
 				return true;
@@ -224,7 +228,7 @@ SFVec3 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
+		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
 
 		lhs -> set1Value (Index, rhs);
 		return true;
@@ -321,6 +325,28 @@ SFVec3 <Type>::cross (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
+SFVec3 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException (cx, "%s .distance: wrong number of arguments.", getClass () -> name);
+	
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+
+		args .rval () .setDouble (lhs -> distance (*rhs));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .distance: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type>
+bool
 SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
@@ -330,7 +356,7 @@ SFVec3 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
+		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> divide (rhs))));
 		return true;
@@ -408,6 +434,29 @@ SFVec3 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class Type>
 bool
+SFVec3 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 2)
+			return ThrowException (cx, "%s .lerp: wrong number of arguments.", getClass () -> name);
+	
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <SFVec3> (cx, args);
+		const auto rhs  = getArgument <SFVec3> (cx, args, 0);
+		const auto t    = getArgument <typename Type::value_type> (cx, args, 1);
+
+		args .rval () .set (create (cx, new Type (lhs -> lerp (*rhs, t))));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .lerp: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class Type>
+bool
 SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
@@ -417,7 +466,7 @@ SFVec3 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec3> (cx, args);
-		const auto rhs  = getArgument <double> (cx, args, 0);
+		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
 
 		args .rval () .set (create (cx, new Type (lhs -> multiply (rhs))));
 		return true;
