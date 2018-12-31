@@ -51,10 +51,9 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFVEC3_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFVEC3_H__
 
-#include "../../../Fields/SFVec3.h"
-#include "../Context.h"
-#include "../Error.h"
 #include "../X3DField.h"
+
+#include "../../../Fields/SFVec3.h"
 
 namespace titania {
 namespace X3D {

@@ -56,11 +56,8 @@
 #include "Error.h"
 #include "ObjectType.h"
 #include "SlotType.h"
-#include "String.h"
 
 #include <jsapi.h>
-
-#include "../../InputOutput/Generator.h"
 
 namespace titania {
 namespace X3D {

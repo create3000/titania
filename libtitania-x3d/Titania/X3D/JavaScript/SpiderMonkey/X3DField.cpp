@@ -51,6 +51,7 @@
 #include "X3DField.h"
 
 #include "../../Basic/X3DField.h"
+#include "../../InputOutput/Generator.h"
 
 namespace titania {
 namespace X3D {
