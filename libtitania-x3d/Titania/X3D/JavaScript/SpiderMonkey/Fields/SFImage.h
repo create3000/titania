@@ -48,21 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFIMAGE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFIMAGE_H__
 
-#include "Fields/SFColor.h"
-#include "Fields/SFColorRGBA.h"
-#include "Fields/SFImage.h"
-//#include "Fields/SFMatrix3.h"
-//#include "Fields/SFMatrix4.h"
-//#include "Fields/SFNode.h"
-#include "Fields/SFRotation.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
-#include "Fields/X3DScalar.h"
+#include "../X3DField.h"
 
-//#include "Fields/ArrayFields.h"
+#include "../../../Fields/SFImage.h"
+
+namespace titania {
+namespace X3D {
+namespace spidermonkey {
+
+class SFImage :
+	public X3DField
+{
+public:
+
+	///  @name Member types
+
+	using internal_type = X3D::SFImage;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
+
+	static
+	JS::Value
+	create (JSContext* const cx, X3D::SFImage* const field);
+
+	static
+	const
+	JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr
+	ObjectType
+	getId ()
+	{ return ObjectType::SFImage; }
+
+
+private:
+
+	///  @name Member types
+
+	enum Property {WIDTH, HEIGHT, COMP, ARRAY};
+
+	///  @name Construction
+
+	static
+	bool
+	construct (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Member access
+
+	static bool setWidth  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getWidth  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setHeight (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getHeight (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setComp   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getComp   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setArray  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getArray  (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Static members
+
+	static const JSClassOps     class_ops;
+	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
+
+};
+
+} // spidermonkey
+} // X3D
+} // titania
 
 #endif

@@ -92,11 +92,11 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 			*static_cast <X3D::SFInt32*> (field) = getArgument <int32_t> (cx, value, 0);
 			break;
 		}
-//		case X3DConstants::SFImage:
-//		{
-//			*static_cast <X3D::SFImage*> (field) = *getArgument <SFImage> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFImage:
+		{
+			*static_cast <X3D::SFImage*> (field) = *getArgument <SFImage> (cx, value, 0);
+			break;
+		}
 //		case X3DConstants::SFMatrix3d:
 //		{
 //			*static_cast <X3D::SFMatrix3d*> (field) = *getArgument <SFMatrix3d> (cx, value, 0);
@@ -308,9 +308,9 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 		case X3DConstants::SFInt32:
 			return SFInt32::create (cx, static_cast <X3D::SFInt32*> (field));
 
-//		case X3DConstants::SFImage:
-//			return SFImage::create (cx, static_cast <X3D::SFImage*> (field));
-//
+		case X3DConstants::SFImage:
+			return SFImage::create (cx, static_cast <X3D::SFImage*> (field));
+
 //		case X3DConstants::SFMatrix3d:
 //			return SFMatrix3d::create (cx, static_cast <X3D::SFMatrix3d*> (field));
 //

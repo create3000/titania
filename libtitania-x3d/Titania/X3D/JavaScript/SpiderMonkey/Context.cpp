@@ -153,6 +153,7 @@ Context::addClasses ()
 
 	addProto (SFColor::getId (),     SFColor::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFColorRGBA::getId (), SFColorRGBA::init (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFImage::getId (),     SFImage::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFRotation::getId (),  SFRotation::init  (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFVec2d::getId (),     SFVec2d::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFVec2f::getId (),     SFVec2f::init     (cx, *global, getProto (X3DField::getId ())));
