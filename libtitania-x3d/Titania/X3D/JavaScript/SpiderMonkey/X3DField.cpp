@@ -240,7 +240,7 @@ X3DField::finalize (JSFreeOp* fop, JSObject* obj)
 
 	// Proto objects have no private
 
-	if (field)
+	if (context and field)
 		context -> removeObject (field);
 }
 

@@ -76,7 +76,7 @@ inline
 Context*
 getContext (JSContext* cx)
 {
-	return static_cast <Context*> (JS_GetContextPrivate (cx));
+	return getObject <Context*> (JS::CurrentGlobalOrNull (cx));
 }
 
 template <class Type>

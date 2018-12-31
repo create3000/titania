@@ -87,7 +87,7 @@ const JSClassOps Context::globalOps = {
 
 const JSClass Context::globalClass = {
 	"global",
-	JSCLASS_GLOBAL_FLAGS,
+	JSCLASS_GLOBAL_FLAGS | JSCLASS_HAS_PRIVATE,
 	&globalOps
 };
 
@@ -109,6 +109,8 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 
 	JS::CompartmentOptions options;
 
+	options .behaviors () .setVersion (JSVERSION_LATEST);
+
 	global = std::make_unique <JS::PersistentRooted <JSObject*>> (cx, JS_NewGlobalObject (cx, &globalClass, nullptr, JS::FireOnNewGlobalHook, options));
 
 	if (not *global)
@@ -116,11 +118,12 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 
 	const JSAutoCompartment ac (cx, *global);
 
+	JS_SetPrivate (global .get () -> get (), this);
+
 	if (not JS_InitStandardClasses (cx, *global))
 		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
 
 	JS::SetWarningReporter (cx, &Context::reportError);
-	JS_SetContextPrivate (cx, this);
 
 	addClasses ();
 	addUserDefinedFields ();
@@ -370,8 +373,6 @@ Context::initialize ()
 	const JSAutoCompartment ac (cx, *global);
 	const JS::AutoSaveExceptionState es (cx);
 
-	JS_SetContextPrivate (cx, this);
-
 	if (not evaluate (getECMAScript (), worldURL))
 		throw std::invalid_argument ("Couldn't evaluate script.");
 
@@ -451,8 +452,6 @@ Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>>
 	const JSAutoCompartment ac (cx, *global);
 	const JS::AutoSaveExceptionState es (cx);
 
-	JS_SetContextPrivate (cx, this);
-
 	call (*functionValue);
 }
 
@@ -464,8 +463,6 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr 
 		const JSAutoRequest ar (cx);
 		const JSAutoCompartment ac (cx, *global);
 		const JS::AutoSaveExceptionState es (cx);
-	
-		JS_SetContextPrivate (cx, this);
 	
 		field -> setTainted (true);
 	
@@ -492,8 +489,6 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 	const JSAutoCompartment ac (cx, *global);
 	const JS::AutoSaveExceptionState es (cx);
 
-	JS_SetContextPrivate (cx, this);
-
 	call (*functionValue);
 }
 
@@ -502,8 +497,6 @@ Context::finish ()
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
-
-	JS_SetContextPrivate (cx, this);
 
 	JS_GC (cx);
 }
@@ -514,8 +507,6 @@ Context::set_shutdown ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 	const JS::AutoSaveExceptionState es (cx);
-
-	JS_SetContextPrivate (cx, this);
 
 	call ("shutdown");
 }
@@ -587,8 +578,6 @@ void
 Context::dispose ()
 {
 	const JSAutoRequest ar (cx);
-
-	JS_SetContextPrivate (cx, this);
 
 	fields .clear ();
 	protos .clear ();
