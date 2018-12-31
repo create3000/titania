@@ -119,7 +119,6 @@ instanceOf (JSContext* const cx, const JS::HandleValue & obj)
 
 // Version for functions.
 template <class Type>
-inline
 typename Type::internal_type*
 getThis (JSContext* const cx, const JS::CallArgs & args)
 {
@@ -143,7 +142,6 @@ getThis (JSContext* const cx, const JS::CallArgs & args)
 
 // Version for properties.
 template <class Type>
-inline
 typename Type::internal_type*
 getThis (JSContext* const cx, JSObject* const obj)
 {
