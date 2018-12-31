@@ -104,7 +104,7 @@ SFColor::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject pa
 }
 
 JS::Value
-SFColor::create (JSContext* const cx, Type* const field)
+SFColor::create (JSContext* const cx, X3D::SFColor* const field)
 {
 	return X3DField::create (cx, &static_class, getId (), field);
 }
@@ -118,17 +118,17 @@ SFColor::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 		{
 			case 0:
 			{
-				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new Type ()));
+				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::SFColor ()));
 				return true;
 			}
 			case Size:
 			{
 				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto r    = getArgument <Type::value_type> (cx, args, R);
-				const auto g    = getArgument <Type::value_type> (cx, args, G);
-				const auto b    = getArgument <Type::value_type> (cx, args, B);
+				const auto r    = getArgument <X3D::SFColor::value_type> (cx, args, R);
+				const auto g    = getArgument <X3D::SFColor::value_type> (cx, args, G);
+				const auto b    = getArgument <X3D::SFColor::value_type> (cx, args, B);
 
-				args .rval () .set (create (cx, new Type (r, g, b)));
+				args .rval () .set (create (cx, new X3D::SFColor (r, g, b)));
 				return true;
 			}
 			default:
@@ -149,7 +149,7 @@ SFColor::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColor> (cx, args);
-		const auto rhs  = getArgument <Type::value_type> (cx, args, 0);
+		const auto rhs  = getArgument <X3D::SFColor::value_type> (cx, args, 0);
 
 		lhs -> set1Value (Index, rhs);
 		return true;
@@ -220,11 +220,11 @@ SFColor::setHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColor> (cx, args);
-		const auto h    = getArgument <Type::value_type> (cx, args, 0);
-		const auto s    = getArgument <Type::value_type> (cx, args, 1);
-		const auto v    = getArgument <Type::value_type> (cx, args, 2);
+		const auto h    = getArgument <X3D::SFColor::value_type> (cx, args, 0);
+		const auto s    = getArgument <X3D::SFColor::value_type> (cx, args, 1);
+		const auto v    = getArgument <X3D::SFColor::value_type> (cx, args, 2);
 
-		lhs -> setHSV (vector3 <Type::value_type> (h, s, v));
+		lhs -> setHSV (vector3 <X3D::SFColor::value_type> (h, s, v));
 
 		args .rval () .setUndefined ();
 		return true;
@@ -246,9 +246,9 @@ SFColor::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFColor> (cx, args);
 		const auto rhs  = getArgument <SFColor> (cx, args, 0);
-		const auto t    = getArgument <Type::value_type> (cx, args, 1);
+		const auto t    = getArgument <X3D::SFColor::value_type> (cx, args, 1);
 
-		args .rval () .set (create (cx, new Type (lhs -> lerp (*rhs, t))));
+		args .rval () .set (create (cx, new X3D::SFColor (lhs -> lerp (*rhs, t))));
 		return true;
 	}
 	catch (const std::exception & error)

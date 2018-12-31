@@ -981,6 +981,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec2.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFColorRGBA.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFColor.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFRotation.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1656,6 +1657,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec2.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFColorRGBA.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFColor.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFRotation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

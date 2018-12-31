@@ -130,11 +130,11 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 //
 //			break;
 //		}
-//		case X3DConstants::SFRotation:
-//		{
-//			*static_cast <X3D::SFRotation*> (field) = *getArgument <SFRotation> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFRotation:
+		{
+			*static_cast <X3D::SFRotation*> (field) = *getArgument <SFRotation> (cx, value, 0);
+			break;
+		}
 		case X3DConstants::SFString:
 		{
 			*static_cast <X3D::SFString*> (field) = getArgument <std::string> (cx, value, 0);
@@ -325,9 +325,9 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 //
 //		case X3DConstants::SFNode:
 //			return SFNode::create (cx, static_cast <X3D::SFNode*> (field));
-//
-//		case X3DConstants::SFRotation:
-//			return SFRotation::create (cx, static_cast <X3D::SFRotation*> (field));
+
+		case X3DConstants::SFRotation:
+			return SFRotation::create (cx, static_cast <X3D::SFRotation*> (field));
 
 		case X3DConstants::SFString:
 			return SFString::create (cx, static_cast <X3D::SFString*> (field));

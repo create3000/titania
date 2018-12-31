@@ -66,8 +66,7 @@ public:
 
 	///  @name Member types
 
-	using Type          = X3D::SFColor;
-	using internal_type = Type;
+	using internal_type = X3D::SFColor;
 
 	///  @name Construction
 
@@ -77,7 +76,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, Type* const field);
+	create (JSContext* const cx, X3D::SFColor* const field);
 
 	static
 	const
@@ -120,7 +119,7 @@ private:
 
 	///  @name Static members
 
-	static constexpr size_t Size = std::tuple_size <typename Type::internal_type> ();
+	static constexpr size_t Size = std::tuple_size <X3D::SFColor::internal_type> ();
 
 	static const JSClassOps     class_ops;
 	static const JSClass        static_class;

@@ -48,25 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFCOLOR_RGBA_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFCOLOR_RGBA_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFROTATION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFROTATION_H__
 
 #include "../X3DField.h"
 
-#include "../../../Fields/SFColorRGBA.h"
+#include "../../../Fields/SFRotation4.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-class SFColorRGBA :
+class SFRotation :
 	public X3DField
 {
 public:
 
 	///  @name Member types
 
-	using internal_type = X3D::SFColorRGBA;
+	using internal_type = X3D::SFRotation;
 
 	///  @name Construction
 
@@ -76,7 +76,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, X3D::SFColorRGBA* const field);
+	create (JSContext* const cx, X3D::SFRotation* const field);
 
 	static
 	const
@@ -88,14 +88,14 @@ public:
 	constexpr
 	ObjectType
 	getId ()
-	{ return ObjectType::SFColorRGBA; }
+	{ return ObjectType::SFRotation; }
 
 
 private:
 
 	///  @name Member types
 
-	enum Property {R, G, B, A};
+	enum Property {X, Y, Z, ANGLE};
 
 	///  @name Construction
 
@@ -113,13 +113,16 @@ private:
 
 	///  @name Functions
 
-	static bool getHSVA (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool setHSVA (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool lerp    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getAxis  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setAxis  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool inverse  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool multiply (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool multVec  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool slerp    (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Static members
 
-	static constexpr size_t Size = std::tuple_size <X3D::SFColorRGBA::internal_type> ();
+	static constexpr size_t Size = std::tuple_size <X3D::SFRotation::internal_type> ();
 
 	static const JSClassOps     class_ops;
 	static const JSClass        static_class;
