@@ -480,6 +480,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix3.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFRotation.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.cpp \

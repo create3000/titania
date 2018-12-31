@@ -97,16 +97,16 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 			*static_cast <X3D::SFImage*> (field) = *getArgument <SFImage> (cx, value, 0);
 			break;
 		}
-//		case X3DConstants::SFMatrix3d:
-//		{
-//			*static_cast <X3D::SFMatrix3d*> (field) = *getArgument <SFMatrix3d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::SFMatrix3f:
-//		{
-//			*static_cast <X3D::SFMatrix3f*> (field) = *getArgument <SFMatrix3f> (cx, value, 0);
-//			break;
-//		}
+		case X3DConstants::SFMatrix3d:
+		{
+			*static_cast <X3D::SFMatrix3d*> (field) = *getArgument <SFMatrix3d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::SFMatrix3f:
+		{
+			*static_cast <X3D::SFMatrix3f*> (field) = *getArgument <SFMatrix3f> (cx, value, 0);
+			break;
+		}
 		case X3DConstants::SFMatrix4d:
 		{
 			*static_cast <X3D::SFMatrix4d*> (field) = *getArgument <SFMatrix4d> (cx, value, 0);
@@ -311,11 +311,11 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 		case X3DConstants::SFImage:
 			return SFImage::create (cx, static_cast <X3D::SFImage*> (field));
 
-//		case X3DConstants::SFMatrix3d:
-//			return SFMatrix3d::create (cx, static_cast <X3D::SFMatrix3d*> (field));
-//
-//		case X3DConstants::SFMatrix3f:
-//			return SFMatrix3f::create (cx, static_cast <X3D::SFMatrix3f*> (field));
+		case X3DConstants::SFMatrix3d:
+			return SFMatrix3d::create (cx, static_cast <X3D::SFMatrix3d*> (field));
+
+		case X3DConstants::SFMatrix3f:
+			return SFMatrix3f::create (cx, static_cast <X3D::SFMatrix3f*> (field));
 
 		case X3DConstants::SFMatrix4d:
 			return SFMatrix4d::create (cx, static_cast <X3D::SFMatrix4d*> (field));

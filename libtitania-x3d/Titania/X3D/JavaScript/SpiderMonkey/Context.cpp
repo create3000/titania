@@ -154,8 +154,8 @@ Context::addClasses ()
 	addProto (SFColor::getId (),     SFColor::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFColorRGBA::getId (), SFColorRGBA::init (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFImage::getId (),     SFImage::init     (cx, *global, getProto (X3DField::getId ())));
-//	addProto (MFMatrix3d::getId (),  MFMatrix3d::init  (cx, *global, getProto (X3DField::getId ())));
-//	addProto (MFMatrix3f::getId (),  MFMatrix3f::init  (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFMatrix3d::getId (),  SFMatrix3d::init  (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFMatrix3f::getId (),  SFMatrix3f::init  (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFMatrix4d::getId (),  SFMatrix4d::init  (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFMatrix4f::getId (),  SFMatrix4f::init  (cx, *global, getProto (X3DField::getId ())));
 //	addProto (SFNode::getId (),      SFNode::init      (cx, *global, getProto (X3DField::getId ())));

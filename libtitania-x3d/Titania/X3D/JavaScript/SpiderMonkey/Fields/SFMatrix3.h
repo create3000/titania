@@ -48,22 +48,23 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFMATRIX4_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFMATRIX4_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFMATRIX3_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFMATRIX3_H__
 
 #include "../X3DField.h"
-#include "SFRotation.h"
+#include "SFVec2.h"
 #include "SFVec3.h"
 
-#include "../../../Fields/SFMatrix4.h"
-#include "../../../Fields/VrmlMatrix.h"
+#include "../../../Fields/SFMatrix3.h"
+
+#include <complex>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
 template <class InternalType>
-class SFMatrix4 :
+class SFMatrix3 :
 	public X3DField
 {
 public:
@@ -71,8 +72,8 @@ public:
 	///  @name Member types
 
 	using internal_type = InternalType;
-	using vector_type   = SFVec3 <typename InternalType::vector_type>;
-	using rotation_type = SFRotation;
+	using vector_type   = SFVec2 <typename InternalType::vector_type>;
+	using rotation_type = SFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename InternalType::value_type>>>;
 
 	///  @name Construction
 
@@ -139,7 +140,7 @@ private:
 };
 
 template <class InternalType>
-const JSPropertySpec SFMatrix4 <InternalType>::properties [ ] = {
+const JSPropertySpec SFMatrix3 <InternalType>::properties [ ] = {
 	JS_PSGS ("0",  get1Value <0>,  set1Value <0>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("1",  get1Value <1>,  set1Value <1>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("2",  get1Value <2>,  set1Value <2>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -149,18 +150,11 @@ const JSPropertySpec SFMatrix4 <InternalType>::properties [ ] = {
 	JS_PSGS ("6",  get1Value <6>,  set1Value <6>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("7",  get1Value <7>,  set1Value <7>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("8",  get1Value <8>,  set1Value <8>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("9",  get1Value <9>,  set1Value <9>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("10", get1Value <10>, set1Value <10>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("11", get1Value <11>, set1Value <11>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("12", get1Value <12>, set1Value <12>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("13", get1Value <13>, set1Value <13>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("14", get1Value <14>, set1Value <14>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("15", get1Value <15>, set1Value <15>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PS_END
 };
 
 template <class InternalType>
-const JSFunctionSpec SFMatrix4 <InternalType>::functions [ ] = {
+const JSFunctionSpec SFMatrix3 <InternalType>::functions [ ] = {
 	JS_FS ("setTransform",  setTransform,  5, JSPROP_PERMANENT),
 	JS_FS ("getTransform",  getTransform,  3, JSPROP_PERMANENT),
 
@@ -177,7 +171,7 @@ const JSFunctionSpec SFMatrix4 <InternalType>::functions [ ] = {
 
 template <class InternalType>
 JSObject*
-SFMatrix4 <InternalType>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
+SFMatrix3 <InternalType>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -189,14 +183,14 @@ SFMatrix4 <InternalType>::init (JSContext* const cx, JS::HandleObject global, JS
 
 template <class InternalType>
 JS::Value
-SFMatrix4 <InternalType>::create (JSContext* const cx, InternalType* const field)
+SFMatrix3 <InternalType>::create (JSContext* const cx, InternalType* const field)
 {
 	return X3DField::create (cx, &static_class, getId (), field);
 }
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -210,24 +204,17 @@ SFMatrix4 <InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp
 			case Size:
 			{
 				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto m11  = getArgument <double> (cx, args,  0);
-				const auto m12  = getArgument <double> (cx, args,  1);
-				const auto m13  = getArgument <double> (cx, args,  2);
-				const auto m14  = getArgument <double> (cx, args,  3);
-				const auto m21  = getArgument <double> (cx, args,  4);
-				const auto m22  = getArgument <double> (cx, args,  5);
-				const auto m23  = getArgument <double> (cx, args,  6);
-				const auto m24  = getArgument <double> (cx, args,  7);
-				const auto m31  = getArgument <double> (cx, args,  8);
-				const auto m32  = getArgument <double> (cx, args,  9);
-				const auto m33  = getArgument <double> (cx, args, 10);
-				const auto m34  = getArgument <double> (cx, args, 11);
-				const auto m41  = getArgument <double> (cx, args, 12);
-				const auto m42  = getArgument <double> (cx, args, 13);
-				const auto m43  = getArgument <double> (cx, args, 14);
-				const auto m44  = getArgument <double> (cx, args, 15);
+				const auto m11  = getArgument <double> (cx, args, 0);
+				const auto m12  = getArgument <double> (cx, args, 1);
+				const auto m13  = getArgument <double> (cx, args, 2);
+				const auto m21  = getArgument <double> (cx, args, 3);
+				const auto m22  = getArgument <double> (cx, args, 4);
+				const auto m23  = getArgument <double> (cx, args, 5);
+				const auto m31  = getArgument <double> (cx, args, 6);
+				const auto m32  = getArgument <double> (cx, args, 7);
+				const auto m33  = getArgument <double> (cx, args, 8);
 
-				args .rval () .set (create (cx, new InternalType (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44)));
+				args .rval () .set (create (cx, new InternalType (m11, m12, m13, m21, m22, m23, m31, m32, m33)));
 				return true;
 			}
 			default:
@@ -243,12 +230,12 @@ SFMatrix4 <InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp
 template <class InternalType>
 template <size_t Index>
 bool
-SFMatrix4 <InternalType>::set1Value (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::set1Value (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
 
 		lhs -> set1Value (Index, rhs);
@@ -263,12 +250,12 @@ SFMatrix4 <InternalType>::set1Value (JSContext* cx, unsigned argc, JS::Value* vp
 template <class InternalType>
 template <size_t Index>
 bool
-SFMatrix4 <InternalType>::get1Value (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::get1Value (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 
 		args .rval () .setDouble (lhs -> get1Value (Index));
 		return true;
@@ -281,7 +268,7 @@ SFMatrix4 <InternalType>::get1Value (JSContext* cx, unsigned argc, JS::Value* vp
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -289,13 +276,13 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setTransform: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 
-		typename InternalType::vector_type translation;
-		typename InternalType::rotation_type rotation;
-		typename InternalType::vector_type scale (1, 1, 1);
-		typename InternalType::rotation_type scaleOrientation;
-		typename InternalType::vector_type center;
+		typename InternalType::vector_type::internal_type translation;
+		typename InternalType::value_type rotation;
+		typename InternalType::vector_type::internal_type scale (1, 1);
+		typename InternalType::value_type scaleOrientation;
+		typename InternalType::vector_type::internal_type center;
 
 		try
 		{
@@ -308,7 +295,7 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 		try
 		{
 			if (argc > 1)
-				rotation = *getArgument <rotation_type> (cx, args, 1);
+				rotation = getArgument <double> (cx, args, 1);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -324,7 +311,7 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 		try
 		{
 			if (argc > 3)
-				scaleOrientation = *getArgument <rotation_type> (cx, args, 3);
+				scaleOrientation = getArgument <double> (cx, args, 3);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -350,7 +337,7 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -358,12 +345,12 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getTransform: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 
 		typename InternalType::vector_type::internal_type translation;
-		typename InternalType::rotation_type::internal_type rotation;
-		typename InternalType::vector_type::internal_type scale (1, 1, 1);
-		typename InternalType::rotation_type::internal_type scaleOrientation;
+		typename InternalType::value_type rotation;
+		typename InternalType::vector_type::internal_type scale (1, 1);
+		typename InternalType::value_type scaleOrientation;
 		typename InternalType::vector_type::internal_type center;
 
 		try
@@ -387,7 +374,11 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 		try
 		{
 			if (argc > 1)
-				getArgument <rotation_type> (cx, args, 1) -> setValue (rotation);
+			{
+				const auto complex = std::polar <typename InternalType::value_type> (1, rotation);
+
+				getArgument <rotation_type> (cx, args, 1) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), rotation));
+			}
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -403,7 +394,11 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 		try
 		{
 			if (argc > 3)
-				getArgument <rotation_type> (cx, args, 3) -> setValue (scaleOrientation);
+			{
+				const auto complex = std::polar <typename InternalType::value_type> (1, scaleOrientation);
+
+				getArgument <rotation_type> (cx, args, 3) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
+			}
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -419,7 +414,7 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::transpose (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::transpose (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -427,7 +422,7 @@ SFMatrix4 <InternalType>::transpose (JSContext* cx, unsigned argc, JS::Value* vp
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .transpose: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 
 		args .rval () .set (create (cx, new InternalType (lhs -> transpose ())));
 		return true;
@@ -440,7 +435,7 @@ SFMatrix4 <InternalType>::transpose (JSContext* cx, unsigned argc, JS::Value* vp
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -448,7 +443,7 @@ SFMatrix4 <InternalType>::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .inverse: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 
 		args .rval () .set (create (cx, new InternalType (lhs -> inverse ())));
 		return true;
@@ -461,7 +456,7 @@ SFMatrix4 <InternalType>::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::multLeft (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::multLeft (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -469,8 +464,8 @@ SFMatrix4 <InternalType>::multLeft (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multLeft: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <SFMatrix4> (cx, args, 0);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
+		const auto rhs  = getArgument <SFMatrix3> (cx, args, 0);
 
 		args .rval () .set (create (cx, new InternalType (lhs -> multLeft (*rhs))));
 		return true;
@@ -483,7 +478,7 @@ SFMatrix4 <InternalType>::multLeft (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::multRight (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::multRight (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -491,8 +486,8 @@ SFMatrix4 <InternalType>::multRight (JSContext* cx, unsigned argc, JS::Value* vp
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multRight: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <SFMatrix4> (cx, args, 0);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
+		const auto rhs  = getArgument <SFMatrix3> (cx, args, 0);
 
 		args .rval () .set (create (cx, new InternalType (lhs -> multLeft (*rhs))));
 		return true;
@@ -505,7 +500,7 @@ SFMatrix4 <InternalType>::multRight (JSContext* cx, unsigned argc, JS::Value* vp
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::multVecMatrix (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::multVecMatrix (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -513,7 +508,7 @@ SFMatrix4 <InternalType>::multVecMatrix (JSContext* cx, unsigned argc, JS::Value
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVecMatrix: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 		const auto rhs  = getArgument <vector_type> (cx, args, 0);
 
 		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multVecMatrix (*rhs))));
@@ -527,7 +522,7 @@ SFMatrix4 <InternalType>::multVecMatrix (JSContext* cx, unsigned argc, JS::Value
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::multMatrixVec (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::multMatrixVec (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -535,7 +530,7 @@ SFMatrix4 <InternalType>::multMatrixVec (JSContext* cx, unsigned argc, JS::Value
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multMatrixVec: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 		const auto rhs  = getArgument <vector_type> (cx, args, 0);
 
 		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multMatrixVec (*rhs))));
@@ -549,7 +544,7 @@ SFMatrix4 <InternalType>::multMatrixVec (JSContext* cx, unsigned argc, JS::Value
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::multDirMatrix (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::multDirMatrix (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -557,7 +552,7 @@ SFMatrix4 <InternalType>::multDirMatrix (JSContext* cx, unsigned argc, JS::Value
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multDirMatrix: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 		const auto rhs  = getArgument <vector_type> (cx, args, 0);
 
 		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multDirMatrix (*rhs))));
@@ -571,7 +566,7 @@ SFMatrix4 <InternalType>::multDirMatrix (JSContext* cx, unsigned argc, JS::Value
 
 template <class InternalType>
 bool
-SFMatrix4 <InternalType>::multMatrixDir (JSContext* cx, unsigned argc, JS::Value* vp)
+SFMatrix3 <InternalType>::multMatrixDir (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -579,7 +574,7 @@ SFMatrix4 <InternalType>::multMatrixDir (JSContext* cx, unsigned argc, JS::Value
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multMatrixDir: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto lhs  = getThis <SFMatrix3> (cx, args);
 		const auto rhs  = getArgument <vector_type> (cx, args, 0);
 
 		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multMatrixDir (*rhs))));
@@ -594,28 +589,20 @@ SFMatrix4 <InternalType>::multMatrixDir (JSContext* cx, unsigned argc, JS::Value
 template <>
 constexpr
 ObjectType
-SFMatrix4 <X3D::SFMatrix4d>::getId ()
-{ return ObjectType::SFMatrix4d; }
+SFMatrix3 <X3D::SFMatrix3d>::getId ()
+{ return ObjectType::SFMatrix3d; }
 
 template <>
 constexpr
 ObjectType
-SFMatrix4 <X3D::SFMatrix4f>::getId ()
-{ return ObjectType::SFMatrix4f; }
+SFMatrix3 <X3D::SFMatrix3f>::getId ()
+{ return ObjectType::SFMatrix3f; }
 
-template <>
-constexpr
-ObjectType
-SFMatrix4 <X3D::VrmlMatrix>::getId ()
-{ return ObjectType::VrmlMatrix; }
+using SFMatrix3d = SFMatrix3 <X3D::SFMatrix3d>;
+using SFMatrix3f = SFMatrix3 <X3D::SFMatrix3f>;
 
-using SFMatrix4d = SFMatrix4 <X3D::SFMatrix4d>;
-using SFMatrix4f = SFMatrix4 <X3D::SFMatrix4f>;
-using VrmlMatrix = SFMatrix4 <X3D::VrmlMatrix>;
-
-extern template class SFMatrix4 <X3D::SFMatrix4d>;
-extern template class SFMatrix4 <X3D::SFMatrix4f>;
-extern template class SFMatrix4 <X3D::VrmlMatrix>;
+extern template class SFMatrix3 <X3D::SFMatrix3d>;
+extern template class SFMatrix3 <X3D::SFMatrix3f>;
 
 } // spidermonkey
 } // X3D

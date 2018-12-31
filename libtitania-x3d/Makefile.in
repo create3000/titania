@@ -598,6 +598,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix3.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix4.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFRotation.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.lo \
@@ -1295,6 +1296,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix3.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix4.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFRotation.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo \
@@ -2205,6 +2207,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix3.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFRotation.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec2.cpp \
@@ -4332,6 +4335,9 @@ Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.lo:  \
 Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix3.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Fields/SFMatrix4.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
@@ -5884,6 +5890,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix3.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix4.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFRotation.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo@am__quote@ # am--include-marker
@@ -7094,6 +7101,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix3.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix4.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFRotation.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo
@@ -7816,6 +7824,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix3.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFMatrix4.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFRotation.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo

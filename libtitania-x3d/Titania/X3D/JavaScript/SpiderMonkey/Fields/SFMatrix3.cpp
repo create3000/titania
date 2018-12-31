@@ -48,21 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
+#include "SFMatrix3.h"
 
-#include "Fields/SFColor.h"
-#include "Fields/SFColorRGBA.h"
-#include "Fields/SFImage.h"
-#include "Fields/SFMatrix3.h"
-#include "Fields/SFMatrix4.h"
-//#include "Fields/SFNode.h"
-#include "Fields/SFRotation.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
-#include "Fields/X3DScalar.h"
+namespace titania {
+namespace X3D {
+namespace spidermonkey {
 
-//#include "Fields/ArrayFields.h"
+template <>
+const JSClassOps SFMatrix3 <X3D::SFMatrix3d>::class_ops = {
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	&finalize, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
+};
 
-#endif
+template <>
+const JSClass SFMatrix3 <X3D::SFMatrix3d>::static_class = {
+	"SFMatrix3d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
+	&class_ops
+};
+
+template <>
+const JSClassOps SFMatrix3 <X3D::SFMatrix3f>::class_ops = {
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	&finalize, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
+};
+
+template <>
+const JSClass SFMatrix3 <X3D::SFMatrix3f>::static_class = {
+	"SFMatrix3f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
+	&class_ops,
+};
+
+template class SFMatrix3 <X3D::SFMatrix3d>;
+template class SFMatrix3 <X3D::SFMatrix3f>;
+
+} // spidermonkey
+} // X3D
+} // titania
