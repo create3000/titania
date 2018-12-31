@@ -63,7 +63,7 @@ public:
 
 	static
 	void
-	init (JSContext* const cx, const JS::HandleObject & global);
+	init (JSContext* const cx, JS::HandleObject global);
 
 
 private:
@@ -76,8 +76,8 @@ private:
 
 	///  @name Static members
 
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
 
 };
 

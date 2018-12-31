@@ -974,6 +974,8 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Error.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\ObjectType.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec3.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DField.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1643,6 +1645,8 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Globals.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\String.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\field.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFVec3.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

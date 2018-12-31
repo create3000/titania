@@ -64,6 +64,14 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
+template <class Type>
+inline
+Type
+getObject (JSObject* const obj)
+{
+	return static_cast <Type> (JS_GetPrivate (obj));
+}
+
 inline
 Context*
 getContext (JSContext* cx)
@@ -73,11 +81,11 @@ getContext (JSContext* cx)
 
 template <class Type>
 bool
-instanceOf (JSContext* const cx, JSObject* const obj)
+instanceOf (JSContext* const cx, const JS::HandleValue & obj)
 {
 	const auto context     = getContext (cx);
-	const auto proto       = context -> getProto (Type::getId ());
-	const auto constructor = JS_GetConstructor (cx, proto);
+	auto       proto       = context -> getProto (Type::getId ());
+	auto       constructor = JS::RootedObject (cx, JS_GetConstructor (cx, proto));
 	bool       boolean     = false;
 
 	if (JS_HasInstance (cx, constructor, obj, &boolean))
@@ -86,12 +94,42 @@ instanceOf (JSContext* const cx, JSObject* const obj)
 	return false;
 }
 
+// Version for functions.
 template <class Type>
 inline
-Type
-getObject (JSObject* const obj)
+typename Type::internal_type*
+getThis (JSContext* const cx, const JS::CallArgs & args)
 {
-	return static_cast <Type> (JS_GetPrivate (obj));
+	const auto thisv = args .thisv ();
+
+	if (thisv .isObjectOrNull ())
+	{
+		const auto self = thisv .toObjectOrNull ();
+
+		if (self and instanceOf <Type> (cx, thisv))
+		{
+			const auto object = getObject <typename Type::internal_type*> (self);
+
+			if (object)
+				return object;
+		}
+	}
+
+	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
+}
+
+// Version for properties.
+template <class Type>
+inline
+typename Type::internal_type*
+getThis (JSContext* const cx, JSObject* const obj)
+{
+	const auto object = getObject <typename Type::internal_type*> (obj);
+
+	if (object)
+		return object;
+
+	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
 }
 
 template <class Type>
@@ -111,7 +149,7 @@ getArgument (JSContext* const cx, const JS::HandleValue & value, const size_t in
 		if (not obj)
 			throw std::domain_error ("type of argument " + std::to_string (index + 1) + " is invalid, must be '" + std::string (Type::getClass () -> name) + "' but is null");
 
-		if (instanceOf <Type> (cx, obj))
+		if (instanceOf <Type> (cx, value))
 			return getObject <typename Type::internal_type*> (obj);
 	}
 

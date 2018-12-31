@@ -104,9 +104,19 @@ public:
 	getGlobal () const
 	{ return *global; }
 
-	JSObject*
+	JS::HandleObject
 	getProto (const ObjectType type) const
-	{ return protos [size_t (type)]; }
+	{ return *protos [size_t (type)]; }
+
+	void
+	addObject (X3D::X3DFieldDefinition* const field, JSObject* const object);
+
+	void
+	removeObject (X3D::X3DFieldDefinition* const field);
+
+	JSObject*
+	getObject (X3D::X3DFieldDefinition* const field) const
+	{ return objects .at (field); }
 
 	///  @name Destruction
 
@@ -166,6 +176,9 @@ private:
 	getFunction (const std::string & name, JS::MutableHandleValue value) const;
 
 	void
+	addProto (const ObjectType type, JSObject* const proto);
+
+	void
 	set_live ();
 
 	void
@@ -184,11 +197,11 @@ private:
 	set_shutdown ();
 
 	void
-	exception ();
+	reportException ();
 
 	static
 	void
-	error (JSContext* cx, JSErrorReport* const report);
+	reportError (JSContext* cx, JSErrorReport* const report);
 
 	///  @name Static members
 
@@ -205,7 +218,8 @@ private:
 	JSContext* const                                                           cx;
 	std::unique_ptr <JS::PersistentRooted <JSObject*>>                         global;
 	std::map <std::string, std::unique_ptr <JS::PersistentRooted <JS::Value>>> fields;
-	std::vector <JSObject*>                                                    protos;
+	std::vector <std::unique_ptr <JS::PersistentRooted <JSObject*>>>           protos;
+	std::map <X3D::X3DFieldDefinition*, JSObject*>                             objects;
 
 };
 

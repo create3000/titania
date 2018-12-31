@@ -59,7 +59,7 @@
 //#include "Fields/SFNode.h"
 //#include "Fields/SFRotation.h"
 //#include "Fields/SFVec2.h"
-//#include "Fields/SFVec3.h"
+#include "Fields/SFVec3.h"
 //#include "Fields/SFVec4.h"
 #include "Fields/X3DScalar.h"
 

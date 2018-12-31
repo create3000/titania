@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
@@ -48,73 +48,60 @@
  *
  ******************************************************************************/
 
-#include "Globals.h"
-
-#include "Arguments.h"
-#include "Context.h"
-#include "String.h"
-
-#include "../../Browser/X3DBrowser.h"
+#include "SFVec3.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-const JSPropertySpec Globals::properties [ ] = {
-	JS_PSG ("NULL",  null_,  JSPROP_ENUMERATE | JSPROP_PERMANENT),
-	JS_PSG ("FALSE", false_, JSPROP_ENUMERATE | JSPROP_PERMANENT),
-	JS_PSG ("TRUE",  true_,  JSPROP_ENUMERATE | JSPROP_PERMANENT),
-	JS_PS_END
+template <>
+const JSClassOps SFVec3 <X3D::SFVec3d>::class_ops = {
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr,
+	nullptr
 };
 
-const JSFunctionSpec Globals::functions [ ] = {
-	JS_FS ("print", Globals::print, 0, JSPROP_PERMANENT), // VRML 2.0
-	JS_FS ("trace", Globals::print, 0, JSPROP_PERMANENT), // Non standard
-	JS_FS_END
+template <>
+const JSClass SFVec3 <X3D::SFVec3d>::static_class = {
+	"SFVec3d",
+	JSCLASS_HAS_PRIVATE | JSCLASS_FOREGROUND_FINALIZE,
+	&class_ops
 };
 
-void
-Globals::init (JSContext* const cx, JS::HandleObject global)
-{
-	JS_DefineProperties (cx, global, properties);
-	JS_DefineFunctions (cx, global, functions);
-}
+template <>
+const JSClassOps SFVec3 <X3D::SFVec3f>::class_ops = {
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	&finalize, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
+};
 
-bool
-Globals::null_ (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	vp -> setNull ();
-	return true;
-}
+template <>
+const JSClass SFVec3 <X3D::SFVec3f>::static_class = {
+	"SFVec3f",
+	JSCLASS_HAS_PRIVATE | JSCLASS_FOREGROUND_FINALIZE,
+	&class_ops,
+};
 
-bool
-Globals::false_ (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	vp -> setBoolean (false);
-	return true;
-}
-
-bool
-Globals::true_ (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	vp -> setBoolean (true);
-	return true;
-}
-
-bool
-Globals::print (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	const auto args    = JS::CallArgsFromVp (argc, vp);
-	const auto browser = getContext (cx) -> getBrowser ();
-
-	for (unsigned i = 0; i < argc; ++ i)
-		browser -> print (to_string (cx, args [i]));
-
-	browser -> print ('\n');
-
-	args .rval () .setUndefined ();
-	return true;
-}
+template class SFVec3 <X3D::SFVec3f>;
+template class SFVec3 <X3D::SFVec3d>;
 
 } // spidermonkey
 } // X3D

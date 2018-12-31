@@ -53,6 +53,7 @@
 #include "Arguments.h"
 #include "Error.h"
 #include "field.h"
+#include "Fields.h"
 #include "Globals.h"
 #include "String.h"
 
@@ -70,18 +71,18 @@ const std::string   Context::typeName       = "SpiderMonkeyContext";
 const std::string   Context::containerField = "context";
 
 const JSClassOps Context::globalOps = {
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	nullptr,
-	JS_GlobalObjectTraceHook
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	nullptr, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	JS_GlobalObjectTraceHook, // trace
 };
 
 const JSClass Context::globalClass = {
@@ -98,7 +99,8 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                       cx (cx),
 	                   global (),
 	                   fields (),
-	                   protos ()
+	                   protos (size_t (ObjectType::SIZE)),
+	                  objects ()
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
@@ -117,7 +119,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	if (not JS_InitStandardClasses (cx, *global))
 		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
 
-	JS::SetWarningReporter (cx, error);
+	JS::SetWarningReporter (cx, &Context::reportError);
 
 	addClasses ();
 	addUserDefinedFields ();
@@ -142,6 +144,11 @@ void
 Context::addClasses ()
 {
 	Globals::init (cx, *global);
+
+	addProto (X3DField::getId (), X3DField::init (cx, *global, nullptr));
+
+	addProto (SFVec3d::getId (),     SFVec3d::init     (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFVec3f::getId (),     SFVec3f::init     (cx, *global, getProto (X3DField::getId ())));
 }
 
 void
@@ -289,7 +296,7 @@ Context::evaluate (const std::string & string, const std::string & filename)
 			return true;
 	}
 
-	exception ();
+	reportException ();
 	return false;
 }
 
@@ -309,7 +316,7 @@ Context::call (JS::HandleValue value)
 
 	JS_CallFunctionValue (cx, *global, value, JS::HandleValueArray::empty (), &rval);
 
-	exception ();
+	reportException ();
 }
 
 bool
@@ -327,6 +334,30 @@ Context::getFunction (const std::string & name, JS::MutableHandleValue value) co
 	}
 
 	return false;
+}
+
+void
+Context::addProto (const ObjectType type, JSObject* const proto)
+{
+	protos [size_t (type)] = std::make_unique <JS::PersistentRooted <JSObject*>> (cx, proto);
+}
+
+void
+Context::addObject (X3D::X3DFieldDefinition* const field, JSObject* const object)
+{
+	if (not objects .emplace (field, object) .second)
+		throw std::invalid_argument ("addObject");
+
+	field -> addParent (this);
+}
+
+void
+Context::removeObject (X3D::X3DFieldDefinition* const field)
+{
+	if (objects .erase (field))
+		field -> removeParent (this);
+	else
+		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
 }
 
 void
@@ -427,23 +458,30 @@ Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>>
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr <JS::PersistentRooted <JS::Value>> & inputFunction)
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState es (cx);
+	try
+	{
+		const JSAutoRequest ar (cx);
+		const JSAutoCompartment ac (cx, *global);
+		const JS::AutoSaveExceptionState es (cx);
+	
+		JS_SetContextPrivate (cx, this);
+	
+		field -> setTainted (true);
+	
+		JS::RootedValue     rval (cx);
+		JS::AutoValueVector args (cx);
+	
+		args .append (getValue (cx, field));
+		args .append (JS::DoubleValue (getCurrentTime ()));
+	
+		JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
 
-	field -> setTainted (true);
-
-	JS_SetContextPrivate (cx, this);
-
-	JS::RootedValue     rval (cx);
-	JS::AutoValueVector args (cx);
-
-	args .append (getValue (cx, field));
-	args .append (JS::DoubleValue (getCurrentTime ()));
-
-	JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
-
-	field -> setTainted (false);
+		field -> setTainted (false);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -482,7 +520,7 @@ Context::set_shutdown ()
 }
 
 void
-Context::exception ()
+Context::reportException ()
 {
 	if (not JS_IsExceptionPending (cx))
 		return;
@@ -498,13 +536,12 @@ Context::exception ()
 
 	if (exception .isObject ())
 	{
-		const JS::RootedObject object (cx, &exception .toObject ());
-
+		const auto object = JS::RootedObject  (cx, &exception .toObject ());
 		const auto report = JS_ErrorFromException (cx, object);
 
 		if (report)
 		{
-			error (cx, report);
+			reportError (cx, report);
 			return;
 		}
 	}
@@ -513,7 +550,7 @@ Context::exception ()
 }
 
 void
-Context::error (JSContext* cx, JSErrorReport* const report)
+Context::reportError (JSContext* cx, JSErrorReport* const report)
 {
 	const auto context = getContext (cx);
 
@@ -550,8 +587,15 @@ Context::dispose ()
 {
 	const JSAutoRequest ar (cx);
 
+	JS_SetContextPrivate (cx, this);
+
 	fields .clear ();
+	protos .clear ();
 	global .reset ();
+
+	JS_GC (cx);
+
+	__LOG__ << objects .size () << std::endl;
 
 	X3D::X3DJavaScriptContext::dispose ();
 }
