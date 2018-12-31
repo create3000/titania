@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class Type>
+template <class InternalType>
 class SFVec4 :
 	public X3DField
 {
@@ -67,7 +67,7 @@ public:
 
 	///  @name Member types
 
-	using internal_type = Type;
+	using internal_type = InternalType;
 
 	///  @name Construction
 
@@ -77,7 +77,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, Type* const field);
+	create (JSContext* const cx, InternalType* const field);
 
 	static
 	const
@@ -130,7 +130,7 @@ private:
 
 	///  @name Static members
 
-	static constexpr size_t Size = std::tuple_size <typename Type::internal_type> ();
+	static constexpr size_t Size = std::tuple_size <typename InternalType::internal_type> ();
 
 	static const JSClassOps     class_ops;
 	static const JSClass        static_class;
@@ -139,8 +139,8 @@ private:
 
 };
 
-template <class Type>
-const JSPropertySpec SFVec4 <Type>::properties [ ] = {
+template <class InternalType>
+const JSPropertySpec SFVec4 <InternalType>::properties [ ] = {
 	JS_PSGS ("x", getProperty <X>, setProperty <X>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("y", getProperty <Y>, setProperty <Y>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("z", getProperty <Z>, setProperty <Z>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -152,8 +152,8 @@ const JSPropertySpec SFVec4 <Type>::properties [ ] = {
 	JS_PS_END
 };
 
-template <class Type>
-const JSFunctionSpec SFVec4 <Type>::functions [ ] = {
+template <class InternalType>
+const JSFunctionSpec SFVec4 <InternalType>::functions [ ] = {
 	JS_FS ("add",       add,       1, JSPROP_PERMANENT),
 	JS_FS ("distance",  distance,  1, JSPROP_PERMANENT),
 	JS_FS ("divide",    divide,    1, JSPROP_PERMANENT),
@@ -169,9 +169,9 @@ const JSFunctionSpec SFVec4 <Type>::functions [ ] = {
 	JS_FS_END
 };
 
-template <class Type>
+template <class InternalType>
 JSObject*
-SFVec4 <Type>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
+SFVec4 <InternalType>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -181,16 +181,16 @@ SFVec4 <Type>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObj
 	return proto;
 }
 
-template <class Type>
+template <class InternalType>
 JS::Value
-SFVec4 <Type>::create (JSContext* const cx, Type* const field)
+SFVec4 <InternalType>::create (JSContext* const cx, InternalType* const field)
 {
 	return X3DField::create (cx, &static_class, getId (), field);
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -198,18 +198,18 @@ SFVec4 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 		{
 			case 0:
 			{
-				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new Type ()));
+				JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new InternalType ()));
 				return true;
 			}
 			case Size:
 			{
 				const auto args = JS::CallArgsFromVp (argc, vp);
-				const auto x    = getArgument <typename Type::value_type> (cx, args, X);
-				const auto y    = getArgument <typename Type::value_type> (cx, args, Y);
-				const auto z    = getArgument <typename Type::value_type> (cx, args, Z);
-				const auto w    = getArgument <typename Type::value_type> (cx, args, W);
+				const auto x    = getArgument <typename InternalType::value_type> (cx, args, X);
+				const auto y    = getArgument <typename InternalType::value_type> (cx, args, Y);
+				const auto z    = getArgument <typename InternalType::value_type> (cx, args, Z);
+				const auto w    = getArgument <typename InternalType::value_type> (cx, args, W);
 
-				args .rval () .set (create (cx, new Type (x, y, z, w)));
+				args .rval () .set (create (cx, new InternalType (x, y, z, w)));
 				return true;
 			}
 			default:
@@ -222,16 +222,16 @@ SFVec4 <Type>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 template <size_t Index>
 bool
-SFVec4 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec4> (cx, args);
-		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
+		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
 
 		lhs -> set1Value (Index, rhs);
 		return true;
@@ -242,10 +242,10 @@ SFVec4 <Type>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 template <size_t Index>
 bool
-SFVec4 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -261,9 +261,9 @@ SFVec4 <Type>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -274,7 +274,7 @@ SFVec4 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto lhs  = getThis <SFVec4> (cx, args);
 		const auto rhs  = getArgument <SFVec4> (cx, args, 0);
 
-		args .rval () .set (create (cx, new Type (lhs -> add (*rhs))));
+		args .rval () .set (create (cx, new InternalType (lhs -> add (*rhs))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -283,9 +283,9 @@ SFVec4 <Type>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -305,9 +305,9 @@ SFVec4 <Type>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -316,9 +316,9 @@ SFVec4 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec4> (cx, args);
-		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
+		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
 
-		args .rval () .set (create (cx, new Type (lhs -> divide (rhs))));
+		args .rval () .set (create (cx, new InternalType (lhs -> divide (rhs))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -327,9 +327,9 @@ SFVec4 <Type>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -340,7 +340,7 @@ SFVec4 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto lhs  = getThis <SFVec4> (cx, args);
 		const auto rhs  = getArgument <SFVec4> (cx, args, 0);
 
-		args .rval () .set (create (cx, new Type (lhs -> divide (*rhs))));
+		args .rval () .set (create (cx, new InternalType (lhs -> divide (*rhs))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -349,9 +349,9 @@ SFVec4 <Type>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -371,9 +371,9 @@ SFVec4 <Type>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -392,9 +392,9 @@ SFVec4 <Type>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -404,9 +404,9 @@ SFVec4 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec4> (cx, args);
 		const auto rhs  = getArgument <SFVec4> (cx, args, 0);
-		const auto t    = getArgument <typename Type::value_type> (cx, args, 1);
+		const auto t    = getArgument <typename InternalType::value_type> (cx, args, 1);
 
-		args .rval () .set (create (cx, new Type (lhs -> lerp (*rhs, t))));
+		args .rval () .set (create (cx, new InternalType (lhs -> lerp (*rhs, t))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -415,9 +415,9 @@ SFVec4 <Type>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -426,9 +426,9 @@ SFVec4 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec4> (cx, args);
-		const auto rhs  = getArgument <typename Type::value_type> (cx, args, 0);
+		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
 
-		args .rval () .set (create (cx, new Type (lhs -> multiply (rhs))));
+		args .rval () .set (create (cx, new InternalType (lhs -> multiply (rhs))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -437,9 +437,9 @@ SFVec4 <Type>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -450,7 +450,7 @@ SFVec4 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto lhs  = getThis <SFVec4> (cx, args);
 		const auto rhs  = getArgument <SFVec4> (cx, args, 0);
 
-		args .rval () .set (create (cx, new Type (lhs -> multiply (*rhs))));
+		args .rval () .set (create (cx, new InternalType (lhs -> multiply (*rhs))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -459,9 +459,9 @@ SFVec4 <Type>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -471,7 +471,7 @@ SFVec4 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec4> (cx, args);
 
-		args .rval () .set (create (cx, new Type (lhs -> negate ())));
+		args .rval () .set (create (cx, new InternalType (lhs -> negate ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -480,9 +480,9 @@ SFVec4 <Type>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -492,7 +492,7 @@ SFVec4 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFVec4> (cx, args);
 
-		args .rval () .set (create (cx, new Type (lhs -> normalize ())));
+		args .rval () .set (create (cx, new InternalType (lhs -> normalize ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -501,9 +501,9 @@ SFVec4 <Type>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 bool
-SFVec4 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
+SFVec4 <InternalType>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
@@ -514,7 +514,7 @@ SFVec4 <Type>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto lhs  = getThis <SFVec4> (cx, args);
 		const auto rhs  = getArgument <SFVec4> (cx, args, 0);
 
-		args .rval () .set (create (cx, new Type (lhs -> subtract (*rhs))));
+		args .rval () .set (create (cx, new InternalType (lhs -> subtract (*rhs))));
 		return true;
 	}
 	catch (const std::exception & error)

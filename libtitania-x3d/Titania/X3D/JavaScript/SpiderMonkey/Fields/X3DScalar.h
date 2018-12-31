@@ -63,14 +63,14 @@ namespace spidermonkey {
 
 // Template class for JavaScript build-in field types.
 
-template <class Type>
+template <class InternalType>
 class X3DScalar
 {
 public:
 
 	///  @name Member types
 
-	using internal_type = Type;
+	using internal_type = InternalType;
 
 	///  @name Construction
 
