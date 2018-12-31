@@ -86,6 +86,13 @@ getContext (JSObject* const obj)
 	return static_cast <Context*> (JS_GetReservedSlot (obj, size_t (SlotType::CONTEXT)) .toPrivate ());
 }
 
+inline
+void
+setObject (JSObject* const obj, std::nullptr_t)
+{
+	JS_SetPrivate (obj, nullptr);
+}
+
 template <class Type>
 inline
 void

@@ -592,11 +592,13 @@ Context::dispose ()
 
 	JS_GC (cx);
 
-	// finalize is not called for global values, probably the global objects is not disposed.
+	// finalize is not called for global values, probably the global object is not disposed.
+
+	//assert (objects .empty ());
 
 	for (const auto [field, object] : objects)
 	{
-		JS_SetPrivate (object, nullptr);
+		setObject (object, nullptr);
 		removeObject (field);
 	}
 
