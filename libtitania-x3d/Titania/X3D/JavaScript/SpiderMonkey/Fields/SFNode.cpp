@@ -111,14 +111,12 @@ SFNode::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject par
 JS::Value
 SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 {
-	const auto node = field -> getValue ();
-
-	if (node)
+	if (field -> getValue ())
 	{
-		const auto value  = X3DField::create (cx, &static_class, getId (), node);
+		const auto value  = X3DField::create (cx, &static_class, getId (), new X3D::SFNode (*field));
 		const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
 
-		for (const auto fieldDefinition : node -> getFieldDefinitions ())
+		for (const auto fieldDefinition : field -> getValue () -> getFieldDefinitions ())
 		{
 			const auto & name = fieldDefinition -> getName ();
 	
@@ -129,7 +127,7 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0),
 			                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
 			                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
-	
+
 			if (fieldDefinition -> getAccessType () == X3D::inputOutput)
 			{
 				JS_DefineProperty (cx,
@@ -203,7 +201,7 @@ SFNode::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::M
 		{
 			const auto lhs   = getThis <SFNode> (cx, obj);
 			const auto name  = to_string (cx, id);
-			const auto field = lhs -> getField (name);
+			const auto field = lhs -> getValue () -> getField (name);
 
 			if (field -> getAccessType () not_eq X3D::outputOnly)
 				setValue (cx, field, vp);
@@ -232,7 +230,7 @@ SFNode::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::M
 		{
 			const auto lhs   = getThis <SFNode> (cx, obj);
 			const auto name  = to_string (cx, id);
-			const auto field = lhs -> getField (name);
+			const auto field = lhs -> getValue () -> getField (name);
 
 			if (field -> getAccessType () == X3D::inputOnly)
 			{
@@ -268,7 +266,7 @@ SFNode::getNodeName (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFNode> (cx, args);
 
-		args .rval () .set (StringValue (cx, lhs -> getName ()));
+		args .rval () .set (StringValue (cx, lhs -> getValue () -> getName ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -287,10 +285,11 @@ SFNode::getNodeType (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFNode> (cx, args);
+		const auto node = lhs -> getValue ();
 
 		JS::AutoValueVector array (cx);
 
-		for (const auto & type : lhs -> getType ())
+		for (const auto & type : node -> getType ())
 			array .append (JS::Int32Value (type));
 
 		const auto result = JS_NewArrayObject (cx, array);
@@ -408,7 +407,7 @@ SFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFNode> (cx, args);
 
-		args .rval () .set (StringValue (cx, lhs -> getTypeName () + " { }"));
+		args .rval () .set (StringValue (cx, lhs -> getValue () -> getTypeName () + " { }"));
 		return true;
 	}
 	catch (const std::exception & error)
