@@ -52,10 +52,10 @@
 
 #include "Arguments.h"
 #include "Error.h"
-#include "field.h"
 #include "Fields.h"
 #include "Globals.h"
 #include "String.h"
+#include "value.h"
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"

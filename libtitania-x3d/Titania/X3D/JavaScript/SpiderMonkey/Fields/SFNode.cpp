@@ -50,9 +50,9 @@
 
 #include "SFNode.h"
 
-#include "../field.h"
 //#include "../FieldDefinitionArray.h"
 #include "../String.h"
+#include "../value.h"
 
 #include "../../../Components/Scripting/Script.h"
 #include "../../../InputOutput/FileLoader.h"
