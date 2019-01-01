@@ -66,7 +66,7 @@ public:
 
 	///  @name Member types
 
-	using internal_type = X3D::SFNode;
+	using internal_type = X3D::X3DBaseNode;
 
 	///  @name Construction
 

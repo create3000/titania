@@ -121,10 +121,11 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 		{
 			try
 			{
-				*static_cast <X3D::SFNode*> (field) = *getArgument <SFNode> (cx, value, 0);
+				*static_cast <X3D::SFNode*> (field) = getArgument <SFNode> (cx, value, 0);
 			}
 			catch (const std::domain_error &)
 			{
+				// value is null object.
 				*static_cast <X3D::SFNode*> (field) = nullptr;
 			}
 

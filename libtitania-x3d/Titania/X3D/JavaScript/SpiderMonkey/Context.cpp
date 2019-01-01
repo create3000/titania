@@ -383,27 +383,27 @@ Context::addProto (const ObjectType type, JSObject* const proto)
 }
 
 void
-Context::addObject (X3D::X3DFieldDefinition* const field, JSObject* const object)
+Context::addObject (X3D::X3DChildObject* const childObject, JSObject* const object)
 {
-	if (not objects .emplace (field, object) .second)
+	if (not objects .emplace (childObject, object) .second)
 		throw std::invalid_argument ("addObject");
 
-	field -> addParent (this);
+	childObject -> addParent (this);
 }
 
 void
-Context::removeObject (X3D::X3DFieldDefinition* const field)
+Context::removeObject (X3D::X3DChildObject* const childObject)
 {
-	if (objects .erase (field))
-		field -> removeParent (this);
+	if (objects .erase (childObject))
+		childObject -> removeParent (this);
 	else
-		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
+		__LOG__ << childObject -> getName () << " : " << childObject -> getTypeName () << std::endl;
 }
 
 JSObject*
-Context::getObject (X3D::X3DFieldDefinition* const field) const
+Context::getObject (X3D::X3DChildObject* const childObject) const
 {
-	const auto iter = objects .find (field);
+	const auto iter = objects .find (childObject);
 
 	if (iter == objects .end ())
 		return nullptr;
@@ -636,10 +636,10 @@ Context::dispose ()
 
 	//assert (objects .empty ());
 
-	for (const auto [field, object] : Objects (objects))
+	for (const auto [childObject, object] : Objects (objects))
 	{
 		setObject (object, nullptr);
-		removeObject (field);
+		removeObject (childObject);
 	}
 
 	X3D::X3DJavaScriptContext::dispose ();
