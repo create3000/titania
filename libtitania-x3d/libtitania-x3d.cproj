@@ -985,6 +985,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFImage.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFMatrix4.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFMatrix3.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1664,6 +1665,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFImage.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFMatrix4.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFMatrix3.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\SFNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

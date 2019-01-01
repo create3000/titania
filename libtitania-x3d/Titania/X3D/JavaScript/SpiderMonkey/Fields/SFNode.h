@@ -48,21 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFNODE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_SFNODE_H__
 
-#include "Fields/SFColor.h"
-#include "Fields/SFColorRGBA.h"
-#include "Fields/SFImage.h"
-#include "Fields/SFMatrix3.h"
-#include "Fields/SFMatrix4.h"
-#include "Fields/SFNode.h"
-#include "Fields/SFRotation.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
-#include "Fields/X3DScalar.h"
+#include "../X3DField.h"
 
-//#include "Fields/ArrayFields.h"
+#include "../../../Fields/SFNode.h"
+
+namespace titania {
+namespace X3D {
+namespace spidermonkey {
+
+class SFNode :
+	public X3DField
+{
+public:
+
+	///  @name Member types
+
+	using internal_type = X3D::SFNode;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
+
+	static
+	JS::Value
+	create (JSContext* const cx, X3D::SFNode* const field);
+
+	static
+	const
+	JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr
+	ObjectType
+	getId ()
+	{ return ObjectType::SFNode; }
+
+
+private:
+
+	///  @name Construction
+
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Member access
+
+	static bool setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result);
+	static bool getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+
+	///  @name Functions
+
+	static bool getNodeName         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getNodeType         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getFieldDefinitions (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	static bool toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool toXMLString  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool toString     (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Static members
+
+	static const JSClassOps     class_ops;
+	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
+
+};
+
+} // spidermonkey
+} // X3D
+} // titania
 
 #endif

@@ -158,7 +158,7 @@ Context::addClasses ()
 	addProto (SFMatrix3f::getId (),  SFMatrix3f::init  (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFMatrix4d::getId (),  SFMatrix4d::init  (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFMatrix4f::getId (),  SFMatrix4f::init  (cx, *global, getProto (X3DField::getId ())));
-//	addProto (SFNode::getId (),      SFNode::init      (cx, *global, getProto (X3DField::getId ())));
+	addProto (SFNode::getId (),      SFNode::init      (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFRotation::getId (),  SFRotation::init  (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFVec2d::getId (),     SFVec2d::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (SFVec2f::getId (),     SFVec2f::init     (cx, *global, getProto (X3DField::getId ())));
@@ -254,7 +254,7 @@ Context::defineProperty (JS::HandleObject obj,
 			                   obj,
 			                   name .c_str (),
 			                   JS::UndefinedHandleValue,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_SHARED | attrs,
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs,
 			                   JS_PROPERTYOP_GETTER (&Context::getBuildInProperty),
 			                   JS_PROPERTYOP_SETTER (&Context::setProperty));
 			break;
@@ -265,7 +265,7 @@ Context::defineProperty (JS::HandleObject obj,
 			                   obj,
 			                   name .c_str (),
 			                   JS::UndefinedHandleValue,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_SHARED | attrs,
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs,
 			                   JS_PROPERTYOP_GETTER (&Context::getProperty),
 			                   JS_PROPERTYOP_SETTER (&Context::setProperty));
 			break;
@@ -615,11 +615,14 @@ Context::dispose ()
 {
 	const JSAutoRequest ar (cx);
 
+__LOG__ << std::endl;
 	fields .clear ();
 	protos .clear ();
 	global .reset ();
 
+__LOG__ << std::endl;
 	JS_GC (cx);
+__LOG__ << std::endl;
 
 	// finalize is not called for global values, probably the global object is not disposed.
 
@@ -627,10 +630,14 @@ Context::dispose ()
 
 	for (const auto [field, object] : objects)
 	{
+__LOG__ << std::endl;
 		setObject (object, nullptr);
+__LOG__ << std::endl;
 		removeObject (field);
+__LOG__ << std::endl;
 	}
 
+__LOG__ << std::endl;
 	X3D::X3DJavaScriptContext::dispose ();
 }
 
