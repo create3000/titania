@@ -400,6 +400,17 @@ Context::removeObject (X3D::X3DFieldDefinition* const field)
 		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
 }
 
+JSObject*
+Context::getObject (X3D::X3DFieldDefinition* const field) const
+{
+	const auto iter = objects .find (field);
+
+	if (iter == objects .end ())
+		return nullptr;
+
+	return iter -> second;
+}
+
 void
 Context::initialize ()
 {
@@ -615,29 +626,22 @@ Context::dispose ()
 {
 	const JSAutoRequest ar (cx);
 
-__LOG__ << std::endl;
 	fields .clear ();
 	protos .clear ();
 	global .reset ();
 
-__LOG__ << std::endl;
 	JS_GC (cx);
-__LOG__ << std::endl;
 
 	// finalize is not called for global values, probably the global object is not disposed.
 
 	//assert (objects .empty ());
 
-	for (const auto [field, object] : objects)
+	for (const auto [field, object] : Objects (objects))
 	{
-__LOG__ << std::endl;
 		setObject (object, nullptr);
-__LOG__ << std::endl;
 		removeObject (field);
-__LOG__ << std::endl;
 	}
 
-__LOG__ << std::endl;
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

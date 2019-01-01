@@ -115,8 +115,7 @@ public:
 	removeObject (X3D::X3DFieldDefinition* const field);
 
 	JSObject*
-	getObject (X3D::X3DFieldDefinition* const field) const
-	{ return objects .at (field); }
+	getObject (X3D::X3DFieldDefinition* const field) const;
 
 	///  @name Destruction
 
@@ -212,6 +211,10 @@ private:
 	static const JSClassOps globalOps;
 	static const JSClass    globalClass;
 
+	///  @name Member types
+
+	using Objects = std::map <X3D::X3DFieldDefinition*, JSObject*>;
+
 	///  @name Members
 
 	basic::uri                                                                 worldURL;
@@ -219,7 +222,7 @@ private:
 	std::unique_ptr <JS::PersistentRooted <JSObject*>>                         global;
 	std::map <std::string, std::unique_ptr <JS::PersistentRooted <JS::Value>>> fields;
 	std::vector <std::unique_ptr <JS::PersistentRooted <JSObject*>>>           protos;
-	std::map <X3D::X3DFieldDefinition*, JSObject*>                             objects;
+	Objects                                                                    objects;
 
 };
 

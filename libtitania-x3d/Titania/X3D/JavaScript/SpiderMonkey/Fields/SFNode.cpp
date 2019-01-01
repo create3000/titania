@@ -55,7 +55,6 @@
 #include "../String.h"
 
 #include "../../../Components/Scripting/Script.h"
-#include "../../../Execution/X3DExecutionContext.h"
 #include "../../../InputOutput/FileLoader.h"
 
 namespace titania {
@@ -114,15 +113,15 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 {
 	if (field -> getValue ())
 	{
-		const auto value = X3DField::create (cx, &static_class, getId (), field);
-		const auto obj   = JS::RootedObject (cx, value .toObjectOrNull ());
-	
+		const auto value  = X3DField::create (cx, &static_class, getId (), new X3D::SFNode (*field));
+		const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
+
 		for (const auto fieldDefinition : field -> getValue () -> getFieldDefinitions ())
 		{
 			const auto & name = fieldDefinition -> getName ();
 	
 			JS_DefineProperty (cx,
-			                   obj,
+			                   object,
 			                   name .c_str (),
 			                   JS::UndefinedHandleValue,
 			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0),
@@ -132,7 +131,7 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 			if (fieldDefinition -> getAccessType () == X3D::inputOutput)
 			{
 				JS_DefineProperty (cx,
-				                   obj,
+				                   object,
 				                   ("set_" + name) .c_str (),
 				                   JS::UndefinedHandleValue,
 				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
@@ -140,7 +139,7 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 				                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
 	
 				JS_DefineProperty (cx,
-				                   obj,
+				                   object,
 				                   (name + "_changed") .c_str (),
 				                   JS::UndefinedHandleValue,
 				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
@@ -166,7 +165,7 @@ SFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 		{
 			case 0:
 			{
-				JS::CallArgsFromVp (argc, vp) .rval () .setObjectOrNull (nullptr);
+				JS::CallArgsFromVp (argc, vp) .rval () .setNull ();
 				return true;
 			}
 			case 1:
@@ -177,9 +176,9 @@ SFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				const auto scene      = X3D::FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
 				if (scene -> getRootNodes () .empty ())
-					args .rval () .setObjectOrNull (nullptr);
+					args .rval () .setNull ();
 				else
-					args .rval () .set (create (cx, new X3D::SFNode (scene -> getRootNodes () [0])));
+					args .rval () .set (create (cx, &scene -> getRootNodes () [0]));
 
 				return true;
 			}
@@ -267,11 +266,7 @@ SFNode::getNodeName (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFNode> (cx, args);
 
-		if (*lhs)
-			args .rval () .set (StringValue (cx, lhs -> getValue () -> getName ()));
-		else
-			args .rval () .setUndefined ();
-
+		args .rval () .set (StringValue (cx, lhs -> getValue () -> getName ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -288,23 +283,16 @@ SFNode::getNodeType (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeType: wrong number of arguments.", getClass () -> name);
 	
-		const auto args   = JS::CallArgsFromVp (argc, vp);
-		const auto lhs    = getThis <SFNode> (cx, args);
-		JSObject*  result = nullptr;
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto lhs  = getThis <SFNode> (cx, args);
+		const auto node = lhs -> getValue ();
 
 		JS::AutoValueVector array (cx);
-	
-		if (lhs -> getValue ())
-		{
-			const auto node = lhs -> getValue ();
 
-			for (const auto & type : node -> getType ())
-				array .append (JS::Int32Value (type));
-	
-			result = JS_NewArrayObject (cx, array);
-		}
-		else
-			result = JS_NewArrayObject (cx, array);
+		for (const auto & type : node -> getType ())
+			array .append (JS::Int32Value (type));
+
+		const auto result = JS_NewArrayObject (cx, array);
 
 		if (not result)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeType: out of memory", getClass () -> name);
@@ -422,11 +410,7 @@ SFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto lhs  = getThis <SFNode> (cx, args);
 
-		if (lhs -> getValue ())
-			args .rval () .set (StringValue (cx, lhs -> getValue () -> getTypeName () + " { }"));
-		else
-			args .rval () .set (StringValue (cx, "NULL"));
-
+		args .rval () .set (StringValue (cx, lhs -> getValue () -> getTypeName () + " { }"));
 		return true;
 	}
 	catch (const std::exception & error)

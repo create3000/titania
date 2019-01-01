@@ -136,12 +136,13 @@ JS::Value
 X3DField::create (JSContext* const cx, const JSClass* const static_class, ObjectType id, InternalType* const field)
 {
 	const auto context = getContext (cx);
+	const auto object  = context -> getObject (field);
 
-	try
+	if (object)
 	{
-		return JS::ObjectValue (*context -> getObject (field));
+		return JS::ObjectValue (*object);
 	}
-	catch (const std::out_of_range & error)
+	else
 	{
 		const auto object = JS_NewObjectWithGivenProto (cx, static_class, context -> getProto (id));
 
