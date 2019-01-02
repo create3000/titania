@@ -131,6 +131,9 @@ private:
 	static bool isWritable  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool toString    (JSContext* cx, unsigned argc, JS::Value* vp);
 
+	static bool equals (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool assign (JSContext* cx, unsigned argc, JS::Value* vp);
+
 	///  @name Static members
 
 	static const JSClassOps     class_ops;

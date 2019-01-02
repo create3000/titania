@@ -122,6 +122,7 @@ private:
 
 	///  @name Functions
 
+	static bool getNodeTypeName     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getNodeName         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getNodeType         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getFieldDefinitions (JSContext* cx, unsigned argc, JS::Value* vp);

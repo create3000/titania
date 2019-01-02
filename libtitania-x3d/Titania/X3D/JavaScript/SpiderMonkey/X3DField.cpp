@@ -89,6 +89,10 @@ const JSFunctionSpec X3DField::functions [ ] = {
 	JS_FS ("isReadable",  isReadable,  0, JSPROP_PERMANENT),
 	JS_FS ("isWritable",  isWritable,  0, JSPROP_PERMANENT),
 	JS_FS ("toString",    toString,    0, JSPROP_PERMANENT),
+
+	JS_FS ("equals",      equals,      1, JSPROP_PERMANENT),
+	JS_FS ("assign",      assign,      1, JSPROP_PERMANENT),
+
 	JS_FS_END
 };
 
@@ -117,10 +121,10 @@ X3DField::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getName: wrong number of arguments.", getClass () -> name);
 	
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <X3DField> (cx, args);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
 
-		args .rval () .set (StringValue (cx, field -> getName ()));
+		args .rval () .set (StringValue (cx, self -> getName ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -137,10 +141,10 @@ X3DField::getTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getTypeName: wrong number of arguments.", getClass () -> name);
 	
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <X3DField> (cx, args);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
 
-		args .rval () .set (StringValue (cx, field -> getTypeName ()));
+		args .rval () .set (StringValue (cx, self -> getTypeName ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -157,10 +161,10 @@ X3DField::getType (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getType: wrong number of arguments.", getClass () -> name);
 	
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <X3DField> (cx, args);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
 
-		args .rval () .setInt32 (field -> getType ());
+		args .rval () .setInt32 (self -> getType ());
 		return true;
 	}
 	catch (const std::exception & error)
@@ -177,10 +181,10 @@ X3DField::isReadable (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .isReadable: wrong number of arguments.", getClass () -> name);
 	
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <X3DField> (cx, args);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
 
-		args .rval () .setBoolean (field -> getAccessType () not_eq inputOnly);
+		args .rval () .setBoolean (self -> getAccessType () not_eq inputOnly);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -197,15 +201,78 @@ X3DField::isWritable (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .isWritable: wrong number of arguments.", getClass () -> name);
 	
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <X3DField> (cx, args);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
 
-		args .rval () .setBoolean (field -> getAccessType () not_eq initializeOnly);
+		args .rval () .setBoolean (self -> getAccessType () not_eq initializeOnly);
 		return true;
 	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .isWritable: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DField::equals (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .equals: wrong number of arguments.", getClass () -> name);
+	
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
+
+		try
+		{
+			const auto field = getArgument <X3DField> (cx, args, 0);
+	
+			if (self -> getType () not_eq field -> getType ())
+				return ThrowException <JSProto_Error> (cx, "%s .prototype .equals: both arguments must be of same type.");
+	
+			args .rval () .setBoolean (self -> equals (*field));
+			return true;
+		}
+		catch (const std::domain_error & error)
+		{
+			if (self -> getType () != X3D::X3DConstants::SFNode)
+				throw;
+
+			args .rval () .setBoolean (static_cast <X3D::SFNode*> (self) -> getValue () == nullptr);
+			return true;
+		}
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .equals: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DField::assign (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .assign: wrong number of arguments.", getClass () -> name);
+	
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <X3DField> (cx, args);
+		const auto field = getArgument <X3DField> (cx, args, 0);
+
+		if (self -> getType () not_eq field -> getType ())
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .assign: both arguments must be of same type.");
+
+		self -> set (*field);
+		self -> addEvent ();
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .assign: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -217,8 +284,8 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
 	
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto field = getThis <X3DField> (cx, args);
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <X3DField> (cx, args);
 
 		std::ostringstream osstream;
 
@@ -226,7 +293,7 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 
 		Generator::NicestStyle (osstream);
 
-		field -> toStream (osstream);
+		self -> toStream (osstream);
 
 		args .rval () .set (StringValue (cx, osstream .str ()));
 		return true;

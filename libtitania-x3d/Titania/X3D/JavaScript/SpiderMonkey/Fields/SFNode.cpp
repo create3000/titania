@@ -87,6 +87,7 @@ const JSPropertySpec SFNode::properties [ ] = {
 };
 
 const JSFunctionSpec SFNode::functions [ ] = {
+	JS_FS ("getNodeTypeName",     getNodeTypeName,     0, JSPROP_PERMANENT),
 	JS_FS ("getNodeName",         getNodeName,         0, JSPROP_PERMANENT),
 	JS_FS ("getNodeType",         getNodeType,         0, JSPROP_PERMANENT),
 	JS_FS ("getFieldDefinitions", getFieldDefinitions, 0, JSPROP_PERMANENT),
@@ -257,6 +258,26 @@ SFNode::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::M
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .%s: %s.", getClass () -> name, to_string (cx, id), error .what ());
+	}
+}
+
+bool
+SFNode::getNodeTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeTypeName: wrong number of arguments.", getClass () -> name);
+	
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		const auto self = getThis <SFNode> (cx, args);
+
+		args .rval () .set (StringValue (cx, self -> getValue () -> getTypeName ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeTypeName: %s.", getClass () -> name, error .what ());
 	}
 }
 
