@@ -99,6 +99,111 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
+template <>
+bool
+MFNode::push (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		for (unsigned i = 0; i < argc; ++ i)
+		{
+			try
+			{
+				array -> emplace_back (getArgument <SFNode> (cx, args, i));
+			}
+			catch (const std::domain_error & error)
+			{
+				array -> emplace_back ();
+			}
+		}
+
+		args .rval () .setNumber (uint32_t (array -> size ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .push: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+bool
+MFNode::splice (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc < 2)
+			return ThrowException <JSProto_Error> (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
+
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto array       = getThis <X3DArrayFieldTemplate> (cx, args);
+		auto       index       = spidermonkey::getArgument <int32_t> (cx, args, 0);
+		auto       deleteCount = spidermonkey::getArgument <int32_t> (cx, args, 1);
+		auto       result      = new X3D::MFNode ();
+
+		if (index > (int32_t) array -> size ())
+			index = array -> size ();
+
+		if (index + deleteCount > (int32_t) array -> size ())
+			deleteCount = array -> size () - index;
+
+		result -> insert (result -> begin (), array -> cbegin () + index, array -> cbegin () + (index + deleteCount));
+		array  -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
+
+		for (ssize_t i = argc - 1; i >= 2; -- i)
+		{
+			try
+			{
+				array -> emplace (array -> begin () + index, getArgument <SFNode> (cx, args, i));
+			}
+			catch (const std::domain_error & error)
+			{
+				array -> emplace (array -> begin () + index, nullptr);
+			}
+		}
+
+		args .rval () .set (create (cx, result));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+bool
+MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		for (ssize_t i = argc - 1; i >= 0; -- i)
+		{
+			try
+			{
+				array -> emplace_front (getArgument <SFNode> (cx, args, i));
+			}
+			catch (const std::domain_error & error)
+			{
+				array -> emplace_front ();
+			}
+		}
+
+		args .rval () .setNumber (uint32_t (array -> size ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .unshift: %s.", getClass () -> name, error .what ());
+	}
+}
+
 //template <>
 //bool
 //MFNode::set1Value (JSContext* cx, JSObject* obj, jsid id, bool strict, jsval* vp)
@@ -133,114 +238,6 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 //	catch (const std::exception & error)
 //	{
 //		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//template <>
-//bool
-//MFNode::unshift (JSContext* cx, uint32_t argc, jsval* vp)
-//{
-//	if (argc == 0)
-//		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
-//
-//	try
-//	{
-//		const auto argv  = JS_ARGV (cx, vp);
-//		const auto array = getThis <MFNode> (cx, vp);
-//
-//		for (ssize_t i = argc - 1; i >= 0; -- i)
-//		{
-//			try
-//			{
-//				array -> emplace_front (getArgument <SFNode> (cx, argv, i));
-//			}
-//			catch (const std::domain_error &)
-//			{
-//				array -> emplace_front (nullptr);
-//			}
-//		}
-//
-//		return JS_NewNumberValue (cx, array -> size (), vp);
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//template <>
-//bool
-//MFNode::push (JSContext* cx, uint32_t argc, jsval* vp)
-//{
-//	if (argc == 0)
-//		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
-//
-//	try
-//	{
-//		const auto argv  = JS_ARGV (cx, vp);
-//		const auto array = getThis <MFNode> (cx, vp);
-//
-//		for (uint32_t i = 0; i < argc; ++ i)
-//		{
-//			try
-//			{
-//				array -> emplace_back (getArgument <SFNode> (cx, argv, i));
-//			}
-//			catch (const std::domain_error &)
-//			{
-//				array -> emplace_back (nullptr);
-//			}
-//		}
-//
-//		return JS_NewNumberValue (cx, array -> size (), vp);
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException (cx, "%s .push: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//template <>
-//bool
-//MFNode::splice (JSContext* cx, uint32_t argc, jsval* vp)
-//{
-//	if (argc < 2)
-//		return ThrowException (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
-//
-//	try
-//	{
-//		const auto argv        = JS_ARGV (cx, vp);
-//		const auto array       = getThis <X3DArrayField> (cx, vp);
-//		auto       index       = spidermonkey::getArgument <int32_t> (cx, argv, 0);
-//		auto       deleteCount = spidermonkey::getArgument <int32_t> (cx, argv, 1);
-//		auto       result      = new X3D::MFNode ();
-//
-//		if (index > (int32_t) array -> size ())
-//			index = array -> size ();
-//
-//		if (index + deleteCount > (int32_t) array -> size ())
-//			deleteCount = array -> size () - index;
-//
-//		result -> insert (result -> begin (), array -> begin () + index, array -> begin () + (index + deleteCount));
-//		array -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
-//
-//		for (ssize_t i = argc - 1; i >= 2; -- i)
-//		{
-//			try
-//			{
-//				array -> emplace (array -> begin () + index, getArgument <SFNode> (cx, argv, i));
-//			}
-//			catch (const std::domain_error &)
-//			{
-//				array -> emplace (array -> begin () + index, nullptr);
-//			}
-//		}
-//
-//		return create <MFNode> (cx, result, &JS_RVAL (cx, vp));
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException (cx, "%s .unshift: %s.", getClass () -> name, error .what ());
 //	}
 //}
 

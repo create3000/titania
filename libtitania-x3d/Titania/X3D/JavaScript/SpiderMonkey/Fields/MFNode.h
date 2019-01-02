@@ -73,20 +73,20 @@ bool
 MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
 //template <>
-//JSBool
+//bool
 //MFNode::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
-//
+
+template <>
+bool
+MFNode::push (JSContext* cx, unsigned argc, JS::Value* vp);
+
 //template <>
-//JSBool
-//MFNode::unshift (JSContext *, uint32_t, jsval*);
-//
-//template <>
-//JSBool
-//MFNode::push (JSContext *, uint32_t, jsval*);
-//
-//template <>
-//JSBool
-//MFNode::splice (JSContext *, uint32_t, jsval*);
+//bool
+//MFNode::splice (JSContext* cx, unsigned argc, JS::Value* vp);
+
+template <>
+bool
+MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp);
 
 } // spidermonkey
 } // X3D

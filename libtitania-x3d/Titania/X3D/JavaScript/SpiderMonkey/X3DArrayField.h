@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DARRAY_FIELD_H__
 
 #include "X3DField.h"
+#include "Fields/SFNode.h"
 
 namespace titania {
 namespace X3D {
@@ -144,7 +145,11 @@ private:
 
 	///  @name Functions
 
-
+	static bool pop     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool push    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool shift   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool splice  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool unshift (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Member access
 
@@ -163,20 +168,20 @@ private:
 		return *spidermonkey::getArgument <Class> (cx, args, index);
 	}
 
-	///  throws std::invalid_argument, std::domain_error
-	template <class Class>
-	static
-	std::enable_if_t <
-		std::is_integral_v <typename Class::internal_type::internal_type> or
-		std::is_floating_point_v <typename Class::internal_type::internal_type> or
-		std::is_same_v <typename Class::internal_type::internal_type, std::string> or
-		std::is_same_v <typename Class::internal_type::internal_type, X3D::String>,
-		typename Class::internal_type::internal_type
-	>
-	getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
-	{
-		return spidermonkey::getArgument <typename Class::internal_type::internal_type> (cx, args, index);
-	}
+//	///  throws std::invalid_argument, std::domain_error
+//	template <class Class>
+//	static
+//	std::enable_if_t <
+//		std::is_integral_v <typename Class::internal_type::internal_type> or
+//		std::is_floating_point_v <typename Class::internal_type::internal_type> or
+//		std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+//		std::is_same_v <typename Class::internal_type::internal_type, X3D::String>,
+//		typename Class::internal_type::internal_type
+//	>
+//	getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
+//	{
+//		return spidermonkey::getArgument <typename Class::internal_type::internal_type> (cx, args, index);
+//	}
 
 	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
@@ -191,6 +196,44 @@ private:
 	getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
 	{
 		return spidermonkey::getArgument <typename Class::internal_type> (cx, args, index);
+	}
+
+	template <class Class>
+	static
+	std::enable_if_t <
+		std::is_integral_v <typename Class::internal_type> or
+		std::is_floating_point_v <typename Class::internal_type> or
+		std::is_same_v <typename Class::internal_type, X3D::String>,
+		JS::Value
+	>
+	getValue (JSContext* const cx, const typename Class::internal_type & value)
+	{
+		return Class::create (cx, value);
+	}
+
+	template <class Class>
+	static
+	std::enable_if_t <
+		not (std::is_integral_v <typename Class::internal_type> or
+		     std::is_floating_point_v <typename Class::internal_type> or
+		     std::is_same_v <typename Class::internal_type, X3D::String> or
+		     std::is_same_v <Class, SFNode>),
+		JS::Value
+	>
+	getValue (JSContext* cx, const typename Class::internal_type::internal_type & value)
+	{
+		return Class::create (cx, new typename Class::internal_type (value));
+	}
+
+	template <class Class>
+	static
+	std::enable_if_t <
+		std::is_same_v <Class, SFNode>,
+		JS::Value
+	>
+	getValue (JSContext* cx, const X3D::SFNode & value)
+	{
+		return SFNode::create (cx, const_cast <X3D::SFNode*> (&value));
 	}
 
 	///  @name Static members
@@ -226,11 +269,11 @@ const JSPropertySpec X3DArrayFieldTemplate <ValueType, InternalType>::properties
 
 template <class ValueType, class InternalType>
 const JSFunctionSpec X3DArrayFieldTemplate <ValueType, InternalType>::functions [ ] = {
-//	JS_FS ("unshift", unshift, 1, JSPROP_PERMANENT),
-//	JS_FS ("push",    push,    1, JSPROP_PERMANENT),
-//	JS_FS ("shift",   shift,   0, JSPROP_PERMANENT),
-//	JS_FS ("pop",     pop,     0, JSPROP_PERMANENT),
-//	JS_FS ("splice",  splice,  2, JSPROP_PERMANENT),
+	JS_FS ("pop",     pop,     0, JSPROP_PERMANENT),
+	JS_FS ("push",    push,    0, JSPROP_PERMANENT),
+	JS_FS ("shift",   shift,   0, JSPROP_PERMANENT),
+	JS_FS ("splice",  splice,  2, JSPROP_PERMANENT),
+	JS_FS ("unshift", unshift, 0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -322,6 +365,148 @@ X3DArrayFieldTemplate <ValueType, InternalType>::setLength (JSContext* cx, unsig
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::pop (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .pop: wrong number of arguments.", getClass () -> name);
+	
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		if (array -> empty ())
+		{
+			args .rval () .setUndefined ();
+			return true;
+		}
+
+		const auto & value = const_cast <const InternalType*> (array) -> back ();
+
+		args .rval () .set (getValue <ValueType> (cx, value));
+
+		array -> pop_back ();
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .pop: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::push (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		for (unsigned i = 0; i < argc; ++ i)
+			array -> emplace_back (getArgument <ValueType> (cx, args, i));
+
+		args .rval () .setNumber (uint32_t (array -> size ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .push: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::shift (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .shift: wrong number of arguments.", getClass () -> name);
+	
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		if (array -> empty ())
+		{
+			args .rval () .setUndefined ();
+			return true;
+		}
+
+		const auto & value = const_cast <const InternalType*> (array) -> front ();
+
+		args .rval () .set (getValue <ValueType> (cx, value));
+
+		array -> pop_front ();
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .shift: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::splice (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc < 2)
+			return ThrowException <JSProto_Error> (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
+
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto array       = getThis <X3DArrayFieldTemplate> (cx, args);
+		auto       index       = spidermonkey::getArgument <int32_t> (cx, args, 0);
+		auto       deleteCount = spidermonkey::getArgument <int32_t> (cx, args, 1);
+		auto       result      = new InternalType ();
+
+		if (index > (int32_t) array -> size ())
+			index = array -> size ();
+
+		if (index + deleteCount > (int32_t) array -> size ())
+			deleteCount = array -> size () - index;
+
+		result -> insert (result -> begin (), array -> cbegin () + index, array -> cbegin () + (index + deleteCount));
+		array  -> erase (array -> begin () + index, array -> begin () + (index + deleteCount));
+
+		for (ssize_t i = argc - 1; i >= 2; -- i)
+			array -> emplace (array -> begin () + index, getArgument <ValueType> (cx, args, i));
+
+		args .rval () .set (create (cx, result));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::unshift (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		for (ssize_t i = argc - 1; i >= 0; -- i)
+			array -> emplace_front (getArgument <ValueType> (cx, args, i));
+
+		args .rval () .setNumber (uint32_t (array -> size ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .unshift: %s.", getClass () -> name, error .what ());
 	}
 }
 

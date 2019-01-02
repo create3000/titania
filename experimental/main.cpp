@@ -1020,21 +1020,12 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const auto m1 = Matrix4d (Vector3d (1,2,3), Rotation4d (1,2,3,4), Vector3d (1,2,3), Rotation4d (1,2,3,4));
-	const auto n1 = transpose (inverse (m1 .submatrix ()));
-	auto       n2 = m1 .submatrix ();
 
-	n2 [0] .normalize ();
-	n2 [1] .normalize ();
-	n2 [2] .normalize ();
+	const auto m = new Matrix4d ();
 
-	n2 .inverse ();
-	n2 .transpose ();
+	m -> transpose ();
 
-	const auto v1 = Vector3d (1,0,0);
-
-	__LOG__ << normalize (v1 * n1) << std::endl;
-	__LOG__ << normalize (v1 * n2) << std::endl;
+	const_cast <const Matrix4d*> (m) -> transpose ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

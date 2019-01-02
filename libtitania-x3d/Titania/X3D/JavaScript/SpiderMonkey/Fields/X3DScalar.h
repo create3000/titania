@@ -61,82 +61,119 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-// Template class for JavaScript build-in field types.
-
-template <class InternalType>
-class X3DScalar
+class SFBool
 {
 public:
 
-	///  @name Member types
-
-	using internal_type = InternalType;
-
-	///  @name Construction
+	using internal_type = bool;
 
 	static
 	JS::Value
-	create (JSContext* const cx, const internal_type* const field)
-	{
-		throw std::runtime_error ("X3DScalar::create");
-	}
+	create (JSContext* const cx, const internal_type & value);
 
 };
 
-template <>
+class SFDouble
+{
+public:
+
+	using internal_type = double;
+
+	static
+	JS::Value
+	create (JSContext* const cx, const internal_type & value);
+
+};
+
+class SFFloat
+{
+public:
+
+	using internal_type = float;
+
+	static
+	JS::Value
+	create (JSContext* const cx, const internal_type & value);
+
+};
+
+class SFInt32
+{
+public:
+
+	using internal_type = int32_t;
+
+	static
+	JS::Value
+	create (JSContext* const cx, const internal_type & value);
+
+};
+
+class SFString
+{
+public:
+
+	using internal_type = X3D::String;
+
+	static
+	JS::Value
+	create (JSContext* const cx, const internal_type & value);
+
+};
+
+class SFTime
+{
+public:
+
+	using internal_type = X3D::time_type;
+
+	static
+	JS::Value
+	create (JSContext* const cx, const internal_type & value);
+
+};
+
 inline
 JS::Value
-X3DScalar <X3D::SFBool>::create (JSContext* const cx, const internal_type* const field)
+SFBool::create (JSContext* const cx, const internal_type & value)
 {
-	return JS::BooleanValue (field -> getValue ());
+	return JS::BooleanValue (value);
 }
 
-template <>
 inline
 JS::Value
-X3DScalar <X3D::SFDouble>::create (JSContext* const cx, const internal_type* const field)
+SFDouble::create (JSContext* const cx, const internal_type & value)
 {
-	return JS::DoubleValue (field -> getValue ());
+	return JS::DoubleValue (value);
 }
 
-template <>
 inline
 JS::Value
-X3DScalar <X3D::SFFloat>::create (JSContext* const cx, const internal_type* const field)
+SFFloat::create (JSContext* const cx, const internal_type & value)
 {
-	return JS::DoubleValue (field -> getValue ());
+	return JS::DoubleValue (value);
 }
 
-template <>
 inline
 JS::Value
-X3DScalar <X3D::SFInt32>::create (JSContext* const cx, const internal_type* const field)
+SFInt32::create (JSContext* const cx, const internal_type & value)
 {
-	return JS::Int32Value (field -> getValue ());
+	return JS::Int32Value (value);
 }
 
-template <>
 inline
 JS::Value
-X3DScalar <X3D::SFString>::create (JSContext* const cx, const internal_type* const field)
+SFString::create (JSContext* const cx, const internal_type & value)
 {
-	return StringValue (cx, field -> getValue ());
+	return StringValue (cx, value);
 }
 
-template <>
 inline
 JS::Value
-X3DScalar <X3D::SFTime>::create (JSContext* const cx, const internal_type* const field)
+SFTime::create (JSContext* const cx, const internal_type & value)
 {
-	return JS::DoubleValue (field -> getValue ());
+	return JS::DoubleValue (value);
 }
-
-using SFBool   = X3DScalar <X3D::SFBool>;
-using SFDouble = X3DScalar <X3D::SFDouble>;
-using SFFloat  = X3DScalar <X3D::SFFloat>;
-using SFInt32  = X3DScalar <X3D::SFInt32>;
-using SFString = X3DScalar <X3D::SFString>;
-using SFTime   = X3DScalar <X3D::SFTime>;
 
 } // spidermonkey
 } // X3D

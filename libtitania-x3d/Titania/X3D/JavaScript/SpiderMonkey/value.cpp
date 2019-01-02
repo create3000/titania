@@ -292,7 +292,7 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:
-			return SFBool::create (cx, static_cast <X3D::SFBool*> (field));
+			return SFBool::create (cx, *static_cast <X3D::SFBool*> (field));
 
 		case X3DConstants::SFColor:
 			return SFColor::create (cx, static_cast <X3D::SFColor*> (field));
@@ -301,13 +301,13 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 			return SFColorRGBA::create (cx, static_cast <X3D::SFColorRGBA*> (field));
 
 		case X3DConstants::SFDouble:
-			return SFDouble::create (cx, static_cast <X3D::SFDouble*> (field));
+			return SFDouble::create (cx, *static_cast <X3D::SFDouble*> (field));
 
 		case X3DConstants::SFFloat:
-			return SFFloat::create (cx, static_cast <X3D::SFFloat*> (field));
+			return SFFloat::create (cx, *static_cast <X3D::SFFloat*> (field));
 
 		case X3DConstants::SFInt32:
-			return SFInt32::create (cx, static_cast <X3D::SFInt32*> (field));
+			return SFInt32::create (cx, *static_cast <X3D::SFInt32*> (field));
 
 		case X3DConstants::SFImage:
 			return SFImage::create (cx, static_cast <X3D::SFImage*> (field));
@@ -331,10 +331,10 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 			return SFRotation::create (cx, static_cast <X3D::SFRotation*> (field));
 
 		case X3DConstants::SFString:
-			return SFString::create (cx, static_cast <X3D::SFString*> (field));
+			return SFString::create (cx, *static_cast <X3D::SFString*> (field));
 
 		case X3DConstants::SFTime:
-			return SFTime::create (cx, static_cast <X3D::SFTime*> (field));
+			return SFTime::create (cx, *static_cast <X3D::SFTime*> (field));
 
 		case X3DConstants::SFVec2d:
 			return SFVec2d::create (cx, static_cast <X3D::SFVec2d*> (field));
