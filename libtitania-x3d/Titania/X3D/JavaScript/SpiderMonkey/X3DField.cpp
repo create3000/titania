@@ -261,6 +261,9 @@ X3DField::assign (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto self  = getThis <X3DField> (cx, args);
 		const auto field = getArgument <X3DField> (cx, args, 0);
 
+		if (self -> getType () == X3D::X3DConstants::SFNode)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .assign: invalid operation.");
+
 		if (self -> getType () not_eq field -> getType ())
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .assign: both arguments must be of same type.");
 
