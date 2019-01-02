@@ -460,7 +460,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::splice (JSContext* cx, unsigned
 	try
 	{
 		if (argc < 2)
-			return ThrowException <JSProto_Error> (cx, "%s .splice: wrong number of arguments.", getClass () -> name);
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: wrong number of arguments.", getClass () -> name);
 
 		const auto args        = JS::CallArgsFromVp (argc, vp);
 		const auto array       = getThis <X3DArrayFieldTemplate> (cx, args);
@@ -470,6 +470,17 @@ X3DArrayFieldTemplate <ValueType, InternalType>::splice (JSContext* cx, unsigned
 
 		if (index > (int32_t) array -> size ())
 			index = array -> size ();
+
+		if (index < 0)
+		{
+			index = array -> size () + index;
+
+			if (index < 0)
+				index = 0;
+		}
+
+		if (deleteCount < 0)
+			deleteCount = 0;
 
 		if (index + deleteCount > (int32_t) array -> size ())
 			deleteCount = array -> size () - index;
