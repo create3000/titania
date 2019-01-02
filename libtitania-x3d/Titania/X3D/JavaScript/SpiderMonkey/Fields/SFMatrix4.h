@@ -190,7 +190,7 @@ template <class InternalType>
 JS::Value
 SFMatrix4 <InternalType>::create (JSContext* const cx, InternalType* const field)
 {
-	return X3DField::create <SFMatrix4> (cx, field);
+	return X3DField::create <SFMatrix4> (cx, field) .first;
 }
 
 template <class InternalType>

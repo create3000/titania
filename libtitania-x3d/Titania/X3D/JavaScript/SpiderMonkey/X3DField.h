@@ -95,7 +95,7 @@ protected:
 
 	template <class Type>
 	static
-	JS::Value
+	std::pair <JS::Value, bool>
 	create (JSContext* const cx, typename Type::internal_type* const field);
 
 	static
@@ -142,7 +142,7 @@ private:
 };
 
 template <class Type>
-JS::Value
+std::pair <JS::Value, bool>
 X3DField::create (JSContext* const cx, typename Type::internal_type* const field)
 {
 	const auto context = getContext (cx);
@@ -150,7 +150,7 @@ X3DField::create (JSContext* const cx, typename Type::internal_type* const field
 
 	if (object)
 	{
-		return JS::ObjectValue (*object);
+		return std::pair (JS::ObjectValue (*object), false);
 	}
 	else
 	{
@@ -166,7 +166,7 @@ X3DField::create (JSContext* const cx, typename Type::internal_type* const field
 
 		context -> addObject (Type::getKey (field), value, object);
 
-		return JS::ObjectValue (*object);
+		return std::pair (JS::ObjectValue (*object), true);
 	}
 }
 

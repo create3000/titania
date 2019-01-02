@@ -157,6 +157,9 @@ private:
 	set_url ();
 
 	void
+	set_directOutput ();
+
+	void
 	set_buffer ();
 
 	///  @name Static members

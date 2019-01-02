@@ -113,41 +113,46 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 {
 	if (field -> getValue ())
 	{
-		const auto value  = X3DField::create <SFNode> (cx, field);
-		const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
+		const auto script           = getContext (cx) -> getScriptNode ();
+		const auto [value, created] = X3DField::create <SFNode> (cx, field);
 
-		for (const auto fieldDefinition : field -> getValue () -> getFieldDefinitions ())
+		if (created and script -> directOutput ())
 		{
-			const auto & name = fieldDefinition -> getName ();
-	
-			JS_DefineProperty (cx,
-			                   object,
-			                   name .c_str (),
-			                   JS::UndefinedHandleValue,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0),
-			                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-			                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+			const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
 
-			if (fieldDefinition -> getAccessType () == X3D::inputOutput)
+			for (const auto fieldDefinition : field -> getValue () -> getFieldDefinitions ())
 			{
+				const auto & name = fieldDefinition -> getName ();
+		
 				JS_DefineProperty (cx,
 				                   object,
-				                   ("set_" + name) .c_str (),
+				                   name .c_str (),
 				                   JS::UndefinedHandleValue,
-				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
+				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0),
 				                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
 				                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
 	
-				JS_DefineProperty (cx,
-				                   object,
-				                   (name + "_changed") .c_str (),
-				                   JS::UndefinedHandleValue,
-				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
-				                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-				                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+				if (fieldDefinition -> getAccessType () == X3D::inputOutput)
+				{
+					JS_DefineProperty (cx,
+					                   object,
+					                   ("set_" + name) .c_str (),
+					                   JS::UndefinedHandleValue,
+					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
+					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
+					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+		
+					JS_DefineProperty (cx,
+					                   object,
+					                   (name + "_changed") .c_str (),
+					                   JS::UndefinedHandleValue,
+					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
+					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
+					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+				}
 			}
 		}
-	
+
 		return value;
 	}
 	else

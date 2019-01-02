@@ -106,7 +106,7 @@ SFColor::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject pa
 JS::Value
 SFColor::create (JSContext* const cx, X3D::SFColor* const field)
 {
-	return X3DField::create <SFColor> (cx, field);
+	return X3DField::create <SFColor> (cx, field) .first;
 }
 
 bool

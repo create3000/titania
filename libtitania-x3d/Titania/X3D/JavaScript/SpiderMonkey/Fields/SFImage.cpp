@@ -105,7 +105,7 @@ SFImage::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject pa
 JS::Value
 SFImage::create (JSContext* const cx, X3D::SFImage* const field)
 {
-	return X3DField::create <SFImage> (cx, field);
+	return X3DField::create <SFImage> (cx, field) .first;
 }
 
 bool

@@ -99,8 +99,9 @@ Script::initialize ()
 {
 	X3DScriptNode::initialize ();
 
-	url () .addInterest (&Script::set_url,    this);
-	buffer .addInterest (&Script::set_buffer, this);
+	url ()          .addInterest (&Script::set_url,          this);
+	directOutput () .addInterest (&Script::set_directOutput, this);
+	buffer          .addInterest (&Script::set_buffer,       this);
 
 	set_url ();
 }
@@ -185,6 +186,14 @@ Script::requestImmediateLoad ()
 
 void
 Script::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
+}
+
+void
+Script::set_directOutput ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

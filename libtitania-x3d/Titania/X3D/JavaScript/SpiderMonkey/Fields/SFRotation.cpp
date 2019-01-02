@@ -113,7 +113,7 @@ SFRotation::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject
 JS::Value
 SFRotation::create (JSContext* const cx, X3D::SFRotation* const field)
 {
-	return X3DField::create <SFRotation> (cx, field);
+	return X3DField::create <SFRotation> (cx, field) .first;
 }
 
 bool

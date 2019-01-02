@@ -183,7 +183,7 @@ template <class InternalType>
 JS::Value
 SFVec3 <InternalType>::create (JSContext* const cx, InternalType* const field)
 {
-	return X3DField::create <SFVec3> (cx, field);
+	return X3DField::create <SFVec3> (cx, field) .first;
 }
 
 template <class InternalType>
