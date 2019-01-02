@@ -71,14 +71,17 @@ StringValue (JSContext* const cx, const std::string & string)
 	if (error)
 		throw std::invalid_argument (error -> message);
 
+	if (not utf16_string)
+		throw std::invalid_argument ("out of memory");
+
 	const auto jsstring = JS_NewUCStringCopyN (cx, (char16_t*) utf16_string, items_written);
 
 	g_free (utf16_string);
 
-	if (jsstring)
-		return JS::StringValue (jsstring);
+	if (not jsstring)
+		throw std::invalid_argument ("out of memory");
 
-	throw std::invalid_argument ("out of memory");
+	return JS::StringValue (jsstring);
 }
 
 std::string

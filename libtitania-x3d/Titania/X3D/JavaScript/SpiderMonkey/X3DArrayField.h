@@ -141,7 +141,8 @@ private:
 
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
-	static bool resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
+	static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
+	static bool resolve   (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
 
 	///  @name Member access
 
@@ -313,7 +314,7 @@ const JSClassOps X3DArrayFieldTemplate <ValueType, InternalType>::class_ops = {
 	nullptr, // delProperty
 	nullptr, // getProperty
 	nullptr, // setProperty
-	nullptr, // enumerate
+	nullptr, // enumerate, // enumerate
 	resolve, // resolve
 	nullptr, // mayResolve
 	finalize <X3DArrayFieldTemplate>, // finalize
@@ -395,6 +396,30 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 
 template <class ValueType, class InternalType>
 bool
+X3DArrayFieldTemplate <ValueType, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly)
+{
+	try
+	{
+//		__LOG__ << std::endl;
+
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
+
+//		__LOG__ << array -> getTypeName () << std::endl;
+//		__LOG__ << array -> size () << std::endl;
+
+		for (size_t i = 0, size = array -> size (); i < size; ++ i)
+			properties .append (INT_TO_JSID (i));
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .enumerate: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
 X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp)
 {
 	if (JSID_IS_INT (id))
@@ -405,7 +430,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::Han
 		                   obj,
 		                   basic::to_string (index, std::locale::classic ()) .c_str (),
 		                   JS::UndefinedHandleValue,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_RESOLVING,
+		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING,
 		                   JS_PROPERTYOP_GETTER (&X3DArrayFieldTemplate::get1Value),
 		                   JS_PROPERTYOP_SETTER (&X3DArrayFieldTemplate::set1Value));
 

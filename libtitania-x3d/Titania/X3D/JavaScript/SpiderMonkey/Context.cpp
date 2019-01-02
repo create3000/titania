@@ -623,12 +623,16 @@ Context::reportError (JSContext* cx, JSErrorReport* const report)
 	glong   items_read    = 0;
 	glong   items_written = 0;
 	GError* error         = nullptr;
+	char*   lb            = nullptr;
 
-	const auto lb = g_utf16_to_utf8 ((gunichar2*) report -> linebuf (),
-	                                 report -> linebufLength (),
-	                                 &items_read,
-	                                 &items_written,
-	                                 &error);
+	if (report -> linebuf ())
+	{
+		lb = g_utf16_to_utf8 ((gunichar2*) report -> linebuf (),
+		                      report -> linebufLength (),
+		                      &items_read,
+		                      &items_written,
+		                      &error);
+	}
 
 	if (error)
 	{
@@ -636,9 +640,10 @@ Context::reportError (JSContext* cx, JSErrorReport* const report)
 	}
 	else
 	{
-		const std::string linebuf (lb, lb + items_written);
+		const auto linebuf = lb ? std::string  (lb, lb + items_written) : std::string ();
 
-		g_free (lb);
+		if (lb)
+			g_free (lb);
 
 		context -> setError (report -> message () .c_str (),
 		                     report -> filename ? report -> filename : "<inline>",
