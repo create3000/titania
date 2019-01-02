@@ -176,113 +176,111 @@ setValue (JSContext* const cx, X3DFieldDefinition* const field, const JS::Handle
 			*static_cast <X3D::SFVec4f*> (field) = *getArgument <SFVec4f> (cx, value, 0);
 			break;
 		}
-//		case X3DConstants::MFBool:
-//		{
-//			*static_cast <X3D::MFBool*> (field) = *getArgument <MFBool> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFColor:
-//		{
-//			*static_cast <X3D::MFColor*> (field) = *getArgument <MFColor> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFColorRGBA:
-//		{
-//			*static_cast <X3D::MFColorRGBA*> (field) = *getArgument <MFColorRGBA> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFDouble:
-//		{
-//			*static_cast <X3D::MFDouble*> (field) = *getArgument <MFDouble> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFFloat:
-//		{
-//			*static_cast <X3D::MFFloat*> (field) = *getArgument <MFFloat> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFImage:
-//		{
-//			*static_cast <X3D::MFImage*> (field) = *getArgument <MFImage> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFInt32:
-//		{
-//			*static_cast <X3D::MFInt32*> (field) = *getArgument <MFInt32> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFMatrix3d:
-//		{
-//			*static_cast <X3D::MFMatrix3d*> (field) = *getArgument <MFMatrix3d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFMatrix3f:
-//		{
-//			*static_cast <X3D::MFMatrix3f*> (field) = *getArgument <MFMatrix3f> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFMatrix4d:
-//		{
-//			*static_cast <X3D::MFMatrix4d*> (field) = *getArgument <MFMatrix4d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFMatrix4f:
-//		{
-//			*static_cast <X3D::MFMatrix4f*> (field) = *getArgument <MFMatrix4f> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFNode:
-//		{
-//			*static_cast <X3D::MFNode*> (field) = *getArgument <MFNode> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFRotation:
-//		{
-//			*static_cast <X3D::MFRotation*> (field) = *getArgument <MFRotation> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFString:
-//		{
-//			*static_cast <X3D::MFString*> (field) = *getArgument <MFString> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFTime:
-//		{
-//			*static_cast <X3D::MFTime*> (field) = *getArgument <MFTime> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFVec2d:
-//		{
-//			*static_cast <X3D::MFVec2d*> (field) = *getArgument <MFVec2d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFVec2f:
-//		{
-//			*static_cast <X3D::MFVec2f*> (field) = *getArgument <MFVec2f> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFVec3d:
-//		{
-//			*static_cast <X3D::MFVec3d*> (field) = *getArgument <MFVec3d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFVec3f:
-//		{
-//			*static_cast <X3D::MFVec3f*> (field) = *getArgument <MFVec3f> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFVec4d:
-//		{
-//			*static_cast <X3D::MFVec4d*> (field) = *getArgument <MFVec4d> (cx, value, 0);
-//			break;
-//		}
-//		case X3DConstants::MFVec4f:
-//		{
-//			*static_cast <X3D::MFVec4f*> (field) = *getArgument <MFVec4f> (cx, value, 0);
-//			break;
-//		}
-		default:
+		case X3DConstants::MFBool:
+		{
+			*static_cast <X3D::MFBool*> (field) = *getArgument <MFBool> (cx, value, 0);
 			break;
+		}
+		case X3DConstants::MFColor:
+		{
+			*static_cast <X3D::MFColor*> (field) = *getArgument <MFColor> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFColorRGBA:
+		{
+			*static_cast <X3D::MFColorRGBA*> (field) = *getArgument <MFColorRGBA> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFDouble:
+		{
+			*static_cast <X3D::MFDouble*> (field) = *getArgument <MFDouble> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFFloat:
+		{
+			*static_cast <X3D::MFFloat*> (field) = *getArgument <MFFloat> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFImage:
+		{
+			*static_cast <X3D::MFImage*> (field) = *getArgument <MFImage> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFInt32:
+		{
+			*static_cast <X3D::MFInt32*> (field) = *getArgument <MFInt32> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFMatrix3d:
+		{
+			*static_cast <X3D::MFMatrix3d*> (field) = *getArgument <MFMatrix3d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFMatrix3f:
+		{
+			*static_cast <X3D::MFMatrix3f*> (field) = *getArgument <MFMatrix3f> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFMatrix4d:
+		{
+			*static_cast <X3D::MFMatrix4d*> (field) = *getArgument <MFMatrix4d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFMatrix4f:
+		{
+			*static_cast <X3D::MFMatrix4f*> (field) = *getArgument <MFMatrix4f> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFNode:
+		{
+			*static_cast <X3D::MFNode*> (field) = *getArgument <MFNode> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFRotation:
+		{
+			*static_cast <X3D::MFRotation*> (field) = *getArgument <MFRotation> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFString:
+		{
+			*static_cast <X3D::MFString*> (field) = *getArgument <MFString> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFTime:
+		{
+			*static_cast <X3D::MFTime*> (field) = *getArgument <MFTime> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFVec2d:
+		{
+			*static_cast <X3D::MFVec2d*> (field) = *getArgument <MFVec2d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFVec2f:
+		{
+			*static_cast <X3D::MFVec2f*> (field) = *getArgument <MFVec2f> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFVec3d:
+		{
+			*static_cast <X3D::MFVec3d*> (field) = *getArgument <MFVec3d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFVec3f:
+		{
+			*static_cast <X3D::MFVec3f*> (field) = *getArgument <MFVec3f> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFVec4d:
+		{
+			*static_cast <X3D::MFVec4d*> (field) = *getArgument <MFVec4d> (cx, value, 0);
+			break;
+		}
+		case X3DConstants::MFVec4f:
+		{
+			*static_cast <X3D::MFVec4f*> (field) = *getArgument <MFVec4f> (cx, value, 0);
+			break;
+		}
 	}
 }
 
@@ -354,71 +352,68 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 		case X3DConstants::SFVec4f:
 			return SFVec4f::create (cx, static_cast <X3D::SFVec4f*> (field));
 
-//		case X3DConstants::MFBool:
-//			return MFBool::create (cx, static_cast <X3D::MFBool*> (field));
-//
-//		case X3DConstants::MFColor:
-//			return MFColor::create (cx, static_cast <X3D::MFColor*> (field));
-//
-//		case X3DConstants::MFColorRGBA:
-//			return MFColorRGBA::create (cx, static_cast <X3D::MFColorRGBA*> (field));
-//
-//		case X3DConstants::MFDouble:
-//			return MFDouble::create (cx, static_cast <X3D::MFDouble*> (field));
-//
-//		case X3DConstants::MFFloat:
-//			return MFFloat::create (cx, static_cast <X3D::MFFloat*> (field));
-//
-//		case X3DConstants::MFImage:
-//			return MFImage::create (cx, static_cast <X3D::MFImage*> (field));
-//
-//		case X3DConstants::MFInt32:
-//			return MFInt32::create (cx, static_cast <X3D::MFInt32*> (field));
-//
-//		case X3DConstants::MFMatrix3d:
-//			return MFMatrix3d::create (cx, static_cast <X3D::MFMatrix3d*> (field));
-//
-//		case X3DConstants::MFMatrix3f:
-//			return MFMatrix3f::create (cx, static_cast <X3D::MFMatrix3f*> (field));
-//
-//		case X3DConstants::MFMatrix4d:
-//			return MFMatrix4d::create (cx, static_cast <X3D::MFMatrix4d*> (field));
-//
-//		case X3DConstants::MFMatrix4f:
-//			return MFMatrix4f::create (cx, static_cast <X3D::MFMatrix4f*> (field));
-//
-//		case X3DConstants::MFNode:
-//			return MFNode::create (cx, static_cast <X3D::MFNode*> (field));
-//
-//		case X3DConstants::MFRotation:
-//			return MFRotation::create (cx, static_cast <X3D::MFRotation*> (field));
-//
-//		case X3DConstants::MFString:
-//			return MFString::create (cx, static_cast <X3D::MFString*> (field));
-//
-//		case X3DConstants::MFTime:
-//			return MFTime::create (cx, static_cast <X3D::MFTime*> (field));
-//
-//		case X3DConstants::MFVec2d:
-//			return MFVec2d::create (cx, static_cast <X3D::MFVec2d*> (field));
-//
-//		case X3DConstants::MFVec2f:
-//			return MFVec2f::create (cx, static_cast <X3D::MFVec2f*> (field));
-//
-//		case X3DConstants::MFVec3d:
-//			return MFVec3d::create (cx, static_cast <X3D::MFVec3d*> (field));
-//
-//		case X3DConstants::MFVec3f:
-//			return MFVec3f::create (cx, static_cast <X3D::MFVec3f*> (field));
-//
-//		case X3DConstants::MFVec4d:
-//			return MFVec4d::create (cx, static_cast <X3D::MFVec4d*> (field));
-//
-//		case X3DConstants::MFVec4f:
-//			return MFVec4f::create (cx, static_cast <X3D::MFVec4f*> (field));
+		case X3DConstants::MFBool:
+			return MFBool::create (cx, static_cast <X3D::MFBool*> (field));
 
-		default:
-			break;
+		case X3DConstants::MFColor:
+			return MFColor::create (cx, static_cast <X3D::MFColor*> (field));
+
+		case X3DConstants::MFColorRGBA:
+			return MFColorRGBA::create (cx, static_cast <X3D::MFColorRGBA*> (field));
+
+		case X3DConstants::MFDouble:
+			return MFDouble::create (cx, static_cast <X3D::MFDouble*> (field));
+
+		case X3DConstants::MFFloat:
+			return MFFloat::create (cx, static_cast <X3D::MFFloat*> (field));
+
+		case X3DConstants::MFImage:
+			return MFImage::create (cx, static_cast <X3D::MFImage*> (field));
+
+		case X3DConstants::MFInt32:
+			return MFInt32::create (cx, static_cast <X3D::MFInt32*> (field));
+
+		case X3DConstants::MFMatrix3d:
+			return MFMatrix3d::create (cx, static_cast <X3D::MFMatrix3d*> (field));
+
+		case X3DConstants::MFMatrix3f:
+			return MFMatrix3f::create (cx, static_cast <X3D::MFMatrix3f*> (field));
+
+		case X3DConstants::MFMatrix4d:
+			return MFMatrix4d::create (cx, static_cast <X3D::MFMatrix4d*> (field));
+
+		case X3DConstants::MFMatrix4f:
+			return MFMatrix4f::create (cx, static_cast <X3D::MFMatrix4f*> (field));
+
+		case X3DConstants::MFNode:
+			return MFNode::create (cx, static_cast <X3D::MFNode*> (field));
+
+		case X3DConstants::MFRotation:
+			return MFRotation::create (cx, static_cast <X3D::MFRotation*> (field));
+
+		case X3DConstants::MFString:
+			return MFString::create (cx, static_cast <X3D::MFString*> (field));
+
+		case X3DConstants::MFTime:
+			return MFTime::create (cx, static_cast <X3D::MFTime*> (field));
+
+		case X3DConstants::MFVec2d:
+			return MFVec2d::create (cx, static_cast <X3D::MFVec2d*> (field));
+
+		case X3DConstants::MFVec2f:
+			return MFVec2f::create (cx, static_cast <X3D::MFVec2f*> (field));
+
+		case X3DConstants::MFVec3d:
+			return MFVec3d::create (cx, static_cast <X3D::MFVec3d*> (field));
+
+		case X3DConstants::MFVec3f:
+			return MFVec3f::create (cx, static_cast <X3D::MFVec3f*> (field));
+
+		case X3DConstants::MFVec4d:
+			return MFVec4d::create (cx, static_cast <X3D::MFVec4d*> (field));
+
+		case X3DConstants::MFVec4f:
+			return MFVec4f::create (cx, static_cast <X3D::MFVec4f*> (field));
 	}
 
 	return JS::UndefinedValue ();

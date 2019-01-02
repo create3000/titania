@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V4.3.3
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.3, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/GridTool.x3dv"
-META "modified" "Sun, 21 Oct 2018 04:09:10 GMT"
+META "modified" "Wed, 02 Jan 2019 15:31:20 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -105,6 +105,38 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF Tool Script {
+              inputOutput SFVec3f    translation 0 0 0
+              inputOutput SFRotation rotation 0 0 1 0
+              inputOutput SFVec3f    scale 1 1 1
+              inputOutput MFInt32    dimension [
+                10,
+                10,
+                10
+              ]
+              inputOutput MFInt32    majorLineEvery [
+                5,
+                5,
+                5
+              ]
+              inputOutput MFInt32    majorLineOffset [
+                0,
+                0,
+                0
+              ]
+              inputOutput SFColor    color 0.5 0.5 0.5
+              inputOutput SFFloat    transparency 0.8
+              inputOutput SFColor    lineColor 1 0.7 0.7
+              inputOutput SFFloat    lineTransparency 0.8
+              inputOutput SFColor    majorLineColor 1 0.7 0.7
+              inputOutput SFFloat    majorLineTransparency 0.6
+              inputOutput SFBool     collision FALSE
+              inputOutput SFBool     handles TRUE
+              inputOutput SFBool     isActive FALSE
+
+              url "ecmascript:
+// Empty body"
+            }
           }
         ]
       }
@@ -273,7 +305,8 @@ DEF DimensionScript Script {
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function initialize ()
 {
 	eventsProcessed ();
@@ -310,7 +343,7 @@ DEF MoveScript Script {
   inputOutput SFRotation rotation 0 0 1 0
   outputOnly  SFVec3f    translation_changed
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function set_translation (value)
 {
@@ -340,7 +373,7 @@ DEF ScaleScript Script {
   ]
   outputOnly  SFVec3f translation_changed
 
-  url "javascript:
+  url "ecmascript:
 
 function initialize ()
 {
@@ -363,38 +396,7 @@ function eventsProcessed ()
 }"
 }
 
-DEF Tool Script {
-  inputOutput SFVec3f    translation 0 0 0
-  inputOutput SFRotation rotation 0 0 1 0
-  inputOutput SFVec3f    scale 1 1 1
-  inputOutput MFInt32    dimension [
-    10,
-    10,
-    10
-  ]
-  inputOutput MFInt32    majorLineEvery [
-    5,
-    5,
-    5
-  ]
-  inputOutput MFInt32    majorLineOffset [
-    0,
-    0,
-    0
-  ]
-  inputOutput SFColor    color 0.5 0.5 0.5
-  inputOutput SFFloat    transparency 0.8
-  inputOutput SFColor    lineColor 1 0.7 0.7
-  inputOutput SFFloat    lineTransparency 0.8
-  inputOutput SFColor    majorLineColor 1 0.7 0.7
-  inputOutput SFFloat    majorLineTransparency 0.6
-  inputOutput SFBool     collision FALSE
-  inputOutput SFBool     handles TRUE
-  inputOutput SFBool     isActive FALSE
-
-  url "ecmascript:
-// Empty body"
-}
+USE Tool
 
 ROUTE DimensionScript.translation_changed TO _13.set_translation
 ROUTE _12.translation_changed TO DimensionScript.set_translation
