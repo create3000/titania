@@ -99,9 +99,7 @@ private:
 
 	///  @name Construction
 
-	static
-	bool
-	construct (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Member access
 

@@ -48,24 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_X3DARRAY_FIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_X3DARRAY_FIELD_H__
 
 #include "X3DField.h"
-#include "X3DArrayField.h"
 
-#include "Fields/SFColor.h"
-#include "Fields/SFColorRGBA.h"
-#include "Fields/SFImage.h"
-#include "Fields/SFMatrix3.h"
-#include "Fields/SFMatrix4.h"
-#include "Fields/SFNode.h"
-#include "Fields/SFRotation.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
-#include "Fields/X3DScalar.h"
+namespace titania {
+namespace X3D {
+namespace spidermonkey {
 
-//#include "Fields/ArrayFields.h"
+class X3DArrayField
+{
+public:
+
+	///  @name Member types
+
+	using internal_type = X3D::X3DFieldDefinition;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
+
+	static
+	const JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr
+	ObjectType
+	getId ()
+	{ return ObjectType::X3DArrayField; }
+
+
+private:
+
+	///  @name Construction
+
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Static members
+
+	static const JSClassOps     class_ops;
+	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
+
+};
+
+} // spidermonkey
+} // X3D
+} // titania
 
 #endif

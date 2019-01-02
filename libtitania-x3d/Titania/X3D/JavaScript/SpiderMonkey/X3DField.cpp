@@ -78,6 +78,10 @@ const JSClass X3DField::static_class = {
 	&class_ops
 };
 
+const JSPropertySpec X3DField::properties [ ] = {
+	JS_PS_END
+};
+
 const JSFunctionSpec X3DField::functions [ ] = {
 	JS_FS ("getName",     getName,     0, JSPROP_PERMANENT),
 	JS_FS ("getTypeName", getTypeName, 0, JSPROP_PERMANENT),
@@ -85,13 +89,13 @@ const JSFunctionSpec X3DField::functions [ ] = {
 	JS_FS ("isReadable",  isReadable,  0, JSPROP_PERMANENT),
 	JS_FS ("isWritable",  isWritable,  0, JSPROP_PERMANENT),
 	JS_FS ("toString",    toString,    0, JSPROP_PERMANENT),
-	{ 0 }
+	JS_FS_END
 };
 
 JSObject*
 X3DField::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
-	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");

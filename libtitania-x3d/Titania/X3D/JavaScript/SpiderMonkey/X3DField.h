@@ -120,9 +120,7 @@ private:
 
 	///  @name Construction
 
-	static
-	bool
-	construct (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Functions
 
@@ -137,6 +135,7 @@ private:
 
 	static const JSClassOps     class_ops;
 	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
 	static const JSFunctionSpec functions [ ];
 
 };

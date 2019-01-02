@@ -48,24 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-
-#include "X3DField.h"
 #include "X3DArrayField.h"
 
-#include "Fields/SFColor.h"
-#include "Fields/SFColorRGBA.h"
-#include "Fields/SFImage.h"
-#include "Fields/SFMatrix3.h"
-#include "Fields/SFMatrix4.h"
-#include "Fields/SFNode.h"
-#include "Fields/SFRotation.h"
-#include "Fields/SFVec2.h"
-#include "Fields/SFVec3.h"
-#include "Fields/SFVec4.h"
-#include "Fields/X3DScalar.h"
+#include "../../Basic/X3DArrayField.h"
+#include "../../InputOutput/Generator.h"
 
-//#include "Fields/ArrayFields.h"
+namespace titania {
+namespace X3D {
+namespace spidermonkey {
 
-#endif
+const JSClassOps X3DArrayField::class_ops = {
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	nullptr, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
+};
+
+const JSClass X3DArrayField::static_class = {
+	"X3DArrayField",
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
+	&class_ops
+};
+
+const JSPropertySpec X3DArrayField::properties [ ] = {
+	JS_PS_END
+};
+
+const JSFunctionSpec X3DArrayField::functions [ ] = {
+	JS_FS_END
+};
+
+JSObject*
+X3DArrayField::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
+{
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+
+	if (not proto)
+		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
+	
+	return proto;
+}
+
+bool
+X3DArrayField::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructable");
+}
+
+} // spidermonkey
+} // X3D
+} // Titania
