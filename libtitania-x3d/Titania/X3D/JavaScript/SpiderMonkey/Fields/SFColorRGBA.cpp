@@ -62,7 +62,7 @@ const JSClassOps SFColorRGBA::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFColorRGBA>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -108,7 +108,7 @@ SFColorRGBA::init (JSContext* const cx, JS::HandleObject global, JS::HandleObjec
 JS::Value
 SFColorRGBA::create (JSContext* const cx, X3D::SFColorRGBA* const field)
 {
-	return X3DField::create (cx, &static_class, getId (), field);
+	return X3DField::create <SFColorRGBA> (cx, field);
 }
 
 bool

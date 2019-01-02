@@ -78,8 +78,7 @@ public:
 	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
 
 	static
-	const
-	JSClass*
+	const JSClass*
 	getClass ()
 	{ return &static_class; }
 
@@ -94,13 +93,24 @@ protected:
 
 	///  @name Construction
 
-	template <class InternalType>
+	template <class Type>
 	static
 	JS::Value
-	create (JSContext* const cx, const JSClass* const static_class, ObjectType id, InternalType* const field);
+	create (JSContext* const cx, typename Type::internal_type* const field);
+
+	static
+	const X3D::X3DChildObject*
+	getKey (const X3D::X3DFieldDefinition* const field)
+	{ return field; }
+
+	static
+	X3D::X3DFieldDefinition*
+	getField (X3D::X3DFieldDefinition* const field)
+	{ return field; }
 
 	///  @name Destruction
 
+	template <class Type>
 	static
 	void
 	finalize (JSFreeOp* fop, JSObject* obj);
@@ -131,12 +141,12 @@ private:
 
 };
 
-template <class InternalType>
+template <class Type>
 JS::Value
-X3DField::create (JSContext* const cx, const JSClass* const static_class, ObjectType id, InternalType* const field)
+X3DField::create (JSContext* const cx, typename Type::internal_type* const field)
 {
 	const auto context = getContext (cx);
-	const auto object  = context -> getObject (field);
+	const auto object  = context -> getObject (Type::getKey (field));
 
 	if (object)
 	{
@@ -144,18 +154,33 @@ X3DField::create (JSContext* const cx, const JSClass* const static_class, Object
 	}
 	else
 	{
-		const auto object = JS_NewObjectWithGivenProto (cx, static_class, context -> getProto (id));
+		const auto object = JS_NewObjectWithGivenProto (cx, Type::getClass (), context -> getProto (Type::getId ()));
 
 		if (object == nullptr)
 			throw std::runtime_error ("out of memory");
 
-		setObject (object, field);
+		const auto value = Type::getField (field);
+
+		setObject (object, value);
 		setContext (object, context);
 
-		context -> addObject (field, object);
+		context -> addObject (Type::getKey (field), value, object);
 
 		return JS::ObjectValue (*object);
 	}
+}
+
+template <class Type>
+void
+X3DField::finalize (JSFreeOp* fop, JSObject* obj)
+{
+	const auto context = getContext (obj);
+	const auto field   = getObject <typename Type::internal_type*> (obj);
+
+	// Proto objects have no private.
+
+	if (field)
+		context -> removeObject (Type::getKey (field));
 }
 
 } // spidermonkey

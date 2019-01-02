@@ -79,8 +79,7 @@ public:
 	create (JSContext* const cx, X3D::SFColor* const field);
 
 	static
-	const
-	JSClass*
+	const JSClass*
 	getClass ()
 	{ return &static_class; }
 

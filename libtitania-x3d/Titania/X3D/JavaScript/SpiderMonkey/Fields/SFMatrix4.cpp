@@ -63,7 +63,7 @@ const JSClassOps SFMatrix4 <X3D::SFMatrix4d>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFMatrix4d>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -86,7 +86,7 @@ const JSClassOps SFMatrix4 <X3D::SFMatrix4f>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFMatrix4f>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -109,7 +109,7 @@ const JSClassOps SFMatrix4 <X3D::VrmlMatrix>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <VrmlMatrix>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

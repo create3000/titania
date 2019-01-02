@@ -79,8 +79,7 @@ public:
 	create (JSContext* const cx, X3D::SFRotation* const field);
 
 	static
-	const
-	JSClass*
+	const JSClass*
 	getClass ()
 	{ return &static_class; }
 

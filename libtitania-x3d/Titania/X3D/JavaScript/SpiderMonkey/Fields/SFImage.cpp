@@ -64,7 +64,7 @@ const JSClassOps SFImage::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFImage>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -105,7 +105,7 @@ SFImage::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject pa
 JS::Value
 SFImage::create (JSContext* const cx, X3D::SFImage* const field)
 {
-	return X3DField::create (cx, &static_class, getId (), field);
+	return X3DField::create <SFImage> (cx, field);
 }
 
 bool

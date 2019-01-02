@@ -63,7 +63,7 @@ const JSClassOps SFMatrix3 <X3D::SFMatrix3d>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFMatrix3d>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -86,7 +86,7 @@ const JSClassOps SFMatrix3 <X3D::SFMatrix3f>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFMatrix3f>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

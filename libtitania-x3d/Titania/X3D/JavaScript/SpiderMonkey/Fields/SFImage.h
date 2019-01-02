@@ -79,8 +79,7 @@ public:
 	create (JSContext* const cx, X3D::SFImage* const field);
 
 	static
-	const
-	JSClass*
+	const JSClass*
 	getClass ()
 	{ return &static_class; }
 

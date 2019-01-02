@@ -64,7 +64,7 @@ const JSClassOps SFRotation::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFRotation>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -113,7 +113,7 @@ SFRotation::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject
 JS::Value
 SFRotation::create (JSContext* const cx, X3D::SFRotation* const field)
 {
-	return X3DField::create (cx, &static_class, getId (), field);
+	return X3DField::create <SFRotation> (cx, field);
 }
 
 bool

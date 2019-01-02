@@ -69,7 +69,7 @@ const JSClassOps SFNode::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFNode>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -113,7 +113,7 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 {
 	if (field -> getValue ())
 	{
-		const auto value  = X3DField::create (cx, &static_class, getId (), new X3D::SFNode (*field));
+		const auto value  = X3DField::create <SFNode> (cx, field);
 		const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
 
 		for (const auto fieldDefinition : field -> getValue () -> getFieldDefinitions ())

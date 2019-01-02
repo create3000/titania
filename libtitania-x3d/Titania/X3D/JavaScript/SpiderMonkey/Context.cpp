@@ -383,32 +383,36 @@ Context::addProto (const ObjectType type, JSObject* const proto)
 }
 
 void
-Context::addObject (X3D::X3DFieldDefinition* const field, JSObject* const object)
+Context::addObject (const X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const obj)
 {
-	if (not objects .emplace (field, object) .second)
+	if (not objects .emplace (key, std::pair (field, obj)) .second)
 		throw std::invalid_argument ("addObject");
 
 	field -> addParent (this);
 }
 
 void
-Context::removeObject (X3D::X3DFieldDefinition* const field)
+Context::removeObject (const X3D::X3DChildObject* const key)
 {
-	if (objects .erase (field))
-		field -> removeParent (this);
-	else
-		__LOG__ << field -> getName () << " : " << field -> getTypeName () << std::endl;
+	const auto iter = objects .find (key);
+
+	assert (iter not_eq objects .end ());
+
+	const auto field = iter -> second .first;
+
+	field -> removeParent (this);
+	objects .erase (iter);
 }
 
 JSObject*
-Context::getObject (X3D::X3DFieldDefinition* const field) const
+Context::getObject (const X3D::X3DChildObject* const key) const
 {
-	const auto iter = objects .find (field);
+	const auto iter = objects .find (key);
 
 	if (iter == objects .end ())
 		return nullptr;
 
-	return iter -> second;
+	return iter -> second .second;
 }
 
 void
@@ -551,11 +555,33 @@ Context::finish ()
 void
 Context::set_shutdown ()
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState ases (cx);
+	{
+		const JSAutoRequest ar (cx);
+		const JSAutoCompartment ac (cx, *global);
+		const JS::AutoSaveExceptionState ases (cx);
+	
+		call ("shutdown");
+	}
 
-	call ("shutdown");
+	{
+		const JSAutoRequest ar (cx);
+	
+		fields .clear ();
+		protos .clear ();
+		global .reset ();
+	
+		JS_GC (cx);
+	
+		// finalize is not called for global values, probably the global object is not disposed.
+	
+		//assert (objects .empty ());
+
+		for (const auto & [key, pair] : Objects (objects))
+		{
+			setObject (pair .second, nullptr);
+			removeObject (key);
+		}
+	}
 }
 
 void
@@ -575,7 +601,7 @@ Context::reportException ()
 
 	if (exception .isObject ())
 	{
-		const auto object = JS::RootedObject  (cx, &exception .toObject ());
+		const auto object = JS::RootedObject  (cx, exception .toObjectOrNull ());
 		const auto report = JS_ErrorFromException (cx, object);
 
 		if (report)
@@ -624,24 +650,6 @@ Context::reportError (JSContext* cx, JSErrorReport* const report)
 void
 Context::dispose ()
 {
-	const JSAutoRequest ar (cx);
-
-	fields .clear ();
-	protos .clear ();
-	global .reset ();
-
-	JS_GC (cx);
-
-	// finalize is not called for global values, probably the global object is not disposed.
-
-	//assert (objects .empty ());
-
-	for (const auto [field, object] : Objects (objects))
-	{
-		setObject (object, nullptr);
-		removeObject (field);
-	}
-
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

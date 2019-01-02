@@ -79,8 +79,7 @@ public:
 	create (JSContext* const cx, X3D::SFNode* const field);
 
 	static
-	const
-	JSClass*
+	const JSClass*
 	getClass ()
 	{ return &static_class; }
 
@@ -89,6 +88,25 @@ public:
 	ObjectType
 	getId ()
 	{ return ObjectType::SFNode; }
+
+
+protected:
+
+	///  @name Friends
+
+	friend class X3DField;
+
+	///  @name Construction
+
+	static
+	const X3D::X3DChildObject*
+	getKey (const X3D::SFNode* const field)
+	{ return field -> getValue (); }
+
+	static
+	X3D::SFNode*
+	getField (X3D::SFNode* const field)
+	{ return new X3D::SFNode (*field); }
 
 
 private:

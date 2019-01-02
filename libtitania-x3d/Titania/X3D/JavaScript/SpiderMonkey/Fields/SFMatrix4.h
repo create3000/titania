@@ -85,8 +85,7 @@ public:
 	create (JSContext* const cx, InternalType* const field);
 
 	static
-	const
-	JSClass*
+	const JSClass*
 	getClass ()
 	{ return &static_class; }
 
@@ -191,7 +190,7 @@ template <class InternalType>
 JS::Value
 SFMatrix4 <InternalType>::create (JSContext* const cx, InternalType* const field)
 {
-	return X3DField::create (cx, &static_class, getId (), field);
+	return X3DField::create <SFMatrix4> (cx, field);
 }
 
 template <class InternalType>

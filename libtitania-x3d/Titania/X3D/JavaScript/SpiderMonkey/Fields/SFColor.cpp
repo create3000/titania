@@ -62,7 +62,7 @@ const JSClassOps SFColor::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFColor>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -106,7 +106,7 @@ SFColor::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject pa
 JS::Value
 SFColor::create (JSContext* const cx, X3D::SFColor* const field)
 {
-	return X3DField::create (cx, &static_class, getId (), field);
+	return X3DField::create <SFColor> (cx, field);
 }
 
 bool

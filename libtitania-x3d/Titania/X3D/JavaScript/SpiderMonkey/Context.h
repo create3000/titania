@@ -109,13 +109,13 @@ public:
 	{ return *protos [size_t (type)]; }
 
 	void
-	addObject (X3D::X3DFieldDefinition* const field, JSObject* const object);
+	addObject (const X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const obj);
 
 	void
-	removeObject (X3D::X3DFieldDefinition* const field);
+	removeObject (const X3D::X3DChildObject* const key);
 
 	JSObject*
-	getObject (X3D::X3DFieldDefinition* const field) const;
+	getObject (const X3D::X3DChildObject* const key) const;
 
 	///  @name Destruction
 
@@ -213,7 +213,7 @@ private:
 
 	///  @name Member types
 
-	using Objects = std::map <X3D::X3DFieldDefinition*, JSObject*>;
+	using Objects = std::map <const X3D::X3DChildObject*, std::pair <X3D::X3DFieldDefinition*, JSObject*>>;
 
 	///  @name Members
 

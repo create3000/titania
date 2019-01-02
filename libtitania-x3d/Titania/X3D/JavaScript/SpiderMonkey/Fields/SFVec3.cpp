@@ -63,7 +63,7 @@ const JSClassOps SFVec3 <X3D::SFVec3d>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFVec3d>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -86,7 +86,7 @@ const JSClassOps SFVec3 <X3D::SFVec3f>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	&finalize, // finalize
+	finalize <SFVec3f>, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

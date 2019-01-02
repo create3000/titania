@@ -133,14 +133,14 @@ getThis (JSContext* const cx, const JS::CallArgs & args)
 
 	if (thisv .isObjectOrNull ())
 	{
-		const auto self = thisv .toObjectOrNull ();
+		const auto obj = thisv .toObjectOrNull ();
 
-		if (self and instanceOf <Type> (cx, thisv))
+		if (obj and instanceOf <Type> (cx, thisv))
 		{
-			const auto object = getObject <typename Type::internal_type*> (self);
+			const auto self = getObject <typename Type::internal_type*> (obj);
 
-			if (object)
-				return object;
+			if (self)
+				return self;
 		}
 	}
 
@@ -152,10 +152,10 @@ template <class Type>
 typename Type::internal_type*
 getThis (JSContext* const cx, JSObject* const obj)
 {
-	const auto object = getObject <typename Type::internal_type*> (obj);
+	const auto self = getObject <typename Type::internal_type*> (obj);
 
-	if (object)
-		return object;
+	if (self)
+		return self;
 
 	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
 }
