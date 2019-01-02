@@ -50,9 +50,6 @@
 
 #include "X3DArrayField.h"
 
-#include "../../Basic/X3DArrayField.h"
-#include "../../InputOutput/Generator.h"
-
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
@@ -100,7 +97,7 @@ X3DArrayField::init (JSContext* const cx, JS::HandleObject global, JS::HandleObj
 bool
 X3DArrayField::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructable");
+	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructible");
 }
 
 } // spidermonkey

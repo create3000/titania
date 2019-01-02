@@ -106,7 +106,7 @@ X3DField::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject p
 bool
 X3DField::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructable");
+	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructible");
 }
 
 bool
