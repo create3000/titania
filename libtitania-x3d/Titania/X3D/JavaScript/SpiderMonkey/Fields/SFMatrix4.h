@@ -136,6 +136,22 @@ private:
 };
 
 template <class InternalType>
+const JSClassOps SFMatrix4 <InternalType>::class_ops = {
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	finalize <SFMatrix4>, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
+};
+
+template <class InternalType>
 const JSPropertySpec SFMatrix4 <InternalType>::properties [ ] = {
 	JS_PSGS ("0",  get1Value <0>,  set1Value <0>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("1",  get1Value <1>,  set1Value <1>,  JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -244,11 +260,11 @@ SFMatrix4 <InternalType>::set1Value (JSContext* cx, unsigned argc, JS::Value* vp
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <SFMatrix4> (cx, args);
+		const auto value = getArgument <typename InternalType::value_type> (cx, args, 0);
 
-		lhs -> set1Value (Index, rhs);
+		self -> set1Value (Index, value);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -265,9 +281,9 @@ SFMatrix4 <InternalType>::get1Value (JSContext* cx, unsigned argc, JS::Value* vp
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto self = getThis <SFMatrix4> (cx, args);
 
-		args .rval () .setDouble (lhs -> get1Value (Index));
+		args .rval () .setDouble (self -> get1Value (Index));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -286,7 +302,7 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setTransform: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto self = getThis <SFMatrix4> (cx, args);
 
 		typename InternalType::vector_type translation;
 		typename InternalType::rotation_type rotation;
@@ -334,7 +350,7 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 		catch (const std::domain_error &)
 		{ }
 
-		lhs -> setTransform (translation, rotation, scale, scaleOrientation, center);
+		self -> setTransform (translation, rotation, scale, scaleOrientation, center);
 
 		args .rval () .setUndefined ();
 		return true;
@@ -355,7 +371,7 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getTransform: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto self = getThis <SFMatrix4> (cx, args);
 
 		typename InternalType::vector_type::internal_type translation;
 		typename InternalType::rotation_type::internal_type rotation;
@@ -371,7 +387,7 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 		catch (const std::domain_error &)
 		{ }
 
-		lhs -> getTransform (translation, rotation, scale, scaleOrientation, center);
+		self -> getTransform (translation, rotation, scale, scaleOrientation, center);
 
 		try
 		{
@@ -424,9 +440,9 @@ SFMatrix4 <InternalType>::transpose (JSContext* cx, unsigned argc, JS::Value* vp
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .transpose: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto self = getThis <SFMatrix4> (cx, args);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> transpose ())));
+		args .rval () .set (create (cx, new InternalType (self -> transpose ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -445,9 +461,9 @@ SFMatrix4 <InternalType>::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .inverse: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
+		const auto self = getThis <SFMatrix4> (cx, args);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> inverse ())));
+		args .rval () .set (create (cx, new InternalType (self -> inverse ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -465,11 +481,11 @@ SFMatrix4 <InternalType>::multLeft (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multLeft: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <SFMatrix4> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFMatrix4> (cx, args);
+		const auto matrix = getArgument <SFMatrix4> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> multLeft (*rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> multLeft (*matrix))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -487,11 +503,11 @@ SFMatrix4 <InternalType>::multRight (JSContext* cx, unsigned argc, JS::Value* vp
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multRight: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <SFMatrix4> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFMatrix4> (cx, args);
+		const auto matrix = getArgument <SFMatrix4> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> multLeft (*rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> multRight (*matrix))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -509,11 +525,11 @@ SFMatrix4 <InternalType>::multVecMatrix (JSContext* cx, unsigned argc, JS::Value
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVecMatrix: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <vector_type> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFMatrix4> (cx, args);
+		const auto vector = getArgument <vector_type> (cx, args, 0);
 
-		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multVecMatrix (*rhs))));
+		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (self -> multVecMatrix (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -531,11 +547,11 @@ SFMatrix4 <InternalType>::multMatrixVec (JSContext* cx, unsigned argc, JS::Value
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multMatrixVec: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <vector_type> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFMatrix4> (cx, args);
+		const auto vector = getArgument <vector_type> (cx, args, 0);
 
-		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multMatrixVec (*rhs))));
+		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (self -> multMatrixVec (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -553,11 +569,11 @@ SFMatrix4 <InternalType>::multDirMatrix (JSContext* cx, unsigned argc, JS::Value
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multDirMatrix: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <vector_type> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFMatrix4> (cx, args);
+		const auto vector = getArgument <vector_type> (cx, args, 0);
 
-		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multDirMatrix (*rhs))));
+		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (self -> multDirMatrix (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -575,11 +591,11 @@ SFMatrix4 <InternalType>::multMatrixDir (JSContext* cx, unsigned argc, JS::Value
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multMatrixDir: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFMatrix4> (cx, args);
-		const auto rhs  = getArgument <vector_type> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFMatrix4> (cx, args);
+		const auto vector = getArgument <vector_type> (cx, args, 0);
 
-		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (lhs -> multMatrixDir (*rhs))));
+		args .rval () .set (vector_type::create (cx, new typename vector_type::internal_type (self -> multMatrixDir (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)

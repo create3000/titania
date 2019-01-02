@@ -77,7 +77,7 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 			const auto args  = JS::CallArgsFromVp (argc, vp);
 			const auto array = new X3D::MFNode ();
 
-			for (uint32_t i = 0; i < argc; ++ i)
+			for (unsigned i = 0; i < argc; ++ i)
 			{
 				try
 				{

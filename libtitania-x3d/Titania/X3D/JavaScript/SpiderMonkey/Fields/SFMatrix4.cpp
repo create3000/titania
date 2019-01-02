@@ -55,22 +55,6 @@ namespace X3D {
 namespace spidermonkey {
 
 template <>
-const JSClassOps SFMatrix4d::class_ops = {
-	nullptr, // addProperty
-	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate
-	nullptr, // resolve
-	nullptr, // mayResolve
-	finalize <SFMatrix4d>, // finalize
-	nullptr, // call
-	nullptr, // hasInstance
-	nullptr, // construct
-	nullptr, // trace
-};
-
-template <>
 const JSClass SFMatrix4d::static_class = {
 	"SFMatrix4d",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
@@ -78,42 +62,10 @@ const JSClass SFMatrix4d::static_class = {
 };
 
 template <>
-const JSClassOps SFMatrix4f::class_ops = {
-	nullptr, // addProperty
-	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate
-	nullptr, // resolve
-	nullptr, // mayResolve
-	finalize <SFMatrix4f>, // finalize
-	nullptr, // call
-	nullptr, // hasInstance
-	nullptr, // construct
-	nullptr, // trace
-};
-
-template <>
 const JSClass SFMatrix4f::static_class = {
 	"SFMatrix4f",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops,
-};
-
-template <>
-const JSClassOps VrmlMatrix::class_ops = {
-	nullptr, // addProperty
-	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate
-	nullptr, // resolve
-	nullptr, // mayResolve
-	finalize <VrmlMatrix>, // finalize
-	nullptr, // call
-	nullptr, // hasInstance
-	nullptr, // construct
-	nullptr, // trace
 };
 
 template <>

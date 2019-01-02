@@ -50,7 +50,7 @@
 
 #include "SFImage.h"
 
-//#include "ArrayFields.h"
+#include "ArrayFields.h"
 
 namespace titania {
 namespace X3D {
@@ -126,10 +126,9 @@ SFImage::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				const auto width  = getArgument <uint32_t> (cx, args, WIDTH);
 				const auto height = getArgument <uint32_t> (cx, args, HEIGHT);
 				const auto comp   = getArgument <uint32_t> (cx, args, COMP);
-//				const auto array  = getArgument <MFInt32>  (cx, args, ARRAY);
-//
-//				args .rval () .set (create (cx, new X3D::SFImage (width, height, comp, *array)));
-				args .rval () .setUndefined ();
+				const auto array  = getArgument <MFInt32>  (cx, args, ARRAY);
+
+				args .rval () .set (create (cx, new X3D::SFImage (width, height, comp, *array)));
 				return true;
 			}
 			default:
@@ -147,11 +146,11 @@ SFImage::setWidth (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
-		const auto rhs  = getArgument <uint32_t> (cx, args, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <SFImage> (cx, args);
+		const auto width = getArgument <uint32_t> (cx, args, 0);
 
-		lhs -> setWidth (rhs);
+		self -> setWidth (width);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -166,9 +165,9 @@ SFImage::getWidth (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
+		const auto self = getThis <SFImage> (cx, args);
 
-		args .rval () .setNumber (uint32_t (lhs -> getWidth ()));
+		args .rval () .setNumber (uint32_t (self -> getWidth ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -182,11 +181,11 @@ SFImage::setHeight (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
-		const auto rhs  = getArgument <uint32_t> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFImage> (cx, args);
+		const auto height = getArgument <uint32_t> (cx, args, 0);
 
-		lhs -> setHeight (rhs);
+		self -> setHeight (height);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -201,9 +200,9 @@ SFImage::getHeight (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
+		const auto self  = getThis <SFImage> (cx, args);
 
-		args .rval () .setNumber (uint32_t (lhs -> getHeight ()));
+		args .rval () .setNumber (uint32_t (self -> getHeight ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -218,10 +217,10 @@ SFImage::setComp (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
-		const auto rhs  = getArgument <uint32_t> (cx, args, 0);
+		const auto self = getThis <SFImage> (cx, args);
+		const auto comp = getArgument <uint32_t> (cx, args, 0);
 
-		lhs -> setComponents (rhs);
+		self -> setComponents (comp);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -236,9 +235,9 @@ SFImage::getComp (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
+		const auto self  = getThis <SFImage> (cx, args);
 
-		args .rval () .setNumber (uint32_t (lhs -> getComponents ()));
+		args .rval () .setNumber (uint32_t (self -> getComponents ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -253,10 +252,10 @@ SFImage::setArray (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
-//		const auto rhs  = getArgument <MFInt32> (cx, args, 0);
-//
-//		lhs -> setArray (*rhs);
+		const auto self  = getThis <SFImage> (cx, args);
+		const auto array = getArgument <MFInt32> (cx, args, 0);
+
+		self -> setArray (*array);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -271,10 +270,9 @@ SFImage::getArray (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFImage> (cx, args);
+		const auto self = getThis <SFImage> (cx, args);
 
-//		args .rval () .set (MFInt32::create (cx, &lhs -> getArray ()));
-		args .rval () .setUndefined ();
+		args .rval () .set (MFInt32::create (cx, &self -> getArray ()));
 		return true;
 	}
 	catch (const std::exception & error)

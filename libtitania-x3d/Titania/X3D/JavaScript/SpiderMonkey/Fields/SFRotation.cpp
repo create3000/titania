@@ -175,11 +175,11 @@ SFRotation::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
-		const auto rhs  = getArgument <X3D::SFRotation::value_type> (cx, args, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <SFRotation> (cx, args);
+		const auto value = getArgument <X3D::SFRotation::value_type> (cx, args, 0);
 
-		lhs -> set1Value (Index, rhs);
+		self -> set1Value (Index, value);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -195,9 +195,9 @@ SFRotation::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
+		const auto self = getThis <SFRotation> (cx, args);
 
-		args .rval () .setDouble (lhs -> get1Value (Index));
+		args .rval () .setDouble (self -> get1Value (Index));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -215,8 +215,8 @@ SFRotation::getAxis (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getAxis: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
-		const auto axis = lhs -> getAxis ();
+		const auto self = getThis <SFRotation> (cx, args);
+		const auto axis = self -> getAxis ();
 
 		args .rval () .set (SFVec3f::create (cx, new X3D::SFVec3f (axis)));
 		return true;
@@ -236,10 +236,10 @@ SFRotation::setAxis (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setAxis: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
+		const auto self = getThis <SFRotation> (cx, args);
 		const auto axis = getArgument <SFVec3f> (cx, args, 0);
 
-		lhs -> setAxis (axis -> getValue ());
+		self -> setAxis (axis -> getValue ());
 
 		args .rval () .setUndefined ();
 		return true;
@@ -259,9 +259,9 @@ SFRotation::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .inverse: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
+		const auto self = getThis <SFRotation> (cx, args);
 
-		args .rval () .set (create (cx, new X3D::SFRotation (lhs -> inverse ())));
+		args .rval () .set (create (cx, new X3D::SFRotation (self -> inverse ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -278,11 +278,11 @@ SFRotation::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multiply: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
-		const auto rhs  = getArgument <SFRotation> (cx, args, 0);
+		const auto args     = JS::CallArgsFromVp (argc, vp);
+		const auto self     = getThis <SFRotation> (cx, args);
+		const auto rotation = getArgument <SFRotation> (cx, args, 0);
 
-		args .rval () .set (create (cx, new X3D::SFRotation (lhs -> multiply (*rhs))));
+		args .rval () .set (create (cx, new X3D::SFRotation (self -> multiply (*rotation))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -300,19 +300,19 @@ SFRotation::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVec: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
+		const auto self = getThis <SFRotation> (cx, args);
 		
 		try
 		{
-			const auto rhs = getArgument <SFVec3f> (cx, args, 0);
+			const auto vector = getArgument <SFVec3f> (cx, args, 0);
 
-			args .rval () .set (SFVec3f::create (cx, new X3D::SFVec3f (lhs -> multVec (rhs -> getValue ()))));
+			args .rval () .set (SFVec3f::create (cx, new X3D::SFVec3f (self -> multVec (vector -> getValue ()))));
 		}
 		catch (const std::exception & error)
 		{
-			const auto rhs = getArgument <SFVec3d> (cx, args, 0);
+			const auto vector = getArgument <SFVec3d> (cx, args, 0);
 
-			args .rval () .set (SFVec3d::create (cx, new X3D::SFVec3d (lhs -> multVec (rhs -> getValue ()))));
+			args .rval () .set (SFVec3d::create (cx, new X3D::SFVec3d (self -> multVec (vector -> getValue ()))));
 		}
 
 		return true;
@@ -331,12 +331,12 @@ SFRotation::slerp (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .slerp: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFRotation> (cx, args);
-		const auto rhs  = getArgument <SFRotation> (cx, args, 0);
-		const auto t    = getArgument <X3D::SFRotation::value_type> (cx, args, 1);
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto self        = getThis <SFRotation> (cx, args);
+		const auto destination = getArgument <SFRotation> (cx, args, 0);
+		const auto t           = getArgument <X3D::SFRotation::value_type> (cx, args, 1);
 
-		args .rval () .set (create (cx, new X3D::SFRotation (lhs -> slerp (*rhs, t))));
+		args .rval () .set (create (cx, new X3D::SFRotation (self -> slerp (*destination, t))));
 		return true;
 	}
 	catch (const std::exception & error)

@@ -55,42 +55,10 @@ namespace X3D {
 namespace spidermonkey {
 
 template <>
-const JSClassOps SFVec3d::class_ops = {
-	nullptr, // addProperty
-	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate
-	nullptr, // resolve
-	nullptr, // mayResolve
-	finalize <SFVec3d>, // finalize
-	nullptr, // call
-	nullptr, // hasInstance
-	nullptr, // construct
-	nullptr, // trace
-};
-
-template <>
 const JSClass SFVec3d::static_class = {
 	"SFVec3d",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
-};
-
-template <>
-const JSClassOps SFVec3f::class_ops = {
-	nullptr, // addProperty
-	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate
-	nullptr, // resolve
-	nullptr, // mayResolve
-	finalize <SFVec3f>, // finalize
-	nullptr, // call
-	nullptr, // hasInstance
-	nullptr, // construct
-	nullptr, // trace
 };
 
 template <>

@@ -137,6 +137,22 @@ private:
 };
 
 template <class InternalType>
+const JSClassOps SFVec2 <InternalType>::class_ops = {
+	nullptr, // addProperty
+	nullptr, // delProperty
+	nullptr, // getProperty
+	nullptr, // setProperty
+	nullptr, // enumerate
+	nullptr, // resolve
+	nullptr, // mayResolve
+	finalize <SFVec2>, // finalize
+	nullptr, // call
+	nullptr, // hasInstance
+	nullptr, // construct
+	nullptr, // trace
+};
+
+template <class InternalType>
 const JSPropertySpec SFVec2 <InternalType>::properties [ ] = {
 	JS_PSGS ("x", getProperty <X>, setProperty <X>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("y", getProperty <Y>, setProperty <Y>, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -220,11 +236,11 @@ SFVec2 <InternalType>::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <SFVec2> (cx, args);
+		const auto value = getArgument <typename InternalType::value_type> (cx, args, 0);
 
-		lhs -> set1Value (Index, rhs);
+		self -> set1Value (Index, value);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -241,9 +257,9 @@ SFVec2 <InternalType>::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto self = getThis <SFVec2> (cx, args);
 
-		args .rval () .setDouble (lhs -> get1Value (Index));
+		args .rval () .setDouble (self -> get1Value (Index));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -261,11 +277,11 @@ SFVec2 <InternalType>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .add: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto vector = getArgument <SFVec2> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> add (*rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> add (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -283,11 +299,11 @@ SFVec2 <InternalType>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .distance: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto vector = getArgument <SFVec2> (cx, args, 0);
 
-		args .rval () .setDouble (lhs -> distance (*rhs));
+		args .rval () .setDouble (self -> distance (*vector));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -305,11 +321,11 @@ SFVec2 <InternalType>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .divide: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto scalar = getArgument <typename InternalType::value_type> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> divide (rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> divide (scalar))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -327,11 +343,11 @@ SFVec2 <InternalType>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .divVec: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto vector = getArgument <SFVec2> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> divide (*rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> divide (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -349,11 +365,11 @@ SFVec2 <InternalType>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .dot: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto vector = getArgument <SFVec2> (cx, args, 0);
 
-		args .rval () .setDouble (lhs -> dot (*rhs));
+		args .rval () .setDouble (self -> dot (*vector));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -372,9 +388,9 @@ SFVec2 <InternalType>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .length: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto self = getThis <SFVec2> (cx, args);
 
-		args .rval () .setDouble (lhs -> length ());
+		args .rval () .setDouble (self -> length ());
 		return true;
 	}
 	catch (const std::exception & error)
@@ -392,12 +408,12 @@ SFVec2 <InternalType>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
-		const auto t    = getArgument <typename InternalType::value_type> (cx, args, 1);
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto self        = getThis <SFVec2> (cx, args);
+		const auto destination = getArgument <SFVec2> (cx, args, 0);
+		const auto t           = getArgument <typename InternalType::value_type> (cx, args, 1);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> lerp (*rhs, t))));
+		args .rval () .set (create (cx, new InternalType (self -> lerp (*destination, t))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -415,11 +431,11 @@ SFVec2 <InternalType>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multiply: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <typename InternalType::value_type> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto scalar = getArgument <typename InternalType::value_type> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> multiply (rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> multiply (scalar))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -437,11 +453,11 @@ SFVec2 <InternalType>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVec: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto vector = getArgument <SFVec2> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> multiply (*rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> multiply (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -460,9 +476,9 @@ SFVec2 <InternalType>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .negate: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto self = getThis <SFVec2> (cx, args);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> negate ())));
+		args .rval () .set (create (cx, new InternalType (self -> negate ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -481,9 +497,9 @@ SFVec2 <InternalType>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .normalize: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
+		const auto self = getThis <SFVec2> (cx, args);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> normalize ())));
+		args .rval () .set (create (cx, new InternalType (self -> normalize ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -501,11 +517,11 @@ SFVec2 <InternalType>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .subtract: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFVec2> (cx, args);
-		const auto rhs  = getArgument <SFVec2> (cx, args, 0);
+		const auto args   = JS::CallArgsFromVp (argc, vp);
+		const auto self   = getThis <SFVec2> (cx, args);
+		const auto vector = getArgument <SFVec2> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (lhs -> subtract (*rhs))));
+		args .rval () .set (create (cx, new InternalType (self -> subtract (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)

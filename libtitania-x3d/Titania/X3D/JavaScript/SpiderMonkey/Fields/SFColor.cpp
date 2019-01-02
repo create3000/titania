@@ -147,11 +147,11 @@ SFColor::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColor> (cx, args);
-		const auto rhs  = getArgument <X3D::SFColor::value_type> (cx, args, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <SFColor> (cx, args);
+		const auto value = getArgument <X3D::SFColor::value_type> (cx, args, 0);
 
-		lhs -> set1Value (Index, rhs);
+		self -> set1Value (Index, value);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -167,9 +167,9 @@ SFColor::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColor> (cx, args);
+		const auto self = getThis <SFColor> (cx, args);
 
-		args .rval () .setDouble (lhs -> get1Value (Index));
+		args .rval () .setDouble (self -> get1Value (Index));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -187,8 +187,8 @@ SFColor::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSV: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColor> (cx, args);
-		const auto hsv  = lhs -> getHSV ();
+		const auto self = getThis <SFColor> (cx, args);
+		const auto hsv  = self -> getHSV ();
 
 		JS::AutoValueVector array (cx);
 
@@ -219,12 +219,12 @@ SFColor::setHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSV: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColor> (cx, args);
+		const auto self = getThis <SFColor> (cx, args);
 		const auto h    = getArgument <X3D::SFColor::value_type> (cx, args, 0);
 		const auto s    = getArgument <X3D::SFColor::value_type> (cx, args, 1);
 		const auto v    = getArgument <X3D::SFColor::value_type> (cx, args, 2);
 
-		lhs -> setHSV (vector3 <X3D::SFColor::value_type> (h, s, v));
+		self -> setHSV (vector3 <X3D::SFColor::value_type> (h, s, v));
 
 		args .rval () .setUndefined ();
 		return true;
@@ -243,12 +243,12 @@ SFColor::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColor> (cx, args);
-		const auto rhs  = getArgument <SFColor> (cx, args, 0);
-		const auto t    = getArgument <X3D::SFColor::value_type> (cx, args, 1);
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto self        = getThis <SFColor> (cx, args);
+		const auto destination = getArgument <SFColor> (cx, args, 0);
+		const auto t           = getArgument <X3D::SFColor::value_type> (cx, args, 1);
 
-		args .rval () .set (create (cx, new X3D::SFColor (lhs -> lerp (*rhs, t))));
+		args .rval () .set (create (cx, new X3D::SFColor (self -> lerp (*destination, t))));
 		return true;
 	}
 	catch (const std::exception & error)

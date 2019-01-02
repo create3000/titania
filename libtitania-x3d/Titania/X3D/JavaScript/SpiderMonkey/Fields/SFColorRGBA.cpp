@@ -150,11 +150,11 @@ SFColorRGBA::setProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColorRGBA> (cx, args);
-		const auto rhs  = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 0);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto self  = getThis <SFColorRGBA> (cx, args);
+		const auto value = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 0);
 
-		lhs -> set1Value (Index, rhs);
+		self -> set1Value (Index, value);
 		return true;
 	}
 	catch (const std::exception & error)
@@ -170,9 +170,9 @@ SFColorRGBA::getProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColorRGBA> (cx, args);
+		const auto self = getThis <SFColorRGBA> (cx, args);
 
-		args .rval () .setDouble (lhs -> get1Value (Index));
+		args .rval () .setDouble (self -> get1Value (Index));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -190,8 +190,8 @@ SFColorRGBA::getHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSVA: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColorRGBA> (cx, args);
-		const auto hsva = lhs -> getHSVA ();
+		const auto self = getThis <SFColorRGBA> (cx, args);
+		const auto hsva = self -> getHSVA ();
 
 		JS::AutoValueVector array (cx);
 
@@ -223,13 +223,13 @@ SFColorRGBA::setHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSVA: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColorRGBA> (cx, args);
+		const auto self = getThis <SFColorRGBA> (cx, args);
 		const auto h    = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 0);
 		const auto s    = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 1);
 		const auto v    = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 2);
 		const auto a    = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 3);
 
-		lhs -> setHSVA (vector4 <X3D::SFColorRGBA::value_type> (h, s, v, a));
+		self -> setHSVA (vector4 <X3D::SFColorRGBA::value_type> (h, s, v, a));
 
 		args .rval () .setUndefined ();
 		return true;
@@ -248,12 +248,12 @@ SFColorRGBA::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
 	
-		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFColorRGBA> (cx, args);
-		const auto rhs  = getArgument <SFColorRGBA> (cx, args, 0);
-		const auto t    = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 1);
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto self        = getThis <SFColorRGBA> (cx, args);
+		const auto destination = getArgument <SFColorRGBA> (cx, args, 0);
+		const auto t           = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 1);
 
-		args .rval () .set (create (cx, new X3D::SFColorRGBA (lhs -> lerp (*rhs, t))));
+		args .rval () .set (create (cx, new X3D::SFColorRGBA (self -> lerp (*destination, t))));
 		return true;
 	}
 	catch (const std::exception & error)

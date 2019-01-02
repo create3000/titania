@@ -204,9 +204,9 @@ SFNode::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::M
 	{
 		try
 		{
-			const auto lhs   = getThis <SFNode> (cx, obj);
+			const auto self  = getThis <SFNode> (cx, obj);
 			const auto name  = to_string (cx, id);
-			const auto field = lhs -> getValue () -> getField (name);
+			const auto field = self -> getValue () -> getField (name);
 
 			if (field -> getAccessType () not_eq X3D::outputOnly)
 				setValue (cx, field, vp);
@@ -233,9 +233,9 @@ SFNode::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::M
 	{
 		try
 		{
-			const auto lhs   = getThis <SFNode> (cx, obj);
+			const auto self  = getThis <SFNode> (cx, obj);
 			const auto name  = to_string (cx, id);
-			const auto field = lhs -> getValue () -> getField (name);
+			const auto field = self -> getValue () -> getField (name);
 
 			if (field -> getAccessType () == X3D::inputOnly)
 			{
@@ -269,9 +269,9 @@ SFNode::getNodeName (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeName: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFNode> (cx, args);
+		const auto self = getThis <SFNode> (cx, args);
 
-		args .rval () .set (StringValue (cx, lhs -> getValue () -> getName ()));
+		args .rval () .set (StringValue (cx, self -> getValue () -> getName ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -289,8 +289,8 @@ SFNode::getNodeType (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeType: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFNode> (cx, args);
-		const auto node = lhs -> getValue ();
+		const auto self = getThis <SFNode> (cx, args);
+		const auto node = self -> getValue ();
 
 		JS::AutoValueVector array (cx);
 
@@ -320,9 +320,9 @@ SFNode::getFieldDefinitions (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getFieldDefinitions: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFNode> (cx, args);
+		const auto self = getThis <SFNode> (cx, args);
 
-//		args .rval () .set (FieldDefinitionArray::create (cx, &lhs -> getFieldDefinitions ()));
+//		args .rval () .set (FieldDefinitionArray::create (cx, &self -> getFieldDefinitions ()));
 
 		return true;
 	}
@@ -343,7 +343,7 @@ SFNode::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args             = JS::CallArgsFromVp (argc, vp);
 		const auto context          = getContext (cx);
 		const auto executionContext = context -> getExecutionContext ();
-		const auto lhs              = getThis <SFNode> (cx, args);
+		const auto self             = getThis <SFNode> (cx, args);
 		const auto version          = executionContext -> getSpecificationVersion ();
 
 		std::ostringstream osstream;
@@ -354,7 +354,7 @@ SFNode::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 		Generator::NicestStyle (osstream);
 		Generator::PushExecutionContext (osstream, executionContext);
 
-		lhs -> toStream (osstream);
+		self -> toStream (osstream);
 
 		args .rval () .set (StringValue (cx, osstream .str ()));
 		return true;
@@ -376,7 +376,7 @@ SFNode::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto args             = JS::CallArgsFromVp (argc, vp);
 		const auto context          = getContext (cx);
 		const auto executionContext = context -> getExecutionContext ();
-		const auto lhs              = getThis <SFNode> (cx, args);
+		const auto self             = getThis <SFNode> (cx, args);
 		auto       version          = executionContext -> getSpecificationVersion ();
 
 		std::ostringstream osstream;
@@ -390,7 +390,7 @@ SFNode::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 		Generator::NicestStyle (osstream);
 		Generator::PushExecutionContext (osstream, executionContext);
 
-		lhs -> toXMLStream (osstream);
+		self -> toXMLStream (osstream);
 
 		args .rval () .set (StringValue (cx, osstream .str ()));
 		return true;
@@ -410,9 +410,9 @@ SFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
-		const auto lhs  = getThis <SFNode> (cx, args);
+		const auto self = getThis <SFNode> (cx, args);
 
-		args .rval () .set (StringValue (cx, lhs -> getValue () -> getTypeName () + " { }"));
+		args .rval () .set (StringValue (cx, self -> getValue () -> getTypeName () + " { }"));
 		return true;
 	}
 	catch (const std::exception & error)
