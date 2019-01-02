@@ -83,7 +83,7 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				{
 					array -> emplace_back (getArgument <SFNode> (cx, args, i));
 				}
-				catch (const std::domain_error &)
+				catch (const std::domain_error & error)
 				{
 					array -> emplace_back ();
 				}	
@@ -93,9 +93,47 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 			return true;
 		}
 	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "new %s: out of memory.", getClass () -> name);
+	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+bool
+MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
+{
+	try
+	{
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index >= 0)
+		{
+			try
+			{
+				array -> set1Value (index, getArgument <SFNode> (cx, vp, 0));
+			}
+			catch (const std::domain_error & error)
+			{
+				array -> set1Value (index, nullptr);
+			}	
+		}
+
+		result .succeed ();
+		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, JSID_TO_INT (id));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
 	}
 }
 
@@ -122,6 +160,10 @@ MFNode::push (JSContext* cx, unsigned argc, JS::Value* vp)
 
 		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .push: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{
@@ -179,6 +221,10 @@ MFNode::splice (JSContext* cx, unsigned argc, JS::Value* vp)
 		args .rval () .set (create (cx, result));
 		return true;
 	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: out of memory.", getClass () -> name);
+	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: %s.", getClass () -> name, error .what ());
@@ -209,48 +255,15 @@ MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp)
 		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
 	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .unshift: out of memory.", getClass () -> name);
+	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .unshift: %s.", getClass () -> name, error .what ());
 	}
 }
-
-//template <>
-//bool
-//MFNode::set1Value (JSContext* cx, JSObject* obj, jsid id, bool strict, jsval* vp)
-//{
-//	try
-//	{
-//		if (not JSID_IS_INT (id))
-//			return true;
-//
-//		const auto array = getThis <MFNode> (cx, obj);
-//		const auto index = JSID_TO_INT (id);
-//
-//		if (index < 0)
-//			return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
-//
-//		try
-//		{
-//			array -> set1Value (index, getArgument <SFNode> (cx, vp, 0));
-//		}
-//		catch (const std::domain_error &)
-//		{
-//			array -> set1Value (index, nullptr);
-//		}
-//
-//		*vp = JSVAL_VOID;
-//		return true;
-//	}
-//	catch (const std::bad_alloc &)
-//	{
-//		return ThrowException (cx, "%s: out of memory.", getClass () -> name);
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException (cx, "%s .set1Value: %s.", getClass () -> name, error .what ());
-//	}
-//}
 
 } // spidermonkey
 } // X3D

@@ -989,6 +989,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DArrayField.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\ArrayFields.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\MFNode.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\NativeArrayReference.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

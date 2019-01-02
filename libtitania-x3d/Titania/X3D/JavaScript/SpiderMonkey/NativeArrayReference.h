@@ -48,45 +48,94 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_MFNODE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_MFNODE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_NATIVE_ARRAY_REFERENCE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_NATIVE_ARRAY_REFERENCE_H__
 
-#include "../X3DArrayField.h"
-#include "SFNode.h"
-
-#include "../../../Fields/MFNode.h"
+#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using MFNode = X3DArrayFieldTemplate <SFNode, X3D::MFNode>;
+template <class ArrayType, class SingleType>
+class NativeArrayReference :
+	public SingleType
+{
+public:
 
-template <>
-constexpr
-ObjectType
-MFNode::getId ()
-{ return ObjectType::MFNode; }
+	///  @name Construction
 
-template <>
-bool
-MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp);
+	/// Constructs NativeArrayReference.
+	NativeArrayReference (ArrayType* const array, const size_t index) :
+		SingleType (array -> get1Value (index)),
+		     array (array),
+		     index (index)
+	{
+		array -> disposed () .addInterest (&NativeArrayReference::set_disposed, this);
+	}
 
-template <>
-bool
-MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result);
+	///  @name Operations
 
-template <>
-bool
-MFNode::push (JSContext* cx, unsigned argc, JS::Value* vp);
+	///  Obtain value referenced by index.
+	virtual
+	const typename SingleType::internal_type &
+	getValue () const final override
+	{
+		if (array)
+			const_cast <NativeArrayReference*> (this) -> SingleType::set (array -> get1Value (index));
 
-template <>
-bool
-MFNode::splice (JSContext* cx, unsigned argc, JS::Value* vp);
+		return SingleType::getValue ();
+	}
 
-template <>
-bool
-MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp);
+	///  Set value referenced by index.
+	virtual
+	void
+	addEvent () final override
+	{
+		if (array)
+			array -> set1Value (index, SingleType::getValue ());
+	}
+
+	/// Destructs NativeArrayReference.
+	virtual
+	~NativeArrayReference ()
+	{ }
+
+
+protected:
+
+	/// Prohibit child events.
+	virtual
+	void
+	addEventObject (X3DChildObject* const object)
+	{ }
+
+	///  Obtain value referenced by index.
+	virtual
+	typename SingleType::internal_type &
+	get () final override
+	{
+		if (array)
+			SingleType::set (array -> get1Value (index));
+
+		return SingleType::get ();
+	}
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_disposed ()
+	{ array = nullptr; }
+
+	///  @name Members
+
+	ArrayType* array;
+	size_t     index;
+
+};
 
 } // spidermonkey
 } // X3D

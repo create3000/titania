@@ -52,6 +52,9 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DARRAY_FIELD_H__
 
 #include "X3DField.h"
+#include "NativeArrayReference.h"
+
+#include "Fields/SFImage.h"
 #include "Fields/SFNode.h"
 
 namespace titania {
@@ -138,10 +141,15 @@ private:
 
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
+	static bool resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
+
 	///  @name Member access
 
-	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result);
+	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+
 	static bool setLength (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Functions
 
@@ -163,25 +171,40 @@ private:
 		     std::is_same_v <typename Class::internal_type::internal_type, X3D::String>),
 		typename Class::internal_type &
 	>
+	getArgument (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+	{
+		return *spidermonkey::getArgument <Class> (cx, value, index);
+	}
+
+	///  throws std::invalid_argument, std::domain_error
+	template <class Class>
+	static
+	std::enable_if_t <
+		std::is_integral_v <typename Class::internal_type> or
+		std::is_floating_point_v <typename Class::internal_type> or
+		std::is_same_v <typename Class::internal_type, std::string> or
+		std::is_same_v <typename Class::internal_type, X3D::String>,
+		typename Class::internal_type
+	>
+	getArgument (JSContext* const cx, const JS::HandleValue & value, const size_t index)
+	{
+		return spidermonkey::getArgument <typename Class::internal_type> (cx, value, index);
+	}
+
+	///  throws std::invalid_argument, std::domain_error
+	template <class Class>
+	static
+	std::enable_if_t <
+		not (std::is_integral_v <typename Class::internal_type::internal_type> or
+		     std::is_floating_point_v <typename Class::internal_type::internal_type> or
+		     std::is_same_v <typename Class::internal_type::internal_type, std::string> or
+		     std::is_same_v <typename Class::internal_type::internal_type, X3D::String>),
+		typename Class::internal_type &
+	>
 	getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
 	{
 		return *spidermonkey::getArgument <Class> (cx, args, index);
 	}
-
-//	///  throws std::invalid_argument, std::domain_error
-//	template <class Class>
-//	static
-//	std::enable_if_t <
-//		std::is_integral_v <typename Class::internal_type::internal_type> or
-//		std::is_floating_point_v <typename Class::internal_type::internal_type> or
-//		std::is_same_v <typename Class::internal_type::internal_type, std::string> or
-//		std::is_same_v <typename Class::internal_type::internal_type, X3D::String>,
-//		typename Class::internal_type::internal_type
-//	>
-//	getArgument (JSContext* const cx, const JS::CallArgs & args, const size_t index)
-//	{
-//		return spidermonkey::getArgument <typename Class::internal_type::internal_type> (cx, args, index);
-//	}
 
 	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
@@ -236,6 +259,45 @@ private:
 		return SFNode::create (cx, const_cast <X3D::SFNode*> (&value));
 	}
 
+	template <class Class>
+	static
+	std::enable_if_t <
+		std::is_integral_v <Class> or
+		std::is_floating_point_v <Class> or
+		std::is_same_v <Class, X3D::String>,
+		JS::Value
+	>
+	getReference (JSContext* cx, InternalType* const array, const size_t index)
+	{
+		return ValueType::create (cx, array -> get1Value (index));
+	}
+
+	template <class Class>
+	static
+	std::enable_if_t <
+		std::is_same_v <Class, X3D::SFImage> or
+		std::is_same_v <Class, X3D::SFNode>,
+		JS::Value
+	>
+	getReference (JSContext* cx, InternalType* const array, const size_t index)
+	{
+		return ValueType::create (cx, &array -> get1Value (index));
+	}
+
+	template <class Class>
+	static
+	std::enable_if_t <
+		not (std::is_integral_v <Class> or
+		     std::is_floating_point_v <Class> or
+		     std::is_same_v <Class, X3D::String> or
+		     std::is_base_of_v <X3D::X3DFieldDefinition, Class>),
+		JS::Value
+	>
+	getReference (JSContext* cx, InternalType* const array, const size_t index)
+	{
+		return ValueType::create (cx, new NativeArrayReference <InternalType, single_type> (array, index));
+	}
+
 	///  @name Static members
 
 	static const JSClassOps     class_ops;
@@ -252,7 +314,7 @@ const JSClassOps X3DArrayFieldTemplate <ValueType, InternalType>::class_ops = {
 	nullptr, // getProperty
 	nullptr, // setProperty
 	nullptr, // enumerate
-	nullptr, // resolve
+	resolve, // resolve
 	nullptr, // mayResolve
 	finalize <X3DArrayFieldTemplate>, // finalize
 	nullptr, // call
@@ -321,6 +383,10 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 			return true;
 		}
 	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "new %s: out of memory.", getClass () -> name);
+	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, error .what ());
@@ -329,19 +395,80 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 
 template <class ValueType, class InternalType>
 bool
-X3DArrayFieldTemplate <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc, JS::Value* vp)
+X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp)
+{
+	if (JSID_IS_INT (id))
+	{
+		const int32_t index = JSID_TO_INT (id);
+
+		JS_DefineProperty (cx,
+		                   obj,
+		                   basic::to_string (index, std::locale::classic ()) .c_str (),
+		                   JS::UndefinedHandleValue,
+		                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_RESOLVING,
+		                   JS_PROPERTYOP_GETTER (&X3DArrayFieldTemplate::get1Value),
+		                   JS_PROPERTYOP_SETTER (&X3DArrayFieldTemplate::set1Value));
+
+		*resolvedp = true;
+		return true;
+	}
+
+	*resolvedp = false;
+	return true;
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
 {
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
+		const auto index = JSID_TO_INT (id);
 
-		args .rval () .setNumber (uint32_t (array -> size ()));
+		if (index >= 0)
+			array -> set1Value (index, getArgument <ValueType> (cx, vp, 0));
+
+		result .succeed ();
 		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, JSID_TO_INT (id));
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+{
+	try
+	{
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index < 0)
+		{
+			vp .setUndefined ();
+		}
+		else
+		{
+			vp .set (getReference <typename InternalType::value_type> (cx, array, index));
+		}
+
+		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, JSID_TO_INT (id));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
 	}
 }
 
@@ -356,6 +483,28 @@ X3DArrayFieldTemplate <ValueType, InternalType>::setLength (JSContext* cx, unsig
 		const auto size  = spidermonkey::getArgument <uint32_t> (cx, args, 0);
 
 		array -> resize (size);
+		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .length: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
 	}
 	catch (const std::bad_alloc & error)
@@ -394,6 +543,10 @@ X3DArrayFieldTemplate <ValueType, InternalType>::pop (JSContext* cx, unsigned ar
 
 		return true;
 	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .pop: out of memory.", getClass () -> name);
+	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .pop: %s.", getClass () -> name, error .what ());
@@ -414,6 +567,10 @@ X3DArrayFieldTemplate <ValueType, InternalType>::push (JSContext* cx, unsigned a
 
 		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .push: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{
@@ -446,6 +603,10 @@ X3DArrayFieldTemplate <ValueType, InternalType>::shift (JSContext* cx, unsigned 
 		array -> pop_front ();
 
 		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .shift: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{
@@ -494,6 +655,10 @@ X3DArrayFieldTemplate <ValueType, InternalType>::splice (JSContext* cx, unsigned
 		args .rval () .set (create (cx, result));
 		return true;
 	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: out of memory.", getClass () -> name);
+	}
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: %s.", getClass () -> name, error .what ());
@@ -514,6 +679,10 @@ X3DArrayFieldTemplate <ValueType, InternalType>::unshift (JSContext* cx, unsigne
 
 		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .unshift: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{
