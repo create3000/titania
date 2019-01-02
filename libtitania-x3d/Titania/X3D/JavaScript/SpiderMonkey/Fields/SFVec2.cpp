@@ -55,7 +55,7 @@ namespace X3D {
 namespace spidermonkey {
 
 template <>
-const JSClassOps SFVec2 <X3D::SFVec2d>::class_ops = {
+const JSClassOps SFVec2d::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -71,14 +71,14 @@ const JSClassOps SFVec2 <X3D::SFVec2d>::class_ops = {
 };
 
 template <>
-const JSClass SFVec2 <X3D::SFVec2d>::static_class = {
+const JSClass SFVec2d::static_class = {
 	"SFVec2d",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
 };
 
 template <>
-const JSClassOps SFVec2 <X3D::SFVec2f>::class_ops = {
+const JSClassOps SFVec2f::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -94,7 +94,7 @@ const JSClassOps SFVec2 <X3D::SFVec2f>::class_ops = {
 };
 
 template <>
-const JSClass SFVec2 <X3D::SFVec2f>::static_class = {
+const JSClass SFVec2f::static_class = {
 	"SFVec2f",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops,

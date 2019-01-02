@@ -476,6 +476,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.cpp \

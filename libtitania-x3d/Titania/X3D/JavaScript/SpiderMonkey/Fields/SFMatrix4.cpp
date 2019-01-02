@@ -55,7 +55,7 @@ namespace X3D {
 namespace spidermonkey {
 
 template <>
-const JSClassOps SFMatrix4 <X3D::SFMatrix4d>::class_ops = {
+const JSClassOps SFMatrix4d::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -71,14 +71,14 @@ const JSClassOps SFMatrix4 <X3D::SFMatrix4d>::class_ops = {
 };
 
 template <>
-const JSClass SFMatrix4 <X3D::SFMatrix4d>::static_class = {
+const JSClass SFMatrix4d::static_class = {
 	"SFMatrix4d",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
 };
 
 template <>
-const JSClassOps SFMatrix4 <X3D::SFMatrix4f>::class_ops = {
+const JSClassOps SFMatrix4f::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -94,14 +94,14 @@ const JSClassOps SFMatrix4 <X3D::SFMatrix4f>::class_ops = {
 };
 
 template <>
-const JSClass SFMatrix4 <X3D::SFMatrix4f>::static_class = {
+const JSClass SFMatrix4f::static_class = {
 	"SFMatrix4f",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops,
 };
 
 template <>
-const JSClassOps SFMatrix4 <X3D::VrmlMatrix>::class_ops = {
+const JSClassOps VrmlMatrix::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -117,7 +117,7 @@ const JSClassOps SFMatrix4 <X3D::VrmlMatrix>::class_ops = {
 };
 
 template <>
-const JSClass SFMatrix4 <X3D::VrmlMatrix>::static_class = {
+const JSClass VrmlMatrix::static_class = {
 	"VrmlMatrix",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops,

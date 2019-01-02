@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
  *
  * This file is part of the Titania Project.
  *
@@ -48,82 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_SFCOLOR_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_SFCOLOR_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_MFNODE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_MFNODE_H__
 
-#include "../X3DField.h"
+#include "../X3DArrayField.h"
+#include "SFNode.h"
 
-#include "../../../Fields/SFColor.h"
+#include "../../../Fields/MFNode.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-class SFColor :
-	public X3DField
-{
-public:
+using MFNode = X3DArrayFieldTemplate <SFNode, X3D::MFNode>;
 
-	///  @name Member types
+template <>
+constexpr
+ObjectType
+MFNode::getId ()
+{ return ObjectType::MFNode; }
 
-	using internal_type = X3D::SFColor;
+template <>
+bool
+MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
-	///  @name Construction
-
-	static
-	JSObject*
-	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
-
-	static
-	JS::Value
-	create (JSContext* const cx, X3D::SFColor* const field);
-
-	static
-	const JSClass*
-	getClass ()
-	{ return &static_class; }
-
-	static
-	constexpr
-	ObjectType
-	getId ()
-	{ return ObjectType::SFColor; }
-
-
-private:
-
-	///  @name Member types
-
-	enum Property {R, G, B};
-
-	///  @name Construction
-
-	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
-
-	///  @name Member access
-
-	template <size_t Index>
-	static bool setProperty (JSContext* cx, unsigned argc, JS::Value* vp);
-
-	template <size_t Index>
-	static bool getProperty (JSContext* cx, unsigned argc, JS::Value* vp);
-
-	///  @name Functions
-
-	static bool getHSV (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool setHSV (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool lerp   (JSContext* cx, unsigned argc, JS::Value* vp);
-
-	///  @name Static members
-
-	static constexpr size_t Size = std::tuple_size <X3D::SFColor::internal_type> ();
-
-	static const JSClassOps     class_ops;
-	static const JSClass        static_class;
-	static const JSPropertySpec properties [ ];
-	static const JSFunctionSpec functions [ ];
-
-};
+//template <>
+//JSBool
+//MFNode::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+//
+//template <>
+//JSBool
+//MFNode::unshift (JSContext *, uint32_t, jsval*);
+//
+//template <>
+//JSBool
+//MFNode::push (JSContext *, uint32_t, jsval*);
+//
+//template <>
+//JSBool
+//MFNode::splice (JSContext *, uint32_t, jsval*);
 
 } // spidermonkey
 } // X3D

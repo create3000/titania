@@ -169,27 +169,27 @@ Context::addClasses ()
 	addProto (SFVec4f::getId (),     SFVec4f::init     (cx, *global, getProto (X3DField::getId ())));
 	addProto (VrmlMatrix::getId (),  VrmlMatrix::init  (cx, *global, getProto (X3DField::getId ())));
 
-//	addProto (MFBool::getId (),      MFBool::init      (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFColor::getId (),     MFColor::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFColorRGBA::getId (), MFColorRGBA::init (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFDouble::getId (),    MFDouble::init    (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFFloat::getId (),     MFFloat::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFImage::getId (),     MFImage::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFInt32::getId (),     MFInt32::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFMatrix3d::getId (),  MFMatrix3d::init  (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFMatrix3f::getId (),  MFMatrix3f::init  (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFMatrix4d::getId (),  MFMatrix4d::init  (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFMatrix4f::getId (),  MFMatrix4f::init  (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFNode::getId (),      MFNode::init      (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFRotation::getId (),  MFRotation::init  (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFString::getId (),    MFString::init    (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFTime::getId (),      MFTime::init      (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFVec2d::getId (),     MFVec2d::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFVec2f::getId (),     MFVec2f::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFVec3d::getId (),     MFVec3d::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFVec3f::getId (),     MFVec3f::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFVec4d::getId (),     MFVec4d::init     (cx, *global, getProto (X3DArrayField::getId ())));
-//	addProto (MFVec4f::getId (),     MFVec4f::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFBool::getId (),      MFBool::init      (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFColor::getId (),     MFColor::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFColorRGBA::getId (), MFColorRGBA::init (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFDouble::getId (),    MFDouble::init    (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFFloat::getId (),     MFFloat::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFImage::getId (),     MFImage::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFInt32::getId (),     MFInt32::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFMatrix3d::getId (),  MFMatrix3d::init  (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFMatrix3f::getId (),  MFMatrix3f::init  (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFMatrix4d::getId (),  MFMatrix4d::init  (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFMatrix4f::getId (),  MFMatrix4f::init  (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFNode::getId (),      MFNode::init      (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFRotation::getId (),  MFRotation::init  (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFString::getId (),    MFString::init    (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFTime::getId (),      MFTime::init      (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFVec2d::getId (),     MFVec2d::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFVec2f::getId (),     MFVec2f::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFVec3d::getId (),     MFVec3d::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFVec3f::getId (),     MFVec3f::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFVec4d::getId (),     MFVec4d::init     (cx, *global, getProto (X3DArrayField::getId ())));
+	addProto (MFVec4f::getId (),     MFVec4f::init     (cx, *global, getProto (X3DArrayField::getId ())));
 }
 
 void

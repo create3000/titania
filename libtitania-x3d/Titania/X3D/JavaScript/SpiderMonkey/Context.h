@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_CONTEXT_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_CONTEXT_H__
 
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"

@@ -594,6 +594,8 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.lo \
 	Titania/X3D/JavaScript/SpiderMonkey.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.lo \
@@ -1296,6 +1298,8 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo \
@@ -2207,6 +2211,8 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColorRGBA.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFImage.cpp \
@@ -4329,6 +4335,12 @@ Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp):
 Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)
 	@: > Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
@@ -5900,6 +5912,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo@am__quote@ # am--include-marker
@@ -7113,6 +7127,8 @@ distclean: distclean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo
@@ -7838,6 +7854,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColorRGBA.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFImage.Plo

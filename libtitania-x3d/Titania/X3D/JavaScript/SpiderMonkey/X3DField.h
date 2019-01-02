@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_X3DFIELD_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_X3DFIELD_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DFIELD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DFIELD_H__
 
 #include "Arguments.h"
 #include "Context.h"

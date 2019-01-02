@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_FIELDS_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_H__
 
 #include "X3DField.h"
 #include "X3DArrayField.h"
@@ -66,6 +66,7 @@
 #include "Fields/SFVec4.h"
 #include "Fields/X3DScalar.h"
 
-//#include "Fields/ArrayFields.h"
+#include "Fields/ArrayFields.h"
+#include "Fields/MFNode.h"
 
 #endif

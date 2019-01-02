@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_VALUE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDERMONKEY_VALUE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_VALUE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_VALUE_H__
 
 #include "../../Basic/X3DFieldDefinition.h"
 
