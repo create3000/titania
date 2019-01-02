@@ -139,6 +139,15 @@ private:
 
 	///  @name Member access
 
+	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setLength (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Functions
+
+
+
+	///  @name Member access
+
 	///  throws std::invalid_argument, std::domain_error
 	template <class Class>
 	static
@@ -211,7 +220,7 @@ const JSClassOps X3DArrayFieldTemplate <ValueType, InternalType>::class_ops = {
 
 template <class ValueType, class InternalType>
 const JSPropertySpec X3DArrayFieldTemplate <ValueType, InternalType>::properties [ ] = {
-	//JS_PSGS ("length", length, length, JSPROP_PERMANENT),
+	JS_PSGS ("length", getLength, setLength, JSPROP_PERMANENT),
 	JS_PS_END
 };
 
@@ -272,6 +281,47 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		args .rval () .setNumber (uint32_t (array -> size ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::setLength (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+		const auto size  = spidermonkey::getArgument <uint32_t> (cx, args, 0);
+
+		array -> resize (size);
+		return true;
+	}
+	catch (const std::bad_alloc & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .length: out of memory.", getClass () -> name);
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
 	}
 }
 
