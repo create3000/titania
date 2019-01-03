@@ -48,19 +48,77 @@
  *
  ******************************************************************************/
 
-#include "ProfileInfoArray.h"
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_PROFILE_INFO_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_PROFILE_INFO_H__
+
+#include "ObjectType.h"
+
+#include "../../Configuration/ProfileInfo.h"
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <>
-const JSClass ProfileInfoArray::static_class = {
-	"ProfileInfoArray",
-	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
-	&class_ops
+class ProfileInfo
+{
+public:
+
+	///  @name Member types
+	
+	using internal_type = X3D::ProfileInfoPtr;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
+
+	static
+	JS::Value
+	create (JSContext* const cx, const X3D::ProfileInfoPtr & profileInfo);
+
+	static
+	const JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr
+	ObjectType
+	getId ()
+	{ return ObjectType::ProfileInfo; }
+
+
+private:
+
+	///  @name Construction
+
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Properties
+
+	static bool getName        (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getTitle       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getComponents  (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Destruction
+
+	static void finalize (JSFreeOp* fop, JSObject* obj);
+
+	///  @name Static members
+
+	static const JSClassOps     class_ops;
+	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
+
 };
 
 } // spidermonkey
 } // X3D
 } // titania
+
+#endif

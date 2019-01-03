@@ -493,6 +493,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Globals.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfo.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ProtoDeclarationArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/RouteArray.cpp \

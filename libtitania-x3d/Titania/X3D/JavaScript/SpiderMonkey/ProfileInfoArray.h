@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_PROFILE_INFO_ARRAY_H__
 
 #include "X3DConstArray.h"
-//#include "ProfileInfo.h"
+#include "ProfileInfo.h"
 
 #include "../../Configuration/ProfileInfoArray.h"
 
@@ -60,13 +60,13 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-//using ProfileInfoArray = X3DConstArray <ProfileInfo, X3D::ProfileInfoArray>;
-//
-//template <>
-//constexpr
-//ObjectType
-//ProfileInfoArray::getId ()
-//{ return ObjectType::ProfileInfoArray; }
+using ProfileInfoArray = X3DConstArray <ProfileInfo, X3D::ProfileInfoArray>;
+
+template <>
+constexpr
+ObjectType
+ProfileInfoArray::getId ()
+{ return ObjectType::ProfileInfoArray; }
 
 } // spidermonkey
 } // X3D
