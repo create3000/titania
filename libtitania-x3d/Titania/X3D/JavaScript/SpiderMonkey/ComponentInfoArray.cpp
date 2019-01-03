@@ -54,12 +54,12 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-//template <>
-//const JSClass ComponentInfoArray::static_class = {
-//	"ComponentInfoArray",
-//	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
-//	&class_ops
-//};
+template <>
+const JSClass ComponentInfoArray::static_class = {
+	"ComponentInfoArray",
+	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
+	&class_ops
+};
 
 } // spidermonkey
 } // X3D

@@ -62,14 +62,14 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 class X3DConstArray
 {
 public:
 
 	///  @name Member types
 
-	using value_type    = Type;
+	using value_type    = ValueType;
 	using internal_type = InternalType;
 
 	///  @name Construction
@@ -115,8 +115,8 @@ private:
 
 };
 
-template <class Type, class InternalType>
-const JSClassOps X3DConstArray <Type, InternalType>::class_ops = {
+template <class ValueType, class InternalType>
+const JSClassOps X3DConstArray <ValueType, InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -131,20 +131,20 @@ const JSClassOps X3DConstArray <Type, InternalType>::class_ops = {
 	nullptr, // trace
 };
 
-template <class Type, class InternalType>
-const JSPropertySpec X3DConstArray <Type, InternalType>::properties [ ] = {
+template <class ValueType, class InternalType>
+const JSPropertySpec X3DConstArray <ValueType, InternalType>::properties [ ] = {
 	JS_PSGS ("length", getLength, nullptr, JSPROP_PERMANENT),
 	JS_PS_END
 };
 
-template <class Type, class InternalType>
-const JSFunctionSpec X3DConstArray <Type, InternalType>::functions [ ] = {
+template <class ValueType, class InternalType>
+const JSFunctionSpec X3DConstArray <ValueType, InternalType>::functions [ ] = {
 	JS_FS_END
 };
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JSObject*
-X3DConstArray <Type, InternalType>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
+X3DConstArray <ValueType, InternalType>::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -154,9 +154,9 @@ X3DConstArray <Type, InternalType>::init (JSContext* const cx, JS::HandleObject 
 	return proto;
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 JS::Value
-X3DConstArray <Type, InternalType>::create (JSContext* const cx, const InternalType* const array)
+X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const InternalType* const array)
 {
 	const auto context = getContext (cx);
 	const auto object  = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
@@ -170,16 +170,16 @@ X3DConstArray <Type, InternalType>::create (JSContext* const cx, const InternalT
 	return JS::ObjectValue (*object);
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 bool
-X3DConstArray <Type, InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+X3DConstArray <ValueType, InternalType>::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructible");
 }
 
-//template <class Type, class InternalType>
+//template <class ValueType, class InternalType>
 //bool
-//X3DConstArray <Type, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
+//X3DConstArray <ValueType, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
 //{
 //	try
 //	{
@@ -196,9 +196,9 @@ X3DConstArray <Type, InternalType>::construct (JSContext* cx, unsigned argc, JS:
 //	}
 //}
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 bool
-X3DConstArray <Type, InternalType>::resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp)
+X3DConstArray <ValueType, InternalType>::resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp)
 {
 	if (JSID_IS_INT (id))
 	{
@@ -220,9 +220,9 @@ X3DConstArray <Type, InternalType>::resolve (JSContext* cx, JS::HandleObject obj
 	return true;
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 bool
-X3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+X3DConstArray <ValueType, InternalType>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
 {
 	try
 	{
@@ -231,7 +231,7 @@ X3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JS::HandleObject o
 
 		if (index >= 0 and index < (int32_t) array -> size ())
 		{
-			vp .set (Type::create (cx, (*array) [index]));
+			vp .set (ValueType::create (cx, (*array) [index]));
 		}
 		else
 		{
@@ -246,9 +246,9 @@ X3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JS::HandleObject o
 	}
 }
 
-template <class Type, class InternalType>
+template <class ValueType, class InternalType>
 bool
-X3DConstArray <Type, InternalType>::getLength (JSContext* cx, unsigned argc, JS::Value* vp)
+X3DConstArray <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{

@@ -475,6 +475,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ExternProtoDeclarationArray.cpp \

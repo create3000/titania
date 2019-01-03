@@ -48,25 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_COMPONENT_INFO_ARRAY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_COMPONENT_INFO_ARRAY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_COMPONENT_INFO_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_COMPONENT_INFO_H__
 
-#include "ComponentInfo.h"
-#include "X3DConstArray.h"
+#include "ObjectType.h"
 
-#include "../../Configuration/ComponentInfoArray.h"
+#include "../../Configuration/ComponentInfo.h"
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using ComponentInfoArray = X3DConstArray <ComponentInfo, X3D::ComponentInfoArray>;
+class ComponentInfo
+{
+public:
 
-template <>
-constexpr
-ObjectType
-ComponentInfoArray::getId ()
-{ return ObjectType::ComponentInfoArray; }
+	///  @name Member types
+
+	using internal_type = X3D::ComponentInfoPtr;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
+
+	static
+	JS::Value
+	create (JSContext* const cx, const X3D::ComponentInfoPtr & componentInfo);
+
+	static
+	const JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr
+	ObjectType
+	getId ()
+	{ return ObjectType::ComponentInfo; }
+
+
+private:
+
+	///  @name Construction
+
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Properties
+
+	static bool getName        (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getLevel       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getTitle       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Destruction
+
+	static void finalize (JSFreeOp* fop, JSObject* obj);
+
+	///  @name Static members
+
+	static const JSClassOps     class_ops;
+	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
+
+};
 
 } // spidermonkey
 } // X3D
