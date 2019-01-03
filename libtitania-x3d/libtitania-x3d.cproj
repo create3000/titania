@@ -997,6 +997,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\ProtoDeclarationArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\RouteArray.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\FieldDefinitionArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DFieldDefinition.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1686,6 +1687,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ProtoDeclarationArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\RouteArray.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\FieldDefinitionArray.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DFieldDefinition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

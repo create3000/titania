@@ -48,28 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELD_DEFINITION_ARRAY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELD_DEFINITION_ARRAY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DFIELD_DEFINITION_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DFIELD_DEFINITION_H__
 
-//#include "X3DFieldDefinition.h"
 #include "ObjectType.h"
 
-#include <jsapi.h>
-
 #include "../../Basic/X3DFieldDefinition.h"
-#include "../../Fields/X3DPtrArray.h"
+#include "../../Fields/FieldPtr.h"
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-class FieldDefinitionArray
+class X3DFieldDefinition
 {
 public:
 
-	///  @name Member types
+	///  @name Member type
 
-	using internal_type = X3D::X3DPtrArray <X3D::X3DFieldDefinition>;
+	using internal_type = X3D::FieldPtr;
 
 	///  @name Construction
 
@@ -79,7 +78,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitionArray);
+	create (JSContext* const cx, const X3D::X3DFieldDefinition* const fieldDefinition);
 
 	static
 	const JSClass*
@@ -87,10 +86,9 @@ public:
 	{ return &static_class; }
 
 	static
-	constexpr
-	ObjectType
+	constexpr ObjectType
 	getId ()
-	{ return ObjectType::FieldDefinitionArray; }
+	{ return ObjectType::X3DFieldDefinition; }
 
 
 private:
@@ -101,8 +99,9 @@ private:
 
 	///  @name Properties
 
-	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
-	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getName       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getAccessType (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getDataType   (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Destruction
 

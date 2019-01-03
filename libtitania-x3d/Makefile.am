@@ -499,6 +499,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/value.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DField.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/X3DFieldDefinition.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.c \

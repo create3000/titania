@@ -48,20 +48,19 @@
  *
  ******************************************************************************/
 
-#include "FieldDefinitionArray.h"
+#include "X3DFieldDefinition.h"
 
 #include "Arguments.h"
 #include "Context.h"
 #include "Error.h"
 #include "SlotType.h"
-
-#include "X3DFieldDefinition.h"
+#include "String.h"
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-const JSClassOps FieldDefinitionArray::class_ops = {
+const JSClassOps X3DFieldDefinition::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // getProperty
@@ -76,23 +75,25 @@ const JSClassOps FieldDefinitionArray::class_ops = {
 	nullptr, // trace
 };
 
-const JSClass FieldDefinitionArray::static_class = {
-	"FieldDefinitionArray",
+const JSClass X3DFieldDefinition::static_class = {
+	"X3DFieldDefinition",
 	JSCLASS_HAS_PRIVATE | JSCLASS_HAS_RESERVED_SLOTS (size_t (SlotType::SIZE)) | JSCLASS_FOREGROUND_FINALIZE,
 	&class_ops
 };
 
-const JSPropertySpec FieldDefinitionArray::properties [ ] = {
-	JS_PSGS ("length", getLength, nullptr, JSPROP_PERMANENT),
+const JSPropertySpec X3DFieldDefinition::properties [ ] = {
+	JS_PSGS ("name",       getName,       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("accessType", getAccessType, nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("dataType",   getDataType,   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PS_END
 };
 
-const JSFunctionSpec FieldDefinitionArray::functions [ ] = {
+const JSFunctionSpec X3DFieldDefinition::functions [ ] = {
 	JS_FS_END
 };
 
 JSObject*
-FieldDefinitionArray::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
+X3DFieldDefinition::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -103,13 +104,13 @@ FieldDefinitionArray::init (JSContext* const cx, JS::HandleObject global, JS::Ha
 }
 
 bool
-FieldDefinitionArray::construct (JSContext* cx, unsigned argc, JS::Value* vp)
+X3DFieldDefinition::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructible");
 }
 
 JS::Value
-FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitionArray)
+X3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition* const fieldDefinition)
 {
 	const auto context = getContext (cx);
 	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
@@ -117,77 +118,77 @@ FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArr
 	if (not obj)
 		throw std::runtime_error ("out of memory");
 
-	const auto array = new internal_type (fieldDefinitionArray .begin (), fieldDefinitionArray .end ());
+	const auto self = new X3D::FieldPtr (const_cast <X3D::X3DFieldDefinition*> (fieldDefinition));
 
-	array -> addParent (context);
-
-	setObject (obj, array);
+	setObject (obj, self);
 	setContext (obj, context);
 
-	const auto object = JS::RootedObject (cx, obj);
-
-	for (size_t i = 0, size = array -> size (); i < size; ++ i)
-	{
-		JS_DefineProperty (cx,
-		                   object,
-		                   basic::to_string (i, std::locale::classic ()) .c_str (),
-		                   JS::UndefinedHandleValue,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE,
-		                   JS_PROPERTYOP_GETTER (&FieldDefinitionArray::get1Value),
-		                   nullptr);
-	}
+	self -> addParent (context);
 
 	return JS::ObjectValue (*obj);
 }
 
 bool
-FieldDefinitionArray::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+X3DFieldDefinition::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto array = getThis <FieldDefinitionArray> (cx, obj);
-		const auto index = JSID_TO_INT (id);
+		const auto   args = JS::CallArgsFromVp (argc, vp);
+		const auto & self = *getThis <X3DFieldDefinition> (cx, args);
 
-		vp .set (X3DFieldDefinition::create (cx, (*array) [index]));
+		args .rval () .set (StringValue (cx, self -> getName ()));
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .name: %s.", getClass () -> name, error .what ());
 	}
 }
 
 bool
-FieldDefinitionArray::getLength (JSContext* cx, unsigned argc, JS::Value* vp)
+X3DFieldDefinition::getAccessType (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto array = getThis <FieldDefinitionArray> (cx, args);
+		const auto   args = JS::CallArgsFromVp (argc, vp);
+		const auto & self = *getThis <X3DFieldDefinition> (cx, args);
 
-		args .rval () .setNumber (uint32_t (array -> size ()));
+		args .rval () .set (JS::NumberValue (self -> getAccessType ()));
 		return true;
-	}
-	catch (const std::bad_alloc & error)
-	{
-		return ThrowException <JSProto_Error> (cx, "%s .length: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .accessType: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DFieldDefinition::getDataType (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto   args = JS::CallArgsFromVp (argc, vp);
+		const auto & self = *getThis <X3DFieldDefinition> (cx, args);
+
+		args .rval () .set (JS::NumberValue (self -> getType ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .accessType: %s.", getClass () -> name, error .what ());
 	}
 }
 
 void
-FieldDefinitionArray::finalize (JSFreeOp* fop, JSObject* obj)
+X3DFieldDefinition::finalize (JSFreeOp* fop, JSObject* obj)
 {
 	const auto context = getContext (obj);
-	const auto array   = getObject <internal_type*> (obj);
+	const auto self    = getObject <X3D::FieldPtr*> (obj);
 
 	// Proto objects have no private
 
-	if (array)
-		array -> removeParent (context);
+	if (self)
+		self -> removeParent (context);
 }
 
 } // spidermonkey
