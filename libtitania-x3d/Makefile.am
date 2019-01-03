@@ -500,6 +500,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DFieldDefinition.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/X3DProtoDeclaration.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DRoute.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \

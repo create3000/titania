@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_PROTO_DECLARATION_ARRAY_H__
 
 #include "X3DConstArray.h"
-//#include "X3DProtoDeclaration.h"
+#include "X3DProtoDeclaration.h"
 
 #include "../../Prototype/ProtoDeclarationArray.h"
 
@@ -60,13 +60,13 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-//using ProtoDeclarationArray = X3DConstArray <X3DProtoDeclaration, X3D::ProtoDeclarationArray>;
-//
-//template <>
-//constexpr
-//ObjectType
-//ProtoDeclarationArray::getId ()
-//{ return ObjectType::ProtoDeclarationArray; }
+using ProtoDeclarationArray = X3DConstArray <X3DProtoDeclaration, X3D::ProtoDeclarationArray>;
+
+template <>
+constexpr
+ObjectType
+ProtoDeclarationArray::getId ()
+{ return ObjectType::ProtoDeclarationArray; }
 
 } // spidermonkey
 } // X3D
