@@ -66,27 +66,6 @@ namespace X3D {
 namespace spidermonkey {
 
 inline
-Context*
-getContext (JSContext* cx)
-{
-	return static_cast <Context*> (JS_GetPrivate (JS::CurrentGlobalOrNull (cx)));
-}
-
-inline
-void
-setContext (JSObject* const obj, Context* const context)
-{
-	JS_SetReservedSlot (obj, size_t (SlotType::CONTEXT), JS::PrivateValue (context));
-}
-
-inline
-Context*
-getContext (JSObject* const obj)
-{
-	return static_cast <Context*> (JS_GetReservedSlot (obj, size_t (SlotType::CONTEXT)) .toPrivate ());
-}
-
-inline
 void
 setObject (JSObject* const obj, std::nullptr_t)
 {
@@ -107,6 +86,27 @@ Type
 getObject (JSObject* const obj)
 {
 	return static_cast <Type> (JS_GetPrivate (obj));
+}
+
+inline
+void
+setContext (JSObject* const obj, Context* const context)
+{
+	JS_SetReservedSlot (obj, size_t (SlotType::CONTEXT), JS::PrivateValue (context));
+}
+
+inline
+Context*
+getContext (JSObject* const obj)
+{
+	return static_cast <Context*> (JS_GetReservedSlot (obj, size_t (SlotType::CONTEXT)) .toPrivate ());
+}
+
+inline
+Context*
+getContext (JSContext* cx)
+{
+	return static_cast <Context*> (JS_GetPrivate (JS::CurrentGlobalOrNull (cx)));
 }
 
 template <class Type>
