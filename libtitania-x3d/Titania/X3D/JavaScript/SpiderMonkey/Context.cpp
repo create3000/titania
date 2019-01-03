@@ -149,6 +149,25 @@ Context::addClasses ()
 {
 	Globals::init (cx, *global);
 
+//	addProto (Browser::getId (),             Browser::init             (cx, *global, nullptr));
+//	addProto (X3DExecutionContext::getId (), X3DExecutionContext::init (cx, *global, nullptr));
+//	addProto (X3DScene::getId (),            X3DScene::init            (cx, *global, getProto (X3DExecutionContext::getId ())));
+//	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
+
+//	addProto (ProfileInfo::getId (),               ProfileInfo::init               (cx, *global, nullptr));
+//	addProto (ComponentInfo::getId (),             ComponentInfo::init             (cx, *global, nullptr));
+//	addProto (X3DExternProtoDeclaration::getId (), X3DExternProtoDeclaration::init (cx, *global, nullptr));
+//	addProto (X3DProtoDeclaration::getId (),       X3DProtoDeclaration::init       (cx, *global, nullptr));
+//	addProto (X3DRoute::getId (),                  X3DRoute::init                  (cx, *global, nullptr));
+//	addProto (X3DFieldDefinition::getId (),        X3DFieldDefinition::init        (cx, *global, nullptr));
+
+//	addProto (ProfileInfoArray::getId (),            ProfileInfoArray::init            (cx, *global, nullptr));
+//	addProto (ComponentInfoArray::getId (),          ComponentInfoArray::init          (cx, *global, nullptr));
+//	addProto (ExternProtoDeclarationArray::getId (), ExternProtoDeclarationArray::init (cx, *global, nullptr));
+//	addProto (ProtoDeclarationArray::getId (),       ProtoDeclarationArray::init       (cx, *global, nullptr));
+//	addProto (RouteArray::getId (),                  RouteArray::init                  (cx, *global, nullptr));
+//	addProto (FieldDefinitionArray::getId (),        FieldDefinitionArray::init        (cx, *global, nullptr));
+
 	addProto (X3DField::getId (),      X3DField::init      (cx, *global, nullptr));
 	addProto (X3DArrayField::getId (), X3DArrayField::init (cx, *global, getProto (X3DField::getId ())));
 
@@ -620,37 +639,11 @@ Context::reportError (JSContext* cx, JSErrorReport* const report)
 {
 	const auto context = getContext (cx);
 
-	glong   items_read    = 0;
-	glong   items_written = 0;
-	GError* error         = nullptr;
-	char*   lb            = nullptr;
-
-	if (report -> linebuf ())
-	{
-		lb = g_utf16_to_utf8 ((gunichar2*) report -> linebuf (),
-		                      report -> linebufLength (),
-		                      &items_read,
-		                      &items_written,
-		                      &error);
-	}
-
-	if (error)
-	{
-		__LOG__ << error -> message << std::endl;
-	}
-	else
-	{
-		const auto linebuf = lb ? std::string  (lb, lb + items_written) : std::string ();
-
-		if (lb)
-			g_free (lb);
-
-		context -> setError (report -> message () .c_str (),
-		                     report -> filename ? report -> filename : "<inline>",
-		                     report -> lineno,
-		                     report -> column,
-		                     linebuf);
-	}
+	context -> setError (report -> message () .c_str (),
+	                     report -> filename ? report -> filename : "<inline>",
+	                     report -> lineno,
+	                     report -> column,
+	                     to_string (report -> linebuf (), report -> linebufLength ()));
 }
 
 void

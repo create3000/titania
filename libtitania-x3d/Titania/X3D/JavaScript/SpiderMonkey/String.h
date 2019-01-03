@@ -76,6 +76,9 @@ to_string (JSContext* const cx, JS::HandleId value)
 	return to_string (cx, JSID_TO_STRING (value));
 }
 
+std::string
+to_string (const char16_t* ucstring, const size_t length);
+
 } // spidermonkey
 } // X3D
 } // titania

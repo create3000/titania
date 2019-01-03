@@ -108,6 +108,35 @@ to_string (JSContext* const cx, const JS::HandleValue & value)
 	return to_string (cx, JS::ToString (cx, value));
 }
 
+std::string
+to_string (const char16_t* ucstring, const size_t length)
+{
+	if (not ucstring)
+		return "";
+
+	glong   items_read    = 0;
+	glong   items_written = 0;
+	GError* error         = nullptr;
+
+	const auto utf8string = g_utf16_to_utf8 ((gunichar2*) ucstring,
+	                                         length,
+	                                         &items_read,
+	                                         &items_written,
+	                                         &error);
+
+	if (error)
+		return "";
+
+	if (not utf8string)
+		return "";
+
+	const auto string = std::string  (utf8string, utf8string + items_written);
+
+	g_free (utf8string);
+
+	return string;
+}
+
 } // spidermonkey
 } // X3D
 } // titania
