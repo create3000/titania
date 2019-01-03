@@ -55,6 +55,8 @@
 #include "Error.h"
 #include "SlotType.h"
 
+//#include "X3DFieldDefinition.h"
+
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
@@ -67,7 +69,7 @@ const JSClassOps FieldDefinitionArray::class_ops = {
 	nullptr, // getProperty
 	nullptr, // setProperty
 	nullptr, // enumerate
-	resolve, // resolve
+	nullptr, // resolve
 	nullptr, // mayResolve
 	nullptr, // finalize
 	nullptr, // call
@@ -112,42 +114,32 @@ JS::Value
 FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitionArray)
 {
 	const auto context = getContext (cx);
-	const auto object  = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto obj  = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
 
-	if (not object)
+	if (not obj)
 		throw std::runtime_error ("out of memory");
 
 	const auto array = new internal_type (fieldDefinitionArray .begin (), fieldDefinitionArray .end ());
 
 	array -> addParent (context);
 
-	setObject (object, array);
-	setContext (object, context);
+	setObject (obj, array);
+	setContext (obj, context);
 
-	return JS::ObjectValue (*object);
-}
+	const auto object = JS::RootedObject (cx, obj);
 
-bool
-FieldDefinitionArray::resolve (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp)
-{
-	if (JSID_IS_INT (id))
+	for (size_t i = 0, size = array -> size (); i < size; ++ i)
 	{
-		const int32_t index = JSID_TO_INT (id);
-
 		JS_DefineProperty (cx,
-		                   obj,
-		                   basic::to_string (index, std::locale::classic ()) .c_str (),
+		                   object,
+		                   basic::to_string (i, std::locale::classic ()) .c_str (),
 		                   JS::UndefinedHandleValue,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING,
+		                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE,
 		                   JS_PROPERTYOP_GETTER (&FieldDefinitionArray::get1Value),
 		                   nullptr);
-
-		*resolvedp = true;
-		return true;
 	}
 
-	*resolvedp = false;
-	return true;
+	return JS::ObjectValue (*obj);
 }
 
 bool
@@ -158,16 +150,8 @@ FieldDefinitionArray::get1Value (JSContext* cx, JS::HandleObject obj, JS::Handle
 		const auto array = getThis <FieldDefinitionArray> (cx, obj);
 		const auto index = JSID_TO_INT (id);
 
-		if (index < 0 or index >= (ssize_t) array -> size ())
-		{
-			vp .setUndefined ();
-		}
-		else
-		{
-			vp .setUndefined ();
-			//vp .set (X3DFieldDefinition::create (cx, (*array) [index]));
-		}
-
+		vp .setUndefined ();
+		//vp .set (X3DFieldDefinition::create (cx, (*array) [index]));
 		return true;
 	}
 	catch (const std::exception & error)

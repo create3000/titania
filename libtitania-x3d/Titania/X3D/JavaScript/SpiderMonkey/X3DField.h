@@ -148,27 +148,27 @@ std::pair <JS::Value, bool>
 X3DField::create (JSContext* const cx, typename Type::internal_type* const field)
 {
 	const auto context = getContext (cx);
-	const auto object  = context -> getObject (Type::getKey (field));
+	const auto obj     = context -> getObject (Type::getKey (field));
 
-	if (object)
+	if (obj)
 	{
-		return std::pair (JS::ObjectValue (*object), false);
+		return std::pair (JS::ObjectValue (*obj), false);
 	}
 	else
 	{
-		const auto object = JS_NewObjectWithGivenProto (cx, Type::getClass (), context -> getProto (Type::getId ()));
+		const auto obj = JS_NewObjectWithGivenProto (cx, Type::getClass (), context -> getProto (Type::getId ()));
 
-		if (object == nullptr)
+		if (not obj)
 			throw std::runtime_error ("out of memory");
 
 		const auto value = Type::getField (field);
 
-		setObject (object, value);
-		setContext (object, context);
+		setObject (obj, value);
+		setContext (obj, context);
 
-		context -> addObject (Type::getKey (field), value, object);
+		context -> addObject (Type::getKey (field), value, obj);
 
-		return std::pair (JS::ObjectValue (*object), true);
+		return std::pair (JS::ObjectValue (*obj), true);
 	}
 }
 
