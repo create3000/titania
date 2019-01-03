@@ -408,7 +408,7 @@ Context::addProto (const ObjectType type, JSObject* const proto)
 }
 
 void
-Context::addObject (const X3D::X3DChildObject* const key, X3D::X3DFieldDefinition* const field, JSObject* const obj)
+Context::addObject (const size_t key, X3D::X3DFieldDefinition* const field, JSObject* const obj)
 {
 	if (not objects .emplace (key, std::pair (field, obj)) .second)
 		throw std::invalid_argument ("addObject");
@@ -417,7 +417,7 @@ Context::addObject (const X3D::X3DChildObject* const key, X3D::X3DFieldDefinitio
 }
 
 void
-Context::removeObject (const X3D::X3DChildObject* const key)
+Context::removeObject (const size_t key)
 {
 	const auto iter = objects .find (key);
 
@@ -430,7 +430,7 @@ Context::removeObject (const X3D::X3DChildObject* const key)
 }
 
 JSObject*
-Context::getObject (const X3D::X3DChildObject* const key) const
+Context::getObject (const size_t key) const
 {
 	const auto iter = objects .find (key);
 

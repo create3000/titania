@@ -116,19 +116,30 @@ JS::Value
 X3DRoute::create (JSContext* const cx, const X3D::RoutePtr & route)
 {
 	const auto context = getContext (cx);
-	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto key     = size_t (route .getValue ());
+	const auto obj     = context -> getObject (key);
 
-	if (not obj)
-		throw std::runtime_error ("out of memory");
-
-	const auto self = new internal_type (route);
-
-	setObject (obj, self);
-	setContext (obj, context);
-
-	self -> addParent (context);
-
-	return JS::ObjectValue (*obj);
+	if (obj)
+	{
+		return JS::ObjectValue (*obj);
+	}
+	else
+	{
+		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	
+		if (not obj)
+			throw std::runtime_error ("out of memory");
+	
+		const auto self = new internal_type (route);
+	
+		setObject (obj, self);
+		setContext (obj, context);
+		setKey (obj, key);
+	
+		context -> addObject (key, self, obj);
+	
+		return JS::ObjectValue (*obj);
+	}
 }
 
 // Properties
@@ -209,10 +220,10 @@ X3DRoute::finalize (JSFreeOp* fop, JSObject* obj)
 	const auto context = getContext (obj);
 	const auto self    = getObject <internal_type*> (obj);
 
-	// Proto objects have no private
+	// Proto objects have no private.
 
 	if (self)
-		self -> removeParent (context);
+		context -> removeObject (getKey (obj));
 }
 
 } // spidermonkey

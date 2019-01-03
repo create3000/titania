@@ -99,9 +99,9 @@ protected:
 	create (JSContext* const cx, typename Type::internal_type* const field);
 
 	static
-	const X3D::X3DChildObject*
+	size_t
 	getKey (const X3D::X3DFieldDefinition* const field)
-	{ return field; }
+	{ return size_t (field); }
 
 	static
 	X3D::X3DFieldDefinition*
@@ -110,10 +110,7 @@ protected:
 
 	///  @name Destruction
 
-	template <class Type>
-	static
-	void
-	finalize (JSFreeOp* fop, JSObject* obj);
+	static void finalize (JSFreeOp* fop, JSObject* obj);
 
 
 private:
@@ -148,7 +145,8 @@ std::pair <JS::Value, bool>
 X3DField::create (JSContext* const cx, typename Type::internal_type* const field)
 {
 	const auto context = getContext (cx);
-	const auto obj     = context -> getObject (Type::getKey (field));
+	const auto key     = Type::getKey (field);
+	const auto obj     = context -> getObject (key);
 
 	if (obj)
 	{
@@ -161,28 +159,16 @@ X3DField::create (JSContext* const cx, typename Type::internal_type* const field
 		if (not obj)
 			throw std::runtime_error ("out of memory");
 
-		const auto value = Type::getField (field);
+		const auto self = Type::getField (field);
 
-		setObject (obj, value);
+		setObject (obj, self);
 		setContext (obj, context);
+		setKey (obj, key);
 
-		context -> addObject (Type::getKey (field), value, obj);
+		context -> addObject (Type::getKey (field), self, obj);
 
 		return std::pair (JS::ObjectValue (*obj), true);
 	}
-}
-
-template <class Type>
-void
-X3DField::finalize (JSFreeOp* fop, JSObject* obj)
-{
-	const auto context = getContext (obj);
-	const auto field   = getObject <typename Type::internal_type*> (obj);
-
-	// Proto objects have no private.
-
-	if (field)
-		context -> removeObject (Type::getKey (field));
 }
 
 } // spidermonkey

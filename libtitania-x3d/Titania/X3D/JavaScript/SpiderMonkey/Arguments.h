@@ -109,6 +109,20 @@ getContext (JSContext* cx)
 	return static_cast <Context*> (JS_GetPrivate (JS::CurrentGlobalOrNull (cx)));
 }
 
+inline
+void
+setKey (JSObject* const obj, const size_t key)
+{
+	JS_SetReservedSlot (obj, size_t (SlotType::KEY), JS::PrivateValue ((void*) key));
+}
+
+inline
+size_t
+getKey (JSObject* const obj)
+{
+	return size_t (JS_GetReservedSlot (obj, size_t (SlotType::KEY)) .toPrivate ());
+}
+
 template <class Type>
 bool
 instanceOf (JSContext* const cx, const JS::HandleValue & obj)

@@ -109,35 +109,46 @@ FieldDefinitionArray::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JS::Value
-FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitionArray)
+FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitions)
 {
 	const auto context = getContext (cx);
-	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto key     = size_t (&fieldDefinitions);
+	const auto obj     = context -> getObject (key);
 
-	if (not obj)
-		throw std::runtime_error ("out of memory");
-
-	const auto array = new internal_type (fieldDefinitionArray .begin (), fieldDefinitionArray .end ());
-
-	array -> addParent (context);
-
-	setObject (obj, array);
-	setContext (obj, context);
-
-	const auto object = JS::RootedObject (cx, obj);
-
-	for (size_t i = 0, size = array -> size (); i < size; ++ i)
+	if (obj)
 	{
-		JS_DefineProperty (cx,
-		                   object,
-		                   basic::to_string (i, std::locale::classic ()) .c_str (),
-		                   JS::UndefinedHandleValue,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE,
-		                   JS_PROPERTYOP_GETTER (&FieldDefinitionArray::get1Value),
-		                   nullptr);
+		return JS::ObjectValue (*obj);
 	}
+	else
+	{
+		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	
+		if (not obj)
+			throw std::runtime_error ("out of memory");
+	
+		const auto array = new internal_type (fieldDefinitions .begin (), fieldDefinitions .end ());
+	
+		setObject (obj, array);
+		setContext (obj, context);
+		setKey (obj, key);
 
-	return JS::ObjectValue (*obj);
+		context -> addObject (key, array, obj);
+
+		const auto object = JS::RootedObject (cx, obj);
+	
+		for (size_t i = 0, size = array -> size (); i < size; ++ i)
+		{
+			JS_DefineProperty (cx,
+			                   object,
+			                   basic::to_string (i, std::locale::classic ()) .c_str (),
+			                   JS::UndefinedHandleValue,
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE,
+			                   JS_PROPERTYOP_GETTER (&FieldDefinitionArray::get1Value),
+			                   nullptr);
+		}
+	
+		return JS::ObjectValue (*obj);
+	}
 }
 
 bool
@@ -184,10 +195,10 @@ FieldDefinitionArray::finalize (JSFreeOp* fop, JSObject* obj)
 	const auto context = getContext (obj);
 	const auto array   = getObject <internal_type*> (obj);
 
-	// Proto objects have no private
+	// Proto objects have no private.
 
 	if (array)
-		array -> removeParent (context);
+		context -> removeObject (getKey (obj));
 }
 
 } // spidermonkey

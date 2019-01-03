@@ -58,6 +58,7 @@ namespace spidermonkey {
 enum class SlotType
 {
 	CONTEXT,
+	KEY,
 
 	SIZE
 };

@@ -307,6 +307,18 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
+void
+X3DField::finalize (JSFreeOp* fop, JSObject* obj)
+{
+	const auto context = getContext (obj);
+	const auto self    = getObject <internal_type*> (obj);
+
+	// Proto objects have no private.
+
+	if (self)
+		context -> removeObject (spidermonkey::getKey (obj));
+}
+
 } // spidermonkey
 } // X3D
 } // Titania

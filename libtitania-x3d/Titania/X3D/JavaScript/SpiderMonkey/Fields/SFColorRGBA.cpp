@@ -62,7 +62,7 @@ const JSClassOps SFColorRGBA::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	finalize <SFColorRGBA>, // finalize
+	finalize, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

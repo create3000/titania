@@ -144,7 +144,7 @@ const JSClassOps SFMatrix4 <InternalType>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	finalize <SFMatrix4>, // finalize
+	finalize, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

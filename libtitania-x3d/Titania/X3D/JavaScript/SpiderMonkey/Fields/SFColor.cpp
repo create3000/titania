@@ -62,7 +62,7 @@ const JSClassOps SFColor::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	finalize <SFColor>, // finalize
+	finalize, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

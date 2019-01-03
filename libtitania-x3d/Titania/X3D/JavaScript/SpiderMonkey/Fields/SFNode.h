@@ -99,9 +99,9 @@ protected:
 	///  @name Construction
 
 	static
-	const X3D::X3DChildObject*
+	size_t
 	getKey (const X3D::SFNode* const field)
-	{ return field -> getValue (); }
+	{ return size_t (field -> getValue ()); }
 
 	static
 	X3D::SFNode*

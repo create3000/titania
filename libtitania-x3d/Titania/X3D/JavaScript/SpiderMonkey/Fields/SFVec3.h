@@ -145,7 +145,7 @@ const JSClassOps SFVec3 <InternalType>::class_ops = {
 	nullptr, // enumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
-	finalize <SFVec3>, // finalize
+	finalize, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

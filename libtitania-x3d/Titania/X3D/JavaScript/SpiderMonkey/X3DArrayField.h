@@ -316,7 +316,7 @@ const JSClassOps X3DArrayFieldTemplate <ValueType, InternalType>::class_ops = {
 	nullptr, // enumerate, // enumerate
 	resolve, // resolve
 	nullptr, // mayResolve
-	finalize <X3DArrayFieldTemplate>, // finalize
+	finalize, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct

@@ -110,22 +110,33 @@ X3DFieldDefinition::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 JS::Value
-X3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition* const fieldDefinition)
+X3DFieldDefinition::create (JSContext* const cx, X3D::X3DFieldDefinition* const fieldDefinition)
 {
 	const auto context = getContext (cx);
-	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto key     = size_t (fieldDefinition + 1);
+	const auto obj     = context -> getObject (key);
 
-	if (not obj)
-		throw std::runtime_error ("out of memory");
+	if (obj)
+	{
+		return JS::ObjectValue (*obj);
+	}
+	else
+	{
+		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	
+		if (not obj)
+			throw std::runtime_error ("out of memory");
+	
+		const auto self = new internal_type (fieldDefinition);
+	
+		setObject (obj, self);
+		setContext (obj, context);
+		setKey (obj, key);
 
-	const auto self = new internal_type (const_cast <X3D::X3DFieldDefinition*> (fieldDefinition));
-
-	setObject (obj, self);
-	setContext (obj, context);
-
-	self -> addParent (context);
-
-	return JS::ObjectValue (*obj);
+		context -> addObject (key, self, obj);
+	
+		return JS::ObjectValue (*obj);
+	}
 }
 
 bool
@@ -185,10 +196,10 @@ X3DFieldDefinition::finalize (JSFreeOp* fop, JSObject* obj)
 	const auto context = getContext (obj);
 	const auto self    = getObject <internal_type*> (obj);
 
-	// Proto objects have no private
+	// Proto objects have no private.
 
 	if (self)
-		self -> removeParent (context);
+		context -> removeObject (getKey (obj));
 }
 
 } // spidermonkey

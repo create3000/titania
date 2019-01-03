@@ -79,7 +79,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitionArray);
+	create (JSContext* const cx, const X3D::FieldDefinitionArray & fieldDefinitions);
 
 	static
 	const JSClass*
