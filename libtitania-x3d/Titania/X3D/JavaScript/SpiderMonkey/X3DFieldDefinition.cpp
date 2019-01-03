@@ -113,7 +113,7 @@ JS::Value
 X3DFieldDefinition::create (JSContext* const cx, X3D::X3DFieldDefinition* const fieldDefinition)
 {
 	const auto context = getContext (cx);
-	const auto key     = size_t (fieldDefinition) + sizeof (size_t);
+	const auto key     = size_t (fieldDefinition) + sizeof (void*);
 	const auto obj     = context -> getObject (key);
 
 	if (obj)
