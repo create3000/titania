@@ -121,7 +121,7 @@ X3DRoute::create (JSContext* const cx, const X3D::RoutePtr & route)
 	if (not obj)
 		throw std::runtime_error ("out of memory");
 
-	const auto self = new X3D::RoutePtr (route);
+	const auto self = new internal_type (route);
 
 	setObject (obj, self);
 	setContext (obj, context);
@@ -207,7 +207,7 @@ void
 X3DRoute::finalize (JSFreeOp* fop, JSObject* obj)
 {
 	const auto context = getContext (obj);
-	const auto self    = getObject <X3D::FieldPtr*> (obj);
+	const auto self    = getObject <internal_type*> (obj);
 
 	// Proto objects have no private
 

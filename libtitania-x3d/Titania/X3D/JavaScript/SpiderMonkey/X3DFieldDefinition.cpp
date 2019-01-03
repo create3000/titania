@@ -118,7 +118,7 @@ X3DFieldDefinition::create (JSContext* const cx, const X3D::X3DFieldDefinition* 
 	if (not obj)
 		throw std::runtime_error ("out of memory");
 
-	const auto self = new X3D::FieldPtr (const_cast <X3D::X3DFieldDefinition*> (fieldDefinition));
+	const auto self = new internal_type (const_cast <X3D::X3DFieldDefinition*> (fieldDefinition));
 
 	setObject (obj, self);
 	setContext (obj, context);
@@ -183,7 +183,7 @@ void
 X3DFieldDefinition::finalize (JSFreeOp* fop, JSObject* obj)
 {
 	const auto context = getContext (obj);
-	const auto self    = getObject <X3D::FieldPtr*> (obj);
+	const auto self    = getObject <internal_type*> (obj);
 
 	// Proto objects have no private
 
