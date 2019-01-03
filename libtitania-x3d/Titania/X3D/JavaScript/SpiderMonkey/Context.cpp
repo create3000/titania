@@ -58,7 +58,9 @@
 #include "value.h"
 
 #include "FieldDefinitionArray.h"
+#include "RouteArray.h"
 #include "X3DFieldDefinition.h"
+#include "X3DRoute.h"
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -161,14 +163,14 @@ Context::addClasses ()
 //	addProto (ComponentInfo::getId (),             ComponentInfo::init             (cx, *global, nullptr));
 //	addProto (X3DExternProtoDeclaration::getId (), X3DExternProtoDeclaration::init (cx, *global, nullptr));
 //	addProto (X3DProtoDeclaration::getId (),       X3DProtoDeclaration::init       (cx, *global, nullptr));
-//	addProto (X3DRoute::getId (),                  X3DRoute::init                  (cx, *global, nullptr));
+	addProto (X3DRoute::getId (),                  X3DRoute::init                  (cx, *global, nullptr));
 	addProto (X3DFieldDefinition::getId (),        X3DFieldDefinition::init        (cx, *global, nullptr));
 
 //	addProto (ProfileInfoArray::getId (),            ProfileInfoArray::init            (cx, *global, nullptr));
 //	addProto (ComponentInfoArray::getId (),          ComponentInfoArray::init          (cx, *global, nullptr));
 //	addProto (ExternProtoDeclarationArray::getId (), ExternProtoDeclarationArray::init (cx, *global, nullptr));
 //	addProto (ProtoDeclarationArray::getId (),       ProtoDeclarationArray::init       (cx, *global, nullptr));
-//	addProto (RouteArray::getId (),                  RouteArray::init                  (cx, *global, nullptr));
+	addProto (RouteArray::getId (),                  RouteArray::init                  (cx, *global, nullptr));
 	addProto (FieldDefinitionArray::getId (),        FieldDefinitionArray::init        (cx, *global, nullptr));
 
 	addProto (X3DField::getId (),      X3DField::init      (cx, *global, nullptr));

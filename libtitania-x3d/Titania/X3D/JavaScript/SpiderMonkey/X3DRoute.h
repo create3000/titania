@@ -48,25 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_ROUTE_ARRAY_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_ROUTE_ARRAY_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DROUTE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DROUTE_H__
 
-#include "X3DConstArray.h"
-#include "X3DRoute.h"
+#include "ObjectType.h"
 
-#include "../../Routing/RouteArray.h"
+#include "../../Types/Pointer.h"
+
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using RouteArray = X3DConstArray <X3DRoute, X3D::RouteArray>;
+class X3DRoute
+{
+public:
 
-template <>
-constexpr
-ObjectType
-RouteArray::getId ()
-{ return ObjectType::RouteArray; }
+	///  @name Member types
+
+	using internal_type = X3D::RoutePtr;
+
+	///  @name Construction
+
+	static
+	JSObject*
+	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
+
+	static
+	JS::Value
+	create (JSContext* const cx, const X3D::RoutePtr & route);
+
+	static
+	const JSClass*
+	getClass ()
+	{ return &static_class; }
+
+	static
+	constexpr
+	ObjectType
+	getId ()
+	{ return ObjectType::X3DRoute; }
+
+
+private:
+
+	///  @name Construction
+
+	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Properties
+
+	static bool getSourceNode       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getSourceField      (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getDestinationNode  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getDestinationField (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Destruction
+
+	static void finalize (JSFreeOp* fop, JSObject* obj);
+
+	///  @name Static members
+
+	static const JSClassOps     class_ops;
+	static const JSClass        static_class;
+	static const JSPropertySpec properties [ ];
+	static const JSFunctionSpec functions [ ];
+
+};
 
 } // spidermonkey
 } // X3D

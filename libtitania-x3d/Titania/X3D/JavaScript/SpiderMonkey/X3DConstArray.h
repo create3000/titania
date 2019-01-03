@@ -103,7 +103,7 @@ private:
 
 	///  @name Properties
 
-	//static JSBool get1Value (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
 	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Static members
@@ -204,13 +204,13 @@ X3DConstArray <Type, InternalType>::resolve (JSContext* cx, JS::HandleObject obj
 	{
 		const int32_t index = JSID_TO_INT (id);
 
-//		JS_DefineProperty (cx,
-//		                   obj,
-//		                   basic::to_string (index, std::locale::classic ()) .c_str (),
-//		                   JS::UndefinedHandleValue,
-//		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING,
-//		                   JS_PROPERTYOP_GETTER (&X3DConstArray::get1Value),
-//		                   nullptr);
+		JS_DefineProperty (cx,
+		                   obj,
+		                   basic::to_string (index, std::locale::classic ()) .c_str (),
+		                   JS::UndefinedHandleValue,
+		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING,
+		                   JS_PROPERTYOP_GETTER (&X3DConstArray::get1Value),
+		                   nullptr);
 
 		*resolvedp = true;
 		return true;
@@ -220,28 +220,31 @@ X3DConstArray <Type, InternalType>::resolve (JSContext* cx, JS::HandleObject obj
 	return true;
 }
 
-//template <class Type, class InternalType>
-//bool
-//X3DConstArray <Type, InternalType>::get1Value (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (not JSID_IS_INT (id))
-//			return true;
-//
-//		const auto array = getThis <X3DConstArray> (cx, obj);
-//		const auto index = JSID_TO_INT (id);
-//
-//		if (index < 0 or index >= (int32_t) array -> size ())
-//			return ThrowException <JSProto_Error> (cx, "%s: array index out of range.", getClass () -> name);
-//
-//		return Type::create (cx, array -> at (index), vp);
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException  <JSProto_Error>(cx, "%s .get1Value: %s.", getClass () -> name, error .what ());
-//	}
-//}
+template <class Type, class InternalType>
+bool
+X3DConstArray <Type, InternalType>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+{
+	try
+	{
+		const auto array = getThis <X3DConstArray> (cx, obj);
+		const auto index = JSID_TO_INT (id);
+
+		if (index >= 0 and index < (int32_t) array -> size ())
+		{
+			vp .set (Type::create (cx, (*array) [index]));
+		}
+		else
+		{
+			vp .setUndefined ();
+		}
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+	}
+}
 
 template <class Type, class InternalType>
 bool
