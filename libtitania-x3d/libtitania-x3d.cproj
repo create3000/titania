@@ -1000,6 +1000,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DFieldDefinition.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DRoute.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DProtoDeclaration.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExternProtoDeclaration.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1692,6 +1693,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DRoute.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DProtoDeclaration.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExternProtoDeclaration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
