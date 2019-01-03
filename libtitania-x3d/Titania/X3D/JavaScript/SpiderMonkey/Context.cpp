@@ -586,6 +586,7 @@ Context::finish ()
 void
 Context::set_shutdown ()
 {
+	if (*global)
 	{
 		const JSAutoRequest ar (cx);
 		const JSAutoCompartment ac (cx, *global);
