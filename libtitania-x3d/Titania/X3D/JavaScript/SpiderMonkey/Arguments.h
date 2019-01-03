@@ -113,7 +113,7 @@ inline
 void
 setKey (JSObject* const obj, const size_t key)
 {
-	JS_SetReservedSlot (obj, size_t (SlotType::KEY), JS::PrivateValue ((void*) key));
+	JS_SetReservedSlot (obj, size_t (SlotType::KEY), JS::PrivateValue (reinterpret_cast <void*> (key)));
 }
 
 inline
