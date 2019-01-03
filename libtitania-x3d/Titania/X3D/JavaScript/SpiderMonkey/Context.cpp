@@ -117,29 +117,6 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
-
-	const JSAutoRequest ar (cx);
-
-	JS::CompartmentOptions options;
-
-	options .behaviors () .setVersion (JSVERSION_LATEST);
-
-	global = std::make_unique <JS::PersistentRooted <JSObject*>> (cx, JS_NewGlobalObject (cx, &globalClass, nullptr, JS::FireOnNewGlobalHook, options));
-
-	if (not *global)
-		throw std::runtime_error ("Couldn't create JavaScript global object.");
-
-	const JSAutoCompartment ac (cx, *global);
-
-	setObject (global .get () -> get (), this);
-
-	if (not JS_InitStandardClasses (cx, *global))
-		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
-
-	JS::SetWarningReporter (cx, &Context::reportError);
-
-	addClasses ();
-	addUserDefinedFields ();
 }
 
 X3DBaseNode*
@@ -452,11 +429,32 @@ Context::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 
+	shutdown () .addInterest (&Context::set_shutdown, this);
+
 	const JSAutoRequest ar (cx);
+
+	JS::CompartmentOptions options;
+
+	options .behaviors () .setVersion (JSVERSION_LATEST);
+
+	global = std::make_unique <JS::PersistentRooted <JSObject*>> (cx, JS_NewGlobalObject (cx, &globalClass, nullptr, JS::FireOnNewGlobalHook, options));
+
+	if (not *global)
+		throw std::runtime_error ("Couldn't create JavaScript global object.");
+
 	const JSAutoCompartment ac (cx, *global);
+
+	setObject (global .get () -> get (), this);
+
+	if (not JS_InitStandardClasses (cx, *global))
+		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
+
+	JS::SetWarningReporter (cx, &Context::reportError);
+
 	const JS::AutoSaveExceptionState ases (cx);
 
-	shutdown () .addInterest (&Context::set_shutdown, this);
+	addClasses ();
+	addUserDefinedFields ();
 
 	if (not evaluate (getECMAScript (), worldURL))
 		throw std::invalid_argument ("Couldn't evaluate script.");
@@ -546,16 +544,17 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr 
 		const JSAutoRequest ar (cx);
 		const JSAutoCompartment ac (cx, *global);
 		const JS::AutoSaveExceptionState ases (cx);
-	
+
 		field -> setTainted (true);
-	
+
 		JS::RootedValue     rval (cx);
 		JS::AutoValueVector args (cx);
-	
+
 		args .append (getValue (cx, field));
 		args .append (JS::DoubleValue (getCurrentTime ()));
-	
+
 		JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
+		reportException ();
 
 		field -> setTainted (false);
 	}
