@@ -593,7 +593,10 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.lo \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.lo \
 	Titania/X3D/JavaScript/SpiderMonkey.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/ExternProtoDeclarationArray.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/FieldDefinitionArray.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.lo \
@@ -607,6 +610,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/Globals.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfoArray.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/ProtoDeclarationArray.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/RouteArray.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/String.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/value.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.lo \
@@ -1292,8 +1298,14 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo \
 	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ExternProtoDeclarationArray.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/FieldDefinitionArray.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Globals.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProfileInfoArray.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProtoDeclarationArray.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/RouteArray.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo \
@@ -2210,7 +2222,10 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ExternProtoDeclarationArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/FieldDefinitionArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
@@ -2224,6 +2239,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Globals.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfoArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ProtoDeclarationArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/RouteArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/String.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/value.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.cpp \
@@ -4326,7 +4344,16 @@ Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp):
 Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)
 	@: > Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Context.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/ExternProtoDeclarationArray.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/FieldDefinitionArray.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp):
@@ -4372,6 +4399,15 @@ Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/Globals.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/ProfileInfoArray.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/ProtoDeclarationArray.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/RouteArray.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey/String.lo:  \
@@ -5906,8 +5942,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ExternProtoDeclarationArray.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/FieldDefinitionArray.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Globals.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProfileInfoArray.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProtoDeclarationArray.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/RouteArray.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo@am__quote@ # am--include-marker
@@ -7121,8 +7163,14 @@ distclean: distclean-am
 	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo
 	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo
 	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ExternProtoDeclarationArray.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/FieldDefinitionArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Globals.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProfileInfoArray.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProtoDeclarationArray.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/RouteArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo
@@ -7848,8 +7896,14 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo
 	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo
 	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ExternProtoDeclarationArray.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/FieldDefinitionArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Globals.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProfileInfoArray.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ProtoDeclarationArray.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/RouteArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/String.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DArrayField.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DField.Plo

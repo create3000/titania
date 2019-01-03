@@ -140,7 +140,6 @@ private:
 	///  @name Construction
 
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
-
 	static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
 	static bool resolve   (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
 

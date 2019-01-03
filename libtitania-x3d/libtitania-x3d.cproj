@@ -990,6 +990,13 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\ArrayFields.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\MFNode.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\NativeArrayReference.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DConstArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\ProfileInfoArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\ComponentInfoArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\ExternProtoDeclarationArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\ProtoDeclarationArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\RouteArray.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\FieldDefinitionArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1673,6 +1680,12 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DArrayField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\ArrayFields.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\MFNode.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ProfileInfoArray.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ComponentInfoArray.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ExternProtoDeclarationArray.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ProtoDeclarationArray.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\RouteArray.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\FieldDefinitionArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

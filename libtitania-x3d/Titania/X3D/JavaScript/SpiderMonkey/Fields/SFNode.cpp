@@ -50,7 +50,7 @@
 
 #include "SFNode.h"
 
-//#include "../FieldDefinitionArray.h"
+#include "../FieldDefinitionArray.h"
 #include "../String.h"
 #include "../value.h"
 
@@ -342,9 +342,9 @@ SFNode::getFieldDefinitions (JSContext* cx, unsigned argc, JS::Value* vp)
 	
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFNode> (cx, args);
+		const auto node = self -> getValue ();
 
-//		args .rval () .set (FieldDefinitionArray::create (cx, &self -> getFieldDefinitions ()));
-
+		args .rval () .set (FieldDefinitionArray::create (cx, node -> getFieldDefinitions ()));
 		return true;
 	}
 	catch (const std::exception & error)

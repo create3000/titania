@@ -57,6 +57,8 @@
 #include "String.h"
 #include "value.h"
 
+#include "FieldDefinitionArray.h"
+
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -166,7 +168,7 @@ Context::addClasses ()
 //	addProto (ExternProtoDeclarationArray::getId (), ExternProtoDeclarationArray::init (cx, *global, nullptr));
 //	addProto (ProtoDeclarationArray::getId (),       ProtoDeclarationArray::init       (cx, *global, nullptr));
 //	addProto (RouteArray::getId (),                  RouteArray::init                  (cx, *global, nullptr));
-//	addProto (FieldDefinitionArray::getId (),        FieldDefinitionArray::init        (cx, *global, nullptr));
+	addProto (FieldDefinitionArray::getId (),        FieldDefinitionArray::init        (cx, *global, nullptr));
 
 	addProto (X3DField::getId (),      X3DField::init      (cx, *global, nullptr));
 	addProto (X3DArrayField::getId (), X3DArrayField::init (cx, *global, getProto (X3DField::getId ())));

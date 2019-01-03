@@ -475,7 +475,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ExternProtoDeclarationArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/FieldDefinitionArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/ArrayFields.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFColor.cpp \
@@ -489,6 +492,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec3.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/SFVec4.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Globals.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ProfileInfoArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/ProtoDeclarationArray.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/RouteArray.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/String.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/value.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DArrayField.cpp \
