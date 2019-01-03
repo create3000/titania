@@ -190,10 +190,10 @@ private:
 	eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue);
 
 	void
-	finish ();
+	set_shutdown ();
 
 	void
-	set_shutdown ();
+	collectGarbage ();
 
 	void
 	reportException ();

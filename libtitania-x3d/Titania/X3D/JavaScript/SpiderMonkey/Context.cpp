@@ -429,8 +429,6 @@ Context::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 
-	shutdown () .addInterest (&Context::set_shutdown, this);
-
 	const JSAutoRequest ar (cx);
 
 	JS::CompartmentOptions options;
@@ -462,11 +460,13 @@ Context::initialize ()
 	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
 	isLive () .addInterest (this, &Context::set_live);
 
+	shutdown () .addInterest (&Context::set_shutdown, this);
+
 	set_live ();
 
 	call ("initialize");
 
-	finish ();
+	collectGarbage ();
 }
 
 void
@@ -486,7 +486,7 @@ Context::set_live ()
 		if (getFunction ("eventsProcessed", eventsProcessed .get ()))
 			getScriptNode () -> addInterest (&Context::eventsProcessed, this, eventsProcessed);
 
-		getScriptNode () -> addInterest (&Context::finish, this);
+		getScriptNode () -> addInterest (&Context::collectGarbage, this);
 
 		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 		{
@@ -519,7 +519,7 @@ Context::set_live ()
 	{
 		getBrowser () -> prepareEvents () .removeInterest (&Context::prepareEvents, this);
 		getScriptNode () -> removeInterest (&Context::eventsProcessed, this);
-		getScriptNode () -> removeInterest (&Context::finish, this);
+		getScriptNode () -> removeInterest (&Context::collectGarbage, this);
 
 		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 			field -> removeInterest (&Context::set_field, this);
@@ -575,47 +575,22 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 }
 
 void
-Context::finish ()
+Context::set_shutdown ()
+{
+	const JSAutoRequest ar (cx);
+	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState ases (cx);
+
+	call ("shutdown");
+}
+
+void
+Context::collectGarbage ()
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
 	JS_GC (cx);
-}
-
-void
-Context::set_shutdown ()
-{
-	if (*global)
-	{
-		const JSAutoRequest ar (cx);
-		const JSAutoCompartment ac (cx, *global);
-		const JS::AutoSaveExceptionState ases (cx);
-	
-		call ("shutdown");
-	}
-
-	{
-		const JSAutoRequest ar (cx);
-	
-		fields .clear ();
-		protos .clear ();
-		global .reset ();
-	
-		JS_GC (cx);
-	
-		// finalize is not called for global values, probably the global object is not disposed.
-	
-		//assert (objects .empty ());
-
-		for (const auto & [key, pair] : Objects (objects))
-		{
-			setObject (pair .second, nullptr);
-			removeObject (key);
-		}
-
-		objects .clear ();
-	}
 }
 
 void
@@ -663,6 +638,26 @@ Context::reportError (JSContext* cx, JSErrorReport* const report)
 void
 Context::dispose ()
 {
+	const JSAutoRequest ar (cx);
+
+	fields .clear ();
+	protos .clear ();
+	global .reset ();
+
+	JS_GC (cx);
+
+	// finalize is not called for global values, probably the global object is not disposed.
+
+	//assert (objects .empty ());
+
+	for (const auto & [key, pair] : Objects (objects))
+	{
+		setObject (pair .second, nullptr);
+		removeObject (key);
+	}
+
+	objects .clear ();
+
 	X3D::X3DJavaScriptContext::dispose ();
 }
 
