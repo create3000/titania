@@ -79,9 +79,9 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-const ComponentType Context::component      = ComponentType::TITANIA;
-const std::string   Context::typeName       = "SpiderMonkeyContext";
-const std::string   Context::containerField = "context";
+const std::string Context::componentName  = "Titania";
+const std::string Context::typeName       = "SpiderMonkeyContext";
+const std::string Context::containerField = "context";
 
 const JSClassOps Context::globalOps = {
 	nullptr, // addProperty

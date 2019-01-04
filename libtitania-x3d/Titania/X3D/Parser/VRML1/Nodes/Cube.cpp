@@ -66,9 +66,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Cube::component      = ComponentType::TITANIA;
-const std::string   Cube::typeName       = "Cube";
-const std::string   Cube::containerField = "children";
+const std::string Cube::componentName  = "Titania";
+const std::string Cube::typeName       = "Cube";
+const std::string Cube::containerField = "children";
 
 Cube::Fields::Fields () :
 	 width (new X3D::SFFloat (2)),

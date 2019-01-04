@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType BlendedVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   BlendedVolumeStyle::typeName       = "BlendedVolumeStyle";
-const std::string   BlendedVolumeStyle::containerField = "renderStyle";
+const std::string BlendedVolumeStyle::componentName  = "VolumeRendering";
+const std::string BlendedVolumeStyle::typeName       = "BlendedVolumeStyle";
+const std::string BlendedVolumeStyle::containerField = "renderStyle";
 
 BlendedVolumeStyle::Fields::Fields () :
 	    renderStyle (new SFNode ()),

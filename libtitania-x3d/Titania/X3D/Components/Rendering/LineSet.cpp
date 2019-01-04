@@ -63,9 +63,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LineSet::component      = ComponentType::RENDERING;
-const std::string   LineSet::typeName       = "LineSet";
-const std::string   LineSet::containerField = "geometry";
+const std::string LineSet::componentName  = "Rendering";
+const std::string LineSet::typeName       = "LineSet";
+const std::string LineSet::containerField = "geometry";
 
 LineSet::Fields::Fields () :
 	vertexCount (new MFInt32 ()),

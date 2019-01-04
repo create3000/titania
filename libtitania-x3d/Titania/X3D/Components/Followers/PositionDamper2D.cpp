@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PositionDamper2D::component      = ComponentType::FOLLOWERS;
-const std::string   PositionDamper2D::typeName       = "PositionDamper2D";
-const std::string   PositionDamper2D::containerField = "children";
+const std::string PositionDamper2D::componentName  = "Followers";
+const std::string PositionDamper2D::typeName       = "PositionDamper2D";
+const std::string PositionDamper2D::containerField = "children";
 
 PositionDamper2D::Fields::Fields () :
 	         set_value (new SFVec2f ()),

@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType PointSound::component      = ComponentType::TITANIA;
-const std::string   PointSound::typeName       = "PointSound";
-const std::string   PointSound::containerField = "children";
+const std::string PointSound::componentName  = "Titania";
+const std::string PointSound::typeName       = "PointSound";
+const std::string PointSound::containerField = "children";
 
 PointSound::Fields::Fields () :
 	       name (new X3D::MFString ({ "" })),

@@ -199,7 +199,7 @@ X3DScene::updateComponent (const ComponentInfoPtr & component)
 	const auto iter = std::find_if (components -> begin (), components -> end (),
 	[&component] (const ComponentInfoPtr & c)
 	{
-		return c -> getType () == component -> getType ();
+		return c -> getName () == component -> getName ();
 	});
 
 	if (iter == components -> end ())

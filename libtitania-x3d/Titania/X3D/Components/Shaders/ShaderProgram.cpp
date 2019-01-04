@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ShaderProgram::component      = ComponentType::SHADERS;
-const std::string   ShaderProgram::typeName       = "ShaderProgram";
-const std::string   ShaderProgram::containerField = "programs";
+const std::string ShaderProgram::componentName  = "Shaders";
+const std::string ShaderProgram::typeName       = "ShaderProgram";
+const std::string ShaderProgram::containerField = "programs";
 
 // http://www.opengl.org/wiki/GLAPI/glCreateShaderProgramv
 

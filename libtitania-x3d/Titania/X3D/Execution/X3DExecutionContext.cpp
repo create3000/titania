@@ -197,7 +197,7 @@ X3DExecutionContext::addUninitializedNode (X3DBaseNode* const uninitializedNode)
 // Component/Profile handling
 
 bool
-X3DExecutionContext::hasComponent (const ComponentType & component) const
+X3DExecutionContext::hasComponent (const std::string & componentName) const
 {
 	if (getProfile () or not getComponents () -> empty ())
 	{
@@ -205,13 +205,25 @@ X3DExecutionContext::hasComponent (const ComponentType & component) const
 		{
 			const auto & components = getProfile () -> getComponents ();
 
-			if (std::count_if (components -> cbegin (), components -> cend (), [component] (const ComponentInfoPtr & c) { return component == c -> getType (); }))
+			const auto found = std::any_of (components -> cbegin (), components -> cend (),
+			[&componentName] (const ComponentInfoPtr & component)
+			{
+				return componentName == component -> getName ();
+			});
+
+			if (found)
 				return true;
 		}
 
 		const auto & components = getComponents ();
 
-		if (std::count_if (components -> cbegin (), components -> cend (), [component] (const ComponentInfoPtr & c) { return component == c -> getType (); }))
+		const auto found = std::any_of (components -> cbegin (), components -> cend (),
+		[&componentName] (const ComponentInfoPtr & component)
+		{
+			return componentName == component -> getName ();
+		});
+
+		if (found)
 			return true;
 
 		return false;;
@@ -230,9 +242,9 @@ X3DExecutionContext::createNode (const std::string & typeName)
 	{
 		const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (typeName);
 	
-		//if (not hasComponent (declaration -> getComponent ()))
+		//if (not hasComponent (declaration -> getComponentName ()))
 		//throw Error <INVALID_NAME> ("Node type '" + typeName + "' not supported by profile or component specification.");
-	
+
 		SFNode node (declaration -> create (this));
 	
 		if (getRealized ())

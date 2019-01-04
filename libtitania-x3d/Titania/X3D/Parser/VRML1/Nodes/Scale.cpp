@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Scale::component      = ComponentType::TITANIA;
-const std::string   Scale::typeName       = "Scale";
-const std::string   Scale::containerField = "children";
+const std::string Scale::componentName  = "Titania";
+const std::string Scale::typeName       = "Scale";
+const std::string Scale::containerField = "children";
 
 Scale::Fields::Fields () :
 	scaleFactor (new X3D::SFVec3f (1, 1, 1))

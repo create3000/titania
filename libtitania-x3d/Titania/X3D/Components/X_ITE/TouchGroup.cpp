@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TouchGroup::component      = ComponentType::TITANIA;
-const std::string   TouchGroup::typeName       = "TouchGroup";
-const std::string   TouchGroup::containerField = "children";
+const std::string TouchGroup::componentName  = "Titania";
+const std::string TouchGroup::typeName       = "TouchGroup";
+const std::string TouchGroup::containerField = "children";
 
 TouchGroup::TouchGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType CoordinateChaser::component      = ComponentType::FOLLOWERS;
-const std::string   CoordinateChaser::typeName       = "CoordinateChaser";
-const std::string   CoordinateChaser::containerField = "children";
+const std::string CoordinateChaser::componentName  = "Followers";
+const std::string CoordinateChaser::typeName       = "CoordinateChaser";
+const std::string CoordinateChaser::containerField = "children";
 
 CoordinateChaser::Fields::Fields () :
 	         set_value (new MFVec3f ()),

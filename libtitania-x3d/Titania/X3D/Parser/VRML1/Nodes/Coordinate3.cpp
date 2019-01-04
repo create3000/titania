@@ -59,9 +59,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Coordinate3::component      = ComponentType::TITANIA;
-const std::string   Coordinate3::typeName       = "Coordinate3";
-const std::string   Coordinate3::containerField = "children";
+const std::string Coordinate3::componentName  = "Titania";
+const std::string Coordinate3::typeName       = "Coordinate3";
+const std::string Coordinate3::containerField = "children";
 
 Coordinate3::Fields::Fields () :
 	point (new X3D::MFVec3f ({ X3D::Vector3f () }))

@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Background::component      = ComponentType::ENVIRONMENTAL_EFFECTS;
-const std::string   Background::typeName       = "Background";
-const std::string   Background::containerField = "children";
+const std::string Background::componentName  = "EnvironmentalEffects";
+const std::string Background::typeName       = "Background";
+const std::string Background::containerField = "children";
 
 Background::Fields::Fields () :
 	 frontUrl (new MFString ()),

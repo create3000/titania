@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType RigidBodyCollection::component      = ComponentType::RIGID_BODY_PHYSICS;
-const std::string   RigidBodyCollection::typeName       = "RigidBodyCollection";
-const std::string   RigidBodyCollection::containerField = "children";
+const std::string RigidBodyCollection::componentName  = "RigidBodyPhysics";
+const std::string RigidBodyCollection::typeName       = "RigidBodyCollection";
+const std::string RigidBodyCollection::containerField = "children";
 
 RigidBodyCollection::Fields::Fields () :
 	                enabled (new SFBool (true)),

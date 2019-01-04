@@ -143,7 +143,7 @@ public:
 	getComponents () const = 0;
 
 	bool
-	hasComponent (const ComponentType &) const;
+	hasComponent (const std::string & componentName) const;
 
 	///  @name Unit handling
 

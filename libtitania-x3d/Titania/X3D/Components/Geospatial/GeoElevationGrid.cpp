@@ -61,9 +61,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GeoElevationGrid::component      = ComponentType::GEOSPATIAL;
-const std::string   GeoElevationGrid::typeName       = "GeoElevationGrid";
-const std::string   GeoElevationGrid::containerField = "geometry";
+const std::string GeoElevationGrid::componentName  = "Geospatial";
+const std::string GeoElevationGrid::typeName       = "GeoElevationGrid";
+const std::string GeoElevationGrid::containerField = "geometry";
 
 GeoElevationGrid::Fields::Fields () :
 	  geoGridOrigin (new SFVec3d ()),

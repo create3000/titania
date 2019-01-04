@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Circle2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Circle2D::typeName       = "Circle2D";
-const std::string   Circle2D::containerField = "geometry";
+const std::string Circle2D::componentName  = "Geometry2D";
+const std::string Circle2D::typeName       = "Circle2D";
+const std::string Circle2D::containerField = "geometry";
 
 Circle2D::Fields::Fields () :
 	 radius (new SFFloat (1)),

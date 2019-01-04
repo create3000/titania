@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType CADPart::component      = ComponentType::CAD_GEOMETRY;
-const std::string   CADPart::typeName       = "CADPart";
-const std::string   CADPart::containerField = "children";
+const std::string CADPart::componentName  = "CADGeometry";
+const std::string CADPart::typeName       = "CADPart";
+const std::string CADPart::containerField = "children";
 
 CADPart::CADPart (X3DExecutionContext* const executionContext) :
 	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),

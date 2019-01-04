@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Box::component      = ComponentType::GEOMETRY_3D;
-const std::string   Box::typeName       = "Box";
-const std::string   Box::containerField = "geometry";
+const std::string Box::componentName  = "Geometry3D";
+const std::string Box::typeName       = "Box";
+const std::string Box::containerField = "geometry";
 
 Box::Fields::Fields () :
 	 size (new SFVec3f (2, 2, 2)),

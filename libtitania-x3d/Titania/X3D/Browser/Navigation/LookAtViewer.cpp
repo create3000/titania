@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LookAtViewer::component      = ComponentType::TITANIA;
-const std::string   LookAtViewer::typeName       = "LookAtViewer";
-const std::string   LookAtViewer::containerField = "viewer";
+const std::string LookAtViewer::componentName  = "Titania";
+const std::string LookAtViewer::typeName       = "LookAtViewer";
+const std::string LookAtViewer::containerField = "viewer";
 
 LookAtViewer::LookAtViewer (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

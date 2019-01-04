@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType CollideStyle::component      = ComponentType::TITANIA;
-const std::string   CollideStyle::typeName       = "CollideStyle";
-const std::string   CollideStyle::containerField = "children";
+const std::string CollideStyle::componentName  = "Titania";
+const std::string CollideStyle::typeName       = "CollideStyle";
+const std::string CollideStyle::containerField = "children";
 
 CollideStyle::Fields::Fields () :
 	collide (new X3D::SFBool (false)),

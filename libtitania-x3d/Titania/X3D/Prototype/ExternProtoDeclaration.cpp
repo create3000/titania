@@ -64,9 +64,9 @@ namespace X3D {
 
 static constexpr bool X3D_PARALLEL = true;
 
-const ComponentType ExternProtoDeclaration::component      = ComponentType::TITANIA;
-const std::string   ExternProtoDeclaration::typeName       = "EXTERNPROTO";
-const std::string   ExternProtoDeclaration::containerField = "externProto";
+const std::string ExternProtoDeclaration::componentName  = "Titania";
+const std::string ExternProtoDeclaration::typeName       = "EXTERNPROTO";
+const std::string ExternProtoDeclaration::containerField = "externProto";
 
 ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),

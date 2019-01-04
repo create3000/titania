@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType OrthographicCamera::component      = ComponentType::TITANIA;
-const std::string   OrthographicCamera::typeName       = "OrthographicCamera";
-const std::string   OrthographicCamera::containerField = "children";
+const std::string OrthographicCamera::componentName  = "Titania";
+const std::string OrthographicCamera::typeName       = "OrthographicCamera";
+const std::string OrthographicCamera::containerField = "children";
 
 OrthographicCamera::Fields::Fields () :
 	     position (new X3D::SFVec3f (0, 0, 1)),

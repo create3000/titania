@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType MotorJoint::component      = ComponentType::RIGID_BODY_PHYSICS;
-const std::string   MotorJoint::typeName       = "MotorJoint";
-const std::string   MotorJoint::containerField = "joints";
+const std::string MotorJoint::componentName  = "RigidBodyPhysics";
+const std::string MotorJoint::typeName       = "MotorJoint";
+const std::string MotorJoint::containerField = "joints";
 
 MotorJoint::Fields::Fields () :
 	            autoCalc (new SFBool ()),

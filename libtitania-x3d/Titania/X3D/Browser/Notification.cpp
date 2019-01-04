@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Notification::component      = ComponentType::TITANIA;
-const std::string   Notification::typeName       = "Notification";
-const std::string   Notification::containerField = "notification";
+const std::string Notification::componentName  = "Titania";
+const std::string Notification::typeName       = "Notification";
+const std::string Notification::containerField = "notification";
 
 Notification::Fields::Fields () :
 	string (new SFString ())

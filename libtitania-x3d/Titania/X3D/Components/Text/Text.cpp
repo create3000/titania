@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Text::component      = ComponentType::TEXT;
-const std::string   Text::typeName       = "Text";
-const std::string   Text::containerField = "geometry";
+const std::string Text::componentName  = "Text";
+const std::string Text::typeName       = "Text";
+const std::string Text::containerField = "geometry";
 
 Text::Fields::Fields () :
 	    string (new MFString ()),

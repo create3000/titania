@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ConeOptions::component      = ComponentType::TITANIA;
-const std::string   ConeOptions::typeName       = "ConeOptions";
-const std::string   ConeOptions::containerField = "options";
+const std::string ConeOptions::componentName  = "Titania";
+const std::string ConeOptions::typeName       = "ConeOptions";
+const std::string ConeOptions::containerField = "options";
 
 ConeOptions::Fields::Fields () :
 	xDimension (new SFInt32 (20)),

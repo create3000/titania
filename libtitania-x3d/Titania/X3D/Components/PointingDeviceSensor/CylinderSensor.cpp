@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType CylinderSensor::component      = ComponentType::POINTING_DEVICE_SENSOR;
-const std::string   CylinderSensor::typeName       = "CylinderSensor";
-const std::string   CylinderSensor::containerField = "children";
+const std::string CylinderSensor::componentName  = "PointingDeviceSensor";
+const std::string CylinderSensor::typeName       = "CylinderSensor";
+const std::string CylinderSensor::containerField = "children";
 
 CylinderSensor::Fields::Fields () :
 	    axisRotation (new SFRotation (0, 1, 0, 0)),

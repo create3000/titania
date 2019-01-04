@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Console::component      = ComponentType::TITANIA;
-const std::string   Console::typeName       = "Console";
-const std::string   Console::containerField = "console";
+const std::string Console::componentName  = "Titania";
+const std::string Console::typeName       = "Console";
+const std::string Console::containerField = "console";
 
 Console::Console (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),

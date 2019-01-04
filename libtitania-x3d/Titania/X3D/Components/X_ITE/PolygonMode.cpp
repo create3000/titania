@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PolygonMode::component      = ComponentType::TITANIA;
-const std::string   PolygonMode::typeName       = "PolygonMode";
-const std::string   PolygonMode::containerField = "children";
+const std::string PolygonMode::componentName  = "Titania";
+const std::string PolygonMode::typeName       = "PolygonMode";
+const std::string PolygonMode::containerField = "children";
 
 PolygonMode::Fields::Fields () :
 	  type (new SFString ("FILL"))

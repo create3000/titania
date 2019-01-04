@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ExamineViewer::component      = ComponentType::TITANIA;
-const std::string   ExamineViewer::typeName       = "ExamineViewer";
-const std::string   ExamineViewer::containerField = "viewer";
+const std::string ExamineViewer::componentName  = "Titania";
+const std::string ExamineViewer::typeName       = "ExamineViewer";
+const std::string ExamineViewer::containerField = "viewer";
 
 ExamineViewer::ExamineViewer (X3DExecutionContext* const executionContext) :
 		  X3DBaseNode (executionContext -> getBrowser (), executionContext),

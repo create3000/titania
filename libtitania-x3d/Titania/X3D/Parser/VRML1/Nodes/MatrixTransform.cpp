@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType MatrixTransform::component      = ComponentType::TITANIA;
-const std::string   MatrixTransform::typeName       = "MatrixTransform";
-const std::string   MatrixTransform::containerField = "children";
+const std::string MatrixTransform::componentName  = "Titania";
+const std::string MatrixTransform::typeName       = "MatrixTransform";
+const std::string MatrixTransform::containerField = "children";
 
 MatrixTransform::Fields::Fields () :
 	matrix (new X3D::SFMatrix4f ())

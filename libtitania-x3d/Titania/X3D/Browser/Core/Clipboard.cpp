@@ -62,9 +62,9 @@ Clipboard::Fields::Fields () :
 	string_changed (new SFString ())
 { }
 
-const ComponentType Clipboard::component      = ComponentType::TITANIA;
-const std::string   Clipboard::typeName       = "Clipboard";
-const std::string   Clipboard::containerField = "clipboard";
+const std::string Clipboard::componentName  = "Titania";
+const std::string Clipboard::typeName       = "Clipboard";
+const std::string Clipboard::containerField = "clipboard";
 
 Clipboard::Clipboard (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -65,9 +65,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Cylinder::component      = ComponentType::GEOMETRY_3D;
-const std::string   Cylinder::typeName       = "Cylinder";
-const std::string   Cylinder::containerField = "geometry";
+const std::string Cylinder::componentName  = "Geometry3D";
+const std::string Cylinder::typeName       = "Cylinder";
+const std::string Cylinder::containerField = "geometry";
 
 Cylinder::Fields::Fields () :
 	    top (new SFBool (true)),

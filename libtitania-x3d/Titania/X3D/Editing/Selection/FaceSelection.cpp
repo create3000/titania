@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType FaceSelection::component      = ComponentType::TITANIA;
-const std::string   FaceSelection::typeName       = "FaceSelection";
-const std::string   FaceSelection::containerField = "selection";
+const std::string FaceSelection::componentName  = "Titania";
+const std::string FaceSelection::typeName       = "FaceSelection";
+const std::string FaceSelection::containerField = "selection";
 
 FaceSelection::Fields::Fields () :
 	geometry (new SFNode ())

@@ -65,9 +65,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Cone::component      = ComponentType::GEOMETRY_3D;
-const std::string   Cone::typeName       = "Cone";
-const std::string   Cone::containerField = "geometry";
+const std::string Cone::componentName  = "Geometry3D";
+const std::string Cone::typeName       = "Cone";
+const std::string Cone::containerField = "geometry";
 
 Cone::Fields::Fields () :
 	        side (new SFBool (true)),

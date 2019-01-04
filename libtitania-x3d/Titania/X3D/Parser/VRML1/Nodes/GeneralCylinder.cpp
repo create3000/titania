@@ -73,9 +73,9 @@ namespace VRML1 {
 static const std::regex sides (R"/(ALL|BOTTOM)/");
 static const std::regex bottom (R"/(ALL|TOP)/");
 
-const ComponentType GeneralCylinder::component      = ComponentType::TITANIA;
-const std::string   GeneralCylinder::typeName       = "GeneralCylinder";
-const std::string   GeneralCylinder::containerField = "children";
+const std::string GeneralCylinder::componentName  = "Titania";
+const std::string GeneralCylinder::typeName       = "GeneralCylinder";
+const std::string GeneralCylinder::containerField = "children";
 
 GeneralCylinder::Fields::Fields () :
 	       spine (new X3D::MFVec3f ({ X3D::Vector3f (0, 0, 0), X3D::Vector3f (0, 1, 0) })),

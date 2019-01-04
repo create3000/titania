@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ProjectionVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   ProjectionVolumeStyle::typeName       = "ProjectionVolumeStyle";
-const std::string   ProjectionVolumeStyle::containerField = "renderStyle";
+const std::string ProjectionVolumeStyle::componentName  = "VolumeRendering";
+const std::string ProjectionVolumeStyle::typeName       = "ProjectionVolumeStyle";
+const std::string ProjectionVolumeStyle::containerField = "renderStyle";
 
 ProjectionVolumeStyle::Fields::Fields () :
 	intensityThreshold (new SFFloat (0))

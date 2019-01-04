@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LightSaber::component      = ComponentType::TITANIA;
-const std::string   LightSaber::typeName       = "LightSaber";
-const std::string   LightSaber::containerField = "viewer";
+const std::string LightSaber::componentName  = "Titania";
+const std::string LightSaber::typeName       = "LightSaber";
+const std::string LightSaber::containerField = "viewer";
 
 LightSaber::LightSaber (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),

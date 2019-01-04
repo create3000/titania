@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Rotation::component      = ComponentType::TITANIA;
-const std::string   Rotation::typeName       = "Rotation";
-const std::string   Rotation::containerField = "children";
+const std::string Rotation::componentName  = "Titania";
+const std::string Rotation::typeName       = "Rotation";
+const std::string Rotation::containerField = "children";
 
 Rotation::Fields::Fields () :
 	rotation (new X3D::SFRotation (0, 0, 1, 0))

@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Contour2D::component      = ComponentType::NURBS;
-const std::string   Contour2D::typeName       = "Contour2D";
-const std::string   Contour2D::containerField = "trimmingContour";
+const std::string Contour2D::componentName  = "NURBS";
+const std::string Contour2D::typeName       = "Contour2D";
+const std::string Contour2D::containerField = "trimmingContour";
 
 Contour2D::Fields::Fields () :
 	   addChildren (new MFNode ()),

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType StaticGroup::component      = ComponentType::GROUPING;
-const std::string   StaticGroup::typeName       = "StaticGroup";
-const std::string   StaticGroup::containerField = "children";
+const std::string StaticGroup::componentName  = "Grouping";
+const std::string StaticGroup::typeName       = "StaticGroup";
+const std::string StaticGroup::containerField = "children";
 
 StaticGroup::Fields::Fields () :
 	children (new MFNode ())

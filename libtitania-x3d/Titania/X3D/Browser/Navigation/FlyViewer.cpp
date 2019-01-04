@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType FlyViewer::component      = ComponentType::TITANIA;
-const std::string   FlyViewer::typeName       = "FlyViewer";
-const std::string   FlyViewer::containerField = "viewer";
+const std::string FlyViewer::componentName  = "Titania";
+const std::string FlyViewer::typeName       = "FlyViewer";
+const std::string FlyViewer::containerField = "viewer";
 
 FlyViewer::FlyViewer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),

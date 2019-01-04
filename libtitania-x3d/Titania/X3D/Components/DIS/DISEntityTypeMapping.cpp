@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType DISEntityTypeMapping::component      = ComponentType::DIS;
-const std::string   DISEntityTypeMapping::typeName       = "DISEntityTypeMapping";
-const std::string   DISEntityTypeMapping::containerField = "mapping";
+const std::string DISEntityTypeMapping::componentName  = "DIS";
+const std::string DISEntityTypeMapping::typeName       = "DISEntityTypeMapping";
+const std::string DISEntityTypeMapping::containerField = "mapping";
 
 DISEntityTypeMapping::Fields::Fields () :
 	url (new MFString ()),

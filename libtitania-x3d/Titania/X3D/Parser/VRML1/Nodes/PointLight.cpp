@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType PointLight::component      = ComponentType::TITANIA;
-const std::string   PointLight::typeName       = "PointLight";
-const std::string   PointLight::containerField = "children";
+const std::string PointLight::componentName  = "Titania";
+const std::string PointLight::typeName       = "PointLight";
+const std::string PointLight::containerField = "children";
 
 PointLight::Fields::Fields () :
 	       on (new X3D::SFBool (true)),

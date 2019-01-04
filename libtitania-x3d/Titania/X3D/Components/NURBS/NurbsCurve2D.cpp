@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NurbsCurve2D::component      = ComponentType::NURBS;
-const std::string   NurbsCurve2D::typeName       = "NurbsCurve2D";
-const std::string   NurbsCurve2D::containerField = "children";
+const std::string NurbsCurve2D::componentName  = "NURBS";
+const std::string NurbsCurve2D::typeName       = "NurbsCurve2D";
+const std::string NurbsCurve2D::containerField = "children";
 
 NurbsCurve2D::Fields::Fields () :
 	tessellation (new SFInt32 ()),

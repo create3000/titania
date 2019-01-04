@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType FontStyleOptions::component      = ComponentType::TITANIA;
-const std::string   FontStyleOptions::typeName       = "FontStyleOptions";
-const std::string   FontStyleOptions::containerField = "fontStyleOptions";
+const std::string FontStyleOptions::componentName  = "Titania";
+const std::string FontStyleOptions::typeName       = "FontStyleOptions";
+const std::string FontStyleOptions::containerField = "fontStyleOptions";
 
 FontStyleOptions::Fields::Fields () :
 	bezierDimension (new SFInt32 (5))

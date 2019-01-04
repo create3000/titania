@@ -151,8 +151,8 @@ public:
 	///  Returns the component name this node belongs to.
 	///  throws Error <DISPOSED>
 	virtual
-	ComponentType
-	getComponent () const = 0;
+	const std::string &
+	getComponentName () const = 0;
 
 	///  Returns a array of types of this node.
 	///  throws Error <DISPOSED>

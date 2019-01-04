@@ -62,9 +62,9 @@ namespace X3D {
 
 static constexpr size_t MAX_TEXTURES = 8;
 
-const ComponentType MultiTexture::component      = ComponentType::TEXTURING;
-const std::string   MultiTexture::typeName       = "MultiTexture";
-const std::string   MultiTexture::containerField = "texture";
+const std::string MultiTexture::componentName  = "Texturing";
+const std::string MultiTexture::typeName       = "MultiTexture";
+const std::string MultiTexture::containerField = "texture";
 
 MultiTexture::Fields::Fields () :
 	   color (new SFColor (1, 1, 1)),

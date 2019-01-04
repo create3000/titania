@@ -61,9 +61,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType OctahedronOptions::component      = ComponentType::TITANIA;
-const std::string   OctahedronOptions::typeName       = "OctahedronOptions";
-const std::string   OctahedronOptions::containerField = "options";
+const std::string OctahedronOptions::componentName  = "Titania";
+const std::string OctahedronOptions::typeName       = "OctahedronOptions";
+const std::string OctahedronOptions::containerField = "options";
 
 OctahedronOptions::Fields::Fields () :
 	sphericalInterpolation (new SFBool ()),

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LinePickSensor::component      = ComponentType::PICKING;
-const std::string   LinePickSensor::typeName       = "LinePickSensor";
-const std::string   LinePickSensor::containerField = "children";
+const std::string LinePickSensor::componentName  = "Picking";
+const std::string LinePickSensor::typeName       = "LinePickSensor";
+const std::string LinePickSensor::containerField = "children";
 
 LinePickSensor::Fields::Fields () :
 	pickedNormal (new MFVec3f ()),

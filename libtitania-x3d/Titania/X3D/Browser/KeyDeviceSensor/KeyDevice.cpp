@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType KeyDevice::component      = ComponentType::TITANIA;
-const std::string   KeyDevice::typeName       = "KeyDevice";
-const std::string   KeyDevice::containerField = "keyDevice";
+const std::string KeyDevice::componentName  = "Titania";
+const std::string KeyDevice::typeName       = "KeyDevice";
+const std::string KeyDevice::containerField = "keyDevice";
 
 KeyDevice::KeyDevice (X3DExecutionContext* const executionContext) :
 		        X3DBaseNode (executionContext -> getBrowser (), executionContext),

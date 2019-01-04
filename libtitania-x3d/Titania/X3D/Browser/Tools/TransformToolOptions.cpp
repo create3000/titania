@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TransformToolOptions::component      = ComponentType::TITANIA;
-const std::string   TransformToolOptions::typeName       = "TransformToolOptions";
-const std::string   TransformToolOptions::containerField = "transformToolOptions";
+const std::string TransformToolOptions::componentName  = "Titania";
+const std::string TransformToolOptions::typeName       = "TransformToolOptions";
+const std::string TransformToolOptions::containerField = "transformToolOptions";
 
 TransformToolOptions::Fields::Fields () :
 	 toolMode (new SFInt32 (0)),

@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ImageCubeMapTexture::component      = ComponentType::CUBE_MAP_TEXTURING;
-const std::string   ImageCubeMapTexture::typeName       = "ImageCubeMapTexture";
-const std::string   ImageCubeMapTexture::containerField = "texture";
+const std::string ImageCubeMapTexture::componentName  = "CubeMapTexturing";
+const std::string ImageCubeMapTexture::typeName       = "ImageCubeMapTexture";
+const std::string ImageCubeMapTexture::containerField = "texture";
 
 ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),

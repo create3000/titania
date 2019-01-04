@@ -66,13 +66,9 @@ public:
 
 	///  @name Construction
 
-	ComponentInfo (const ComponentType, const std::string &, const std::string &, const size_t);
+	ComponentInfo (const std::string & title, const std::string & name, const size_t level);
 
 	///  @name Member access
-
-	ComponentType
-	getType () const
-	{ return type; }
 
 	const std::string &
 	getTitle () const
@@ -106,7 +102,6 @@ private:
 
 	///  @name Members
 
-	const ComponentType type;
 	const std::string   title;
 	const std::string   name;
 	const size_t        level;

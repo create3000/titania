@@ -59,9 +59,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Material::component      = ComponentType::TITANIA;
-const std::string   Material::typeName       = "Material";
-const std::string   Material::containerField = "children";
+const std::string Material::componentName  = "Titania";
+const std::string Material::typeName       = "Material";
+const std::string Material::containerField = "children";
 
 Material::Fields::Fields () :
 	 ambientColor (new X3D::MFColor ({ X3D::Color3f (0.2, 0.2, 0.2) })),

@@ -60,9 +60,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Script::component      = ComponentType::SCRIPTING;
-const std::string   Script::typeName       = "Script";
-const std::string   Script::containerField = "children";
+const std::string Script::componentName  = "Scripting";
+const std::string Script::typeName       = "Script";
+const std::string Script::containerField = "children";
 
 Script::Fields::Fields () :
 	directOutput (new SFBool ()),

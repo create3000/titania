@@ -213,7 +213,7 @@ Combine::geometryBoolean (const BooleanOperation & booleanOperation,
 	{
 		static constexpr double MERGE_DISTANCE = 1e-6;
 
-		if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
+		if (not executionContext -> hasComponent ("Geometry3D"))
 			executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
 
 		// Choose target.
@@ -307,7 +307,7 @@ Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
                           const UndoStepPtr & undoStep)
 {
-	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
+	if (not executionContext -> hasComponent ("Geometry3D"))
 		executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
 
 	// Choose target

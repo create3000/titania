@@ -87,7 +87,7 @@ private:
 	///  @name Operations
 
 	void
-	add (const std::string &, const std::string &, std::initializer_list <ComponentInfoPtr>);
+	add (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList);
 
 	///  @name Members
 

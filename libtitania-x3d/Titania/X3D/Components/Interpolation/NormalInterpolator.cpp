@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NormalInterpolator::component      = ComponentType::INTERPOLATION;
-const std::string   NormalInterpolator::typeName       = "NormalInterpolator";
-const std::string   NormalInterpolator::containerField = "children";
+const std::string NormalInterpolator::componentName  = "Interpolation";
+const std::string NormalInterpolator::typeName       = "NormalInterpolator";
+const std::string NormalInterpolator::containerField = "children";
 
 NormalInterpolator::Fields::Fields () :
 	     keyValue (new MFVec3f ()),

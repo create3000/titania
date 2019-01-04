@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType EdgeEnhancementVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   EdgeEnhancementVolumeStyle::typeName       = "EdgeEnhancementVolumeStyle";
-const std::string   EdgeEnhancementVolumeStyle::containerField = "renderStyle";
+const std::string EdgeEnhancementVolumeStyle::componentName  = "VolumeRendering";
+const std::string EdgeEnhancementVolumeStyle::typeName       = "EdgeEnhancementVolumeStyle";
+const std::string EdgeEnhancementVolumeStyle::containerField = "renderStyle";
 
 EdgeEnhancementVolumeStyle::Fields::Fields () :
 	        edgeColor (new SFColorRGBA (0, 0, 0, 1)),

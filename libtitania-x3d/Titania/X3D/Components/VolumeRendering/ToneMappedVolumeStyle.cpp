@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ToneMappedVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   ToneMappedVolumeStyle::typeName       = "ToneMappedVolumeStyle";
-const std::string   ToneMappedVolumeStyle::containerField = "renderStyle";
+const std::string ToneMappedVolumeStyle::componentName  = "VolumeRendering";
+const std::string ToneMappedVolumeStyle::typeName       = "ToneMappedVolumeStyle";
+const std::string ToneMappedVolumeStyle::containerField = "renderStyle";
 
 ToneMappedVolumeStyle::Fields::Fields () :
 	     coolColor (new SFColorRGBA (0, 0, 1, 0)),

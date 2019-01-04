@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ContourPolyline2D::component      = ComponentType::NURBS;
-const std::string   ContourPolyline2D::typeName       = "ContourPolyline2D";
-const std::string   ContourPolyline2D::containerField = "children";
+const std::string ContourPolyline2D::componentName  = "NURBS";
+const std::string ContourPolyline2D::typeName       = "ContourPolyline2D";
+const std::string ContourPolyline2D::containerField = "children";
 
 ContourPolyline2D::ContourPolyline2D (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),

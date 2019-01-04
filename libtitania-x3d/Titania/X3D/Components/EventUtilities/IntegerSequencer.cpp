@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType IntegerSequencer::component      = ComponentType::EVENT_UTILITIES;
-const std::string   IntegerSequencer::typeName       = "IntegerSequencer";
-const std::string   IntegerSequencer::containerField = "children";
+const std::string IntegerSequencer::componentName  = "EventUtilities";
+const std::string IntegerSequencer::typeName       = "IntegerSequencer";
+const std::string IntegerSequencer::containerField = "children";
 
 IntegerSequencer::Fields::Fields () :
 	     keyValue (new MFInt32 ()),

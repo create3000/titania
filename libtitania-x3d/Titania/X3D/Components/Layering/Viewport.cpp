@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Viewport::component      = ComponentType::LAYERING;
-const std::string   Viewport::typeName       = "Viewport";
-const std::string   Viewport::containerField = "viewport";
+const std::string Viewport::componentName  = "Layering";
+const std::string Viewport::typeName       = "Viewport";
+const std::string Viewport::containerField = "viewport";
 
 Viewport::Fields::Fields () :
 	clipBoundary (new MFFloat ({ 0, 1, 0, 1 }))

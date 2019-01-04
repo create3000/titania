@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NurbsSurfaceInterpolator::component      = ComponentType::NURBS;
-const std::string   NurbsSurfaceInterpolator::typeName       = "NurbsSurfaceInterpolator";
-const std::string   NurbsSurfaceInterpolator::containerField = "children";
+const std::string NurbsSurfaceInterpolator::componentName  = "NURBS";
+const std::string NurbsSurfaceInterpolator::typeName       = "NurbsSurfaceInterpolator";
+const std::string NurbsSurfaceInterpolator::containerField = "children";
 
 NurbsSurfaceInterpolator::Fields::Fields () :
 	set_fraction (new SFVec2f ()),

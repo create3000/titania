@@ -71,9 +71,9 @@ namespace X3D {
 
 const std::string X3DBrowser::version = "4.3.8"; // Don't forget to call 'make version'.
 
-const ComponentType X3DBrowser::component      = ComponentType::TITANIA;
-const std::string   X3DBrowser::typeName       = "Browser";
-const std::string   X3DBrowser::containerField = "browser";
+const std::string X3DBrowser::componentName  = "Titania";
+const std::string X3DBrowser::typeName       = "Browser";
+const std::string X3DBrowser::containerField = "browser";
 
 X3DBrowser::X3DBrowser (const X3DBrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
 	        X3DBaseNode (),

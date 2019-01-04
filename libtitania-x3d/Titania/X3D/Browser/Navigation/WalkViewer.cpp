@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType WalkViewer::component      = ComponentType::TITANIA;
-const std::string   WalkViewer::typeName       = "WalkViewer";
-const std::string   WalkViewer::containerField = "viewer";
+const std::string WalkViewer::componentName  = "Titania";
+const std::string WalkViewer::typeName       = "WalkViewer";
+const std::string WalkViewer::containerField = "viewer";
 
 WalkViewer::WalkViewer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),

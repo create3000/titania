@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType EaseInEaseOut::component      = ComponentType::INTERPOLATION;
-const std::string   EaseInEaseOut::typeName       = "EaseInEaseOut";
-const std::string   EaseInEaseOut::containerField = "children";
+const std::string EaseInEaseOut::componentName  = "Interpolation";
+const std::string EaseInEaseOut::typeName       = "EaseInEaseOut";
+const std::string EaseInEaseOut::containerField = "children";
 
 EaseInEaseOut::Fields::Fields () :
 	           easeInEaseOut (new MFVec2f ()),

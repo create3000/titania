@@ -64,9 +64,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NavigationInfo::component      = ComponentType::NAVIGATION;
-const std::string   NavigationInfo::typeName       = "NavigationInfo";
-const std::string   NavigationInfo::containerField = "children";
+const std::string NavigationInfo::componentName  = "Navigation";
+const std::string NavigationInfo::typeName       = "NavigationInfo";
+const std::string NavigationInfo::containerField = "children";
 
 NavigationInfo::Fields::Fields () :
 	              type (new MFString ({ "EXAMINE", "ANY" })),

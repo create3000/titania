@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType IndexedTriangleSet::component      = ComponentType::RENDERING;
-const std::string   IndexedTriangleSet::typeName       = "IndexedTriangleSet";
-const std::string   IndexedTriangleSet::containerField = "geometry";
+const std::string IndexedTriangleSet::componentName  = "Rendering";
+const std::string IndexedTriangleSet::typeName       = "IndexedTriangleSet";
+const std::string IndexedTriangleSet::containerField = "geometry";
 
 IndexedTriangleSet::Fields::Fields () :
 	index (new MFInt32 ())

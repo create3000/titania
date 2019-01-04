@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType SnapSourceTool::component      = ComponentType::TITANIA;
-const std::string   SnapSourceTool::typeName       = "SnapSourceTool";
-const std::string   SnapSourceTool::containerField = "SnapTool";
+const std::string SnapSourceTool::componentName  = "Titania";
+const std::string SnapSourceTool::typeName       = "SnapSourceTool";
+const std::string SnapSourceTool::containerField = "SnapTool";
 
 SnapSourceTool::SnapSourceTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

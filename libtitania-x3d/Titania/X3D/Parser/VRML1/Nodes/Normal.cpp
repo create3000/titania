@@ -59,9 +59,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Normal::component      = ComponentType::TITANIA;
-const std::string   Normal::typeName       = "Normal";
-const std::string   Normal::containerField = "children";
+const std::string Normal::componentName  = "Titania";
+const std::string Normal::typeName       = "Normal";
+const std::string Normal::containerField = "children";
 
 Normal::Fields::Fields () :
 	vector (new X3D::MFVec3f ())

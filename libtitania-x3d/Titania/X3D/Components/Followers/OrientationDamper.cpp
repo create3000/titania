@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType OrientationDamper::component      = ComponentType::FOLLOWERS;
-const std::string   OrientationDamper::typeName       = "OrientationDamper";
-const std::string   OrientationDamper::containerField = "children";
+const std::string OrientationDamper::componentName  = "Followers";
+const std::string OrientationDamper::typeName       = "OrientationDamper";
+const std::string OrientationDamper::containerField = "children";
 
 OrientationDamper::Fields::Fields () :
 	         set_value (new SFRotation ()),

@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PolylineEmitter::component      = ComponentType::PARTICLE_SYSTEMS;
-const std::string   PolylineEmitter::typeName       = "PolylineEmitter";
-const std::string   PolylineEmitter::containerField = "emitter";
+const std::string PolylineEmitter::componentName  = "ParticleSystems";
+const std::string PolylineEmitter::typeName       = "PolylineEmitter";
+const std::string PolylineEmitter::containerField = "emitter";
 
 PolylineEmitter::Fields::Fields () :
 	 direction (new SFVec3f (0, 1, 0)),

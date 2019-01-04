@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType SegmentedVolumeData::component      = ComponentType::VOLUME_RENDERING;
-const std::string   SegmentedVolumeData::typeName       = "SegmentedVolumeData";
-const std::string   SegmentedVolumeData::containerField = "children";
+const std::string SegmentedVolumeData::componentName  = "VolumeRendering";
+const std::string SegmentedVolumeData::typeName       = "SegmentedVolumeData";
+const std::string SegmentedVolumeData::containerField = "children";
 
 SegmentedVolumeData::Fields::Fields () :
 	       renderStyle (new MFNode ()),

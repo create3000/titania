@@ -65,9 +65,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Disk2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Disk2D::typeName       = "Disk2D";
-const std::string   Disk2D::containerField = "geometry";
+const std::string Disk2D::componentName  = "Geometry2D";
+const std::string Disk2D::typeName       = "Disk2D";
+const std::string Disk2D::containerField = "geometry";
 
 Disk2D::Fields::Fields () :
 	innerRadius (new SFFloat ()),

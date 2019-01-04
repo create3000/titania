@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType PerspectiveCamera::component      = ComponentType::TITANIA;
-const std::string   PerspectiveCamera::typeName       = "PerspectiveCamera";
-const std::string   PerspectiveCamera::containerField = "children";
+const std::string PerspectiveCamera::componentName  = "Titania";
+const std::string PerspectiveCamera::typeName       = "PerspectiveCamera";
+const std::string PerspectiveCamera::containerField = "children";
 
 PerspectiveCamera::Fields::Fields () :
 	     position (new X3D::SFVec3f (0, 0, 1)),

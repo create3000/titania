@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TextureProperties::component      = ComponentType::TEXTURING;
-const std::string   TextureProperties::typeName       = "TextureProperties";
-const std::string   TextureProperties::containerField = "textureProperties";
+const std::string TextureProperties::componentName  = "Texturing";
+const std::string TextureProperties::typeName       = "TextureProperties";
+const std::string TextureProperties::containerField = "textureProperties";
 
 // http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
 

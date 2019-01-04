@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType CoordinateDouble::component      = ComponentType::NURBS;
-const std::string   CoordinateDouble::typeName       = "CoordinateDouble";
-const std::string   CoordinateDouble::containerField = "coord";
+const std::string CoordinateDouble::componentName  = "NURBS";
+const std::string CoordinateDouble::typeName       = "CoordinateDouble";
+const std::string CoordinateDouble::containerField = "coord";
 
 CoordinateDouble::Fields::Fields () :
 	point (new MFVec3d ())

@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType NavigationInfo::component      = ComponentType::TITANIA;
-const std::string   NavigationInfo::typeName       = "NavigationInfo";
-const std::string   NavigationInfo::containerField = "children";
+const std::string NavigationInfo::componentName  = "Titania";
+const std::string NavigationInfo::typeName       = "NavigationInfo";
+const std::string NavigationInfo::containerField = "children";
 
 NavigationInfo::Fields::Fields () :
 	           type (new X3D::MFString ({ "walk" })),

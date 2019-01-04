@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType BlendMode::component      = ComponentType::X_ITE;
-const std::string   BlendMode::typeName       = "BlendMode";
-const std::string   BlendMode::containerField = "blendMode";
+const std::string BlendMode::componentName  = "X_ITE";
+const std::string BlendMode::typeName       = "BlendMode";
+const std::string BlendMode::containerField = "blendMode";
 
 const std::map <std::string, GLenum> BlendMode::blendTypes = {
 	// WebGL

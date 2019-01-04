@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GeoLOD::component      = ComponentType::GEOSPATIAL;
-const std::string   GeoLOD::typeName       = "GeoLOD";
-const std::string   GeoLOD::containerField = "children";
+const std::string GeoLOD::componentName  = "Geospatial";
+const std::string GeoLOD::typeName       = "GeoLOD";
+const std::string GeoLOD::containerField = "children";
 
 GeoLOD::Fields::Fields () :
 	      rootUrl (new MFString ()),

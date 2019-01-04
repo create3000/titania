@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType Background::component      = ComponentType::TITANIA;
-const std::string   Background::typeName       = "Background";
-const std::string   Background::containerField = "children";
+const std::string Background::componentName  = "Titania";
+const std::string Background::typeName       = "Background";
+const std::string Background::containerField = "children";
 
 Background::Fields::Fields () :
 	groundColors (new X3D::MFColor ()),

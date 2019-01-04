@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GeoLocation::component      = ComponentType::GEOSPATIAL;
-const std::string   GeoLocation::typeName       = "GeoLocation";
-const std::string   GeoLocation::containerField = "children";
+const std::string GeoLocation::componentName  = "Geospatial";
+const std::string GeoLocation::typeName       = "GeoLocation";
+const std::string GeoLocation::containerField = "children";
 GeoLocation::Fields::Fields () :
 	geoCoords (new SFVec3d ())
 { }

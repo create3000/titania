@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ScalarInterpolator::component      = ComponentType::INTERPOLATION;
-const std::string   ScalarInterpolator::typeName       = "ScalarInterpolator";
-const std::string   ScalarInterpolator::containerField = "children";
+const std::string ScalarInterpolator::componentName  = "Interpolation";
+const std::string ScalarInterpolator::typeName       = "ScalarInterpolator";
+const std::string ScalarInterpolator::containerField = "children";
 
 ScalarInterpolator::Fields::Fields () :
 	     keyValue (new MFFloat ()),

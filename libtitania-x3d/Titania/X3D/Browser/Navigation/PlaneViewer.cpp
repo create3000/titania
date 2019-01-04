@@ -61,9 +61,9 @@ namespace X3D {
 
 static constexpr double SCROLL_FACTOR = 0.05;
 
-const ComponentType PlaneViewer::component      = ComponentType::TITANIA;
-const std::string   PlaneViewer::typeName       = "PlaneViewer";
-const std::string   PlaneViewer::containerField = "viewer";
+const std::string PlaneViewer::componentName  = "Titania";
+const std::string PlaneViewer::typeName       = "PlaneViewer";
+const std::string PlaneViewer::containerField = "viewer";
 
 PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext, const NodeType type) :
 	   X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -73,9 +73,9 @@ public:
 
 	///  throws X3D::Error <X3D::DISPOSED>
 	virtual
-	X3D::ComponentType
-	getComponent () const final override
-	{ return component; }
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
 
 	///  throws X3D::Error <X3D::DISPOSED>
 	virtual
@@ -94,7 +94,7 @@ private:
 
 	///  @name Static members
 
-	static const X3D::ComponentType component;
+	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
 

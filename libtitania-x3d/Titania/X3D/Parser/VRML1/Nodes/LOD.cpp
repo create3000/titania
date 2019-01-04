@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType LOD::component      = ComponentType::TITANIA;
-const std::string   LOD::typeName       = "LOD";
-const std::string   LOD::containerField = "children";
+const std::string LOD::componentName  = "Titania";
+const std::string LOD::typeName       = "LOD";
+const std::string LOD::containerField = "children";
 
 LOD::Fields::Fields () :
 	 range (new X3D::MFFloat ()),

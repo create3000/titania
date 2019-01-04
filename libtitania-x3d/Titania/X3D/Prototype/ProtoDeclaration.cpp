@@ -60,9 +60,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ProtoDeclaration::component      = ComponentType::TITANIA;
-const std::string   ProtoDeclaration::typeName       = "PROTO";
-const std::string   ProtoDeclaration::containerField = "proto";
+const std::string ProtoDeclaration::componentName  = "Titania";
+const std::string ProtoDeclaration::typeName       = "PROTO";
+const std::string ProtoDeclaration::containerField = "proto";
 
 ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),

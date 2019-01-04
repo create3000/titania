@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ScalarDamper::component      = ComponentType::FOLLOWERS;
-const std::string   ScalarDamper::typeName       = "ScalarDamper";
-const std::string   ScalarDamper::containerField = "children";
+const std::string ScalarDamper::componentName  = "Followers";
+const std::string ScalarDamper::typeName       = "ScalarDamper";
+const std::string ScalarDamper::containerField = "children";
 
 ScalarDamper::Fields::Fields () :
 	         set_value (new SFFloat ()),

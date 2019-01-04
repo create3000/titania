@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType DISEntityManager::component      = ComponentType::DIS;
-const std::string   DISEntityManager::typeName       = "DISEntityManager";
-const std::string   DISEntityManager::containerField = "children";
+const std::string DISEntityManager::componentName  = "DIS";
+const std::string DISEntityManager::typeName       = "DISEntityManager";
+const std::string DISEntityManager::containerField = "children";
 
 DISEntityManager::Fields::Fields () :
 	address (new SFString ("localhost")),

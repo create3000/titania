@@ -65,9 +65,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Shape::component      = ComponentType::SHAPE;
-const std::string   Shape::typeName       = "Shape";
-const std::string   Shape::containerField = "children";
+const std::string Shape::componentName  = "Shape";
+const std::string Shape::typeName       = "Shape";
+const std::string Shape::containerField = "children";
 
 Shape::Shape (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),

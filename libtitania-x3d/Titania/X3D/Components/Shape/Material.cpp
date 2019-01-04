@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Material::component      = ComponentType::SHAPE;
-const std::string   Material::typeName       = "Material";
-const std::string   Material::containerField = "material";
+const std::string Material::componentName  = "Shape";
+const std::string Material::typeName       = "Material";
+const std::string Material::containerField = "material";
 
 Material::Fields::Fields () :
 	ambientIntensity (new SFFloat (0.2)),

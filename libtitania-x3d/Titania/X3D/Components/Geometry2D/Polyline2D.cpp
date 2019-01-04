@@ -60,9 +60,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Polyline2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Polyline2D::typeName       = "Polyline2D";
-const std::string   Polyline2D::containerField = "geometry";
+const std::string Polyline2D::componentName  = "Geometry2D";
+const std::string Polyline2D::typeName       = "Polyline2D";
+const std::string Polyline2D::containerField = "geometry";
 
 /*
  * Changed accessType of lineSegments to inputOutput, so Polyline2D can be animated.

@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType AudioClip::component      = ComponentType::SOUND;
-const std::string   AudioClip::typeName       = "AudioClip";
-const std::string   AudioClip::containerField = "source";
+const std::string AudioClip::componentName  = "Sound";
+const std::string AudioClip::typeName       = "AudioClip";
+const std::string AudioClip::containerField = "source";
 
 AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),

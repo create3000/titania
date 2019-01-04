@@ -61,9 +61,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PolygonText::component      = ComponentType::TITANIA;
-const std::string   PolygonText::typeName       = "PolygonText";
-const std::string   PolygonText::containerField = "textGeometry";
+const std::string PolygonText::componentName  = "Titania";
+const std::string PolygonText::typeName       = "PolygonText";
+const std::string PolygonText::containerField = "textGeometry";
 
 PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 	    X3DBaseNode (text -> getBrowser (), text -> getExecutionContext ()),
@@ -243,9 +243,9 @@ PolygonText::toPrimitive () const
 	return SFNode (geometry);
 }
 
-const ComponentType FontStyle::component      = ComponentType::TEXT;
-const std::string   FontStyle::typeName       = "FontStyle";
-const std::string   FontStyle::containerField = "fontStyle";
+const std::string FontStyle::componentName  = "Text";
+const std::string FontStyle::typeName       = "FontStyle";
+const std::string FontStyle::containerField = "fontStyle";
 
 FontStyle::Fields::Fields () :
 	size (new SFFloat (1))

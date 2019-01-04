@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType FieldSet::component      = ComponentType::TITANIA;
-const std::string   FieldSet::typeName       = "FieldSet";
-const std::string   FieldSet::containerField = "fieldContainer";
+const std::string FieldSet::componentName  = "Titania";
+const std::string FieldSet::typeName       = "FieldSet";
+const std::string FieldSet::containerField = "fieldContainer";
 
 FieldSet::FieldSet (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

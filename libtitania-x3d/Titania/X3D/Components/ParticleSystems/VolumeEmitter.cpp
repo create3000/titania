@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType VolumeEmitter::component      = ComponentType::PARTICLE_SYSTEMS;
-const std::string   VolumeEmitter::typeName       = "VolumeEmitter";
-const std::string   VolumeEmitter::containerField = "emitter";
+const std::string VolumeEmitter::componentName  = "ParticleSystems";
+const std::string VolumeEmitter::typeName       = "VolumeEmitter";
+const std::string VolumeEmitter::containerField = "emitter";
 
 VolumeEmitter::Fields::Fields () :
 	  internal (new SFBool (true)),

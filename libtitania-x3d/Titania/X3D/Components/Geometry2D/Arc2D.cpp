@@ -64,9 +64,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Arc2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Arc2D::typeName       = "Arc2D";
-const std::string   Arc2D::containerField = "geometry";
+const std::string Arc2D::componentName  = "Geometry2D";
+const std::string Arc2D::typeName       = "Arc2D";
+const std::string Arc2D::containerField = "geometry";
 
 Arc2D::Fields::Fields () :
 	startAngle (new SFFloat ()),

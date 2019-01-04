@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType DepthBuffer::component      = ComponentType::TITANIA;
-const std::string   DepthBuffer::typeName       = "DepthBuffer";
-const std::string   DepthBuffer::containerField = "children";
+const std::string DepthBuffer::componentName  = "Titania";
+const std::string DepthBuffer::typeName       = "DepthBuffer";
+const std::string DepthBuffer::containerField = "children";
 
 DepthBuffer::Fields::Fields () :
 	          enabled (new SFBool (true)),

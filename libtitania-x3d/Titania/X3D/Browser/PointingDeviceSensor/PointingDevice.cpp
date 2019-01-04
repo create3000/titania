@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PointingDevice::component      = ComponentType::TITANIA;
-const std::string   PointingDevice::typeName       = "PointingDevice";
-const std::string   PointingDevice::containerField = "pointingDevice";
+const std::string PointingDevice::componentName  = "Titania";
+const std::string PointingDevice::typeName       = "PointingDevice";
+const std::string PointingDevice::containerField = "pointingDevice";
 
 PointingDevice::PointingDevice (X3DExecutionContext* const executionContext) :
 		            X3DBaseNode (executionContext -> getBrowser (), executionContext),

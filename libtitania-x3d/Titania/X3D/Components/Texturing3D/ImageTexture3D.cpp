@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ImageTexture3D::component      = ComponentType::TEXTURING_3D;
-const std::string   ImageTexture3D::typeName       = "ImageTexture3D";
-const std::string   ImageTexture3D::containerField = "texture";
+const std::string ImageTexture3D::componentName  = "Texturing3D";
+const std::string ImageTexture3D::typeName       = "ImageTexture3D";
+const std::string ImageTexture3D::containerField = "texture";
 
 ImageTexture3D::ImageTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),

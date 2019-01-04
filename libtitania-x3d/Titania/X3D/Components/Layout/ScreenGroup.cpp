@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ScreenGroup::component      = ComponentType::LAYOUT;
-const std::string   ScreenGroup::typeName       = "ScreenGroup";
-const std::string   ScreenGroup::containerField = "children";
+const std::string ScreenGroup::componentName  = "Layout";
+const std::string ScreenGroup::typeName       = "ScreenGroup";
+const std::string ScreenGroup::containerField = "children";
 
 ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),

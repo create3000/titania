@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType IsoSurfaceVolumeData::component      = ComponentType::VOLUME_RENDERING;
-const std::string   IsoSurfaceVolumeData::typeName       = "IsoSurfaceVolumeData";
-const std::string   IsoSurfaceVolumeData::containerField = "children";
+const std::string IsoSurfaceVolumeData::componentName  = "VolumeRendering";
+const std::string IsoSurfaceVolumeData::typeName       = "IsoSurfaceVolumeData";
+const std::string IsoSurfaceVolumeData::containerField = "children";
 
 IsoSurfaceVolumeData::Fields::Fields () :
 	 contourStepSize (new SFFloat (0)),

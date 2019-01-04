@@ -252,7 +252,7 @@ private:
 	/// @name Static members
 
 	///  TypeName identifer for X3DFields.
-	static const std::string   typeName;
+	static const std::string typeName;
 
 	///  Type identifer for X3DFields.
 	static const FieldType type;

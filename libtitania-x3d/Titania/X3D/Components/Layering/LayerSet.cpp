@@ -61,9 +61,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LayerSet::component      = ComponentType::LAYERING;
-const std::string   LayerSet::typeName       = "LayerSet";
-const std::string   LayerSet::containerField = "children";
+const std::string LayerSet::componentName  = "Layering";
+const std::string LayerSet::typeName       = "LayerSet";
+const std::string LayerSet::containerField = "children";
 
 LayerSet::Fields::Fields () :
 	privateActiveLayer (-1),

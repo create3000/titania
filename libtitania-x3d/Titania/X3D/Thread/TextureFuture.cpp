@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TextureFuture::component      = ComponentType::TITANIA;
-const std::string   TextureFuture::typeName       = "TextureFuture";
-const std::string   TextureFuture::containerField = "future";
+const std::string TextureFuture::componentName  = "Titania";
+const std::string TextureFuture::typeName       = "TextureFuture";
+const std::string TextureFuture::containerField = "future";
 
 TextureFuture::TextureFuture (X3DExecutionContext* const executionContext,
                               const MFString & url,

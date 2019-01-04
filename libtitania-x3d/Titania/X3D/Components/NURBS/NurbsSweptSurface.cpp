@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NurbsSweptSurface::component      = ComponentType::NURBS;
-const std::string   NurbsSweptSurface::typeName       = "NurbsSweptSurface";
-const std::string   NurbsSweptSurface::containerField = "geometry";
+const std::string NurbsSweptSurface::componentName  = "NURBS";
+const std::string NurbsSweptSurface::typeName       = "NurbsSweptSurface";
+const std::string NurbsSweptSurface::containerField = "geometry";
 
 NurbsSweptSurface::Fields::Fields () :
 	            solid (new SFBool (true)),

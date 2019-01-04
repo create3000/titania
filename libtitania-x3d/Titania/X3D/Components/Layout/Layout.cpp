@@ -61,9 +61,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Layout::component      = ComponentType::LAYOUT;
-const std::string   Layout::typeName       = "Layout";
-const std::string   Layout::containerField = "layout";
+const std::string Layout::componentName  = "Layout";
+const std::string Layout::typeName       = "Layout";
+const std::string Layout::containerField = "layout";
 
 Layout::Fields::Fields () :
 	      align (new MFString ({ "CENTER", "CENTER" })),

@@ -62,9 +62,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Extrusion::component      = ComponentType::GEOMETRY_3D;
-const std::string   Extrusion::typeName       = "Extrusion";
-const std::string   Extrusion::containerField = "geometry";
+const std::string Extrusion::componentName  = "Geometry3D";
+const std::string Extrusion::typeName       = "Extrusion";
+const std::string Extrusion::containerField = "geometry";
 
 Extrusion::Fields::Fields () :
 	    beginCap (new SFBool (true)),

@@ -60,9 +60,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LayoutLayer::component      = ComponentType::LAYOUT;
-const std::string   LayoutLayer::typeName       = "LayoutLayer";
-const std::string   LayoutLayer::containerField = "layers";
+const std::string LayoutLayer::componentName  = "Layout";
+const std::string LayoutLayer::typeName       = "LayoutLayer";
+const std::string LayoutLayer::containerField = "layers";
 
 LayoutLayer::Fields::Fields () :
 	layout (new SFNode ())

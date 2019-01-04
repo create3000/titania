@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PositionChaser::component      = ComponentType::FOLLOWERS;
-const std::string   PositionChaser::typeName       = "PositionChaser";
-const std::string   PositionChaser::containerField = "children";
+const std::string PositionChaser::componentName  = "Followers";
+const std::string PositionChaser::typeName       = "PositionChaser";
+const std::string PositionChaser::containerField = "children";
 
 PositionChaser::Fields::Fields () :
 	         set_value (new SFVec3f ()),

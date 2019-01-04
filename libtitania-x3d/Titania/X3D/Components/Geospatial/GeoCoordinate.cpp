@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GeoCoordinate::component      = ComponentType::GEOSPATIAL;
-const std::string   GeoCoordinate::typeName       = "GeoCoordinate";
-const std::string   GeoCoordinate::containerField = "coord";
+const std::string GeoCoordinate::componentName  = "Geospatial";
+const std::string GeoCoordinate::typeName       = "GeoCoordinate";
+const std::string GeoCoordinate::containerField = "coord";
 
 GeoCoordinate::Fields::Fields () :
 	point (new MFVec3d ())

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Color::component      = ComponentType::RENDERING;
-const std::string   Color::typeName       = "Color";
-const std::string   Color::containerField = "color";
+const std::string Color::componentName  = "Rendering";
+const std::string Color::typeName       = "Color";
+const std::string Color::containerField = "color";
 
 Color::Fields::Fields () :
 	color (new MFColor ())

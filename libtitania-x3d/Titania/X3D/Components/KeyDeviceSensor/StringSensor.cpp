@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType StringSensor::component      = ComponentType::KEY_DEVICE_SENSOR;
-const std::string   StringSensor::typeName       = "StringSensor";
-const std::string   StringSensor::containerField = "children";
+const std::string StringSensor::componentName  = "KeyDeviceSensor";
+const std::string StringSensor::typeName       = "StringSensor";
+const std::string StringSensor::containerField = "children";
 
 StringSensor::Fields::Fields () :
 	deletionAllowed (new SFBool (true)),

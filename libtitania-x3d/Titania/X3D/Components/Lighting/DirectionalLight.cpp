@@ -67,9 +67,9 @@ namespace X3D {
 
 static constexpr int32_t DIRECTIONAL_LIGHT = 1;
 
-const ComponentType DirectionalLight::component      = ComponentType::LIGHTING;
-const std::string   DirectionalLight::typeName       = "DirectionalLight";
-const std::string   DirectionalLight::containerField = "children";
+const std::string DirectionalLight::componentName  = "Lighting";
+const std::string DirectionalLight::typeName       = "DirectionalLight";
+const std::string DirectionalLight::containerField = "children";
 
 DirectionalLight::Fields::Fields () :
    direction (new SFVec3f (0, 0, -1))

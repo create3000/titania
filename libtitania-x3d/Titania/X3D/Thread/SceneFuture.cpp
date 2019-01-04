@@ -62,9 +62,9 @@ namespace X3D {
 // See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
 // how to handle the profile and component arguments/statements of inline nodes.
 
-const ComponentType SceneFuture::component      = ComponentType::TITANIA;
-const std::string   SceneFuture::typeName       = "SceneFuture";
-const std::string   SceneFuture::containerField = "future";
+const std::string SceneFuture::componentName  = "Titania";
+const std::string SceneFuture::typeName       = "SceneFuture";
+const std::string SceneFuture::containerField = "future";
 
 SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFString & url, const bool externproto, const SceneFutureCallback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ShadedVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   ShadedVolumeStyle::typeName       = "ShadedVolumeStyle";
-const std::string   ShadedVolumeStyle::containerField = "renderStyle";
+const std::string ShadedVolumeStyle::componentName  = "VolumeRendering";
+const std::string ShadedVolumeStyle::typeName       = "ShadedVolumeStyle";
+const std::string ShadedVolumeStyle::containerField = "renderStyle";
 
 ShadedVolumeStyle::Fields::Fields () :
 	      lighting (new SFBool ()),

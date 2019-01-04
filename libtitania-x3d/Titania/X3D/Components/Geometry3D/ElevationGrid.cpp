@@ -65,9 +65,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ElevationGrid::component      = ComponentType::GEOMETRY_3D;
-const std::string   ElevationGrid::typeName       = "ElevationGrid";
-const std::string   ElevationGrid::containerField = "geometry";
+const std::string ElevationGrid::componentName  = "Geometry3D";
+const std::string ElevationGrid::typeName       = "ElevationGrid";
+const std::string ElevationGrid::containerField = "geometry";
 
 ElevationGrid::Fields::Fields () :
 	     xDimension (new SFInt32 ()),

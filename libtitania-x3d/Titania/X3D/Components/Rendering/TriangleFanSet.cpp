@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TriangleFanSet::component      = ComponentType::RENDERING;
-const std::string   TriangleFanSet::typeName       = "TriangleFanSet";
-const std::string   TriangleFanSet::containerField = "geometry";
+const std::string TriangleFanSet::componentName  = "Rendering";
+const std::string TriangleFanSet::typeName       = "TriangleFanSet";
+const std::string TriangleFanSet::containerField = "geometry";
 
 TriangleFanSet::Fields::Fields () :
 	fanCount (new MFInt32 ())

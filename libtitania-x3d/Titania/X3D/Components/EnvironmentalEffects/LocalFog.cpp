@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LocalFog::component      = ComponentType::ENVIRONMENTAL_EFFECTS;
-const std::string   LocalFog::typeName       = "LocalFog";
-const std::string   LocalFog::containerField = "children";
+const std::string LocalFog::componentName  = "EnvironmentalEffects";
+const std::string LocalFog::typeName       = "LocalFog";
+const std::string LocalFog::containerField = "children";
 
 LocalFog::Fields::Fields () :
 	enabled (new SFBool (true))

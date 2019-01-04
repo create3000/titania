@@ -164,9 +164,9 @@ private:
 
 	///  @name Static members
 
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
 
 	///  @name Members
 

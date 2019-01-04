@@ -93,9 +93,9 @@ namespace X3D {
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 // LogarithmicDepthBuffer  Boolean                                  False                        Whether to use a logarithmic depth buffer. It may be neccesary to use this if dealing with huge differences in scale in a single scene.
 
-const ComponentType BrowserOptions::component      = ComponentType::TITANIA;
-const std::string   BrowserOptions::typeName       = "BrowserOptions";
-const std::string   BrowserOptions::containerField = "browserOptions";
+const std::string BrowserOptions::componentName  = "Titania";
+const std::string BrowserOptions::typeName       = "BrowserOptions";
+const std::string BrowserOptions::containerField = "browserOptions";
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	          SplashScreen (new SFBool (true)),

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType EspduTransform::component      = ComponentType::DIS;
-const std::string   EspduTransform::typeName       = "EspduTransform";
-const std::string   EspduTransform::containerField = "children";
+const std::string EspduTransform::componentName  = "DIS";
+const std::string EspduTransform::typeName       = "EspduTransform";
+const std::string EspduTransform::containerField = "children";
 
 EspduTransform::Fields::Fields () :
 	set_articulationParameterValue0 (new SFFloat ()),

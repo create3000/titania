@@ -62,9 +62,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType WorldInfo::component      = ComponentType::TITANIA;
-const std::string   WorldInfo::typeName       = "WorldInfo";
-const std::string   WorldInfo::containerField = "children";
+const std::string WorldInfo::componentName  = "Titania";
+const std::string WorldInfo::typeName       = "WorldInfo";
+const std::string WorldInfo::containerField = "children";
 
 WorldInfo::Fields::Fields () :
 	title (new X3D::SFString ("" )),

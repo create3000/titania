@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Route::component      = ComponentType::TITANIA;
-const std::string   Route::typeName       = "Route";
-const std::string   Route::containerField = "route";
+const std::string Route::componentName  = "Titania";
+const std::string Route::typeName       = "Route";
+const std::string Route::containerField = "route";
 
 Route::Route (X3DExecutionContext* const executionContext,
               const SFNode & p_sourceNode,      X3DFieldDefinition* const p_sourceField,

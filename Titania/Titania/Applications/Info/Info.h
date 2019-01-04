@@ -101,8 +101,6 @@ private:
 	int
 	nodes ()
 	{
-		const auto supportedComponents = X3D::getBrowser () -> getSupportedComponents ();
-
 		X3D::Generator::Style (std::cout, "compact");
 
 		std::cout .imbue (std::locale::classic ());
@@ -137,20 +135,11 @@ private:
 			   << node -> getContainerField ()
 			   << std::endl;
 
-			const auto component = std::find_if (supportedComponents -> cbegin (), supportedComponents -> cend (),
-			[&node] (const X3D::ComponentInfoPtr & component)
-			{
-				return node -> getComponent () == component -> getType ();
-			});
-
-			if (component not_eq supportedComponents -> cend ())
-			{
-				std::cout
-				   << '\t'
-				   << "componentName = "
-				   << (*component) -> getName ()
-				   << std::endl;
-			}
+			std::cout
+			   << '\t'
+			   << "componentName = "
+			   << node -> getComponentName ()
+			   << std::endl;
 
 			std::cout << std::endl;
 		}

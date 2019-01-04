@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GeoTouchSensor::component      = ComponentType::GEOSPATIAL;
-const std::string   GeoTouchSensor::typeName       = "GeoTouchSensor";
-const std::string   GeoTouchSensor::containerField = "children";
+const std::string GeoTouchSensor::componentName  = "Geospatial";
+const std::string GeoTouchSensor::typeName       = "GeoTouchSensor";
+const std::string GeoTouchSensor::containerField = "children";
 
 GeoTouchSensor::Fields::Fields () :
 	hitTexCoord_changed (new SFVec2f ()),

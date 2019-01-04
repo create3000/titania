@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType BooleanSequencer::component      = ComponentType::EVENT_UTILITIES;
-const std::string   BooleanSequencer::typeName       = "BooleanSequencer";
-const std::string   BooleanSequencer::containerField = "children";
+const std::string BooleanSequencer::componentName  = "EventUtilities";
+const std::string BooleanSequencer::typeName       = "BooleanSequencer";
+const std::string BooleanSequencer::containerField = "children";
 
 BooleanSequencer::Fields::Fields () :
 	     keyValue (new MFBool ()),

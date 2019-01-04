@@ -71,9 +71,9 @@ namespace VRML1 {
 static const std::regex sides (R"/(ALL|SIDES)/");
 static const std::regex bottom (R"/(ALL|BOTTOM)/");
 
-const ComponentType Cone::component      = ComponentType::TITANIA;
-const std::string   Cone::typeName       = "Cone";
-const std::string   Cone::containerField = "children";
+const std::string Cone::componentName  = "Titania";
+const std::string Cone::typeName       = "Cone";
+const std::string Cone::containerField = "children";
 
 Cone::Fields::Fields () :
 	       parts (new X3D::SFString ("ALL")),

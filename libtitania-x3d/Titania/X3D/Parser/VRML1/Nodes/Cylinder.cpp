@@ -72,9 +72,9 @@ static const std::regex sides (R"/(ALL|SIDES)/");
 static const std::regex top (R"/(ALL|TOP)/");
 static const std::regex bottom (R"/(ALL|BOTTOM)/");
 
-const ComponentType Cylinder::component      = ComponentType::TITANIA;
-const std::string   Cylinder::typeName       = "Cylinder";
-const std::string   Cylinder::containerField = "children";
+const std::string Cylinder::componentName  = "Titania";
+const std::string Cylinder::typeName       = "Cylinder";
+const std::string Cylinder::containerField = "children";
 
 Cylinder::Fields::Fields () :
 	 parts (new X3D::SFString ("ALL")),

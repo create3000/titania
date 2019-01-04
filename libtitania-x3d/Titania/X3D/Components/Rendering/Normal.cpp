@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Normal::component      = ComponentType::RENDERING;
-const std::string   Normal::typeName       = "Normal";
-const std::string   Normal::containerField = "normal";
+const std::string Normal::componentName  = "Rendering";
+const std::string Normal::typeName       = "Normal";
+const std::string Normal::containerField = "normal";
 
 Normal::Fields::Fields () :
 	vector (new MFVec3f ())

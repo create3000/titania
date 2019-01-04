@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ExplosionEmitter::component      = ComponentType::PARTICLE_SYSTEMS;
-const std::string   ExplosionEmitter::typeName       = "ExplosionEmitter";
-const std::string   ExplosionEmitter::containerField = "emitter";
+const std::string ExplosionEmitter::componentName  = "ParticleSystems";
+const std::string ExplosionEmitter::typeName       = "ExplosionEmitter";
+const std::string ExplosionEmitter::containerField = "emitter";
 
 ExplosionEmitter::Fields::Fields () :
 	position (new SFVec3f ())

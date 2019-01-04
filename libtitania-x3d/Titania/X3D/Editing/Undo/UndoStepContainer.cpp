@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType UndoStepContainer::component      = ComponentType::TITANIA;
-const std::string   UndoStepContainer::typeName       = "UndoStepContainer";
-const std::string   UndoStepContainer::containerField = "undoStep";
+const std::string UndoStepContainer::componentName  = "Titania";
+const std::string UndoStepContainer::typeName       = "UndoStepContainer";
+const std::string UndoStepContainer::containerField = "undoStep";
 
 UndoStepContainer::UndoStepContainer (X3DExecutionContext* const executionContext, const UndoStepPtr & undoStep) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

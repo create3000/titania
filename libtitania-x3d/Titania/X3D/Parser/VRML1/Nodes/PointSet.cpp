@@ -67,9 +67,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType PointSet::component      = ComponentType::TITANIA;
-const std::string   PointSet::typeName       = "PointSet";
-const std::string   PointSet::containerField = "children";
+const std::string PointSet::componentName  = "Titania";
+const std::string PointSet::typeName       = "PointSet";
+const std::string PointSet::containerField = "children";
 
 PointSet::Fields::Fields () :
 	startIndex (new X3D::SFInt32 (0)),

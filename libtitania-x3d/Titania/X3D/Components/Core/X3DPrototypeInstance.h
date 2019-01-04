@@ -82,9 +82,9 @@ public:
 	///  @name Common members
 
 	virtual
-	ComponentType
-	getComponent () const final override
-	{ return component; }
+	const std::string &
+	getComponentName () const final override
+	{ return componentName; }
 
 	///  throws Error <DISPOSED>
 	virtual
@@ -289,8 +289,8 @@ private:
 
 	///  @name Static members
 
-	static const ComponentType component;
-	static const std::string   containerField;
+	static const std::string componentName;
+	static const std::string containerField;
 
 	///  @name Members
 

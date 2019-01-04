@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType MultiTextureTransform::component      = ComponentType::TEXTURING;
-const std::string   MultiTextureTransform::typeName       = "MultiTextureTransform";
-const std::string   MultiTextureTransform::containerField = "textureTransform";
+const std::string MultiTextureTransform::componentName  = "Texturing";
+const std::string MultiTextureTransform::typeName       = "MultiTextureTransform";
+const std::string MultiTextureTransform::containerField = "textureTransform";
 
 MultiTextureTransform::Fields::Fields () :
 	textureTransform (new MFNode ())

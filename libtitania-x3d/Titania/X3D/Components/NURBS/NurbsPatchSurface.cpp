@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NurbsPatchSurface::component      = ComponentType::NURBS;
-const std::string   NurbsPatchSurface::typeName       = "NurbsPatchSurface";
-const std::string   NurbsPatchSurface::containerField = "geometry";
+const std::string NurbsPatchSurface::componentName  = "NURBS";
+const std::string NurbsPatchSurface::typeName       = "NurbsPatchSurface";
+const std::string NurbsPatchSurface::containerField = "geometry";
 
 NurbsPatchSurface::NurbsPatchSurface (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),

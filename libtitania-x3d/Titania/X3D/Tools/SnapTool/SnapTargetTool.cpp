@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType SnapTargetTool::component      = ComponentType::TITANIA;
-const std::string   SnapTargetTool::typeName       = "SnapTargetTool";
-const std::string   SnapTargetTool::containerField = "SnapTool";
+const std::string SnapTargetTool::componentName  = "Titania";
+const std::string SnapTargetTool::typeName       = "SnapTargetTool";
+const std::string SnapTargetTool::containerField = "SnapTool";
 
 SnapTargetTool::Fields::Fields () :
 	snapToCenter (new SFBool (true)),

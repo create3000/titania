@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType IntegerTrigger::component      = ComponentType::EVENT_UTILITIES;
-const std::string   IntegerTrigger::typeName       = "IntegerTrigger";
-const std::string   IntegerTrigger::containerField = "children";
+const std::string IntegerTrigger::componentName  = "EventUtilities";
+const std::string IntegerTrigger::typeName       = "IntegerTrigger";
+const std::string IntegerTrigger::containerField = "children";
 
 IntegerTrigger::Fields::Fields () :
 	 set_boolean (new SFBool ()),

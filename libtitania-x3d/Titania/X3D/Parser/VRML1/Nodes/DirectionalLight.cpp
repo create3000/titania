@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType DirectionalLight::component      = ComponentType::TITANIA;
-const std::string   DirectionalLight::typeName       = "DirectionalLight";
-const std::string   DirectionalLight::containerField = "children";
+const std::string DirectionalLight::componentName  = "Titania";
+const std::string DirectionalLight::typeName       = "DirectionalLight";
+const std::string DirectionalLight::containerField = "children";
 
 DirectionalLight::Fields::Fields () :
 	       on (new X3D::SFBool (true)),

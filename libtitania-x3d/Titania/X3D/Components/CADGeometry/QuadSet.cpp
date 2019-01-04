@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType QuadSet::component      = ComponentType::CAD_GEOMETRY;
-const std::string   QuadSet::typeName       = "QuadSet";
-const std::string   QuadSet::containerField = "geometry";
+const std::string QuadSet::componentName  = "CADGeometry";
+const std::string QuadSet::typeName       = "QuadSet";
+const std::string QuadSet::containerField = "geometry";
 
 static constexpr size_t VERTEX_COUNT = 4;
 

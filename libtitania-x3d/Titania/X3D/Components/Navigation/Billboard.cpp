@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Billboard::component      = ComponentType::NAVIGATION;
-const std::string   Billboard::typeName       = "Billboard";
-const std::string   Billboard::containerField = "children";
+const std::string Billboard::componentName  = "Navigation";
+const std::string Billboard::typeName       = "Billboard";
+const std::string Billboard::containerField = "children";
 
 // https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/vrml97/Billboard.cpp
 

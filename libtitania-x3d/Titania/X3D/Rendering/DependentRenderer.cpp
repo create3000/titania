@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType DependentRenderer::component      = ComponentType::TITANIA;
-const std::string   DependentRenderer::typeName       = "DependentRenderer";
-const std::string   DependentRenderer::containerField = "renderer";
+const std::string DependentRenderer::componentName  = "Titania";
+const std::string DependentRenderer::typeName       = "DependentRenderer";
+const std::string DependentRenderer::containerField = "renderer";
 
 DependentRenderer::DependentRenderer (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),

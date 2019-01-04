@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType BoundaryEnhancementVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   BoundaryEnhancementVolumeStyle::typeName       = "BoundaryEnhancementVolumeStyle";
-const std::string   BoundaryEnhancementVolumeStyle::containerField = "renderStyle";
+const std::string BoundaryEnhancementVolumeStyle::componentName  = "VolumeRendering";
+const std::string BoundaryEnhancementVolumeStyle::typeName       = "BoundaryEnhancementVolumeStyle";
+const std::string BoundaryEnhancementVolumeStyle::containerField = "renderStyle";
 
 BoundaryEnhancementVolumeStyle::Fields::Fields () :
 	boundaryOpacity (new SFFloat (0.9)),

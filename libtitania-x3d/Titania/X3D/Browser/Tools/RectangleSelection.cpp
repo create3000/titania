@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType RectangleSelection::component      = ComponentType::TITANIA;
-const std::string   RectangleSelection::typeName       = "RectangleSelection";
-const std::string   RectangleSelection::containerField = "viewer";
+const std::string RectangleSelection::componentName  = "Titania";
+const std::string RectangleSelection::typeName       = "RectangleSelection";
+const std::string RectangleSelection::containerField = "viewer";
 
 RectangleSelection::RectangleSelection (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Transform::component      = ComponentType::TITANIA;
-const std::string   Transform::typeName       = "Transform";
-const std::string   Transform::containerField = "children";
+const std::string Transform::componentName  = "Titania";
+const std::string Transform::typeName       = "Transform";
+const std::string Transform::containerField = "children";
 
 Transform::Fields::Fields () :
 	     translation (new X3D::SFVec3f (0, 0, 0)),

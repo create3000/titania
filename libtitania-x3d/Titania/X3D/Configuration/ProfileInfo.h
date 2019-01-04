@@ -62,7 +62,7 @@ public:
 
 	///  @name Construction
 
-	ProfileInfo (const std::string &, const std::string &, std::initializer_list <ComponentInfoPtr> componentList);
+	ProfileInfo (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList);
 
 	///  @name Member access
 

@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NurbsPositionInterpolator::component      = ComponentType::NURBS;
-const std::string   NurbsPositionInterpolator::typeName       = "NurbsPositionInterpolator";
-const std::string   NurbsPositionInterpolator::containerField = "children";
+const std::string NurbsPositionInterpolator::componentName  = "NURBS";
+const std::string NurbsPositionInterpolator::typeName       = "NurbsPositionInterpolator";
+const std::string NurbsPositionInterpolator::containerField = "children";
 
 NurbsPositionInterpolator::Fields::Fields () :
 	set_fraction (new SFFloat ()),

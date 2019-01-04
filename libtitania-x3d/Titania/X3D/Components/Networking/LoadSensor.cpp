@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType LoadSensor::component      = ComponentType::NETWORKING;
-const std::string   LoadSensor::typeName       = "LoadSensor";
-const std::string   LoadSensor::containerField = "children";
+const std::string LoadSensor::componentName  = "Networking";
+const std::string LoadSensor::typeName       = "LoadSensor";
+const std::string LoadSensor::containerField = "children";
 
 LoadSensor::Fields::Fields () :
 	  timeOut (new SFTime ()),

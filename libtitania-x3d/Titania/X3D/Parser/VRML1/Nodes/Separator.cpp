@@ -59,9 +59,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Separator::component      = ComponentType::TITANIA;
-const std::string   Separator::typeName       = "Separator";
-const std::string   Separator::containerField = "children";
+const std::string Separator::componentName  = "Titania";
+const std::string Separator::typeName       = "Separator";
+const std::string Separator::containerField = "children";
 
 Separator::Fields::Fields () :
 	renderCulling (new X3D::SFString ("AUTO"))

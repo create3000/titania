@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NamedNode::component      = ComponentType::TITANIA;
-const std::string   NamedNode::typeName       = "NamedNode";
-const std::string   NamedNode::containerField = "namedNode";
+const std::string NamedNode::componentName  = "Titania";
+const std::string NamedNode::typeName       = "NamedNode";
+const std::string NamedNode::containerField = "namedNode";
 
 NamedNode::NamedNode (X3DExecutionContext* const executionContext, const SFNode & node_) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),

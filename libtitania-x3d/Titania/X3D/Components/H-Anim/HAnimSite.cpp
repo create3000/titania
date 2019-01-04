@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType HAnimSite::component      = ComponentType::H_ANIM;
-const std::string   HAnimSite::typeName       = "HAnimSite";
-const std::string   HAnimSite::containerField = "children";
+const std::string HAnimSite::componentName  = "H-Anim";
+const std::string HAnimSite::typeName       = "HAnimSite";
+const std::string HAnimSite::containerField = "children";
 
 HAnimSite::Fields::Fields () :
 	center (new SFVec3f ()),

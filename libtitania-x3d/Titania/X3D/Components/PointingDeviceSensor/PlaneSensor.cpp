@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PlaneSensor::component      = ComponentType::POINTING_DEVICE_SENSOR;
-const std::string   PlaneSensor::typeName       = "PlaneSensor";
-const std::string   PlaneSensor::containerField = "children";
+const std::string PlaneSensor::componentName  = "PointingDeviceSensor";
+const std::string PlaneSensor::typeName       = "PlaneSensor";
+const std::string PlaneSensor::containerField = "children";
 
 PlaneSensor::Fields::Fields () :
 	       axisRotation (new SFRotation ()),

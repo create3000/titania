@@ -55,8 +55,7 @@
 namespace titania {
 namespace X3D {
 
-ComponentInfo::ComponentInfo (const ComponentType type, const std::string & title, const std::string & name, const size_t level) :
-          type (type),
+ComponentInfo::ComponentInfo (const std::string & title, const std::string & name, const size_t level) :
 	      title (title),
 	       name (name),
 	      level (level),

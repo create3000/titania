@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ImportedNode::component      = ComponentType::TITANIA;
-const std::string   ImportedNode::typeName       = "ImportedNode";
-const std::string   ImportedNode::containerField = "importedNode";
+const std::string ImportedNode::componentName  = "Titania";
+const std::string ImportedNode::typeName       = "ImportedNode";
+const std::string ImportedNode::containerField = "importedNode";
 
 ///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,

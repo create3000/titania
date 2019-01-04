@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType WindPhysicsModel::component      = ComponentType::PARTICLE_SYSTEMS;
-const std::string   WindPhysicsModel::typeName       = "WindPhysicsModel";
-const std::string   WindPhysicsModel::containerField = "physics";
+const std::string WindPhysicsModel::componentName  = "ParticleSystems";
+const std::string WindPhysicsModel::typeName       = "WindPhysicsModel";
+const std::string WindPhysicsModel::containerField = "physics";
 
 WindPhysicsModel::Fields::Fields () :
 	 direction (new SFVec3f ()),

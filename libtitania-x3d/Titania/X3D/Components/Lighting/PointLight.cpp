@@ -66,9 +66,9 @@ namespace X3D {
 
 static constexpr int32_t POINT_LIGHT = 2;
 
-const ComponentType PointLight::component      = ComponentType::LIGHTING;
-const std::string   PointLight::typeName       = "PointLight";
-const std::string   PointLight::containerField = "children";
+const std::string PointLight::componentName  = "Lighting";
+const std::string PointLight::typeName       = "PointLight";
+const std::string PointLight::containerField = "children";
 
 PointLight::Fields::Fields () :
 	attenuation (new SFVec3f (1, 0, 0)),

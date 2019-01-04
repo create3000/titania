@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Scene::component      = ComponentType::TITANIA;
-const std::string   Scene::typeName       = "Scene";
-const std::string   Scene::containerField = "scene";
+const std::string Scene::componentName  = "Titania";
+const std::string Scene::typeName       = "Scene";
+const std::string Scene::containerField = "scene";
 
 Scene::Scene (X3DBrowser* const browser) :
 	X3DBaseNode (browser, this),

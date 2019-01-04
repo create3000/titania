@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GridTool::component      = ComponentType::TITANIA;
-const std::string   GridTool::typeName       = "GridTool";
-const std::string   GridTool::containerField = "grid";
+const std::string GridTool::componentName  = "Titania";
+const std::string GridTool::typeName       = "GridTool";
+const std::string GridTool::containerField = "grid";
 
 GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

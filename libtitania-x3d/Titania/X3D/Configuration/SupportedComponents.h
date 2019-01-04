@@ -88,7 +88,7 @@ private:
 	///  @name Operations
 
 	void
-	add (const ComponentType, const std::string &, const std::string &, const int32_t);
+	add (const std::string & title, const std::string & name, const int32_t level);
 
 	///  @name Members
 

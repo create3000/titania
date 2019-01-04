@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PolygonOffset::component      = ComponentType::TITANIA;
-const std::string   PolygonOffset::typeName       = "PolygonOffset";
-const std::string   PolygonOffset::containerField = "children";
+const std::string PolygonOffset::componentName  = "Titania";
+const std::string PolygonOffset::typeName       = "PolygonOffset";
+const std::string PolygonOffset::containerField = "children";
 
 PolygonOffset::Fields::Fields () :
 	  type (new SFString ("POLYGON_OFFSET_FILL")),

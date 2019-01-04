@@ -59,9 +59,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType ShapeHints::component      = ComponentType::TITANIA;
-const std::string   ShapeHints::typeName       = "ShapeHints";
-const std::string   ShapeHints::containerField = "children";
+const std::string ShapeHints::componentName  = "Titania";
+const std::string ShapeHints::typeName       = "ShapeHints";
+const std::string ShapeHints::containerField = "children";
 
 ShapeHints::Fields::Fields () :
 	vertexOrdering (new X3D::SFString ("COUNTERCLOCKWISE")),

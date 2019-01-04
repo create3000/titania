@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType ElevationGrid::component      = ComponentType::TITANIA;
-const std::string   ElevationGrid::typeName       = "ElevationGrid";
-const std::string   ElevationGrid::containerField = "children";
+const std::string ElevationGrid::componentName  = "Titania";
+const std::string ElevationGrid::typeName       = "ElevationGrid";
+const std::string ElevationGrid::containerField = "children";
 
 ElevationGrid::Fields::Fields () :
 	   verticesPerRow (new X3D::SFInt32 (0)),

@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ConeEmitter::component      = ComponentType::PARTICLE_SYSTEMS;
-const std::string   ConeEmitter::typeName       = "ConeEmitter";
-const std::string   ConeEmitter::containerField = "emitter";
+const std::string ConeEmitter::componentName  = "ParticleSystems";
+const std::string ConeEmitter::typeName       = "ConeEmitter";
+const std::string ConeEmitter::containerField = "emitter";
 
 ConeEmitter::Fields::Fields () :
 	 position (new SFVec3f ()),

@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType CoordinateTool::component      = ComponentType::TITANIA;
-const std::string   CoordinateTool::typeName       = "CoordinateTool";
-const std::string   CoordinateTool::containerField = "coordTool";
+const std::string CoordinateTool::componentName  = "Titania";
+const std::string CoordinateTool::typeName       = "CoordinateTool";
+const std::string CoordinateTool::containerField = "coordTool";
 
 CoordinateTool::Fields::Fields () :
 	color (new SFColorRGBA (ToolColors::BLUE_RGBA))

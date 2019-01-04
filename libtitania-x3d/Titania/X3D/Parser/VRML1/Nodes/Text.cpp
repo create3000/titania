@@ -57,9 +57,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Text::component      = ComponentType::TITANIA;
-const std::string   Text::typeName       = "Text";
-const std::string   Text::containerField = "children";
+const std::string Text::componentName  = "Titania";
+const std::string Text::typeName       = "Text";
+const std::string Text::containerField = "children";
 
 Text::Fields::Fields () :
 	       string (new X3D::MFString ({ "" })),

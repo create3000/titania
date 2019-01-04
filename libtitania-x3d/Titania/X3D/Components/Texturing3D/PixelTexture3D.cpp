@@ -62,9 +62,9 @@ constexpr size_t WIDTH      = 1;
 constexpr size_t HEIGHT     = 2;
 constexpr size_t DEPTH      = 3;
 
-const ComponentType PixelTexture3D::component      = ComponentType::TEXTURING_3D;
-const std::string   PixelTexture3D::typeName       = "PixelTexture3D";
-const std::string   PixelTexture3D::containerField = "texture";
+const std::string PixelTexture3D::componentName  = "Texturing3D";
+const std::string PixelTexture3D::typeName       = "PixelTexture3D";
+const std::string PixelTexture3D::containerField = "texture";
 
 PixelTexture3D::Fields::Fields () :
 	image (new MFInt32 ({ 0, 0, 0, 0 }))

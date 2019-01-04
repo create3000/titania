@@ -70,9 +70,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType IndexedFaceSet::component      = ComponentType::TITANIA;
-const std::string   IndexedFaceSet::typeName       = "IndexedFaceSet";
-const std::string   IndexedFaceSet::containerField = "children";
+const std::string IndexedFaceSet::componentName  = "Titania";
+const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
+const std::string IndexedFaceSet::containerField = "children";
 
 IndexedFaceSet::Fields::Fields () :
 	       coordIndex (new X3D::MFInt32 ({ 0 })),

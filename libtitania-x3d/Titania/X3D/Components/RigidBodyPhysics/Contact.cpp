@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Contact::component      = ComponentType::RIGID_BODY_PHYSICS;
-const std::string   Contact::typeName       = "Contact";
-const std::string   Contact::containerField = "children";
+const std::string Contact::componentName  = "RigidBodyPhysics";
+const std::string Contact::typeName       = "Contact";
+const std::string Contact::containerField = "children";
 
 Contact::Fields::Fields () :
 	                position (new SFVec3f ()),

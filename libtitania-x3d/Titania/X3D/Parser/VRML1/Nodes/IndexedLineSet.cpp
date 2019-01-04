@@ -66,9 +66,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType IndexedLineSet::component      = ComponentType::TITANIA;
-const std::string   IndexedLineSet::typeName       = "IndexedLineSet";
-const std::string   IndexedLineSet::containerField = "children";
+const std::string IndexedLineSet::componentName  = "Titania";
+const std::string IndexedLineSet::typeName       = "IndexedLineSet";
+const std::string IndexedLineSet::containerField = "children";
 
 IndexedLineSet::Fields::Fields () :
 	       coordIndex (new X3D::MFInt32 ({ 0 })),

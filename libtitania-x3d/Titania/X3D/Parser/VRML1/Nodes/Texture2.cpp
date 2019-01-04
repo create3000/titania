@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType Texture2::component      = ComponentType::TITANIA;
-const std::string   Texture2::typeName       = "Texture2";
-const std::string   Texture2::containerField = "children";
+const std::string Texture2::componentName  = "Titania";
+const std::string Texture2::typeName       = "Texture2";
+const std::string Texture2::containerField = "children";
 
 Texture2::Fields::Fields () :
 	filename (new X3D::SFString ("")),

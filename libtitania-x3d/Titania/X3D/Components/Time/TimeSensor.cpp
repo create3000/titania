@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TimeSensor::component      = ComponentType::TIME;
-const std::string   TimeSensor::typeName       = "TimeSensor";
-const std::string   TimeSensor::containerField = "children";
+const std::string TimeSensor::componentName  = "Time";
+const std::string TimeSensor::typeName       = "TimeSensor";
+const std::string TimeSensor::containerField = "children";
 
 // The field range (min fraction, current, max fraction) is NOT PUBLIC; all values should be in the interval [0, 1].
 // It constrains the output of fraction_changed to the interval [min fraction, max fraction] and the start point of

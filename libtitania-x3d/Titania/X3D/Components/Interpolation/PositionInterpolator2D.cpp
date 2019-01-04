@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PositionInterpolator2D::component      = ComponentType::INTERPOLATION;
-const std::string   PositionInterpolator2D::typeName       = "PositionInterpolator2D";
-const std::string   PositionInterpolator2D::containerField = "children";
+const std::string PositionInterpolator2D::componentName  = "Interpolation";
+const std::string PositionInterpolator2D::typeName       = "PositionInterpolator2D";
+const std::string PositionInterpolator2D::containerField = "children";
 
 PositionInterpolator2D::Fields::Fields () :
 	     keyValue (new MFVec2f ()),

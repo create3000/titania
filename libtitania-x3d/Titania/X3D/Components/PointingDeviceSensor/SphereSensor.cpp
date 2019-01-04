@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType SphereSensor::component      = ComponentType::POINTING_DEVICE_SENSOR;
-const std::string   SphereSensor::typeName       = "SphereSensor";
-const std::string   SphereSensor::containerField = "children";
+const std::string SphereSensor::componentName  = "PointingDeviceSensor";
+const std::string SphereSensor::typeName       = "SphereSensor";
+const std::string SphereSensor::containerField = "children";
 
 SphereSensor::Fields::Fields () :
 	          offset (new SFRotation (0, 1, 0, 0)),

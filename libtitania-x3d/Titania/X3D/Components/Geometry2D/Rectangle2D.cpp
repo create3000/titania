@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Rectangle2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Rectangle2D::typeName       = "Rectangle2D";
-const std::string   Rectangle2D::containerField = "geometry";
+const std::string Rectangle2D::componentName  = "Geometry2D";
+const std::string Rectangle2D::typeName       = "Rectangle2D";
+const std::string Rectangle2D::containerField = "geometry";
 
 Rectangle2D::Fields::Fields () :
 	 size (new SFVec2f (2, 2)),

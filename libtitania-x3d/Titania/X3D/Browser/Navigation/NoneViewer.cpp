@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NoneViewer::component      = ComponentType::TITANIA;
-const std::string   NoneViewer::typeName       = "NoneViewer";
-const std::string   NoneViewer::containerField = "viewer";
+const std::string NoneViewer::componentName  = "Titania";
+const std::string NoneViewer::typeName       = "NoneViewer";
+const std::string NoneViewer::containerField = "viewer";
 
 NoneViewer::NoneViewer (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),

@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ComposedShader::component      = ComponentType::SHADERS;
-const std::string   ComposedShader::typeName       = "ComposedShader";
-const std::string   ComposedShader::containerField = "shaders";
+const std::string ComposedShader::componentName  = "Shaders";
+const std::string ComposedShader::typeName       = "ComposedShader";
+const std::string ComposedShader::containerField = "shaders";
 
 ComposedShader::Fields::Fields () :
 	parts (new MFNode ())

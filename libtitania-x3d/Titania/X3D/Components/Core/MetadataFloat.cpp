@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType MetadataFloat::component      = ComponentType::CORE;
-const std::string   MetadataFloat::typeName       = "MetadataFloat";
-const std::string   MetadataFloat::containerField = "metadata";
+const std::string MetadataFloat::componentName  = "Core";
+const std::string MetadataFloat::typeName       = "MetadataFloat";
+const std::string MetadataFloat::containerField = "metadata";
 
 MetadataFloat::Fields::Fields () :
 	value (new MFFloat ())

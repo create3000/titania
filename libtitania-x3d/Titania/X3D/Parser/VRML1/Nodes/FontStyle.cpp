@@ -57,9 +57,9 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType FontStyle::component      = ComponentType::TITANIA;
-const std::string   FontStyle::typeName       = "FontStyle";
-const std::string   FontStyle::containerField = "children";
+const std::string FontStyle::componentName  = "Titania";
+const std::string FontStyle::typeName       = "FontStyle";
+const std::string FontStyle::containerField = "children";
 
 FontStyle::Fields::Fields () :
 	  size (new X3D::SFFloat (10)),

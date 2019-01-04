@@ -255,9 +255,9 @@ ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shad
 
 // ParticleSystem
 
-const ComponentType ParticleSystem::component      = ComponentType::PARTICLE_SYSTEMS;
-const std::string   ParticleSystem::typeName       = "ParticleSystem";
-const std::string   ParticleSystem::containerField = "children";
+const std::string ParticleSystem::componentName  = "ParticleSystems";
+const std::string ParticleSystem::typeName       = "ParticleSystem";
+const std::string ParticleSystem::containerField = "children";
 
 ParticleSystem::Fields::Fields () :
 	           enabled (new SFBool (true)),

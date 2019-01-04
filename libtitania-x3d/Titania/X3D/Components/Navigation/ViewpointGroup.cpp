@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ViewpointGroup::component      = ComponentType::NAVIGATION;
-const std::string   ViewpointGroup::typeName       = "ViewpointGroup";
-const std::string   ViewpointGroup::containerField = "children";
+const std::string ViewpointGroup::componentName  = "Navigation";
+const std::string ViewpointGroup::typeName       = "ViewpointGroup";
+const std::string ViewpointGroup::containerField = "children";
 
 ViewpointGroup::Fields::Fields () :
 	displayed (new SFBool (true)),

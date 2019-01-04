@@ -65,9 +65,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ScreenText::component      = ComponentType::TITANIA;
-const std::string   ScreenText::typeName       = "ScreenText";
-const std::string   ScreenText::containerField = "textGeometry";
+const std::string ScreenText::componentName  = "Titania";
+const std::string ScreenText::typeName       = "ScreenText";
+const std::string ScreenText::containerField = "textGeometry";
 
 ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle) :
 	    X3DBaseNode (text -> getBrowser (), text -> getExecutionContext ()),
@@ -479,9 +479,9 @@ ScreenText::toPrimitive () const
 ScreenText::~ScreenText ()
 { }
 
-const ComponentType ScreenFontStyle::component      = ComponentType::LAYOUT;
-const std::string   ScreenFontStyle::typeName       = "ScreenFontStyle";
-const std::string   ScreenFontStyle::containerField = "fontStyle";
+const std::string ScreenFontStyle::componentName  = "Layout";
+const std::string ScreenFontStyle::typeName       = "ScreenFontStyle";
+const std::string ScreenFontStyle::containerField = "fontStyle";
 
 ScreenFontStyle::Fields::Fields () :
 	pointSize (new SFFloat (12))

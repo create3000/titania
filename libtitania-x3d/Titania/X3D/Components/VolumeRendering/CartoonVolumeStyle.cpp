@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType CartoonVolumeStyle::component      = ComponentType::VOLUME_RENDERING;
-const std::string   CartoonVolumeStyle::typeName       = "CartoonVolumeStyle";
-const std::string   CartoonVolumeStyle::containerField = "renderStyle";
+const std::string CartoonVolumeStyle::componentName  = "VolumeRendering";
+const std::string CartoonVolumeStyle::typeName       = "CartoonVolumeStyle";
+const std::string CartoonVolumeStyle::containerField = "renderStyle";
 
 CartoonVolumeStyle::Fields::Fields () :
 	     colorSteps (new SFInt32 (4)),

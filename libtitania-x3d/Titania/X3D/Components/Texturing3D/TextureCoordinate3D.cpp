@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TextureCoordinate3D::component      = ComponentType::TEXTURING_3D;
-const std::string   TextureCoordinate3D::typeName       = "TextureCoordinate3D";
-const std::string   TextureCoordinate3D::containerField = "texCoord";
+const std::string TextureCoordinate3D::componentName  = "Texturing3D";
+const std::string TextureCoordinate3D::typeName       = "TextureCoordinate3D";
+const std::string TextureCoordinate3D::containerField = "texCoord";
 
 TextureCoordinate3D::Fields::Fields () :
 	point (new MFVec3f ())

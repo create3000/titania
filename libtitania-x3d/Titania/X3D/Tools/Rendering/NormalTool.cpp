@@ -58,9 +58,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NormalTool::component      = ComponentType::TITANIA;
-const std::string   NormalTool::typeName       = "NormalTool";
-const std::string   NormalTool::containerField = "normalTool";
+const std::string NormalTool::componentName  = "Titania";
+const std::string NormalTool::typeName       = "NormalTool";
+const std::string NormalTool::containerField = "normalTool";
 
 NormalTool::Fields::Fields () :
 	         length (new SFFloat (1)),

@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType DirectedSound::component      = ComponentType::TITANIA;
-const std::string   DirectedSound::typeName       = "DirectedSound";
-const std::string   DirectedSound::containerField = "children";
+const std::string DirectedSound::componentName  = "Titania";
+const std::string DirectedSound::typeName       = "DirectedSound";
+const std::string DirectedSound::containerField = "children";
 
 DirectedSound::Fields::Fields () :
 	       name (new X3D::MFString ({ "" })),

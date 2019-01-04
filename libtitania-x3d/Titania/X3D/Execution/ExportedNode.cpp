@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ExportedNode::component      = ComponentType::TITANIA;
-const std::string   ExportedNode::typeName       = "ExportedNode";
-const std::string   ExportedNode::containerField = "exportedNode";
+const std::string ExportedNode::componentName  = "Titania";
+const std::string ExportedNode::typeName       = "ExportedNode";
+const std::string ExportedNode::containerField = "exportedNode";
 
 ExportedNode::ExportedNode (X3DScene* const scene,
                             const std::string & exportedName,

@@ -59,9 +59,9 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const ComponentType Environment::component      = ComponentType::TITANIA;
-const std::string   Environment::typeName       = "Environment";
-const std::string   Environment::containerField = "children";
+const std::string Environment::componentName  = "Titania";
+const std::string Environment::typeName       = "Environment";
+const std::string Environment::containerField = "children";
 
 Environment::Fields::Fields () :
 	ambientIntensity (new X3D::SFFloat (0.2)),

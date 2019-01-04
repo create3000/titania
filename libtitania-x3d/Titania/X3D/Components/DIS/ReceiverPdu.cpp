@@ -55,9 +55,9 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType ReceiverPdu::component      = ComponentType::DIS;
-const std::string   ReceiverPdu::typeName       = "ReceiverPdu";
-const std::string   ReceiverPdu::containerField = "children";
+const std::string ReceiverPdu::componentName  = "DIS";
+const std::string ReceiverPdu::typeName       = "ReceiverPdu";
+const std::string ReceiverPdu::containerField = "children";
 
 ReceiverPdu::Fields::Fields () :
 	address (new SFString ("localhost")),
