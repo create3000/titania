@@ -1003,6 +1003,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExternProtoDeclaration.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\ComponentInfo.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\ProfileInfo.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1698,6 +1699,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ComponentInfo.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ProfileInfo.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DConstants.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

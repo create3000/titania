@@ -65,6 +65,7 @@
 #include "ProfileInfoArray.h"
 #include "ProtoDeclarationArray.h"
 #include "RouteArray.h"
+#include "X3DConstants.h"
 #include "X3DExternProtoDeclaration.h"
 #include "X3DFieldDefinition.h"
 #include "X3DProtoDeclaration.h"
@@ -140,7 +141,7 @@ Context::addClasses ()
 	Globals::init (cx, *global);
 
 //	addProto (Browser::getId (),             Browser::init             (cx, *global, nullptr));
-//	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
+	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
 //	addProto (X3DExecutionContext::getId (), X3DExecutionContext::init (cx, *global, nullptr));
 //	addProto (X3DScene::getId (),            X3DScene::init            (cx, *global, getProto (X3DExecutionContext::getId ())));
 
