@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using RouteArray = X3DConstArray <X3DRoute, X3D::RouteArray>;
+using RouteArray = X3DConstArray <X3DRoute, X3D::RouteArrayPtr>;
 
 template <>
 constexpr

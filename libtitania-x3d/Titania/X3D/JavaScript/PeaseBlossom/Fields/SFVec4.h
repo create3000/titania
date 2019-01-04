@@ -379,7 +379,7 @@ SFVec4 <InternalType>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto lhs = getThis <SFVec4> (ec, object);
 		const auto rhs = get1Argument <SFVec4> (args, 0);
 
-		return create <SFVec4> (ec, new InternalType (lhs -> multiply (*rhs)));
+		return create <SFVec4> (ec, new InternalType (lhs -> multVec (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -419,7 +419,7 @@ SFVec4 <InternalType>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, cons
 		const auto lhs = getThis <SFVec4> (ec, object);
 		const auto rhs = get1Argument <SFVec4> (args, 0);
 
-		return create <SFVec4> (ec, new InternalType (lhs -> divide (*rhs)));
+		return create <SFVec4> (ec, new InternalType (lhs -> divVec (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{

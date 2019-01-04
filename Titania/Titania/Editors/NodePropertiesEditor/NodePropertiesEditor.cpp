@@ -100,11 +100,19 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 
 	if (node)
 	{
+		const auto supportedComponents = node -> getBrowser () -> getSupportedComponents ();
+
+		const auto component = std::find_if (supportedComponents -> cbegin (), supportedComponents -> cend (),
+		[&] (const X3D::ComponentInfoPtr & component)
+		{
+			return node -> getComponent () == component -> getType ();
+		});
+
 		node -> name_changed () .addInterest (&NodePropertiesEditor::set_name, this);
 
 		set_name ();
 		getTypeNameEntry ()       .set_text (node -> getTypeName ());
-		getComponentEntry ()      .set_text (node -> getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ());
+		getComponentEntry ()      .set_text (component not_eq supportedComponents -> cend () ? (*component) -> getName () : "");
 		getContainerFieldEntry () .set_text (node -> getContainerField ());
 	}
 	else

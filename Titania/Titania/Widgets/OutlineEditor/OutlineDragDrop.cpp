@@ -163,8 +163,8 @@ OutlineDragDrop::get_proto_limits (const Gtk::TreePath & path, X3D::ProtoDeclara
 {
 	const auto executionContext = prototype -> getExecutionContext ();
 
-	std::vector <X3D::ProtoDeclarationPtr> prototypes (executionContext -> getProtoDeclarations () .begin (),
-	                                                   executionContext -> getProtoDeclarations () .end ());
+	std::vector <X3D::ProtoDeclarationPtr> prototypes (executionContext -> getProtoDeclarations () -> cbegin (),
+	                                                   executionContext -> getProtoDeclarations () -> cend ());
 
 	const auto first  = get_proto_first_limit  (path, prototype, prototypes);
 	const auto second = get_proto_second_limit (path, prototype, prototypes);
@@ -549,8 +549,8 @@ OutlineDragDrop::on_drag_data_proto_received (const Glib::RefPtr <Gdk::DragConte
 	// Get destination extern protos.
 	
 
-	std::vector <X3D::ProtoDeclarationPtr> destProtos (sourceContext -> getProtoDeclarations () .begin (),
-	                                                   sourceContext -> getProtoDeclarations () .end ());
+	std::vector <X3D::ProtoDeclarationPtr> destProtos (sourceContext -> getProtoDeclarations () -> cbegin (),
+	                                                   sourceContext -> getProtoDeclarations () -> cend ());
 
 	// Insert source extern proto in destination extern protos.
 
@@ -588,7 +588,7 @@ OutlineDragDrop::on_drag_data_proto_received (const Glib::RefPtr <Gdk::DragConte
 				
 				const auto currentProtos = sourceContext -> getProtoDeclarations ();
 
-				for (const auto & externProto : basic::make_reverse_range (currentProtos))
+				for (const auto & externProto : basic::make_reverse_range (*currentProtos))
 				{
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, sourceContext, externProto -> getName (), externProto);
 					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, sourceContext, externProto -> getName ());
@@ -644,8 +644,8 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 	// Get destination extern protos.
 	
 
-	std::vector <X3D::ExternProtoDeclarationPtr> destExternProtos (sourceContext -> getExternProtoDeclarations () .begin (),
-	                                                               sourceContext -> getExternProtoDeclarations () .end ());
+	std::vector <X3D::ExternProtoDeclarationPtr> destExternProtos (sourceContext -> getExternProtoDeclarations () -> cbegin (),
+	                                                               sourceContext -> getExternProtoDeclarations () -> cend ());
 
 	// Insert source extern proto in destination extern protos.
 
@@ -683,7 +683,7 @@ OutlineDragDrop::on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::Dr
 				
 				const auto currentExternProtos = sourceContext -> getExternProtoDeclarations ();
 
-				for (const auto & externProto : basic::make_reverse_range (currentExternProtos))
+				for (const auto & externProto : basic::make_reverse_range (*currentExternProtos))
 				{
 					undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, sourceContext, externProto -> getName (), externProto);
 					undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, sourceContext, externProto -> getName ());

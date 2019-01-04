@@ -54,6 +54,9 @@
 #include "../Bits/Error.h"
 #include "../Configuration/ComponentInfoArray.h"
 
+#include <map>
+#include <string>
+
 namespace titania {
 namespace X3D {
 
@@ -75,7 +78,7 @@ public:
 	const ComponentInfoPtr &
 	get (const std::string &) const;
 
-	const ComponentInfoArray &
+	const ComponentInfoArrayPtr &
 	get () const
 	{ return components; }
 
@@ -90,7 +93,7 @@ private:
 	///  @name Members
 
 	std::map <std::string, ComponentInfoPtr> componentIndex;
-	ComponentInfoArray                       components;
+	ComponentInfoArrayPtr                    components;
 
 };
 

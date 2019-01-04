@@ -58,7 +58,7 @@ namespace X3D {
 
 SupportedComponents::SupportedComponents () :
 	componentIndex (),
-	    components ()
+	    components (new ComponentInfoArray ())
 {
 	//std::clog << "\tCreating component index:" << std::endl;
 
@@ -111,7 +111,7 @@ SupportedComponents::add (const ComponentType type, const std::string & title, c
 	const auto component = ComponentInfoPtr (new ComponentInfo (type, title, name, level));
 
 	componentIndex .emplace (name, component);
-	components .push_back (type, component);
+	components -> emplace_back (component);
 }
 
 ///  throws Error <NOT_SUPPORTED>

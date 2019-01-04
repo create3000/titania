@@ -202,7 +202,7 @@ public:
 	divide (const value_type & value) const;
 
 	InternalType
-	divide (const InternalType & vector) const;
+	divVec (const InternalType & vector) const;
 
 	value_type
 	dot (const InternalType & vector) const;
@@ -217,7 +217,7 @@ public:
 	multiply (const value_type & value) const;
 
 	InternalType
-	multiply (const InternalType & vector) const;
+	multVec (const InternalType & vector) const;
 
 	InternalType
 	negate () const;
@@ -437,7 +437,7 @@ SFVec3 <InternalType>::divide (const value_type & value) const
 template <class InternalType>
 inline
 InternalType
-SFVec3 <InternalType>::divide (const InternalType & vector) const
+SFVec3 <InternalType>::divVec (const InternalType & vector) const
 {
 	return getValue () / vector;
 }
@@ -477,7 +477,7 @@ SFVec3 <InternalType>::multiply (const value_type & value) const
 template <class InternalType>
 inline
 InternalType
-SFVec3 <InternalType>::multiply (const InternalType & vector) const
+SFVec3 <InternalType>::multVec (const InternalType & vector) const
 {
 	return getValue () * vector;
 }

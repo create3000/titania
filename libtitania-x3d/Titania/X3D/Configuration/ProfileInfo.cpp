@@ -59,11 +59,8 @@ ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, s
 	      title (title),
 	       name (name),
 	providerUrl ("http://titania.create3000.de"),
-	 components ()
-{
-	for (const auto & component : componentList)
-		const_cast <ComponentInfoArray &> (components) .push_back (component -> getType (), component);
-}
+	 components (new ComponentInfoArray (componentList .begin (), componentList .end ()))
+{ }
 
 void
 ProfileInfo::toStream (std::ostream & ostream) const

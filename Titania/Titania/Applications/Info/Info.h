@@ -67,12 +67,12 @@ private:
 	int
 	profiles ()
 	{
-		const auto   browser  = X3D::getBrowser ();
-		const auto & profiles = browser -> getSupportedProfiles ();
+		const auto browser  = X3D::getBrowser ();
+		const auto profiles = browser -> getSupportedProfiles ();
 
 		std::cout .imbue (std::locale::classic ());
 
-		for (const auto & profile : profiles)
+		for (const auto & profile : *profiles)
 		{
 			std::cout << profile -> getName () << std::endl;
 		}
@@ -84,12 +84,12 @@ private:
 	int
 	components ()
 	{
-		const auto   browser    = X3D::getBrowser ();
-		const auto & components = browser -> getSupportedComponents ();
+		const auto browser    = X3D::getBrowser ();
+		const auto components = browser -> getSupportedComponents ();
 
 		std::cout .imbue (std::locale::classic ());
 
-		for (const auto & component : components)
+		for (const auto & component : *components)
 		{
 			std::cout << component -> getName () << std::endl;
 		}
@@ -101,6 +101,8 @@ private:
 	int
 	nodes ()
 	{
+		const auto supportedComponents = X3D::getBrowser () -> getSupportedComponents ();
+
 		X3D::Generator::Style (std::cout, "compact");
 
 		std::cout .imbue (std::locale::classic ());
@@ -135,11 +137,20 @@ private:
 			   << node -> getContainerField ()
 			   << std::endl;
 
-			std::cout
-			   << '\t'
-			   << "componentName = "
-			   << X3D::getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ()
-			   << std::endl;
+			const auto component = std::find_if (supportedComponents -> cbegin (), supportedComponents -> cend (),
+			[&node] (const X3D::ComponentInfoPtr & component)
+			{
+				return node -> getComponent () == component -> getType ();
+			});
+
+			if (component not_eq supportedComponents -> cend ())
+			{
+				std::cout
+				   << '\t'
+				   << "componentName = "
+				   << (*component) -> getName ()
+				   << std::endl;
+			}
 
 			std::cout << std::endl;
 		}

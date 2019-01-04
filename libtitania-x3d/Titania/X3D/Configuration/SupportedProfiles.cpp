@@ -50,13 +50,13 @@
 
 #include "SupportedProfiles.h"
 
-#include <Titania/LOG.h>
+#include <algorithm>
 
 namespace titania {
 namespace X3D {
 
 SupportedProfiles::SupportedProfiles (const std::shared_ptr <SupportedComponents> & supportedComponents) :
-	profiles ()
+	profiles (new ProfileInfoArray ())
 {
 	//std::clog << "Creating profile index:" << std::endl;
 
@@ -225,21 +225,23 @@ SupportedProfiles::add (const std::string & title, const std::string & name, std
 void
 SupportedProfiles::add (const ProfileInfoPtr & profile)
 {
-	profiles .push_back (profile -> getName (), profile);
+	profiles -> emplace_back (profile);
 }
 
 ///  throws Error <NOT_SUPPORTED>
 const ProfileInfoPtr &
 SupportedProfiles::get (const std::string & name) const
 {
-	try
+	const auto iter = std::find_if (profiles -> begin (), profiles -> end (),
+	[&name] (const ProfileInfoPtr & profile)
 	{
-		return profiles .rfind (name);
-	}
-	catch (const std::out_of_range &)
-	{
+		return name == profile -> getName ();
+	});
+
+	if (iter == profiles -> end ())
 		throw Error <NOT_SUPPORTED> ("Unkown profile '" + name + "'");
-	}
+
+	return *iter;
 }
 
 } // X3D

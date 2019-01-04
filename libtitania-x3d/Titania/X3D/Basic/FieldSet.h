@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_FIELD_CONTAINER_H__
-#define __TITANIA_X3D_BASIC_FIELD_CONTAINER_H__
+#ifndef __TITANIA_X3D_BASIC_FIELD_SET_H__
+#define __TITANIA_X3D_BASIC_FIELD_SET_H__
 
 #include "../Basic/X3DBaseNode.h"
 #include "../Execution/X3DExecutionContext.h"

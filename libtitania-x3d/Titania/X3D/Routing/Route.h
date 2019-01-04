@@ -58,18 +58,12 @@
 namespace titania {
 namespace X3D {
 
-typedef std::pair <X3DFieldDefinition*, X3DFieldDefinition*> RouteId;
+using RouteId = std::pair <X3DFieldDefinition*, X3DFieldDefinition*>;
 
 class Route :
 	public X3DBaseNode
 {
 public:
-
-	///  @name Fields
-
-	const Output &
-	disconnected () const
-	{ return disconnectedOutput; }
 
 	///  @name Construction
 
@@ -134,6 +128,12 @@ public:
 
 	void
 	erase ();
+
+	///  @name Fields
+
+	const Output &
+	disconnected () const
+	{ return disconnectedOutput; }
 
 	///  @name Input/Output
 

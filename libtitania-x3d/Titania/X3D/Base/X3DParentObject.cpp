@@ -265,6 +265,8 @@ X3DParentObject::removeEvents ()
 void
 X3DParentObject::dispose ()
 {
+try
+{
 	X3DReferenceObject::dispose ();
 
 	for (const auto & child : children)
@@ -278,6 +280,11 @@ X3DParentObject::dispose ()
 
 		browser -> removeParent (this);
 	}
+}
+catch (const std::exception & error)
+{
+	__LOG__ << error .what () << std::endl;
+}
 }
 
 /***

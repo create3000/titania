@@ -373,7 +373,7 @@ SFVec3 <InternalType>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (self -> divide (*vector))));
+		args .rval () .set (create (cx, new InternalType (self -> divVec (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -483,7 +483,7 @@ SFVec3 <InternalType>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
 
-		args .rval () .set (create (cx, new InternalType (self -> multiply (*vector))));
+		args .rval () .set (create (cx, new InternalType (self -> multVec (*vector))));
 		return true;
 	}
 	catch (const std::exception & error)

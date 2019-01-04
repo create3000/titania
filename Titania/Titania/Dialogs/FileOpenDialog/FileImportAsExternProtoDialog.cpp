@@ -105,7 +105,7 @@ FileImportAsExternProtoDialog::run ()
 		const auto uri   = getUrl ();
 		const auto scene = getCurrentBrowser () -> createX3DFromURL ({ uri .str () });
 
-		for (const auto & prototype : scene -> getProtoDeclarations ())
+		for (const auto & prototype : *scene -> getProtoDeclarations ())
 		{
 			const basic::uri worldURL (uri + "#" + prototype -> getName ());
 

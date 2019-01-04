@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using ExternProtoDeclarationArray = X3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoDeclarationArray>;
+using ExternProtoDeclarationArray = X3DConstArray <X3DExternProtoDeclaration, X3D::ExternProtoDeclarationArrayPtr>;
 
 template <>
 constexpr

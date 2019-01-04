@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using ComponentInfoArray = X3DConstArray <ComponentInfo, X3D::ComponentInfoArray>;
+using ComponentInfoArray = X3DConstArray <ComponentInfo, X3D::ComponentInfoArrayPtr>;
 
 template <>
 constexpr

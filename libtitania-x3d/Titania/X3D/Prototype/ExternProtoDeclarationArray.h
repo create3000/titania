@@ -57,7 +57,8 @@
 namespace titania {
 namespace X3D {
 
-using ExternProtoDeclarationArray = X3D::X3DPtrArray <ExternProtoDeclaration>;
+using ExternProtoDeclarationArray    = X3D::X3DPtrArray <ExternProtoDeclaration>;
+using ExternProtoDeclarationArrayPtr = X3D::X3DPtr <ExternProtoDeclarationArray>;
 
 } // X3D
 } // titania

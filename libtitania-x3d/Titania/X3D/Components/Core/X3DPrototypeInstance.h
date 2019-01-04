@@ -164,7 +164,7 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	const ComponentInfoArray &
+	const ComponentInfoArrayPtr &
 	getComponents () const final override
 	{ return protoNode -> getProtoDeclaration () -> getComponents (); }
 

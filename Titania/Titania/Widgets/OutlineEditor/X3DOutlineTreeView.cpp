@@ -538,13 +538,13 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 
 	// ExternProtos
 
-	if (externProtos and not executionContext -> getExternProtoDeclarations () .empty ())
+	if (externProtos and not executionContext -> getExternProtoDeclarations () -> empty ())
 	{
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Extern Prototypes")), 0, false);
 
 		size_t i = 0;
 
-		for (auto & externProto : executionContext -> getExternProtoDeclarations ())
+		for (auto & externProto : *executionContext -> getExternProtoDeclarations ())
 		{
 			const auto iter = get_model () -> append (OutlineIterType::ExternProtoDeclaration, externProto, i ++, false);
 
@@ -554,13 +554,13 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 
 	// Prototypes
 
-	if (prototypes and not executionContext -> getProtoDeclarations () .empty ())
+	if (prototypes and not executionContext -> getProtoDeclarations () -> empty ())
 	{
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Prototypes")), 0, false);
 
 		size_t i = 0;
 
-		for (auto & prototype : executionContext -> getProtoDeclarations ())
+		for (auto & prototype : *executionContext -> getProtoDeclarations ())
 		{
 			const auto iter = get_model () -> append (OutlineIterType::ProtoDeclaration, prototype, i ++, false);
 
@@ -952,25 +952,25 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeIter & iter)
 
 			// ExternProtos
 
-			if (externProtos and not executionContext -> getExternProtoDeclarations () .empty ())
+			if (externProtos and not executionContext -> getExternProtoDeclarations () -> empty ())
 			{
 				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Extern Prototypes")), 0, get_model () -> get_data (iter) -> getSelected ());
 
 				size_t i = 0;
 
-				for (auto & externProto : executionContext -> getExternProtoDeclarations ())
+				for (auto & externProto : *executionContext -> getExternProtoDeclarations ())
 					get_model () -> append (iter, OutlineIterType::ExternProtoDeclaration, externProto, i ++, get_model () -> get_data (iter) -> getSelected ());
 			}
 
 			// Prototypes
 
-			if (prototypes and not executionContext -> getProtoDeclarations () .empty ())
+			if (prototypes and not executionContext -> getProtoDeclarations () -> empty ())
 			{
 				get_model () -> append (iter, OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Prototypes")), 0, get_model () -> get_data (iter) -> getSelected ());
 
 				size_t i = 0;
 
-				for (auto & prototype : executionContext -> getProtoDeclarations ())
+				for (auto & prototype : *executionContext -> getProtoDeclarations ())
 					get_model () -> append (iter, OutlineIterType::ProtoDeclaration, prototype, i ++, get_model () -> get_data (iter) -> getSelected ());
 			}
 

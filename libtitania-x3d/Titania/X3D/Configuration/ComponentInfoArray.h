@@ -53,12 +53,14 @@
 
 #include "../Configuration/ComponentInfo.h"
 
-#include <Titania/Basic/IndexedMultiMap.h>
+#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-using ComponentInfoArray = basic::indexed_multimap <ComponentType, ComponentInfoPtr>;
+using ComponentInfoArray    = std::vector <ComponentInfoPtr>;
+using ComponentInfoArrayPtr = std::shared_ptr <ComponentInfoArray>;
 
 } // X3D
 } // titania

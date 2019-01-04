@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-using ProtoDeclarationArray = X3DConstArray <X3DProtoDeclaration, X3D::ProtoDeclarationArray>;
+using ProtoDeclarationArray = X3DConstArray <X3DProtoDeclaration, X3D::ProtoDeclarationArrayPtr>;
 
 template <>
 constexpr

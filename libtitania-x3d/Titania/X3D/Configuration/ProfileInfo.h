@@ -78,7 +78,7 @@ public:
 	getProviderUrl () const
 	{ return providerUrl; }
 
-	const ComponentInfoArray &
+	const ComponentInfoArrayPtr &
 	getComponents () const
 	{ return components; }
 
@@ -102,7 +102,7 @@ private:
 	const std::string name;
 	const std::string providerUrl;
 
-	const ComponentInfoArray components;
+	const ComponentInfoArrayPtr components;
 
 };
 

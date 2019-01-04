@@ -139,7 +139,7 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	const ComponentInfoArray &
+	const ComponentInfoArrayPtr &
 	getComponents () const = 0;
 
 	bool
@@ -281,7 +281,7 @@ public:
 	getProtoDeclaration (const std::string &) const;
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	const ProtoDeclarationArray &
+	const ProtoDeclarationArrayPtr &
 	getProtoDeclarations () const
 	{ return prototypes; }
 
@@ -319,7 +319,7 @@ public:
 	getExternProtoDeclaration (const std::string &) const;
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	const ExternProtoDeclarationArray &
+	const ExternProtoDeclarationArrayPtr &
 	getExternProtoDeclarations () const
 	{ return externProtos; }
 
@@ -415,7 +415,7 @@ public:
 	deleteRoute (Route* const);
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	const RouteArray &
+	const RouteArrayPtr &
 	getRoutes () const
 	{ return routes; }
 
@@ -558,13 +558,13 @@ private:
 	SFTime                                   namedNodesOutput;
 	ImportedNodeIndex                        importedNodes;
 	SFTime                                   importedNodesOutput;
-	ProtoDeclarationArray                    prototypes;
+	ProtoDeclarationArrayPtr                 prototypes;
 	SFTime                                   prototypesOutput;
-	ExternProtoDeclarationArray              externProtos;
+	ExternProtoDeclarationArrayPtr           externProtos;
 	SFInt32                                  externProtosLoadCount;
 	std::set <const ExternProtoDeclaration*> loadingExternProtos;
 	SFTime                                   externProtosOutput;
-	RouteArray                               routes;
+	RouteArrayPtr                            routes;
 	SFTime                                   routesOutput;
 	MFNode* const                            rootNodes;
 	SFTime                                   sceneGraphOutput;

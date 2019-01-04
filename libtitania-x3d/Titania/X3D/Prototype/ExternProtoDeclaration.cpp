@@ -362,7 +362,7 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 
 		if (scene -> getWorldURL () .fragment () .empty ())
 		{
-			setProtoDeclaration (scene -> getProtoDeclarations () .at (0));
+			setProtoDeclaration (scene -> getProtoDeclarations () -> at (0));
 		}
 		else
 		{

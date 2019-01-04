@@ -397,7 +397,8 @@ Context::addObject (const size_t key, X3D::X3DFieldDefinition* const field, JSOb
 {
 	assert (objects .emplace (key, std::pair (field, obj)) .second);
 
-	field -> addParent (this);
+	if (field)
+		field -> addParent (this);
 }
 
 void
@@ -409,7 +410,9 @@ Context::removeObject (const size_t key)
 
 	const auto field = iter -> second .first;
 
-	field -> removeParent (this);
+	if (field)
+		field -> removeParent (this);
+
 	objects .erase (iter);
 }
 
@@ -652,7 +655,9 @@ Context::dispose ()
 
 	for (const auto & [key, pair] : Objects (objects))
 	{
-		setObject (pair .second, nullptr);
+		const auto [field, obj] = pair;
+
+		setObject (obj, nullptr);
 		removeObject (key);
 	}
 

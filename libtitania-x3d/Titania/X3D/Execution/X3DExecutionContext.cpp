@@ -78,12 +78,12 @@ X3DExecutionContext::X3DExecutionContext () :
 	           namedNodes (),
 	        importedNodes (),
 	  importedNodesOutput (),
-	           prototypes (),
+	           prototypes (new ProtoDeclarationArray ()),
 	     prototypesOutput (),
-	         externProtos (),
+	         externProtos (new ExternProtoDeclarationArray ()),
 	externProtosLoadCount (),
 	   externProtosOutput (),
-	               routes (),
+	               routes (new RouteArray ()),
 	         routesOutput (),
 	            rootNodes (new MFNode ()),
 	     sceneGraphOutput (),
@@ -100,6 +100,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	                 externProtos,
 	                 externProtosLoadCount,
 	                 externProtosOutput,
+	                 routes,
 	                 routesOutput,
 	                 sceneGraphOutput,
 	                 bboxOutput,
@@ -198,15 +199,19 @@ X3DExecutionContext::addUninitializedNode (X3DBaseNode* const uninitializedNode)
 bool
 X3DExecutionContext::hasComponent (const ComponentType & component) const
 {
-	if (getProfile () or not getComponents () .empty ())
+	if (getProfile () or not getComponents () -> empty ())
 	{
 		if (getProfile ())
 		{
-			if (getProfile () -> getComponents () .count (component))
+			const auto & components = getProfile () -> getComponents ();
+
+			if (std::count_if (components -> cbegin (), components -> cend (), [component] (const ComponentInfoPtr & c) { return component == c -> getType (); }))
 				return true;
 		}
 
-		if (getComponents () .count (component))
+		const auto & components = getComponents ();
+
+		if (std::count_if (components -> cbegin (), components -> cend (), [component] (const ComponentInfoPtr & c) { return component == c -> getType (); }))
 			return true;
 
 		return false;;
@@ -666,7 +671,7 @@ X3DExecutionContext::addProtoDeclaration (const std::string & name, const ProtoD
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto '" + name + "' is already in use.");
 
 	prototype -> setName (name);
-	prototypes .emplace_back (prototype);
+	prototypes -> emplace_back (prototype);
 
 	prototypesOutput = getCurrentTime ();
 }
@@ -698,13 +703,13 @@ X3DExecutionContext::updateProtoDeclaration (const std::string & name, const Pro
 void
 X3DExecutionContext::removeProtoDeclaration (const std::string & name)
 {
-	const auto iter = std::remove_if (prototypes .begin (), prototypes .end (),
+	const auto iter = std::remove_if (prototypes -> begin (), prototypes -> end (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
 	});
 
-	prototypes .erase (iter, prototypes .end ());
+	prototypes -> erase (iter, prototypes -> end ());
 
 	prototypesOutput = getCurrentTime ();
 }
@@ -713,13 +718,13 @@ X3DExecutionContext::removeProtoDeclaration (const std::string & name)
 const ProtoDeclarationPtr &
 X3DExecutionContext::getProtoDeclaration (const std::string & name) const
 {
-	const auto iter = std::find_if (prototypes .crbegin (), prototypes .crend (),
+	const auto iter = std::find_if (prototypes -> crbegin (), prototypes -> crend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
 	});
 
-	if (iter == prototypes .crend ())
+	if (iter == prototypes -> crend ())
 		throw Error <INVALID_NAME> ("Proto declaration '" + name + "' not found.");
 
 	return *iter;
@@ -728,7 +733,7 @@ X3DExecutionContext::getProtoDeclaration (const std::string & name) const
 bool
 X3DExecutionContext::hasProtoDeclaration (const std::string & name) const
 {
-	return std::any_of (prototypes .cbegin (), prototypes .cend (),
+	return std::any_of (prototypes -> cbegin (), prototypes -> cend (),
 	[&name] (const ProtoDeclarationPtr & prototype)
 	{
 		return prototype -> getName () == name;
@@ -802,7 +807,7 @@ X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const 
 		throw Error <INVALID_NAME> ("Couldn't add extern extern proto declaration: extern proto '" + name + "' is already in use.");
 
 	externProto -> setName (name);
-	externProtos .emplace_back (externProto);
+	externProtos -> emplace_back (externProto);
 
 	externProtosOutput = getCurrentTime ();
 }
@@ -834,13 +839,13 @@ X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, con
 void
 X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
 {
-	const auto iter = std::remove_if (externProtos .begin (), externProtos .end (),
+	const auto iter = std::remove_if (externProtos -> begin (), externProtos -> end (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
 	});
 
-	externProtos .erase (iter, externProtos .end ());
+	externProtos -> erase (iter, externProtos -> end ());
 
 	externProtosOutput = getCurrentTime ();
 }
@@ -849,13 +854,13 @@ X3DExecutionContext::removeExternProtoDeclaration (const std::string & name)
 const ExternProtoDeclarationPtr &
 X3DExecutionContext::getExternProtoDeclaration (const std::string & name) const
 {
-	const auto iter = std::find_if (externProtos .crbegin (), externProtos .crend (),
+	const auto iter = std::find_if (externProtos -> crbegin (), externProtos -> crend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
 	});
 
-	if (iter == externProtos .crend ())
+	if (iter == externProtos -> crend ())
 		throw Error <INVALID_NAME> ("Extern proto declaration '" + name + "' not found.");
 
 	return *iter;
@@ -864,7 +869,7 @@ X3DExecutionContext::getExternProtoDeclaration (const std::string & name) const
 bool
 X3DExecutionContext::hasExternProtoDeclaration (const std::string & name) const
 {
-	return std::any_of (externProtos .cbegin (), externProtos .cend (),
+	return std::any_of (externProtos -> cbegin (), externProtos -> cend (),
 	[&name] (const ExternProtoDeclarationPtr & externProto)
 	{
 		return externProto -> getName () == name;
@@ -906,7 +911,7 @@ X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 	// Parallel load all extern protos, then sync.
 	requestAsyncLoadOfExternProtos ();
 
-	for (const auto&  externProto : getExternProtoDeclarations ())
+	for (const auto&  externProto : *getExternProtoDeclarations ())
 	{
 		if (externProto -> getInstances () .empty ())
 		   continue;
@@ -914,7 +919,7 @@ X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 		externProto -> requestImmediateLoad ();
 	}
 
-	for (const auto & proto : getProtoDeclarations ())
+	for (const auto & proto : *getProtoDeclarations ())
 		proto -> requestImmediateLoadOfExternProtos ();
 }
 
@@ -924,7 +929,7 @@ X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 	externProtosLoadCount .setTainted (false);
 	externProtosLoadCount .addEvent ();
 
-	for (const auto & externProto : getExternProtoDeclarations ())
+	for (const auto & externProto : *getExternProtoDeclarations ())
 	{
 		if (externProto -> getInstances () .empty ())
 		   continue;
@@ -932,7 +937,7 @@ X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 		externProto -> requestAsyncLoad ();
 	}
 
-	for (const auto & proto : getProtoDeclarations ())
+	for (const auto & proto : *getProtoDeclarations ())
 	{
 	   proto -> requestAsyncLoadOfExternProtos ();
 	}
@@ -1011,7 +1016,7 @@ X3DExecutionContext::findProtoDeclarations () const
 
 		bool skip = true;
 
-		for (const auto & prototype : basic::make_reverse_range (executionContext -> getProtoDeclarations ()))
+		for (const auto & prototype : basic::make_reverse_range (*executionContext -> getProtoDeclarations ()))
 		{
 			if (skip and not current .empty ())
 			{
@@ -1024,7 +1029,7 @@ X3DExecutionContext::findProtoDeclarations () const
 			prototypes .emplace (prototype -> getName (), prototype);
 		}
 
-		for (const auto & prototype : executionContext -> getExternProtoDeclarations ())
+		for (const auto & prototype : *executionContext -> getExternProtoDeclarations ())
 			prototypes .emplace (prototype -> getName (), prototype);
 
 		if (executionContext -> isType ({ X3DConstants::X3DScene }))
@@ -1181,24 +1186,27 @@ X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::
 
 	const auto routeKey = std::pair (sourceField, destinationField);
 
-	try
+	const auto iter = std::find_if (routes -> cbegin (), routes -> cend (),
+	[&routeKey] (const RoutePtr & route)
 	{
-		// Silently return if route already exists.
+		return routeKey == route -> getKey ();
+	});
 
-		return routes .rfind (routeKey);
-	}
-	catch (const std::out_of_range &)
+	if (iter == routes -> cend ())
 	{
-		// Add route.
-
-		const auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
-
+		const auto & route = addRoute (new Route (this, sourceNode, sourceField, destinationNode, destinationField));
+	
 		if (getRealized ())
 			route -> setup ();
 		else
 			addUninitializedNode (route);
-
+	
 		return route;
+	}
+	else
+	{
+		// Silently return if route already exists.
+		return *iter;
 	}
 }
 
@@ -1212,12 +1220,9 @@ X3DExecutionContext::addRoute (Route* const value)
 	if (value -> getExecutionContext () not_eq this)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
 
-	routes .push_back (value -> getKey (), RoutePtr (value));
+	routes -> emplace_back (value);
 
-	auto & route = routes .back ();
-
-	route .setTainted (true);
-	route .addParent (this);
+	auto & route = routes -> back ();
 
 	routesOutput = getCurrentTime ();
 
@@ -1231,6 +1236,9 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 {
 	try
 	{
+		if (not routes)
+			throw Error <DISPOSED> ("deleteRoute");
+
 		if (not sourceNode)
 			return;
 
@@ -1239,8 +1247,16 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 
 		const auto routeKey = RouteId (sourceNode -> getField (sourceFieldId), destinationNode -> getField (destinationFieldId));
 
-		routes .rfind (routeKey) -> disconnect ();
-		routes .erase (routeKey);
+		const auto iter = std::remove_if (routes -> begin (), routes -> end (),
+		[&routeKey] (const RoutePtr & route)
+		{
+			return routeKey == route -> getKey ();
+		});
+
+		for (const auto & route : std::pair (iter, routes -> end ()))
+			route -> disconnect ();
+
+		routes -> erase (iter, routes -> end ());
 
 		routesOutput = getCurrentTime ();
 	}
@@ -1254,16 +1270,26 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 void
 X3DExecutionContext::deleteRoute (Route* const route)
 {
+	if (not routes)
+		throw Error <DISPOSED> ("deleteRoute");
+
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
 
 	if (route -> getExecutionContext () not_eq this)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
 
+	route -> disconnect ();
+
 	const auto routeKey = route -> getKey ();
 
-	route -> disconnect ();
-	routes .erase (routeKey);
+	const auto iter = std::remove_if (routes -> begin (), routes -> end (),
+	[&routeKey] (const RoutePtr & route)
+	{
+		return routeKey == route -> getKey ();
+	});
+
+	routes -> erase (iter, routes -> end ());
 }
 
 ///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
@@ -1402,7 +1428,7 @@ X3DExecutionContext::importNamedNodes (const X3DExecutionContext* const executio
 void
 X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 {
-	for (const auto & route : executionContext -> routes)
+	for (const auto & route : *executionContext -> getRoutes ())
 	{
 		try
 		{
@@ -1412,7 +1438,7 @@ X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 		{ }
 	}
 
-	executionContext -> routes .clear ();
+	executionContext -> routes -> clear ();
 }
 
 // X3DProtoInstance import handling
@@ -1420,7 +1446,7 @@ X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 void
 X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CopyType type)
 {
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+	for (const auto & externProto : *executionContext -> getExternProtoDeclarations ())
 	{
 		try
 		{
@@ -1434,7 +1460,7 @@ X3DExecutionContext::importExternProtos (const X3DExecutionContext* const execut
 void
 X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CopyType type)
 {
-	for (const auto & proto : executionContext -> getProtoDeclarations ())
+	for (const auto & proto : *executionContext -> getProtoDeclarations ())
 	{
 		try
 		{
@@ -1475,7 +1501,7 @@ X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executi
 void
 X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext, const CopyType type)
 {
-	for (const auto & route : executionContext -> getRoutes ())
+	for (const auto & route : *executionContext -> getRoutes ())
 	{
 		try
 		{
@@ -1495,7 +1521,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	Generator::EnterScope (ostream);
 	Generator::ImportedNodes (ostream, getImportedNodes ());
 
-	for (const auto & externProto : getExternProtoDeclarations ())
+	for (const auto & externProto : *getExternProtoDeclarations ())
 	{
 		ostream
 			<< externProto
@@ -1503,7 +1529,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	for (const auto & proto : getProtoDeclarations ())
+	for (const auto & proto : *getProtoDeclarations ())
 	{
 		ostream
 			<< proto
@@ -1545,11 +1571,11 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	if (not getRoutes () .empty ())
+	if (not getRoutes () -> empty ())
 	{
 		ostream << Generator::TidyBreak;
 
-		for (const auto & route : getRoutes ())
+		for (const auto & route : *getRoutes ())
 		{
 			try
 			{
@@ -1589,14 +1615,14 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 	Generator::EnterScope (ostream);
 	Generator::ImportedNodes (ostream, getImportedNodes ());
 
-	for (const auto & externProto : getExternProtoDeclarations ())
+	for (const auto & externProto : *getExternProtoDeclarations ())
 	{
 		ostream
 			<< XMLEncode (externProto)
 			<< Generator::TidyBreak;
 	}
 
-	for (const auto & proto : getProtoDeclarations ())
+	for (const auto & proto : *getProtoDeclarations ())
 	{
 		ostream
 			<< XMLEncode (proto)
@@ -1622,7 +1648,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	for (const auto & route : getRoutes ())
+	for (const auto & route : *getRoutes ())
 	{
 		try
 		{
@@ -1652,7 +1678,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 
 	// Extern proto declarations
 
-	if (not getExternProtoDeclarations () .empty ())
+	if (not getExternProtoDeclarations () -> empty ())
 	{
 		if (lastProperty)
 		{
@@ -1661,13 +1687,13 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidyBreak;
 		}
 	
-		for (const auto & externProto : getExternProtoDeclarations ())
+		for (const auto & externProto : *getExternProtoDeclarations ())
 		{
 			ostream
 				<< Generator::Indent
 				<< JSONEncode (externProto);
 	
-			if (externProto not_eq getExternProtoDeclarations () .back ())
+			if (externProto not_eq getExternProtoDeclarations () -> back ())
 			{
 				ostream
 					<< ','
@@ -1681,7 +1707,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 
 	// Proto declarations
 
-	if (not getProtoDeclarations () .empty ())
+	if (not getProtoDeclarations () -> empty ())
 	{
 		if (lastProperty)
 		{
@@ -1690,13 +1716,13 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidyBreak;
 		}
 	
-		for (const auto & proto : getProtoDeclarations ())
+		for (const auto & proto : *getProtoDeclarations ())
 		{
 			ostream
 				<< Generator::Indent
 				<< JSONEncode (proto);
 	
-			if (proto not_eq getProtoDeclarations () .back ())
+			if (proto not_eq getProtoDeclarations () -> back ())
 			{
 				ostream
 					<< ','
@@ -1796,11 +1822,11 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 
 	// Routes
 
-	if (not getRoutes () .empty ())
+	if (not getRoutes () -> empty ())
 	{
 		std::vector <std::string> routes;
 
-		for (const auto & route : getRoutes ())
+		for (const auto & route : *getRoutes ())
 		{
 			try
 			{
@@ -1853,9 +1879,6 @@ X3DExecutionContext::dispose ()
 {
 	namedNodes    .clear ();
 	importedNodes .clear ();
-	prototypes    .clear ();
-	externProtos  .clear ();
-	routes        .clear ();
 	
 	rootNodes -> clear ();
 }

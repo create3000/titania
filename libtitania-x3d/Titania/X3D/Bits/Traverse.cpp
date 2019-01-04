@@ -82,7 +82,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 
 	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 	{
-		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		for (const auto & externProto : *executionContext -> getExternProtoDeclarations ())
 		{
 			SFNode node (externProto);
 
@@ -95,7 +95,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 
 	if (flags & TRAVERSE_PROTO_DECLARATIONS)
 	{
-		for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		for (const auto & prototype : *executionContext -> getProtoDeclarations ())
 		{
 			SFNode node (prototype);
 
@@ -429,7 +429,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	{
 		if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 		{
-			for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+			for (const auto & externProto : *executionContext -> getExternProtoDeclarations ())
 			{
 				find (static_cast <X3DBaseNode*> (externProto), object, flags, hierarchies, hierarchy, seen);
 			}
@@ -437,7 +437,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	
 		if (flags & TRAVERSE_PROTO_DECLARATIONS)
 		{
-			for (const auto & prototype : executionContext -> getProtoDeclarations ())
+			for (const auto & prototype : *executionContext -> getProtoDeclarations ())
 			{
 				find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchies, hierarchy, seen);
 			}

@@ -51,15 +51,14 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTE_ARRAY_H__
 #define __TITANIA_X3D_ROUTING_ROUTE_ARRAY_H__
 
-#include "../Basic/X3DFieldDefinition.h"
+#include "../Fields/X3DPtrArray.h"
 #include "../Types/Pointer.h"
-
-#include <Titania/Basic/IndexedMultiMap.h>
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::pair <X3DFieldDefinition*, X3DFieldDefinition*>, RoutePtr> RouteArray;
+using RouteArray    = X3DPtrArray <Route>;
+using RouteArrayPtr = X3DPtr <RouteArray>;
 
 } // X3D
 } // titania

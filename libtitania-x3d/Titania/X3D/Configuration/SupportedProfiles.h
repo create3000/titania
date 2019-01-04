@@ -77,7 +77,7 @@ public:
 	const ProfileInfoPtr &
 	get (const std::string &) const;
 
-	const ProfileInfoArray &
+	const ProfileInfoArrayPtr &
 	get () const
 	{ return profiles; }
 
@@ -91,7 +91,7 @@ private:
 
 	///  @name Members
 
-	ProfileInfoArray profiles;
+	ProfileInfoArrayPtr profiles;
 
 };
 

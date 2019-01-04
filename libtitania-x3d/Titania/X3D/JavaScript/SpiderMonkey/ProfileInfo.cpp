@@ -113,17 +113,30 @@ JS::Value
 ProfileInfo::create (JSContext* const cx, const X3D::ProfileInfoPtr & profileInfo)
 {
 	const auto context = getContext (cx);
-	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto key     = size_t (profileInfo .get ());
+	const auto obj     = context -> getObject (key);
 
-	if (not obj)
-		throw std::runtime_error ("out of memory");
+	if (obj)
+	{
+		return JS::ObjectValue (*obj);
+	}
+	else
+	{
+		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
 
-	const auto self = new internal_type (profileInfo);
+		if (not obj)
+			throw std::runtime_error ("out of memory");
 
-	setObject (obj, self);
-	setContext (obj, context);
+		const auto self = new internal_type (profileInfo);
 
-	return JS::ObjectValue (*obj);
+		setObject (obj, self);
+		setContext (obj, context);
+		setKey (obj, key);
+
+		context -> addObject (key, nullptr, obj);
+
+		return JS::ObjectValue (*obj);
+	}
 }
 
 bool
@@ -185,7 +198,7 @@ ProfileInfo::getComponents (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto   args = JS::CallArgsFromVp (argc, vp);
 		const auto & self = *getThis <ProfileInfo> (cx, args);
 
-		args .rval () .set (ComponentInfoArray::create (cx, &self -> getComponents ()));
+		args .rval () .set (ComponentInfoArray::create (cx, self -> getComponents ()));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -197,12 +210,16 @@ ProfileInfo::getComponents (JSContext* cx, unsigned argc, JS::Value* vp)
 void
 ProfileInfo::finalize (JSFreeOp* fop, JSObject* obj)
 {
-	const auto self = getObject <internal_type*> (obj);
+	const auto context = getContext (obj);
+	const auto self    = getObject <internal_type*> (obj);
 
 	// Proto objects have no private.
 
 	if (self)
+	{
+		context -> removeObject (getKey (obj));
 		delete self;
+	}
 }
 
 } // spidermonkey

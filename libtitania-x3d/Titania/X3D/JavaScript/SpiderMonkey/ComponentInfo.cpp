@@ -112,17 +112,30 @@ JS::Value
 ComponentInfo::create (JSContext* const cx, const X3D::ComponentInfoPtr & componentInfo)
 {
 	const auto context = getContext (cx);
-	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto key     = size_t (componentInfo .get ());
+	const auto obj     = context -> getObject (key);
 
-	if (not obj)
-		throw std::runtime_error ("out of memory");
+	if (obj)
+	{
+		return JS::ObjectValue (*obj);
+	}
+	else
+	{
+		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	
+		if (not obj)
+			throw std::runtime_error ("out of memory");
+	
+		const auto self = new internal_type (componentInfo);
+	
+		setObject (obj, self);
+		setContext (obj, context);
+		setKey (obj, key);
 
-	const auto self = new internal_type (componentInfo);
+		context -> addObject (key, nullptr, obj);
 
-	setObject (obj, self);
-	setContext (obj, context);
-
-	return JS::ObjectValue (*obj);
+		return JS::ObjectValue (*obj);
+	}
 }
 
 bool
@@ -196,12 +209,16 @@ ComponentInfo::getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp)
 void
 ComponentInfo::finalize (JSFreeOp* fop, JSObject* obj)
 {
-	const auto self = getObject <internal_type*> (obj);
+	const auto context = getContext (obj);
+	const auto self    = getObject <internal_type*> (obj);
 
 	// Proto objects have no private.
 
 	if (self)
+	{
+		context -> removeObject (getKey (obj));
 		delete self;
+	}
 }
 
 } // spidermonkey

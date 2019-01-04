@@ -138,10 +138,10 @@ ProtoDeclaration::initialize ()
 	// Prototypes must be setuped partially to ensure that routes are printed always, especially route from and to nodes
 	// without names or hidden names, this is ok as setup can be called multiple times.
 
-	for (const auto & proto : getProtoDeclarations ())
+	for (const auto & proto : *getProtoDeclarations ())
 		proto -> setup ();
 
-	for (const auto & route : getRoutes ())
+	for (const auto & route : *getRoutes ())
 		route -> setup ();
 
 	loadState = COMPLETE_STATE;

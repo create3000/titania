@@ -273,7 +273,7 @@ X3DBrowser::getComponent (const std::string & name, const size_t level) const
 }
 
 ///  throws Error <DISPOSED>
-const ComponentInfoArray &
+const ComponentInfoArrayPtr &
 X3DBrowser::getSupportedComponents () const
 {
 	if (not supportedComponents)
@@ -283,7 +283,7 @@ X3DBrowser::getSupportedComponents () const
 }
 
 ///  throws Error <DISPOSED>
-const ProfileInfoArray &
+const ProfileInfoArrayPtr &
 X3DBrowser::getSupportedProfiles () const
 {
 	if (not supportedProfiles)

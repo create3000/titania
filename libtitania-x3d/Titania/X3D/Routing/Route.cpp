@@ -208,7 +208,12 @@ Route::disconnect ()
 void
 Route::erase ()
 {
-	getExecutionContext () -> deleteRoute (this);
+	try
+	{
+		getExecutionContext () -> deleteRoute (this);
+	}
+	catch (const Error <DISPOSED> & error)
+	{ }
 }
 
 void

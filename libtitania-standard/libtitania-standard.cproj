@@ -70,7 +70,6 @@
     <None Include="Titania\Chrono\ClockBase.h" />
     <None Include="Titania\Chrono\CountingClock.h" />
     <None Include="libtitania-standard.md.pc" />
-    <None Include="Titania\Basic\IndexedMultiMap.h" />
     <None Include="Titania\Basic\Path.h" />
     <None Include="Titania\Math\Algorithms\EigenDecomposition.h" />
     <None Include="Makefile.am" />

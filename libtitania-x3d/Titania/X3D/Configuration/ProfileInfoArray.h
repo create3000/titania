@@ -52,13 +52,15 @@
 #define __TITANIA_X3D_CONFIGURATION_PROFILE_INFO_ARRAY_H__
 
 #include "../Configuration/ProfileInfo.h"
-#include <Titania/Basic/IndexedMultiMap.h>
-#include <string>
+
+#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-using ProfileInfoArray = basic::indexed_multimap <std::string, const ProfileInfoPtr>;
+using ProfileInfoArray    = std::vector <ProfileInfoPtr>;
+using ProfileInfoArrayPtr = std::shared_ptr <ProfileInfoArray>;
 
 } // X3D
 } // titania

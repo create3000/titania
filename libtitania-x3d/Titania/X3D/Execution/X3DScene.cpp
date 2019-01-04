@@ -93,7 +93,7 @@ X3DScene::X3DScene () :
 	   characterEncoding ("utf8"),
 	             comment ("Titania"),
 	             profile (),
-	          components (),
+	          components (new ComponentInfoArray ()),
 	               units (standardUnits),
 	         unitsOutput (),
 	           metadatas (),
@@ -196,20 +196,19 @@ X3DScene::setSpecificationVersion (const std::string & value)
 void
 X3DScene::updateComponent (const ComponentInfoPtr & component)
 {
-	try
+	const auto iter = std::find_if (components -> begin (), components -> end (),
+	[&component] (const ComponentInfoPtr & c)
 	{
-		const ComponentInfoPtr & existing = components .rfind (component -> getType ());
+		return c -> getType () == component -> getType ();
+	});
 
-		if (existing -> getLevel () < component -> getLevel ())
-		{
-			components .erase (existing -> getType ());
-
-			components .push_back (component -> getType (), component);
-		}
+	if (iter == components -> end ())
+	{
+		components -> emplace_back (component);
 	}
-	catch (const std::out_of_range &)
+	else
 	{
-		components .push_back (component -> getType (), component);
+		*iter = component;
 	}
 }
 
@@ -497,7 +496,7 @@ X3DScene::importScene (X3DExecutionContext* const executionContext)
 {
 	ContextLock lock (getBrowser ());
 
-	if (getProfile () or not getComponents () .empty ())
+	if (getProfile () or not getComponents () -> empty ())
 	   setProfile (getBrowser () -> getProfile ("Full"));
 
 	//importMetaData (other); // Makes no sense.
@@ -634,9 +633,9 @@ X3DScene::toStream (std::ostream & ostream) const
 				<< Generator::TidyBreak;
 		}
 
-		if (not getComponents () .empty ())
+		if (not getComponents () -> empty ())
 		{
-			for (const auto & component : getComponents ())
+			for (const auto & component : *getComponents ())
 			{
 				ostream
 					<< *component
@@ -786,7 +785,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	// <head>
 
-	for (const auto & component : getComponents ())
+	for (const auto & component : *getComponents ())
 	{
 		ostream
 			<< XMLEncode (component)
@@ -991,7 +990,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			outputUnits = true;
 	}
 
-	if (not getMetaDatas () .empty () or not getComponents () .empty () or outputUnits)
+	if (not getMetaDatas () .empty () or not getComponents () -> empty () or outputUnits)
 	{
 		bool headLastProperty = false;
 	
@@ -1088,7 +1087,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 		// Components
 
-		if (not getComponents () .empty ())
+		if (not getComponents () -> empty ())
 		{
 			if (headLastProperty)
 			{
@@ -1114,13 +1113,13 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 			// Components
 
-			for (const auto & component : getComponents ())
+			for (const auto & component : *getComponents ())
 			{
 				ostream << Generator::Indent;
 
 				component -> toJSONStream (ostream);
 
-				if (component not_eq getComponents () .back ())
+				if (component not_eq getComponents () -> back ())
 					ostream << ',';
 		
 				ostream << Generator::TidyBreak;
@@ -1230,11 +1229,11 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 	bool lastProperty = false;
 
-	lastProperty |= not getExternProtoDeclarations () .empty ();
-	lastProperty |= not getProtoDeclarations ()       .empty ();
-	lastProperty |= not getRootNodes ()               .empty ();
-	lastProperty |= not getImportedNodes ()           .empty ();
-	lastProperty |= not getRoutes ()                  .empty ();
+	lastProperty |= not getExternProtoDeclarations () -> empty ();
+	lastProperty |= not getProtoDeclarations () -> empty ();
+	lastProperty |= not getRootNodes () .empty ();
+	lastProperty |= not getImportedNodes () .empty ();
+	lastProperty |= not getRoutes () -> empty ();
 
 	// Exported nodes
 

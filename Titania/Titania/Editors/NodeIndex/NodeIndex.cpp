@@ -528,7 +528,7 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 void
 NodeIndex::getCurrentProtoNodes (X3D::X3DExecutionContext* const executionContext, X3D::MFNode & nodes)
 {
-	for (const auto & proto : executionContext -> getProtoDeclarations ())
+	for (const auto & proto : *executionContext -> getProtoDeclarations ())
 	{
 		getCurrentProtoNodes (proto, nodes);
 

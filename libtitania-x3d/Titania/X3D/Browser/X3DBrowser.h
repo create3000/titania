@@ -113,7 +113,7 @@ public:
 	getComponent (const std::string &, const size_t) const;
 
 	///  throws Error <DISPOSED>
-	const ComponentInfoArray &
+	const ComponentInfoArrayPtr &
 	getSupportedComponents () const;
 
 	///  throws Error <NOT_SUPPORTED>, Error <DISPOSED>
@@ -121,7 +121,7 @@ public:
 	getProfile (const std::string &) const;
 
 	///  throws Error <DISPOSED>
-	const ProfileInfoArray &
+	const ProfileInfoArrayPtr &
 	getSupportedProfiles () const;
 
 	///  @name Execution context handling

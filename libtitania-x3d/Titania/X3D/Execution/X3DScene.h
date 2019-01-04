@@ -155,7 +155,7 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	const ComponentInfoArray &
+	const ComponentInfoArrayPtr &
 	getComponents () const final override
 	{ return components; }
 
@@ -348,7 +348,7 @@ private:
 	std::string                     characterEncoding;
 	std::string                     comment;
 	ProfileInfoPtr                  profile;
-	ComponentInfoArray              components;
+	ComponentInfoArrayPtr           components;
 	UnitArray                       units;
 	SFTime                          unitsOutput;
 	MetaDataIndex                   metadatas;

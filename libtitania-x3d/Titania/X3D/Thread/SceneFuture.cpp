@@ -181,7 +181,7 @@ SceneFuture::loadAsync (const MFString & url)
 	
 						if (protoName .empty ())
 						{
-							if (scene -> getProtoDeclarations () .empty ())
+							if (scene -> getProtoDeclarations () -> empty ())
 							{
 								getBrowser () -> getConsole () -> error ("No PROTO found\n");
 								continue;

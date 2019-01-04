@@ -80,7 +80,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, const InternalType* const array);
+	create (JSContext* const cx, const InternalType & array);
 
 	static
 	const JSClass*
@@ -97,6 +97,28 @@ private:
 
 	///  @name Construction
 
+	template <class Type>
+	static
+	std::enable_if_t <
+		std::is_base_of_v <X3D::X3DFieldDefinition, Type>,
+		X3D::X3DFieldDefinition*
+	>
+	getField (Type* const self)
+	{
+		return self;
+	}
+
+	template <class Type>
+	static
+	std::enable_if_t <
+		not (std::is_base_of_v <X3D::X3DFieldDefinition, Type>),
+		X3D::X3DFieldDefinition*
+	>
+	getField (Type* const self)
+	{
+		return nullptr;
+	}
+
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
 	//static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
 	static bool resolve   (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
@@ -105,6 +127,30 @@ private:
 
 	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
 	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
+
+	///  @name Destruction
+
+	static void finalize (JSFreeOp* fop, JSObject* obj);
+
+	template <class Type>
+	static
+	std::enable_if_t <
+		std::is_base_of_v <X3D::X3DFieldDefinition, Type>,
+		void
+	>
+	deleteObject (Type* const self)
+	{ }
+
+	template <class Type>
+	static
+	std::enable_if_t <
+		not (std::is_base_of_v <X3D::X3DFieldDefinition, Type>),
+		void
+	>
+	deleteObject (Type* const self)
+	{
+		delete self;
+	}
 
 	///  @name Static members
 
@@ -124,7 +170,7 @@ const JSClassOps X3DConstArray <ValueType, InternalType>::class_ops = {
 	nullptr, // enumerate
 	resolve, // resolve
 	nullptr, // mayResolve
-	nullptr, // finalize
+	finalize, // finalize
 	nullptr, // call
 	nullptr, // hasInstance
 	nullptr, // construct
@@ -156,18 +202,33 @@ X3DConstArray <ValueType, InternalType>::init (JSContext* const cx, JS::HandleOb
 
 template <class ValueType, class InternalType>
 JS::Value
-X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const InternalType* const array)
+X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const InternalType & array)
 {
 	const auto context = getContext (cx);
-	const auto object  = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	const auto key     = size_t (array .operator -> ());
+	const auto obj     = context -> getObject (key);
 
-	if (object == nullptr)
-		throw std::runtime_error ("out of memory");
+	if (obj)
+	{
+		return JS::ObjectValue (*obj);
+	}
+	else
+	{
+		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+	
+		if (not obj)
+			throw std::runtime_error ("out of memory");
+	
+		const auto self = new internal_type (array);
+	
+		setObject (obj, self);
+		setContext (obj, context);
+		setKey (obj, key);
 
-	setObject (object, const_cast <InternalType*> (array));
-	setContext (object, context);
+		context -> addObject (key, getField (self), obj);
 
-	return JS::ObjectValue (*object);
+		return JS::ObjectValue (*obj);
+	}
 }
 
 template <class ValueType, class InternalType>
@@ -183,7 +244,7 @@ X3DConstArray <ValueType, InternalType>::construct (JSContext* cx, unsigned argc
 //{
 //	try
 //	{
-//		const auto array = getThis <X3DConstArray> (cx, obj);
+//		const auto & array = *getThis <X3DConstArray> (cx, obj);
 //
 //		for (size_t i = 0, size = array -> size (); i < size; ++ i)
 //			properties .append (INT_TO_JSID (i));
@@ -226,8 +287,8 @@ X3DConstArray <ValueType, InternalType>::get1Value (JSContext* cx, JS::HandleObj
 {
 	try
 	{
-		const auto array = getThis <X3DConstArray> (cx, obj);
-		const auto index = JSID_TO_INT (id);
+		const auto & array = *getThis <X3DConstArray> (cx, obj);
+		const auto   index = JSID_TO_INT (id);
 
 		if (index >= 0 and index < (int32_t) array -> size ())
 		{
@@ -252,8 +313,8 @@ X3DConstArray <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc
 {
 	try
 	{
-		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto array = getThis <X3DConstArray> (cx, args);
+		const auto   args  = JS::CallArgsFromVp (argc, vp);
+		const auto & array = *getThis <X3DConstArray> (cx, args);
 
 		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
@@ -265,6 +326,22 @@ X3DConstArray <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <class ValueType, class InternalType>
+void
+X3DConstArray <ValueType, InternalType>::finalize (JSFreeOp* fop, JSObject* obj)
+{
+	const auto context = getContext (obj);
+	const auto self    = getObject <internal_type*> (obj);
+
+	// Proto objects have no private.
+
+	if (self)
+	{
+		context -> removeObject (getKey (obj));
+		deleteObject (self);
 	}
 }
 
