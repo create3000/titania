@@ -112,7 +112,7 @@ JS::Value
 ComponentInfo::create (JSContext* const cx, const X3D::ComponentInfoPtr & componentInfo)
 {
 	const auto context = getContext (cx);
-	const auto key     = size_t (componentInfo .get ());
+	const auto key     = size_t (componentInfo .getValue ());
 	const auto obj     = context -> getObject (key);
 
 	if (obj)
@@ -132,7 +132,7 @@ ComponentInfo::create (JSContext* const cx, const X3D::ComponentInfoPtr & compon
 		setContext (obj, context);
 		setKey (obj, key);
 
-		context -> addObject (key, nullptr, obj);
+		context -> addObject (key, self, obj);
 
 		return JS::ObjectValue (*obj);
 	}
@@ -215,10 +215,7 @@ ComponentInfo::finalize (JSFreeOp* fop, JSObject* obj)
 	// Proto objects have no private.
 
 	if (self)
-	{
 		context -> removeObject (getKey (obj));
-		delete self;
-	}
 }
 
 } // spidermonkey

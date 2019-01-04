@@ -71,15 +71,15 @@ public:
 	///  @name Operations
 
 	void
-	add (const ProfileInfoPtr &);
+	add (const ProfileInfoPtr & profileInfo);
 
 	///  throws Error <NOT_SUPPORTED>
-	const ProfileInfoPtr &
-	get (const std::string &) const;
+	ProfileInfoPtr
+	get (const std::string & name) const;
 
-	const ProfileInfoArrayPtr &
+	const ProfileInfoArray &
 	get () const
-	{ return profiles; }
+	{ return *profiles; }
 
 
 private:
@@ -87,7 +87,7 @@ private:
 	///  @name Operations
 
 	void
-	add (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList);
+	add (const std::string & title, const std::string & name, const ComponentInfoArray & components);
 
 	///  @name Members
 

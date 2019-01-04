@@ -72,15 +72,15 @@ public:
 
 	///  throws Error <NOT_SUPPORTED>
 	ComponentInfoPtr
-	get (const std::string &, const size_t) const;
+	get (const std::string & name, const size_t level) const;
 
 	///  throws Error <NOT_SUPPORTED>
-	const ComponentInfoPtr &
-	get (const std::string &) const;
+	ComponentInfoPtr
+	get (const std::string & name) const;
 
-	const ComponentInfoArrayPtr &
+	const ComponentInfoArray &
 	get () const
-	{ return components; }
+	{ return *components; }
 
 
 private:

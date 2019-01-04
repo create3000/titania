@@ -67,12 +67,12 @@ private:
 	int
 	profiles ()
 	{
-		const auto browser  = X3D::getBrowser ();
-		const auto profiles = browser -> getSupportedProfiles ();
+		const auto   browser  = X3D::getBrowser ();
+		const auto & profiles = browser -> getSupportedProfiles ();
 
 		std::cout .imbue (std::locale::classic ());
 
-		for (const auto & profile : *profiles)
+		for (const auto & profile : profiles)
 		{
 			std::cout << profile -> getName () << std::endl;
 		}
@@ -84,12 +84,12 @@ private:
 	int
 	components ()
 	{
-		const auto browser    = X3D::getBrowser ();
-		const auto components = browser -> getSupportedComponents ();
+		const auto   browser    = X3D::getBrowser ();
+		const auto & components = browser -> getSupportedComponents ();
 
 		std::cout .imbue (std::locale::classic ());
 
-		for (const auto & component : *components)
+		for (const auto & component : components)
 		{
 			std::cout << component -> getName () << std::endl;
 		}

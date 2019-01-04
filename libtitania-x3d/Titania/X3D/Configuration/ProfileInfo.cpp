@@ -55,11 +55,18 @@
 namespace titania {
 namespace X3D {
 
-ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList) :
-	      title (title),
-	       name (name),
-	providerUrl ("http://titania.create3000.de"),
-	 components (new ComponentInfoArray (componentList .begin (), componentList .end ()))
+const std::string ProfileInfo::typeName = "ProfileInfo";
+
+ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, const ComponentInfoArray & components) :
+	X3DChildObject (),
+	         title (title),
+	          name (name),
+	   providerUrl ("http://titania.create3000.de"),
+	    components (new ComponentInfoArray (components))
+{ }
+
+void
+ProfileInfo::fromStream (std::istream & istream)
 { }
 
 void

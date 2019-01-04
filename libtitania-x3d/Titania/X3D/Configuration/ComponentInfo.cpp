@@ -55,11 +55,18 @@
 namespace titania {
 namespace X3D {
 
+const std::string ComponentInfo::typeName = "ComponentInfo";
+
 ComponentInfo::ComponentInfo (const std::string & title, const std::string & name, const size_t level) :
-	      title (title),
-	       name (name),
-	      level (level),
-	providerUrl ("http://titania.create3000.de")
+	X3DChildObject (),
+	         title (title),
+	          name (name),
+	         level (level),
+	   providerUrl ("http://titania.create3000.de")
+{ }
+
+void
+ComponentInfo::fromStream (std::istream & istream)
 { }
 
 void

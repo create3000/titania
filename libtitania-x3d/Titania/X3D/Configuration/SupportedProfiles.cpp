@@ -213,11 +213,11 @@ SupportedProfiles::SupportedProfiles (const std::shared_ptr <SupportedComponents
 }
 
 void
-SupportedProfiles::add (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList)
+SupportedProfiles::add (const std::string & title, const std::string & name, const ComponentInfoArray & components)
 {
 	//std::clog << "\tAdding profile " << name << ": " << std::flush;
 
-	add (ProfileInfoPtr (new ProfileInfo (title, name, componentList)));
+	add (ProfileInfoPtr (new ProfileInfo (title, name, components)));
 
 	//std::clog << "Done." << std::endl;
 }
@@ -229,7 +229,7 @@ SupportedProfiles::add (const ProfileInfoPtr & profile)
 }
 
 ///  throws Error <NOT_SUPPORTED>
-const ProfileInfoPtr &
+ProfileInfoPtr
 SupportedProfiles::get (const std::string & name) const
 {
 	const auto iter = std::find_if (profiles -> begin (), profiles -> end (),
@@ -241,7 +241,7 @@ SupportedProfiles::get (const std::string & name) const
 	if (iter == profiles -> end ())
 		throw Error <NOT_SUPPORTED> ("Unkown profile '" + name + "'");
 
-	return *iter;
+	return ProfileInfoPtr ((*iter) -> copy (CopyType::CLONE));
 }
 
 } // X3D

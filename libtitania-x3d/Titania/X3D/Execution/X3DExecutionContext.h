@@ -139,7 +139,7 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	const ComponentInfoArrayPtr &
+	const ComponentInfoArray &
 	getComponents () const = 0;
 
 	bool
@@ -281,9 +281,9 @@ public:
 	getProtoDeclaration (const std::string &) const;
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	const ProtoDeclarationArrayPtr &
+	const ProtoDeclarationArray &
 	getProtoDeclarations () const
-	{ return prototypes; }
+	{ return *prototypes; }
 
 	bool
 	hasProtoDeclaration (const std::string & name) const;
@@ -319,9 +319,9 @@ public:
 	getExternProtoDeclaration (const std::string &) const;
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	const ExternProtoDeclarationArrayPtr &
+	const ExternProtoDeclarationArray &
 	getExternProtoDeclarations () const
-	{ return externProtos; }
+	{ return *externProtos; }
 
 	bool
 	hasExternProtoDeclaration (const std::string & name) const;
@@ -402,22 +402,22 @@ public:
 
 	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <IMPORTED_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	const RoutePtr &
-	addRoute (const SFNode &, const std::string &,
-	          const SFNode &, const std::string &);
+	addRoute (const SFNode & sourceNode, const std::string & sourceFieldId,
+	          const SFNode & destinationNode, const std::string & destinationFieldId);
 
 	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	deleteRoute (const SFNode &, const std::string &,
-	             const SFNode &, const std::string &);
+	deleteRoute (const SFNode & sourceNode, const std::string & sourceFieldId,
+	             const SFNode & destinationNode, const std::string & destinationFieldId);
 
 	///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	deleteRoute (Route* const);
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	const RouteArrayPtr &
+	const RouteArray &
 	getRoutes () const
-	{ return routes; }
+	{ return *routes; }
 
 	const SFTime &
 	routes_changed () const

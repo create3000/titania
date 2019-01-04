@@ -52,15 +52,13 @@
 #define __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_ARRAY_H__
 
 #include "../Configuration/ComponentInfo.h"
-
-#include <memory>
-#include <vector>
+#include "../Fields/X3DPtrArray.h"
 
 namespace titania {
 namespace X3D {
 
-using ComponentInfoArray    = std::vector <ComponentInfoPtr>;
-using ComponentInfoArrayPtr = std::shared_ptr <ComponentInfoArray>;
+using ComponentInfoArray    = X3DPtrArray <ComponentInfo>;
+using ComponentInfoArrayPtr = X3DPtr <ComponentInfoArray>;
 
 } // X3D
 } // titania

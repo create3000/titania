@@ -52,15 +52,13 @@
 #define __TITANIA_X3D_CONFIGURATION_PROFILE_INFO_ARRAY_H__
 
 #include "../Configuration/ProfileInfo.h"
-
-#include <memory>
-#include <vector>
+#include "../Fields/X3DPtrArray.h"
 
 namespace titania {
 namespace X3D {
 
-using ProfileInfoArray    = std::vector <ProfileInfoPtr>;
-using ProfileInfoArrayPtr = std::shared_ptr <ProfileInfoArray>;
+using ProfileInfoArray    = X3DPtrArray <ProfileInfo>;
+using ProfileInfoArrayPtr = X3DPtr <ProfileInfoArray>;
 
 } // X3D
 } // titania

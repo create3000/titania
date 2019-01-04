@@ -181,7 +181,7 @@ Parser::importProto (const std::string & name)
 	if (not extensions .emplace (name) .second)
 		return;
 	
-	const auto externprotos = scene -> getExternProtoDeclarations () -> size ();
+	const auto externprotos = scene -> getExternProtoDeclarations () .size ();
 	const auto rootNodes    = scene -> getRootNodes () .size ();
 	const auto filename     = get_shader ((USE_PROTOTYPES ? "/glTF/Prototypes/" : "/glTF/") + name + ".x3d");
 
@@ -191,8 +191,8 @@ Parser::importProto (const std::string & name)
 
 	// Update externproto's url field.
 
-	const auto importedExternprotos = X3D::ExternProtoDeclarationArray (scene -> getExternProtoDeclarations () -> cbegin () + externprotos,
-	                                                                    scene -> getExternProtoDeclarations () -> cend ());
+	const auto importedExternprotos = X3D::ExternProtoDeclarationArray (scene -> getExternProtoDeclarations () .cbegin () + externprotos,
+	                                                                    scene -> getExternProtoDeclarations () .cend ());
 
 	for (const auto & externproto : importedExternprotos)
 	{

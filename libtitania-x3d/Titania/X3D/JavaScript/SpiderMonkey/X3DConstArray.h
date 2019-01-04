@@ -80,7 +80,7 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, const InternalType & array);
+	create (JSContext* const cx, const typename InternalType::internal_type & array);
 
 	static
 	const JSClass*
@@ -97,28 +97,6 @@ private:
 
 	///  @name Construction
 
-	template <class Type>
-	static
-	std::enable_if_t <
-		std::is_base_of_v <X3D::X3DFieldDefinition, Type>,
-		X3D::X3DFieldDefinition*
-	>
-	getField (Type* const self)
-	{
-		return self;
-	}
-
-	template <class Type>
-	static
-	std::enable_if_t <
-		not (std::is_base_of_v <X3D::X3DFieldDefinition, Type>),
-		X3D::X3DFieldDefinition*
-	>
-	getField (Type* const self)
-	{
-		return nullptr;
-	}
-
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
 	//static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
 	static bool resolve   (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
@@ -131,26 +109,6 @@ private:
 	///  @name Destruction
 
 	static void finalize (JSFreeOp* fop, JSObject* obj);
-
-	template <class Type>
-	static
-	std::enable_if_t <
-		std::is_base_of_v <X3D::X3DFieldDefinition, Type>,
-		void
-	>
-	deleteObject (Type* const self)
-	{ }
-
-	template <class Type>
-	static
-	std::enable_if_t <
-		not (std::is_base_of_v <X3D::X3DFieldDefinition, Type>),
-		void
-	>
-	deleteObject (Type* const self)
-	{
-		delete self;
-	}
 
 	///  @name Static members
 
@@ -202,10 +160,10 @@ X3DConstArray <ValueType, InternalType>::init (JSContext* const cx, JS::HandleOb
 
 template <class ValueType, class InternalType>
 JS::Value
-X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const InternalType & array)
+X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const typename InternalType::internal_type & array)
 {
 	const auto context = getContext (cx);
-	const auto key     = size_t (array .operator -> ());
+	const auto key     = size_t (array);
 	const auto obj     = context -> getObject (key);
 
 	if (obj)
@@ -225,7 +183,7 @@ X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const Inte
 		setContext (obj, context);
 		setKey (obj, key);
 
-		context -> addObject (key, getField (self), obj);
+		context -> addObject (key, self, obj);
 
 		return JS::ObjectValue (*obj);
 	}
@@ -339,10 +297,7 @@ X3DConstArray <ValueType, InternalType>::finalize (JSFreeOp* fop, JSObject* obj)
 	// Proto objects have no private.
 
 	if (self)
-	{
 		context -> removeObject (getKey (obj));
-		deleteObject (self);
-	}
 }
 
 } // spidermonkey

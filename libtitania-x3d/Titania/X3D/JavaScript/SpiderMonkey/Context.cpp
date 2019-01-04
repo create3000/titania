@@ -140,9 +140,9 @@ Context::addClasses ()
 	Globals::init (cx, *global);
 
 //	addProto (Browser::getId (),             Browser::init             (cx, *global, nullptr));
+//	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
 //	addProto (X3DExecutionContext::getId (), X3DExecutionContext::init (cx, *global, nullptr));
 //	addProto (X3DScene::getId (),            X3DScene::init            (cx, *global, getProto (X3DExecutionContext::getId ())));
-//	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
 
 	addProto (ProfileInfo::getId (),               ProfileInfo::init               (cx, *global, nullptr));
 	addProto (ComponentInfo::getId (),             ComponentInfo::init             (cx, *global, nullptr));
@@ -397,8 +397,7 @@ Context::addObject (const size_t key, X3D::X3DFieldDefinition* const field, JSOb
 {
 	assert (objects .emplace (key, std::pair (field, obj)) .second);
 
-	if (field)
-		field -> addParent (this);
+	field -> addParent (this);
 }
 
 void
@@ -410,8 +409,7 @@ Context::removeObject (const size_t key)
 
 	const auto field = iter -> second .first;
 
-	if (field)
-		field -> removeParent (this);
+	field -> removeParent (this);
 
 	objects .erase (iter);
 }

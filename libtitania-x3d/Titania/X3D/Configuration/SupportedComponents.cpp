@@ -129,12 +129,12 @@ SupportedComponents::get (const std::string & name, const size_t level) const
 }
 
 ///  throws Error <NOT_SUPPORTED>
-const ComponentInfoPtr &
+ComponentInfoPtr
 SupportedComponents::get (const std::string & name) const
 {
 	try
 	{
-		return componentIndex .at (name);
+		return ComponentInfoPtr (componentIndex .at (name) -> copy (CopyType::CLONE));
 	}
 	catch (const std::out_of_range &)
 	{

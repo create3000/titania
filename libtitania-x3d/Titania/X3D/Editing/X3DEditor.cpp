@@ -217,10 +217,10 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 	{
 		// Restore protos
 
-		undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, *executionContext -> getExternProtoDeclarations ());
-		undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, *executionContext -> getProtoDeclarations ());
+		undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
+		undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
 
-		for (const auto & externproto : *scene -> getExternProtoDeclarations ())
+		for (const auto & externproto : scene -> getExternProtoDeclarations ())
 		{
 			try
 			{
@@ -260,7 +260,7 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 			{ }
 		}
 
-		for (const auto & prototype : *scene -> getProtoDeclarations ())
+		for (const auto & prototype : scene -> getProtoDeclarations ())
 		{
 			try
 			{
@@ -314,8 +314,8 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 
 		// Restore protos
 
-		undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, *executionContext -> getExternProtoDeclarations ());
-		undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, *executionContext -> getProtoDeclarations ());
+		undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
+		undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
 
 		// Prototype support
 
@@ -1262,7 +1262,7 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 		return;
 
 	// Restore prototypes
-	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, *executionContext -> getProtoDeclarations ());
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
 
 	// Update prototype
 
@@ -1271,7 +1271,7 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 	executionContext -> updateProtoDeclaration (name, prototype);
 
 	// Restore prototypes
-	undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, *executionContext -> getProtoDeclarations ());
+	undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
 
 	// Prototype support
 
@@ -1329,7 +1329,7 @@ X3DEditor::convertProtoToExternProto (const ProtoDeclarationPtr & prototype, con
 void
 X3DEditor::restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos)
 {
-	const auto currentProtos = *executionContext -> getProtoDeclarations ();
+	const auto currentProtos = executionContext -> getProtoDeclarations ();
 
 	for (const auto & prototype : currentProtos)
 		executionContext -> removeProtoDeclaration (prototype -> getName ());
@@ -1348,7 +1348,7 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 		return;
 
 	// Restore externprotos.
-	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, *executionContext -> getExternProtoDeclarations ());
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 
 	// Update name.
 	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
@@ -1374,7 +1374,7 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 	undoStep -> addRedoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
 
 	// Restore externprotos.
-	undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, *executionContext -> getExternProtoDeclarations ());
+	undoStep -> addRedoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 
 	// Prototype support
 
@@ -1427,7 +1427,7 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 void
 X3DEditor::restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & externprotos)
 {
-	const auto currentExternProtos = *executionContext -> getExternProtoDeclarations ();
+	const auto currentExternProtos = executionContext -> getExternProtoDeclarations ();
 
 	for (const auto & externproto : currentExternProtos)
 		executionContext -> removeExternProtoDeclaration (externproto -> getName ());
@@ -1758,12 +1758,12 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 
 	std::map <ExternProtoDeclarationPtr, size_t> externProtos;
 
-	for (const auto & externProto : *executionContext -> getExternProtoDeclarations ())
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProtos .emplace (externProto, externProtos .size ());
 
 	std::map <ProtoDeclarationPtr, size_t> prototypes;
 
-	for (const auto & prototype : *executionContext -> getProtoDeclarations ())
+	for (const auto & prototype : executionContext -> getProtoDeclarations ())
 		prototypes .emplace (prototype, prototypes .size ());
 
 	// Find proto declaration not used in prototypes or scene.

@@ -113,7 +113,7 @@ JS::Value
 ProfileInfo::create (JSContext* const cx, const X3D::ProfileInfoPtr & profileInfo)
 {
 	const auto context = getContext (cx);
-	const auto key     = size_t (profileInfo .get ());
+	const auto key     = size_t (profileInfo .getValue ());
 	const auto obj     = context -> getObject (key);
 
 	if (obj)
@@ -133,7 +133,7 @@ ProfileInfo::create (JSContext* const cx, const X3D::ProfileInfoPtr & profileInf
 		setContext (obj, context);
 		setKey (obj, key);
 
-		context -> addObject (key, nullptr, obj);
+		context -> addObject (key, self, obj);
 
 		return JS::ObjectValue (*obj);
 	}
@@ -198,7 +198,7 @@ ProfileInfo::getComponents (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto   args = JS::CallArgsFromVp (argc, vp);
 		const auto & self = *getThis <ProfileInfo> (cx, args);
 
-		args .rval () .set (ComponentInfoArray::create (cx, self -> getComponents ()));
+		args .rval () .set (ComponentInfoArray::create (cx, const_cast <X3D::ComponentInfoArray*> (&self -> getComponents ())));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -216,10 +216,7 @@ ProfileInfo::finalize (JSFreeOp* fop, JSObject* obj)
 	// Proto objects have no private.
 
 	if (self)
-	{
 		context -> removeObject (getKey (obj));
-		delete self;
-	}
 }
 
 } // spidermonkey

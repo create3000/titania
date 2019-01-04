@@ -51,22 +51,39 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 #define __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 
+#include "../Base/X3DChildObject.h"
 #include "../Bits/X3DConstants.h"
+#include "../Fields/X3DPtr.h"
 
-#include <memory>
 #include <string>
 #include <iostream>
 
 namespace titania {
 namespace X3D {
 
-class ComponentInfo
+class ComponentInfo :
+	public X3DChildObject
 {
 public:
 
 	///  @name Construction
 
 	ComponentInfo (const std::string & title, const std::string & name, const size_t level);
+
+	ComponentInfo*
+	copy (const CopyType type) const
+	{ return new ComponentInfo (title, name, level); }
+
+	ComponentInfo*
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
+	{ return copy (type); }
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
 
 	///  @name Member access
 
@@ -88,17 +105,28 @@ public:
 
 	///  @name Input/Output
 
+	virtual
 	void
-	toStream (std::ostream & ostream) const;
+	fromStream (std::istream & istream) final override;
 
+	virtual
 	void
-	toXMLStream (std::ostream & ostream) const;
+	toStream (std::ostream & ostream) const final override;
 
+	virtual
 	void
-	toJSONStream (std::ostream & ostream) const;
+	toXMLStream (std::ostream & ostream) const final override;
+
+	virtual
+	void
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 private:
+
+	///  @name Static members
+
+	static const std::string typeName;
 
 	///  @name Members
 
@@ -117,7 +145,7 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const ComponentInfo &
 	return ostream;
 }
 
-using ComponentInfoPtr = std::shared_ptr <const ComponentInfo>;
+using ComponentInfoPtr = X3DPtr <ComponentInfo>;
 
 struct XMLEncodeComponentInfoType { const ComponentInfoPtr & component; };
 

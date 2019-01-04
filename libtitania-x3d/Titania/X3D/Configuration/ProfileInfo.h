@@ -51,18 +51,37 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_PROFILE_INFO_H__
 #define __TITANIA_X3D_CONFIGURATION_PROFILE_INFO_H__
 
+#include "../Base/X3DChildObject.h"
+#include "../Bits/X3DConstants.h"
 #include "../Configuration/ComponentInfoArray.h"
+#include "../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 
-class ProfileInfo
+class ProfileInfo :
+	public X3DChildObject
 {
 public:
 
 	///  @name Construction
 
-	ProfileInfo (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> componentList);
+	ProfileInfo (const std::string & title, const std::string & name, const ComponentInfoArray & components);
+
+	ProfileInfo*
+	copy (const CopyType type) const
+	{ return new ProfileInfo (title, name, *components); }
+
+	ProfileInfo*
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
+	{ return copy (type); }
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
 
 	///  @name Member access
 
@@ -78,23 +97,34 @@ public:
 	getProviderUrl () const
 	{ return providerUrl; }
 
-	const ComponentInfoArrayPtr &
+	const ComponentInfoArray &
 	getComponents () const
-	{ return components; }
+	{ return *components; }
 
 	///  @name Input/Output
 
+	virtual
 	void
-	toStream (std::ostream & ostream) const;
+	fromStream (std::istream & istream) final override;
 
+	virtual
 	void
-	toXMLStream (std::ostream & ostream) const;
+	toStream (std::ostream & ostream) const final override;
 
+	virtual
 	void
-	toJSONStream (std::ostream & ostream) const;
+	toXMLStream (std::ostream & ostream) const final override;
+
+	virtual
+	void
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 private:
+
+	///  @name Static members
+
+	static const std::string typeName;
 
 	///  @name Members
 
@@ -114,7 +144,7 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const ProfileInfo & p
 	return ostream;
 }
 
-using ProfileInfoPtr = std::shared_ptr <const ProfileInfo>;
+using ProfileInfoPtr = X3DPtr <ProfileInfo>;
 
 struct XMLEncodeProfileType { const ProfileInfoPtr & profile; };
 

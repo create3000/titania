@@ -160,7 +160,7 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	const ComponentInfoArrayPtr &
+	const ComponentInfoArray &
 	getComponents () const final override
 	{ return getExecutionContext () -> getComponents (); }
 
