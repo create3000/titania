@@ -53,6 +53,7 @@
 #include "Arguments.h"
 #include "Context.h"
 #include "String.h"
+#include "X3DConstants.h"
 
 #include "../../Browser/X3DBrowser.h"
 
@@ -83,21 +84,24 @@ Globals::init (JSContext* const cx, JS::HandleObject global)
 bool
 Globals::null_ (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	vp -> setNull ();
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNull ();
 	return true;
 }
 
 bool
 Globals::false_ (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	vp -> setBoolean (false);
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setBoolean (false);
 	return true;
 }
 
 bool
 Globals::true_ (JSContext* cx, unsigned argc, JS::Value* vp)
 {
-	vp -> setBoolean (true);
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setBoolean (true);
 	return true;
 }
 

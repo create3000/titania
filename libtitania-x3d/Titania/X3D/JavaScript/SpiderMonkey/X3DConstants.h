@@ -68,6 +68,10 @@ public:
 	init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent);
 
 	static
+	JSObject*
+	create (JSContext* const cx);
+
+	static
 	const JSClass*
 	getClass ()
 	{ return &static_class; }

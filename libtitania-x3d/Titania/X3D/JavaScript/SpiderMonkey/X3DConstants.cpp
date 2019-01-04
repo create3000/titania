@@ -50,6 +50,7 @@
 
 #include "X3DConstants.h"
 
+#include "Arguments.h"
 #include "Error.h"
 #include "SlotType.h"
 
@@ -496,12 +497,10 @@ const JSFunctionSpec X3DConstants::functions [ ] = {
 JSObject*
 X3DConstants::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject parent)
 {
-	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
+	const auto proto = JS_InitClass (cx, global, parent, &static_class, nullptr, 0, properties, functions, nullptr, nullptr);
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-
-	JS_DefineObject (cx, global, "X3DConstants", &static_class, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
 
 	return proto;
 }
@@ -510,6 +509,15 @@ bool
 X3DConstants::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructible");
+}
+
+JSObject*
+X3DConstants::create (JSContext* const cx)
+{
+	const auto context = getContext (cx);
+	const auto obj     = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
+
+	return obj;
 }
 
 // Event types

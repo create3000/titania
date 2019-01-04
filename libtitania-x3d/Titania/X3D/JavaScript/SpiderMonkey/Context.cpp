@@ -200,6 +200,8 @@ Context::addClasses ()
 	addProto (MFVec3f::getId (),     MFVec3f::init     (cx, *global, getProto (X3DArrayField::getId ())));
 	addProto (MFVec4d::getId (),     MFVec4d::init     (cx, *global, getProto (X3DArrayField::getId ())));
 	addProto (MFVec4f::getId (),     MFVec4f::init     (cx, *global, getProto (X3DArrayField::getId ())));
+
+	JS_DefineProperty (cx, *global, "X3DConstants", JS::RootedObject (cx, X3DConstants::create (cx)), JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE, nullptr, nullptr);
 }
 
 void

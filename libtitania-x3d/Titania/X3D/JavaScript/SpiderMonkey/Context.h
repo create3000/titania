@@ -99,10 +99,6 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-	
-	JS::HandleObject
-	getGlobal () const
-	{ return *global; }
 
 	JS::HandleObject
 	getProto (const ObjectType type) const
