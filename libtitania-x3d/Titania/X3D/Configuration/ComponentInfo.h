@@ -121,6 +121,15 @@ public:
 	void
 	toJSONStream (std::ostream & ostream) const final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~ComponentInfo () final override;
+
 
 private:
 

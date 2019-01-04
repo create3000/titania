@@ -57,13 +57,26 @@ namespace X3D {
 
 const std::string ProfileInfo::typeName = "ProfileInfo";
 
-ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, const ComponentInfoArray & components) :
+ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, const ComponentInfoArray & componentList) :
 	X3DChildObject (),
 	         title (title),
 	          name (name),
 	   providerUrl ("http://titania.create3000.de"),
-	    components (new ComponentInfoArray (components))
-{ }
+	    components (new ComponentInfoArray (componentList))
+{
+	components .addParent (this);
+}
+
+ProfileInfo*
+ProfileInfo::copy (const CopyType type) const
+{
+	auto componentList = ComponentInfoArray ();
+
+	for (const auto & component : *components)
+		componentList .emplace_back (component -> copy (type));
+
+	return new ProfileInfo (title, name, componentList);
+}
 
 void
 ProfileInfo::fromStream (std::istream & istream)
@@ -92,6 +105,17 @@ ProfileInfo::toJSONStream (std::ostream & ostream) const
 		<< name
 		<< '"';
 }
+
+void
+ProfileInfo::dispose ()
+{
+	components .dispose ();
+
+	X3DChildObject::dispose ();
+}
+
+ProfileInfo::~ProfileInfo ()
+{ }
 
 } // X3D
 } // titania

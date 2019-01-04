@@ -69,8 +69,7 @@ public:
 	ProfileInfo (const std::string & title, const std::string & name, const ComponentInfoArray & components);
 
 	ProfileInfo*
-	copy (const CopyType type) const
-	{ return new ProfileInfo (title, name, *components); }
+	copy (const CopyType type) const;
 
 	ProfileInfo*
 	copy (X3DExecutionContext* const executionContext, const CopyType type) const
@@ -119,6 +118,15 @@ public:
 	void
 	toJSONStream (std::ostream & ostream) const final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~ProfileInfo () final override;
+
 
 private:
 
@@ -132,7 +140,7 @@ private:
 	const std::string name;
 	const std::string providerUrl;
 
-	const ComponentInfoArrayPtr components;
+	ComponentInfoArrayPtr components;
 
 };
 

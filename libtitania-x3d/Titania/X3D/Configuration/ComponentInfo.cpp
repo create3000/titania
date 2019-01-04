@@ -140,5 +140,14 @@ ComponentInfo::toJSONStream (std::ostream & ostream) const
 		<< '}';
 }
 
+void
+ComponentInfo::dispose ()
+{
+	X3DChildObject::dispose (); 
+}
+
+ComponentInfo::~ComponentInfo ()
+{ }
+
 } // X3D
 } // titania
