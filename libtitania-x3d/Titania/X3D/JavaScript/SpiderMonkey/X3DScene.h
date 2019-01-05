@@ -48,12 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DEXECUTION_CONTEXT_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DEXECUTION_CONTEXT_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DSCENE_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_X3DSCENE_H__
 
 #include "ObjectType.h"
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../../Execution/X3DScene.h"
 
 #include <jsapi.h>
 
@@ -61,14 +61,14 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-class X3DExecutionContext
+class X3DScene
 {
 public:
 
 	///  @name Member types
-
-	using internal_type = X3D::X3DExecutionContextPtr;
-
+	
+	using internal_type = X3D::X3DScenePtr;
+	
 	///  @name Construction
 
 	static
@@ -77,18 +77,18 @@ public:
 
 	static
 	JS::Value
-	create (JSContext* const cx, X3D::X3DExecutionContext* const executionContext);
+	create (JSContext* const cx, X3D::X3DScene* const executionContext);
 
 	static
 	const JSClass*
 	getClass ()
 	{ return &static_class; }
-
+	
 	static
 	constexpr
 	ObjectType
 	getId ()
-	{ return ObjectType::X3DExecutionContext; }
+	{ return ObjectType::X3DScene; }
 
 
 private:
@@ -99,42 +99,23 @@ private:
 
 	///  @name Properties
 
-	static bool getSpecificationVersion (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getEncoding             (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getWorldURL             (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getProfile              (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getComponents           (JSContext* cx, unsigned argc, JS::Value* vp);
-
-//	static bool getExternprotos (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getProtos       (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getRootNodes    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getRoutes       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setRootNodes (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Functions
 
-//	static bool fromUnit (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool toUnit   (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool setMetaData (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool getMetaData (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool createNode  (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool createProto (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool addExportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool removeExportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool updateExportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool getExportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool addNamedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool removeNamedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool updateNamedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getNamedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-
-//	static bool addImportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool removeImportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool updateImportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getImportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-
-//	static bool getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp);
-
-//	static bool addRoute (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool deleteRoute (JSContext* cx, unsigned argc, JS::Value* vp);
-
-//	static bool toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool toXMLString  (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool addRootNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool removeRootNode (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool setRootNodes   (JSContext* cx, unsigned argc, JS::Value* vp);
+//	static bool getRootNodes   (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Destruction
 
@@ -146,10 +127,6 @@ private:
 	static const JSClass        static_class;
 	static const JSPropertySpec properties [ ];
 	static const JSFunctionSpec functions [ ];
-
-	///  @name Static members
-
-	static const std::set <int32_t> unitCategories;
 
 };
 

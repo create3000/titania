@@ -71,6 +71,7 @@
 #include "X3DFieldDefinition.h"
 #include "X3DProtoDeclaration.h"
 #include "X3DRoute.h"
+#include "X3DScene.h"
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -144,7 +145,7 @@ Context::addClasses ()
 //	addProto (Browser::getId (),             Browser::init             (cx, *global, nullptr));
 	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
 	addProto (X3DExecutionContext::getId (), X3DExecutionContext::init (cx, *global, nullptr));
-//	addProto (X3DScene::getId (),            X3DScene::init            (cx, *global, getProto (X3DExecutionContext::getId ())));
+	addProto (X3DScene::getId (),            X3DScene::init            (cx, *global, getProto (X3DExecutionContext::getId ())));
 
 	addProto (ProfileInfo::getId (),               ProfileInfo::init               (cx, *global, nullptr));
 	addProto (ComponentInfo::getId (),             ComponentInfo::init             (cx, *global, nullptr));

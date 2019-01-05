@@ -625,6 +625,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DFieldDefinition.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DProtoDeclaration.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DRoute.lo \
+	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.lo \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.lo \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.lo \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.lo \
@@ -1325,6 +1326,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DFieldDefinition.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DProtoDeclaration.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo \
@@ -2270,6 +2272,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DFieldDefinition.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DProtoDeclaration.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DRoute.cpp \
+	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.c \
@@ -4470,6 +4473,9 @@ Titania/X3D/JavaScript/SpiderMonkey/X3DProtoDeclaration.lo:  \
 Titania/X3D/JavaScript/SpiderMonkey/X3DRoute.lo:  \
 	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/JavaScript/SpiderMonkey/X3DScene.lo:  \
+	Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp) \
+	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/X3DJavaScriptContext.lo:  \
 	Titania/X3D/JavaScript/$(am__dirstamp) \
 	Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
@@ -6009,6 +6015,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DFieldDefinition.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DProtoDeclaration.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo@am__quote@ # am--include-marker
@@ -7238,6 +7245,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DFieldDefinition.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DProtoDeclaration.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo
@@ -7979,6 +7987,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DFieldDefinition.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DProtoDeclaration.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo
+	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo

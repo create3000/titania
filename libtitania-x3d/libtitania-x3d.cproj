@@ -1005,6 +1005,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\ProfileInfo.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DConstants.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExecutionContext.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1702,6 +1703,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\ProfileInfo.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DConstants.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExecutionContext.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
