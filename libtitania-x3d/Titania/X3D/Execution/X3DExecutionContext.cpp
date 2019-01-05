@@ -1248,9 +1248,6 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 {
 	try
 	{
-		if (not routes)
-			throw Error <DISPOSED> ("X3DExecutionContext::deleteRoute: X3DExecutionContext is already disposed.");
-
 		if (not sourceNode)
 			return;
 
@@ -1282,9 +1279,6 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 void
 X3DExecutionContext::deleteRoute (Route* const route)
 {
-	if (not routes)
-		throw Error <DISPOSED> ("X3DExecutionContext::deleteRoute: X3DExecutionContext is already disposed.");
-
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
 
