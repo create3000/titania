@@ -176,7 +176,6 @@ X3DExecutionContext::create (JSContext* const cx, X3D::X3DExecutionContext* cons
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
-		setExecutionContext <X3DExecutionContext> (obj, executionContext);
 
 		context -> addObject (key, self, obj);
 	
@@ -337,11 +336,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::fromUnit (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 2)
-//		return ThrowException <JSProto_Error> (cx, "%s .fromUnit: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 2)
+//		   return ThrowException <JSProto_Error> (cx, "%s .fromUnit: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto unitCategory     = getArgument <int32_t> (cx, argv, 0);
@@ -361,11 +360,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::toUnit (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 2)
-//		return ThrowException <JSProto_Error> (cx, "%s .toUnit: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 2)
+//		   return ThrowException <JSProto_Error> (cx, "%s .toUnit: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto unitCategory     = getArgument <int32_t> (cx, argv, 0);
@@ -385,11 +384,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::createNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .createNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 1)
+//		   return ThrowException <JSProto_Error> (cx, "%s .createNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto name             = getArgument <std::string> (cx, argv, 0);
@@ -406,11 +405,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::createProto (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .createProto: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 1)
+//		   return ThrowException <JSProto_Error> (cx, "%s .createProto: wrong number of arguments.", getClass () -> name);
+//
 //		const auto  argv             = JS_ARGV (cx, vp);
 //		const auto  executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto  name             = getArgument <std::string> (cx, argv, 0);
@@ -427,11 +426,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::addNamedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 2)
-//		return ThrowException <JSProto_Error> (cx, "%s .addNamedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 2)
+//		   return ThrowException <JSProto_Error> (cx, "%s .addNamedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto name             = getArgument <std::string> (cx, argv, 0);
@@ -451,11 +450,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::removeNamedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .removeNamedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 1)
+//		   return ThrowException <JSProto_Error> (cx, "%s .removeNamedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto name             = getArgument <std::string> (cx, argv, 0);
@@ -474,11 +473,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::updateNamedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 2)
-//		return ThrowException <JSProto_Error> (cx, "%s .updateNamedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 2)
+//		   return ThrowException <JSProto_Error> (cx, "%s .updateNamedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto name             = getArgument <std::string> (cx, argv, 0);
@@ -498,11 +497,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::getNamedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .getNamedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 1)
+//		   return ThrowException <JSProto_Error> (cx, "%s .getNamedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto name             = getArgument <std::string> (cx, argv, 0);
@@ -519,11 +518,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::addImportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 2 and argc not_eq 3)
-//		return ThrowException <JSProto_Error> (cx, "%s .addImportedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 2 and argc not_eq 3)
+//		   return ThrowException <JSProto_Error> (cx, "%s .addImportedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto node             = getArgument <SFNode> (cx, argv, 0);
@@ -548,11 +547,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::removeImportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .removeImportedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 1)
+//		   return ThrowException <JSProto_Error> (cx, "%s .removeImportedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto importedName     = getArgument <std::string> (cx, argv, 0);
@@ -571,11 +570,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::updateImportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 2 and argc not_eq 3)
-//		return ThrowException <JSProto_Error> (cx, "%s .updateImportedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+// 	if (argc not_eq 2 and argc not_eq 3)
+//		   return ThrowException <JSProto_Error> (cx, "%s .updateImportedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto node             = getArgument <SFNode> (cx, argv, 0);
@@ -600,11 +599,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::getImportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .getImportedNode: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 1)
+//		   return ThrowException <JSProto_Error> (cx, "%s .getImportedNode: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto importedName     = getArgument <std::string> (cx, argv, 0);
@@ -621,11 +620,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 0)
-//		return ThrowException <JSProto_Error> (cx, "%s .getRootNodes: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 0)
+//		   return ThrowException <JSProto_Error> (cx, "%s .getRootNodes: wrong number of arguments.", getClass () -> name);
+//
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto rootNodes        = new X3D::MFNode (executionContext -> getRootNodes ());
 //
@@ -643,11 +642,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::addRoute (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 4)
-//		return ThrowException <JSProto_Error> (cx, "%s .addRoute: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+// 	if (argc not_eq 4)
+//		   return ThrowException <JSProto_Error> (cx, "%s .addRoute: wrong number of arguments.", getClass () -> name);
+//
 //		const auto   argv             = JS_ARGV (cx, vp);
 //		const auto   executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto   fromNode         = getArgument <SFNode> (cx, argv, 0);
@@ -667,11 +666,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::deleteRoute (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 1)
-//		return ThrowException <JSProto_Error> (cx, "%s .deleteRoute: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+// 	if (argc not_eq 1)
+//	   	return ThrowException <JSProto_Error> (cx, "%s .deleteRoute: wrong number of arguments.", getClass () -> name);
+//
 //		const auto argv             = JS_ARGV (cx, vp);
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //		const auto route            = getArgument <X3DRoute> (cx, argv, 0);
@@ -690,11 +689,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 0)
-//		return ThrowException <JSProto_Error> (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+// 	if (argc not_eq 0)
+//		   return ThrowException <JSProto_Error> (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
+//
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //
 //		std::ostringstream osstream;
@@ -703,7 +702,7 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //
 //		Generator::NicestStyle (osstream);
 //
-//		executionContext -> X3D::X3DExecutionContext::toStream (osstream);
+//		executionContext -> toStream (osstream);
 //
 //		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 //	}
@@ -716,11 +715,11 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //bool
 //X3DExecutionContext::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 //{
-//	if (argc not_eq 0)
-//		return ThrowException <JSProto_Error> (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
-//
 //	try
 //	{
+//	   if (argc not_eq 0)
+//		   return ThrowException <JSProto_Error> (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
+//
 //		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 //
 //		std::ostringstream osstream;
@@ -729,7 +728,7 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 //
 //		Generator::NicestStyle (osstream);
 //
-//		executionContext -> X3D::X3DExecutionContext::toXMLStream (osstream);
+//		executionContext -> toXMLStream (osstream);
 //
 //		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 //	}

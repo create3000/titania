@@ -175,30 +175,10 @@ getThis (JSContext* const cx, JSObject* const obj)
 }
 
 template <class Type>
-inline
-void
-setExecutionContext (JSObject* const obj, const typename Type::internal_type::internal_type & executionContext)
-{
-	JS_SetReservedSlot (obj, size_t (SlotType::EXECUTION_CONTEXT), JS::PrivateValue (executionContext));
-}
-
-template <class Type>
-typename Type::internal_type::internal_type
+typename Type::context_type*
 getExecutionContext (JSContext* const cx, const JS::CallArgs & args)
 {
-	const auto thisv = args .thisv ();
-
-	if (thisv .isObjectOrNull ())
-	{
-		const auto obj = thisv .toObjectOrNull ();
-
-		if (obj and instanceOf <Type> (cx, thisv))
-		{
-			return static_cast <typename Type::internal_type::internal_type> (JS_GetReservedSlot (obj, size_t (SlotType::EXECUTION_CONTEXT)) .toPrivate ());
-		}
-	}
-
-	throw std::invalid_argument ("function must be called with object of type '" + std::string (Type::getClass () -> name) + "'");
+	return static_cast <typename Type::context_type*> (getThis <Type> (cx, args) -> getValue ());
 }
 
 template <class Type>

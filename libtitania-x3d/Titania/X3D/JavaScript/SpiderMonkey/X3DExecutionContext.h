@@ -68,6 +68,7 @@ public:
 	///  @name Member types
 
 	using internal_type = X3D::X3DExecutionContextPtr;
+	using context_type  = X3D::X3DExecutionContext;
 
 	///  @name Construction
 

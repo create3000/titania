@@ -140,8 +140,7 @@ X3DScene::create (JSContext* const cx, X3D::X3DScene* const scene)
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
-		setExecutionContext <X3DScene> (obj, scene);
-
+	
 		context -> addObject (key, self, obj);
 	
 		return JS::ObjectValue (*obj);
