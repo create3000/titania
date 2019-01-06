@@ -59,7 +59,7 @@ enum class ObjectType
 {
 	X3DConstants,
 
-	Browser,
+	X3DBrowser,
 	X3DExecutionContext,
 	X3DScene,
 

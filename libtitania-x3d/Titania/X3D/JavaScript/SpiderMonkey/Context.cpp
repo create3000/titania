@@ -65,6 +65,7 @@
 #include "ProfileInfoArray.h"
 #include "ProtoDeclarationArray.h"
 #include "RouteArray.h"
+#include "X3DBrowser.h"
 #include "X3DConstants.h"
 #include "X3DExecutionContext.h"
 #include "X3DExternProtoDeclaration.h"
@@ -142,7 +143,7 @@ Context::addClasses ()
 {
 	Globals::init (cx, *global);
 
-//	addProto (Browser::getId (),             Browser::init             (cx, *global, nullptr));
+	addProto (X3DBrowser::getId (),          X3DBrowser::init          (cx, *global, nullptr));
 	addProto (X3DConstants::getId (),        X3DConstants::init        (cx, *global, nullptr));
 	addProto (X3DExecutionContext::getId (), X3DExecutionContext::init (cx, *global, nullptr));
 	addProto (X3DScene::getId (),            X3DScene::init            (cx, *global, getProto (X3DExecutionContext::getId ())));
@@ -203,6 +204,7 @@ Context::addClasses ()
 	addProto (MFVec4d::getId (),     MFVec4d::init     (cx, *global, getProto (X3DArrayField::getId ())));
 	addProto (MFVec4f::getId (),     MFVec4f::init     (cx, *global, getProto (X3DArrayField::getId ())));
 
+	JS_DefineProperty (cx, *global, "Browser",      JS::RootedObject (cx, X3DBrowser::create (cx)),   JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE, nullptr, nullptr);
 	JS_DefineProperty (cx, *global, "X3DConstants", JS::RootedObject (cx, X3DConstants::create (cx)), JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE, nullptr, nullptr);
 }
 
