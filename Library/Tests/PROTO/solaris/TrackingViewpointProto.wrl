@@ -27,7 +27,7 @@ PROTO TrackingViewpoint [
     field   SFNode  data DEF Data Data {
       pointOfInterest IS pointOfInterest
     }
-    url "peaseblossom:
+    url "ecmascript:
 function get_rotation(fromVec, toVec) {
 	distance = toVec.subtract(fromVec);
 	rA = new SFRotation(defaultPosition, distance);

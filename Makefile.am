@@ -5,7 +5,6 @@ SUBDIRS =  \
 	libtitania-standard \
 	libtitania-sqlite \
 	libtitania-stream \
-	libtitania-peaseblossom \
 	libtitania-ftgl \
 	libtitania-x3d \
 	Titania

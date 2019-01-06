@@ -457,23 +457,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/InputOutput/VRMLGenerator.cpp \
 	Titania/X3D/InputOutput/X3DGenerator.cpp \
 	Titania/X3D/InputOutput/XMLGenerator.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Browser.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColorRGBA.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFImage.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix3.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFNode.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFRotation.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec2.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/value.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
@@ -709,8 +692,7 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_STREAM_LIBS) \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la \
-	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la
+	$(top_builddir)/libtitania-stream/libtitania-stream.la
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_FTGL_CFLAGS) \
@@ -718,8 +700,7 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
 	-I$(top_builddir)/libtitania-ftgl \
 	-I$(top_builddir)/libtitania-standard \
-	-I$(top_builddir)/libtitania-stream \
-	-I$(top_builddir)/libtitania-peaseblossom
+	-I$(top_builddir)/libtitania-stream
 
 install-exec-hook:
 	mkdir -m 755 -p $(DESTDIR)$(datadir)

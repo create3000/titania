@@ -26,7 +26,6 @@
         <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="False" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="False" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-peaseblossom/libtitania-peaseblossom.md.pc" name="libtitania-peaseblossom" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-ftgl/libtitania-ftgl.md.pc" name="libtitania-ftgl" IsProject="True" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/libxml++-2.6.pc" name="libxml++" IsProject="False" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/json-c.pc" name="json-c" IsProject="False" />
@@ -577,8 +576,6 @@
     <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
     <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Context.h" />
     <None Include="Titania\X3D\Base\X3DReferenceObject.h" />
     <None Include="Titania\X3D\Base\X3DParentObject.h" />
     <None Include="Titania\X3D\Routing\ChildrenList.h" />
@@ -622,27 +619,6 @@
     <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
     <None Include="Titania\X3D\Parser\Wavefront\Parser.h" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Arguments.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Global.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\ObjectType.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\X3DField.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\X3DArrayField.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Array.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\ArrayFields.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\value.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec3.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec2.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\X3DScalar.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFRotation.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColorRGBA.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColor.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix4.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix3.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFNode.h" />
-    <None Include="Titania\X3D\JavaScript\PeaseBlossom\Browser.h" />
     <None Include="Makefile.in" />
     <None Include="libtitania-x3d.cproj" />
     <None Include="libtitania-x3d.pidb" />
@@ -1392,8 +1368,6 @@
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Context.cpp" />
     <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
     <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
@@ -1407,21 +1381,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\ConeOptions.cpp" />
     <Compile Include="Titania\X3D\InputOutput\GoldenGate.cpp" />
     <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DField.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DArrayField.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\ArrayFields.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\value.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec3.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec4.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFVec2.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFRotation.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColorRGBA.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFColor.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFImage.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix4.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFMatrix3.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\SFNode.cpp" />
-    <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Browser.cpp" />
     <Compile Include="Titania\X3D\Browser\Sound\MediaStream.cpp" />
     <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionContainer.cpp" />
@@ -1757,7 +1716,6 @@
     <Folder Include="Titania\X3D\Browser\Text\" />
     <Folder Include="Titania\X3D\Browser\ParticleSystems\" />
     <Folder Include="scripts\" />
-    <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\" />
     <Folder Include="Titania\X3D\Tools\Lighting\" />
     <Folder Include="Titania\X3D\Tools\Geospatial\" />
     <Folder Include="Titania\X3D\Tools\ParticleSystems\" />
@@ -1765,7 +1723,6 @@
     <Folder Include="Titania\X3D\Tools\Layering\" />
     <Folder Include="Titania\X3D\Tools\Picking\" />
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
-    <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
     <Folder Include="Titania\X3D\Browser\Sound\" />
     <Folder Include="Titania\X3D\Browser\Texturing3D\" />
     <Folder Include="Titania\X3D\Browser\Geospatial\" />

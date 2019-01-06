@@ -30,7 +30,7 @@ PROTO ComposeVec3f [
       z IS z
       startTime IS startTime
     }
-    url "peaseblossom:
+    url "ecmascript:
 function set_x(value, time) { }
 function set_y(value, time) { }
 function set_z(value, time) { }

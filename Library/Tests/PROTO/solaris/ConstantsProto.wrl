@@ -26,7 +26,7 @@ PROTO Constants [
 
   DEF _Constants Script {
     field SFNode data USE Data
-    url "peaseblossom:
+    url "ecmascript:
 function initialize () {
 	data.c2 = Math.pow(data.c, 2);
 	data.pi2 = 2 * Math.PI;

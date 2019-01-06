@@ -47,7 +47,7 @@ DEF Felulet Script {
   field    MFInt32 sample1 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
   field    MFInt32 sample2 [ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 ]
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function initialize ()
 {

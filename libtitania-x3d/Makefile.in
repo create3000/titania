@@ -133,8 +133,7 @@ libtitania_x3d_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la \
-	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la
+	$(top_builddir)/libtitania-stream/libtitania-stream.la
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Base/International.lo Titania/X3D/Base/Output.lo \
@@ -575,23 +574,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/InputOutput/VRMLGenerator.lo \
 	Titania/X3D/InputOutput/X3DGenerator.lo \
 	Titania/X3D/InputOutput/XMLGenerator.lo \
-	Titania/X3D/JavaScript/PeaseBlossom.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Browser.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Context.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColorRGBA.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFImage.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix3.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFNode.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFRotation.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec2.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/value.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.lo \
-	Titania/X3D/JavaScript/PeaseBlossom/X3DField.lo \
 	Titania/X3D/JavaScript/SpiderMonkey.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.lo \
@@ -1288,26 +1270,9 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/InputOutput/$(DEPDIR)/VRMLGenerator.Plo \
 	Titania/X3D/InputOutput/$(DEPDIR)/X3DGenerator.Plo \
 	Titania/X3D/InputOutput/$(DEPDIR)/XMLGenerator.Plo \
-	Titania/X3D/JavaScript/$(DEPDIR)/PeaseBlossom.Plo \
 	Titania/X3D/JavaScript/$(DEPDIR)/SpiderMonkey.Plo \
 	Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptContext.Plo \
 	Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptEngine.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Browser.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Context.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DArrayField.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DField.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/value.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/ArrayFields.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColor.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColorRGBA.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFImage.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix3.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix4.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFNode.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFRotation.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfo.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo \
 	Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo \
@@ -2224,23 +2189,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/InputOutput/VRMLGenerator.cpp \
 	Titania/X3D/InputOutput/X3DGenerator.cpp \
 	Titania/X3D/InputOutput/XMLGenerator.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Browser.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColorRGBA.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFImage.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix3.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFNode.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFRotation.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec2.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/value.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.cpp \
-	Titania/X3D/JavaScript/PeaseBlossom/X3DField.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
@@ -2476,8 +2424,7 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_STREAM_LIBS) \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la \
-	$(top_builddir)/libtitania-peaseblossom/libtitania-peaseblossom.la
+	$(top_builddir)/libtitania-stream/libtitania-stream.la
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_FTGL_CFLAGS) \
@@ -2485,8 +2432,7 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
 	-I$(top_builddir)/libtitania-ftgl \
 	-I$(top_builddir)/libtitania-standard \
-	-I$(top_builddir)/libtitania-stream \
-	-I$(top_builddir)/libtitania-peaseblossom
+	-I$(top_builddir)/libtitania-stream
 
 all: all-am
 
@@ -4302,69 +4248,6 @@ Titania/X3D/JavaScript/$(am__dirstamp):
 Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/JavaScript/$(DEPDIR)
 	@: > Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom.lo:  \
-	Titania/X3D/JavaScript/$(am__dirstamp) \
-	Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/JavaScript/PeaseBlossom
-	@: > Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)
-	@: > Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Browser.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Context.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/JavaScript/PeaseBlossom/Fields
-	@: > Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)
-	@: > Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/ArrayFields.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColor.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFColorRGBA.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFImage.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix3.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFMatrix4.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFNode.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFRotation.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec2.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec3.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/Fields/SFVec4.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/value.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/X3DArrayField.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/JavaScript/PeaseBlossom/X3DField.lo:  \
-	Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp) \
-	Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/SpiderMonkey.lo:  \
 	Titania/X3D/JavaScript/$(am__dirstamp) \
 	Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
@@ -5438,10 +5321,6 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/InputOutput/*.lo
 	-rm -f Titania/X3D/JavaScript/*.$(OBJEXT)
 	-rm -f Titania/X3D/JavaScript/*.lo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/*.$(OBJEXT)
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/*.lo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/*.$(OBJEXT)
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/*.lo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/*.$(OBJEXT)
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/*.lo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/*.$(OBJEXT)
@@ -5982,26 +5861,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/VRMLGenerator.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/X3DGenerator.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/XMLGenerator.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/PeaseBlossom.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/SpiderMonkey.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptEngine.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Browser.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Context.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DArrayField.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DField.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/value.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/ArrayFields.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColor.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColorRGBA.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFImage.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix4.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFNode.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFRotation.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfo.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo@am__quote@ # am--include-marker
@@ -6358,8 +6220,6 @@ clean-libtool:
 	-rm -rf Titania/X3D/Fields/.libs Titania/X3D/Fields/_libs
 	-rm -rf Titania/X3D/InputOutput/.libs Titania/X3D/InputOutput/_libs
 	-rm -rf Titania/X3D/JavaScript/.libs Titania/X3D/JavaScript/_libs
-	-rm -rf Titania/X3D/JavaScript/PeaseBlossom/.libs Titania/X3D/JavaScript/PeaseBlossom/_libs
-	-rm -rf Titania/X3D/JavaScript/PeaseBlossom/Fields/.libs Titania/X3D/JavaScript/PeaseBlossom/Fields/_libs
 	-rm -rf Titania/X3D/JavaScript/SpiderMonkey/.libs Titania/X3D/JavaScript/SpiderMonkey/_libs
 	-rm -rf Titania/X3D/JavaScript/SpiderMonkey/Fields/.libs Titania/X3D/JavaScript/SpiderMonkey/Fields/_libs
 	-rm -rf Titania/X3D/Parser/.libs Titania/X3D/Parser/_libs
@@ -6663,10 +6523,6 @@ distclean-generic:
 	-rm -f Titania/X3D/InputOutput/$(am__dirstamp)
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/JavaScript/$(am__dirstamp)
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(am__dirstamp)
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(am__dirstamp)
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp)
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
@@ -7213,26 +7069,9 @@ distclean: distclean-am
 	-rm -f Titania/X3D/InputOutput/$(DEPDIR)/VRMLGenerator.Plo
 	-rm -f Titania/X3D/InputOutput/$(DEPDIR)/X3DGenerator.Plo
 	-rm -f Titania/X3D/InputOutput/$(DEPDIR)/XMLGenerator.Plo
-	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/PeaseBlossom.Plo
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/SpiderMonkey.Plo
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptContext.Plo
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptEngine.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Browser.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Context.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DArrayField.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DField.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/value.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/ArrayFields.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColor.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColorRGBA.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFImage.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix3.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix4.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFNode.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFRotation.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfo.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo
@@ -7956,26 +7795,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/InputOutput/$(DEPDIR)/VRMLGenerator.Plo
 	-rm -f Titania/X3D/InputOutput/$(DEPDIR)/X3DGenerator.Plo
 	-rm -f Titania/X3D/InputOutput/$(DEPDIR)/XMLGenerator.Plo
-	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/PeaseBlossom.Plo
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/SpiderMonkey.Plo
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptContext.Plo
 	-rm -f Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptEngine.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Browser.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/Context.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DArrayField.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/X3DField.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR)/value.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/ArrayFields.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColor.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFColorRGBA.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFImage.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix3.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFMatrix4.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFNode.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFRotation.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec2.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec3.Plo
-	-rm -f Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR)/SFVec4.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfo.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/ComponentInfoArray.Plo
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/Context.Plo

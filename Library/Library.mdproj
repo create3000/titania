@@ -552,7 +552,6 @@
     <None Include="Tests\Scripting\X3DNode.wrl" />
     <None Include="Tests\Scripting\V8.x3dv" />
     <None Include="Tests\Scripting\V8-Inline.x3dv" />
-    <None Include="Tests\Scripting\pb\pb.x3dv" />
     <None Include="Tests\Handles\QuadSphere.x3dv" />
     <None Include="Tests\Handles\Transform-URI.x3dv" />
     <None Include="Tests\Scripting\Shutdown.x3dv" />
@@ -595,8 +594,6 @@
     <None Include="Tests\Handles\Combine.x3dv" />
     <None Include="Tests\EnvironmentalSensors\TransformSensor.x3dv" />
     <None Include="Tests\EnvironmentalSensors\FallingBoxes.x3dv" />
-    <None Include="Tests\Scripting\pb\pb-Inline.x3dv" />
-    <None Include="Tests\Scripting\pb\pb1.x3dv" />
     <None Include="Tests\PROTO\solaris\CollisionManagerProto.wrl" />
     <None Include="Tests\PROTO\solaris\ComposeVec3fProto.wrl" />
     <None Include="Tests\PROTO\solaris\ConstantsProto.wrl" />
@@ -758,7 +755,6 @@
     <Folder Include="Tests\ParticleSystems\" />
     <Folder Include="Tests\Geospatial\" />
     <Folder Include="Tests\Layering\home1\" />
-    <Folder Include="Tests\Scripting\pb\" />
     <Folder Include="Tests\PROTO\solaris\" />
     <Folder Include="Examples\" />
     <Folder Include="Tests\3rd Party\Autodesk\" />

@@ -257,7 +257,7 @@ PROTO Grid [
     initializeOnly SFNode  majorPoints USE MajorPoints_1
     initializeOnly SFNode  minorPoints USE MinorPoints_1
 
-    url "peaseblossom:
+    url "ecmascript:
 
 function initialize ()
 {

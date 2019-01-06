@@ -35,7 +35,7 @@ PROTO VrmlLoader [
       startTime IS startTime
       children IS children
     }
-    url "peaseblossom:
+    url "ecmascript:
 function query() {
 	q = '';
 	for (i = 0; i < data.parameter.length; i++) {
@@ -155,7 +155,7 @@ PROTO World [
     field    SFNode   self USE _World
     field    SFNode   data USE Data
     field    SFNode   gateway NULL
-    url "peaseblossom:
+    url "ecmascript:
 function findNode (name, nodes) {
 	// search first 2 level for node;
 	for (i=0; i<nodes.length; ++i) {

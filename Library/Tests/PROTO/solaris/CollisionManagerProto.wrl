@@ -46,7 +46,7 @@ PROTO CollisionManager [
     field    SFNode  data USE Data
     field    MFNode  children [ ]
     field    MFVec3f nbox [ 1 0 0, -1 0 0, 0 1 0, 0 -1 0, 0 0 1, 0 0 -1 ]
-    url "peaseblossom:
+    url "ecmascript:
 function randomVec3f (value) {
 	rv = new SFVec3f(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5);
 	return rv.normalize().multiply(value);

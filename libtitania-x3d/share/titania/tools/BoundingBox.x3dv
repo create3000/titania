@@ -122,7 +122,8 @@ WorldInfo {
                 }
               }
 
-              url "peaseblossom:
+              url "ecmascript:
+
 function eventsProcessed ()
 {
 	// Position arrows
@@ -346,7 +347,8 @@ DEF BBoxScript Script {
   initializeOnly SFNode  bbox USE BBox
   initializeOnly SFNode  axes USE AxesCoord
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -397,7 +399,8 @@ DEF CenterScript Script {
   outputOnly     SFInt32 whichChoice_changed
   initializeOnly SFNode  coord USE CenterLineCoord
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function set_displayCenter (value)
 {
 	whichChoice_changed = value;
@@ -418,7 +421,8 @@ DEF AxisOfRotationScript Script {
   initializeOnly SFNode  transform USE _3
   initializeOnly SFNode  inline USE Vector
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function eventsProcessed ()
 {
 	if (vector .x == 0 && vector .y == 0 && vector .z == 0)

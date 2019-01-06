@@ -201,7 +201,7 @@ LayerSet {
         initializeOnly SFNode  background USE Background
         initializeOnly SFNode  geometry USE BackgroundGeometry
 
-        url "peaseblossom:
+        url "ecmascript:
 
 function set_textBounds (value, time)
 {

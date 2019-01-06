@@ -35,7 +35,7 @@ PROTO DoubleClick [
     inputOutput SFTime doubleClickInterval IS doubleClickInterval
     outputOnly  SFTime doubleClickTime IS doubleClickTime
 
-    url "peaseblossom:
+    url "ecmascript:
 
 var firstTime = 0;
 
@@ -1350,7 +1350,7 @@ DEF ModeScript Script {
   outputOnly     SFInt32  whichChoice_changed
   initializeOnly SFInt32  tool 0
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function initialize ()
 {
@@ -1475,7 +1475,7 @@ DEF BBoxScript Script {
   initializeOnly SFNode     yBack USE YBack
   initializeOnly SFNode     zBack USE ZBack
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function initialize ()
 {
@@ -1569,7 +1569,7 @@ DEF MoveScript Script {
   initializeOnly SFVec3f size 0 0 0
   initializeOnly SFInt32 events 4
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function set_active (value)
 {
@@ -1696,7 +1696,8 @@ DEF CenterScript Script {
   initializeOnly SFNode  coord USE CenterLineCoord
   initializeOnly SFNode  self USE CenterScript
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function set_doubleClickTime ()
 {
   keepCenter_changed = ! keepCenter_changed;
@@ -1789,7 +1790,8 @@ DEF DiskScript Script {
   initializeOnly SFNode  ySensor USE YRotationSensor
   initializeOnly SFNode  zSensor USE ZRotationSensor
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function initialize ()
 {
 	x_changed = 1;
@@ -1836,7 +1838,8 @@ DEF RotateScript Script {
   initializeOnly SFInt32    events 0
   inputOutput    SFNode     transform NULL
 
-  url "peaseblossom:
+  url "ecmascript:
+
 function set_active (value)
 {
 	if (value)
@@ -1922,7 +1925,7 @@ DEF ScaleHandlesScript Script {
     USE ScaleSensor8
   ]
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function initialize ()
 {

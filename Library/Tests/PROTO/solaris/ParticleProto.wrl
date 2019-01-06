@@ -75,7 +75,7 @@ PROTO Particle [
       isActive IS isActive
     }
     field    SFNode  data USE Data
-    url "peaseblossom:
+    url "ecmascript:
 function rel_mass () {
 	return data.mass / Math.sqrt(1 - (Math.pow(data.velocity.length(), 2) / data.constants.c2));
 }

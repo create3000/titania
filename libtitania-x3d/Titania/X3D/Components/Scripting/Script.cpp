@@ -144,7 +144,7 @@ Script::removeUserDefinedField (const std::string & name)
 bool
 Script::loadDocument (const std::string & URL, std::string & scheme, std::string & ecmascript)
 {
-	static const std::regex ECMAScript (R"/((^\s*(?:ecmascript|javascript|vrmlscript|v8|peaseblossom)\:))/");
+	static const std::regex ECMAScript (R"/((^\s*(?:ecmascript|javascript|vrmlscript)\:))/");
 
 	std::smatch match;
 
@@ -216,7 +216,7 @@ Script::set_buffer ()
 		{
 			try
 			{
-				auto javaScript = getBrowser () -> getJavaScriptEngine (scheme) -> createContext (this, ecmascript, getWorldURL ());
+				auto javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL ());
 				
 				// Initialize.
 

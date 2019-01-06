@@ -1,5 +1,0 @@
-Name: libtitania-peaseblossom
-Description: 
-Version: 0.3
-Libs: -L"/home/holger/Projekte/Titania/libtitania-peaseblossom/bin/Debug" -ltitania-peaseblossom
-Cflags: -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Base" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Bits" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Execution" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Expressions" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Objects" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Parser" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Primitives" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Standard" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/InputOutput" -I"/home/holger/Projekte/Titania/libtitania-peaseblossom/Titania/PeaseBlossom/Cache"

@@ -329,7 +329,7 @@ DEF DimensionScript Script {
   inputOnly   SFVec3f set_translation
   outputOnly  SFVec3f translation_changed
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function initialize ()
 {
@@ -355,7 +355,7 @@ DEF MoveScript Script {
   inputOutput SFRotation rotation 0 0 1 0
   outputOnly  SFVec3f    translation_changed
 
-  url "peaseblossom:
+  url "ecmascript:
 
 function set_translation (value)
 {

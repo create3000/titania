@@ -65,7 +65,7 @@ public:
 	///  @name Member access
 
 	const X3DPtr <X3DJavaScriptEngine> &
-	getJavaScriptEngine (const std::string & = "ecmascript") const;
+	getJavaScriptEngine () const;
 
 	///  @name Destruction
 
@@ -93,7 +93,7 @@ private:
 
 	///  @name Members
 
-	std::map <std::string, X3DPtr <X3DJavaScriptEngine>> javaScriptEngines;
+	X3DPtr <X3DJavaScriptEngine> javaScriptEngine;
 
 };
 

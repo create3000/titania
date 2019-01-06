@@ -90,7 +90,7 @@ PROTO XSlider [
     field    SFFloat r2 1
     field    SFTime  precision 0
     field    SFNode  nu NULL
-    url "peaseblossom:
+    url "ecmascript:
 function round(value) {
 	return Math.round(value * precision) / precision;
 }

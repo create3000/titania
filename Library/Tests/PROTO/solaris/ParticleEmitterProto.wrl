@@ -62,7 +62,7 @@ PROTO ParticleEmitter [
       stopTime 1
     }
     field   SFNode  data USE Data
-    url "peaseblossom:
+    url "ecmascript:
 function randomVec3f (value) {
 	rv = new SFVec3f(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5);
 	rv = rv.normalize();

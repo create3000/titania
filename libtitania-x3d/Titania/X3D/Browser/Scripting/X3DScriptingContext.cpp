@@ -50,39 +50,28 @@
 
 #include "X3DScriptingContext.h"
 
-#include "../../JavaScript/PeaseBlossom.h"
 #include "../../JavaScript/SpiderMonkey.h"
 
 namespace titania {
 namespace X3D {
 
 X3DScriptingContext::X3DScriptingContext () :
-	      X3DBaseNode (),
-	javaScriptEngines ({
-	                      std::pair ("javascript",   X3DPtr <X3DJavaScriptEngine> (new SpiderMonkey (getExecutionContext ()))),
-	                      std::pair ("peaseblossom", X3DPtr <X3DJavaScriptEngine> (new PeaseBlossom (getExecutionContext ()))),
-							 })
+	     X3DBaseNode (),
+	javaScriptEngine (new SpiderMonkey (getExecutionContext ()))
 {
-	for (auto & javaScriptEngine : javaScriptEngines)
-		addChildObject (javaScriptEngine .second);
+	addChildObject (javaScriptEngine);
 }
 
 void
 X3DScriptingContext::initialize ()
 {
-	for (const auto & javaScriptEngine : javaScriptEngines)
-		javaScriptEngine .second -> setup ();
+	javaScriptEngine -> setup ();
 }
 
 const X3DPtr <X3DJavaScriptEngine> &
-X3DScriptingContext::getJavaScriptEngine (const std::string & scheme) const
+X3DScriptingContext::getJavaScriptEngine () const
 {
-	const auto iter = javaScriptEngines .find (scheme);
-
-	if (iter not_eq javaScriptEngines .end ())
-		return iter -> second;
-
-	return javaScriptEngines .at ("javascript");
+	return javaScriptEngine;
 }
 
 X3DScriptingContext::~X3DScriptingContext ()
