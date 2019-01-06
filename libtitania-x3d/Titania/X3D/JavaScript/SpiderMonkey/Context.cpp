@@ -76,6 +76,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Thread/SceneFuture.h"
 
 #include <cassert>
 
@@ -117,7 +118,8 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   global (),
 	                   fields (),
 	                   protos (size_t (ObjectType::SIZE)),
-	                  objects ()
+	                  objects (),
+	                   future ()
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
@@ -132,8 +134,8 @@ Context::create (X3D::X3DExecutionContext* const) const
 void
 Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
 {
-	//if (future)
-	//	future -> setExecutionContext (executionContext);
+	if (future)
+		future -> setExecutionContext (executionContext);
 
 	X3DJavaScriptContext::setExecutionContext (executionContext);
 }
@@ -647,6 +649,8 @@ void
 Context::dispose ()
 {
 	const JSAutoRequest ar (cx);
+
+	future .setValue (nullptr);
 
 	fields .clear ();
 	protos .clear ();

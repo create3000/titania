@@ -1,14 +1,13 @@
-#X3D V3.3 utf8 Titania V2.0.1
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 03 Feb 2017 09:50:02 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv"
-META "modified" "Mon, 06 Feb 2017 19:59:48 GMT"
-META "outputStyle" "Nicest"
+META "modified" "Sun, 06 Jan 2019 12:47:45 GMT"
 
 EXTERNPROTO Grid [
   inputOutput    SFVec3f    translation
@@ -27,7 +26,7 @@ EXTERNPROTO Grid [
 ]
 [
   "library/Grid.x3dv#Grid",
-  "file:///usr/share/titania/tools/library/Grid.x3dv#Grid"
+  "file:///usr/share/titania/tools/library/Grid.x3dv#Grid",
   "file:///app/share/titania/tools/library/Grid.x3dv#Grid"
 ]
 
@@ -46,9 +45,10 @@ PROTO SculpToolBrush [
 {
   DEF ElevationGrid Transform {
     translation -0.5 0 -0.5
+    scale 0.2 0.1 0.2
     center 0.5 0 0.5
     children [
-      DEF _1 Shape {
+      Shape {
         appearance Appearance {
           material DEF Metal17 Material {
             ambientIntensity 0.0570021
@@ -58,7 +58,7 @@ PROTO SculpToolBrush [
             transparency 0.2
           }
         }
-        geometry DEF _2 ElevationGrid {
+        geometry DEF _1 ElevationGrid {
           xDimension 101
           zDimension 101
           xSpacing 0.01
@@ -10316,7 +10316,7 @@ PROTO SculpToolBrush [
     inputOutput    SFDouble pressure IS pressure
     inputOutput    SFDouble scale IS scale
     initializeOnly SFNode   transform USE ElevationGrid
-    initializeOnly SFNode   geometry USE _2
+    initializeOnly SFNode   geometry USE _1
 
     url "ecmascript:
 
@@ -10383,6 +10383,7 @@ function squared (a, b, w, h, s, e)
 	                            Math .abs (Math .pow (s * Math .abs (b), e)))));
 }
 "
+    directOutput TRUE
   }
 }
 
@@ -10403,7 +10404,7 @@ WorldInfo {
       DEF Grid MetadataSet {
         name "Grid"
         reference "http://titania.create3000.de"
-        value DEF enabled_1 MetadataBoolean {
+        value DEF enabled_2 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value FALSE
@@ -10456,14 +10457,31 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
             value NULL
           }
-          DEF children MetadataSet {
-            name "children"
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
             reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }

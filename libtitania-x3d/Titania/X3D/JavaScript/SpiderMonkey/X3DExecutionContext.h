@@ -101,41 +101,39 @@ private:
 	///  @name Properties
 
 	static bool getSpecificationVersion (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getEncoding             (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getWorldURL             (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getProfile              (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getComponents           (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getEncoding             (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getWorldURL             (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getProfile              (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getComponents           (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool getExternprotos (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getProtos       (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getRootNodes    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getRoutes       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getExternprotos (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getProtos       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getRootNodes    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getRoutes       (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Functions
 
-//	static bool fromUnit (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool toUnit   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool fromUnit (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool toUnit   (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool createNode  (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool createProto (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool createNode  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool createProto (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool addNamedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool removeNamedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool updateNamedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getNamedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool addNamedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool removeNamedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool updateNamedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getNamedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool addImportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool removeImportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool updateImportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getImportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool addImportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool removeImportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool updateImportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getImportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool addRoute (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool deleteRoute (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool addRoute (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool deleteRoute (JSContext* cx, unsigned argc, JS::Value* vp);
-
-//	static bool toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool toXMLString  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool toXMLString  (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Destruction
 

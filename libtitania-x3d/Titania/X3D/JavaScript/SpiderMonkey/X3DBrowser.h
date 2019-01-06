@@ -53,6 +53,8 @@
 
 #include "ObjectType.h"
 
+#include "../../Fields/SFNode.h"
+#include "../../Fields/MFNode.h"
 #include "../../Types/Pointer.h"
 
 #include <jsapi.h>
@@ -107,36 +109,36 @@ private:
 
 	///  @name X3D functions
 
-//	static bool replaceWorld         (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool createX3DFromString  (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool createX3DFromURL     (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool loadURL              (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getRenderingProperty (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getBrowserProperty   (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getBrowserOption     (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool setBrowserOption     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool replaceWorld         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool createX3DFromString  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool createX3DFromURL     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool loadURL              (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getRenderingProperty (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getBrowserProperty   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getBrowserOption     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setBrowserOption     (JSContext* cx, unsigned argc, JS::Value* vp);
 	
-//	static bool firstViewpoint       (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool previousViewpoint    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool nextViewpoint        (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool lastViewpoint        (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool firstViewpoint       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool previousViewpoint    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool nextViewpoint        (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool lastViewpoint        (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool print                (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool println              (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool print                (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool println              (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name VRML97 functions
 
-//	static bool getWorldURL          (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool createVrmlFromString (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool createVrmlFromURL    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool addRoute             (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool deleteRoute          (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getWorldURL          (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool createVrmlFromString (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool createVrmlFromURL    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool addRoute             (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool deleteRoute          (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Event handler
 
-//	static
-//	void
-//	setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene);
+	static
+	void
+	setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene);
 
 	///  @name Static members
 

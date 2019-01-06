@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V4.3.3
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.3, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleGridTool.x3dv"
-META "modified" "Sun, 21 Oct 2018 04:08:50 GMT"
+META "modified" "Sun, 06 Jan 2019 12:50:22 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -119,6 +119,43 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF AngleScript Script {
+              inputOnly   SFRotation set_rotation
+              inputOutput MFInt32    dimension [
+                5,
+                16,
+                10
+              ]
+              outputOnly  SFFloat    angle_changed
+              outputOnly  SFRotation rotation_changed
+
+              url "javascript:
+
+var yAxis = new SFVec3f (0, 1, 0);
+
+function initialize ()
+{
+	set_dimension ();
+}
+
+function set_rotation (value)
+{
+	var angle = value .angle;
+	var sign  = value .getAxis () .dot (yAxis) < 0;
+
+	if (sign)
+		angle = 2 * Math .PI - angle;
+
+	dimension [1] = Math .round (2 * Math .PI / angle); 
+}
+
+function set_dimension ()
+{
+	angle_changed    = 2 * Math .PI / dimension [1];
+	rotation_changed = new SFRotation (yAxis, angle_changed);
+}
+"
+            }
           }
         ]
       }
@@ -275,43 +312,7 @@ DEF Handles Collision {
   }
 }
 
-DEF AngleScript Script {
-  inputOnly   SFRotation set_rotation
-  inputOutput MFInt32    dimension [
-    5,
-    16,
-    10
-  ]
-  outputOnly  SFFloat    angle_changed
-  outputOnly  SFRotation rotation_changed
-
-  url "javascript:
-
-var yAxis = new SFVec3f (0, 1, 0);
-
-function initialize ()
-{
-	set_dimension ();
-}
-
-function set_rotation (value)
-{
-	var angle = value .angle;
-	var sign  = value .getAxis () .dot (yAxis) < 0;
-
-	if (sign)
-		angle = 2 * Math .PI - angle;
-
-	dimension [1] = Math .round (2 * Math .PI / angle); 
-}
-
-function set_dimension ()
-{
-	angle_changed    = 2 * Math .PI / dimension [1];
-	rotation_changed = new SFRotation (yAxis, angle_changed);
-}
-"
-}
+USE AngleScript
 
 DEF DimensionScript Script {
   inputOnly   SFVec3f set_translation

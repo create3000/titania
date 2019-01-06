@@ -1,13 +1,15 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V4.3.8
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 29 Aug 2014 13:13:27 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sun, 14 Sep 2014 08:40:57 GMT"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/BoundingBox.x3dv"
+META "modified" "Sun, 06 Jan 2019 12:50:12 GMT"
 
-EXTERNPROTO ToolShader [
-]
+EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
 
 PROTO Interface [
@@ -26,6 +28,120 @@ PROTO Interface [
 ]
 {
   Group { }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF ArrowsScript Script {
+              inputOutput    SFVec3f bboxSize 1 1 1
+              initializeOnly SFNode  x DEF XHandle Transform {
+                translation 0.5 0 0
+                children ScreenGroup {
+                  children Transform {
+                    translation 6 0 0
+                    rotation 0 0 -1 1.5708
+                    children Shape {
+                      appearance DEF Red Appearance {
+                        material Material {
+                          diffuseColor 1 0 0
+                        }
+                        shaders ToolShader { }
+                      }
+                      geometry DEF Arrow Cone {
+                        height 12
+                        bottomRadius 4
+                      }
+                    }
+                  }
+                }
+              }
+              initializeOnly SFNode  y DEF YHandle Transform {
+                translation 0 0.5 0
+                children ScreenGroup {
+                  children Transform {
+                    translation 0 6 0
+                    children Shape {
+                      appearance DEF Green Appearance {
+                        material Material {
+                          diffuseColor 0 1 0
+                        }
+                        shaders ToolShader { }
+                      }
+                      geometry USE Arrow
+                    }
+                  }
+                }
+              }
+              initializeOnly SFNode  z DEF ZHandle Transform {
+                translation 0 0 0.5
+                children ScreenGroup {
+                  children Transform {
+                    translation 0 0 6
+                    rotation 1 0 0 1.5708
+                    children Shape {
+                      appearance DEF Blue Appearance {
+                        material Material {
+                          diffuseColor 0 0 1
+                        }
+                        shaders ToolShader { }
+                      }
+                      geometry USE Arrow
+                    }
+                  }
+                }
+              }
+
+              url "peaseblossom:
+function eventsProcessed ()
+{
+	// Position arrows
+	
+	var bboxSize1_2 = bboxSize .divide (2);
+
+	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
+	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
+	z .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
+}
+"
+              directOutput TRUE
+            }
+          }
+        ]
+      }
+    ]
+  }
+  title "BoundingBox"
 }
 
 DEF Tool Interface { }
@@ -86,7 +202,7 @@ Collision {
             }
           }
         }
-        DEF Axes_1 Shape {
+        DEF Axes_2 Shape {
           geometry IndexedLineSet {
             colorPerVertex FALSE
             coordIndex [
@@ -122,65 +238,9 @@ Collision {
     }
     DEF AdjustmentHandles Transform {
       children [
-        DEF XHandle Transform {
-          translation 0.5 0 0
-          children ScreenGroup {
-            children Transform {
-              translation 6 0 0
-              rotation 0 0 -1 1.5708
-              children Shape {
-                appearance DEF Red Appearance {
-                  material Material {
-                    diffuseColor 1 0 0
-                  }
-                  shaders ToolShader {
-                  }
-                }
-                geometry DEF Arrow Cone {
-                  height 12
-                  bottomRadius 4
-                }
-              }
-            }
-          }
-        }
-        DEF YHandle Transform {
-          translation 0 0.5 0
-          children ScreenGroup {
-            children Transform {
-              translation 0 6 0
-              children Shape {
-                appearance DEF Green Appearance {
-                  material Material {
-                    diffuseColor 0 1 0
-                  }
-                  shaders ToolShader {
-                  }
-                }
-                geometry USE Arrow
-              }
-            }
-          }
-        }
-        DEF ZHandle Transform {
-          translation 0 0 0.5
-          children ScreenGroup {
-            children Transform {
-              translation 0 0 6
-              rotation 1 0 0 1.5708
-              children Shape {
-                appearance DEF Blue Appearance {
-                  material Material {
-                    diffuseColor 0 0 1
-                  }
-                  shaders ToolShader {
-                  }
-                }
-                geometry USE Arrow
-              }
-            }
-          }
-        }
+        USE XHandle
+        USE YHandle
+        USE ZHandle
       ]
     }
     DEF Center Switch {
@@ -218,7 +278,7 @@ Collision {
                 }
               }
             }
-            DEF _2 Transform {
+            DEF _3 Transform {
               children [
                 DEF CenterPoint ScreenGroup {
                   children Shape {
@@ -226,8 +286,7 @@ Collision {
                       material Material {
                         diffuseColor 1 1 0
                       }
-                      shaders ToolShader {
-                      }
+                      shaders ToolShader { }
                     }
                     geometry Sphere {
                       radius 5
@@ -245,13 +304,13 @@ Collision {
       ]
     }
     DEF Rectangle Switch {
-      children DEF _3 Transform {
-        children DEF Box_1 Shape {
+      children DEF _4 Transform {
+        children DEF Box_5 Shape {
           appearance Appearance {
             lineProperties LineProperties {
               linewidthScaleFactor 2
             }
-            material DEF BBoxMaterial_1 Material {
+            material DEF BBoxMaterial_6 Material {
               emissiveColor 0 1 0
             }
           }
@@ -328,26 +387,7 @@ function eventsProcessed ()
   directOutput TRUE
 }
 
-DEF ArrowsScript Script {
-  inputOutput    SFVec3f bboxSize 1 1 1
-  initializeOnly SFNode  x USE XHandle
-  initializeOnly SFNode  y USE YHandle
-  initializeOnly SFNode  z USE ZHandle
-
-  url "peaseblossom:
-function eventsProcessed ()
-{
-	// Position arrows
-	
-	var bboxSize1_2 = bboxSize .divide (2);
-
-	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
-	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
-	z .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
-}
-"
-  directOutput TRUE
-}
+USE ArrowsScript
 
 DEF CenterScript Script {
   inputOutput    SFBool  displayCenter FALSE
@@ -375,7 +415,7 @@ function eventsProcessed ()
 DEF AxisOfRotationScript Script {
   inputOutput    SFVec3f vector 0 0 0
   initializeOnly SFVec3f zAxis 0 0 1
-  initializeOnly SFNode  transform USE _2
+  initializeOnly SFNode  transform USE _3
   initializeOnly SFNode  inline USE Vector
 
   url "peaseblossom:
@@ -409,11 +449,11 @@ ROUTE Tool.bboxSize_changed TO CenterScript.set_bboxSize
 ROUTE Tool.displayCenter_changed TO CenterScript.set_displayCenter
 ROUTE CenterScript.whichChoice_changed TO Center.set_whichChoice
 ROUTE Tool.linetype_changed TO _1.set_linetype
-ROUTE Tool.center_changed TO _2.set_translation
+ROUTE Tool.center_changed TO _3.set_translation
 ROUTE Tool.axisOfRotation_changed TO AxisOfRotationScript.set_vector
 ROUTE Tool.rectangle_changed TO BBoxScript.set_rectangle
 ROUTE Tool.rectangle_changed TO Rectangle.set_whichChoice
 ROUTE Tool.rectangleBBoxSize_changed TO BBoxScript.set_rectangleBBoxSize
-ROUTE Tool.rectangleBBoxCenter_changed TO _3.set_translation
+ROUTE Tool.rectangleBBoxCenter_changed TO _4.set_translation
 
 EXPORT Tool

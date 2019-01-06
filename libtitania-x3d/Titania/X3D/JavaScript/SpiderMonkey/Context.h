@@ -60,6 +60,9 @@
 
 namespace titania {
 namespace X3D {
+
+class SceneLoader;
+
 namespace spidermonkey {
 
 class Context :
@@ -100,6 +103,11 @@ public:
 
 	///  @name Member access
 
+
+	JSObject*
+	getGlobal () const
+	{ return global -> get (); }
+
 	JS::HandleObject
 	getProto (const ObjectType type) const
 	{ return *protos [size_t (type)]; }
@@ -112,6 +120,10 @@ public:
 
 	JSObject*
 	getObject (const size_t key) const;
+
+	X3D::X3DPtr <X3D::SceneFuture> &
+	getFuture ()
+	{ return future; }
 
 	///  @name Destruction
 
@@ -219,6 +231,8 @@ private:
 	std::map <std::string, std::unique_ptr <JS::PersistentRooted <JS::Value>>> fields;
 	std::vector <std::unique_ptr <JS::PersistentRooted <JSObject*>>>           protos;
 	Objects                                                                    objects;
+
+	X3D::X3DPtr <X3D::SceneFuture> future;
 
 };
 

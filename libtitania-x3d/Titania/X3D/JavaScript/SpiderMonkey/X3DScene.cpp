@@ -87,16 +87,16 @@ const JSPropertySpec X3DScene::properties [ ] = {
 };
 
 const JSFunctionSpec X3DScene::functions [ ] = {
-//	JS_FS ("setMetaData",        setMetaData,        2, JSPROP_PERMANENT),
-//	JS_FS ("getMetaData",        getMetaData,        1, JSPROP_PERMANENT),
-//	JS_FS ("addExportedNode",    addExportedNode,    2, JSPROP_PERMANENT),
-//	JS_FS ("removeExportedNode", removeExportedNode, 1, JSPROP_PERMANENT),
-//	JS_FS ("updateExportedNode", updateExportedNode, 2, JSPROP_PERMANENT),
-//	JS_FS ("getExportedNode",    getExportedNode,    1, JSPROP_PERMANENT),
-//	JS_FS ("addRootNode",        addRootNode,        1, JSPROP_PERMANENT),
-//	JS_FS ("removeRootNode",     removeRootNode,     1, JSPROP_PERMANENT),
-//	JS_FS ("setRootNodes",       setRootNodes,       1, JSPROP_PERMANENT),
-//	JS_FS ("getRootNodes",       getRootNodes,       0, JSPROP_PERMANENT),
+	JS_FS ("setMetaData",        setMetaData,        2, JSPROP_PERMANENT),
+	JS_FS ("getMetaData",        getMetaData,        1, JSPROP_PERMANENT),
+	JS_FS ("addExportedNode",    addExportedNode,    2, JSPROP_PERMANENT),
+	JS_FS ("removeExportedNode", removeExportedNode, 1, JSPROP_PERMANENT),
+	JS_FS ("updateExportedNode", updateExportedNode, 2, JSPROP_PERMANENT),
+	JS_FS ("getExportedNode",    getExportedNode,    1, JSPROP_PERMANENT),
+	JS_FS ("addRootNode",        addRootNode,        1, JSPROP_PERMANENT),
+	JS_FS ("removeRootNode",     removeRootNode,     1, JSPROP_PERMANENT),
+	JS_FS ("setRootNodes",       setRootNodes,       1, JSPROP_PERMANENT),
+	JS_FS ("getRootNodes",       getRootNodes,       0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -152,6 +152,9 @@ X3DScene::setRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: wrong number of arguments.", getClass () -> name);
+	
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto scene = getExecutionContext <X3DScene> (cx, args);
 		const auto value = getArgument <MFNode> (cx, args, 0);
@@ -163,7 +166,7 @@ X3DScene::setRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -172,6 +175,9 @@ X3DScene::getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: wrong number of arguments.", getClass () -> name);
+	
 		// Differs from X3DExecutionContext rootNodes!!!
 
 		const auto args  = JS::CallArgsFromVp (argc, vp);
@@ -182,236 +188,199 @@ X3DScene::getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: %s.", getClass () -> name, error .what ());
 	}
 }
 
-//bool
-//X3DScene::setMetaData (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 2)
-//			return ThrowException <JSProto_Error> (cx, "%s .setMetaData: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv  = JS_ARGV (cx, vp);
-//		const auto scene = getThis <X3DScene> (cx, vp);
-//		const auto key   = getArgument <std::string> (cx, argv, 0);
-//		const auto value = getArgument <std::string> (cx, argv, 1);
-//
-//		scene -> setMetaData (key, value);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .setMetaData: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::getMetaData (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 1)
-//			return ThrowException <JSProto_Error> (cx, "%s .getMetaData: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv  = JS_ARGV (cx, vp);
-//		const auto scene = getThis <X3DScene> (cx, vp);
-//		const auto key   = getArgument <std::string> (cx, argv, 0);
-//
-//		return JS_NewStringValue (cx, scene -> getMetaData (key), &JS_RVAL (cx, vp));
-//	}
-//	catch (const Error <X3D::INVALID_NAME> &)
-//	{
-//		return JS_NewStringValue (cx, "", &JS_RVAL (cx, vp));
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .getMetaData: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::addExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 2)
-//			return ThrowException <JSProto_Error> (cx, "%s .addExportedNode: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv         = JS_ARGV (cx, vp);
-//		const auto scene        = getThis <X3DScene> (cx, vp);
-//		const auto exportedName = getArgument <std::string> (cx, argv, 0);
-//		const auto node         = getArgument <SFNode> (cx, argv, 1);
-//
-//		scene -> addExportedNode (exportedName, *node);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .addExportedNode: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::removeExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 1)
-//			return ThrowException <JSProto_Error> (cx, "%s .removeExportedNode: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv         = JS_ARGV (cx, vp);
-//		const auto scene        = getThis <X3DScene> (cx, vp);
-//		const auto exportedName = getArgument <std::string> (cx, argv, 0);
-//
-//		scene -> removeImportedNode (exportedName);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .removeExportedNode: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::updateExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 2)
-//			return ThrowException <JSProto_Error> (cx, "%s .updateExportedNode: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv         = JS_ARGV (cx, vp);
-//		const auto scene        = getThis <X3DScene> (cx, vp);
-//		const auto exportedName = getArgument <std::string> (cx, argv, 0);
-//		const auto node         = getArgument <SFNode> (cx, argv, 1);
-//
-//		scene -> updateExportedNode (exportedName, *node);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .updateExportedNode: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::getExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 1)
-//			return ThrowException <JSProto_Error> (cx, "%s .getExportedNode: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv         = JS_ARGV (cx, vp);
-//		const auto scene        = getThis <X3DScene> (cx, vp);
-//		const auto exportedName = getArgument <std::string> (cx, argv, 0);
-//		auto       exportedNode = scene -> getExportedNode (exportedName);
-//
-//		return X3DField::get <SFNode> (cx, exportedNode, &JS_RVAL (cx, vp));
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .getExportedNode: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::addRootNode (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 1)
-//			return ThrowException <JSProto_Error> (cx, "%s .addRootNode: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv     = JS_ARGV (cx, vp);
-//		const auto scene    = getThis <X3DScene> (cx, vp);
-//		const auto rootNode = getArgument <SFNode> (cx, argv, 0);
-//
-//		scene -> addRootNode (*rootNode);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .addRootNode: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::removeRootNode (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 1)
-//			return ThrowException <JSProto_Error> (cx, "%s .removeRootNode: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv     = JS_ARGV (cx, vp);
-//		const auto scene    = getThis <X3DScene> (cx, vp);
-//		const auto rootNode = getArgument <SFNode> (cx, argv, 0);
-//
-//		scene -> removeRootNode (*rootNode);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .removeRootNode: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::setRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 1)
-//			return ThrowException <JSProto_Error> (cx, "%s .setRootNodes: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto argv  = JS_ARGV (cx, vp);
-//		const auto scene = getThis <X3DScene> (cx, vp);
-//		const auto value = getArgument <MFNode> (cx, argv, 0);
-//
-//		scene -> setRootNodes (*value);
-//
-//		JS_SET_RVAL (cx, vp, JSVAL_VOID);
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .setRootNodes: %s.", getClass () -> name, error .what ());
-//	}
-//}
-//
-//bool
-//X3DScene::getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	try
-//	{
-//		if (argc not_eq 0)
-//			return ThrowException <JSProto_Error> (cx, "%s .getRootNodes: wrong number of arguments.", getClass () -> name);
-//	
-//		const auto scene = getThis <X3DScene> (cx, vp);
-//
-//		return X3DField::get <MFNode> (cx, scene -> getRootNodes (), &JS_RVAL (cx, vp));
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .getRootNodes: %s.", getClass () -> name, error .what ());
-//	}
-//}
+bool
+X3DScene::setMetaData (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 2)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .setMetaData: wrong number of arguments.", getClass () -> name);
+	
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto scene = getExecutionContext <X3DScene> (cx, args);
+		const auto key   = getArgument <std::string> (cx, args, 0);
+		const auto value = getArgument <std::string> (cx, args, 1);
+
+		scene -> setMetaData (key, value);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .setMetaData: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::getMetaData (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getMetaData: wrong number of arguments.", getClass () -> name);
+	
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto scene = getExecutionContext <X3DScene> (cx, args);
+		const auto key   = getArgument <std::string> (cx, args, 0);
+
+		args .rval () .set (StringValue (cx, scene -> getMetaData (key)));
+		return true;
+	}
+	catch (const Error <X3D::INVALID_NAME> &)
+	{
+		const auto args = JS::CallArgsFromVp (argc, vp);
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getMetaData: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::addExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 2)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .addExportedNode: wrong number of arguments.", getClass () -> name);
+	
+		const auto args         = JS::CallArgsFromVp (argc, vp);
+		const auto scene        = getExecutionContext <X3DScene> (cx, args);
+		const auto exportedName = getArgument <std::string> (cx, args, 0);
+		const auto node         = getArgument <SFNode> (cx, args, 1);
+
+		scene -> addExportedNode (exportedName, *node);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .addExportedNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::removeExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .removeExportedNode: wrong number of arguments.", getClass () -> name);
+	
+		const auto args         = JS::CallArgsFromVp (argc, vp);
+		const auto scene        = getExecutionContext <X3DScene> (cx, args);
+		const auto exportedName = getArgument <std::string> (cx, args, 0);
+
+		scene -> removeImportedNode (exportedName);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .removeExportedNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::updateExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 2)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .updateExportedNode: wrong number of arguments.", getClass () -> name);
+	
+		const auto args         = JS::CallArgsFromVp (argc, vp);
+		const auto scene        = getExecutionContext <X3DScene> (cx, args);
+		const auto exportedName = getArgument <std::string> (cx, args, 0);
+		const auto node         = getArgument <SFNode> (cx, args, 1);
+
+		scene -> updateExportedNode (exportedName, *node);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .updateExportedNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::getExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .getExportedNode: wrong number of arguments.", getClass () -> name);
+	
+		const auto args         = JS::CallArgsFromVp (argc, vp);
+		const auto scene        = getExecutionContext <X3DScene> (cx, args);
+		const auto exportedName = getArgument <std::string> (cx, args, 0);
+		auto       exportedNode = scene -> getExportedNode (exportedName);
+
+		args .rval () .set (SFNode::create (cx, &exportedNode));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .getExportedNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::addRootNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .addRootNode: wrong number of arguments.", getClass () -> name);
+	
+		const auto args     = JS::CallArgsFromVp (argc, vp);
+		const auto scene    = getExecutionContext <X3DScene> (cx, args);
+		const auto rootNode = getArgument <SFNode> (cx, args, 0);
+
+		scene -> addRootNode (*rootNode);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .addRootNode: %s.", getClass () -> name, error .what ());
+	}
+}
+
+bool
+X3DScene::removeRootNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .removeRootNode: wrong number of arguments.", getClass () -> name);
+	
+		const auto args     = JS::CallArgsFromVp (argc, vp);
+		const auto scene    = getExecutionContext <X3DScene> (cx, args);
+		const auto rootNode = getArgument <SFNode> (cx, args, 0);
+
+		scene -> removeRootNode (*rootNode);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .removeRootNode: %s.", getClass () -> name, error .what ());
+	}
+}
 
 // Destruction
 

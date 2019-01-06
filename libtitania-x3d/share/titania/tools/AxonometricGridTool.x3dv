@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V4.3.3
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.3, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AxonometricGridTool.x3dv"
-META "modified" "Sun, 21 Oct 2018 04:10:59 GMT"
+META "modified" "Sun, 06 Jan 2019 12:50:18 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -101,6 +101,37 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF ScaleScript Script {
+              inputOnly   SFVec3f set_translation
+              inputOutput SFVec3f scale 1 1 1
+              inputOutput MFInt32 dimension [
+                5,
+                10
+              ]
+              outputOnly  SFVec3f translation_changed
+
+              url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = Math .abs (value .x) / dimension [0];
+	var factor = length / scale .x;
+
+	scale .x *= factor;
+	scale .y *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	translation_changed = new SFVec3f (-scale .x * dimension [0], 0, 0);
+}"
+            }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -335,37 +366,7 @@ function set_translation (value)
 "
 }
 
-DEF ScaleScript Script {
-  inputOnly   SFVec3f set_translation
-  inputOutput SFVec3f scale 1 1 1
-  inputOutput MFInt32 dimension [
-    5,
-    10
-  ]
-  outputOnly  SFVec3f translation_changed
-
-  url "javascript:
-
-function initialize ()
-{
-	eventsProcessed ();
-}
-
-function set_translation (value)
-{
-	var length = Math .abs (value .x) / dimension [0];
-	var factor = length / scale .x;
-
-	scale .x *= factor;
-	scale .y *= factor;
-	scale .z *= factor;
-}
-
-function eventsProcessed ()
-{
-	translation_changed = new SFVec3f (-scale .x * dimension [0], 0, 0);
-}"
-}
+USE ScaleScript
 
 DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0

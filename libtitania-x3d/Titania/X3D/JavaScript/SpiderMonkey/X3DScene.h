@@ -105,18 +105,16 @@ private:
 
 	///  @name Functions
 
-//	static bool setMetaData (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getMetaData (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setMetaData (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getMetaData (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool addExportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool removeExportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool updateExportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getExportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool addExportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool removeExportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool updateExportedNode (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getExportedNode    (JSContext* cx, unsigned argc, JS::Value* vp);
 
-//	static bool addRootNode    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool removeRootNode (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool setRootNodes   (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getRootNodes   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool addRootNode    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool removeRootNode (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Destruction
 

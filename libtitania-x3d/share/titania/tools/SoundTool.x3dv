@@ -1,13 +1,15 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V4.3.8
+
+PROFILE Full
 
 UNIT angle degree 0.0174532925199432958
 
 META "comment" "World of Titania"
 META "created" "Thu, 18 Feb 2016 08:47:54 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SoundTool.x3dv"
-META "modified" "Sat, 20 Feb 2016 17:26:00 GMT"
+META "modified" "Sun, 06 Jan 2019 12:50:48 GMT"
 
 EXTERNPROTO QuadSphere [
   inputOutput    SFInt32 uDimension
@@ -17,8 +19,7 @@ EXTERNPROTO QuadSphere [
 ]
 "library/QuadSphere.x3dv"
 
-EXTERNPROTO ToolShader [
-]
+EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
 
 WorldInfo {
@@ -98,144 +99,49 @@ WorldInfo {
           }
         ]
       }
-    ]
-  }
-}
-
-Collision {
-  enabled FALSE
-  children DEF SoundTool TouchGroup {
-    enabled FALSE
-    children DEF Sound Transform {
-      children [
-        DEF Speaker ScreenGroup {
-          children Group {
-            children [
-              DEF Cone Transform {
-                rotation -0.999999999993254 -3.67320512848233e-06 5.34689547954277e-19 1.5707963267949
-                scaleOrientation 0.999999999997857 1.84874067061104e-06 -9.31541809008593e-07 3.92699081698934
-                children Shape {
-                  appearance DEF _1 Appearance {
-                    material Material {
-                      diffuseColor 0.2 0.2 0.2
-                      specularColor 1 1 1
-                    }
-                  }
-                  geometry Cone {
-                    height 20
-                    bottomRadius 24
-                  }
-                }
-              }
-              DEF Cylinder Transform {
-                rotation -0.999999999993254 -3.67320512848233e-06 -5.41254053295498e-19 1.5707963267949
-                children Shape {
-                  appearance USE _1
-                  geometry Cylinder {
-                    height 20
-                    radius 12
-                  }
-                }
-              }
-            ]
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
           }
-        }
-        DEF MinEllipsoid Transform {
-          children Transform {
-            rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
-            children DEF _2 Switch {
-              children [
-                Shape {
-                  appearance Appearance {
-                    fillProperties DEF _3 FillProperties {
-                      filled FALSE
-                      hatched FALSE
-                    }
-                    lineProperties DEF _4 LineProperties {
-                      linewidthScaleFactor 1
-                    }
-                    material DEF _5 Material {
-                      diffuseColor 0.618 0.1854 0.1854
-                    }
-                    shaders DEF _6 ToolShader {
-                    }
-                  }
-                  geometry DEF _7 QuadSphere {
-                    uDimension 11
-                    vDimension 9
-                    solid FALSE
-                  }
-                }
-                Shape {
-                  appearance Appearance {
-                    fillProperties USE _3
-                    lineProperties USE _4
-                    material DEF _8 Material {
-                      diffuseColor 1 0.3 0.3
-                    }
-                    shaders DEF _9 ToolShader {
-                    }
-                  }
-                  geometry USE _7
-                }
-              ]
-            }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
-        }
-        DEF MaxEllipsoid Transform {
-          scale 10 10 10
-          children Transform {
-            rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
-            children DEF _10 Switch {
-              children [
-                Shape {
-                  appearance Appearance {
-                    fillProperties USE _3
-                    lineProperties USE _4
-                    material DEF _11 Material {
-                      diffuseColor 0.1854 0.618 0.2575
-                    }
-                    shaders DEF _12 ToolShader {
-                    }
-                  }
-                  geometry USE _7
-                }
-                Shape {
-                  appearance Appearance {
-                    fillProperties USE _3
-                    lineProperties USE _4
-                    material DEF _13 Material {
-                      diffuseColor 0.3 1 0.416667
-                    }
-                    shaders DEF _14 ToolShader {
-                    }
-                  }
-                  geometry USE _7
-                }
-              ]
-            }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
           }
-        }
-      ]
-    }
-  }
-}
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF SoundScript Script {
+              inputOnly      SFVec3f    set_location
+              inputOnly      SFFloat    set_range
+              inputOutput    SFBool     selected FALSE
+              outputOnly     SFVec3f    translation_changed
+              outputOnly     SFRotation rotation_changed
+              outputOnly     SFVec3f    minTranslation_changed
+              outputOnly     SFVec3f    maxTranslation_changed
+              outputOnly     SFVec3f    minScale_changed
+              outputOnly     SFVec3f    maxScale_changed
+              outputOnly     SFInt32    whichChoice_changed
+              inputOutput    SFNode     sound DEF _2 Sound { }
+              initializeOnly SFNode     self USE SoundScript
 
-DEF SoundScript Script {
-  inputOnly      SFVec3f    set_location
-  inputOnly      SFFloat    set_range
-  inputOutput    SFBool     selected FALSE
-  outputOnly     SFVec3f    translation_changed
-  outputOnly     SFRotation rotation_changed
-  outputOnly     SFVec3f    minTranslation_changed
-  outputOnly     SFVec3f    maxTranslation_changed
-  outputOnly     SFVec3f    minScale_changed
-  outputOnly     SFVec3f    maxScale_changed
-  outputOnly     SFInt32    whichChoice_changed
-  inputOutput    SFNode     sound DEF _15 Sound { }
-  initializeOnly SFNode     self USE SoundScript
-
-  url "ecmascript:
+              url "ecmascript:
 
 var zAxis = new SFVec3f (0, 0, 1);
 
@@ -297,7 +203,131 @@ function maxRange ()
 	maxTranslation_changed = new SFVec3f (0, 0, e);
 	maxScale_changed       = new SFVec3f (b, b, a);
 }"
+              directOutput TRUE
+            }
+          }
+        ]
+      }
+    ]
+  }
 }
+
+Collision {
+  enabled FALSE
+  children DEF SoundTool TouchGroup {
+    enabled FALSE
+    children DEF Sound Transform {
+      children [
+        DEF Speaker ScreenGroup {
+          children Group {
+            children [
+              DEF Cone Transform {
+                rotation -0.999999999993254 -3.67320512848233e-06 5.34689547954277e-19 90.0000000000002
+                scaleOrientation 0.999999999997857 1.84874067061104e-06 -9.31541809008593e-07 225.00000000012
+                children Shape {
+                  appearance DEF _3 Appearance {
+                    material Material {
+                      diffuseColor 0.2 0.2 0.2
+                      specularColor 1 1 1
+                    }
+                  }
+                  geometry Cone {
+                    height 20
+                    bottomRadius 24
+                  }
+                }
+              }
+              DEF Cylinder Transform {
+                rotation -0.999999999993254 -3.67320512848233e-06 -5.41254053295498e-19 90.0000000000002
+                children Shape {
+                  appearance USE _3
+                  geometry Cylinder {
+                    height 20
+                    radius 12
+                  }
+                }
+              }
+            ]
+          }
+        }
+        DEF MinEllipsoid Transform {
+          children Transform {
+            rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 120
+            children DEF _4 Switch {
+              children [
+                Shape {
+                  appearance Appearance {
+                    fillProperties DEF _5 FillProperties {
+                      filled FALSE
+                      hatched FALSE
+                    }
+                    lineProperties DEF _6 LineProperties {
+                      linewidthScaleFactor 1
+                    }
+                    material Material {
+                      diffuseColor 0.618 0.1854 0.1854
+                    }
+                    shaders ToolShader { }
+                  }
+                  geometry DEF _7 QuadSphere {
+                    uDimension 11
+                    vDimension 9
+                    solid FALSE
+                  }
+                }
+                Shape {
+                  appearance Appearance {
+                    fillProperties USE _5
+                    lineProperties USE _6
+                    material Material {
+                      diffuseColor 1 0.3 0.3
+                    }
+                    shaders ToolShader { }
+                  }
+                  geometry USE _7
+                }
+              ]
+            }
+          }
+        }
+        DEF MaxEllipsoid Transform {
+          scale 10 10 10
+          children Transform {
+            rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 120
+            children DEF _8 Switch {
+              children [
+                Shape {
+                  appearance Appearance {
+                    fillProperties USE _5
+                    lineProperties USE _6
+                    material Material {
+                      diffuseColor 0.1854 0.618 0.2575
+                    }
+                    shaders ToolShader { }
+                  }
+                  geometry USE _7
+                }
+                Shape {
+                  appearance Appearance {
+                    fillProperties USE _5
+                    lineProperties USE _6
+                    material Material {
+                      diffuseColor 0.3 1 0.416667
+                    }
+                    shaders ToolShader { }
+                  }
+                  geometry USE _7
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+USE SoundScript
 
 ROUTE SoundScript.minScale_changed TO MinEllipsoid.set_scale
 ROUTE SoundScript.minTranslation_changed TO MinEllipsoid.set_translation
@@ -305,13 +335,13 @@ ROUTE SoundScript.translation_changed TO Sound.set_translation
 ROUTE SoundScript.maxTranslation_changed TO MaxEllipsoid.set_translation
 ROUTE SoundScript.maxScale_changed TO MaxEllipsoid.set_scale
 ROUTE SoundScript.rotation_changed TO Sound.set_rotation
-ROUTE _15.maxFront_changed TO SoundScript.set_range
-ROUTE _15.maxBack_changed TO SoundScript.set_range
-ROUTE _15.minFront_changed TO SoundScript.set_range
-ROUTE _15.minBack_changed TO SoundScript.set_range
-ROUTE _15.direction_changed TO SoundScript.set_location
-ROUTE _15.location_changed TO SoundScript.set_location
-ROUTE SoundScript.whichChoice_changed TO _10.set_whichChoice
-ROUTE SoundScript.whichChoice_changed TO _2.set_whichChoice
+ROUTE _2.maxFront_changed TO SoundScript.set_range
+ROUTE _2.maxBack_changed TO SoundScript.set_range
+ROUTE _2.minFront_changed TO SoundScript.set_range
+ROUTE _2.minBack_changed TO SoundScript.set_range
+ROUTE _2.direction_changed TO SoundScript.set_location
+ROUTE _2.location_changed TO SoundScript.set_location
+ROUTE SoundScript.whichChoice_changed TO _8.set_whichChoice
+ROUTE SoundScript.whichChoice_changed TO _4.set_whichChoice
 
 EXPORT SoundScript AS Tool

@@ -1,14 +1,13 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 29 May 2014 16:43:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/EnvironmentalSensor.x3dv"
-META "modified" "Tue, 14 Mar 2017 16:19:17 GMT"
-META "outputStyle" "nicest"
+META "modified" "Sun, 06 Jan 2019 12:50:05 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -29,20 +28,26 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
-            value TouchGroup {
-              enabled FALSE
-              children DEF Box Transform {
+            value DEF Tool Script {
+              inputOutput    SFBool  enabled FALSE
+              inputOutput    SFBool  selected FALSE
+              inputOutput    SFColor color 0.35 1 0.7
+              inputOutput    SFNode  node NULL
+              initializeOnly SFNode  material DEF BoxMaterial Material {
+                ambientIntensity 0
+                diffuseColor 0.2 0.2 0.2
+                emissiveColor 0.0875 0.25 0.175
+                shininess 0
+                transparency 0.5
+              }
+              initializeOnly SFNode  transform DEF TransformTool Transform {
                 children Shape {
                   appearance Appearance {
-                    material DEF BoxMaterial Material {
-                      ambientIntensity 0
-                      diffuseColor 0.2 0.2 0.2
-                      emissiveColor 0.0875 0.25 0.175
-                      shininess 0
-                      transparency 0.5
+                    material Material {
+                      transparency 1
                     }
                   }
                   geometry Box {
@@ -50,11 +55,46 @@ WorldInfo {
                   }
                 }
               }
+
+              url "ecmascript:
+
+function initialize ()
+{
+	set_color ();
+}
+
+function set_enabled ()
+{
+	set_color ();
+}
+
+function set_color ()
+{
+	if (enabled)
+		material .emissiveColor = color;
+	else
+		material .emissiveColor = new SFColor (color .r / 4, color .g / 4, color .b / 4);
+}
+
+function set_node ()
+{
+	Browser .addRoute (node, \"size\", transform, \"scale\");
+	Browser .addRoute (node, \"center\", transform, \"translation\");
+
+	Browser .addRoute (transform, \"scale\", node, \"size\");
+	Browser .addRoute (transform, \"translation\", node, \"center\");
+
+	transform .scale       = node .size;
+	transform .translation = node .center;
+}
+"
+              directOutput TRUE
             }
           }
-          DEF nodes MetadataSet {
-            name "nodes"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
+            value FALSE
           }
         ]
       }
@@ -101,6 +141,22 @@ WorldInfo {
           }
         ]
       }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
     ]
   }
   title "EnvironmentalSensor"
@@ -113,66 +169,23 @@ Collision {
       whichChoice TRUE
       children [
         DEF _2 Group { }
-        DEF TransformTool Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                transparency 1
-              }
-            }
-            geometry Box {
-              size 1 1 1
-            }
-          }
-        }
+        USE TransformTool
       ]
     }
-    USE Box
+    DEF Box Transform {
+      children Shape {
+        appearance Appearance {
+          material USE BoxMaterial
+        }
+        geometry Box {
+          size 1 1 1
+        }
+      }
+    }
   ]
 }
 
-DEF Tool Script {
-  inputOutput    SFBool  enabled FALSE
-  inputOutput    SFBool  selected FALSE
-  inputOutput    SFColor color 0.35 1 0.7
-  inputOutput    SFNode  node NULL
-  initializeOnly SFNode  material USE BoxMaterial
-  initializeOnly SFNode  transform USE TransformTool
-
-  url "ecmascript:
-
-function initialize ()
-{
-	set_color ();
-}
-
-function set_enabled ()
-{
-	set_color ();
-}
-
-function set_color ()
-{
-	if (enabled)
-		material .emissiveColor = color;
-	else
-		material .emissiveColor = new SFColor (color .r / 4, color .g / 4, color .b / 4);
-}
-
-function set_node ()
-{
-	Browser .addRoute (node, \"size\", transform, \"scale\");
-	Browser .addRoute (node, \"center\", transform, \"translation\");
-
-	Browser .addRoute (transform, \"scale\", node, \"size\");
-	Browser .addRoute (transform, \"translation\", node, \"center\");
-
-	transform .scale       = node .size;
-	transform .translation = node .center;
-}
-"
-  directOutput TRUE
-}
+USE Tool
 
 ROUTE Tool.selected_changed TO _1.set_whichChoice
 ROUTE TransformTool.translation_changed TO Box.set_translation
