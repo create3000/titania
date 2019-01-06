@@ -97,12 +97,12 @@ const JSClass X3DBrowser::static_class = {
 
 const JSPropertySpec X3DBrowser::properties [ ] = {
 	JS_PSGS ("name",                getName,                nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
-//	JS_PSGS ("version",             getVersion,             nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
-//	JS_PSGS ("currentSpeed",        getCurrentSpeed,        nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
-//	JS_PSGS ("currentFrameRate",    getCurrentFrameRate,    nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
-//	JS_PSGS ("description",         getDescription,         setDescription, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-//	JS_PSGS ("supportedComponents", getSupportedComponents, nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
-//	JS_PSGS ("supportedProfiles",   getSupportedProfiles,   nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("version",             getVersion,             nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("currentSpeed",        getCurrentSpeed,        nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("currentFrameRate",    getCurrentFrameRate,    nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("description",         getDescription,         setDescription, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("supportedComponents", getSupportedComponents, nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("supportedProfiles",   getSupportedProfiles,   nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("currentScene",        getCurrentScene,        nullptr,        JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PS_END
 };
@@ -130,11 +130,11 @@ const JSFunctionSpec X3DBrowser::functions [ ] = {
 //	// VRML functions
 
 	JS_FS ("getName",              getName,              0, JSPROP_PERMANENT),
-//	JS_FS ("getVersion",           getVersion,           0, JSPROP_PERMANENT),
-//	JS_FS ("getCurrentSpeed",      getCurrentSpeed,      0, JSPROP_PERMANENT),
-//	JS_FS ("getCurrentFrameRate",  getCurrentFrameRate,  0, JSPROP_PERMANENT),
+	JS_FS ("getVersion",           getVersion,           0, JSPROP_PERMANENT),
+	JS_FS ("getCurrentSpeed",      getCurrentSpeed,      0, JSPROP_PERMANENT),
+	JS_FS ("getCurrentFrameRate",  getCurrentFrameRate,  0, JSPROP_PERMANENT),
 //	JS_FS ("getWorldURL",          getWorldURL,          0, JSPROP_PERMANENT),
-//	JS_FS ("setDescription",       setDescription,       1, JSPROP_PERMANENT),
+	JS_FS ("setDescription",       setDescription,       1, JSPROP_PERMANENT),
 //	JS_FS ("createVrmlFromString", createVrmlFromString, 1, JSPROP_PERMANENT),
 //	JS_FS ("createVrmlFromURL",    createVrmlFromURL,    3, JSPROP_PERMANENT),
 //	JS_FS ("addRoute",             addRoute,             4, JSPROP_PERMANENT),
@@ -190,63 +190,142 @@ X3DBrowser::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-//bool
-//X3DBrowser::getVersion (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	return JS_NewStringValue (cx, script -> getBrowser () -> getVersion (), vp);
-//}
-//
-//bool
-//X3DBrowser::getCurrentSpeed (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	return JS_NewNumberValue (cx, script -> getBrowser () -> getCurrentSpeed (), vp);
-//}
-//
-//bool
-//X3DBrowser::getCurrentFrameRate (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	return JS_NewNumberValue (cx, script -> getBrowser () -> getCurrentFrameRate (), vp);
-//}
-//
-//bool
-//X3DBrowser::setDescription (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	script -> getBrowser () -> setDescription (to_string (cx, *vp));
-//
-//	return true;
-//}
-//
-//bool
-//X3DBrowser::getDescription (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	return JS_NewStringValue (cx, script -> getBrowser () -> getDescription (), vp);
-//}
-//
-//bool
-//X3DBrowser::getSupportedComponents (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	return ComponentInfoArray::create (cx, &script -> getBrowser () -> getSupportedComponents (), vp);
-//}
-//
-//bool
-//X3DBrowser::getSupportedProfiles (JSContext* cx, unsigned argc, JS::Value* vp)
-//{
-//	const auto & script = getContext (cx) -> getScriptNode ();
-//
-//	return ProfileInfoArray::create (cx, &script -> getBrowser () -> getSupportedProfiles (), vp);
-//}
+bool
+X3DBrowser::getVersion (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .version: wrong number of arguments.", getClass () -> name);
+	
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto browser = getContext (cx) -> getBrowser ();
+
+		args .rval () .set (StringValue (cx, browser -> getVersion ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .version: %s.", error .what ());
+	}
+}
+
+bool
+X3DBrowser::getCurrentSpeed (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .currentSpeed: wrong number of arguments.", getClass () -> name);
+	
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto browser = getContext (cx) -> getBrowser ();
+
+		args .rval () .setNumber (browser -> getCurrentSpeed ());
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .currentSpeed: %s.", error .what ());
+	}
+}
+
+bool
+X3DBrowser::getCurrentFrameRate (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .currentFrameRate: wrong number of arguments.", getClass () -> name);
+	
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto browser = getContext (cx) -> getBrowser ();
+
+		args .rval () .setNumber (browser -> getCurrentFrameRate ());
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .currentFrameRate: %s.", error .what ());
+	}
+}
+
+bool
+X3DBrowser::setDescription (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 1)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .description: wrong number of arguments.", getClass () -> name);
+	
+		const auto args        = JS::CallArgsFromVp (argc, vp);
+		const auto browser     = getContext (cx) -> getBrowser ();
+		const auto description = getArgument <std::string> (cx, args, 0);
+
+		browser -> setDescription (description);
+
+		args .rval () .setUndefined ();
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .description: %s.", error .what ());
+	}
+}
+
+bool
+X3DBrowser::getDescription (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .description: wrong number of arguments.", getClass () -> name);
+	
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto browser = getContext (cx) -> getBrowser ();
+
+		args .rval () .set (StringValue (cx, browser -> getDescription ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .description: %s.", error .what ());
+	}
+}
+
+bool
+X3DBrowser::getSupportedComponents (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto browser = getContext (cx) -> getBrowser ();
+
+		args .rval () .set (ComponentInfoArray::create (cx, const_cast <X3D::ComponentInfoArray*> (&browser -> getSupportedComponents ())));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .supportedComponents: %s.", error .what ());
+	}
+}
+
+bool
+X3DBrowser::getSupportedProfiles (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		const auto args    = JS::CallArgsFromVp (argc, vp);
+		const auto browser = getContext (cx) -> getBrowser ();
+
+		args .rval () .set (ProfileInfoArray::create (cx, const_cast <X3D::ProfileInfoArray*> (&browser -> getSupportedProfiles ())));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .supportedProfiles: %s.", error .what ());
+	}
+}
 
 bool
 X3DBrowser::getCurrentScene (JSContext* cx, unsigned argc, JS::Value* vp)

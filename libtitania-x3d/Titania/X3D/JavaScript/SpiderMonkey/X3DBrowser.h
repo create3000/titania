@@ -96,13 +96,13 @@ private:
 	///  @name X3D properties
 
 	static bool getName                (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getVersion             (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getCurrentSpeed        (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getCurrentFrameRate    (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool setDescription         (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getDescription         (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getSupportedComponents (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool getSupportedProfiles   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getVersion             (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getCurrentSpeed        (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getCurrentFrameRate    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool setDescription         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getDescription         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getSupportedComponents (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool getSupportedProfiles   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getCurrentScene        (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name X3D functions
@@ -127,7 +127,6 @@ private:
 	///  @name VRML97 functions
 
 //	static bool getWorldURL          (JSContext* cx, unsigned argc, JS::Value* vp);
-//	static bool setDescription       (JSContext* cx, unsigned argc, JS::Value* vp);
 //	static bool createVrmlFromString (JSContext* cx, unsigned argc, JS::Value* vp);
 //	static bool createVrmlFromURL    (JSContext* cx, unsigned argc, JS::Value* vp);
 //	static bool addRoute             (JSContext* cx, unsigned argc, JS::Value* vp);
