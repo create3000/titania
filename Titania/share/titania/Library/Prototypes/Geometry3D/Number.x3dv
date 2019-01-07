@@ -11,10 +11,10 @@ EXTERNPROTO Number [
   inputOutput    SFNode  fontStyle
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.4/Prototypes/Geometry3D/Number.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.4/Prototypes/Geometry3D/Number.x3d",
-  "https://rawgit.com/create3000/Library/1.0.4/Prototypes/Geometry3D/Number.x3d",
-  "http://rawgit.com/create3000/Library/1.0.4/Prototypes/Geometry3D/Number.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Geometry3D/Number.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Geometry3D/Number.x3d",
+  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Geometry3D/Number.x3d",
+  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Geometry3D/Number.x3d"
 ]
 
 DEF Number Transform {

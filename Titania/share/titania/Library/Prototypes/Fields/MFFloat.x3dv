@@ -8,10 +8,10 @@ EXTERNPROTO MFFloat [
   outputOnly  MFFloat value_changed
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.4/Prototypes/Fields/MFFloat.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.4/Prototypes/Fields/MFFloat.x3d",
-  "https://rawgit.com/create3000/Library/1.0.4/Prototypes/Fields/MFFloat.x3d",
-  "http://rawgit.com/create3000/Library/1.0.4/Prototypes/Fields/MFFloat.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/MFFloat.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/MFFloat.x3d",
+  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/MFFloat.x3d",
+  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/MFFloat.x3d"
 ]
 
 MFFloat { }
