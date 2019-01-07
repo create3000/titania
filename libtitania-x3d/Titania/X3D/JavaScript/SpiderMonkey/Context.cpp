@@ -600,7 +600,7 @@ Context::collectGarbage ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	JS_GC (cx);
+	JS_MaybeGC (cx);
 }
 
 void

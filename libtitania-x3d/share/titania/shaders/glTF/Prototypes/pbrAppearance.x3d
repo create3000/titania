@@ -5,9 +5,9 @@
     <meta name='comment' content='World of Titania'/>
     <meta name='created' content='Sat, 10 Feb 2018 02:42:59 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
-    <meta name='generator' content='Titania V4.3.0, http://titania.create3000.de'/>
+    <meta name='generator' content='Titania V4.3.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d'/>
-    <meta name='modified' content='Sun, 03 Jun 2018 03:52:27 GMT'/>
+    <meta name='modified' content='Mon, 07 Jan 2019 02:23:43 GMT'/>
   </head>
   <Scene>
     <ProtoDeclare name='pbrAppearance'>
@@ -40,7 +40,7 @@
             <field accessType='inputOutput' type='SFNode' name='diffuseEnvironmentTexture'/>
             <field accessType='inputOutput' type='SFNode' name='specularEnvironmentTexture'/>
             <field accessType='inputOutput' type='SFNode' name='brdfLUT'/>
-            <field accessType='inputOutput' type='SFVec4f' name='diffuseFactor'/>
+            <field accessType='inputOutput' type='SFVec4f' name='diffuseFactor' value='1 1 1 1'/>
             <field accessType='inputOutput' type='SFVec3f' name='specularFactor' value='1 1 1'/>
             <field accessType='inputOutput' type='SFFloat' name='glossinessFactor' value='1'/>
             <field accessType='inputOutput' type='SFNode' name='diffuseTexture'/>
@@ -146,7 +146,6 @@ main ()
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
 // BEGIN DEFINES
-#define KHR_materials_pbrMetallicRoughness
 // END DEFINES
 
 #extension GL_OES_standard_derivatives : enable
@@ -547,7 +546,8 @@ main ()
             </ShaderPart>
           </ComposedShader>
         </Appearance>
-        <Script DEF='pbrAppearanceScript'>
+        <Script DEF='pbrAppearanceScript'
+            directOutput='true'>
           <field accessType='inputOutput' type='MFString' name='defines'/>
           <field accessType='inputOutput' type='SFString' name='alphaMode'/>
           <field accessType='inputOutput' type='SFFloat' name='metallicFactor' value='1'/>
@@ -563,10 +563,10 @@ main ()
                 transparency='1'/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='shader'>
-            <ComposedShader USE='pbrShader'/>
+            <ComposedShader USE='pbrShader' containerField='shader'/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='self'>
-            <Script USE='pbrAppearanceScript'/>
+            <Script USE='pbrAppearanceScript' containerField='self'/>
           </field>
           <IS>
             <connect nodeField='defines' protoField='defines'/>
@@ -765,7 +765,9 @@ function set_extensions (value, time)
               value='false'/>
           <MetadataSet DEF='nodes' containerField='value'
               name='nodes'
-              reference='http://titania.create3000.de'/>
+              reference='http://titania.create3000.de'>
+            <!-- NULL -->
+          </MetadataSet>
         </MetadataSet>
         <MetadataSet DEF='Page' containerField='value'
             name='Page'
