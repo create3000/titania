@@ -1,14 +1,87 @@
-#VRML V2.0 utf8 Titania
+#VRML V2.0 utf8 Titania V4.3.9
 
 PROTO Test [
-  exposedField SFBool enabled TRUE
-  eventIn      SFBool set_bind
-  eventOut     SFBool isBound
-  field        SFBool solid FALSE
-  exposedField MFNode children [ ]
+  exposedField   SFBool enabled TRUE
+  eventIn        SFBool set_bind
+  eventOut       SFBool isBound
+  field          SFBool solid FALSE
+  exposedField   MFNode children [ ]
 ]
 {
   Group { }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF RouteScript Script {
+              eventIn        SFTime addRoute
+              eventIn        SFTime deleteRoute
+              field          SFNode node1 DEF Script1 Test { }
+              field          SFNode node2 DEF Script2 Test { }
+
+              url "vrmlscript:
+function addRoute ()
+{
+	Browser .addRoute (node1, 'isBound', node2, 'set_bind');
+
+	printRoutes ();
+}
+
+function deleteRoute ()
+{
+	Browser .deleteRoute (node1, 'isBound', node2, 'set_bind');
+	
+	printRoutes ();
+}
+
+function printRoutes ()
+{
+	var routes = Browser .currentScene .routes;
+	
+	print (Browser .getWorldURL ());
+	
+	for (var i = 0; i < routes .length; ++ i)
+		print (routes [i] .sourceNode .getNodeName (), \" \", routes [i] .sourceField, \" \",
+		       routes [i] .destinationNode .getNodeName (), \" \", routes [i] .destinationField);
+}"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  title "Routes"
 }
 
 DEF Above Test { }
@@ -19,9 +92,9 @@ DEF Middle Test {
 
 DEF Below Test { }
 
-DEF Script1 Test { }
+USE Script1
 
-DEF Script2 Test { }
+USE Script2
 
 DEF Scripting Transform {
   children [
@@ -62,24 +135,7 @@ DEF Scripting Transform {
         }
       ]
     }
-    DEF RouteScript Script {
-      eventIn SFTime addRoute
-      eventIn SFTime deleteRoute
-      field   SFNode node1 USE Script1
-      field   SFNode node2 USE Script2
-
-      url "vrmlscript:
-function addRoute ()
-{
-	Browser .addRoute (node1, 'isBound', node2, 'set_bind');
-}
-
-function deleteRoute ()
-{
-	Browser .deleteRoute (node1, 'isBound', node2, 'set_bind');
-}
-"
-    }
+    USE RouteScript
   ]
 }
 
