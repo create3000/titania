@@ -420,7 +420,7 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto & script  = context -> getScriptNode ();
 		const auto   url     = getArgument <MFString> (cx, args, 0);
 
-		if (argc === 1)
+		if (argc == 1)
 		{
 			const auto scene = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
 
