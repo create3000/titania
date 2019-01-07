@@ -121,9 +121,8 @@ public:
 	JSObject*
 	getObject (const size_t key) const;
 
-	X3D::X3DPtr <X3D::SceneFuture> &
-	getFuture ()
-	{ return future; }
+	void
+	addFuture (const X3D::X3DPtr <X3D::SceneFuture> & future);
 
 	///  @name Destruction
 
@@ -232,7 +231,7 @@ private:
 	std::vector <std::unique_ptr <JS::PersistentRooted <JSObject*>>>           protos;
 	Objects                                                                    objects;
 
-	X3D::X3DPtr <X3D::SceneFuture> future;
+	X3D::X3DPtrArray <X3D::SceneFuture> futures;
 
 };
 

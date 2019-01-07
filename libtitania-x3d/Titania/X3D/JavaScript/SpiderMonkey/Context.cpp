@@ -119,10 +119,12 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   fields (),
 	                   protos (size_t (ObjectType::SIZE)),
 	                  objects (),
-	                   future ()
+	                  futures ()
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
+
+	addChildObjects (futures);
 }
 
 X3DBaseNode*
@@ -134,7 +136,7 @@ Context::create (X3D::X3DExecutionContext* const) const
 void
 Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
 {
-	if (future)
+	for (const auto & future : futures)
 		future -> setExecutionContext (executionContext);
 
 	X3DJavaScriptContext::setExecutionContext (executionContext);
@@ -435,6 +437,22 @@ Context::getObject (const size_t key) const
 }
 
 void
+Context::addFuture (const X3D::X3DPtr <X3D::SceneFuture> & future)
+{
+	futures .erase (std::remove_if (futures .begin (), futures .end (),
+	[ ] (const X3D::X3DPtr <X3D::SceneFuture> & future)
+	{
+		if (future)
+			return future -> isReady ();
+
+		return true;
+	}),
+	futures .end ());
+
+	futures .emplace_back (future);
+}
+
+void
 Context::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
@@ -651,11 +669,10 @@ Context::dispose ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	future .setValue (nullptr);
-
-	fields .clear ();
-	protos .clear ();
-	global .reset ();
+	futures .clear ();
+	fields  .clear ();
+	protos  .clear ();
+	global  .reset ();
 
 	// finalize is not called for global values, probably the global object is not disposed.
 

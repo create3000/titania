@@ -448,19 +448,16 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 					if (field -> getType () not_eq X3D::X3DConstants::MFNode)
 						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not a MFNode.", getClass () -> name, event .c_str ());
 		
-					if (context -> getFuture ())
-						context -> getFuture () -> wait ();
-		
 					using namespace std::placeholders;
 		
-					context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
-					                                                         *url,
-					                                                         false,
-					                                                         std::bind (&X3DBrowser::setSceneAsync,
-					                                                                    X3D::SFNode (script),
-					                                                                    *node,
-					                                                                    static_cast <X3D::MFNode*> (field),
-					                                                                    _1)));
+					context -> addFuture (X3D::MakePtr <X3D::SceneFuture> (script -> getExecutionContext (),
+					                                                       *url,
+					                                                       false,
+					                                                       std::bind (&X3DBrowser::setSceneAsync,
+					                                                                  X3D::SFNode (script),
+					                                                                  *node,
+					                                                                  static_cast <X3D::MFNode*> (field),
+					                                                                  _1)));
 
 					args .rval () .setUndefined ();
 					return true;
@@ -859,19 +856,16 @@ X3DBrowser::createVrmlFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 			if (field -> getType () not_eq X3D::X3DConstants::MFNode)
 				return ThrowException <JSProto_Error> (cx, "%s .prototype .createVrmlFromURL: field '%s' is not a MFNode.", getClass () -> name, event .c_str ());
 
-			if (context -> getFuture ())
-				context -> getFuture () -> wait ();
-
 			using namespace std::placeholders;
 
-			context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
-			                                                         *url,
-			                                                         false,
-			                                                         std::bind (&X3DBrowser::setSceneAsync,
-			                                                                    X3D::SFNode (script),
-			                                                                    *node,
-			                                                                    static_cast <X3D::MFNode*> (field),
-			                                                                    _1)));
+			context -> addFuture (X3D::MakePtr <X3D::SceneFuture> (script -> getExecutionContext (),
+			                                                       *url,
+			                                                       false,
+			                                                       std::bind (&X3DBrowser::setSceneAsync,
+			                                                                  X3D::SFNode (script),
+			                                                                  *node,
+			                                                                  static_cast <X3D::MFNode*> (field),
+			                                                                  _1)));
 
 			args .rval () .setUndefined ();
 			return true;

@@ -81,7 +81,11 @@ public:
 
 	void
 	stop ()
-	{ stopping .store (true); }
+	{ m_stopping .store (true); }
+
+	bool
+	isReady () const
+	{ return m_ready .load (); }
 
 	///  @name Destruction
 
@@ -94,7 +98,8 @@ protected:
 	///  @name Construction
 
 	X3DInterruptibleThread () :
-		stopping (false)
+		m_stopping (false),
+		   m_ready (false)
 	{ }
 
 	///  @name Member access
@@ -108,17 +113,23 @@ protected:
 		throw InterruptThreadException ();
 	}
 
+	void
+	ready ()
+	{ m_ready .store (true); }
+
+
 private:
 
 	///  @name Member access
 
 	bool
 	isStopping () const
-	{ return stopping .load (); }
+	{ return m_stopping .load (); }
 
 	///  @name Members
 
-	std::atomic <bool> stopping;
+	std::atomic <bool> m_stopping;
+	std::atomic <bool> m_ready;
 
 };
 

@@ -1061,11 +1061,11 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-//	if (Generator::IsSharedNode (ostream, this) )
-//	{
-//		ostream << "NULL";
-//		return;
-//	}
+	if (Generator::IsSharedNode (ostream, this) )
+	{
+		ostream << "NULL";
+		return;
+	}
 
 	Generator::EnterScope (ostream);
 
@@ -1436,14 +1436,14 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-//	if (Generator::IsSharedNode (ostream, this))
-//	{
-//		ostream
-//			<< Generator::Indent
-//			<< "<!-- NULL -->";
-//
-//		return;
-//	}
+	if (Generator::IsSharedNode (ostream, this))
+	{
+		ostream
+			<< Generator::Indent
+			<< "<!-- NULL -->";
+
+		return;
+	}
 
 	Generator::EnterScope (ostream);
 
@@ -1787,11 +1787,11 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-//	if (Generator::IsSharedNode (ostream, this))
-//	{
-//		ostream << "null";
-//		return;
-//	}
+	if (Generator::IsSharedNode (ostream, this))
+	{
+		ostream << "null";
+		return;
+	}
 
 	Generator::EnterScope (ostream);
 

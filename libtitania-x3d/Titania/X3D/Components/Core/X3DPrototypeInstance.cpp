@@ -604,14 +604,14 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-//	if (Generator::IsSharedNode (ostream, this))
-//	{
-//		ostream
-//			<< Generator::Indent
-//			<< "<!-- NULL -->";
-//
-//		return;
-//	}
+	if (Generator::IsSharedNode (ostream, this))
+	{
+		ostream
+			<< Generator::Indent
+			<< "<!-- NULL -->";
+
+		return;
+	}
 
 	Generator::EnterScope (ostream);
 
@@ -881,11 +881,11 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-//	if (Generator::IsSharedNode (ostream, this))
-//	{
-//		ostream << "null";
-//		return;
-//	}
+	if (Generator::IsSharedNode (ostream, this))
+	{
+		ostream << "null";
+		return;
+	}
 
 	Generator::EnterScope (ostream);
 

@@ -121,6 +121,7 @@ SceneFuture::wait ()
 		if (not future .valid ())
 		{
 			stop ();
+			ready ();
 			return;
 		}
 
@@ -133,10 +134,12 @@ SceneFuture::wait ()
 		callback (std::move (scene));
 
 		stop ();
+		ready ();
 	}
 	catch (const InterruptThreadException &)
 	{
 		// Interrupt
+		ready ();
 	}
 	catch (const std::exception & error)
 	{
@@ -145,6 +148,7 @@ SceneFuture::wait ()
 		callback (nullptr);
 
 		stop ();
+		ready ();
 	}
 }
 
@@ -268,6 +272,7 @@ SceneFuture::set_scene ()
 	catch (const InterruptThreadException &)
 	{
 		// Interrupt
+		ready ();
 	}
 	catch (const std::exception & error)
 	{
@@ -276,6 +281,7 @@ SceneFuture::set_scene ()
 		callback (nullptr);
 
 		stop ();
+		ready ();
 	}
 }
 
@@ -294,10 +300,12 @@ SceneFuture::set_loadCount (const int32_t loadCount)
 		callback (std::move (scene));
 
 		stop ();
+		ready ();
 	}
 	catch (const InterruptThreadException &)
 	{
 		// Interrupt
+		ready ();
 	}
 }
 
@@ -318,6 +326,7 @@ void
 SceneFuture::dispose ()
 {
 	stop ();
+	ready ();
 
 	X3DFuture::dispose ();
 }
