@@ -230,6 +230,10 @@ public:
 	X3DFieldDefinition*
 	getField (const std::string & name) const;
 
+	///  Returns the field alias index for @a specificationVersion.
+	const std::map <std::string, std::string> &
+	getAliases (const SpecificationVersionType specificationVersion) const;
+
 	///  Returns whether this node can have user defined fields.
 	virtual
 	bool

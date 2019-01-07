@@ -119,9 +119,10 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 
 		if (created and script -> directOutput ())
 		{
+			const auto node   = field -> getValue ();
 			const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
 
-			for (const auto fieldDefinition : field -> getValue () -> getFieldDefinitions ())
+			for (const auto fieldDefinition : node -> getFieldDefinitions ())
 			{
 				const auto & name = fieldDefinition -> getName ();
 		
@@ -152,6 +153,43 @@ SFNode::create (JSContext* const cx, X3D::SFNode* const field)
 					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
 				}
 			}
+
+			try
+			{
+				for (const auto & [alias, name] : node -> getAliases (node -> getExecutionContext () -> getSpecificationVersion ()))
+				{
+					const auto fieldDefinition = node -> getField (alias);
+
+					JS_DefineProperty (cx,
+					                   object,
+					                   alias .c_str (),
+					                   JS::UndefinedHandleValue,
+					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
+					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
+					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+		
+					if (fieldDefinition -> getAccessType () == X3D::inputOutput)
+					{
+						JS_DefineProperty (cx,
+						                   object,
+						                   ("set_" + alias) .c_str (),
+						                   JS::UndefinedHandleValue,
+						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
+						                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
+						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+			
+						JS_DefineProperty (cx,
+						                   object,
+						                   (alias + "_changed") .c_str (),
+						                   JS::UndefinedHandleValue,
+						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
+						                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
+						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+					}
+				}
+			}
+			catch (const std::exception & error)
+			{ }
 		}
 
 		return value;

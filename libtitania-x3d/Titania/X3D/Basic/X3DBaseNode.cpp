@@ -582,9 +582,9 @@ X3DBaseNode::set_sceneGraph ()
  *  throws Error <INVALID_NAME>, Error <DISPOSED>
  */
 void
-X3DBaseNode::addField (const SpecificationVersionType version, const std::string & alias, const std::string & name)
+X3DBaseNode::addField (const SpecificationVersionType specificationVersion, const std::string & alias, const std::string & name)
 {
-	auto & fieldAlias = fieldAliases [version];
+	auto & fieldAlias = fieldAliases [specificationVersion];
 
 	fieldAlias .first [alias] = name;
 	fieldAlias .second [name] = alias;
@@ -693,6 +693,12 @@ X3DBaseNode::getFieldName (const std::string & alias) const
 	}
 
 	return alias;
+}
+
+const std::map <std::string, std::string> &
+X3DBaseNode::getAliases (const SpecificationVersionType specificationVersion) const
+{
+	return fieldAliases .at (specificationVersion) .first;
 }
 
 /***

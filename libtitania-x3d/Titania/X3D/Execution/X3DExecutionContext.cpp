@@ -1201,7 +1201,10 @@ X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::
 	const auto iter = std::find_if (routes -> cbegin (), routes -> cend (),
 	[&routeKey] (const RoutePtr & route)
 	{
-		return routeKey == route -> getKey ();
+		if (route)
+			return routeKey == route -> getKey ();
+
+		return false;
 	});
 
 	if (iter == routes -> cend ())
@@ -1259,7 +1262,10 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 		const auto iter = std::remove_if (routes -> begin (), routes -> end (),
 		[&routeKey] (const RoutePtr & route)
 		{
-			return routeKey == route -> getKey ();
+			if (route)
+				return routeKey == route -> getKey ();
+
+			return true;
 		});
 
 		for (const auto & route : std::pair (iter, routes -> end ()))
@@ -1292,7 +1298,10 @@ X3DExecutionContext::deleteRoute (Route* const route)
 	const auto iter = std::remove_if (routes -> begin (), routes -> end (),
 	[&routeKey] (const RoutePtr & route)
 	{
-		return routeKey == route -> getKey ();
+		if (route)
+			return routeKey == route -> getKey ();
+
+		return true;
 	});
 
 	routes -> erase (iter, routes -> end ());
