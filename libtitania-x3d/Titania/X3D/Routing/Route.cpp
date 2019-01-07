@@ -219,8 +219,13 @@ Route::erase ()
 void
 Route::set_node ()
 {
-	if (not sourceNode or not destinationNode)
-		getExecutionContext () -> deleteRoute (this);
+	try
+	{
+		if (not sourceNode or not destinationNode)
+			getExecutionContext () -> deleteRoute (this);
+	}
+	catch (const Error <DISPOSED> & error)
+	{ }
 }
 
 //throw Error <INVALID_NODE>,

@@ -1269,7 +1269,10 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 		});
 
 		for (const auto & route : std::pair (iter, routes -> end ()))
-			route -> disconnect ();
+		{
+			if (route)
+				route -> disconnect ();
+		}
 
 		routes -> erase (iter, routes -> end ());
 
@@ -1278,6 +1281,13 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 	catch (const std::exception & error)
 	{
 		// Silently return if route not exists.
+
+		routes -> erase (std::remove_if (routes -> begin (), routes -> end (),
+		[ ] (const RoutePtr & route)
+		{
+			return not route;
+		}),
+		routes -> end ());
 	}
 }
 
