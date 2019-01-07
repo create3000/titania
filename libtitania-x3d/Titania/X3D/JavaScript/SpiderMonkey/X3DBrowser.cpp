@@ -406,12 +406,13 @@ X3DBrowser::createX3DFromString (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
+// createX3DFromURL (url, event, node);
 bool
 X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		if (argc > 3)
+		if (argc not_eq 1 and argc not_eq 3)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: wrong number of arguments.", getClass () -> name);
 	
 		const auto   args    = JS::CallArgsFromVp (argc, vp);
@@ -419,58 +420,61 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto & script  = context -> getScriptNode ();
 		const auto   url     = getArgument <MFString> (cx, args, 0);
 
-		if (argc > 1)
+		if (argc === 1)
+		{
+			const auto scene = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+
+			args .rval () .set (X3DScene::create (cx, scene));
+			return true;
+		}
+		else
 		{
 			const auto event = getArgument <std::string> (cx, args, 1);
 
 			try
 			{
-				if (argc == 3)
+				const auto node = getArgument <SFNode> (cx, args, 2);
+
+				if (not node -> getValue ())
+					return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: node is NULL.", getClass () -> name);
+		
+				try
 				{
-					const auto node = getArgument <SFNode> (cx, args, 2);
+					const auto field = node -> getValue () -> getField (event);
+		
+					if (not field -> isInput ())
+						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not an eventIn.", getClass () -> name, event .c_str ());
+		
+					if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not a MFNode.", getClass () -> name, event .c_str ());
+		
+					if (context -> getFuture ())
+						context -> getFuture () -> wait ();
+		
+					using namespace std::placeholders;
+		
+					context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
+					                                                         *url,
+					                                                         false,
+					                                                         std::bind (&X3DBrowser::setSceneAsync,
+					                                                                    X3D::SFNode (script),
+					                                                                    *node,
+					                                                                    static_cast <X3D::MFNode*> (field),
+					                                                                    _1)));
 
-					if (not node -> getValue ())
-						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: node is NULL.", getClass () -> name);
-
-					try
-					{
-						const auto field = node -> getValue () -> getField (event);
-
-						if (not field -> isInput ())
-							return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not an eventIn.", getClass () -> name, event .c_str ());
-
-						if (field -> getType () not_eq X3D::X3DConstants::MFNode)
-							return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not a MFNode.", getClass () -> name, event .c_str ());
-
-						try
-						{
-							const auto scene = X3D::FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
-
-							field -> set (scene -> getRootNodes ());
-							field -> addEvent ();
-						}
-						catch (const X3D::X3DError & error)
-						{
-							script -> getBrowser () -> getConsole () -> error (error .what (), "\n");
-
-							field -> set (X3D::MFNode ());
-							field -> addEvent ();
-						}
-
-						args .rval () .setUndefined ();
-						return true;
-					}
-					catch (const Error <X3D::INVALID_NAME> &)
-					{
-						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: no such field '%s' in node %s.", getClass () -> name, event .c_str (), node -> getValue () -> getTypeName () .c_str ());
-					}
+					args .rval () .setUndefined ();
+					return true;
+				}
+				catch (const Error <INVALID_NAME> &)
+				{
+					return ThrowException <JSProto_Error> (cx, "%s .createX3DFromURL: no such field '%s' in node %s.", getClass () -> name, event .c_str (), node -> getValue () -> getTypeName () .c_str ());
 				}
 			}
 			catch (const std::exception &)
 			{ }
 
 			const auto scene   = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
-			auto       nodeObj = argc == 2 or not args [1] .isObject () ? context -> getGlobal () : args [1] .toObjectOrNull ();
+			auto       nodeObj = argc == 2 or not args [2] .isObject () ? context -> getGlobal () : args [2] .toObjectOrNull ();
 
 			if (not nodeObj)
 				nodeObj = context -> getGlobal ();
@@ -489,13 +493,6 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 			}
 
 			args .rval () .setUndefined ();
-			return true;
-		}
-		else
-		{
-			const auto scene = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
-
-			args .rval () .set (X3DScene::create (cx, scene));
 			return true;
 		}
 	}
@@ -890,23 +887,6 @@ X3DBrowser::createVrmlFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
-//  XXX: use FieldPtr here for "X3D::MFNode* const field"
-void
-X3DBrowser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene)
-{
-	if (scene)
-	{
-		const auto executionContext = script -> getExecutionContext ();
-
-		executionContext -> isLive () .addInterest (scene -> isLive ());
-
-		scene -> isLive () = executionContext -> isLive ();
-		scene -> setup ();
-
-		*field = scene -> getRootNodes ();
-	}
-}
-
 bool
 X3DBrowser::addRoute (JSContext* cx, unsigned argc, JS::Value* vp)
 {
@@ -956,6 +936,23 @@ X3DBrowser::deleteRoute (JSContext* cx, unsigned argc, JS::Value* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .deleteRoute: %s.", getClass () -> name, error .what ());
+	}
+}
+
+//  XXX: use FieldPtr here for "X3D::MFNode* const field"
+void
+X3DBrowser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3D::MFNode* const field, X3D::X3DScenePtr && scene)
+{
+	if (scene)
+	{
+		const auto executionContext = script -> getExecutionContext ();
+
+		executionContext -> isLive () .addInterest (scene -> isLive ());
+
+		scene -> isLive () = executionContext -> isLive ();
+		scene -> setup ();
+
+		*field = scene -> getRootNodes ();
 	}
 }
 
