@@ -155,7 +155,7 @@ SFImage::setWidth (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .width: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .width: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -172,7 +172,7 @@ SFImage::getWidth (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .width: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .width: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -190,7 +190,7 @@ SFImage::setHeight (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .height: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .height: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -207,7 +207,7 @@ SFImage::getHeight (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .height: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .height: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -225,7 +225,7 @@ SFImage::setComp (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .comp: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .comp: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -242,7 +242,7 @@ SFImage::getComp (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .comp: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .comp: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -260,7 +260,7 @@ SFImage::setArray (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .array: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .array: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -277,7 +277,7 @@ SFImage::getArray (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .array: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .array: %s.", getClass () -> name, error .what ());
 	}
 }
 

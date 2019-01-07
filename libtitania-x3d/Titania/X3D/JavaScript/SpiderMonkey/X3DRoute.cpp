@@ -158,7 +158,7 @@ X3DRoute::getSourceNode (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .sourceNode: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .sourceNode: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -175,7 +175,7 @@ X3DRoute::getSourceField (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .sourceField: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .sourceField: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -193,7 +193,7 @@ X3DRoute::getDestinationNode (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .destinationNode: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .destinationNode: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -210,7 +210,7 @@ X3DRoute::getDestinationField (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .destinationField: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .destinationField: %s.", getClass () -> name, error .what ());
 	}
 }
 

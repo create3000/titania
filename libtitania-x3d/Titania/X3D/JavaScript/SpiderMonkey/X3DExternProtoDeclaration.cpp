@@ -162,7 +162,7 @@ X3DExternProtoDeclaration::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .name: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .name: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -179,7 +179,7 @@ X3DExternProtoDeclaration::getFields (JSContext* cx, unsigned argc, JS::Value* v
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .fields: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .fields: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -196,7 +196,7 @@ X3DExternProtoDeclaration::isExternProto (JSContext* cx, unsigned argc, JS::Valu
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .isExternProto: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .isExternProto: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -213,7 +213,7 @@ X3DExternProtoDeclaration::getUrls (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .urls: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .urls: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -230,7 +230,7 @@ X3DExternProtoDeclaration::getLoadState (JSContext* cx, unsigned argc, JS::Value
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .loadState: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .loadState: %s.", getClass () -> name, error .what ());
 	}
 }
 

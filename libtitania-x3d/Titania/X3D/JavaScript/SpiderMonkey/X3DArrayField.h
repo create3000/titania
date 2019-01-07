@@ -543,11 +543,11 @@ X3DArrayFieldTemplate <ValueType, InternalType>::getLength (JSContext* cx, unsig
 	}
 	catch (const std::bad_alloc & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .length: out of memory.", getClass () -> name);
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .length: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .length: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .length: %s.", getClass () -> name, error .what ());
 	}
 }
 

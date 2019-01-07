@@ -228,7 +228,7 @@ Script::set_buffer ()
 			}
 			catch (const std::exception & error)
 			{
-				getBrowser () -> getConsole () -> warn ("Warning: ", error .what (), "\n");
+				getBrowser () -> getConsole () -> warn ("Couldn't create ECMAScript: ", error .what (), "\n");
 			}
 		}
 	}

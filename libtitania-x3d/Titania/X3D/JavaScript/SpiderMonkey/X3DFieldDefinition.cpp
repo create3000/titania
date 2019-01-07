@@ -152,7 +152,7 @@ X3DFieldDefinition::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .name: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .name: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -169,7 +169,7 @@ X3DFieldDefinition::getAccessType (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .accessType: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .accessType: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -186,7 +186,7 @@ X3DFieldDefinition::getDataType (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .accessType: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .accessType: %s.", getClass () -> name, error .what ());
 	}
 }
 

@@ -200,7 +200,7 @@ X3DExecutionContext::getSpecificationVersion (JSContext* cx, unsigned argc, JS::
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .specificationVersion: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .specificationVersion: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -217,7 +217,7 @@ X3DExecutionContext::getEncoding (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .encoding: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .encoding: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -234,7 +234,7 @@ X3DExecutionContext::getWorldURL (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .worldURL: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .worldURL: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -258,7 +258,7 @@ X3DExecutionContext::getProfile (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .profile: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .profile: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -275,7 +275,7 @@ X3DExecutionContext::getComponents (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .components: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .components: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -292,7 +292,7 @@ X3DExecutionContext::getExternprotos (JSContext* cx, unsigned argc, JS::Value* v
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .externprotos: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .externprotos: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -309,7 +309,7 @@ X3DExecutionContext::getProtos (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -319,7 +319,7 @@ X3DExecutionContext::getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		if (argc not_eq 0)
-		   return ThrowException <JSProto_Error> (cx, "%s .prototype .getRootNodes: wrong number of arguments.", getClass () -> name);
+		   return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: wrong number of arguments.", getClass () -> name);
 
 		const auto args             = JS::CallArgsFromVp (argc, vp);
 		const auto executionContext = getExecutionContext <X3DExecutionContext> (cx, args);
@@ -333,7 +333,7 @@ X3DExecutionContext::getRootNodes (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .rootNodes: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -350,7 +350,7 @@ X3DExecutionContext::getRoutes (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .routes: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .routes: %s.", getClass () -> name, error .what ());
 	}
 }
 

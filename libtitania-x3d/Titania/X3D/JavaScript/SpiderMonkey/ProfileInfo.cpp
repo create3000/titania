@@ -152,7 +152,7 @@ ProfileInfo::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .name: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .name: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -169,7 +169,7 @@ ProfileInfo::getTitle (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .title: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .title: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -186,7 +186,7 @@ ProfileInfo::getProviderUrl (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .providerUrl: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .providerUrl: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -203,7 +203,7 @@ ProfileInfo::getComponents (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .components: %s.", getClass () -> name, error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .components: %s.", getClass () -> name, error .what ());
 	}
 }
 
