@@ -1,11 +1,13 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V4.3.8
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Sun, 31 Jan 2016 11:29:00 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Texture3DPreview.x3dv"
-META "modified" "Mon, 15 Feb 2016 01:26:14 GMT"
+META "modified" "Mon, 07 Jan 2019 02:07:28 GMT"
 
 PROTO Volume [
   inputOutput SFInt32 dimension 10
@@ -13,68 +15,13 @@ PROTO Volume [
 ]
 {
   DEF Shapes Group {
-    children [
-      Transform {
-        translation 0 0 1
-        children Shape {
-          appearance Appearance { }
-        }
+    children Transform {
+      translation 0 0 1
+      children Shape {
+        appearance Appearance { }
+        geometry NULL
       }
-      Transform {
-        translation 0 0 0.777778
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 0.555556
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 0.333333
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 0.111111
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 -0.111111
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 -0.333333
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 -0.555556
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 -0.777778
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-      Transform {
-        translation 0 0 -1
-        children Shape {
-          appearance Appearance { }
-        }
-      }
-    ]
+    }
   }
 
   DEF VolumeScript Script {
@@ -97,7 +44,7 @@ PROTO Volume [
       ]
     }
 
-    url "vrmlscript:
+    url "ecmascript:
 
 function initialize ()
 {
@@ -140,6 +87,7 @@ function set_dimension ()
 	}
 }
 "
+    directOutput TRUE
   }
 }
 
@@ -194,85 +142,34 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF Texture3D Group {
-            children [
-              DEF Volume Group {
-                children [
-                  DEF _1 ClipPlane {
-                    plane 0 0 -1 1
-                  }
-                  Transform {
-                    children Volume {
-                      dimension 200
-                      texture DEF Texture ComposedTexture3D {
-                        textureProperties TextureProperties {
-                          generateMipMaps TRUE
-                          minificationFilter "AVG_PIXEL"
-                          magnificationFilter "NICEST"
-                          boundaryModeS "CLAMP_TO_EDGE"
-                          boundaryModeT "CLAMP_TO_EDGE"
-                          boundaryModeR "CLAMP_TO_EDGE"
-                        }
-                        texture [
-                          ImageTexture {
-                            url "../../../../../Library/Tests/images/lena.jpg"
-                          }
-                          ImageTexture {
-                            url "../../../../../Library/Tests/images/ubuntu.png"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-              DEF VisibleClipPlane Group {
-                children [
-                  DEF ClipPlaneScript Script {
-                    inputOnly  SFVec3f set_translation
-                    outputOnly SFVec4f plane_changed
-
-                    url "vrmlscript:
-function set_translation (value)
-{
-	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
-
-	plane_changed = new SFVec4f (0,0,-1, -distanceFromOrigin);
-}
-"
-                  }
-                  DEF PlaneSensor PlaneSensor {
-                    axisRotation 0 1 0 1.5708
-                    offset 3.62463e-06 0 1
-                    minPosition -1 0
-                    maxPosition 1 0
-                  }
-                  DEF Rectangle2D Transform {
-                    translation 3.62463e-06 0 1
-                    children Shape {
-                      appearance Appearance {
-                        fillProperties FillProperties {
-                          filled FALSE
-                          hatched FALSE
-                        }
-                        lineProperties LineProperties {
-                          linewidthScaleFactor 3
-                        }
-                        material Material { }
-                      }
-                      geometry Rectangle2D {
-                        solid FALSE
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
           }
-        }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value NULL
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
       }
     ]
   }
@@ -288,7 +185,80 @@ Viewpoint {
   position 0 0 5
 }
 
-USE Texture3D
+DEF Texture3D Group {
+  children [
+    DEF Volume Group {
+      children [
+        DEF _1 ClipPlane {
+          plane 0 0 -1 1
+        }
+        Transform {
+          children Volume {
+            dimension 200
+            texture DEF Texture ComposedTexture3D {
+              textureProperties TextureProperties {
+                generateMipMaps TRUE
+                minificationFilter "AVG_PIXEL"
+                magnificationFilter "NICEST"
+                boundaryModeS "CLAMP_TO_EDGE"
+                boundaryModeT "CLAMP_TO_EDGE"
+                boundaryModeR "CLAMP_TO_EDGE"
+              }
+              texture [
+                ImageTexture {
+                  url "../../../../../Library/Tests/images/lena.jpg"
+                }
+                ImageTexture {
+                  url "../../../../../Library/Tests/images/ubuntu.png"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+    DEF VisibleClipPlane Group {
+      children [
+        DEF ClipPlaneScript Script {
+          inputOnly  SFVec3f set_translation
+          outputOnly SFVec4f plane_changed
+
+          url "ecmascript:
+
+function set_translation (value)
+{
+	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
+
+	plane_changed = new SFVec4f (0,0,-1, -distanceFromOrigin);
+}
+"
+        }
+        DEF PlaneSensor PlaneSensor {
+          axisRotation 0 1 0 1.5708
+          offset 3.62463e-06 0 1
+          minPosition -1 0
+          maxPosition 1 0
+        }
+        DEF Rectangle2D Transform {
+          translation 3.62463e-06 0 1
+          children Shape {
+            appearance Appearance {
+              fillProperties FillProperties {
+                filled FALSE
+                hatched FALSE
+              }
+              lineProperties LineProperties {
+                linewidthScaleFactor 3
+              }
+              material Material { }
+            }
+            geometry Rectangle2D { }
+          }
+        }
+      ]
+    }
+  ]
+}
 
 ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation
 ROUTE PlaneSensor.translation_changed TO Rectangle2D.set_translation

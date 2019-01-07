@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V4.0.2
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.0.2, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/RotationTool.x3dv"
-META "modified" "Mon, 27 Nov 2017 14:12:56 GMT"
+META "modified" "Mon, 07 Jan 2019 02:06:15 GMT"
 
 EXTERNPROTO ToolShader [ ]
 [
@@ -61,6 +61,47 @@ WorldInfo {
               0,
               0
             ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF PrimitiveQuality Script {
+              url "ecmascript:
+
+function initialize ()
+{
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+}
+"
+              directOutput TRUE
+            }
           }
         ]
       }
@@ -223,15 +264,7 @@ DEF Objects Transform {
   ]
 }
 
-DEF PrimitiveQuality Script {
-  url "vrmlscript:
-function initialize ()
-{
-	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
-}
-"
-  directOutput TRUE
-}
+USE PrimitiveQuality
 
 DEF Tool Script {
   inputOutput    SFRotation inputRotation 0 0 1 0
@@ -242,7 +275,7 @@ DEF Tool Script {
     endAngle 0
   }
 
-  url "javascript:
+  url "ecmascript:
 
 var zAxis = new SFVec3f (0, 0, 1);
 

@@ -27,15 +27,78 @@ META "comment" "World of Titania"
 META "created" "Thu, 10 Jul 2014 17:28:33 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.8, http://titania.create3000.de"
-META "identifier" "/home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TexturePreview.x3dv"
-META "modified" "Sun, 06 Jan 2019 12:41:43 GMT"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TexturePreview.x3dv"
+META "modified" "Mon, 07 Jan 2019 02:09:04 GMT"
 
 PROTO Volume [
   inputOutput SFInt32 dimension 10
   inputOutput SFNode  appearance NULL
 ]
 {
-  DEF Shapes Group { }
+  DEF Shapes Group {
+    children [
+      Transform {
+        translation 0 0 1
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 0.777778
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 0.555556
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 0.333333
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 0.111111
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 -0.111111
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 -0.333333
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 -0.555556
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 -0.777778
+        children Shape {
+          geometry NULL
+        }
+      }
+      Transform {
+        translation 0 0 -1
+        children Shape {
+          geometry NULL
+        }
+      }
+    ]
+  }
 
   DEF VolumeScript Script {
     inputOutput    SFInt32 dimension IS dimension
@@ -49,7 +112,7 @@ PROTO Volume [
       0,
       -1
     ]
-    initializeOnly SFNode  coord Coordinate {
+    initializeOnly SFNode  coord DEF _1 Coordinate {
       point [
         1 1 0,
         -1 1 0,
@@ -58,7 +121,7 @@ PROTO Volume [
       ]
     }
 
-    url "vrmlscript:
+    url "ecmascript:
 
 function initialize ()
 {
@@ -172,6 +235,59 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF TextureScript Script {
+              inputOutput SFNode  texture NULL
+              outputOnly  SFInt32 whichChoice_changed
+              outputOnly  SFBool  textureTrue
+              outputOnly  SFBool  texture3DTrue
+              outputOnly  SFBool  cubeMapTextureTrue
+
+              url "ecmascript:
+
+function initialize ()
+{
+	set_texture (texture);
+}
+
+function set_texture (value)
+{
+	if (value)
+	{
+		var type = value .getNodeType () .reverse ();
+	
+		for (var i = 0; i < type .length; ++ i)
+		{
+			switch (type [i])
+			{
+				case X3DConstants .MultiTexture:
+				case X3DConstants .X3DTexture2DNode:
+				{
+					textureTrue         = true;
+					whichChoice_changed = 0;
+					return;
+				}
+				case X3DConstants .X3DTexture3DNode:
+				{
+					texture3DTrue       = true;
+					whichChoice_changed = 1;
+					return;
+				}
+				case X3DConstants .X3DEnvironmentTextureNode:
+				{
+					cubeMapTextureTrue  = true;
+					whichChoice_changed = 2;
+					return;
+				}
+				default:
+					continue;
+			}
+		}
+	}
+
+	textureTrue         = true;
+	whichChoice_changed = -1;
+}"
+            }
           }
         ]
       }
@@ -262,7 +378,7 @@ LayerSet {
         DEF CubeMapViewpoint Viewpoint {
           position 0 0 2.84738
         }
-        DEF _1 Switch {
+        DEF _2 Switch {
           children [
             DEF Texture2D Transform {
               children Shape {
@@ -274,7 +390,7 @@ LayerSet {
               children [
                 DEF Volume Group {
                   children [
-                    DEF _2 ClipPlane {
+                    DEF _3 ClipPlane {
                       plane 0 0 -1 1
                     }
                     Transform {
@@ -291,7 +407,8 @@ LayerSet {
                       inputOnly  SFVec3f set_translation
                       outputOnly SFVec4f plane_changed
 
-                      url "vrmlscript:
+                      url "ecmascript:
+
 function set_translation (value)
 {
 	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
@@ -13198,68 +13315,16 @@ function set_translation (value)
             }
           ]
         }
-        DEF TextureScript Script {
-          inputOutput SFNode  texture NULL
-          outputOnly  SFInt32 whichChoice_changed
-          outputOnly  SFBool  textureTrue
-          outputOnly  SFBool  texture3DTrue
-          outputOnly  SFBool  cubeMapTextureTrue
-
-          url "ecmascript:
-
-function initialize ()
-{
-	set_texture (texture);
-}
-
-function set_texture (value)
-{
-	if (value)
-	{
-		var type = value .getNodeType () .reverse ();
-	
-		for (var i = 0; i < type .length; ++ i)
-		{
-			switch (type [i])
-			{
-				case X3DConstants .MultiTexture:
-				case X3DConstants .X3DTexture2DNode:
-				{
-					textureTrue         = true;
-					whichChoice_changed = 0;
-					return;
-				}
-				case X3DConstants .X3DTexture3DNode:
-				{
-					texture3DTrue       = true;
-					whichChoice_changed = 1;
-					return;
-				}
-				case X3DConstants .X3DEnvironmentTextureNode:
-				{
-					cubeMapTextureTrue  = true;
-					whichChoice_changed = 2;
-					return;
-				}
-				default:
-					continue;
-			}
-		}
-	}
-
-	textureTrue         = true;
-	whichChoice_changed = -1;
-}"
-        }
+        USE TextureScript
       ]
     }
   ]
 }
 
-ROUTE ClipPlaneScript.plane_changed TO _2.set_plane
+ROUTE ClipPlaneScript.plane_changed TO _3.set_plane
 ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation
 ROUTE PlaneSensor.translation_changed TO Rectangle2D.set_translation
-ROUTE TextureScript.whichChoice_changed TO _1.set_whichChoice
+ROUTE TextureScript.whichChoice_changed TO _2.set_whichChoice
 ROUTE Appearance.texture_changed TO TextureScript.set_texture
 ROUTE TextureScript.textureTrue TO Texture2DViewpoint.set_bind
 ROUTE TextureScript.textureTrue TO Texture2DNavigationInfo.set_bind

@@ -176,7 +176,7 @@ LayerSet {
                   inputOnly  SFBool  set_active
                   outputOnly SFInt32 whichChoice_changed
 
-                  url "javascript:
+                  url "ecmascript:
 
 function initialize ()
 {
@@ -230,7 +230,7 @@ function set_active (value)
 DEF BackScript Script {
   outputOnly SFInt32 whichChoice_changed
 
-  url "javascript:
+  url "ecmascript:
 
 function initialize ()
 {

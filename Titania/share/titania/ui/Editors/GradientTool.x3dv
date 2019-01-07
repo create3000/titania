@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V4.0.3
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
@@ -7,9 +7,9 @@ UNIT angle degree 0.0174532925199433
 META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.0.3, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/GradientTool.x3dv"
-META "modified" "Thu, 14 Dec 2017 09:04:40 GMT"
+META "modified" "Mon, 07 Jan 2019 02:04:28 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -22,7 +22,7 @@ PROTO DoubleClick [
     inputOutput SFTime doubleClickInterval IS doubleClickInterval
     outputOnly  SFTime doubleClickTime IS doubleClickTime
 
-    url "javascript:
+    url "ecmascript:
 
 var firstTime = 0;
 
@@ -298,10 +298,50 @@ function eventsProcessed ()
 	geometry .index = index;
 }
 "
+    directOutput TRUE
   }
 }
 
-WorldInfo { }
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value NULL
+          }
+        ]
+      }
+    ]
+  }
+}
 
 LayerSet {
   activeLayer -1
@@ -692,6 +732,7 @@ function lowerBound (array, first, last, value, comp)
 	return first;
 }
 "
+          directOutput TRUE
         }
       ]
     }
@@ -730,12 +771,12 @@ function lowerBound (array, first, last, value, comp)
 }
 
 ROUTE _15.touchTime TO _16.set_time
-ROUTE GradientEditorScript.position_changed TO _14.set_position
-ROUTE GradientEditorScript.color_changed TO _14.set_color
 ROUTE _17.isActive TO GradientEditorScript.set_active
 ROUTE _18.isActive TO GradientEditorScript.set_active
 ROUTE _16.doubleClickTime TO GradientEditorScript.set_addTime
 ROUTE _18.doubleClickTime TO GradientEditorScript.set_removeTime
 ROUTE _17.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE GradientEditorScript.position_changed TO _14.set_position
+ROUTE GradientEditorScript.color_changed TO _14.set_color
 
 EXPORT GradientEditorScript AS Tool

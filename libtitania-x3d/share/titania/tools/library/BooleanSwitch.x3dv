@@ -23,7 +23,7 @@ PROTO BooleanSwitch [
     inputOutput    SFBool whichChoice IS whichChoice
     initializeOnly SFNode group USE Switch
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

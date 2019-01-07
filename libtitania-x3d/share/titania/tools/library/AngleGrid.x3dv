@@ -253,7 +253,7 @@ PROTO AngleGrid [
     initializeOnly SFNode  minorAppearance USE MinorAppearance
     initializeOnly SFNode  majorAppearance USE MajorAppearance
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {

@@ -1,14 +1,13 @@
-#X3D V3.3 utf8 Titania V2.0.1
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Palette.x3dv"
-META "modified" "Fri, 03 Feb 2017 15:16:40 GMT"
-META "outputStyle" "nicest"
+META "modified" "Mon, 07 Jan 2019 02:05:23 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -106,21 +105,23 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
+            value FALSE
           }
-          DEF children MetadataSet {
-            name "children"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
-            value DEF PhongShadingScript Script {
+            value DEF PrimitiveQuality Script {
               url "ecmascript:
 
 function initialize ()
 {
-	Browser .setBrowserOption (\"Shading\", \"PHONG\");
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
 }
 "
+              directOutput TRUE
             }
           }
         ]
@@ -165,6 +166,22 @@ function initialize ()
               1.48430001735687,
               0
             ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }
@@ -300,17 +317,17 @@ DEF SelectionSwitch Switch {
   ]
 }
 
-DEF PrimitiveQuality Script {
-  url "vrmlscript:
+USE PrimitiveQuality
+
+DEF PhongShadingScript Script {
+  url "ecmascript:
+
 function initialize ()
 {
-	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+	Browser .setBrowserOption (\"Shading\", \"PHONG\");
 }
 "
-  directOutput TRUE
 }
-
-USE PhongShadingScript
 
 EXPORT Items
 EXPORT SelectionRectangle

@@ -129,7 +129,7 @@ WorldInfo {
               outputOnly  SFFloat    angle_changed
               outputOnly  SFRotation rotation_changed
 
-              url "javascript:
+              url "ecmascript:
 
 var yAxis = new SFVec3f (0, 1, 0);
 
@@ -324,7 +324,7 @@ DEF DimensionScript Script {
   outputOnly  SFVec3f dimensionTranslation_changed
   outputOnly  SFVec3f angleTranslation_changed
 
-  url "javascript:
+  url "ecmascript:
 
 function initialize ()
 {
@@ -355,7 +355,7 @@ DEF ScaleScript Script {
   ]
   outputOnly  SFVec3f translation_changed
 
-  url "javascript:
+  url "ecmascript:
 
 function initialize ()
 {

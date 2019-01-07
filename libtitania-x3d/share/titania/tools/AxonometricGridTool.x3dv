@@ -110,7 +110,7 @@ WorldInfo {
               ]
               outputOnly  SFVec3f translation_changed
 
-              url "javascript:
+              url "ecmascript:
 
 function initialize ()
 {

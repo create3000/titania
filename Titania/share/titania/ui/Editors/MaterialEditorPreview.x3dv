@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V2.0.1
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
@@ -26,10 +26,9 @@ COMPONENT EventUtilities : 1
 META "comment" "World of Titania"
 META "created" "Thu, 10 Jul 2014 17:28:33 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/MaterialEditorPreview.x3dv"
-META "modified" "Thu, 29 Dec 2016 17:40:17 GMT"
-META "outputStyle" "nicest"
+META "modified" "Mon, 07 Jan 2019 02:06:40 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -92,14 +91,41 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
+            value FALSE
           }
-          DEF children MetadataSet {
-            name "children"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
-            value DEF BackMaterial Material { }
+            value DEF BrowserOptionsScript Script {
+              url "ecmascript:
+
+function initialize ()
+{
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+	Browser .setBrowserOption ('Shading',          'PHONG');
+}
+"
+              directOutput TRUE
+            }
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }
@@ -165,7 +191,7 @@ LayerSet {
             name "Grid"
             reference "http://titania.create3000.de"
             value [
-              DEF enabled_1 MetadataBoolean {
+              DEF enabled_2 MetadataBoolean {
                 name "enabled"
                 reference "http://titania.create3000.de"
                 value TRUE
@@ -225,18 +251,18 @@ LayerSet {
               children [
                 DEF Material Transform {
                   scale 0.95 0.95 0.95
-                  children DEF _1 Shape {
+                  children DEF _3 Shape {
                     appearance DEF Appearance Appearance {
-                      material USE BackMaterial
+                      material DEF BackMaterial Material { }
                     }
-                    geometry DEF _2 Sphere { }
+                    geometry DEF _4 Sphere { }
                   }
                 }
                 DEF TwoSidedMaterial Group {
                   children [
                     DEF Front Transform {
                       translation -1 0 0
-                      children USE _1
+                      children USE _3
                     }
                     DEF Back Transform {
                       translation 1 0 0
@@ -244,7 +270,7 @@ LayerSet {
                         appearance DEF BackAppearance Appearance {
                           material USE BackMaterial
                         }
-                        geometry USE _2
+                        geometry USE _4
                       }
                     }
                   ]
@@ -254,14 +280,14 @@ LayerSet {
             DEF Dragon Switch {
               whichChoice 0
               children [
-                DEF Material_1 Transform {
+                DEF Material_5 Transform {
                   translation 0.277528 -1.32782 -0.404287
                   rotation 0.699759894394203 0.700702862531722 0.139109987553966 0.418794232354243
                   scale 12.0139 12.0139 12.0139
                   scaleOrientation -0.152955600238216 -0.0633562677099217 0.986200064742259 3.91721321526447
-                  children DEF _3 Shape {
+                  children DEF _6 Shape {
                     appearance USE Appearance
-                    geometry DEF _4 IndexedFaceSet {
+                    geometry DEF _7 IndexedFaceSet {
                       creaseAngle 0.639628
                       coordIndex [
                         797,
@@ -12449,25 +12475,25 @@ LayerSet {
                     }
                   }
                 }
-                DEF TwoSidedMaterial_1 Transform {
+                DEF TwoSidedMaterial_8 Transform {
                   translation -1.92762e-08 0.0141042 -0.0113068
                   scale 0.876175 0.876175 0.876175
                   children [
-                    DEF Front_1 Transform {
+                    DEF Front_9 Transform {
                       translation -1.05446 -1.46708 -0.528885
                       rotation 0.328841921711633 0.94382477530085 -0.0325235922570124 0.930853
                       scale 13.1743 13.1743 13.1743
                       scaleOrientation -0.264392960547682 -0.250411962633905 -0.931337861027172 0.43673
-                      children USE _3
+                      children USE _6
                     }
-                    DEF Back_1 Transform {
+                    DEF Back_10 Transform {
                       translation 1.05446 -1.46708 -0.528885
                       rotation 0.903524681564355 0.0147582948109444 0.428281849414967 3.43785000052228
                       scale -13.1743 -13.1743 -13.1743
                       scaleOrientation 0.968867980742659 0.105467321432954 0.223989910490186 3.89984161890831
                       children Shape {
                         appearance USE BackAppearance
-                        geometry USE _4
+                        geometry USE _7
                       }
                     }
                   ]
@@ -12499,16 +12525,7 @@ LayerSet {
   ]
 }
 
-DEF BrowserOptionsScript Script {
-  url "vrmlscript:
-function initialize ()
-{
-	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
-	Browser .setBrowserOption ('Shading',          'PHONG');
-}
-"
-  directOutput TRUE
-}
+USE BrowserOptionsScript
 
 ROUTE Sphere.whichChoice_changed TO Dragon.set_whichChoice
 ROUTE Dragon.whichChoice_changed TO Sphere.set_whichChoice

@@ -1730,7 +1730,8 @@ DEF RotationHandleScript Script {
   initializeOnly SFNode     zHandle USE ZRotationHandle
   initializeOnly SFNode     self USE RotationHandleScript
 
-  url "vrmlscript:
+  url "ecmascript:
+
 function set_transform ()
 {
   Browser .addRoute (transform, 'center', self, 'set_center');

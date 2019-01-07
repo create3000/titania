@@ -1,13 +1,70 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Applications/PolygonColoringEditor.x3dv"
-META "modified" "Sat, 19 Aug 2017 06:12:41 GMT"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/PolygonColoringEditorPreview.x3dv"
+META "modified" "Mon, 07 Jan 2019 02:05:47 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF SwitchScript Script {
+              inputOnly  SFBool  set_active
+              outputOnly SFInt32 whichChoice_changed
+
+              url "ecmascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  title "PolygonColoringEditorPreview"
+}
 
 DEF LayerSet LayerSet {
   activeLayer 3
@@ -60,7 +117,7 @@ DEF LayerSet LayerSet {
       children [
         DEF Navigation Group {
           children [
-            DEF _1 Viewpoint { }
+            DEF _2 Viewpoint { }
             DEF NavigationInfo NavigationInfo {
               transitionType "TELEPORT"
             }
@@ -81,43 +138,28 @@ DEF LayerSet LayerSet {
     DEF TriangleLayer Layer {
       isPickable FALSE
       children [
-        DEF Navigation_1 Group {
+        DEF Navigation_3 Group {
           children [
-            USE _1
+            USE _2
             USE NavigationInfo
           ]
         }
         DEF Triangle Transform {
-          children DEF _2 Switch {
+          children DEF _4 Switch {
             whichChoice 0
             children [
               Group {
-                children DEF SwitchScript Script {
-                  inputOnly  SFBool  set_active
-                  outputOnly SFInt32 whichChoice_changed
-
-                  url "javascript:
-
-function initialize ()
-{
-	whichChoice_changed = false;
-}
-
-function set_active (value)
-{
-	whichChoice_changed = value;
-}"
-                }
+                children USE SwitchScript
               }
               Group {
                 children [
-                  DEF _3 Switch {
+                  DEF _5 Switch {
                     whichChoice 0
                     children [
                       DEF BackScript Script {
                         outputOnly SFInt32 whichChoice_changed
 
-                        url "javascript:
+                        url "ecmascript:
 
 function initialize ()
 {
@@ -197,10 +239,10 @@ function initialize ()
 }
 
 ROUTE TouchSensor.isOver TO SwitchScript.set_active
-ROUTE SwitchScript.whichChoice_changed TO _2.set_whichChoice
+ROUTE SwitchScript.whichChoice_changed TO _4.set_whichChoice
 ROUTE Transform.translation_changed TO Triangle.set_translation
 ROUTE Transform.rotation_changed TO Triangle.set_rotation
 ROUTE Transform.scale_changed TO Triangle.set_scale
 ROUTE Transform.scaleOrientation_changed TO Triangle.set_scaleOrientation
 ROUTE Transform.center_changed TO Triangle.set_center
-ROUTE BackScript.whichChoice_changed TO _3.set_whichChoice
+ROUTE BackScript.whichChoice_changed TO _5.set_whichChoice

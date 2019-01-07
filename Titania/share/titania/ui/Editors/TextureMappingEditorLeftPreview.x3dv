@@ -1,10 +1,13 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V4.3.8
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 13 Oct 2015 07:35:17 GMT"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TextureMappingEditorLeftPreview.x3dv"
+META "modified" "Mon, 07 Jan 2019 02:07:54 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -31,7 +34,7 @@ PROTO IndexedPointSet [
     initializeOnly SFNode  points USE Points
     initializeOnly SFNode  self USE IndexedPointSetScript
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {
@@ -77,6 +80,7 @@ function eventsProcessed ()
 	}
 }
 "
+    directOutput TRUE
   }
 }
 
@@ -128,6 +132,38 @@ WorldInfo {
           }
         ]
       }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value NULL
+          }
+        ]
+      }
     ]
   }
   title "TextureCoordinateEditorLeftPreview"
@@ -150,12 +186,12 @@ LayerSet {
     }
     DEF ImageLayer Layer {
       children [
-        DEF Navigation_1 Group {
+        DEF Navigation_2 Group {
           children [
-            DEF _1 OrthoViewpoint {
+            DEF _3 OrthoViewpoint {
               position 0.5 0.5 10
             }
-            DEF _2 NavigationInfo {
+            DEF _4 NavigationInfo {
               type [
                 "PLANE_create3000.de",
                 "ANY"
@@ -216,14 +252,14 @@ LayerSet {
       children [
         DEF Navigation Group {
           children [
-            USE _2
-            USE _1
+            USE _4
+            USE _3
           ]
         }
         DEF SelectedFaces Transform {
           children [
-            DEF _3 Switch {
-              whichChoice 1
+            DEF _5 Switch {
+              whichChoice 0
               children [
                 Group { }
                 Shape {
@@ -256,7 +292,7 @@ LayerSet {
           translation 0 0 1
           children Shape {
             appearance Appearance {
-              lineProperties DEF _4 LineProperties {
+              lineProperties DEF _6 LineProperties {
                 linewidthScaleFactor 8
               }
               material Material {
@@ -276,7 +312,7 @@ LayerSet {
               inputOnly  SFBool  set_active
               outputOnly SFInt32 whichChoice_changed
 
-              url "javascript:
+              url "ecmascript:
 
 function initialize ()
 {
@@ -288,11 +324,11 @@ function set_active (value)
 	whichChoice_changed = value;
 }"
             }
-            DEF PointSet_1 Transform {
+            DEF PointSet_7 Transform {
               translation 0 0 2
               children Shape {
                 appearance Appearance {
-                  lineProperties USE _4
+                  lineProperties USE _6
                   material Material {
                     diffuseColor 0 0 0
                     emissiveColor 1 0 0
@@ -309,10 +345,10 @@ function set_active (value)
     }
     DEF Center Layer {
       children [
-        DEF Navigation_2 Group {
+        DEF Navigation_8 Group {
           children [
-            USE _2
-            USE _1
+            USE _4
+            USE _3
           ]
         }
         DEF CenterPoint Transform {
@@ -321,15 +357,15 @@ function set_active (value)
             children Transform {
               scale 8 8 1
               children [
-                DEF _5 Switch {
-                  whichChoice 1
+                DEF _9 Switch {
+                  whichChoice 0
                   children [
                     Group { }
                     DEF Back Group {
                       children [
-                        DEF Circle2D_1 Transform {
+                        DEF Circle2D_10 Transform {
                           children Shape {
-                            appearance DEF _6 Appearance {
+                            appearance DEF _11 Appearance {
                               fillProperties FillProperties {
                                 filled FALSE
                                 hatched FALSE
@@ -341,13 +377,13 @@ function set_active (value)
                                 diffuseColor 0 0 0
                               }
                             }
-                            geometry DEF _7 Rectangle2D { }
+                            geometry DEF _12 Rectangle2D { }
                           }
                         }
-                        DEF IndexedLineSet_1 Transform {
+                        DEF IndexedLineSet_13 Transform {
                           children Shape {
-                            appearance USE _6
-                            geometry DEF _8 IndexedLineSet {
+                            appearance USE _11
+                            geometry DEF _14 IndexedLineSet {
                               coordIndex [
                                 0,
                                 1,
@@ -385,7 +421,7 @@ function set_active (value)
                   children [
                     DEF Circle2D Transform {
                       children Shape {
-                        appearance DEF _9 Appearance {
+                        appearance DEF _15 Appearance {
                           fillProperties FillProperties {
                             filled FALSE
                             hatched FALSE
@@ -398,25 +434,25 @@ function set_active (value)
                             emissiveColor 1 0 0
                           }
                         }
-                        geometry USE _7
+                        geometry USE _12
                       }
                     }
                     DEF IndexedLineSet Transform {
                       children Shape {
-                        appearance USE _9
-                        geometry USE _8
+                        appearance USE _15
+                        geometry USE _14
                       }
                     }
                   ]
                 }
-                DEF Rectangle2D_1 Transform {
+                DEF Rectangle2D_16 Transform {
                   children Shape {
                     appearance Appearance {
                       material Material {
                         transparency 1
                       }
                     }
-                    geometry USE _7
+                    geometry USE _12
                   }
                 }
               ]
@@ -428,7 +464,7 @@ function set_active (value)
           inputOnly  SFBool set_active
           outputOnly SFBool isPickable
 
-          url "javascript:
+          url "ecmascript:
 
 function initialize ()
 {
@@ -445,10 +481,10 @@ function set_active (value)
   ]
 }
 
-DEF BackScript_1 Script {
+DEF BackScript_17 Script {
   outputOnly SFInt32 whichChoice_changed
 
-  url "javascript:
+  url "ecmascript:
 
 function initialize ()
 {
@@ -461,5 +497,5 @@ ROUTE TouchSensor.isOver TO PointScript.set_active
 ROUTE PointScript.whichChoice_changed TO ActivePoint.set_whichChoice
 ROUTE TouchSensor.isActive TO CenterPointScript.set_active
 ROUTE CenterPointScript.isPickable TO Center.set_isPickable
-ROUTE BackScript_1.whichChoice_changed TO _5.set_whichChoice
-ROUTE BackScript_1.whichChoice_changed TO _3.set_whichChoice
+ROUTE BackScript_17.whichChoice_changed TO _9.set_whichChoice
+ROUTE BackScript_17.whichChoice_changed TO _5.set_whichChoice

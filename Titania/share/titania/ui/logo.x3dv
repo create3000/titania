@@ -47,7 +47,7 @@ PROTO EnterWorld [
     outputOnly SFBool isActive IS isActive
     outputOnly SFTime enterTime IS enterTime
 
-    url "javascript:
+    url "ecmascript:
 
 function initialize ()
 {
@@ -5163,7 +5163,7 @@ LayerSet {
         outputOnly SFTime triggerTrue
         outputOnly SFTime triggerFalse
 
-        url "javascript:
+        url "ecmascript:
 
 function set_value (value, time)
 {

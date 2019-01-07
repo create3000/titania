@@ -1,15 +1,62 @@
-#X3D V3.3 utf8 Titania V4.0.3
+#X3D V3.3 utf8 Titania V4.3.8
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.0.3, http://titania.create3000.de"
+META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/NormalTool.x3dv"
-META "modified" "Sat, 16 Dec 2017 09:59:54 GMT"
+META "modified" "Mon, 07 Jan 2019 02:04:59 GMT"
 
 WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF PrimitiveQuality Script {
+              url "ecmascript:
+
+function initialize ()
+{
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+}
+"
+              directOutput TRUE
+            }
+          }
+        ]
+      }
+    ]
+  }
   title "NormalTool"
 }
 
@@ -81,20 +128,14 @@ DEF _2 Transform {
   ]
 }
 
-DEF PrimitiveQuality Script {
-  url "vrmlscript:
-function initialize ()
-{
-	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
-}
-"
-  directOutput TRUE
-}
+USE PrimitiveQuality
 
 DEF Tool Script {
   inputOutput SFRotation inputRotation 0 0 1 0
   inputOutput SFRotation outputRotation 0 0 1 0
 
+  url "ecmascript:
+"
   directOutput TRUE
 }
 

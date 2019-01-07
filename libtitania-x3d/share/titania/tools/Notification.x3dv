@@ -231,7 +231,7 @@ LayerSet {
           cycleInterval 2
         }
 
-        url "javascript:
+        url "ecmascript:
 
 var cornerRadius = 4;
 
