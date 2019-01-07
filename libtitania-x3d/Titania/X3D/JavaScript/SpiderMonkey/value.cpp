@@ -323,7 +323,7 @@ getValue (JSContext* const cx, X3DFieldDefinition* const field)
 			return SFMatrix4f::create (cx, static_cast <X3D::SFMatrix4f*> (field));
 
 		case X3DConstants::SFNode:
-			return SFNode::create (cx, static_cast <X3D::SFNode*> (field));
+			return SFNode::create (cx, *static_cast <X3D::SFNode*> (field));
 
 		case X3DConstants::SFRotation:
 			return SFRotation::create (cx, static_cast <X3D::SFRotation*> (field));

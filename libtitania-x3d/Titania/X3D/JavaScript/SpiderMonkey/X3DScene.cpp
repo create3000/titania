@@ -327,7 +327,7 @@ X3DScene::getExportedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto exportedName = getArgument <std::string> (cx, args, 0);
 		auto       exportedNode = scene -> getExportedNode (exportedName);
 
-		args .rval () .set (SFNode::create (cx, &exportedNode));
+		args .rval () .set (SFNode::create (cx, exportedNode));
 		return true;
 	}
 	catch (const std::exception & error)

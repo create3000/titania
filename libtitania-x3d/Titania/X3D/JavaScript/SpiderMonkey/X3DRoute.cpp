@@ -153,7 +153,7 @@ X3DRoute::getSourceNode (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto & self       = *getThis <X3DRoute> (cx, args);
 		auto         sourceNode = self -> getSourceNode ();
 
-		args .rval () .set (SFNode::create (cx, &sourceNode));
+		args .rval () .set (SFNode::create (cx, sourceNode));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -188,7 +188,7 @@ X3DRoute::getDestinationNode (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto & self            = *getThis <X3DRoute> (cx, args);
 		auto         destinationNode = self -> getDestinationNode ();
 
-		args .rval () .set (SFNode::create (cx, &destinationNode));
+		args .rval () .set (SFNode::create (cx, destinationNode));
 		return true;
 	}
 	catch (const std::exception & error)

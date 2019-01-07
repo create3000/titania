@@ -214,7 +214,7 @@ X3DProtoDeclaration::newInstance (JSContext* cx, unsigned argc, JS::Value* vp)
 
 		instance -> setup ();
 
-		args .rval () .set (SFNode::create (cx, &instance));
+		args .rval () .set (SFNode::create (cx, instance));
 		return true;
 	}
 	catch (const std::exception & error)

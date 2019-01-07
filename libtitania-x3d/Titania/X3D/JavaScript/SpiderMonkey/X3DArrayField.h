@@ -256,7 +256,7 @@ private:
 	>
 	getValue (JSContext* cx, const X3D::SFNode & value)
 	{
-		return SFNode::create (cx, const_cast <X3D::SFNode*> (&value));
+		return SFNode::create (cx, value);
 	}
 
 	template <class Class>
@@ -275,13 +275,23 @@ private:
 	template <class Class>
 	static
 	std::enable_if_t <
-		std::is_same_v <Class, X3D::SFImage> or
-		std::is_same_v <Class, X3D::SFNode>,
+		std::is_same_v <Class, X3D::SFImage>,
 		JS::Value
 	>
 	getReference (JSContext* cx, InternalType* const array, const size_t index)
 	{
 		return ValueType::create (cx, &array -> get1Value (index));
+	}
+
+	template <class Class>
+	static
+	std::enable_if_t <
+		std::is_same_v <Class, X3D::SFNode>,
+		JS::Value
+	>
+	getReference (JSContext* cx, InternalType* const array, const size_t index)
+	{
+		return ValueType::create (cx, array -> get1Value (index));
 	}
 
 	template <class Class>

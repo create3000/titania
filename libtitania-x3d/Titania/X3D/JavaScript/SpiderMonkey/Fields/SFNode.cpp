@@ -110,16 +110,16 @@ SFNode::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject par
 }
 
 JS::Value
-SFNode::create (JSContext* const cx, X3D::SFNode* const field)
+SFNode::create (JSContext* const cx, const X3D::SFNode & field)
 {
-	if (field -> getValue ())
+	if (field .getValue ())
 	{
 		const auto script           = getContext (cx) -> getScriptNode ();
-		const auto [value, created] = X3DField::create <SFNode> (cx, field);
+		const auto [value, created] = X3DField::create <SFNode> (cx, const_cast <X3D::SFNode*> (&field));
 
 		if (created and script -> directOutput ())
 		{
-			const auto node   = field -> getValue ();
+			const auto node   = field .getValue ();
 			const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
 
 			for (const auto fieldDefinition : node -> getFieldDefinitions ())
@@ -222,7 +222,7 @@ SFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				if (scene -> getRootNodes () .empty ())
 					args .rval () .setNull ();
 				else
-					args .rval () .set (create (cx, &scene -> getRootNodes () [0]));
+					args .rval () .set (create (cx, scene -> getRootNodes () [0]));
 
 				return true;
 			}

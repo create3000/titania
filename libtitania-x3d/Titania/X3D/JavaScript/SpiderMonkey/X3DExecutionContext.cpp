@@ -419,7 +419,7 @@ X3DExecutionContext::createNode (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto name             = getArgument <std::string> (cx, args, 0);
 		auto       node             = executionContext -> createNode (name);
 
-		args .rval () .set (SFNode::create (cx, &node));
+		args .rval () .set (SFNode::create (cx, node));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -441,7 +441,7 @@ X3DExecutionContext::createProto (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto name             = getArgument <std::string> (cx, args, 0);
 		auto       node             = X3D::SFNode (executionContext -> createProto (name));
 
-		args .rval () .set (SFNode::create (cx, &node));
+		args .rval () .set (SFNode::create (cx, node));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -534,7 +534,7 @@ X3DExecutionContext::getNamedNode (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto name             = getArgument <std::string> (cx, args, 0);
 		auto       namedNode        = executionContext -> getNamedNode (name);
 
-		args .rval () .set (SFNode::create (cx, &namedNode));
+		args .rval () .set (SFNode::create (cx, namedNode));
 		return true;
 	}
 	catch (const std::exception & error)
@@ -637,7 +637,7 @@ X3DExecutionContext::getImportedNode (JSContext* cx, unsigned argc, JS::Value* v
 		const auto importedName     = getArgument <std::string> (cx, args, 0);
 		auto       importedNode     = executionContext -> getImportedNode (importedName);
 
-		args .rval () .set (SFNode::create (cx, &importedNode));
+		args .rval () .set (SFNode::create (cx, importedNode));
 		return true;
 	}
 	catch (const std::exception & error)
