@@ -498,7 +498,7 @@ Context::initialize ()
 
 	call ("initialize");
 
-	collectGarbage ();
+	JS_GC (cx);
 }
 
 void
