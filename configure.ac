@@ -102,11 +102,12 @@ dnl ***************************************************************************
 dnl Check required libraries that do not have a pkgconfig
 dnl ***************************************************************************
 
-USE_CGAL="no"
-AC_CHECK_LIB(CGAL, _init, [USE_CGAL="yes"])
-if test "$USE_CGAL" = "no"; then
-	AC_MSG_ERROR([*** Please install CGAL library.])
-fi
+# Does not work with FlatPak
+#USE_CGAL="no"
+#AC_CHECK_LIB(CGAL, _init, [USE_CGAL="yes"])
+#if test "$USE_CGAL" = "no"; then
+#	AC_MSG_ERROR([*** Please install CGAL library.])
+#fi
 
 
 
