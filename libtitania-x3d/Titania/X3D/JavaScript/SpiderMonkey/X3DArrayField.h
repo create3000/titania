@@ -305,7 +305,25 @@ private:
 	>
 	getReference (JSContext* cx, InternalType* const array, const size_t index)
 	{
-		return ValueType::create (cx, new NativeArrayReference <InternalType, single_type> (array, index));
+		const auto context   = getContext (cx);
+		const auto reference = context -> getReference (array, index);
+
+		if (reference)
+		{
+			return JS::ObjectValue (*reference);
+		}
+		else
+		{
+			const auto value = ValueType::create (cx, new NativeArrayReference <InternalType, single_type> (array, index));
+			const auto obj   = value .toObjectOrNull ();
+	
+			setArray (obj, array);
+			setIndex (obj, index);
+
+			context -> addReference (array, index, obj);
+	
+			return value;
+		}
 	}
 
 	///  @name Static members

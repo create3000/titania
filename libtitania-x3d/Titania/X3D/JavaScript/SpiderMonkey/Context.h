@@ -122,6 +122,15 @@ public:
 	getObject (const size_t key) const;
 
 	void
+	addReference (X3D::X3DFieldDefinition* const array, const size_t index, JSObject* const obj);
+
+	void
+	removeReference (X3D::X3DFieldDefinition* const array, const size_t index);
+
+	JSObject*
+	getReference (X3D::X3DFieldDefinition* const array, const size_t index);
+
+	void
 	addFuture (const X3D::X3DPtr <X3D::SceneFuture> & future);
 
 	///  @name Destruction
@@ -211,7 +220,8 @@ private:
 
 	///  @name Member types
 
-	using Objects = std::map <size_t, std::pair <X3D::X3DFieldDefinition*, JSObject*>>;
+	using Objects    = std::map <size_t, std::pair <X3D::X3DFieldDefinition*, JSObject*>>;
+	using References = std::map <std::pair <X3D::X3DFieldDefinition*, size_t>, JSObject*>;
 
 	///  @name Static members
 
@@ -233,6 +243,7 @@ private:
 	std::map <std::string, std::unique_ptr <JS::PersistentRooted <JS::Value>>> fields;
 	std::vector <std::unique_ptr <JS::PersistentRooted <JSObject*>>>           protos;
 	Objects                                                                    objects;
+	References                                                                 references;
 
 	X3D::X3DPtrArray <X3D::SceneFuture> futures;
 

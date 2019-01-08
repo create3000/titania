@@ -316,7 +316,14 @@ X3DField::finalize (JSFreeOp* fop, JSObject* obj)
 	// Proto objects have no private.
 
 	if (self)
+	{
+		const auto array = getArray (obj);
+
 		context -> removeObject (spidermonkey::getKey (obj));
+
+		if (array)
+			context -> removeReference (array, getIndex (obj));
+	}
 }
 
 } // spidermonkey

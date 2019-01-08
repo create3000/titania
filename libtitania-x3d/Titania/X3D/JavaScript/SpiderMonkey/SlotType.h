@@ -59,6 +59,8 @@ enum class SlotType
 {
 	CONTEXT,
 	KEY,
+	ARRAY,
+	INDEX,
 
 	SIZE
 };

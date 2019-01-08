@@ -164,6 +164,7 @@ X3DField::create (JSContext* const cx, typename Type::internal_type* const field
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
+		setArray (obj, nullptr);
 
 		context -> addObject (Type::getKey (field), self, obj);
 

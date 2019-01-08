@@ -122,6 +122,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   fields (),
 	                   protos (size_t (ObjectType::SIZE)),
 	                  objects (),
+	               references (),
 	                  futures (),
 	                   lastGC (X3D::SFTime::now ())
 {
@@ -441,6 +442,29 @@ Context::getObject (const size_t key) const
 }
 
 void
+Context::addReference (X3D::X3DFieldDefinition* const array, const size_t index, JSObject* const obj)
+{
+	assert (references .emplace (std::pair (array, index), obj) .second);
+}
+
+void
+Context::removeReference (X3D::X3DFieldDefinition* const array, const size_t index)
+{
+	references .erase (std::pair (array, index));
+}
+
+JSObject*
+Context::getReference (X3D::X3DFieldDefinition* const array, const size_t index)
+{
+	const auto iter = references .find (std::pair (array, index));
+
+	if (iter == references .end ())
+		return nullptr;
+
+	return iter -> second;
+}
+
+void
 Context::addFuture (const X3D::X3DPtr <X3D::SceneFuture> & future)
 {
 	futures .erase (std::remove_if (futures .begin (), futures .end (),
@@ -702,7 +726,8 @@ Context::dispose ()
 		removeObject (key);
 	}
 
-	objects .clear ();
+	references .clear ();
+	objects    .clear ();
 
 	X3D::X3DJavaScriptContext::dispose ();
 }

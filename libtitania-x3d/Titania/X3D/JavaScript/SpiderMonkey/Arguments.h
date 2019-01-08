@@ -123,6 +123,34 @@ getKey (JSObject* const obj)
 	return size_t (JS_GetReservedSlot (obj, size_t (SlotType::KEY)) .toPrivate ());
 }
 
+inline
+void
+setArray (JSObject* const obj, X3D::X3DFieldDefinition* const array)
+{
+	JS_SetReservedSlot (obj, size_t (SlotType::ARRAY), JS::PrivateValue (array));
+}
+
+inline
+X3D::X3DFieldDefinition*
+getArray (JSObject* const obj)
+{
+	return static_cast <X3D::X3DFieldDefinition*> (JS_GetReservedSlot (obj, size_t (SlotType::ARRAY)) .toPrivate ());
+}
+
+inline
+void
+setIndex (JSObject* const obj, const uint32_t index)
+{
+	JS_SetReservedSlot (obj, size_t (SlotType::INDEX), JS::NumberValue (index));
+}
+
+inline
+uint32_t
+getIndex (JSObject* const obj)
+{
+	return JS_GetReservedSlot (obj, size_t (SlotType::INDEX)) .toNumber ();
+}
+
 template <class Type>
 bool
 instanceOf (JSContext* const cx, const JS::HandleValue & obj)
