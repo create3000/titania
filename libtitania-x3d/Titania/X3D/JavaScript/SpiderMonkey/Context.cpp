@@ -123,7 +123,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   protos (size_t (ObjectType::SIZE)),
 	                  objects (),
 	                  futures (),
-	                   lastGC (chrono::now ())
+	                   lastGC (X3D::SFTime::now ())
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
@@ -622,9 +622,9 @@ Context::collectGarbage ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	__LOG__ << objects .size () << std::endl;
+	//__LOG__ << objects .size () << std::endl;
 
-	const auto now = chrono::now ();
+	const auto now = X3D::SFTime::now ();
 
 	if (objects .size () > MAX_OBJECTS or now - lastGC > GC_INTERVAL)
 	{
