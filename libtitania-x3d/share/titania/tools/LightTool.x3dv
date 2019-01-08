@@ -156,13 +156,11 @@ function set_light ()
 
 	set_color (light .on, light .color, light .intensity);
 
-	var nodeType = light .getNodeType () .reverse ();
+	var type = light .getNodeType () .reverse ();
 
-	for (var key in nodeType)
+	for (var i = 0; i < type .length; ++ i)
 	{
-		var type = nodeType [key]
-
-		switch (type)
+		switch (type [i])
 		{
 			case X3DConstants .DirectionalLight:
 			{
