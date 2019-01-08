@@ -109,6 +109,9 @@ const JSClass Context::globalClass = {
 	&globalOps
 };
 
+const size_t    Context::MAX_OBJECTS = 65'536;
+const time_type Context::GC_INTERVAL = 2;
+
 ///  throws std::exception
 Context::Context (JSContext* const cx, X3D::Script* const script, const std::string & ecmascript, const basic::uri & uri) :
 	         X3D::X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
@@ -119,7 +122,8 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   fields (),
 	                   protos (size_t (ObjectType::SIZE)),
 	                  objects (),
-	                  futures ()
+	                  futures (),
+	                   lastGC (chrono::now ())
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
@@ -618,7 +622,19 @@ Context::collectGarbage ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	JS_MaybeGC (cx);
+	__LOG__ << objects .size () << std::endl;
+
+	const auto now = chrono::now ();
+
+	if (objects .size () > MAX_OBJECTS or now - lastGC > GC_INTERVAL)
+	{
+		lastGC = now;
+		JS_GC (cx);
+	}
+	else
+	{
+		JS_MaybeGC (cx);
+	}
 }
 
 void

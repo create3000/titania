@@ -209,6 +209,10 @@ private:
 	void
 	reportError (JSContext* cx, JSErrorReport* const report);
 
+	///  @name Member types
+
+	using Objects = std::map <size_t, std::pair <X3D::X3DFieldDefinition*, JSObject*>>;
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -218,9 +222,8 @@ private:
 	static const JSClassOps globalOps;
 	static const JSClass    globalClass;
 
-	///  @name Member types
-
-	using Objects = std::map <size_t, std::pair <X3D::X3DFieldDefinition*, JSObject*>>;
+	static const size_t    MAX_OBJECTS;
+	static const time_type GC_INTERVAL;
 
 	///  @name Members
 
@@ -233,6 +236,7 @@ private:
 
 	X3D::X3DPtrArray <X3D::SceneFuture> futures;
 
+	time_type lastGC;
 };
 
 } // spidermonkey
