@@ -81,6 +81,10 @@ protected:
 	{ }
 
 	virtual
+	void
+	configure () override;
+
+	virtual
 	const std::unique_ptr <ViewpointList> &
 	getViewpointList () const = 0;
 
@@ -96,11 +100,24 @@ private:
 	void
 	on_new_viewpoint_clicked () final override;
 
+	virtual
+	void
+	on_perspective_viewpoint_orientation_type_clicked () final override;
+
+	virtual
+	void
+	on_perspective_viewpoint_orientation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_perspective_viewpoint_orientation_euler_toggled () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
 	RotationTool                          orientationTool;	
 	SFRotationAdjustment                  orientation;
+	EulerAdjustment                       orientationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
 	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;
 

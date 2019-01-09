@@ -84,6 +84,10 @@ protected:
 	{ }
 
 	virtual
+	void
+	configure () override;
+
+	virtual
 	const std::unique_ptr <ViewpointList> &
 	getViewpointList () const = 0;
 

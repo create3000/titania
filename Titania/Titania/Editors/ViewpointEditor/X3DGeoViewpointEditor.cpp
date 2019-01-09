@@ -131,6 +131,11 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 }
 
 void
+X3DGeoViewpointEditor::configure ()
+{
+}
+
+void
 X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
 {
 	const X3D::X3DPtr <X3D::GeoViewpoint> geoViewpoint (viewpointNode);

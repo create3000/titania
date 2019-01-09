@@ -73,13 +73,6 @@ public:
 	///  @name Member access
 
 	void
-	setNegativeRange (const bool value);
-
-	bool
-	getNegativeRange () const
-	{ return negativeRange; }
-
-	void
 	setNodes (const X3D::MFNode & value);
 
 	const X3D::MFNode &
@@ -131,7 +124,6 @@ private:
 	int                                                 input;
 	bool                                                changing;
 	X3D::SFTime                                         buffer;
-	bool                                                negativeRange;
 
 };
 

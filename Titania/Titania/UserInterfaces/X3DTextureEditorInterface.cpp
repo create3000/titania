@@ -145,9 +145,6 @@ X3DTextureEditorInterface::create ()
 	m_ImageTextureURLCellrendererPixbuf1           = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf1"));
 
 	// Get widgets.
-	m_builder -> get_widget ("TextureTransform3DRotationPopover", m_TextureTransform3DRotationPopover);
-	m_builder -> get_widget ("TextureTransform3DRotationAxisAngleButton", m_TextureTransform3DRotationAxisAngleButton);
-	m_builder -> get_widget ("TextureTransform3DRotationEulerButton", m_TextureTransform3DRotationEulerButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
@@ -339,6 +336,9 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("EditPaletteCancelButton", m_EditPaletteCancelButton);
 	m_builder -> get_widget ("EditPaletteOkButton", m_EditPaletteOkButton);
 	m_builder -> get_widget ("PaletteNameEntry", m_PaletteNameEntry);
+	m_builder -> get_widget ("TextureTransform3DRotationPopover", m_TextureTransform3DRotationPopover);
+	m_builder -> get_widget ("TextureTransform3DRotationAxisAngleButton", m_TextureTransform3DRotationAxisAngleButton);
+	m_builder -> get_widget ("TextureTransform3DRotationEulerButton", m_TextureTransform3DRotationEulerButton);
 	m_builder -> get_widget ("PaletteMenu", m_PaletteMenu);
 	m_builder -> get_widget ("AddPaletteMenuItem", m_AddPaletteMenuItem);
 	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
@@ -347,10 +347,6 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("UpdateObjectInPaletteMenuItem", m_UpdateObjectInPaletteMenuItem);
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 	m_builder -> get_widget ("ShowDefaultPalettesMenuItem", m_ShowDefaultPalettesMenuItem);
-
-	// Connect object Gtk::RadioButton with id 'TextureTransform3DRotationAxisAngleButton'.
-	m_TextureTransform3DRotationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_axis_angle_toggled));
-	m_TextureTransform3DRotationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_euler_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
 	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_changed));
@@ -406,6 +402,10 @@ X3DTextureEditorInterface::create ()
 	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_palette_name_changed));
 	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_palette_name_delete_text), false);
 	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_palette_name_insert_text), false);
+
+	// Connect object Gtk::RadioButton with id 'TextureTransform3DRotationAxisAngleButton'.
+	m_TextureTransform3DRotationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_axis_angle_toggled));
+	m_TextureTransform3DRotationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_euler_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'AddPaletteMenuItem'.
 	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_add_palette_activate));

@@ -101,6 +101,9 @@ void
 ViewpointEditor::configure ()
 {
 	X3DViewpointEditorInterface::configure ();
+	X3DViewpointEditor::configure ();
+	X3DOrthoViewpointEditor::configure ();
+	X3DGeoViewpointEditor::configure ();
 
 	if (getConfig () -> hasItem ("paned"))
 		getPaned () .set_position (getConfig () -> getItem <int32_t> ("paned"));

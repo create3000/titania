@@ -218,6 +218,18 @@ public:
 	{ return m_PerspectiveViewpointOrientationAAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getPerspectiveViewpointOrientationEulerXAdjustment () const
+	{ return m_PerspectiveViewpointOrientationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPerspectiveViewpointOrientationEulerYAdjustment () const
+	{ return m_PerspectiveViewpointOrientationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPerspectiveViewpointOrientationEulerZAdjustment () const
+	{ return m_PerspectiveViewpointOrientationEulerZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getPerspectiveViewpointOrientationXAdjustment () const
 	{ return m_PerspectiveViewpointOrientationXAdjustment; }
 
@@ -346,12 +358,24 @@ public:
 	{ return *m_PerspectiveViewpointCenterOfRotationBox; }
 
 	Gtk::Box &
+	getPerspectiveViewpointOrientationToolBox () const
+	{ return *m_PerspectiveViewpointOrientationToolBox; }
+
+	Gtk::Notebook &
+	getPerspectiveViewpointOrientationNotebook () const
+	{ return *m_PerspectiveViewpointOrientationNotebook; }
+
+	Gtk::Box &
 	getPerspectiveViewpointOrientationBox () const
 	{ return *m_PerspectiveViewpointOrientationBox; }
 
 	Gtk::Box &
-	getPerspectiveViewpointOrientationToolBox () const
-	{ return *m_PerspectiveViewpointOrientationToolBox; }
+	getPerspectiveViewpointOrientationEulerBox () const
+	{ return *m_PerspectiveViewpointOrientationEulerBox; }
+
+	Gtk::Button &
+	getPerspectiveViewpointOrientationTypeButton () const
+	{ return *m_PerspectiveViewpointOrientationTypeButton; }
 
 	Gtk::Expander &
 	getOrthoViewpointExpander () const
@@ -497,6 +521,18 @@ public:
 	getNewGeoViewpointButton () const
 	{ return *m_NewGeoViewpointButton; }
 
+	Gtk::Popover &
+	getPerspectiveViewpointOrientationPopover () const
+	{ return *m_PerspectiveViewpointOrientationPopover; }
+
+	Gtk::RadioButton &
+	getPerspectiveViewpointOrientationAxisAngleButton () const
+	{ return *m_PerspectiveViewpointOrientationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getPerspectiveViewpointOrientationEulerButton () const
+	{ return *m_PerspectiveViewpointOrientationEulerButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -517,6 +553,10 @@ public:
 
 	virtual
 	void
+	on_perspective_viewpoint_orientation_type_clicked () = 0;
+
+	virtual
+	void
 	on_new_viewpoint_clicked () = 0;
 
 	virtual
@@ -526,6 +566,14 @@ public:
 	virtual
 	void
 	on_new_geo_viewpoint_clicked () = 0;
+
+	virtual
+	void
+	on_perspective_viewpoint_orientation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_perspective_viewpoint_orientation_euler_toggled () = 0;
 
 	///  @name Destruction
 
@@ -583,6 +631,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointCenterOfRotationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointFieldOfViewAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointOrientationZAdjustment;
@@ -615,8 +666,11 @@ private:
 	Gtk::Box* m_PerspectiveViewpointFieldOfViewBox;
 	Gtk::Box* m_PerspectiveViewpointPositionBox;
 	Gtk::Box* m_PerspectiveViewpointCenterOfRotationBox;
-	Gtk::Box* m_PerspectiveViewpointOrientationBox;
 	Gtk::Box* m_PerspectiveViewpointOrientationToolBox;
+	Gtk::Notebook* m_PerspectiveViewpointOrientationNotebook;
+	Gtk::Box* m_PerspectiveViewpointOrientationBox;
+	Gtk::Box* m_PerspectiveViewpointOrientationEulerBox;
+	Gtk::Button* m_PerspectiveViewpointOrientationTypeButton;
 	Gtk::Expander* m_OrthoViewpointExpander;
 	Gtk::Grid* m_OrthoViewpointBox;
 	Gtk::Box* m_OrthoViewpointPositionBox;
@@ -653,6 +707,9 @@ private:
 	Gtk::Button* m_NewViewpointButton;
 	Gtk::Button* m_NewOthoViewpointButton;
 	Gtk::Button* m_NewGeoViewpointButton;
+	Gtk::Popover* m_PerspectiveViewpointOrientationPopover;
+	Gtk::RadioButton* m_PerspectiveViewpointOrientationAxisAngleButton;
+	Gtk::RadioButton* m_PerspectiveViewpointOrientationEulerButton;
 
 };
 

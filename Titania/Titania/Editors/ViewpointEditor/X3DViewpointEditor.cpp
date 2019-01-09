@@ -76,6 +76,12 @@ X3DViewpointEditor::X3DViewpointEditor () :
 	                             getPerspectiveViewpointOrientationAAdjustment (),
 	                             getPerspectiveViewpointOrientationBox (),
 	                             "orientation"),
+	           orientationEuler (this,
+	                             getPerspectiveViewpointOrientationEulerXAdjustment (),
+	                             getPerspectiveViewpointOrientationEulerYAdjustment (),
+	                             getPerspectiveViewpointOrientationEulerZAdjustment (),
+	                             getPerspectiveViewpointOrientationEulerBox (),
+	                             "orientation"),
 	           centerOfRotation (this,
 	                             getPerspectiveViewpointCenterOfRotationXAdjustment (),
 	                             getPerspectiveViewpointCenterOfRotationYAdjustment (),
@@ -91,6 +97,20 @@ X3DViewpointEditor::X3DViewpointEditor () :
 }
 
 void
+X3DViewpointEditor::configure ()
+{
+	switch (getConfig () -> getItem <int32_t> ("viewpointOrientationType"))
+	{
+		case 1:
+			getPerspectiveViewpointOrientationEulerButton () .set_active (true);
+			break;
+		default:
+			getPerspectiveViewpointOrientationAxisAngleButton () .set_active (true);
+			break;
+	}
+}
+
+void
 X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
 {
 	const X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
@@ -103,6 +123,7 @@ X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & vi
 	position         .setNodes (viewpoints);
 	orientationTool  .setNodes (viewpoints);
 	orientation      .setNodes (viewpoints);
+	orientationEuler .setNodes (viewpoints);
 	centerOfRotation .setNodes (viewpoints);
 	fieldOfView      .setNodes (viewpoints);
 }
@@ -142,6 +163,46 @@ X3DViewpointEditor::on_new_viewpoint_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);
+}
+
+void
+X3DViewpointEditor::on_perspective_viewpoint_orientation_type_clicked ()
+{
+	getPerspectiveViewpointOrientationPopover () .popup ();
+}
+
+void
+X3DViewpointEditor::on_perspective_viewpoint_orientation_axis_angle_toggled ()
+{
+	getPerspectiveViewpointOrientationPopover () .popdown ();
+
+	if (not getPerspectiveViewpointOrientationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getPerspectiveViewpointOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getPerspectiveViewpointOrientationBox () .set_visible (true);
+	getPerspectiveViewpointOrientationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("viewpointOrientationType", 0);
+}
+
+void
+X3DViewpointEditor::on_perspective_viewpoint_orientation_euler_toggled ()
+{
+	getPerspectiveViewpointOrientationPopover () .popdown ();
+
+	if (not getPerspectiveViewpointOrientationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getPerspectiveViewpointOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getPerspectiveViewpointOrientationEulerBox () .set_visible (true);
+	getPerspectiveViewpointOrientationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("viewpointOrientationType", 1);
 }
 
 X3DViewpointEditor::~X3DViewpointEditor ()

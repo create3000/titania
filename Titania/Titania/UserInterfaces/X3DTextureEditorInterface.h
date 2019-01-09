@@ -349,18 +349,6 @@ public:
 	getImageTextureURLCellrendererPixbuf1 () const
 	{ return m_ImageTextureURLCellrendererPixbuf1; }
 
-	Gtk::Popover &
-	getTextureTransform3DRotationPopover () const
-	{ return *m_TextureTransform3DRotationPopover; }
-
-	Gtk::RadioButton &
-	getTextureTransform3DRotationAxisAngleButton () const
-	{ return *m_TextureTransform3DRotationAxisAngleButton; }
-
-	Gtk::RadioButton &
-	getTextureTransform3DRotationEulerButton () const
-	{ return *m_TextureTransform3DRotationEulerButton; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -1125,6 +1113,18 @@ public:
 	getPaletteNameEntry () const
 	{ return *m_PaletteNameEntry; }
 
+	Gtk::Popover &
+	getTextureTransform3DRotationPopover () const
+	{ return *m_TextureTransform3DRotationPopover; }
+
+	Gtk::RadioButton &
+	getTextureTransform3DRotationAxisAngleButton () const
+	{ return *m_TextureTransform3DRotationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getTextureTransform3DRotationEulerButton () const
+	{ return *m_TextureTransform3DRotationEulerButton; }
+
 	Gtk::Menu &
 	getPaletteMenu () const
 	{ return *m_PaletteMenu; }
@@ -1158,14 +1158,6 @@ public:
 	{ return *m_ShowDefaultPalettesMenuItem; }
 
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_texture_transform_3d_rotation_axis_angle_toggled () = 0;
-
-	virtual
-	void
-	on_texture_transform_3d_rotation_euler_toggled () = 0;
 
 	virtual
 	void
@@ -1266,6 +1258,14 @@ public:
 	virtual
 	void
 	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_texture_transform_3d_rotation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_texture_transform_3d_rotation_euler_toggled () = 0;
 
 	virtual
 	void
@@ -1384,9 +1384,6 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_ImageCubeMapTextureURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ImageCubeMapTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf1;
-	Gtk::Popover* m_TextureTransform3DRotationPopover;
-	Gtk::RadioButton* m_TextureTransform3DRotationAxisAngleButton;
-	Gtk::RadioButton* m_TextureTransform3DRotationEulerButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -1578,6 +1575,9 @@ private:
 	Gtk::Button* m_EditPaletteCancelButton;
 	Gtk::Button* m_EditPaletteOkButton;
 	Gtk::Entry* m_PaletteNameEntry;
+	Gtk::Popover* m_TextureTransform3DRotationPopover;
+	Gtk::RadioButton* m_TextureTransform3DRotationAxisAngleButton;
+	Gtk::RadioButton* m_TextureTransform3DRotationEulerButton;
 	Gtk::Menu* m_PaletteMenu;
 	Gtk::ImageMenuItem* m_AddPaletteMenuItem;
 	Gtk::ImageMenuItem* m_RemovePaletteMenuItem;

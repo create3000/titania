@@ -93,6 +93,11 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 }
 
 void
+X3DOrthoViewpointEditor::configure ()
+{
+}
+
+void
 X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
 {
 	const X3D::X3DPtr <X3D::OrthoViewpoint> orthoViewpoint (viewpointNode);

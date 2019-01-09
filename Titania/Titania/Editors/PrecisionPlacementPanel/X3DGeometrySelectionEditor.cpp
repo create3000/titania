@@ -105,8 +105,6 @@ X3DGeometrySelectionEditor::initialize ()
 	rotation      .setUndo (false);
 	rotationEuler .setUndo (false);
 	scale         .setUndo (false);
-
-	rotationEuler .setNegativeRange (true);
 }
 
 void
