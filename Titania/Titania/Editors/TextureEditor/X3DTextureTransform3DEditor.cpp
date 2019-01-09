@@ -50,8 +50,6 @@
 
 #include "X3DTextureTransform3DEditor.h"
 
-#include "../../ComposedWidgets/RotationTool.h"
-
 #include <Titania/X3D/Components/Texturing/TextureTransform.h>
 #include <Titania/X3D/Components/Texturing3D/TextureTransformMatrix3D.h>
 
@@ -68,6 +66,7 @@ X3DTextureTransform3DEditor::X3DTextureTransform3DEditor () :
 	                           getTextureTransform3DTranslationZAdjustment (),
 	                           getTextureTransform3DTranslationBox (),
 	                           "translation"),
+	             rotationTool (this, getTextureTransform3DRotationToolBox (), "rotation"),
 	                 rotation (this,
 	                           getTextureTransform3DRotationXAdjustment (),
 	                           getTextureTransform3DRotationYAdjustment (),
@@ -75,7 +74,12 @@ X3DTextureTransform3DEditor::X3DTextureTransform3DEditor () :
 	                           getTextureTransform3DRotationAAdjustment (),
 	                           getTextureTransform3DRotationBox (),
 	                           "rotation"),
-	             rotationTool (new RotationTool (this, getTextureTransform3DRotationToolBox (), "rotation")),
+	            rotationEuler (this,
+	                           getTextureTransform3DRotationEulerXAdjustment (),
+	                           getTextureTransform3DRotationEulerYAdjustment (),
+	                           getTextureTransform3DRotationEulerZAdjustment (),
+	                           getTextureTransform3DRotationEulerBox (),
+	                           "rotation"),
 	                    scale (this,
 	                           getTextureTransform3DScaleXAdjustment (),
 	                           getTextureTransform3DScaleYAdjustment (),
@@ -95,6 +99,16 @@ X3DTextureTransform3DEditor::X3DTextureTransform3DEditor () :
 void
 X3DTextureTransform3DEditor::configure ()
 {
+	switch (getConfig () -> getItem <int32_t> ("textureTransform3DRotationType"))
+	{
+		case 1:
+			getTextureTransform3DRotationEulerButton () .set_active (true);
+			break;
+		default:
+			getTextureTransform3DRotationAxisAngleButton () .set_active (true);
+			break;
+	}
+
 	getTextureTransform3DUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("textureTransform3DUniformScale"));
 }
 
@@ -108,12 +122,13 @@ X3DTextureTransform3DEditor::setTextureTransform3D (const X3D::X3DExecutionConte
 
 	const X3D::MFNode nodes = { textureTransform };
 
-	translation .setNodes (nodes);
-	rotation    .setNodes (nodes);
-	scale       .setNodes (nodes);
-	center      .setNodes (nodes);
+	translation   .setNodes (nodes);
+	rotationTool  .setNodes (nodes);
+	rotation      .setNodes (nodes);
+	rotationEuler .setNodes (nodes);
+	scale         .setNodes (nodes);
+	center        .setNodes (nodes);
 
-	rotationTool -> setNodes (nodes);
 }
 
 const X3D::X3DPtr <X3D::TextureTransform3D> &
@@ -174,7 +189,47 @@ X3DTextureTransform3DEditor::getTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 }
 
 void
-X3DTextureTransform3DEditor::on_texture_transform3D_uniform_scale_clicked ()
+X3DTextureTransform3DEditor::on_texture_transform_3d_rotation_type_clicked ()
+{
+	getTextureTransform3DRotationPopover () .popup ();
+}
+
+void
+X3DTextureTransform3DEditor::on_texture_transform_3d_rotation_axis_angle_toggled ()
+{
+	getTextureTransform3DRotationPopover () .popdown ();
+
+	if (not getTextureTransform3DRotationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getTextureTransform3DRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getTextureTransform3DRotationBox () .set_visible (true);
+	getTextureTransform3DRotationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("textureTransform3DRotationType", 0);
+}
+
+void
+X3DTextureTransform3DEditor::on_texture_transform_3d_rotation_euler_toggled ()
+{
+	getTextureTransform3DRotationPopover () .popdown ();
+
+	if (not getTextureTransform3DRotationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getTextureTransform3DRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getTextureTransform3DRotationEulerBox () .set_visible (true);
+	getTextureTransform3DRotationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("textureTransform3DRotationType", 1);
+}
+
+void
+X3DTextureTransform3DEditor::on_texture_transform_3d_uniform_scale_clicked ()
 {
 	if (getTextureTransform3DUniformScaleButton () .get_active ())
 	{

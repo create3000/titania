@@ -93,6 +93,9 @@ X3DTextureEditorInterface::create ()
 	m_TextureTransform3DCenterYAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DCenterYAdjustment"));
 	m_TextureTransform3DCenterZAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DCenterZAdjustment"));
 	m_TextureTransform3DRotationAAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationAAdjustment"));
+	m_TextureTransform3DRotationEulerXAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationEulerXAdjustment"));
+	m_TextureTransform3DRotationEulerYAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationEulerYAdjustment"));
+	m_TextureTransform3DRotationEulerZAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationEulerZAdjustment"));
 	m_TextureTransform3DRotationXAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationXAdjustment"));
 	m_TextureTransform3DRotationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationYAdjustment"));
 	m_TextureTransform3DRotationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationZAdjustment"));
@@ -142,6 +145,9 @@ X3DTextureEditorInterface::create ()
 	m_ImageTextureURLCellrendererPixbuf1           = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf1"));
 
 	// Get widgets.
+	m_builder -> get_widget ("TextureTransform3DRotationPopover", m_TextureTransform3DRotationPopover);
+	m_builder -> get_widget ("TextureTransform3DRotationAxisAngleButton", m_TextureTransform3DRotationAxisAngleButton);
+	m_builder -> get_widget ("TextureTransform3DRotationEulerButton", m_TextureTransform3DRotationEulerButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
@@ -301,8 +307,11 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("TextureTransformRotationSpinButton", m_TextureTransformRotationSpinButton);
 	m_builder -> get_widget ("TextureTransform3DBox", m_TextureTransform3DBox);
 	m_builder -> get_widget ("TextureTransform3DTranslationBox", m_TextureTransform3DTranslationBox);
-	m_builder -> get_widget ("TextureTransform3DRotationBox", m_TextureTransform3DRotationBox);
 	m_builder -> get_widget ("TextureTransform3DRotationToolBox", m_TextureTransform3DRotationToolBox);
+	m_builder -> get_widget ("TextureTransform3DRotationNotebook", m_TextureTransform3DRotationNotebook);
+	m_builder -> get_widget ("TextureTransform3DRotationBox", m_TextureTransform3DRotationBox);
+	m_builder -> get_widget ("TextureTransform3DRotationEulerBox", m_TextureTransform3DRotationEulerBox);
+	m_builder -> get_widget ("TextureTransform3DRotationTypeButton", m_TextureTransform3DRotationTypeButton);
 	m_builder -> get_widget ("TextureTransform3DScaleBox", m_TextureTransform3DScaleBox);
 	m_builder -> get_widget ("TextureTransform3DUniformScaleButton", m_TextureTransform3DUniformScaleButton);
 	m_builder -> get_widget ("TextureTransform3DUniformScaleImage", m_TextureTransform3DUniformScaleImage);
@@ -339,6 +348,10 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 	m_builder -> get_widget ("ShowDefaultPalettesMenuItem", m_ShowDefaultPalettesMenuItem);
 
+	// Connect object Gtk::RadioButton with id 'TextureTransform3DRotationAxisAngleButton'.
+	m_TextureTransform3DRotationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_axis_angle_toggled));
+	m_TextureTransform3DRotationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_euler_toggled));
+
 	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
 	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_changed));
 
@@ -364,7 +377,12 @@ X3DTextureEditorInterface::create ()
 
 	// Connect object Gtk::ToggleButton with id 'TextureTransformUniformScaleButton'.
 	m_TextureTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_uniform_scale_clicked));
-	m_TextureTransform3DUniformScaleButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform3D_uniform_scale_clicked));
+
+	// Connect object Gtk::Button with id 'TextureTransform3DRotationTypeButton'.
+	m_TextureTransform3DRotationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_rotation_type_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'TextureTransform3DUniformScaleButton'.
+	m_TextureTransform3DUniformScaleButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_transform_3d_uniform_scale_clicked));
 
 	// Connect object Gtk::CheckButton with id 'TextureCoordinateGeneratorCheckButton'.
 	m_TextureCoordinateGeneratorCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_toggled));

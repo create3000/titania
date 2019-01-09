@@ -59,8 +59,6 @@
 namespace titania {
 namespace puck {
 
-class RotationTool;
-
 class X3DTextureTransform3DEditor :
 	virtual public X3DTextureEditorInterface
 {
@@ -101,15 +99,28 @@ private:
 
 	virtual
 	void
-	on_texture_transform3D_uniform_scale_clicked () final override;
+	on_texture_transform_3d_rotation_type_clicked () final override;
+
+	virtual
+	void
+	on_texture_transform_3d_rotation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_texture_transform_3d_rotation_euler_toggled () final override;
+
+	virtual
+	void
+	on_texture_transform_3d_uniform_scale_clicked () final override;
 
 	///  @name Members
 
 	X3D::X3DPtr <X3D::TextureTransform3D> textureTransform;
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
+	RotationTool                       rotationTool;	
 	SFRotationAdjustment               rotation;
-	std::unique_ptr <RotationTool>     rotationTool;	
+	EulerAdjustment                    rotationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
 	X3DFieldAdjustment3 <X3D::SFVec3f> center;
 

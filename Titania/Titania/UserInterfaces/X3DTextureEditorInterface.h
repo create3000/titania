@@ -150,6 +150,18 @@ public:
 	{ return m_TextureTransform3DRotationAAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationEulerXAdjustment () const
+	{ return m_TextureTransform3DRotationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationEulerYAdjustment () const
+	{ return m_TextureTransform3DRotationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationEulerZAdjustment () const
+	{ return m_TextureTransform3DRotationEulerZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTextureTransform3DRotationXAdjustment () const
 	{ return m_TextureTransform3DRotationXAdjustment; }
 
@@ -336,6 +348,18 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getImageTextureURLCellrendererPixbuf1 () const
 	{ return m_ImageTextureURLCellrendererPixbuf1; }
+
+	Gtk::Popover &
+	getTextureTransform3DRotationPopover () const
+	{ return *m_TextureTransform3DRotationPopover; }
+
+	Gtk::RadioButton &
+	getTextureTransform3DRotationAxisAngleButton () const
+	{ return *m_TextureTransform3DRotationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getTextureTransform3DRotationEulerButton () const
+	{ return *m_TextureTransform3DRotationEulerButton; }
 
 	Gtk::Window &
 	getWindow () const
@@ -974,12 +998,24 @@ public:
 	{ return *m_TextureTransform3DTranslationBox; }
 
 	Gtk::Box &
+	getTextureTransform3DRotationToolBox () const
+	{ return *m_TextureTransform3DRotationToolBox; }
+
+	Gtk::Notebook &
+	getTextureTransform3DRotationNotebook () const
+	{ return *m_TextureTransform3DRotationNotebook; }
+
+	Gtk::Box &
 	getTextureTransform3DRotationBox () const
 	{ return *m_TextureTransform3DRotationBox; }
 
 	Gtk::Box &
-	getTextureTransform3DRotationToolBox () const
-	{ return *m_TextureTransform3DRotationToolBox; }
+	getTextureTransform3DRotationEulerBox () const
+	{ return *m_TextureTransform3DRotationEulerBox; }
+
+	Gtk::Button &
+	getTextureTransform3DRotationTypeButton () const
+	{ return *m_TextureTransform3DRotationTypeButton; }
 
 	Gtk::Box &
 	getTextureTransform3DScaleBox () const
@@ -1125,6 +1161,14 @@ public:
 
 	virtual
 	void
+	on_texture_transform_3d_rotation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_texture_transform_3d_rotation_euler_toggled () = 0;
+
+	virtual
+	void
 	on_texture_changed () = 0;
 
 	virtual
@@ -1173,7 +1217,11 @@ public:
 
 	virtual
 	void
-	on_texture_transform3D_uniform_scale_clicked () = 0;
+	on_texture_transform_3d_rotation_type_clicked () = 0;
+
+	virtual
+	void
+	on_texture_transform_3d_uniform_scale_clicked () = 0;
 
 	virtual
 	void
@@ -1286,6 +1334,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DCenterZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureTransform3DRotationZAdjustment;
@@ -1333,6 +1384,9 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_ImageCubeMapTextureURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ImageCubeMapTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf1;
+	Gtk::Popover* m_TextureTransform3DRotationPopover;
+	Gtk::RadioButton* m_TextureTransform3DRotationAxisAngleButton;
+	Gtk::RadioButton* m_TextureTransform3DRotationEulerButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
@@ -1492,8 +1546,11 @@ private:
 	Gtk::SpinButton* m_TextureTransformRotationSpinButton;
 	Gtk::Grid* m_TextureTransform3DBox;
 	Gtk::Box* m_TextureTransform3DTranslationBox;
-	Gtk::Box* m_TextureTransform3DRotationBox;
 	Gtk::Box* m_TextureTransform3DRotationToolBox;
+	Gtk::Notebook* m_TextureTransform3DRotationNotebook;
+	Gtk::Box* m_TextureTransform3DRotationBox;
+	Gtk::Box* m_TextureTransform3DRotationEulerBox;
+	Gtk::Button* m_TextureTransform3DRotationTypeButton;
 	Gtk::Box* m_TextureTransform3DScaleBox;
 	Gtk::ToggleButton* m_TextureTransform3DUniformScaleButton;
 	Gtk::Image* m_TextureTransform3DUniformScaleImage;

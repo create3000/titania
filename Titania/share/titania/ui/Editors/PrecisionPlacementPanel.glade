@@ -8032,7 +8032,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="draw_indicator">False</property>
-            <property name="group">GeoTransformRotationAxisAngleButton</property>
+            <property name="group">GeometrySelectionRotationAxisAngleButton</property>
             <signal name="toggled" handler="on_geometry_selection_rotation_euler_toggled" swapped="no"/>
           </object>
           <packing>

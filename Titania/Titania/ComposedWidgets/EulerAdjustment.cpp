@@ -69,7 +69,8 @@ EulerAdjustment::EulerAdjustment (X3DBaseInterface* const editor,
 	         undoStep (),
 	            input (-1),
 	         changing (false),
-	           buffer ()
+	           buffer (),
+	    negativeRange (false)
 {
 	addChildObjects (scene, nodes, buffer);
 	            
@@ -97,6 +98,14 @@ EulerAdjustment::set_scene ()
 	scene = getCurrentScene ();
 
 	scene -> units_changed () .addInterest (&EulerAdjustment::set_field, this);
+}
+
+void
+EulerAdjustment::setNegativeRange (const bool value)
+{
+	negativeRange = value;
+
+	set_bounds ();
 }
 
 void
@@ -222,7 +231,7 @@ EulerAdjustment::set_bounds ()
 {
 	for (const auto & adjustment : adjustments)
 	{
-		adjustment -> set_lower (getCurrentScene () -> toUnit (X3D::UnitCategory::ANGLE, 0));
+		adjustment -> set_lower (getCurrentScene () -> toUnit (X3D::UnitCategory::ANGLE, negativeRange ? -math::pi <double> * 2 : 0));
 		adjustment -> set_upper (getCurrentScene () -> toUnit (X3D::UnitCategory::ANGLE, math::pi <double> * 2));
 	}
 }
