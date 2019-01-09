@@ -58,8 +58,6 @@
 namespace titania {
 namespace puck {
 
-class RotationTool;
-
 class X3DOrthoViewpointEditor :
 	virtual public X3DViewpointEditorInterface
 {
@@ -102,11 +100,24 @@ private:
 	void
 	on_new_ortho_viewpoint_clicked () final override;
 
+	virtual
+	void
+	on_ortho_viewpoint_orientation_type_clicked () final override;
+
+	virtual
+	void
+	on_ortho_viewpoint_orientation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_ortho_viewpoint_orientation_euler_toggled () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
+	RotationTool                          orientationTool;	
 	SFRotationAdjustment                  orientation;
-	std::unique_ptr <RotationTool>        orientationTool;	
+	EulerAdjustment                       orientationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
 	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView0;
 	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView1;

@@ -51,7 +51,6 @@
 #include "X3DOrthoViewpointEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
-#include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Execution/World.h>
@@ -67,6 +66,7 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 	                             getOrthoViewpointPositionZAdjustment (),
 	                             getOrthoViewpointPositionBox (),
 	                             "position"),
+	            orientationTool (this, getOthoViewpointOrientationToolBox (), "orientation"),
 	                orientation (this,
 	                             getOrthoViewpointOrientationXAdjustment (),
 	                             getOrthoViewpointOrientationYAdjustment (),
@@ -74,7 +74,12 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 	                             getOrthoViewpointOrientationAAdjustment (),
 	                             getOrthoViewpointOrientationBox (),
 	                             "orientation"),
-	            orientationTool (new RotationTool (this, getOthoViewpointOrientationToolBox (), "orientation")),
+	           orientationEuler (this,
+	                             getOrthoViewpointOrientationEulerXAdjustment (),
+	                             getOrthoViewpointOrientationEulerYAdjustment (),
+	                             getOrthoViewpointOrientationEulerZAdjustment (),
+	                             getOrthoViewpointOrientationEulerBox (),
+	                             "orientation"),
 	           centerOfRotation (this,
 	                             getOrthoViewpointCenterOfRotationXAdjustment (),
 	                             getOrthoViewpointCenterOfRotationYAdjustment (),
@@ -95,6 +100,15 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 void
 X3DOrthoViewpointEditor::configure ()
 {
+	switch (getConfig () -> getItem <int32_t> ("orthoViewpointOrientationType"))
+	{
+		case 1:
+			getOrthoViewpointOrientationEulerButton () .set_active (true);
+			break;
+		default:
+			getOrthoViewpointOrientationAxisAngleButton () .set_active (true);
+			break;
+	}
 }
 
 void
@@ -118,14 +132,15 @@ X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpoint
 	const auto orthoViewpoints = orthoViewpoint ? X3D::MFNode ({ orthoViewpoint }) : X3D::MFNode ();
 
 	position         .setNodes (orthoViewpoints);
+	orientationTool  .setNodes (orthoViewpoints);
 	orientation      .setNodes (orthoViewpoints);
+	orientationEuler .setNodes (orthoViewpoints);
 	centerOfRotation .setNodes (orthoViewpoints);
 	fieldOfView0     .setNodes (orthoViewpoints);
 	fieldOfView1     .setNodes (orthoViewpoints);
 	fieldOfView2     .setNodes (orthoViewpoints);
 	fieldOfView3     .setNodes (orthoViewpoints);
 
-	orientationTool -> setNodes (orthoViewpoints);
 }
 
 void
@@ -163,6 +178,46 @@ X3DOrthoViewpointEditor::on_new_ortho_viewpoint_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);
+}
+
+void
+X3DOrthoViewpointEditor::on_ortho_viewpoint_orientation_type_clicked ()
+{
+	getOrthoViewpointOrientationPopover () .popup ();
+}
+
+void
+X3DOrthoViewpointEditor::on_ortho_viewpoint_orientation_axis_angle_toggled ()
+{
+	getOrthoViewpointOrientationPopover () .popdown ();
+
+	if (not getOrthoViewpointOrientationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getOrthoViewpointOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getOrthoViewpointOrientationBox () .set_visible (true);
+	getOrthoViewpointOrientationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("orthoViewpointOrientationType", 0);
+}
+
+void
+X3DOrthoViewpointEditor::on_ortho_viewpoint_orientation_euler_toggled ()
+{
+	getOrthoViewpointOrientationPopover () .popdown ();
+
+	if (not getOrthoViewpointOrientationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getOrthoViewpointOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getOrthoViewpointOrientationEulerBox () .set_visible (true);
+	getOrthoViewpointOrientationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("orthoViewpointOrientationType", 1);
 }
 
 X3DOrthoViewpointEditor::~X3DOrthoViewpointEditor ()

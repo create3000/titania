@@ -99,6 +99,9 @@ X3DViewpointEditorInterface::create ()
 	m_OrthoViewpointFieldOfViewMinXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointFieldOfViewMinXAdjustment"));
 	m_OrthoViewpointFieldOfViewMinYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointFieldOfViewMinYAdjustment"));
 	m_OrthoViewpointOrientationAAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationAAdjustment"));
+	m_OrthoViewpointOrientationEulerXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationEulerXAdjustment"));
+	m_OrthoViewpointOrientationEulerYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationEulerYAdjustment"));
+	m_OrthoViewpointOrientationEulerZAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationEulerZAdjustment"));
 	m_OrthoViewpointOrientationXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationXAdjustment"));
 	m_OrthoViewpointOrientationYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationYAdjustment"));
 	m_OrthoViewpointOrientationZAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OrthoViewpointOrientationZAdjustment"));
@@ -156,8 +159,11 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("OrthoViewpointBox", m_OrthoViewpointBox);
 	m_builder -> get_widget ("OrthoViewpointPositionBox", m_OrthoViewpointPositionBox);
 	m_builder -> get_widget ("OrthoViewpointCenterOfRotationBox", m_OrthoViewpointCenterOfRotationBox);
-	m_builder -> get_widget ("OrthoViewpointOrientationBox", m_OrthoViewpointOrientationBox);
 	m_builder -> get_widget ("OthoViewpointOrientationToolBox", m_OthoViewpointOrientationToolBox);
+	m_builder -> get_widget ("OrthoViewpointOrientationNotebook", m_OrthoViewpointOrientationNotebook);
+	m_builder -> get_widget ("OrthoViewpointOrientationBox", m_OrthoViewpointOrientationBox);
+	m_builder -> get_widget ("OrthoViewpointOrientationEulerBox", m_OrthoViewpointOrientationEulerBox);
+	m_builder -> get_widget ("OrthoViewpointOrientationTypeButton", m_OrthoViewpointOrientationTypeButton);
 	m_builder -> get_widget ("OrthoViewpointFieldOfViewBox", m_OrthoViewpointFieldOfViewBox);
 	m_builder -> get_widget ("OrthoViewpointFieldOfViewSpinButton3", m_OrthoViewpointFieldOfViewSpinButton3);
 	m_builder -> get_widget ("OrthoViewpointFieldOfViewSpinButton0", m_OrthoViewpointFieldOfViewSpinButton0);
@@ -188,6 +194,9 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("NewViewpointButton", m_NewViewpointButton);
 	m_builder -> get_widget ("NewOthoViewpointButton", m_NewOthoViewpointButton);
 	m_builder -> get_widget ("NewGeoViewpointButton", m_NewGeoViewpointButton);
+	m_builder -> get_widget ("OrthoViewpointOrientationPopover", m_OrthoViewpointOrientationPopover);
+	m_builder -> get_widget ("OrthoViewpointOrientationAxisAngleButton", m_OrthoViewpointOrientationAxisAngleButton);
+	m_builder -> get_widget ("OrthoViewpointOrientationEulerButton", m_OrthoViewpointOrientationEulerButton);
 	m_builder -> get_widget ("PerspectiveViewpointOrientationPopover", m_PerspectiveViewpointOrientationPopover);
 	m_builder -> get_widget ("PerspectiveViewpointOrientationAxisAngleButton", m_PerspectiveViewpointOrientationAxisAngleButton);
 	m_builder -> get_widget ("PerspectiveViewpointOrientationEulerButton", m_PerspectiveViewpointOrientationEulerButton);
@@ -200,11 +209,14 @@ X3DViewpointEditorInterface::create ()
 
 	// Connect object Gtk::Button with id 'PerspectiveViewpointOrientationTypeButton'.
 	m_PerspectiveViewpointOrientationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_perspective_viewpoint_orientation_type_clicked));
+	m_OrthoViewpointOrientationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_ortho_viewpoint_orientation_type_clicked));
 	m_NewViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_viewpoint_clicked));
 	m_NewOthoViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_ortho_viewpoint_clicked));
 	m_NewGeoViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_geo_viewpoint_clicked));
 
-	// Connect object Gtk::RadioButton with id 'PerspectiveViewpointOrientationAxisAngleButton'.
+	// Connect object Gtk::RadioButton with id 'OrthoViewpointOrientationAxisAngleButton'.
+	m_OrthoViewpointOrientationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_ortho_viewpoint_orientation_axis_angle_toggled));
+	m_OrthoViewpointOrientationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_ortho_viewpoint_orientation_euler_toggled));
 	m_PerspectiveViewpointOrientationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_perspective_viewpoint_orientation_axis_angle_toggled));
 	m_PerspectiveViewpointOrientationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_perspective_viewpoint_orientation_euler_toggled));
 }
