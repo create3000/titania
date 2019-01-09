@@ -59,7 +59,6 @@ namespace titania {
 namespace puck {
 
 class MFStringGeoSystem;
-class RotationTool;
 
 class X3DGeoViewpointEditor :
 	virtual public X3DViewpointEditorInterface
@@ -103,12 +102,25 @@ private:
 	void
 	on_new_geo_viewpoint_clicked () final override;
 
+	virtual
+	void
+	on_geo_viewpoint_orientation_type_clicked () final override;
+
+	virtual
+	void
+	on_geo_viewpoint_orientation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_geo_viewpoint_orientation_euler_toggled () final override;
+
 	///  @name Members
 
 	std::unique_ptr <MFStringGeoSystem>   geoSystem;
 	X3DFieldAdjustment3 <X3D::SFVec3d>    position;
+	RotationTool                          orientationTool;	
 	SFRotationAdjustment                  orientation;
-	std::unique_ptr <RotationTool>        orientationTool;	
+	EulerAdjustment                       orientationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3d>    centerOfRotation;
 	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;
 	X3DFieldAdjustment <X3D::SFFloat>     speedFactor;

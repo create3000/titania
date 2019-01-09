@@ -83,6 +83,9 @@ X3DViewpointEditorInterface::create ()
 	m_GeoViewpointCenterOfRotationZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointCenterOfRotationZAdjustment"));
 	m_GeoViewpointFieldOfViewAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointFieldOfViewAdjustment"));
 	m_GeoViewpointOrientationAAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationAAdjustment"));
+	m_GeoViewpointOrientationEulerXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationEulerXAdjustment"));
+	m_GeoViewpointOrientationEulerYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationEulerYAdjustment"));
+	m_GeoViewpointOrientationEulerZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationEulerZAdjustment"));
 	m_GeoViewpointOrientationXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationXAdjustment"));
 	m_GeoViewpointOrientationYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationYAdjustment"));
 	m_GeoViewpointOrientationZAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointOrientationZAdjustment"));
@@ -180,8 +183,11 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("GeoViewpointCenterOfRotationXSpinButton", m_GeoViewpointCenterOfRotationXSpinButton);
 	m_builder -> get_widget ("GeoViewpointCenterOfRotationYSpinButton", m_GeoViewpointCenterOfRotationYSpinButton);
 	m_builder -> get_widget ("GeoViewpointCenterOfRotationZSpinButton", m_GeoViewpointCenterOfRotationZSpinButton);
-	m_builder -> get_widget ("GeoViewpointOrientationBox", m_GeoViewpointOrientationBox);
 	m_builder -> get_widget ("GeoViewpointOrientationToolBox", m_GeoViewpointOrientationToolBox);
+	m_builder -> get_widget ("GeoViewpointOrientationNotebook", m_GeoViewpointOrientationNotebook);
+	m_builder -> get_widget ("GeoViewpointOrientationBox", m_GeoViewpointOrientationBox);
+	m_builder -> get_widget ("GeoViewpointOrientationEulerBox", m_GeoViewpointOrientationEulerBox);
+	m_builder -> get_widget ("GeoViewpointOrientationTypeButton", m_GeoViewpointOrientationTypeButton);
 	m_builder -> get_widget ("GeoViewpointSpeedFactorSpinButton", m_GeoViewpointSpeedFactorSpinButton);
 	m_builder -> get_widget ("GeoViewpointCoordinateSystemComboBoxText", m_GeoViewpointCoordinateSystemComboBoxText);
 	m_builder -> get_widget ("GeoViewpointEllipsoidBox", m_GeoViewpointEllipsoidBox);
@@ -190,6 +196,9 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("GeoViewpointGeoSystemUTMBox", m_GeoViewpointGeoSystemUTMBox);
 	m_builder -> get_widget ("GeoViewpointHemisphereComboBoxText", m_GeoViewpointHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
+	m_builder -> get_widget ("GeoViewpointOrientationPopover", m_GeoViewpointOrientationPopover);
+	m_builder -> get_widget ("GeoViewpointOrientationAxisAngleButton", m_GeoViewpointOrientationAxisAngleButton);
+	m_builder -> get_widget ("GeoViewpointOrientationEulerButton", m_GeoViewpointOrientationEulerButton);
 	m_builder -> get_widget ("NewViewpointPopover", m_NewViewpointPopover);
 	m_builder -> get_widget ("NewViewpointButton", m_NewViewpointButton);
 	m_builder -> get_widget ("NewOthoViewpointButton", m_NewOthoViewpointButton);
@@ -210,6 +219,13 @@ X3DViewpointEditorInterface::create ()
 	// Connect object Gtk::Button with id 'PerspectiveViewpointOrientationTypeButton'.
 	m_PerspectiveViewpointOrientationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_perspective_viewpoint_orientation_type_clicked));
 	m_OrthoViewpointOrientationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_ortho_viewpoint_orientation_type_clicked));
+	m_GeoViewpointOrientationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_geo_viewpoint_orientation_type_clicked));
+
+	// Connect object Gtk::RadioButton with id 'GeoViewpointOrientationAxisAngleButton'.
+	m_GeoViewpointOrientationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_geo_viewpoint_orientation_axis_angle_toggled));
+	m_GeoViewpointOrientationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_geo_viewpoint_orientation_euler_toggled));
+
+	// Connect object Gtk::Button with id 'NewViewpointButton'.
 	m_NewViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_viewpoint_clicked));
 	m_NewOthoViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_ortho_viewpoint_clicked));
 	m_NewGeoViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_geo_viewpoint_clicked));

@@ -110,6 +110,18 @@ public:
 	{ return m_GeoViewpointOrientationAAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationEulerXAdjustment () const
+	{ return m_GeoViewpointOrientationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationEulerYAdjustment () const
+	{ return m_GeoViewpointOrientationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoViewpointOrientationEulerZAdjustment () const
+	{ return m_GeoViewpointOrientationEulerZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoViewpointOrientationXAdjustment () const
 	{ return m_GeoViewpointOrientationXAdjustment; }
 
@@ -490,12 +502,24 @@ public:
 	{ return *m_GeoViewpointCenterOfRotationZSpinButton; }
 
 	Gtk::Box &
+	getGeoViewpointOrientationToolBox () const
+	{ return *m_GeoViewpointOrientationToolBox; }
+
+	Gtk::Notebook &
+	getGeoViewpointOrientationNotebook () const
+	{ return *m_GeoViewpointOrientationNotebook; }
+
+	Gtk::Box &
 	getGeoViewpointOrientationBox () const
 	{ return *m_GeoViewpointOrientationBox; }
 
 	Gtk::Box &
-	getGeoViewpointOrientationToolBox () const
-	{ return *m_GeoViewpointOrientationToolBox; }
+	getGeoViewpointOrientationEulerBox () const
+	{ return *m_GeoViewpointOrientationEulerBox; }
+
+	Gtk::Button &
+	getGeoViewpointOrientationTypeButton () const
+	{ return *m_GeoViewpointOrientationTypeButton; }
 
 	Gtk::SpinButton &
 	getGeoViewpointSpeedFactorSpinButton () const
@@ -528,6 +552,18 @@ public:
 	Gtk::ComboBoxText &
 	getGeoViewpointUTMOrderComboBoxText () const
 	{ return *m_GeoViewpointUTMOrderComboBoxText; }
+
+	Gtk::Popover &
+	getGeoViewpointOrientationPopover () const
+	{ return *m_GeoViewpointOrientationPopover; }
+
+	Gtk::RadioButton &
+	getGeoViewpointOrientationAxisAngleButton () const
+	{ return *m_GeoViewpointOrientationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getGeoViewpointOrientationEulerButton () const
+	{ return *m_GeoViewpointOrientationEulerButton; }
 
 	Gtk::Popover &
 	getNewViewpointPopover () const
@@ -597,6 +633,18 @@ public:
 
 	virtual
 	void
+	on_geo_viewpoint_orientation_type_clicked () = 0;
+
+	virtual
+	void
+	on_geo_viewpoint_orientation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_geo_viewpoint_orientation_euler_toggled () = 0;
+
+	virtual
+	void
 	on_new_viewpoint_clicked () = 0;
 
 	virtual
@@ -652,6 +700,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointFieldOfViewAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointOrientationZAdjustment;
@@ -747,8 +798,11 @@ private:
 	Gtk::SpinButton* m_GeoViewpointCenterOfRotationXSpinButton;
 	Gtk::SpinButton* m_GeoViewpointCenterOfRotationYSpinButton;
 	Gtk::SpinButton* m_GeoViewpointCenterOfRotationZSpinButton;
-	Gtk::Box* m_GeoViewpointOrientationBox;
 	Gtk::Box* m_GeoViewpointOrientationToolBox;
+	Gtk::Notebook* m_GeoViewpointOrientationNotebook;
+	Gtk::Box* m_GeoViewpointOrientationBox;
+	Gtk::Box* m_GeoViewpointOrientationEulerBox;
+	Gtk::Button* m_GeoViewpointOrientationTypeButton;
 	Gtk::SpinButton* m_GeoViewpointSpeedFactorSpinButton;
 	Gtk::ComboBoxText* m_GeoViewpointCoordinateSystemComboBoxText;
 	Gtk::Box* m_GeoViewpointEllipsoidBox;
@@ -757,6 +811,9 @@ private:
 	Gtk::Box* m_GeoViewpointGeoSystemUTMBox;
 	Gtk::ComboBoxText* m_GeoViewpointHemisphereComboBoxText;
 	Gtk::ComboBoxText* m_GeoViewpointUTMOrderComboBoxText;
+	Gtk::Popover* m_GeoViewpointOrientationPopover;
+	Gtk::RadioButton* m_GeoViewpointOrientationAxisAngleButton;
+	Gtk::RadioButton* m_GeoViewpointOrientationEulerButton;
 	Gtk::Popover* m_NewViewpointPopover;
 	Gtk::Button* m_NewViewpointButton;
 	Gtk::Button* m_NewOthoViewpointButton;

@@ -31,6 +31,21 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="GeoViewpointOrientationEulerXAdjustment">
+    <property name="upper">6.2800000000000002</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="GeoViewpointOrientationEulerYAdjustment">
+    <property name="upper">6.2800000000000002</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="GeoViewpointOrientationEulerZAdjustment">
+    <property name="upper">6.2800000000000002</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="GeoViewpointOrientationXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
@@ -2027,7 +2042,7 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkBox" id="GeoViewpointOrientationBox">
+                                          <object class="GtkBox">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="halign">start</property>
@@ -2055,28 +2070,75 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkBox" id="box12">
+                                              <object class="GtkNotebook" id="GeoViewpointOrientationNotebook">
                                                 <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="hexpand">False</property>
-                                                <property name="spacing">2</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="show_tabs">False</property>
+                                                <property name="show_border">False</property>
                                                 <child>
-                                                  <object class="GtkBox" id="box13">
+                                                  <object class="GtkBox" id="GeoViewpointOrientationBox">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
-                                                    <property name="hexpand">True</property>
-                                                    <property name="orientation">vertical</property>
+                                                    <property name="hexpand">False</property>
                                                     <property name="spacing">2</property>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="spinbutton33">
+                                                      <object class="GtkBox" id="box13">
                                                         <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                                        <property name="text" translatable="yes">0,000</property>
-                                                        <property name="adjustment">GeoViewpointOrientationXAdjustment</property>
-                                                        <property name="climb_rate">0.01</property>
-                                                        <property name="digits">3</property>
-                                                        <property name="numeric">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="hexpand">True</property>
+                                                        <property name="orientation">vertical</property>
+                                                        <property name="spacing">2</property>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="spinbutton33">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="adjustment">GeoViewpointOrientationXAdjustment</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="numeric">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="spinbutton34">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="adjustment">GeoViewpointOrientationYAdjustment</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="numeric">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="spinbutton35">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="adjustment">GeoViewpointOrientationZAdjustment</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="numeric">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -2085,14 +2147,15 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="spinbutton34">
+                                                      <object class="GtkSpinButton" id="spinbutton36">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                                        <property name="tooltip_text" translatable="yes">Angle</property>
+                                                        <property name="valign">end</property>
                                                         <property name="text" translatable="yes">0,000</property>
-                                                        <property name="adjustment">GeoViewpointOrientationYAdjustment</property>
+                                                        <property name="adjustment">GeoViewpointOrientationAAdjustment</property>
                                                         <property name="climb_rate">0.01</property>
-                                                        <property name="digits">3</property>
+                                                        <property name="digits">6</property>
                                                         <property name="numeric">True</property>
                                                       </object>
                                                       <packing>
@@ -2101,16 +2164,74 @@
                                                         <property name="position">1</property>
                                                       </packing>
                                                     </child>
+                                                  </object>
+                                                </child>
+                                                <child type="tab">
+                                                  <object class="GtkLabel">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">page 1</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="tab_fill">False</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="GeoViewpointOrientationEulerBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <property name="spacing">2</property>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="spinbutton35">
+                                                      <object class="GtkSpinButton" id="spinbutton25">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="tooltip_text" translatable="yes">z-Axis</property>
-                                                        <property name="text" translatable="yes">0,000</property>
-                                                        <property name="adjustment">GeoViewpointOrientationZAdjustment</property>
+                                                        <property name="tooltip_text" translatable="yes">Roll</property>
+                                                        <property name="valign">end</property>
+                                                        <property name="text" translatable="yes">0,000000</property>
+                                                        <property name="adjustment">GeoViewpointOrientationEulerXAdjustment</property>
                                                         <property name="climb_rate">0.01</property>
-                                                        <property name="digits">3</property>
+                                                        <property name="digits">6</property>
                                                         <property name="numeric">True</property>
+                                                        <property name="wrap">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="spinbutton27">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Pitch</property>
+                                                        <property name="valign">end</property>
+                                                        <property name="text" translatable="yes">0,000000</property>
+                                                        <property name="adjustment">GeoViewpointOrientationEulerYAdjustment</property>
+                                                        <property name="climb_rate">0.01</property>
+                                                        <property name="digits">6</property>
+                                                        <property name="numeric">True</property>
+                                                        <property name="wrap">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="spinbutton28">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Yaw</property>
+                                                        <property name="valign">end</property>
+                                                        <property name="text" translatable="yes">0,000000</property>
+                                                        <property name="adjustment">GeoViewpointOrientationEulerZAdjustment</property>
+                                                        <property name="climb_rate">0.01</property>
+                                                        <property name="digits">6</property>
+                                                        <property name="numeric">True</property>
+                                                        <property name="wrap">True</property>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -2120,27 +2241,18 @@
                                                     </child>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
-                                                    <property name="position">0</property>
+                                                    <property name="position">1</property>
                                                   </packing>
                                                 </child>
-                                                <child>
-                                                  <object class="GtkSpinButton" id="spinbutton36">
+                                                <child type="tab">
+                                                  <object class="GtkLabel">
                                                     <property name="visible">True</property>
-                                                    <property name="can_focus">True</property>
-                                                    <property name="tooltip_text" translatable="yes">Angle</property>
-                                                    <property name="valign">end</property>
-                                                    <property name="text" translatable="yes">0,000</property>
-                                                    <property name="adjustment">GeoViewpointOrientationAAdjustment</property>
-                                                    <property name="climb_rate">0.01</property>
-                                                    <property name="digits">6</property>
-                                                    <property name="numeric">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">page 2</property>
                                                   </object>
                                                   <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">True</property>
                                                     <property name="position">1</property>
+                                                    <property name="tab_fill">False</property>
                                                   </packing>
                                                 </child>
                                               </object>
@@ -2148,6 +2260,27 @@
                                                 <property name="expand">False</property>
                                                 <property name="fill">True</property>
                                                 <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="GeoViewpointOrientationTypeButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="valign">end</property>
+                                                <signal name="clicked" handler="on_geo_viewpoint_orientation_type_clicked" swapped="no"/>
+                                                <child>
+                                                  <object class="GtkImage">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-properties</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">2</property>
                                               </packing>
                                             </child>
                                           </object>
@@ -2451,6 +2584,51 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="GeoViewpointOrientationPopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">GeoViewpointOrientationTypeButton</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkRadioButton" id="GeoViewpointOrientationAxisAngleButton">
+            <property name="label" translatable="yes">Axis-Angle</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">False</property>
+            <signal name="toggled" handler="on_geo_viewpoint_orientation_axis_angle_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="GeoViewpointOrientationEulerButton">
+            <property name="label" translatable="yes">Euler</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">GeoViewpointOrientationAxisAngleButton</property>
+            <signal name="toggled" handler="on_geo_viewpoint_orientation_euler_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>

@@ -52,7 +52,6 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/MFStringGeoSystem.h"
-#include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Geospatial/GeoViewpoint.h>
 #include <Titania/X3D/Execution/World.h>
@@ -80,6 +79,7 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	                             getGeoViewpointPositionZAdjustment (),
 	                             getGeoViewpointPositionBox (),
 	                             "position"),
+	            orientationTool (this, getGeoViewpointOrientationToolBox (), "orientation"),
 	                orientation (this,
 	                             getGeoViewpointOrientationXAdjustment (),
 	                             getGeoViewpointOrientationYAdjustment (),
@@ -87,7 +87,12 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	                             getGeoViewpointOrientationAAdjustment (),
 	                             getGeoViewpointOrientationBox (),
 	                             "orientation"),
-	            orientationTool (new RotationTool (this, getGeoViewpointOrientationToolBox (), "orientation")),
+	           orientationEuler (this,
+	                             getGeoViewpointOrientationEulerXAdjustment (),
+	                             getGeoViewpointOrientationEulerYAdjustment (),
+	                             getGeoViewpointOrientationEulerZAdjustment (),
+	                             getGeoViewpointOrientationEulerBox (),
+	                             "orientation"),
 	           centerOfRotation (this,
 	                             getGeoViewpointCenterOfRotationXAdjustment (),
 	                             getGeoViewpointCenterOfRotationYAdjustment (),
@@ -133,6 +138,15 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 void
 X3DGeoViewpointEditor::configure ()
 {
+	switch (getConfig () -> getItem <int32_t> ("geoViewpointOrientationType"))
+	{
+		case 1:
+			getGeoViewpointOrientationEulerButton () .set_active (true);
+			break;
+		default:
+			getGeoViewpointOrientationAxisAngleButton () .set_active (true);
+			break;
+	}
 }
 
 void
@@ -148,12 +162,12 @@ X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode
 	geoSystem -> setNodes (geoViewpoints);
 
 	position         .setNodes (geoViewpoints);
+	orientationTool  .setNodes (geoViewpoints);
 	orientation      .setNodes (geoViewpoints);
+	orientationEuler .setNodes (geoViewpoints);
 	centerOfRotation .setNodes (geoViewpoints);
 	fieldOfView      .setNodes (geoViewpoints);
 	speedFactor      .setNodes (geoViewpoints);
-
-	orientationTool -> setNodes (geoViewpoints);
 }
 
 void
@@ -197,6 +211,46 @@ X3DGeoViewpointEditor::on_new_geo_viewpoint_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node), true);
+}
+
+void
+X3DGeoViewpointEditor::on_geo_viewpoint_orientation_type_clicked ()
+{
+	getGeoViewpointOrientationPopover () .popup ();
+}
+
+void
+X3DGeoViewpointEditor::on_geo_viewpoint_orientation_axis_angle_toggled ()
+{
+	getGeoViewpointOrientationPopover () .popdown ();
+
+	if (not getGeoViewpointOrientationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeoViewpointOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeoViewpointOrientationBox () .set_visible (true);
+	getGeoViewpointOrientationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("geoViewpointOrientationType", 0);
+}
+
+void
+X3DGeoViewpointEditor::on_geo_viewpoint_orientation_euler_toggled ()
+{
+	getGeoViewpointOrientationPopover () .popdown ();
+
+	if (not getGeoViewpointOrientationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeoViewpointOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeoViewpointOrientationEulerBox () .set_visible (true);
+	getGeoViewpointOrientationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("geoViewpointOrientationType", 1);
 }
 
 X3DGeoViewpointEditor::~X3DGeoViewpointEditor ()
