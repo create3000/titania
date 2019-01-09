@@ -51,7 +51,6 @@
 #include "X3DGeoTransformEditor.h"
 
 #include "../../ComposedWidgets/MFStringGeoSystem.h"
-#include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Geospatial/GeoTransform.h>
 
@@ -76,6 +75,7 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 	                                     getGeoTransformTranslationZAdjustment (),
 	                                     getGeoTransformTranslationBox (),
 	                                     "translation"),
+	                       rotationTool (this, getGeoTransformRotationToolBox (), "rotation"),
 	                           rotation (this,
 	                                     getGeoTransformRotationXAdjustment (),
 	                                     getGeoTransformRotationYAdjustment (),
@@ -83,13 +83,19 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 	                                     getGeoTransformRotationAAdjustment (),
 	                                     getGeoTransformRotationBox (),
 	                                     "rotation"),
-	                       rotationTool (new RotationTool (this, getGeoTransformRotationToolBox (), "rotation")),
+	                      rotationEuler (this,
+	                                     getGeoTransformRotationEulerXAdjustment (),
+	                                     getGeoTransformRotationEulerYAdjustment (),
+	                                     getGeoTransformRotationEulerZAdjustment (),
+	                                     getGeoTransformRotationEulerBox (),
+	                                     "rotation"),
 	                              scale (this,
 	                                     getGeoTransformScaleXAdjustment (),
 	                                     getGeoTransformScaleYAdjustment (),
 	                                     getGeoTransformScaleZAdjustment (),
 	                                     getGeoTransformScaleBox (),
 	                                     "scale"),
+	               scaleOrientationTool (this, getGeoTransformScaleOrientationToolBox (), "scaleOrientation"),
 	                   scaleOrientation (this,
 	                                     getGeoTransformScaleOrientationXAdjustment (),
 	                                     getGeoTransformScaleOrientationYAdjustment (),
@@ -97,7 +103,12 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 	                                     getGeoTransformScaleOrientationAAdjustment (),
 	                                     getGeoTransformScaleOrientationBox (),
 	                                     "scaleOrientation"),
-	               scaleOrientationTool (new RotationTool (this, getGeoTransformScaleOrientationToolBox (), "scaleOrientation")),
+	              scaleOrientationEuler (this,
+	                                     getGeoTransformScaleOrientationEulerXAdjustment (),
+	                                     getGeoTransformScaleOrientationEulerYAdjustment (),
+	                                     getGeoTransformScaleOrientationEulerZAdjustment (),
+	                                     getGeoTransformScaleOrientationEulerBox (),
+	                                     "scaleOrientation"),
 	                          geoCenter (this,
 	                                     getGeoTransformGeoCenterXAdjustment (),
 	                                     getGeoTransformGeoCenterYAdjustment (),
@@ -121,7 +132,27 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 void
 X3DGeoTransformEditor::configure ()
 {
+	switch (getConfig () -> getItem <int32_t> ("geoTransformRotationType"))
+	{
+		case 1:
+			getGeoTransformRotationEulerButton () .set_active (true);
+			break;
+		default:
+			getGeoTransformRotationAxisAngleButton () .set_active (true);
+			break;
+	}
+
 	getGeoTransformUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("geoTransformUniformScale"));
+
+	switch (getConfig () -> getItem <int32_t> ("geoTransformScaleOrientationType"))
+	{
+		case 1:
+			getGeoTransformScaleOrientationEulerButton () .set_active (true);
+			break;
+		default:
+			getGeoTransformScaleOrientationAxisAngleButton () .set_active (true);
+			break;
+	}
 }
 
 void
@@ -133,14 +164,56 @@ X3DGeoTransformEditor::set_selection (const X3D::MFNode & selection)
 	getGeoTransformExpander () .set_visible (transform);
 
 	geoSystem -> setNodes (transforms);
-	translation      .setNodes (transforms);
-	rotation         .setNodes (transforms);
-	scale            .setNodes (transforms);
-	scaleOrientation .setNodes (transforms);
-	geoCenter        .setNodes (transforms);
 
-	rotationTool -> setNodes (transforms);
-	scaleOrientationTool -> setNodes (transforms);
+	translation           .setNodes (transforms);
+	rotationTool          .setNodes (transforms);
+	rotation              .setNodes (transforms);
+	rotationEuler         .setNodes (transforms);
+	scale                 .setNodes (transforms);
+	scaleOrientationTool  .setNodes (transforms);
+	scaleOrientation      .setNodes (transforms);
+	scaleOrientationEuler .setNodes (transforms);
+	geoCenter             .setNodes (transforms);
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_rotation_type_clicked ()
+{
+	getGeoTransformRotationPopover () .popup ();
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_rotation_axis_angle_toggled ()
+{
+	getGeoTransformRotationPopover () .popdown ();
+
+	if (not getGeoTransformRotationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeoTransformRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeoTransformRotationBox () .set_visible (true);
+	getGeoTransformRotationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("geoTransformRotationType", 0);
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_rotation_euler_toggled ()
+{
+	getGeoTransformRotationPopover () .popdown ();
+
+	if (not getGeoTransformRotationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeoTransformRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeoTransformRotationEulerBox () .set_visible (true);
+	getGeoTransformRotationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("geoTransformRotationType", 1);
 }
 
 void
@@ -156,6 +229,46 @@ X3DGeoTransformEditor::on_geo_transform_uniform_scale_clicked ()
 		getGeoTransformUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_scale_orientation_type_clicked ()
+{
+	getGeoTransformScaleOrientationPopover () .popup ();
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_scale_orientation_axis_angle_toggled ()
+{
+	getGeoTransformScaleOrientationPopover () .popdown ();
+
+	if (not getGeoTransformScaleOrientationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeoTransformScaleOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeoTransformScaleOrientationBox () .set_visible (true);
+	getGeoTransformScaleOrientationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("geoTransformScaleOrientationType", 0);
+}
+
+void
+X3DGeoTransformEditor::on_geo_transform_scale_orientation_euler_toggled ()
+{
+	getGeoTransformScaleOrientationPopover () .popdown ();
+
+	if (not getGeoTransformScaleOrientationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeoTransformScaleOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeoTransformScaleOrientationEulerBox () .set_visible (true);
+	getGeoTransformScaleOrientationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("geoTransformScaleOrientationType", 1);
 }
 
 void

@@ -375,6 +375,7 @@
     <Compile Include="Titania\Editors\ProjectsEditor\ProjectEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DOpenEditorsEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ProjectsEditor\OpenEditorsEditor.cpp" />
+    <Compile Include="Titania\ComposedWidgets\EulerAdjustment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3192,6 +3193,7 @@
     <None Include="share\titania\Library\Effects\LamberShader.x3dv" />
     <None Include="share\titania\Library\Effects\ToonShader.x3dv" />
     <None Include="share\titania\Library\Effects\AnisotropicShader.x3dv" />
+    <None Include="Titania\ComposedWidgets\EulerAdjustment.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

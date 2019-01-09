@@ -51,7 +51,6 @@
 #include "X3DTransformEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
-#include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
 
@@ -66,6 +65,7 @@ X3DTransformEditor::X3DTransformEditor () :
 	                                     getTransformTranslationZAdjustment (),
 	                                     getTransformTranslationBox (),
 	                                     "translation"),
+	                       rotationTool (this, getTransformRotationToolBox (), "rotation"),
 	                           rotation (this,
 	                                     getTransformRotationXAdjustment (),
 	                                     getTransformRotationYAdjustment (),
@@ -73,13 +73,19 @@ X3DTransformEditor::X3DTransformEditor () :
 	                                     getTransformRotationAAdjustment (),
 	                                     getTransformRotationBox (),
 	                                     "rotation"),
-	                       rotationTool (new RotationTool (this, getTransformRotationToolBox (), "rotation")),
+	                      rotationEuler (this,
+	                                     getTransformRotationEulerXAdjustment (),
+	                                     getTransformRotationEulerYAdjustment (),
+	                                     getTransformRotationEulerZAdjustment (),
+	                                     getTransformRotationEulerBox (),
+	                                     "rotation"),
 	                              scale (this,
 	                                     getTransformScaleXAdjustment (),
 	                                     getTransformScaleYAdjustment (),
 	                                     getTransformScaleZAdjustment (),
 	                                     getTransformScaleBox (),
 	                                     "scale"),
+	               scaleOrientationTool (this, getTransformScaleOrientationToolBox (), "scaleOrientation"),
 	                   scaleOrientation (this,
 	                                     getTransformScaleOrientationXAdjustment (),
 	                                     getTransformScaleOrientationYAdjustment (),
@@ -87,7 +93,12 @@ X3DTransformEditor::X3DTransformEditor () :
 	                                     getTransformScaleOrientationAAdjustment (),
 	                                     getTransformScaleOrientationBox (),
 	                                     "scaleOrientation"),
-	               scaleOrientationTool (new RotationTool (this, getTransformScaleOrientationToolBox (), "scaleOrientation")),
+	              scaleOrientationEuler (this,
+	                                     getTransformScaleOrientationEulerXAdjustment (),
+	                                     getTransformScaleOrientationEulerYAdjustment (),
+	                                     getTransformScaleOrientationEulerZAdjustment (),
+	                                     getTransformScaleOrientationEulerBox (),
+	                                     "scaleOrientation"),
 	                             center (this,
 	                                     getTransformCenterXAdjustment (),
 	                                     getTransformCenterYAdjustment (),
@@ -99,7 +110,27 @@ X3DTransformEditor::X3DTransformEditor () :
 void
 X3DTransformEditor::configure ()
 {
+	switch (getConfig () -> getItem <int32_t> ("transformRotationType"))
+	{
+		case 1:
+			getTransformRotationEulerButton () .set_active (true);
+			break;
+		default:
+			getTransformRotationAxisAngleButton () .set_active (true);
+			break;
+	}
+
 	getTransformUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("transformUniformScale"));
+
+	switch (getConfig () -> getItem <int32_t> ("transformScaleOrientationType"))
+	{
+		case 1:
+			getTransformScaleOrientationEulerButton () .set_active (true);
+			break;
+		default:
+			getTransformScaleOrientationAxisAngleButton () .set_active (true);
+			break;
+	}
 }
 
 void
@@ -110,14 +141,56 @@ X3DTransformEditor::set_selection (const X3D::MFNode & selection)
 
 	getTransformExpander () .set_visible (transform);
 
-	translation      .setNodes (transforms);
-	rotation         .setNodes (transforms);
-	scale            .setNodes (transforms);
-	scaleOrientation .setNodes (transforms);
-	center           .setNodes (transforms);
+	translation           .setNodes (transforms);
+	rotation              .setNodes (transforms);
+	rotationTool          .setNodes (transforms);
+	rotationEuler         .setNodes (transforms);
+	scale                 .setNodes (transforms);
+	scaleOrientationTool  .setNodes (transforms);
+	scaleOrientation      .setNodes (transforms);
+	scaleOrientationEuler .setNodes (transforms);
+	center                .setNodes (transforms);
 
-	rotationTool -> setNodes (transforms);
-	scaleOrientationTool -> setNodes (transforms);
+}
+
+void
+X3DTransformEditor::on_transform_rotation_type_clicked ()
+{
+	getTransformRotationPopover () .popup ();
+}
+
+void
+X3DTransformEditor::on_transform_rotation_axis_angle_toggled ()
+{
+	getTransformRotationPopover () .popdown ();
+
+	if (not getTransformRotationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getTransformRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getTransformRotationBox () .set_visible (true);
+	getTransformRotationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("transformRotationType", 0);
+}
+
+void
+X3DTransformEditor::on_transform_rotation_euler_toggled ()
+{
+	getTransformRotationPopover () .popdown ();
+
+	if (not getTransformRotationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getTransformRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getTransformRotationEulerBox () .set_visible (true);
+	getTransformRotationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("transformRotationType", 1);
 }
 
 void
@@ -133,6 +206,46 @@ X3DTransformEditor::on_transform_uniform_scale_clicked ()
 		getTransformUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 		scale .setUniform (false);
 	}
+}
+
+void
+X3DTransformEditor::on_transform_scale_orientation_type_clicked ()
+{
+	getTransformScaleOrientationPopover () .popup ();
+}
+
+void
+X3DTransformEditor::on_transform_scale_orientation_axis_angle_toggled ()
+{
+	getTransformScaleOrientationPopover () .popdown ();
+
+	if (not getTransformScaleOrientationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getTransformScaleOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getTransformScaleOrientationBox () .set_visible (true);
+	getTransformScaleOrientationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("transformScaleOrientationType", 0);
+}
+
+void
+X3DTransformEditor::on_transform_scale_orientation_euler_toggled ()
+{
+	getTransformScaleOrientationPopover () .popdown ();
+
+	if (not getTransformScaleOrientationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getTransformScaleOrientationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getTransformScaleOrientationEulerBox () .set_visible (true);
+	getTransformScaleOrientationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("transformScaleOrientationType", 1);
 }
 
 void

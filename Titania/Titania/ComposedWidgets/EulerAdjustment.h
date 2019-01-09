@@ -48,61 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DVIEWPOINT_EDITOR_H__
-#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DVIEWPOINT_EDITOR_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_EULER_ADJUSTMENT_H__
+#define __TITANIA_COMPOSED_WIDGETS_EULER_ADJUSTMENT_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
-#include "../../Editors/BindableNodeList/ViewpointList.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
-class X3DViewpointEditor :
-	virtual public X3DViewpointEditorInterface
+class EulerAdjustment :
+	public X3DComposedWidget
 {
 public:
+
+	///  @name Construction
+
+	EulerAdjustment (X3DBaseInterface* const editor,
+	                      const Glib::RefPtr <Gtk::Adjustment> & adjustmentX,
+	                      const Glib::RefPtr <Gtk::Adjustment> & adjustmentY,
+	                      const Glib::RefPtr <Gtk::Adjustment> & adjustmentZ,
+	                      Gtk::Widget & widget,
+	                      const std::string & name);
+
+	///  @name Member access
+
+	void
+	setNodes (const X3D::MFNode & value);
+
+	const X3D::MFNode &
+	getNodes ()
+	{ return nodes; }
 
 	///  @name Destruction
 
 	virtual
-	~X3DViewpointEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DViewpointEditor ();
-
-	virtual
-	void
-	initialize () override
-	{ }
-
-	virtual
-	const std::unique_ptr <ViewpointList> &
-	getViewpointList () const = 0;
-
-	void
-	setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &, const bool);
+	~EulerAdjustment () final override;
 
 
 private:
 
 	///  @name Event handlers
 
-	virtual
 	void
-	on_new_viewpoint_clicked () final override;
+	set_scene ();
+
+	void
+	on_value_changed (const int id);
+
+	void
+	set_field ();
+
+	void
+	set_buffer ();
+
+	void
+	set_bounds ();
+
+	void
+	connect (const X3D::SFRotation & field);
+
+	X3D::Rotation4d
+	fromEuler (const X3D::Vector3d & euler);
+	
+	X3D::Vector3d
+	toEuler (const X3D::Rotation4d & rotation);
 
 	///  @name Members
 
-	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
-	RotationTool                          orientationTool;	
-	SFRotationAdjustment                  orientation;
-	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
-	X3DFieldAdjustment <X3D::SFFloat>     fieldOfView;
+	const std::vector <Glib::RefPtr <Gtk::Adjustment>>  adjustments;
+	Gtk::Widget &                                       widget;
+	X3D::X3DScenePtr                                    scene;
+	X3D::MFNode                                         nodes;
+	const std::string                                   name;
+	X3D::UndoStepPtr                                    undoStep;
+	int                                                 input;
+	bool                                                changing;
+	X3D::SFTime                                         buffer;
 
 };
 

@@ -40,6 +40,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
+	Titania/ComposedWidgets/EulerAdjustment.cpp \
 	Titania/ComposedWidgets/GradientTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \

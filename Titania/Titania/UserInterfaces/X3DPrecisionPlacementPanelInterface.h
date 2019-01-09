@@ -250,6 +250,18 @@ public:
 	{ return m_GeoTransformRotationAAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationEulerXAdjustment () const
+	{ return m_GeoTransformRotationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationEulerYAdjustment () const
+	{ return m_GeoTransformRotationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformRotationEulerZAdjustment () const
+	{ return m_GeoTransformRotationEulerZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoTransformRotationXAdjustment () const
 	{ return m_GeoTransformRotationXAdjustment; }
 
@@ -264,6 +276,18 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoTransformScaleOrientationAAdjustment () const
 	{ return m_GeoTransformScaleOrientationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationEulerXAdjustment () const
+	{ return m_GeoTransformScaleOrientationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationEulerYAdjustment () const
+	{ return m_GeoTransformScaleOrientationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoTransformScaleOrientationEulerZAdjustment () const
+	{ return m_GeoTransformScaleOrientationEulerZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoTransformScaleOrientationXAdjustment () const
@@ -486,6 +510,18 @@ public:
 	{ return m_TransformRotationAAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransformRotationEulerXAdjustment () const
+	{ return m_TransformRotationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransformRotationEulerYAdjustment () const
+	{ return m_TransformRotationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransformRotationEulerZAdjustment () const
+	{ return m_TransformRotationEulerZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransformRotationXAdjustment () const
 	{ return m_TransformRotationXAdjustment; }
 
@@ -500,6 +536,18 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransformScaleOrientationAAdjustment () const
 	{ return m_TransformScaleOrientationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransformScaleOrientationEulerXAdjustment () const
+	{ return m_TransformScaleOrientationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransformScaleOrientationEulerYAdjustment () const
+	{ return m_TransformScaleOrientationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransformScaleOrientationEulerZAdjustment () const
+	{ return m_TransformScaleOrientationEulerZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransformScaleOrientationXAdjustment () const
@@ -642,20 +690,44 @@ public:
 	{ return *m_TransformTranslationBox; }
 
 	Gtk::Box &
+	getTransformRotationToolBox () const
+	{ return *m_TransformRotationToolBox; }
+
+	Gtk::Notebook &
+	getTransformRotationNotebook () const
+	{ return *m_TransformRotationNotebook; }
+
+	Gtk::Box &
 	getTransformRotationBox () const
 	{ return *m_TransformRotationBox; }
 
 	Gtk::Box &
-	getTransformRotationToolBox () const
-	{ return *m_TransformRotationToolBox; }
+	getTransformRotationEulerBox () const
+	{ return *m_TransformRotationEulerBox; }
+
+	Gtk::Button &
+	getTransformRotationTypeButton () const
+	{ return *m_TransformRotationTypeButton; }
+
+	Gtk::Box &
+	getTransformScaleOrientationToolBox () const
+	{ return *m_TransformScaleOrientationToolBox; }
+
+	Gtk::Notebook &
+	getTransformScaleOrientationNotebook () const
+	{ return *m_TransformScaleOrientationNotebook; }
 
 	Gtk::Box &
 	getTransformScaleOrientationBox () const
 	{ return *m_TransformScaleOrientationBox; }
 
 	Gtk::Box &
-	getTransformScaleOrientationToolBox () const
-	{ return *m_TransformScaleOrientationToolBox; }
+	getTransformScaleOrientationEulerBox () const
+	{ return *m_TransformScaleOrientationEulerBox; }
+
+	Gtk::Button &
+	getTransformScaleOrientationTypeButton () const
+	{ return *m_TransformScaleOrientationTypeButton; }
 
 	Gtk::Box &
 	getTransformScaleBox () const
@@ -786,20 +858,44 @@ public:
 	{ return *m_GeoTransformTranslationBox; }
 
 	Gtk::Box &
+	getGeoTransformRotationToolBox () const
+	{ return *m_GeoTransformRotationToolBox; }
+
+	Gtk::Notebook &
+	getGeoTransformRotationNotebook () const
+	{ return *m_GeoTransformRotationNotebook; }
+
+	Gtk::Box &
 	getGeoTransformRotationBox () const
 	{ return *m_GeoTransformRotationBox; }
 
 	Gtk::Box &
-	getGeoTransformRotationToolBox () const
-	{ return *m_GeoTransformRotationToolBox; }
+	getGeoTransformRotationEulerBox () const
+	{ return *m_GeoTransformRotationEulerBox; }
+
+	Gtk::Button &
+	getGeoTransformRotationTypeButton () const
+	{ return *m_GeoTransformRotationTypeButton; }
+
+	Gtk::Box &
+	getGeoTransformScaleOrientationToolBox () const
+	{ return *m_GeoTransformScaleOrientationToolBox; }
+
+	Gtk::Notebook &
+	getGeoTransformScaleOrientationNotebook () const
+	{ return *m_GeoTransformScaleOrientationNotebook; }
 
 	Gtk::Box &
 	getGeoTransformScaleOrientationBox () const
 	{ return *m_GeoTransformScaleOrientationBox; }
 
 	Gtk::Box &
-	getGeoTransformScaleOrientationToolBox () const
-	{ return *m_GeoTransformScaleOrientationToolBox; }
+	getGeoTransformScaleOrientationEulerBox () const
+	{ return *m_GeoTransformScaleOrientationEulerBox; }
+
+	Gtk::Button &
+	getGeoTransformScaleOrientationTypeButton () const
+	{ return *m_GeoTransformScaleOrientationTypeButton; }
 
 	Gtk::Box &
 	getGeoTransformScaleBox () const
@@ -1522,6 +1618,30 @@ public:
 	{ return *m_BBoxCenterZSpinButton; }
 
 	Gtk::Popover &
+	getGeoTransformRotationPopover () const
+	{ return *m_GeoTransformRotationPopover; }
+
+	Gtk::RadioButton &
+	getGeoTransformRotationAxisAngleButton () const
+	{ return *m_GeoTransformRotationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getGeoTransformRotationEulerButton () const
+	{ return *m_GeoTransformRotationEulerButton; }
+
+	Gtk::Popover &
+	getGeoTransformScaleOrientationPopover () const
+	{ return *m_GeoTransformScaleOrientationPopover; }
+
+	Gtk::RadioButton &
+	getGeoTransformScaleOrientationAxisAngleButton () const
+	{ return *m_GeoTransformScaleOrientationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getGeoTransformScaleOrientationEulerButton () const
+	{ return *m_GeoTransformScaleOrientationEulerButton; }
+
+	Gtk::Popover &
 	getNewPhysicsPopover () const
 	{ return *m_NewPhysicsPopover; }
 
@@ -1532,6 +1652,30 @@ public:
 	Gtk::Button &
 	getNewWindPhysicsModelButton () const
 	{ return *m_NewWindPhysicsModelButton; }
+
+	Gtk::Popover &
+	getTransformRotationPopover () const
+	{ return *m_TransformRotationPopover; }
+
+	Gtk::RadioButton &
+	getTransformRotationAxisAngleButton () const
+	{ return *m_TransformRotationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getTransformRotationEulerButton () const
+	{ return *m_TransformRotationEulerButton; }
+
+	Gtk::Popover &
+	getTransformScaleOrientationPopover () const
+	{ return *m_TransformScaleOrientationPopover; }
+
+	Gtk::RadioButton &
+	getTransformScaleOrientationAxisAngleButton () const
+	{ return *m_TransformScaleOrientationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getTransformScaleOrientationEulerButton () const
+	{ return *m_TransformScaleOrientationEulerButton; }
 
 	///  @name Signal handlers
 
@@ -1557,6 +1701,14 @@ public:
 
 	virtual
 	void
+	on_transform_rotation_type_clicked () = 0;
+
+	virtual
+	void
+	on_transform_scale_orientation_type_clicked () = 0;
+
+	virtual
+	void
 	on_transform_uniform_scale_clicked () = 0;
 
 	virtual
@@ -1574,6 +1726,14 @@ public:
 	virtual
 	void
 	on_lod_keep_current_level_toggled () = 0;
+
+	virtual
+	void
+	on_geo_transform_rotation_type_clicked () = 0;
+
+	virtual
+	void
+	on_geo_transform_scale_orientation_type_clicked () = 0;
 
 	virtual
 	void
@@ -1645,11 +1805,43 @@ public:
 
 	virtual
 	void
+	on_geo_transform_rotation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_geo_transform_rotation_euler_toggled () = 0;
+
+	virtual
+	void
+	on_geo_transform_scale_orientation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_geo_transform_scale_orientation_euler_toggled () = 0;
+
+	virtual
+	void
 	on_new_force_physics_model_clicked () = 0;
 
 	virtual
 	void
 	on_new_wind_physics_model_clicked () = 0;
+
+	virtual
+	void
+	on_transform_rotation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_transform_rotation_euler_toggled () = 0;
+
+	virtual
+	void
+	on_transform_scale_orientation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_transform_scale_orientation_euler_toggled () = 0;
 
 	///  @name Destruction
 
@@ -1715,10 +1907,16 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformGeoCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformGeoCenterZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformRotationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformScaleOrientationZAdjustment;
@@ -1774,10 +1972,16 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformRotationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformScaleOrientationZAdjustment;
@@ -1813,10 +2017,16 @@ private:
 	Gtk::Expander* m_TransformExpander;
 	Gtk::Grid* m_TransformBox;
 	Gtk::Box* m_TransformTranslationBox;
-	Gtk::Box* m_TransformRotationBox;
 	Gtk::Box* m_TransformRotationToolBox;
-	Gtk::Box* m_TransformScaleOrientationBox;
+	Gtk::Notebook* m_TransformRotationNotebook;
+	Gtk::Box* m_TransformRotationBox;
+	Gtk::Box* m_TransformRotationEulerBox;
+	Gtk::Button* m_TransformRotationTypeButton;
 	Gtk::Box* m_TransformScaleOrientationToolBox;
+	Gtk::Notebook* m_TransformScaleOrientationNotebook;
+	Gtk::Box* m_TransformScaleOrientationBox;
+	Gtk::Box* m_TransformScaleOrientationEulerBox;
+	Gtk::Button* m_TransformScaleOrientationTypeButton;
 	Gtk::Box* m_TransformScaleBox;
 	Gtk::ToggleButton* m_TransformUniformScaleButton;
 	Gtk::Image* m_TransformUniformScaleImage;
@@ -1849,10 +2059,16 @@ private:
 	Gtk::Expander* m_GeoTransformExpander;
 	Gtk::Grid* m_GeoTransformBox;
 	Gtk::Box* m_GeoTransformTranslationBox;
-	Gtk::Box* m_GeoTransformRotationBox;
 	Gtk::Box* m_GeoTransformRotationToolBox;
-	Gtk::Box* m_GeoTransformScaleOrientationBox;
+	Gtk::Notebook* m_GeoTransformRotationNotebook;
+	Gtk::Box* m_GeoTransformRotationBox;
+	Gtk::Box* m_GeoTransformRotationEulerBox;
+	Gtk::Button* m_GeoTransformRotationTypeButton;
 	Gtk::Box* m_GeoTransformScaleOrientationToolBox;
+	Gtk::Notebook* m_GeoTransformScaleOrientationNotebook;
+	Gtk::Box* m_GeoTransformScaleOrientationBox;
+	Gtk::Box* m_GeoTransformScaleOrientationEulerBox;
+	Gtk::Button* m_GeoTransformScaleOrientationTypeButton;
 	Gtk::Box* m_GeoTransformScaleBox;
 	Gtk::ToggleButton* m_GeoTransformUniformScaleButton;
 	Gtk::Image* m_GeoTransformUniformScaleImage;
@@ -2033,9 +2249,21 @@ private:
 	Gtk::SpinButton* m_BBoxCenterXSpinButton;
 	Gtk::SpinButton* m_BBoxCenterYSpinButton;
 	Gtk::SpinButton* m_BBoxCenterZSpinButton;
+	Gtk::Popover* m_GeoTransformRotationPopover;
+	Gtk::RadioButton* m_GeoTransformRotationAxisAngleButton;
+	Gtk::RadioButton* m_GeoTransformRotationEulerButton;
+	Gtk::Popover* m_GeoTransformScaleOrientationPopover;
+	Gtk::RadioButton* m_GeoTransformScaleOrientationAxisAngleButton;
+	Gtk::RadioButton* m_GeoTransformScaleOrientationEulerButton;
 	Gtk::Popover* m_NewPhysicsPopover;
 	Gtk::Button* m_NewForcePhysicsModelButton;
 	Gtk::Button* m_NewWindPhysicsModelButton;
+	Gtk::Popover* m_TransformRotationPopover;
+	Gtk::RadioButton* m_TransformRotationAxisAngleButton;
+	Gtk::RadioButton* m_TransformRotationEulerButton;
+	Gtk::Popover* m_TransformScaleOrientationPopover;
+	Gtk::RadioButton* m_TransformScaleOrientationAxisAngleButton;
+	Gtk::RadioButton* m_TransformScaleOrientationEulerButton;
 
 };
 

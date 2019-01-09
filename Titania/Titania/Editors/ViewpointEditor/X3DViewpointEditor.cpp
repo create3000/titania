@@ -51,7 +51,6 @@
 #include "X3DViewpointEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
-#include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Execution/World.h>
@@ -69,6 +68,7 @@ X3DViewpointEditor::X3DViewpointEditor () :
 	                             getPerspectiveViewpointPositionZAdjustment (),
 	                             getPerspectiveViewpointPositionBox (),
 	                             "position"),
+	            orientationTool (this, getPerspectiveViewpointOrientationToolBox (), "orientation"),
 	                orientation (this,
 	                             getPerspectiveViewpointOrientationXAdjustment (),
 	                             getPerspectiveViewpointOrientationYAdjustment (),
@@ -76,7 +76,6 @@ X3DViewpointEditor::X3DViewpointEditor () :
 	                             getPerspectiveViewpointOrientationAAdjustment (),
 	                             getPerspectiveViewpointOrientationBox (),
 	                             "orientation"),
-	            orientationTool (new RotationTool (this, getPerspectiveViewpointOrientationToolBox (), "orientation")),
 	           centerOfRotation (this,
 	                             getPerspectiveViewpointCenterOfRotationXAdjustment (),
 	                             getPerspectiveViewpointCenterOfRotationYAdjustment (),
@@ -102,11 +101,10 @@ X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & vi
 	const auto viewpoints = viewpoint ? X3D::MFNode ({ viewpoint }) : X3D::MFNode ();
 
 	position         .setNodes (viewpoints);
+	orientationTool  .setNodes (viewpoints);
 	orientation      .setNodes (viewpoints);
 	centerOfRotation .setNodes (viewpoints);
 	fieldOfView      .setNodes (viewpoints);
-
-	orientationTool -> setNodes (viewpoints);
 }
 
 void

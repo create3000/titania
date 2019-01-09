@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class RotationTool;
-
 class X3DTransformEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
 {
@@ -101,20 +99,46 @@ private:
 	
 	virtual
 	void
+	on_transform_rotation_type_clicked () final override;
+
+	virtual
+	void
+	on_transform_rotation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_transform_rotation_euler_toggled () final override;
+
+	virtual
+	void
 	on_transform_uniform_scale_clicked () final override;
 	
 	virtual
 	void
 	on_transform_move_center_button () final override;
+	
+	virtual
+	void
+	on_transform_scale_orientation_type_clicked () final override;
+
+	virtual
+	void
+	on_transform_scale_orientation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_transform_scale_orientation_euler_toggled () final override;
 
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
+	RotationTool                          rotationTool;	
 	SFRotationAdjustment                  rotation;
-	std::unique_ptr <RotationTool>        rotationTool;	
+	EulerAdjustment                       rotationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
+	RotationTool                          scaleOrientationTool;	
 	SFRotationAdjustment                  scaleOrientation;
-	std::unique_ptr <RotationTool>        scaleOrientationTool;	
+	EulerAdjustment                       scaleOrientationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    center;
 
 };

@@ -135,6 +135,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
+	Titania/ComposedWidgets/EulerAdjustment.$(OBJEXT) \
 	Titania/ComposedWidgets/GradientTool.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT) \
@@ -471,6 +472,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po \
 	Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po \
+	Titania/ComposedWidgets/$(DEPDIR)/EulerAdjustment.Po \
 	Titania/ComposedWidgets/$(DEPDIR)/GradientTool.Po \
 	Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po \
 	Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po \
@@ -997,6 +999,7 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/RenderPanel/VideoEncoder.cpp \
 	Titania/BrowserNotebook/RenderPanel/X3DRenderPanel.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
+	Titania/ComposedWidgets/EulerAdjustment.cpp \
 	Titania/ComposedWidgets/GradientTool.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
@@ -1535,6 +1538,9 @@ Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/ComposedWidgets/$(DEPDIR)
 	@: > Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/BackgroundTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/EulerAdjustment.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/GradientTool.$(OBJEXT):  \
@@ -2791,6 +2797,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/EulerAdjustment.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/GradientTool.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po@am__quote@ # am--include-marker
@@ -3399,6 +3406,7 @@ distclean: distclean-am
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po
+	-rm -f Titania/ComposedWidgets/$(DEPDIR)/EulerAdjustment.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/GradientTool.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po
@@ -3753,6 +3761,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/VideoEncoder.Po
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/X3DRenderPanel.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po
+	-rm -f Titania/ComposedWidgets/$(DEPDIR)/EulerAdjustment.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/GradientTool.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po
 	-rm -f Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po

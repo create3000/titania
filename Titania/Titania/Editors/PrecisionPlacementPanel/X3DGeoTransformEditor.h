@@ -57,7 +57,6 @@
 namespace titania {
 namespace puck {
 
-class RotationTool;
 class MFStringGeoSystem;
 
 class X3DGeoTransformEditor :
@@ -98,20 +97,46 @@ protected:
 private:
 
 	///  @name Event handlers
+	
+	virtual
+	void
+	on_geo_transform_rotation_type_clicked () final override;
+
+	virtual
+	void
+	on_geo_transform_rotation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_geo_transform_rotation_euler_toggled () final override;
 
 	virtual
 	void
 	on_geo_transform_uniform_scale_clicked () final override;
+	
+	virtual
+	void
+	on_geo_transform_scale_orientation_type_clicked () final override;
+
+	virtual
+	void
+	on_geo_transform_scale_orientation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_geo_transform_scale_orientation_euler_toggled () final override;
 
 	///  @name Members
 
 	std::unique_ptr <MFStringGeoSystem>   geoSystem;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
+	RotationTool                          rotationTool;
 	SFRotationAdjustment                  rotation;
-	std::unique_ptr <RotationTool>        rotationTool;
+	EulerAdjustment                       rotationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
+	RotationTool                          scaleOrientationTool;
 	SFRotationAdjustment                  scaleOrientation;
-	std::unique_ptr <RotationTool>        scaleOrientationTool;
+	EulerAdjustment                       scaleOrientationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3d>    geoCenter;
 
 };
