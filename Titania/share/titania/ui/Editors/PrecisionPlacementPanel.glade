@@ -1391,6 +1391,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="stock">gtk-properties</property>
+                                                <property name="icon_size">1</property>
                                               </object>
                                             </child>
                                           </object>
@@ -1640,6 +1641,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="stock">gtk-properties</property>
+                                                <property name="icon_size">1</property>
                                               </object>
                                             </child>
                                           </object>
@@ -2812,6 +2814,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="stock">gtk-properties</property>
+                                                <property name="icon_size">1</property>
                                               </object>
                                             </child>
                                           </object>
@@ -3061,6 +3064,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="stock">gtk-properties</property>
+                                                <property name="icon_size">1</property>
                                               </object>
                                             </child>
                                           </object>
@@ -7500,6 +7504,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="stock">gtk-properties</property>
+                                        <property name="icon_size">1</property>
                                       </object>
                                     </child>
                                   </object>
