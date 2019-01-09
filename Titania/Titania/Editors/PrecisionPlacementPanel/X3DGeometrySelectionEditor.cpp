@@ -51,7 +51,6 @@
 #include "X3DGeometrySelectionEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
-#include "../../ComposedWidgets/RotationTool.h"
 #include "../../Revealer/GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Components/Grouping/Transform.h>
