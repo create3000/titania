@@ -70,6 +70,7 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	                                     getGeometrySelectionTranslationZAdjustment (),
 	                                     getGeometrySelectionTranslationBox (),
 	                                     "translation"),
+	                       rotationTool (this, getGeometrySelectionRotationToolBox (), "rotation"),
 	                           rotation (this,
 	                                     getGeometrySelectionRotationXAdjustment (),
 	                                     getGeometrySelectionRotationYAdjustment (),
@@ -77,7 +78,12 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	                                     getGeometrySelectionRotationAAdjustment (),
 	                                     getGeometrySelectionRotationBox (),
 	                                     "rotation"),
-	                       rotationTool (new RotationTool (this, getGeometrySelectionRotationToolBox (), "rotation")),
+	                      rotationEuler (this,
+	                                     getGeometrySelectionRotationEulerXAdjustment (),
+	                                     getGeometrySelectionRotationEulerYAdjustment (),
+	                                     getGeometrySelectionRotationEulerZAdjustment (),
+	                                     getGeometrySelectionRotationEulerBox (),
+	                                     "rotation"),
 	                              scale (this,
 	                                     getGeometrySelectionScaleXAdjustment (),
 	                                     getGeometrySelectionScaleYAdjustment (),
@@ -95,16 +101,26 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 void
 X3DGeometrySelectionEditor::initialize ()
 {
-	translation .setUndo (false);
-	rotation    .setUndo (false);
-	scale       .setUndo (false);
-
-	rotationTool -> setUndo (false);
+	translation   .setUndo (false);
+	rotationTool  .setUndo (false);
+	rotation      .setUndo (false);
+	rotationEuler .setUndo (false);
+	scale         .setUndo (false);
 }
 
 void
 X3DGeometrySelectionEditor::configure ()
 {
+	switch (getConfig () -> getItem <int32_t> ("geometrySelectionRotationType"))
+	{
+		case 1:
+			getGeometrySelectionRotationEulerButton () .set_active (true);
+			break;
+		default:
+			getGeometrySelectionRotationAxisAngleButton () .set_active (true);
+			break;
+	}
+
 	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getItem <bool> ("geometrySelectionUniformScale"));
 
 	set_geometries (getBrowserWindow () -> getSelection () -> getGeometries ());
@@ -121,10 +137,11 @@ X3DGeometrySelectionEditor::set_geometries (const X3D::MFNode & geometryNodes)
 
 	transformNode -> scale () .setUnit (X3D::UnitCategory::LENGTH);
 
-	translation .setNodes (transforms);
-	rotation    .setNodes (transforms);
-	scale       .setNodes (transforms);
-	rotationTool -> setNodes (transforms);
+	translation   .setNodes (transforms);
+	rotationTool  .setNodes (transforms);
+	rotation      .setNodes (transforms);
+	rotationEuler .setNodes (transforms);
+	scale         .setNodes (transforms);
 
 	// IndexedFaceSetTool detection
 
@@ -308,6 +325,46 @@ X3DGeometrySelectionEditor::on_geometry_selection_focus_in_event (GdkEventFocus*
 	undoStep .reset ();
 
 	return false;
+}
+
+void
+X3DGeometrySelectionEditor::on_geometry_selection_rotation_type_clicked ()
+{
+	getGeometrySelectionRotationPopover () .popup ();
+}
+
+void
+X3DGeometrySelectionEditor::on_geometry_selection_rotation_axis_angle_toggled ()
+{
+	getGeometrySelectionRotationPopover () .popdown ();
+
+	if (not getGeometrySelectionRotationAxisAngleButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeometrySelectionRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeometrySelectionRotationBox () .set_visible (true);
+	getGeometrySelectionRotationNotebook () .set_current_page (0);
+
+	getConfig () -> setItem <int32_t> ("geometrySelectionRotationType", 0);
+}
+
+void
+X3DGeometrySelectionEditor::on_geometry_selection_rotation_euler_toggled ()
+{
+	getGeometrySelectionRotationPopover () .popdown ();
+
+	if (not getGeometrySelectionRotationEulerButton () .get_active ())
+		return;
+
+	for (const auto widget : getGeometrySelectionRotationNotebook () .get_children ())
+		widget -> set_visible (false);
+
+	getGeometrySelectionRotationEulerBox () .set_visible (true);
+	getGeometrySelectionRotationNotebook () .set_current_page (1);
+
+	getConfig () -> setItem <int32_t> ("geometrySelectionRotationType", 1);
 }
 
 void

@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class RotationTool;
-
 class X3DGeometrySelectionEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
 {
@@ -138,6 +136,18 @@ private:
 
 	virtual
 	void
+	on_geometry_selection_rotation_type_clicked () final override;
+
+	virtual
+	void
+	on_geometry_selection_rotation_axis_angle_toggled () final override;
+
+	virtual
+	void
+	on_geometry_selection_rotation_euler_toggled () final override;
+
+	virtual
+	void
 	on_geometry_selection_uniform_scale_toggled () final override;
 
 	X3D::X3DPtr <X3D::IndexedFaceSetTool>
@@ -146,8 +156,9 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
+	RotationTool                          rotationTool;	
 	SFRotationAdjustment                  rotation;
-	std::unique_ptr <RotationTool>        rotationTool;	
+	EulerAdjustment                       rotationEuler;
 	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
 
 	X3D::X3DPtr <X3D::Transform>          transformNode;

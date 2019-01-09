@@ -139,6 +139,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_GeoTransformTranslationZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformTranslationZAdjustment"));
 	m_GeoTransformZoneAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformZoneAdjustment"));
 	m_GeometrySelectionRotationAAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationAAdjustment"));
+	m_GeometrySelectionRotationEulerXAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationEulerXAdjustment"));
+	m_GeometrySelectionRotationEulerYAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationEulerYAdjustment"));
+	m_GeometrySelectionRotationEulerZAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationEulerZAdjustment"));
 	m_GeometrySelectionRotationXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationXAdjustment"));
 	m_GeometrySelectionRotationYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationYAdjustment"));
 	m_GeometrySelectionRotationZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationZAdjustment"));
@@ -437,12 +440,15 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("SelectedEdgesLabel", m_SelectedEdgesLabel);
 	m_builder -> get_widget ("SelectedHolesLabel", m_SelectedHolesLabel);
 	m_builder -> get_widget ("SelectedFacesLabel", m_SelectedFacesLabel);
-	m_builder -> get_widget ("GeometrySelectionRotationBox", m_GeometrySelectionRotationBox);
 	m_builder -> get_widget ("GeometrySelectionRotationToolBox", m_GeometrySelectionRotationToolBox);
+	m_builder -> get_widget ("GeometrySelectionRotationNotebook", m_GeometrySelectionRotationNotebook);
+	m_builder -> get_widget ("GeometrySelectionRotationBox", m_GeometrySelectionRotationBox);
 	m_builder -> get_widget ("GeometrySelectionRotationXButton", m_GeometrySelectionRotationXButton);
 	m_builder -> get_widget ("GeometrySelectionRotationYButton", m_GeometrySelectionRotationYButton);
 	m_builder -> get_widget ("GeometrySelectionRotationZButton", m_GeometrySelectionRotationZButton);
 	m_builder -> get_widget ("GeometrySelectionRotationAButton", m_GeometrySelectionRotationAButton);
+	m_builder -> get_widget ("GeometrySelectionRotationEulerBox", m_GeometrySelectionRotationEulerBox);
+	m_builder -> get_widget ("GeometrySelectionRotationTypeButton", m_GeometrySelectionRotationTypeButton);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
@@ -468,6 +474,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("GeoTransformScaleOrientationPopover", m_GeoTransformScaleOrientationPopover);
 	m_builder -> get_widget ("GeoTransformScaleOrientationAxisAngleButton", m_GeoTransformScaleOrientationAxisAngleButton);
 	m_builder -> get_widget ("GeoTransformScaleOrientationEulerButton", m_GeoTransformScaleOrientationEulerButton);
+	m_builder -> get_widget ("GeometrySelectionRotationPopover", m_GeometrySelectionRotationPopover);
+	m_builder -> get_widget ("GeometrySelectionRotationAxisAngleButton", m_GeometrySelectionRotationAxisAngleButton);
+	m_builder -> get_widget ("GeometrySelectionRotationEulerButton", m_GeometrySelectionRotationEulerButton);
 	m_builder -> get_widget ("NewPhysicsPopover", m_NewPhysicsPopover);
 	m_builder -> get_widget ("NewForcePhysicsModelButton", m_NewForcePhysicsModelButton);
 	m_builder -> get_widget ("NewWindPhysicsModelButton", m_NewWindPhysicsModelButton);
@@ -556,6 +565,9 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_GeometrySelectionRotationZButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
 	m_GeometrySelectionRotationAButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
 
+	// Connect object Gtk::Button with id 'GeometrySelectionRotationTypeButton'.
+	m_GeometrySelectionRotationTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_rotation_type_clicked));
+
 	// Connect object Gtk::ToggleButton with id 'BBoxUniformSizeButton'.
 	m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked));
 
@@ -567,6 +579,8 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_GeoTransformRotationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_rotation_euler_toggled));
 	m_GeoTransformScaleOrientationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_scale_orientation_axis_angle_toggled));
 	m_GeoTransformScaleOrientationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_scale_orientation_euler_toggled));
+	m_GeometrySelectionRotationAxisAngleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_rotation_axis_angle_toggled));
+	m_GeometrySelectionRotationEulerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_rotation_euler_toggled));
 
 	// Connect object Gtk::Button with id 'NewForcePhysicsModelButton'.
 	m_NewForcePhysicsModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_new_force_physics_model_clicked));

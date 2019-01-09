@@ -334,6 +334,18 @@ public:
 	{ return m_GeometrySelectionRotationAAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationEulerXAdjustment () const
+	{ return m_GeometrySelectionRotationEulerXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationEulerYAdjustment () const
+	{ return m_GeometrySelectionRotationEulerYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationEulerZAdjustment () const
+	{ return m_GeometrySelectionRotationEulerZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeometrySelectionRotationXAdjustment () const
 	{ return m_GeometrySelectionRotationXAdjustment; }
 
@@ -1518,12 +1530,16 @@ public:
 	{ return *m_SelectedFacesLabel; }
 
 	Gtk::Box &
-	getGeometrySelectionRotationBox () const
-	{ return *m_GeometrySelectionRotationBox; }
-
-	Gtk::Box &
 	getGeometrySelectionRotationToolBox () const
 	{ return *m_GeometrySelectionRotationToolBox; }
+
+	Gtk::Notebook &
+	getGeometrySelectionRotationNotebook () const
+	{ return *m_GeometrySelectionRotationNotebook; }
+
+	Gtk::Box &
+	getGeometrySelectionRotationBox () const
+	{ return *m_GeometrySelectionRotationBox; }
 
 	Gtk::SpinButton &
 	getGeometrySelectionRotationXButton () const
@@ -1540,6 +1556,14 @@ public:
 	Gtk::SpinButton &
 	getGeometrySelectionRotationAButton () const
 	{ return *m_GeometrySelectionRotationAButton; }
+
+	Gtk::Box &
+	getGeometrySelectionRotationEulerBox () const
+	{ return *m_GeometrySelectionRotationEulerBox; }
+
+	Gtk::Button &
+	getGeometrySelectionRotationTypeButton () const
+	{ return *m_GeometrySelectionRotationTypeButton; }
 
 	Gtk::Expander &
 	getBoundingBoxExpander () const
@@ -1640,6 +1664,18 @@ public:
 	Gtk::RadioButton &
 	getGeoTransformScaleOrientationEulerButton () const
 	{ return *m_GeoTransformScaleOrientationEulerButton; }
+
+	Gtk::Popover &
+	getGeometrySelectionRotationPopover () const
+	{ return *m_GeometrySelectionRotationPopover; }
+
+	Gtk::RadioButton &
+	getGeometrySelectionRotationAxisAngleButton () const
+	{ return *m_GeometrySelectionRotationAxisAngleButton; }
+
+	Gtk::RadioButton &
+	getGeometrySelectionRotationEulerButton () const
+	{ return *m_GeometrySelectionRotationEulerButton; }
 
 	Gtk::Popover &
 	getNewPhysicsPopover () const
@@ -1797,6 +1833,10 @@ public:
 
 	virtual
 	void
+	on_geometry_selection_rotation_type_clicked () = 0;
+
+	virtual
+	void
 	on_bbox_uniform_size_clicked () = 0;
 
 	virtual
@@ -1818,6 +1858,14 @@ public:
 	virtual
 	void
 	on_geo_transform_scale_orientation_euler_toggled () = 0;
+
+	virtual
+	void
+	on_geometry_selection_rotation_axis_angle_toggled () = 0;
+
+	virtual
+	void
+	on_geometry_selection_rotation_euler_toggled () = 0;
 
 	virtual
 	void
@@ -1928,6 +1976,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationEulerXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationEulerYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationEulerZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationZAdjustment;
@@ -2224,12 +2275,15 @@ private:
 	Gtk::Label* m_SelectedEdgesLabel;
 	Gtk::Label* m_SelectedHolesLabel;
 	Gtk::Label* m_SelectedFacesLabel;
-	Gtk::Box* m_GeometrySelectionRotationBox;
 	Gtk::Box* m_GeometrySelectionRotationToolBox;
+	Gtk::Notebook* m_GeometrySelectionRotationNotebook;
+	Gtk::Box* m_GeometrySelectionRotationBox;
 	Gtk::SpinButton* m_GeometrySelectionRotationXButton;
 	Gtk::SpinButton* m_GeometrySelectionRotationYButton;
 	Gtk::SpinButton* m_GeometrySelectionRotationZButton;
 	Gtk::SpinButton* m_GeometrySelectionRotationAButton;
+	Gtk::Box* m_GeometrySelectionRotationEulerBox;
+	Gtk::Button* m_GeometrySelectionRotationTypeButton;
 	Gtk::Expander* m_BoundingBoxExpander;
 	Gtk::Grid* m_BoundingBoxBox;
 	Gtk::Box* m_BBoxSizeBox;
@@ -2255,6 +2309,9 @@ private:
 	Gtk::Popover* m_GeoTransformScaleOrientationPopover;
 	Gtk::RadioButton* m_GeoTransformScaleOrientationAxisAngleButton;
 	Gtk::RadioButton* m_GeoTransformScaleOrientationEulerButton;
+	Gtk::Popover* m_GeometrySelectionRotationPopover;
+	Gtk::RadioButton* m_GeometrySelectionRotationAxisAngleButton;
+	Gtk::RadioButton* m_GeometrySelectionRotationEulerButton;
 	Gtk::Popover* m_NewPhysicsPopover;
 	Gtk::Button* m_NewForcePhysicsModelButton;
 	Gtk::Button* m_NewWindPhysicsModelButton;
