@@ -1153,6 +1153,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Select orientation type.</property>
                                                 <property name="valign">end</property>
                                                 <signal name="clicked" handler="on_perspective_viewpoint_orientation_type_clicked" swapped="no"/>
                                                 <child>
@@ -1604,6 +1605,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Select orientation type.</property>
                                                 <property name="valign">end</property>
                                                 <signal name="clicked" handler="on_ortho_viewpoint_orientation_type_clicked" swapped="no"/>
                                                 <child>
@@ -2267,6 +2269,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Select orientation type.</property>
                                                 <property name="valign">end</property>
                                                 <signal name="clicked" handler="on_geo_viewpoint_orientation_type_clicked" swapped="no"/>
                                                 <child>
