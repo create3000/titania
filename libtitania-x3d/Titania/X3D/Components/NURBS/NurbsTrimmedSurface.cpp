@@ -82,11 +82,11 @@ NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionCo
 	addField (initializeOnly, "solid",                 solid ());
 	addField (initializeOnly, "uOrder",                uOrder ());
 	addField (initializeOnly, "vOrder",                vOrder ());
-	addField (initializeOnly, "uDimension",            uDimension ());
-	addField (initializeOnly, "vDimension",            vDimension ());
 	addField (initializeOnly, "uKnot",                 uKnot ());
 	addField (initializeOnly, "vKnot",                 vKnot ());
 	addField (inputOutput,    "weight",                weight ());
+	addField (initializeOnly, "uDimension",            uDimension ());
+	addField (initializeOnly, "vDimension",            vDimension ());
 	addField (inputOutput,    "texCoord",              texCoord ());
 	addField (inputOutput,    "controlPoint",          controlPoint ());
 	addField (inputOnly,      "addTrimmingContour",    addTrimmingContour ());

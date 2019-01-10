@@ -78,14 +78,14 @@ NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const execu
 	addType (X3DConstants::NurbsTextureCoordinate);
 
 	addField (inputOutput,    "metadata",     metadata ());
-	addField (inputOutput,    "controlPoint", controlPoint ());
+	addField (initializeOnly, "uOrder",       uOrder ());
+	addField (initializeOnly, "vOrder",       vOrder ());
+	addField (initializeOnly, "uKnot",        uKnot ());
+	addField (initializeOnly, "vKnot",        vKnot ());
 	addField (inputOutput,    "weight",       weight ());
 	addField (initializeOnly, "uDimension",   uDimension ());
-	addField (initializeOnly, "uKnot",        uKnot ());
-	addField (initializeOnly, "uOrder",       uOrder ());
 	addField (initializeOnly, "vDimension",   vDimension ());
-	addField (initializeOnly, "vKnot",        vKnot ());
-	addField (initializeOnly, "vOrder",       vOrder ());
+	addField (inputOutput,    "controlPoint", controlPoint ());
 }
 
 X3DBaseNode*

@@ -136,26 +136,6 @@ public:
 	{ return *fields .vOrder; }
 
 	virtual
-	SFInt32 &
-	uDimension ()
-	{ return *fields .uDimension; }
-
-	virtual
-	const SFInt32 &
-	uDimension () const
-	{ return *fields .uDimension; }
-
-	virtual
-	SFInt32 &
-	vDimension ()
-	{ return *fields .vDimension; }
-
-	virtual
-	const SFInt32 &
-	vDimension () const
-	{ return *fields .vDimension; }
-
-	virtual
 	MFDouble &
 	uKnot ()
 	{ return *fields .uKnot; }
@@ -184,6 +164,26 @@ public:
 	const MFDouble &
 	weight () const
 	{ return *fields .weight; }
+
+	virtual
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	virtual
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	virtual
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	virtual
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
 
 	virtual
 	SFNode &
@@ -288,11 +288,11 @@ private:
 		SFBool* const solid;
 		SFInt32* const uOrder;
 		SFInt32* const vOrder;
-		SFInt32* const uDimension;
-		SFInt32* const vDimension;
 		MFDouble* const uKnot;
 		MFDouble* const vKnot;
 		MFDouble* const weight;
+		SFInt32* const uDimension;
+		SFInt32* const vDimension;
 		SFNode* const texCoord;
 		SFNode* const controlPoint;
 	};

@@ -63,11 +63,11 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 	        solid (new SFBool (true)),
 	       uOrder (new SFInt32 (3)),
 	       vOrder (new SFInt32 (3)),
-	   uDimension (new SFInt32 ()),
-	   vDimension (new SFInt32 ()),
 	        uKnot (new MFDouble ()),
 	        vKnot (new MFDouble ()),
 	       weight (new MFDouble ()),
+	   uDimension (new SFInt32 ()),
+	   vDimension (new SFInt32 ()),
 	     texCoord (new SFNode ()),
 	 controlPoint (new SFNode ())
 { }
@@ -228,7 +228,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 	if (not controlPointNode)
 		return;
 
-	if (controlPointNode -> getSize () not_eq size_t (uDimension () * vDimension ()))
+	if (int32_t (controlPointNode -> getSize ()) not_eq uDimension () * vDimension ())
 		return;
 
 	// ControlPoints
@@ -264,13 +264,13 @@ X3DNurbsSurfaceGeometryNode::build ()
 	texControlPoints .emplace_back (0, 1, 0, 1);
 	texControlPoints .emplace_back (1, 1, 0, 1);
 
-	texUKnot .emplace_back (uKnots [0]);
-	texUKnot .emplace_back (uKnots [0]);
+	texUKnot .emplace_back (uKnots .front ());
+	texUKnot .emplace_back (uKnots .front ());
 	texUKnot .emplace_back (uKnots .back ());
 	texUKnot .emplace_back (uKnots .back ());
 
-	texVKnot .emplace_back (vKnots [0]);
-	texVKnot .emplace_back (vKnots [0]);
+	texVKnot .emplace_back (vKnots .front ());
+	texVKnot .emplace_back (vKnots .front ());
 	texVKnot .emplace_back (vKnots .back ());
 	texVKnot .emplace_back (vKnots .back ());
 

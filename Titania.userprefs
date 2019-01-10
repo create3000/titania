@@ -1,12 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsSweptSurface.cpp">
     <Files>
-      <File FileName="../../../../usr/include/mozjs-52/jsapi.h" Line="3296" Column="1" />
-      <File FileName="../../../../usr/include/mozjs-52/js/Value.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.h" Line="234" Column="45" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="438" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DBrowser.cpp" Line="866" Column="7" />
+      <File FileName="../../../../usr/include/mozjs-52/jsapi.h" Line="4317" Column="14" />
+      <File FileName="../../../../usr/include/mozjs-52/js/Value.h" Line="1396" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.h" Line="246" Column="87" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" Line="463" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DParametricGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsSweptSurface.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
