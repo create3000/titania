@@ -155,7 +155,7 @@ X3DNurbsSurfaceGeometryNode::getVTessellation () const
 }
 
 std::vector <float>
-X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t order, const int32_t dimension) const
+X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const bool closed, const int32_t order, const int32_t dimension) const
 {
 	std::vector <float> knots (knot .cbegin (), knot .cend ());
 
@@ -192,20 +192,26 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t orde
 		for (size_t i = 0, size = knots .size (); i < size; ++ i)
 			knots [i] = float (i) / (size - 1);
 	}
-//	else
-//	{
-//		// Scale to one unit length for correct tessellation.
-//
-//		double scale = knots .back () - knots .front ();
-//
-//		if (scale)
-//		{
-//			scale = 1 / scale;
-//		
-//			for (auto & value : knots)
-//				value *= scale;
-//		}
-//	}
+
+	if (closed)
+	{
+		const auto offset = 1.0f / (knots .size () - 1);
+
+		for (int32_t i = 0, size = order - 1; i < size; ++ i)
+			knots .emplace_back (knots .back () + offset);
+	}
+
+	// Scale to unit length for correct tessellation.
+
+	float scale = knots .back () - knots .front ();
+
+	if (scale)
+	{
+		scale = 1 / scale;
+	
+		for (auto & value : knots)
+			value *= scale;
+	}
 
 	return knots;
 }
@@ -237,27 +243,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// Knots
 
-	std::vector <float> uKnots = getKnots (uKnot (), uOrder (), uDimension ());
-	std::vector <float> vKnots = getKnots (vKnot (), vOrder (), vDimension ());
-
-	if (uClosed ())
-	{
-		const auto offset = 1.0f / (uKnots .size () - 1);
-
-		for (int32_t i = 0, size = uOrder () - 1; i < size; ++ i)
-			uKnots .emplace_back (uKnots .back () + offset);
-	}
-
-	if (vClosed ())
-	{
-		const auto offset = 1.0f / (vKnots .size () - 1);
-
-		for (int32_t i = 0, size = vOrder () - 1; i < size; ++ i)
-			vKnots .emplace_back (vKnots .back () + offset);
-	}
-
-	const double uScale = uKnots .back () - uKnots .front ();
-	const double vScale = vKnots .back () - vKnots .front ();
+	std::vector <float> uKnots = getKnots (uKnot (), uClosed (), uOrder (), uDimension ());
+	std::vector <float> vKnots = getKnots (vKnot (), vClosed (), vOrder (), vDimension ());
 
 	// TextureCoordinate
 
@@ -310,8 +297,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation () / uScale : getUTessellation ());
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation () / vScale : getVTessellation ());
+	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellation ());
+	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellation ());
 
 	// Options
 	

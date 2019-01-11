@@ -243,7 +243,7 @@ private:
 	getVTessellation () const;
 
 	std::vector <float>
-	getKnots (const MFDouble &, const int32_t, const int32_t) const;
+	getKnots (const std::vector <double> &, const bool closed, const int32_t order, const int32_t dimension) const;
 
 	virtual
 	void
