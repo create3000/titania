@@ -60,11 +60,11 @@ const std::string NurbsPositionInterpolator::typeName       = "NurbsPositionInte
 const std::string NurbsPositionInterpolator::containerField = "children";
 
 NurbsPositionInterpolator::Fields::Fields () :
-	set_fraction (new SFFloat ()),
-	controlPoint (new SFNode ()),
-	knot (new MFDouble ()),
-	order (new SFInt32 (3)),
-	weight (new MFDouble ()),
+	 set_fraction (new SFFloat ()),
+	        order (new SFInt32 (3)),
+	         knot (new MFDouble ()),
+	       weight (new MFDouble ()),
+	 controlPoint (new SFNode ()),
 	value_changed (new SFVec3f ())
 { }
 
@@ -77,10 +77,10 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
-	addField (inputOutput, "controlPoint",  controlPoint ());
-	addField (inputOutput, "knot",          knot ());
 	addField (inputOutput, "order",         order ());
+	addField (inputOutput, "knot",          knot ());
 	addField (inputOutput, "weight",        weight ());
+	addField (inputOutput, "controlPoint",  controlPoint ());
 	addField (outputOnly,  "value_changed", value_changed ());
 }
 

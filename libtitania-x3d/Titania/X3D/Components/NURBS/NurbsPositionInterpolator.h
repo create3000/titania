@@ -94,22 +94,6 @@ public:
 	set_fraction () const
 	{ return *fields .set_fraction; }
 
-	SFNode &
-	controlPoint ()
-	{ return *fields .controlPoint; }
-
-	const SFNode &
-	controlPoint () const
-	{ return *fields .controlPoint; }
-
-	MFDouble &
-	knot ()
-	{ return *fields .knot; }
-
-	const MFDouble &
-	knot () const
-	{ return *fields .knot; }
-
 	SFInt32 &
 	order ()
 	{ return *fields .order; }
@@ -119,12 +103,28 @@ public:
 	{ return *fields .order; }
 
 	MFDouble &
+	knot ()
+	{ return *fields .knot; }
+
+	const MFDouble &
+	knot () const
+	{ return *fields .knot; }
+
+	MFDouble &
 	weight ()
 	{ return *fields .weight; }
 
 	const MFDouble &
 	weight () const
 	{ return *fields .weight; }
+
+	SFNode &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const SFNode &
+	controlPoint () const
+	{ return *fields .controlPoint; }
 
 	SFVec3f &
 	value_changed ()
@@ -151,10 +151,10 @@ private:
 		Fields ();
 
 		SFFloat* const set_fraction;
-		SFNode* const controlPoint;
-		MFDouble* const knot;
 		SFInt32* const order;
+		MFDouble* const knot;
 		MFDouble* const weight;
+		SFNode* const controlPoint;
 		SFVec3f* const value_changed;
 	};
 

@@ -156,19 +156,19 @@ Coordinate::addVertex (std::vector <Vector3d> & vertices, const size_t index) co
 std::vector <Vector4f>
 Coordinate::getControlPoints (const bool uClosed,
                               const bool vClosed,
-                              const int32_t uOrder,
-                              const int32_t vOrder,
-                              const std::vector <double> & weight,
-                              const int32_t uDimension,
-                              const int32_t vDimension) const
+                              const size_t uOrder,
+                              const size_t vOrder,
+                              const size_t uDimension,
+                              const size_t vDimension,
+                              const std::vector <double> & weight) const
 {
 	std::vector <Vector4f> controlPoints;
 
 	if (weight .size () < point () .size ())
 	{
-		for (int32_t v = 0, i = 0; v < vDimension; ++ v)
+		for (size_t v = 0, i = 0; v < vDimension; ++ v)
 		{
-			for (int32_t u = 0; u < uDimension; ++ u, ++ i)
+			for (size_t u = 0; u < uDimension; ++ u, ++ i)
 			{
 				const auto & p = point () [i];
 
@@ -182,22 +182,22 @@ Coordinate::getControlPoints (const bool uClosed,
 			{
 				const auto first = controlPoints .size () - uDimension;
 
-				for (int32_t i = 0, size = uOrder - 1; i < size; ++ i)
+				for (size_t i = 0, size = uOrder - 1; i < size; ++ i)
 					controlPoints .emplace_back (controlPoints [first + i]);
 			}
 		}
 
 		if (vClosed)
 		{
-			for (int32_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
+			for (size_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
 				controlPoints .emplace_back (controlPoints [i]);
 		}
 	}
 	else
 	{
-		for (int32_t v = 0, i = 0; v < vDimension; ++ v)
+		for (size_t v = 0, i = 0; v < vDimension; ++ v)
 		{
-			for (int32_t u = 0; u < uDimension; ++ u, ++ i)
+			for (size_t u = 0; u < uDimension; ++ u, ++ i)
 			{
 				const auto & p = point () [i];
 
@@ -211,14 +211,14 @@ Coordinate::getControlPoints (const bool uClosed,
 			{
 				const auto first = controlPoints .size () - uDimension;
 
-				for (int32_t i = 0, size = uOrder - 1; i < size; ++ i)
+				for (size_t i = 0, size = uOrder - 1; i < size; ++ i)
 					controlPoints .emplace_back (controlPoints [first + i]);
 			}
 		}
 
 		if (vClosed)
 		{
-			for (int32_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
+			for (size_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
 				controlPoints .emplace_back (controlPoints [i]);
 		}
 	}

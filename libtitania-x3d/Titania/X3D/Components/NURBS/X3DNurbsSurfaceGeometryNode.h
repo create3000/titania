@@ -156,16 +156,6 @@ public:
 	{ return *fields .vKnot; }
 
 	virtual
-	MFDouble &
-	weight ()
-	{ return *fields .weight; }
-
-	virtual
-	const MFDouble &
-	weight () const
-	{ return *fields .weight; }
-
-	virtual
 	SFInt32 &
 	uDimension ()
 	{ return *fields .uDimension; }
@@ -186,6 +176,16 @@ public:
 	{ return *fields .vDimension; }
 
 	virtual
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
+
+	virtual
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	virtual
 	SFNode &
 	texCoord ()
 	{ return *fields .texCoord; }
@@ -204,6 +204,10 @@ public:
 	const SFNode &
 	controlPoint () const
 	{ return *fields .controlPoint; }
+
+	///  @name Destruction
+
+	~X3DNurbsSurfaceGeometryNode ();
 
 
 protected:
@@ -243,7 +247,7 @@ private:
 	getVTessellation () const;
 
 	std::vector <float>
-	getKnots (const std::vector <double> &, const bool closed, const int32_t order, const int32_t dimension) const;
+	getKnots (const std::vector <double> &, const bool closed, const size_t order, const size_t dimension) const;
 
 	virtual
 	void
@@ -290,9 +294,9 @@ private:
 		SFInt32* const vOrder;
 		MFDouble* const uKnot;
 		MFDouble* const vKnot;
-		MFDouble* const weight;
 		SFInt32* const uDimension;
 		SFInt32* const vDimension;
+		MFDouble* const weight;
 		SFNode* const texCoord;
 		SFNode* const controlPoint;
 	};
@@ -300,6 +304,7 @@ private:
 	Fields fields;
 	
 	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
+	X3DPtr <NurbsTextureCoordinate>   nurbsTexCoordNode;
 	X3DPtr <X3DCoordinateNode>        controlPointNode;
 
 	GLenum type;

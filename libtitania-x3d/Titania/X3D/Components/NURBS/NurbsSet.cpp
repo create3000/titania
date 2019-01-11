@@ -60,10 +60,10 @@ const std::string NurbsSet::typeName       = "NurbsSet";
 const std::string NurbsSet::containerField = "children";
 
 NurbsSet::Fields::Fields () :
-	addGeometry (new MFNode ()),
-	removeGeometry (new MFNode ()),
-	geometry (new MFNode ()),
-	tessellationScale (new SFFloat (1))
+	tessellationScale (new SFFloat (1)),
+	      addGeometry (new MFNode ()),
+	   removeGeometry (new MFNode ()),
+	         geometry (new MFNode ())
 { }
 
 NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
@@ -75,12 +75,12 @@ NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::NurbsSet);
 
 	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "tessellationScale", tessellationScale ());
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());
 	addField (inputOnly,      "addGeometry",       addGeometry ());
 	addField (inputOnly,      "removeGeometry",    removeGeometry ());
 	addField (inputOutput,    "geometry",          geometry ());
-	addField (inputOutput,    "tessellationScale", tessellationScale ());
 }
 
 X3DBaseNode*

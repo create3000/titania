@@ -86,38 +86,6 @@ public:
 
 	///  @name Fields
 
-	MFVec2f &
-	controlPoint ()
-	{ return *fields .controlPoint; }
-
-	const MFVec2f &
-	controlPoint () const
-	{ return *fields .controlPoint; }
-
-	MFFloat &
-	weight ()
-	{ return *fields .weight; }
-
-	const MFFloat &
-	weight () const
-	{ return *fields .weight; }
-
-	SFInt32 &
-	uDimension ()
-	{ return *fields .uDimension; }
-
-	const SFInt32 &
-	uDimension () const
-	{ return *fields .uDimension; }
-
-	MFDouble &
-	uKnot ()
-	{ return *fields .uKnot; }
-
-	const MFDouble &
-	uKnot () const
-	{ return *fields .uKnot; }
-
 	SFInt32 &
 	uOrder ()
 	{ return *fields .uOrder; }
@@ -127,12 +95,20 @@ public:
 	{ return *fields .uOrder; }
 
 	SFInt32 &
-	vDimension ()
-	{ return *fields .vDimension; }
+	vOrder ()
+	{ return *fields .vOrder; }
 
 	const SFInt32 &
-	vDimension () const
-	{ return *fields .vDimension; }
+	vOrder () const
+	{ return *fields .vOrder; }
+
+	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
 
 	MFDouble &
 	vKnot ()
@@ -143,12 +119,36 @@ public:
 	{ return *fields .vKnot; }
 
 	SFInt32 &
-	vOrder ()
-	{ return *fields .vOrder; }
+	uDimension ()
+	{ return *fields .uDimension; }
 
 	const SFInt32 &
-	vOrder () const
-	{ return *fields .vOrder; }
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
+
+	MFFloat &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFFloat &
+	weight () const
+	{ return *fields .weight; }
+
+	MFVec2f &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const MFVec2f &
+	controlPoint () const
+	{ return *fields .controlPoint; }
 
 
 private:
@@ -166,14 +166,14 @@ private:
 	{
 		Fields ();
 
-		MFVec2f* const controlPoint;
-		MFFloat* const weight;
-		SFInt32* const uDimension;
-		MFDouble* const uKnot;
 		SFInt32* const uOrder;
-		SFInt32* const vDimension;
-		MFDouble* const vKnot;
 		SFInt32* const vOrder;
+		MFDouble* const uKnot;
+		MFDouble* const vKnot;
+		SFInt32* const uDimension;
+		SFInt32* const vDimension;
+		MFFloat* const weight;
+		MFVec2f* const controlPoint;
 	};
 
 	Fields fields;

@@ -75,8 +75,8 @@ NurbsCurve2D::NurbsCurve2D (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::NurbsCurve2D);
 
 	addField (inputOutput,    "metadata",     metadata ());
-	addField (inputOutput,    "tessellation", tessellation ());
 	addField (initializeOnly, "closed",       closed ());
+	addField (inputOutput,    "tessellation", tessellation ());
 	addField (initializeOnly, "order",        order ());
 	addField (initializeOnly, "knot",         knot ());
 	addField (inputOutput,    "weight",       weight ());

@@ -61,8 +61,8 @@ const std::string NurbsCurve::typeName       = "NurbsCurve";
 const std::string NurbsCurve::containerField = "geometry";
 
 NurbsCurve::Fields::Fields () :
-	tessellation (new SFInt32 ()),
 	      closed (new SFBool ()),
+	tessellation (new SFInt32 ()),
 	       order (new SFInt32 (3)),
 	        knot (new MFDouble ()),
 	      weight (new MFDouble ()),
@@ -77,8 +77,8 @@ NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::NurbsCurve);
 
 	addField (inputOutput,    "metadata",     metadata ());
-	addField (inputOutput,    "tessellation", tessellation ());
 	addField (initializeOnly, "closed",       closed ());
+	addField (inputOutput,    "tessellation", tessellation ());
 	addField (initializeOnly, "order",        order ());
 	addField (initializeOnly, "knot",         knot ());
 	addField (inputOutput,    "weight",       weight ());

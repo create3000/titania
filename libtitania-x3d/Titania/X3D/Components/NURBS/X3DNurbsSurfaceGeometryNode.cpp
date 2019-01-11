@@ -50,6 +50,7 @@
 
 #include "X3DNurbsSurfaceGeometryNode.h"
 
+#include "NurbsTextureCoordinate.h"
 #include "../../Bits/Cast.h"
 
 namespace titania {
@@ -65,9 +66,9 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 	       vOrder (new SFInt32 (3)),
 	        uKnot (new MFDouble ()),
 	        vKnot (new MFDouble ()),
-	       weight (new MFDouble ()),
 	   uDimension (new SFInt32 ()),
 	   vDimension (new SFInt32 ()),
+	       weight (new MFDouble ()),
 	     texCoord (new SFNode ()),
 	 controlPoint (new SFNode ())
 { }
@@ -76,6 +77,7 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	X3DParametricGeometryNode (),
 	                   fields (),
 	             texCoordNode (),
+	        nurbsTexCoordNode (),
 	         controlPointNode (),
 	                     type (0),
 	                texCoords (),
@@ -85,8 +87,9 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	              numVertices (0)
 {
 	addType (X3DConstants::X3DNurbsSurfaceGeometryNode);
-	
+
 	addChildObjects (texCoordNode,
+	                 nurbsTexCoordNode,
 	                 controlPointNode);
 }
 
@@ -108,10 +111,17 @@ X3DNurbsSurfaceGeometryNode::set_texCoord ()
 	if (texCoordNode)
 		texCoordNode -> removeInterest (this);
 
-	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+	if (nurbsTexCoordNode)
+		nurbsTexCoordNode -> removeInterest (this);
+
+	texCoordNode      .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+	nurbsTexCoordNode .set (x3d_cast <NurbsTextureCoordinate*>   (texCoord ()));
 
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
+
+	if (nurbsTexCoordNode)
+		nurbsTexCoordNode -> addInterest (this);
 }
 
 void
@@ -155,7 +165,7 @@ X3DNurbsSurfaceGeometryNode::getVTessellation () const
 }
 
 std::vector <float>
-X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const bool closed, const int32_t order, const int32_t dimension) const
+X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const
 {
 	std::vector <float> knots (knot .cbegin (), knot .cend ());
 
@@ -164,11 +174,11 @@ X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const 
 
 	bool generateUniform = true;
 
-	if (int32_t (knots .size ()) == dimension + order)
+	if (knots .size () == size_t (dimension + order))
 	{
 		generateUniform = false;
 
-		int32_t consecutiveKnots = 0;
+		size_t consecutiveKnots = 0;
 
 		for (size_t i = 1; i < knots .size (); ++ i)
 		{
@@ -195,10 +205,20 @@ X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const 
 
 	if (closed)
 	{
-		const auto offset = 1.0f / (knots .size () - 1);
+		float offset = 0;
 
-		for (int32_t i = 0, size = order - 1; i < size; ++ i)
-			knots .emplace_back (knots .back () + offset);
+		for (size_t i = 1; i < knots .size (); ++ i)
+		{
+			offset = knots [i] - knots [i - 1];
+
+			if (offset)
+				break;
+		}
+
+		knots .emplace_back (knots .back () + offset);
+
+		for (size_t i = 1, size = order - 1; i < size; ++ i)
+			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
 	}
 
 	// Scale to unit length for correct tessellation.
@@ -234,12 +254,12 @@ X3DNurbsSurfaceGeometryNode::build ()
 	if (not controlPointNode)
 		return;
 
-	if (int32_t (controlPointNode -> getSize ()) not_eq uDimension () * vDimension ())
+	if (controlPointNode -> getSize () not_eq size_t (uDimension () * vDimension ()))
 		return;
 
 	// ControlPoints
 
-	auto controlPoints = controlPointNode -> getControlPoints (uClosed (), vClosed (), uOrder (), vOrder (), weight (), uDimension (), vDimension ());
+	auto controlPoints = controlPointNode -> getControlPoints (uClosed (), vClosed (), uOrder (), vOrder (), uDimension (), vDimension (), weight ());
 
 	// Knots
 
@@ -250,6 +270,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	//if (texCoordNode)
 	// texCoordNode -> init (getTexCoords (), reserve);
+	//else if (nurbsTexCoordNode)
 	//else
 	getTexCoords () .emplace_back ();
 
@@ -529,6 +550,9 @@ X3DNurbsSurfaceGeometryNode::tessError (GLenum errorCode)
 {
 	__LOG__ << gluErrorString (errorCode) << std::endl;
 }
+
+X3DNurbsSurfaceGeometryNode::~X3DNurbsSurfaceGeometryNode ()
+{ }
 
 } // X3D
 } // titania

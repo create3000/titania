@@ -131,11 +131,11 @@ public:
 	std::vector <Vector4f>
 	getControlPoints (const bool uClosed,
 	                  const bool vClosed,
-	                  const int32_t uOrder,
-	                  const int32_t vOrder,
-	                  const std::vector <double> & weight,
-	                  const int32_t uDimension,
-	                  const int32_t vDimension) const final override;
+	                  const size_t uOrder,
+	                  const size_t vOrder,
+	                  const size_t uDimension,
+	                  const size_t vDimension,
+	                  const std::vector <double> & weight) const final override;
 
 	virtual
 	void

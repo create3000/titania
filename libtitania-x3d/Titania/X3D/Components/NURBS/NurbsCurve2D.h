@@ -88,14 +88,6 @@ public:
 
 	///  @name Fields
 
-	SFInt32 &
-	tessellation ()
-	{ return *fields .tessellation; }
-
-	const SFInt32 &
-	tessellation () const
-	{ return *fields .tessellation; }
-
 	SFBool &
 	closed ()
 	{ return *fields .closed; }
@@ -103,6 +95,14 @@ public:
 	const SFBool &
 	closed () const
 	{ return *fields .closed; }
+
+	SFInt32 &
+	tessellation ()
+	{ return *fields .tessellation; }
+
+	const SFInt32 &
+	tessellation () const
+	{ return *fields .tessellation; }
 
 	SFInt32 &
 	order ()
@@ -157,8 +157,8 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const tessellation;
 		SFBool* const closed;
+		SFInt32* const tessellation;
 		SFInt32* const order;
 		MFDouble* const knot;
 		MFDouble* const weight;

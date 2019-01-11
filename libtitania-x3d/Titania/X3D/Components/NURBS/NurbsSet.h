@@ -89,6 +89,14 @@ public:
 
 	///  @name Fields
 
+	SFFloat &
+	tessellationScale ()
+	{ return *fields .tessellationScale; }
+
+	const SFFloat &
+	tessellationScale () const
+	{ return *fields .tessellationScale; }
+
 	MFNode &
 	addGeometry ()
 	{ return *fields .addGeometry; }
@@ -112,14 +120,6 @@ public:
 	const MFNode &
 	geometry () const
 	{ return *fields .geometry; }
-
-	SFFloat &
-	tessellationScale ()
-	{ return *fields .tessellationScale; }
-
-	const SFFloat &
-	tessellationScale () const
-	{ return *fields .tessellationScale; }
 
 	///  @name Member access
 
@@ -154,10 +154,10 @@ private:
 	{
 		Fields ();
 
+		SFFloat* const tessellationScale;
 		MFNode* const addGeometry;
 		MFNode* const removeGeometry;
 		MFNode* const geometry;
-		SFFloat* const tessellationScale;
 	};
 
 	Fields fields;
