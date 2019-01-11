@@ -102,35 +102,41 @@ public:
 
 	virtual
 	void
-	set1Point (const size_t, const Vector3d &) final override;
+	set1Point (const size_t index, const Vector3d & value) final override;
 
 	virtual
 	Vector3d
-	get1Point (const size_t) const final override;
+	get1Point (const size_t index) const final override;
 
 	virtual
 	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const final override;
+	getNormal (const size_t index1, const size_t index2, const size_t index3) const final override;
 
 	virtual
 	Vector3f
-	getNormal (const size_t, const size_t, const size_t, const size_t) const final override;
+	getNormal (const size_t index1, const size_t index2, const size_t index3, const size_t index4) const final override;
 
 	virtual
 	void
-	addVertex (math::tessellator <double, size_t> &, const size_t, const size_t) const final override;
+	addVertex (math::tessellator <double, size_t> & tessellator, const size_t index, const size_t i) const final override;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3d> &, const size_t) const final override;
+	addVertex (std::vector <Vector3d> & vertices, const size_t index) const final override;
 
 	virtual
-	std::vector <Vector4d>
-	getControlPoints (const MFDouble & weight) const final override;
+	std::vector <Vector4f>
+	getControlPoints (const bool uClosed,
+	                  const bool vClosed,
+	                  const int32_t uOrder,
+	                  const int32_t vOrder,
+	                  const std::vector <double> & weight,
+	                  const int32_t uDimension,
+	                  const int32_t vDimension) const final override;
 
 	virtual
 	void
-	erasePoint (const size_t) final override;
+	erasePoint (const size_t index) final override;
 
 	virtual
 	bool

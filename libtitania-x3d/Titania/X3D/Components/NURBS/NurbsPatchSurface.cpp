@@ -67,11 +67,11 @@ NurbsPatchSurface::NurbsPatchSurface (X3DExecutionContext* const executionContex
 	addType (X3DConstants::NurbsPatchSurface);
 
 	addField (inputOutput,    "metadata",      metadata ());
+	addField (initializeOnly, "solid",         solid ());
 	addField (inputOutput,    "uTessellation", uTessellation ());
 	addField (inputOutput,    "vTessellation", vTessellation ());
 	addField (initializeOnly, "uClosed",       uClosed ());
 	addField (initializeOnly, "vClosed",       vClosed ());
-	addField (initializeOnly, "solid",         solid ());
 	addField (initializeOnly, "uOrder",        uOrder ());
 	addField (initializeOnly, "vOrder",        vOrder ());
 	addField (initializeOnly, "uKnot",         uKnot ());

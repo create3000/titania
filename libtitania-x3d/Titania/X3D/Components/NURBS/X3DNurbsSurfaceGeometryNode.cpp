@@ -56,11 +56,11 @@ namespace titania {
 namespace X3D {
 
 X3DNurbsSurfaceGeometryNode::Fields::Fields () :
+	        solid (new SFBool (true)),
 	uTessellation (new SFInt32 ()),
 	vTessellation (new SFInt32 ()),
 	      uClosed (new SFBool ()),
 	      vClosed (new SFBool ()),
-	        solid (new SFBool (true)),
 	       uOrder (new SFInt32 (3)),
 	       vOrder (new SFInt32 (3)),
 	        uKnot (new MFDouble ()),
@@ -164,11 +164,11 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t orde
 
 	bool generateUniform = true;
 
-	if (knots .size () == size_t (dimension + order))
+	if (int32_t (knots .size ()) == dimension + order)
 	{
 		generateUniform = false;
 
-		size_t consecutiveKnots = 0;
+		int32_t consecutiveKnots = 0;
 
 		for (size_t i = 1; i < knots .size (); ++ i)
 		{
@@ -177,7 +177,7 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t orde
 			else
 				consecutiveKnots = 0;
 
-			if (consecutiveKnots > size_t (order - 1))
+			if (consecutiveKnots > order - 1)
 				generateUniform = true;
 
 			if (knots [i - 1] > knots [i])
@@ -190,7 +190,7 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t orde
 		knots .resize (dimension + order);
 
 		for (size_t i = 0, size = knots .size (); i < size; ++ i)
-			knots [i] = (double) i / (size - 1);
+			knots [i] = float (i) / (size - 1);
 	}
 //	else
 //	{
@@ -233,25 +233,37 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// ControlPoints
 
-	const auto cp = controlPointNode -> getControlPoints (weight ());
-
-	std::vector <Vector4f> controlPoints (cp .cbegin (), cp .cend ());
+	auto controlPoints = controlPointNode -> getControlPoints (uClosed (), vClosed (), uOrder (), vOrder (), weight (), uDimension (), vDimension ());
 
 	// Knots
 
 	std::vector <float> uKnots = getKnots (uKnot (), uOrder (), uDimension ());
 	std::vector <float> vKnots = getKnots (vKnot (), vOrder (), vDimension ());
 
+	if (uClosed ())
+	{
+		const auto offset = 1.0f / (uKnots .size () - 1);
+
+		for (int32_t i = 0, size = uOrder () - 1; i < size; ++ i)
+			uKnots .emplace_back (uKnots .back () + offset);
+	}
+
+	if (vClosed ())
+	{
+		const auto offset = 1.0f / (vKnots .size () - 1);
+
+		for (int32_t i = 0, size = vOrder () - 1; i < size; ++ i)
+			vKnots .emplace_back (vKnots .back () + offset);
+	}
+
 	const double uScale = uKnots .back () - uKnots .front ();
 	const double vScale = vKnots .back () - vKnots .front ();
 
 	// TextureCoordinate
 
-	//	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
-	//
-	//	if (_textureCoordinate)
-	//		_textureCoordinate -> init (getTexCoords (), reserve);
-	//	else
+	//if (texCoordNode)
+	// texCoordNode -> init (getTexCoords (), reserve);
+	//else
 	getTexCoords () .emplace_back ();
 
 	// Default unit square
@@ -298,8 +310,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation () / uScale : 1);
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation () / vScale : 1);
+	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation () / uScale : getUTessellation ());
+	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation () / vScale : getVTessellation ());
 
 	// Options
 	
@@ -322,7 +334,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 	gluNurbsSurface (nurbsRenderer,
 	                 uKnots .size (), uKnots .data (),
 	                 vKnots .size (), vKnots .data (),
-	                 4, 4 * uDimension (),
+	                 4, 4 * (uDimension () + uClosed () * (uOrder () - 1)),
 	                 controlPoints [0] .data (),
 	                 uOrder (), vOrder (),
 	                 GL_MAP2_VERTEX_4);

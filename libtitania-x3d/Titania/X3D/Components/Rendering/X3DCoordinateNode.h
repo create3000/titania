@@ -79,35 +79,41 @@ public:
 	
 	virtual
 	void
-	set1Point (const size_t, const Vector3d &) = 0;
+	set1Point (const size_t index, const Vector3d & value) = 0;
 
 	virtual
 	Vector3d
-	get1Point (const size_t) const = 0;
+	get1Point (const size_t index) const = 0;
 
 	virtual
 	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const = 0;
+	getNormal (const size_t index1, const size_t index2, const size_t index3) const = 0;
 
 	virtual
 	Vector3f
-	getNormal (const size_t, const size_t, const size_t, const size_t) const = 0;
+	getNormal (const size_t index1, const size_t index2, const size_t index3, const size_t index4) const = 0;
 
 	virtual
 	void
-	addVertex (math::tessellator <double, size_t> &, const size_t, const size_t) const = 0;
+	addVertex (math::tessellator <double, size_t> & tessellator, const size_t index, const size_t i) const = 0;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3d>&, const size_t) const = 0;
+	addVertex (std::vector <Vector3d> & vertices, const size_t index) const = 0;
 
 	virtual
-	std::vector <Vector4d>
-	getControlPoints (const MFDouble & weight) const = 0;
+	std::vector <Vector4f>
+	getControlPoints (const bool uClosed,
+	                  const bool vClosed,
+	                  const int32_t uOrder,
+	                  const int32_t vOrder,
+	                  const std::vector <double> & weight,
+	                  const int32_t uDimension,
+	                  const int32_t vDimension) const = 0;
 
 	virtual
 	void
-	erasePoint (const size_t) = 0;
+	erasePoint (const size_t index) = 0;
 
 	virtual
 	bool

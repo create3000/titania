@@ -66,6 +66,16 @@ public:
 	///  @name Fields
 
 	virtual
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	virtual
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	virtual
 	SFInt32 &
 	uTessellation ()
 	{ return *fields .uTessellation; }
@@ -104,16 +114,6 @@ public:
 	const SFBool &
 	vClosed () const
 	{ return *fields .vClosed; }
-
-	virtual
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
-
-	virtual
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
 
 	virtual
 	SFInt32 &
@@ -281,11 +281,11 @@ private:
 	{
 		Fields ();
 
+		SFBool* const solid;
 		SFInt32* const uTessellation;
 		SFInt32* const vTessellation;
 		SFBool* const uClosed;
 		SFBool* const vClosed;
-		SFBool* const solid;
 		SFInt32* const uOrder;
 		SFInt32* const vOrder;
 		MFDouble* const uKnot;

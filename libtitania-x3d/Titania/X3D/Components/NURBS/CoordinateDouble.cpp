@@ -151,31 +151,73 @@ CoordinateDouble::addVertex (std::vector <Vector3d> & vertices, const size_t ind
 		vertices .emplace_back ();
 }
 
-std::vector <Vector4d>
-CoordinateDouble::getControlPoints (const MFDouble & weight) const
+std::vector <Vector4f>
+CoordinateDouble::getControlPoints (const bool uClosed,
+                                    const bool vClosed,
+                                    const int32_t uOrder,
+                                    const int32_t vOrder,
+                                    const std::vector <double> & weight,
+                                    const int32_t uDimension,
+                                    const int32_t vDimension) const
 {
-	std::vector <Vector4d> controlPoints;
-
-	controlPoints .reserve (point () .size ());
+	std::vector <Vector4f> controlPoints;
 
 	if (weight .size () < point () .size ())
 	{
-		for (size_t i = 0; i < point () .size (); i ++)
+		for (int32_t v = 0, i = 0; v < vDimension; ++ v)
 		{
-			controlPoints .emplace_back (point () [i] .x (),
-			                             point () [i] .y (),
-			                             point () [i] .z (),
-			                             1);
+			for (int32_t u = 0; u < uDimension; ++ u, ++ i)
+			{
+				const auto & p = point () [i];
+
+				controlPoints .emplace_back (p .x (),
+				                             p .y (),
+				                             p .z (),
+				                             1);
+			}
+
+			if (uClosed)
+			{
+				const auto first = controlPoints .size () - uDimension;
+
+				for (int32_t i = 0, size = uOrder - 1; i < size; ++ i)
+					controlPoints .emplace_back (controlPoints [first + i]);
+			}
+		}
+
+		if (vClosed)
+		{
+			for (int32_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [i]);
 		}
 	}
 	else
 	{
-		for (size_t i = 0; i < point () .size (); i ++)
+		for (int32_t v = 0, i = 0; v < vDimension; ++ v)
 		{
-			controlPoints .emplace_back (point () [i] .x (),
-			                             point () [i] .y (),
-			                             point () [i] .z (),
-			                             weight [i]);
+			for (int32_t u = 0; u < uDimension; ++ u, ++ i)
+			{
+				const auto & p = point () [i];
+
+				controlPoints .emplace_back (p .x (),
+				                             p .y (),
+				                             p .z (),
+				                             weight [i]);
+			}
+
+			if (uClosed)
+			{
+				const auto first = controlPoints .size () - uDimension;
+
+				for (int32_t i = 0, size = uOrder - 1; i < size; ++ i)
+					controlPoints .emplace_back (controlPoints [first + i]);
+			}
+		}
+
+		if (vClosed)
+		{
+			for (int32_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [i]);
 		}
 	}
 
