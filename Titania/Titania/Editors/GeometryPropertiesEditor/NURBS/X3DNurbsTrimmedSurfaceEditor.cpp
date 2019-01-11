@@ -103,6 +103,18 @@ X3DNurbsTrimmedSurfaceEditor::set_geometry ()
 	vDimension    .setNodes (nodes);
 }
 
+void
+X3DNurbsTrimmedSurfaceEditor::on_nurbs_trimmed_surface_u_dimension_changed ()
+{
+	getNurbsTrimmedSurfaceUOrderAdjustment () -> set_upper (getNurbsTrimmedSurfaceUDimensionAdjustment () -> get_value ());
+}
+
+void
+X3DNurbsTrimmedSurfaceEditor::on_nurbs_trimmed_surface_v_dimension_changed ()
+{
+	getNurbsTrimmedSurfaceVOrderAdjustment () -> set_upper (getNurbsTrimmedSurfaceVDimensionAdjustment () -> get_value ());
+}
+
 X3DNurbsTrimmedSurfaceEditor::~X3DNurbsTrimmedSurfaceEditor ()
 { }
 

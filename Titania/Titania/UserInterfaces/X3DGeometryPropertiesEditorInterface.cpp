@@ -396,6 +396,10 @@ X3DGeometryPropertiesEditorInterface::create ()
 	// Connect object Gtk::Adjustment with id 'Disk2DInnerRadiusAdjustment'.
 	m_Disk2DInnerRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
 	m_Disk2DOuterRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
+	m_NurbsPatchSurfaceUDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_nurbs_patch_surface_u_dimension_changed));
+	m_NurbsPatchSurfaceVDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_nurbs_patch_surface_v_dimension_changed));
+	m_NurbsTrimmedSurfaceUDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_nurbs_trimmed_surface_u_dimension_changed));
+	m_NurbsTrimmedSurfaceVDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_nurbs_trimmed_surface_v_dimension_changed));
 
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
 	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));

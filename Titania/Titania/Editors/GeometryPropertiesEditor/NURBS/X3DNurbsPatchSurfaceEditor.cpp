@@ -103,6 +103,18 @@ X3DNurbsPatchSurfaceEditor::set_geometry ()
 	vDimension    .setNodes (nodes);
 }
 
+void
+X3DNurbsPatchSurfaceEditor::on_nurbs_patch_surface_u_dimension_changed ()
+{
+	getNurbsPatchSurfaceUOrderAdjustment () -> set_upper (getNurbsPatchSurfaceUDimensionAdjustment () -> get_value ());
+}
+
+void
+X3DNurbsPatchSurfaceEditor::on_nurbs_patch_surface_v_dimension_changed ()
+{
+	getNurbsPatchSurfaceVOrderAdjustment () -> set_upper (getNurbsPatchSurfaceVDimensionAdjustment () -> get_value ());
+}
+
 X3DNurbsPatchSurfaceEditor::~X3DNurbsPatchSurfaceEditor ()
 { }
 

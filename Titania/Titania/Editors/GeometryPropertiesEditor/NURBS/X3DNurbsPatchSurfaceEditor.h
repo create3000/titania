@@ -81,6 +81,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_nurbs_patch_surface_u_dimension_changed () final override;
+
+	virtual
+	void
+	on_nurbs_patch_surface_v_dimension_changed () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFInt32>  uTessellation;

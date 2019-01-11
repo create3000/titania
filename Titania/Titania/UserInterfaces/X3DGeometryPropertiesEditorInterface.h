@@ -1345,6 +1345,22 @@ public:
 
 	virtual
 	void
+	on_nurbs_patch_surface_u_dimension_changed () = 0;
+
+	virtual
+	void
+	on_nurbs_patch_surface_v_dimension_changed () = 0;
+
+	virtual
+	void
+	on_nurbs_trimmed_surface_u_dimension_changed () = 0;
+
+	virtual
+	void
+	on_nurbs_trimmed_surface_v_dimension_changed () = 0;
+
+	virtual
+	void
 	on_geometry_changed () = 0;
 
 	virtual

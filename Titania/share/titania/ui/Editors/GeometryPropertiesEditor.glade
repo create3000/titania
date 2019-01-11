@@ -330,6 +330,7 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_nurbs_patch_surface_u_dimension_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="NurbsPatchSurfaceUOrderAdjustment">
     <property name="lower">2</property>
@@ -347,6 +348,7 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_nurbs_patch_surface_v_dimension_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="NurbsPatchSurfaceVOrderAdjustment">
     <property name="lower">2</property>
@@ -364,6 +366,7 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_nurbs_trimmed_surface_u_dimension_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="NurbsTrimmedSurfaceUOrderAdjustment">
     <property name="lower">2</property>
@@ -381,6 +384,7 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_nurbs_trimmed_surface_v_dimension_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="NurbsTrimmedSurfaceVOrderAdjustment">
     <property name="lower">2</property>
