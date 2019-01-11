@@ -203,27 +203,33 @@ X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const 
 			knots [i] = float (i) / (size - 1);
 	}
 
+	// Scale to unit length for correct tessellation.
+	
+	normalizeKnots (knots, 0, knots .size () - 1);
+
 	if (closed)
 	{
-		float offset = 0;
+		const auto size   = knots .size ();
+		const auto offset = 1.0f / (size - 1);
 
-		for (size_t i = 1; i < knots .size (); ++ i)
-		{
-			offset = knots [i] - knots [i - 1];
+		for (size_t i = order + 1; i > 0; -- i)
+			knots [i - 1] = knots [i] - offset;
 
-			if (offset)
-				break;
-		}
+		for (size_t i = 0, size = order - 1; i < size; ++ i)
+			knots .emplace_back (knots .back () + offset);
 
-		knots .emplace_back (knots .back () + offset);
-
-		for (size_t i = 1, size = order - 1; i < size; ++ i)
-			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
+		// Scale to unit length for correct tessellation.
+	
+		normalizeKnots (knots, 0, size - 1);
 	}
 
-	// Scale to unit length for correct tessellation.
+	return knots;
+}
 
-	float scale = knots .back () - knots .front ();
+void
+X3DNurbsSurfaceGeometryNode::normalizeKnots (std::vector <float> & knots, const size_t first, const size_t last) const
+{
+	float scale = knots [last] - knots [first];
 
 	if (scale)
 	{
@@ -232,8 +238,6 @@ X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const 
 		for (auto & value : knots)
 			value *= scale;
 	}
-
-	return knots;
 }
 
 void
@@ -318,8 +322,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellation ());
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellation ());
+	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellation () * 1.5);
+	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellation () * 1.5);
 
 	// Options
 	
