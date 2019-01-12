@@ -285,7 +285,10 @@ private:
 	void
 	set_live ();
 
-	///  @name Member types
+	///  @name Member access
+
+	bool
+	hasTool () const;
 
 	///  @name Static members
 

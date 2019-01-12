@@ -65,6 +65,8 @@ X3DBaseTool::X3DBaseTool (X3DBaseNode* node) :
 	X3DToolObject (),
 	         node (node)
 {
+	//addType (X3DConstants::X3DBaseTool);
+
 	setPrivate (node -> getPrivate ());
 
 	node -> addParent (this);

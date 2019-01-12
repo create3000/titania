@@ -275,6 +275,8 @@ X3DPrototypeInstance::update ()
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
+		const auto tool = hasTool ();
+
 		X3DExecutionContext::dispose ();
 
 		const auto proto  = protoNode -> getProtoDeclaration ();
@@ -406,6 +408,9 @@ X3DPrototypeInstance::update ()
 		}
 
 		construct ();
+
+		if (tool)
+			addTool ();
 	}
 	catch (const X3DError & error)
 	{
@@ -558,6 +563,19 @@ X3DPrototypeInstance::traverse (const TraverseType type, X3DRenderObject* const 
 	{ }
 }
 
+bool
+X3DPrototypeInstance::hasTool () const
+{
+	try
+	{
+		return getInnerNode () -> isType ({ X3DConstants::X3DToolObject });
+	}
+	catch (const X3DError & error)
+	{
+		return false;
+	}
+}
+
 void
 X3DPrototypeInstance::addTool ()
 {
@@ -565,7 +583,7 @@ X3DPrototypeInstance::addTool ()
 	{
 		getInnerNode () -> addTool ();
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 }
 
@@ -576,7 +594,7 @@ X3DPrototypeInstance::removeTool (const bool really)
 	{
 		getInnerNode () -> removeTool (really);
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 }
 
