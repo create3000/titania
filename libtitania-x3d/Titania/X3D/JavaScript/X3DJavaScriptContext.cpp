@@ -104,7 +104,6 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 
 				if (start == std::string::npos)
 					break;
-
 				else
 					++ start;
 			}
@@ -133,7 +132,7 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 	                                         "#      ", trimmedLine, "\n");
 
 	if (startColumn > 0)
-		getBrowser () -> getConsole () -> error ("#      " + std::string (startColumn - 1 - spaces, ' ') + "^\n");
+		getBrowser () -> getConsole () -> error ("#      " + std::string (startColumn - spaces, ' ') + "^\n");
 
 	getBrowser () -> getConsole () -> error ("\n");
 }
