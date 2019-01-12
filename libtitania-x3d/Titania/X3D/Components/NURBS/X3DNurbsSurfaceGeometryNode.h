@@ -246,11 +246,17 @@ private:
 	size_t
 	getVTessellation () const;
 
+	bool
+	getUClosed () const;
+
+	bool
+	getVClosed () const;
+
 	std::vector <float>
 	getKnots (const std::vector <double> &, const bool closed, const size_t order, const size_t dimension) const;
 
 	void
-	normalizeKnots (std::vector <float> & knots, const size_t first, const size_t last) const;
+	normalizeKnots (std::vector <float> & knots) const;
 
 	virtual
 	void

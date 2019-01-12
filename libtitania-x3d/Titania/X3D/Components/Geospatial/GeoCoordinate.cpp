@@ -198,7 +198,7 @@ GeoCoordinate::getControlPoints (const bool uClosed,
 {
 	std::vector <Vector4f> controlPoints;
 
-	if (weight .size () < point () .size ())
+	if (weight .size () not_eq point () .size ())
 	{
 		for (size_t v = 0, i = 0; v < vDimension; ++ v)
 		{
@@ -216,14 +216,14 @@ GeoCoordinate::getControlPoints (const bool uClosed,
 			{
 				const auto first = controlPoints .size () - uDimension;
 
-				for (size_t i = 0, size = uOrder - 1; i < size; ++ i)
+				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
 					controlPoints .emplace_back (controlPoints [first + i]);
 			}
 		}
 
 		if (vClosed)
 		{
-			for (size_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
+			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
 				controlPoints .emplace_back (controlPoints [i]);
 		}
 	}
@@ -245,14 +245,14 @@ GeoCoordinate::getControlPoints (const bool uClosed,
 			{
 				const auto first = controlPoints .size () - uDimension;
 
-				for (size_t i = 0, size = uOrder - 1; i < size; ++ i)
+				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
 					controlPoints .emplace_back (controlPoints [first + i]);
 			}
 		}
 
 		if (vClosed)
 		{
-			for (size_t i = 0, size = (uDimension + uClosed * (uOrder - 1)) * (vOrder - 1); i < size; ++ i)
+			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
 				controlPoints .emplace_back (controlPoints [i]);
 		}
 	}
