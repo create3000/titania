@@ -316,6 +316,7 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 
 						const auto editable = selection -> getSelectGeometry () and node -> isType ({
 							X3D::X3DConstants::IndexedFaceSet,
+							X3D::X3DConstants::X3DNurbsSurfaceGeometryNode,
 						});
 
 						// Normal
@@ -341,13 +342,19 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 
 						if (editable)
 						{
-							coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
-							coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("primitiveColor"));
+							coordEditor -> getField <X3D::SFColorRGBA> ("color")          .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+
+							coordTool -> setField <X3D::SFColorRGBA> ("primitiveColor", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
+							coordTool -> setField <X3D::SFColorRGBA> ("color",          coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
 						}
 						else
 						{
+							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("primitiveColor"));
 							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
-							coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
+
+							coordTool -> setField <X3D::SFColorRGBA> ("primitiveColor", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
+							coordTool -> setField <X3D::SFColorRGBA> ("color",          coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
 						}
 
 						break;

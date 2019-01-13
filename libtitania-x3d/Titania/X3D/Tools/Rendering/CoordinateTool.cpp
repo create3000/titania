@@ -52,6 +52,7 @@
 
 #include "../../Browser/Networking/config.h"
 #include "../../Components/Networking/Inline.h"
+#include "../../Components/Shape/Material.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../ToolColors.h"
 
@@ -63,7 +64,8 @@ const std::string CoordinateTool::typeName       = "CoordinateTool";
 const std::string CoordinateTool::containerField = "coordTool";
 
 CoordinateTool::Fields::Fields () :
-	color (new SFColorRGBA (ToolColors::BLUE_RGBA))
+	         color (new SFColorRGBA (ToolColors::BLUE_RGBA)),
+	primitiveColor (new SFColorRGBA (ToolColors::DARK_BLUE_RGBA))
 { }
 
 CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
@@ -73,9 +75,10 @@ CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::CoordinateTool);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "load",     load ());
-	addField (inputOutput, "color",    color ());
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOutput, "load",           load ());
+	addField (inputOutput, "color",          color ());
+	addField (inputOutput, "primitiveColor", primitiveColor ());
 }
 
 X3DBaseNode*
@@ -116,9 +119,11 @@ CoordinateTool::realize ()
 		selectedEdgesGeometry -> setPrivate (true);
 		selectedFacesGeometry -> setPrivate (true);
 
-		color () .addInterest (&CoordinateTool::set_color, this);
+		color ()           .addInterest (&CoordinateTool::set_color, this);
+		primitiveColor () .addInterest (&CoordinateTool::set_primitiveColor, this);
 
 		set_color ();
+		set_primitiveColor ();
 	}
 	catch (const X3DError & error)
 	{
@@ -131,10 +136,26 @@ CoordinateTool::set_color ()
 {
 	try
 	{
-		const auto material = getInlineNode () -> getExportedNode ("EdgesMaterial");
+		const auto material = getInlineNode () -> getExportedNode <Material> ("EdgesMaterial");
 
-		material -> setField <SFColor> ("emissiveColor", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
-		material -> setField <SFFloat> ("transparency", 1 - color () .getAlpha ());
+		material -> emissiveColor () = Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ());
+		material -> transparency ()  = 1 - color () .getAlpha ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+CoordinateTool::set_primitiveColor ()
+{
+	try
+	{
+		const auto material = getInlineNode () -> getExportedNode <Material> ("PrimitiveMaterial");
+
+		material -> emissiveColor () = Color3f (primitiveColor () .getRed (), primitiveColor () .getGreen (), primitiveColor () .getBlue ());
+		material -> transparency ()  = 1 - primitiveColor () .getAlpha ();
 	}
 	catch (const X3DError & error)
 	{

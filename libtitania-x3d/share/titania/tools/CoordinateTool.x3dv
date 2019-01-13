@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 13 Jan 2019 03:21:39 GMT"
+META "modified" "Sun, 13 Jan 2019 03:58:53 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -64,6 +64,10 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF PrimitiveMaterial Material {
+              diffuseColor 0 0 0
+              emissiveColor 0.35 0.35 1
+            }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -204,24 +208,17 @@ Collision {
           children [
             Group { }
             DepthBuffer {
-              enabled FALSE
               children [
                 DEF ControlPoints Shape {
                   appearance Appearance {
                     lineProperties USE _2
-                    material Material {
-                      diffuseColor 0 0 0
-                      emissiveColor 0.35 0.35 1
-                    }
+                    material USE PrimitiveMaterial
                   }
                   geometry DEF ControlPointSet PointSet { }
                 }
                 DEF ControlPointEdges Shape {
                   appearance Appearance {
-                    material Material {
-                      diffuseColor 0 0 0
-                      emissiveColor 0.7 0.85 1
-                    }
+                    material USE PrimitiveMaterial
                   }
                   geometry DEF ControlPointLines IndexedLineSet { }
                 }
@@ -599,6 +596,7 @@ EXPORT KnifeStartPointSwitch
 EXPORT KnifeTouchSensor
 EXPORT PlaneSensor
 EXPORT PlaneSensorNormal
+EXPORT PrimitiveMaterial
 EXPORT SculpBrushTouchSensor
 EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry

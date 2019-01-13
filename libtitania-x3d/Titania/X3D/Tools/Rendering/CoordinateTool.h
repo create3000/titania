@@ -96,6 +96,14 @@ public:
 	color () const
 	{ return *fields .color; }
 
+	SFColorRGBA &
+	primitiveColor ()
+	{ return *fields .primitiveColor; }
+
+	const SFColorRGBA &
+	primitiveColor () const
+	{ return *fields .primitiveColor; }
+
 
 private:
 
@@ -113,6 +121,9 @@ private:
 	void
 	set_color ();
 
+	void
+	set_primitiveColor ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -126,6 +137,7 @@ private:
 		Fields ();
 
 		SFColorRGBA* const color;
+		SFColorRGBA* const primitiveColor;
 	};
 
 	Fields fields;
