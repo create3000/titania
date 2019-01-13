@@ -122,30 +122,30 @@ public:
 	begin_surface ();
 	
 	void
-	nurbs_surface (int32_t sKnotCount,
-	               float* sKnots,
-	               int32_t tKnotCount,
-	               float* tKnots,
-	               int32_t sStride,
-	               int32_t tStride,
-	               float* control,
-	               int32_t sOrder,
-	               int32_t tOrder,
-	               GLenum type);
+	nurbs_surface (const int32_t sKnotCount,
+	               float* const sKnots,
+	               const int32_t tKnotCount,
+	               float* const tKnots,
+	               const int32_t sStride,
+	               const int32_t tStride,
+	               float* const control,
+	               const int32_t sOrder,
+	               const int32_t tOrder,
+	               const GLenum type);
 
 	void
-	nurbs_curve (int32_t knotCount,
-	             float* knots,
-	             int32_t stride,
-	             float* control,
-	             int32_t order,
-	             GLenum type);
+	nurbs_curve (const int32_t knotCount,
+	             float* const knots,
+	             const int32_t stride,
+	             float* const control,
+	             const int32_t order,
+	             const GLenum type);
 
 	void
-	pwl_curve (int32_t count,
-              float* data,
-              int32_t stride,
-              GLenum type);
+	pwl_curve (const int32_t count,
+              float* const data,
+              const int32_t stride,
+              const GLenum type);
 
 	void
 	begin_trim ();
@@ -165,27 +165,27 @@ private:
 
 	static
 	void
-	tess_begin_data (GLenum type, nurbs_tessellator* self);
+	tess_begin_data (const GLenum type, nurbs_tessellator* const self);
 	
 	static
 	void
-	tess_tex_coord_data (float* texCoord, nurbs_tessellator* self);
+	tess_tex_coord_data (float* const texCoord, nurbs_tessellator* const self);
 	
 	static
 	void
-	tess_normal_data (float* normal, nurbs_tessellator* self);
+	tess_normal_data (float* const normal, nurbs_tessellator* const self);
 	
 	static
 	void
-	tess_vertex_data (float* vertex, nurbs_tessellator* self);
+	tess_vertex_data (float* const vertex, nurbs_tessellator* const self);
 	
 	static
 	void
-	tess_end_data (nurbs_tessellator* self);
+	tess_end_data (nurbs_tessellator* const self);
 	
 	static
 	void
-	tess_error (GLenum errorCode);
+	tess_error (const GLenum errorCode);
 
 	///  @name Members
 

@@ -225,10 +225,10 @@ public:
 	///  @name Operations
 
 	void
-	property (const GLenum, const double);
+	property (const GLenum property, const GLdouble value);
 
 	void
-	normal (const vector3 <Type> & value);
+	normal (const vector3 <Type> & normal);
 
 	void
 	combine (const combine_function_type & value);
@@ -250,7 +250,7 @@ public:
 
 	template <class ... A>
 	void
-	add_vertex (const vector3 <Type> &, A && ... args);
+	add_vertex (const vector3 <Type> & point, A && ... args);
 
 	///  @name Members access
 
@@ -272,22 +272,24 @@ private:
 
 	static
 	void
-	tessBeginData (const GLenum, tessellator* const);
+	tess_begin_data (const GLenum type, tessellator* const self);
 
 	static
 	void
-	tessVertexData (vertex_type* const, tessellator* const);
+	tess_vertex_data (vertex_type* const vertex, tessellator* const self);
 
 	static
 	void
-	tessCombineData (const double [3], const vertex_type* const [4], const float [4], void**, tessellator* const);
+	tess_combine_data (const double coords [3], const vertex_type* const vertices [4],
+	                   const float weight [4], void** outData,
+	                   tessellator* const self);
 
 	static
 	void
-	tessEndData (tessellator* const);
+	tess_end_data (tessellator* const self);
 
 	static
-	void tessError (GLenum);
+	void tess_error (const GLenum errorCode);
 
 	///  @name Members
 
@@ -308,12 +310,12 @@ tessellator <Type, Args ...>::tessellator (const bool debug) :
 	if (m_tess)
 	{
 		gluTessProperty (m_tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (m_tess, GLU_TESS_BEGIN_DATA,   _GLUfuncptr (&tessellator::tessBeginData));
-		gluTessCallback (m_tess, GLU_TESS_VERTEX_DATA,  _GLUfuncptr (&tessellator::tessVertexData));
-		gluTessCallback (m_tess, GLU_TESS_END_DATA,     _GLUfuncptr (&tessellator::tessEndData));
+		gluTessCallback (m_tess, GLU_TESS_BEGIN_DATA,   _GLUfuncptr (&tessellator::tess_begin_data));
+		gluTessCallback (m_tess, GLU_TESS_VERTEX_DATA,  _GLUfuncptr (&tessellator::tess_vertex_data));
+		gluTessCallback (m_tess, GLU_TESS_END_DATA,     _GLUfuncptr (&tessellator::tess_end_data));
 
 		if (debug)
-			gluTessCallback (m_tess, GLU_TESS_ERROR, _GLUfuncptr (&tessellator::tessError));
+			gluTessCallback (m_tess, GLU_TESS_ERROR, _GLUfuncptr (&tessellator::tess_error));
 	}
 }
 
@@ -340,7 +342,7 @@ tessellator <Type, Args ...>::combine (const combine_function_type & value)
 	m_combine = value;
 
 	if (m_combine)
-		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tessCombineData));
+		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tess_combine_data));
 	else
 		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, nullptr);
 }
@@ -397,23 +399,23 @@ tessellator <Type, Args ...>::add_vertex (const vector3 <Type> & point, A && ...
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessBeginData (const GLenum type, tessellator* const self)
+tessellator <Type, Args ...>::tess_begin_data (const GLenum type, tessellator* const self)
 {
 	self -> m_polygons .emplace_back (type);
 }
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessVertexData (vertex_type* const vertex, tessellator* const self)
+tessellator <Type, Args ...>::tess_vertex_data (vertex_type* const vertex, tessellator* const self)
 {
 	self -> m_polygons .back () .m_vertices .emplace_back (vertex);
 }
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessCombineData (const double coords [3], const vertex_type* const vertices [4],
-                                               const float weight [4], void** outData,
-                                               tessellator* const self)
+tessellator <Type, Args ...>::tess_combine_data (const double coords [3], const vertex_type* const vertices [4],
+                                                 const float weight [4], void** outData,
+                                                 tessellator* const self)
 {
 	vector3 <Type> point (coords [0], coords [1], coords [2]);
 
@@ -424,15 +426,15 @@ tessellator <Type, Args ...>::tessCombineData (const double coords [3], const ve
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessEndData (tessellator* const self)
+tessellator <Type, Args ...>::tess_end_data (tessellator* const self)
 { }
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessError (const GLenum err_no)
+tessellator <Type, Args ...>::tess_error (const GLenum errorCode)
 {
 	#ifdef TITANIA_DEBUG
-	std::clog << "Warning: tessellation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
+	std::clog << "Warning: tessellation error: '" << (char*) gluErrorString (errorCode) << "'." << std::endl;
 	#endif
 }
 

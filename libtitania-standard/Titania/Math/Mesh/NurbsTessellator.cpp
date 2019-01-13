@@ -97,16 +97,16 @@ nurbs_tessellator::begin_surface ()
 }
 
 void
-nurbs_tessellator::nurbs_surface (int32_t sKnotCount,
-                            float* sKnots,
-                            int32_t tKnotCount,
-                            float* tKnots,
-                            int32_t sStride,
-                            int32_t tStride,
-                            float* control,
-                            int32_t sOrder,
-                            int32_t tOrder,
-                            GLenum type)
+nurbs_tessellator::nurbs_surface (const int32_t sKnotCount,
+                                  float* const sKnots,
+                                  const int32_t tKnotCount,
+                                  float* const tKnots,
+                                  const int32_t sStride,
+                                  const int32_t tStride,
+                                  float* const control,
+                                  const int32_t sOrder,
+                                  const int32_t tOrder,
+                                  const GLenum type)
 {
 	gluNurbsSurface (m_tess,
 	                 sKnotCount,
@@ -122,12 +122,12 @@ nurbs_tessellator::nurbs_surface (int32_t sKnotCount,
 }
 
 void
-nurbs_tessellator::nurbs_curve (int32_t knotCount,
-                                float* knots,
-                                int32_t stride,
-                                float* control,
-                                int32_t order,
-                                GLenum type)
+nurbs_tessellator::nurbs_curve (const int32_t knotCount,
+                                float* const knots,
+                                const int32_t stride,
+                                float* const control,
+                                const int32_t order,
+                                const GLenum type)
 {
 	gluNurbsCurve (m_tess,
 	               knotCount,
@@ -139,10 +139,10 @@ nurbs_tessellator::nurbs_curve (int32_t knotCount,
 }
 
 void
-nurbs_tessellator::pwl_curve (int32_t count,
-                              float* data,
-                              int32_t stride,
-                              GLenum type)
+nurbs_tessellator::pwl_curve (const int32_t count,
+                              float* const data,
+                              const int32_t stride,
+                              const GLenum type)
 {
 	gluPwlCurve (m_tess,
 	             count,
@@ -170,7 +170,7 @@ nurbs_tessellator::end_surface ()
 }
 
 void
-nurbs_tessellator::tess_begin_data (GLenum type, nurbs_tessellator* self)
+nurbs_tessellator::tess_begin_data (const GLenum type, nurbs_tessellator* const self)
 {
 	self -> m_type = type;
 
@@ -180,25 +180,25 @@ nurbs_tessellator::tess_begin_data (GLenum type, nurbs_tessellator* self)
 }
 
 void
-nurbs_tessellator::tess_tex_coord_data (float* texCoord, nurbs_tessellator* self)
+nurbs_tessellator::tess_tex_coord_data (float* const texCoord, nurbs_tessellator* const self)
 {
 	self -> m_tex_coords .emplace_back (texCoord [0], texCoord [1], texCoord [2], texCoord [3]);
 }
 
 void
-nurbs_tessellator::tess_normal_data (float* normal, nurbs_tessellator* self)
+nurbs_tessellator::tess_normal_data (float* const normal, nurbs_tessellator* const self)
 {
 	self -> m_normals .emplace_back (normal [0], normal [1], normal [2]);
 }
 
 void
-nurbs_tessellator::tess_vertex_data (float* vertex, nurbs_tessellator* self)
+nurbs_tessellator::tess_vertex_data (float* const vertex, nurbs_tessellator* const self)
 {
 	self -> m_vertices .emplace_back (vertex [0], vertex [1], vertex [2]);
 }
 
 void
-nurbs_tessellator::tess_end_data (nurbs_tessellator* self)
+nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 {
 	auto & m_tex_coords = self -> m_tex_coords;
 	auto & m_normals    = self -> m_normals;
@@ -348,9 +348,11 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* self)
 }
 
 void
-nurbs_tessellator::tess_error (GLenum errorCode)
+nurbs_tessellator::tess_error (const GLenum errorCode)
 {
-	__LOG__ << gluErrorString (errorCode) << std::endl;
+	#ifdef TITANIA_DEBUG
+	std::clog << "Warning: nurbs tessellation error: '" << (char*) gluErrorString (errorCode) << "'." << std::endl;
+	#endif
 }
 
 nurbs_tessellator::~nurbs_tessellator ()
