@@ -510,35 +510,23 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// Triangles
 
-	getTexCoords () [0] .insert (getTexCoords () [0] .end (),
-	                             tessellator .triangles () .tex_coords () .begin (),
-	                             tessellator .triangles () .tex_coords () .end ());
+	const auto & triangles = tessellator .triangles ();
 
-	getNormals () .insert (getNormals () .end (),
-	                       tessellator .triangles () .normals () .begin (),
-	                       tessellator .triangles () .normals () .end ());
+	getTexCoords () [0] .insert (getTexCoords () [0] .end (), triangles .tex_coords () .begin (), triangles .tex_coords () .end ());
+	getNormals ()  .insert (getNormals ()  .end (), triangles .normals ()  .begin (), triangles .normals ()  .end ());
+	getVertices () .insert (getVertices () .end (), triangles .vertices () .begin (), triangles .vertices () .end ());
 
-	getVertices () .insert (getVertices () .end (),
-	                        tessellator .triangles () .vertices () .begin (),
-	                        tessellator .triangles () .vertices () .end ());
-
-	addElements (GL_TRIANGLES, tessellator .triangles () .vertices () .size ());
+	addElements (GL_TRIANGLES, triangles .vertices () .size ());
 
 	// Quads
 
-	getTexCoords () [0] .insert (getTexCoords () [0] .end (),
-	                             tessellator .quads () .tex_coords () .begin (),
-	                             tessellator .quads () .tex_coords () .end ());
+	const auto & quads = tessellator .quads ();
 
-	getNormals () .insert (getNormals () .end (),
-	                       tessellator .quads () .normals () .begin (),
-	                       tessellator .quads () .normals () .end ());
+	getTexCoords () [0] .insert (getTexCoords () [0] .end (), quads .tex_coords () .begin (), quads .tex_coords () .end ());
+	getNormals ()  .insert (getNormals ()  .end (), quads .normals ()  .begin (), quads .normals ()  .end ());
+	getVertices () .insert (getVertices () .end (), quads .vertices () .begin (), quads .vertices () .end ());
 
-	getVertices () .insert (getVertices () .end (),
-	                        tessellator .quads () .vertices () .begin (),
-	                        tessellator .quads () .vertices () .end ());
-
-	addElements (GL_QUADS, tessellator .quads () .vertices () .size ());
+	addElements (GL_QUADS, quads .vertices () .size ());
 
 	// Properties
 
