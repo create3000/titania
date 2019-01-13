@@ -139,7 +139,7 @@ X3DNurbsSurfaceGeometryNode::set_controlPoint ()
 }
 
 size_t
-X3DNurbsSurfaceGeometryNode::getUTessellation () const
+X3DNurbsSurfaceGeometryNode::getUTessellation (const size_t uDimension) const
 {
 	// Return a tessellation one less to the standard to get the right tessellation.
 
@@ -147,13 +147,13 @@ X3DNurbsSurfaceGeometryNode::getUTessellation () const
 		return uTessellation ();
 		
 	if (uTessellation () < 0)
-		return -uTessellation () * uDimension ();
+		return -uTessellation () * uDimension;
 
-	return 2 * uDimension ();
+	return 2 * uDimension;
 }
 
 size_t
-X3DNurbsSurfaceGeometryNode::getVTessellation () const
+X3DNurbsSurfaceGeometryNode::getVTessellation (const size_t vDimension) const
 {
 	// Return a tessellation one less to the standard to get the right tessellation.
 
@@ -161,9 +161,9 @@ X3DNurbsSurfaceGeometryNode::getVTessellation () const
 		return vTessellation ();
 		
 	if (vTessellation () < 0)
-		return -vTessellation () * vDimension ();
+		return -vTessellation () * vDimension;
 
-	return 2 * vDimension ();
+	return 2 * vDimension;
 }
 
 bool
@@ -506,8 +506,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation () / uScale : 1);
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation () / vScale : 1);
+	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation (uKnots .size () - uOrder ()) / uScale : 1);
+	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation (vKnots .size () - vOrder ()) / vScale : 1);
 
 	// Options
 	

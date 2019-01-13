@@ -241,10 +241,10 @@ private:
 	///  @name Operations
 
 	size_t
-	getUTessellation () const;
+	getUTessellation (const size_t uDimension) const;
 
 	size_t
-	getVTessellation () const;
+	getVTessellation (const size_t vDimension) const;
 
 	bool
 	getUClosed (const size_t uOrder,

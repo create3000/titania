@@ -250,7 +250,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_loadState ();
+	set_normal_loadState ();
+
+	void
+	set_coord_loadState ();
 
 	void
 	set_toolType ();
@@ -274,9 +277,15 @@ private:
 
 	Fields fields;
 
-	MFVec3d                 selection;
-	X3DPtr <NormalTool>     normalToolNode;
-	X3DPtr <CoordinateTool> coordToolNode;
+	X3DPtr <NormalTool>       normalToolNode;
+	X3DPtr <CoordinateTool>   coordToolNode;
+	X3DPtr <LineSet>          normalsLineSet;
+	X3DPtr <CoordinateDouble> normalsCoord;
+	X3DPtr <Switch>           edgesSwich;
+	X3DPtr <LineSet>          edgesLineSet;
+	X3DPtr <CoordinateDouble> edgesCoord;
+	X3DPtr <CoordinateDouble> verticesCoord;
+	MFVec3d                   selection;
 
 };
 

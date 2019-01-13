@@ -82,19 +82,31 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	 X3DGeometryNode (),
 	     X3DNodeTool (),
 	          fields (),
-	       selection (),
 	  normalToolNode (new NormalTool (getExecutionContext ())), 
-	   coordToolNode (new CoordinateTool (getExecutionContext ()))
+	   coordToolNode (new CoordinateTool (getExecutionContext ())),
+	  normalsLineSet (),
+	    normalsCoord (),
+	      edgesSwich (),
+	    edgesLineSet (),
+	      edgesCoord (),
+	   verticesCoord (),
+	       selection ()
 {
 	addType (X3DConstants::X3DGeometryNodeTool);
 
 	normalTool () .set (normalToolNode);
 	coordTool  () .set (coordToolNode);
 
-	addChildObjects (selection,
-	                 normalToolNode,
-	                 coordToolNode);
-
+	addChildObjects (normalToolNode,
+	                 coordToolNode,
+		              normalsLineSet,
+		              normalsCoord,
+	                 edgesSwich,
+	                 edgesLineSet,
+	                 edgesCoord,
+	                 verticesCoord,
+	                 selection);
+	                 
 	setCameraObject (true);
 }
 
@@ -116,16 +128,16 @@ X3DGeometryNodeTool::initialize ()
 {
 	X3DNodeTool::initialize ();
 
-	getBrowser () -> getSelectable ()        .addInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelectable () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 	getBrowser () -> getSelection () -> getSelectGeometry () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 
 	selection .addInterest (&X3DGeometryNodeTool::set_selection, this);
 
-	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_loadState, this);
+	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_normal_loadState, this);
 	normalToolNode -> length () .addInterest (&X3DGeometryNodeTool::eventProcessed, this);
 	getNode <X3DGeometryNode> () -> addInterest (&X3DGeometryNodeTool::eventProcessed, this);
 
-	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_loadState, this);
+	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_coord_loadState, this);
 	coordToolNode -> load () = true; // Always load coord tool.
 
 	normalToolNode -> setup ();
@@ -133,14 +145,58 @@ X3DGeometryNodeTool::initialize ()
 
 	toolType () .addInterest (&X3DGeometryNodeTool::set_toolType, this);
 
-	set_loadState ();
+	set_normal_loadState ();
+	set_coord_loadState ();
 }
 
 void
-X3DGeometryNodeTool::set_loadState ()
+X3DGeometryNodeTool::set_normal_loadState ()
 {
 	try
 	{
+		const auto & inlineNode = normalToolNode -> getInlineNode ();
+
+		if (inlineNode -> checkLoadState () == COMPLETE_STATE)
+		{
+			normalsLineSet = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet");
+			normalsCoord   = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord");
+		}
+		else
+		{
+			normalsLineSet = nullptr;
+			normalsCoord   = nullptr;
+		}
+
+		eventProcessed ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DGeometryNodeTool::set_coord_loadState ()
+{
+	try
+	{
+		const auto & inlineNode = coordToolNode -> getInlineNode ();
+
+		if (inlineNode -> checkLoadState () == COMPLETE_STATE)
+		{
+			edgesSwich    = inlineNode -> getExportedNode <Switch> ("EdgesSwitch");
+			edgesLineSet  = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet");
+			edgesCoord    = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord");
+			verticesCoord = inlineNode -> getExportedNode <CoordinateDouble> ("VerticesCoord");
+		}
+		else
+		{
+			edgesSwich    = nullptr;
+			edgesLineSet  = nullptr;
+			edgesCoord    = nullptr;
+			verticesCoord = nullptr;
+		}
+
 		set_toolType ();
 		set_pickable ();
 		eventProcessed ();
@@ -217,9 +273,8 @@ X3DGeometryNodeTool::eventProcessed ()
 	{
 		// Normals
 
-		const auto & inlineNode        = normalToolNode -> getInlineNode ();
-		auto &       normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
-		auto &       normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
+		auto & normalVertexCount = normalsLineSet -> vertexCount ();
+		auto & normalPoint       = normalsCoord -> point ();
 
 		if (normals .empty ())
 		{
@@ -247,12 +302,10 @@ X3DGeometryNodeTool::eventProcessed ()
 	{
 		// Points
 
-		const auto & inlineNode       = coordToolNode -> getInlineNode ();
-		const auto   edgesSwich       = inlineNode -> getExportedNode <Switch> ("EdgesSwitch");
-		auto &       edgesVertexCount = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet") -> vertexCount ();
-		auto &       edgesPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord") -> point ();
-		auto &       verticesPoint    = inlineNode -> getExportedNode <CoordinateDouble> ("VerticesCoord") -> point ();
-		const bool   lineGeometry     = getGeometryType () == GeometryType::GEOMETRY_POINTS or getGeometryType () == GeometryType::GEOMETRY_LINES;
+		auto &     edgesVertexCount = edgesLineSet -> vertexCount ();
+		auto &     edgesPoint       = edgesCoord -> point ();
+		auto &     verticesPoint    = verticesCoord -> point ();
+		const bool lineGeometry     = getGeometryType () == GeometryType::GEOMETRY_POINTS or getGeometryType () == GeometryType::GEOMETRY_LINES;
 
 		edgesSwich -> whichChoice () = lineGeometry;
 
