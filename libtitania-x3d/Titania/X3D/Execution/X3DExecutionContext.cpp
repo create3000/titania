@@ -1201,10 +1201,7 @@ X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::
 	const auto iter = std::find_if (routes -> cbegin (), routes -> cend (),
 	[&routeKey] (const RoutePtr & route)
 	{
-		if (route)
-			return routeKey == route -> getKey ();
-
-		return false;
+		return routeKey == route -> getKey ();
 	});
 
 	if (iter == routes -> cend ())
@@ -1262,36 +1259,20 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 		const auto iter = std::remove_if (routes -> begin (), routes -> end (),
 		[&routeKey] (const RoutePtr & route)
 		{
-			if (route)
-				return routeKey == route -> getKey ();
+			if (routeKey not_eq route -> getKey ())
+				return false;
+
+			route -> disconnect ();
 
 			return true;
 		});
-
-		for (const auto & route : std::pair (iter, routes -> end ()))
-		{
-			if (route)
-				route -> disconnect ();
-		}
 
 		routes -> erase (iter, routes -> end ());
 
 		routesOutput = getCurrentTime ();
 	}
 	catch (const std::exception & error)
-	{
-		// Silently return if route not exists.
-
-		if (routes)
-		{
-			routes -> erase (std::remove_if (routes -> begin (), routes -> end (),
-			[ ] (const RoutePtr & route)
-			{
-				return not route;
-			}),
-			routes -> end ());
-		}
-	}
+	{ }
 }
 
 ///  throws Error <INVALID_NODE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
@@ -1311,13 +1292,12 @@ X3DExecutionContext::deleteRoute (Route* const route)
 	const auto iter = std::remove_if (routes -> begin (), routes -> end (),
 	[&routeKey] (const RoutePtr & route)
 	{
-		if (route)
-			return routeKey == route -> getKey ();
-
-		return true;
+		return routeKey == route -> getKey ();
 	});
 
 	routes -> erase (iter, routes -> end ());
+
+	routesOutput = getCurrentTime ();
 }
 
 ///  throws Error <INVALID_NAME>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
