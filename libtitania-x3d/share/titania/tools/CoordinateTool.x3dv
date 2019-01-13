@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 13 Jan 2019 03:13:20 GMT"
+META "modified" "Sun, 13 Jan 2019 03:21:39 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -64,7 +64,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF ControlPointLines IndexedLineSet { }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -204,7 +203,8 @@ Collision {
         DEF ControlPointSwitch Switch {
           children [
             Group { }
-            Group {
+            DepthBuffer {
+              enabled FALSE
               children [
                 DEF ControlPoints Shape {
                   appearance Appearance {
@@ -223,7 +223,7 @@ Collision {
                       emissiveColor 0.7 0.85 1
                     }
                   }
-                  geometry USE ControlPointLines
+                  geometry DEF ControlPointLines IndexedLineSet { }
                 }
               ]
             }
