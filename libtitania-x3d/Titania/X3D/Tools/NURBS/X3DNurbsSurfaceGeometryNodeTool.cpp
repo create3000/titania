@@ -154,10 +154,7 @@ X3DNurbsSurfaceGeometryNodeTool::eventProcessed ()
 		if (controlPointNode -> getSize () not_eq size_t (uDimension () * vDimension ()))
 			return;
 
-		const auto uClosed = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight ());
-		const auto vClosed = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight ());
-
-		for (size_t v = 0, size = vDimension () - 1; v < size; ++ v)
+		for (size_t v = 0, size = vDimension (); v < size; ++ v)
 		{
 			for (size_t u = 0, size = uDimension () - 1; u < size; ++ u)
 			{
@@ -168,34 +165,14 @@ X3DNurbsSurfaceGeometryNodeTool::eventProcessed ()
 				coordIndex .emplace_back (i2);
 				coordIndex .emplace_back (-1);
 			}
-
-			if (uClosed)
-			{
-				const auto i1 = v * uDimension ();
-				const auto i2 = v * uDimension () + uDimension () - 1;
-
-				coordIndex .emplace_back (i1);
-				coordIndex .emplace_back (i2);
-				coordIndex .emplace_back (-1);
-			}
 		}
 
-		for (size_t u = 0, size = uDimension () - 1; u < size; ++ u)
+		for (size_t u = 0, size = uDimension (); u < size; ++ u)
 		{
 			for (size_t v = 0, size = vDimension () - 1; v < size; ++ v)
 			{
 				const auto i1 = v * uDimension () + u;
 				const auto i2 = (v + 1) * uDimension () + u;
-
-				coordIndex .emplace_back (i1);
-				coordIndex .emplace_back (i2);
-				coordIndex .emplace_back (-1);
-			}
-
-			if (vClosed)
-			{
-				const auto i1 = u;
-				const auto i2 = (vDimension () - 1) * uDimension () + u;
 
 				coordIndex .emplace_back (i1);
 				coordIndex .emplace_back (i2);

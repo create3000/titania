@@ -233,26 +233,6 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Operations
-
-	virtual
-	bool
-	getUClosed (const size_t uOrder,
-	            const size_t uDimension,
-	            const size_t vDimension,
-	            const std::vector <double> & uKnot,
-	            const std::vector <double> & weight) const final override
-	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> getUClosed (uOrder, uDimension, vDimension, uKnot, weight); }
-
-	virtual
-	bool
-	getVClosed (const size_t vOrder,
-	            const size_t uDimension,
-	            const size_t vDimension,
-	            const std::vector <double> & vKnot,
-	            const std::vector <double> & weight) const final override
-	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> getUClosed (vOrder, uDimension, vDimension, vKnot, weight); }
-
 
 private:
 
