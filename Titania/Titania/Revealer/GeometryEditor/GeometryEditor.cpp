@@ -176,9 +176,11 @@ GeometryEditor::on_map ()
 {
 	getCurrentBrowser () .addInterest (&GeometryEditor::set_browser, this);
 
+	getBrowserWindow () -> getSelection () -> getNodes ()      .addInterest (&GeometryEditor::set_geometries, this);
 	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&GeometryEditor::set_geometries, this);
 
 	set_browser (getCurrentBrowser ());
+	set_geometries (getBrowserWindow () -> getSelection () -> getNodes ());
 	set_geometries (getBrowserWindow () -> getSelection () -> getGeometries ());
 }
 
