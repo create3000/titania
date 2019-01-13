@@ -312,6 +312,7 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 
 						const auto editable = node -> isType ({
 							X3D::X3DConstants::IndexedFaceSet,
+							//X3D::X3DConstants::X3DNurbsSurfaceGeometryNode,
 						});
 
 						// Normal

@@ -50,20 +50,163 @@
 
 #include "X3DNurbsSurfaceGeometryNodeTool.h"
 
+#include "../../Components/Grouping/Switch.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Components/Rendering/PointSet.h"
+#include "../Rendering/CoordinateTool.h"
+
 namespace titania {
 namespace X3D {
 
 X3DNurbsSurfaceGeometryNodeTool::X3DNurbsSurfaceGeometryNodeTool () :
 	  X3DNurbsSurfaceGeometryNode (),
-	X3DParametricGeometryNodeTool ()
+	X3DParametricGeometryNodeTool (),
+	            controlPointLines ()
 {
 	addType (X3DConstants::X3DNurbsSurfaceGeometryNodeTool);
+
+	addChildObjects (controlPointLines);
 }
 
 void
 X3DNurbsSurfaceGeometryNodeTool::initialize ()
 {
 	X3DParametricGeometryNodeTool::initialize ();
+
+	const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
+
+	inlineNode -> checkLoadState () .addInterest (&X3DNurbsSurfaceGeometryNodeTool::set_load_state, this);
+
+	controlPoint () .addInterest (&X3DNurbsSurfaceGeometryNodeTool::set_controlPoint, this);
+
+	getNode <X3DNurbsSurfaceGeometryNode> () -> addInterest (&X3DNurbsSurfaceGeometryNodeTool::eventProcessed, this);
+
+	set_load_state ();
+}
+
+void
+X3DNurbsSurfaceGeometryNodeTool::set_load_state ()
+{
+	try
+	{
+		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
+	
+		if (inlineNode -> checkLoadState () not_eq COMPLETE_STATE)
+			return;
+	
+		const auto controlPointSwitch = inlineNode -> getExportedNode <Switch> ("ControlPointSwitch");
+
+		controlPointLines = inlineNode -> getExportedNode <IndexedLineSet> ("ControlPointLines");
+
+		controlPointSwitch -> whichChoice () = true;
+
+		set_controlPoint ();
+		eventProcessed ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DNurbsSurfaceGeometryNodeTool::set_controlPoint ()
+{
+	try
+	{
+		const auto & inlineNode      = getCoordinateTool () -> getInlineNode ();
+		const auto   controlPointSet = inlineNode -> getExportedNode <PointSet> ("ControlPointSet");
+
+		controlPointSet -> coord () = controlPoint ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DNurbsSurfaceGeometryNodeTool::eventProcessed ()
+{
+	try
+	{
+		auto & coordIndex = controlPointLines -> coordIndex ();
+
+		coordIndex .clear ();
+
+		const auto & controlPointNode = getControlPoint ();
+
+		if (uOrder () < 2)
+			return;
+	
+		if (vOrder () < 2)
+			return;
+	
+		if (uDimension () < uOrder ())
+			return;
+	
+		if (vDimension () < vOrder ())
+			return;
+	
+		if (not controlPointNode)
+			return;
+	
+		if (controlPointNode -> getSize () not_eq size_t (uDimension () * vDimension ()))
+			return;
+
+		const auto uClosed = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight ());
+		const auto vClosed = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight ());
+
+		for (size_t v = 0, size = vDimension () - 1; v < size; ++ v)
+		{
+			for (size_t u = 0, size = uDimension () - 1; u < size; ++ u)
+			{
+				const auto i1 = v * uDimension () + u;
+				const auto i2 = v * uDimension () + u + 1;
+
+				coordIndex .emplace_back (i1);
+				coordIndex .emplace_back (i2);
+				coordIndex .emplace_back (-1);
+			}
+
+			if (uClosed)
+			{
+				const auto i1 = v * uDimension ();
+				const auto i2 = v * uDimension () + uDimension () - 1;
+
+				coordIndex .emplace_back (i1);
+				coordIndex .emplace_back (i2);
+				coordIndex .emplace_back (-1);
+			}
+		}
+
+		for (size_t u = 0, size = uDimension () - 1; u < size; ++ u)
+		{
+			for (size_t v = 0, size = vDimension () - 1; v < size; ++ v)
+			{
+				const auto i1 = v * uDimension () + u;
+				const auto i2 = (v + 1) * uDimension () + u;
+
+				coordIndex .emplace_back (i1);
+				coordIndex .emplace_back (i2);
+				coordIndex .emplace_back (-1);
+			}
+
+			if (vClosed)
+			{
+				const auto i1 = u;
+				const auto i2 = (vDimension () - 1) * uDimension () + u;
+
+				coordIndex .emplace_back (i1);
+				coordIndex .emplace_back (i2);
+				coordIndex .emplace_back (-1);
+			}
+		}
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

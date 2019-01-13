@@ -205,12 +205,23 @@ public:
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getControlPoint () const
+	{ return controlPointNode; }
+
 	///  @name Destruction
 
 	~X3DNurbsSurfaceGeometryNode ();
 
 
 protected:
+
+	///  @name Friends
+
+	friend class X3DNurbsSurfaceGeometryNodeTool;
 
 	///  @name Construction
 
@@ -221,6 +232,22 @@ protected:
 	initialize () override;
 
 	///  @name Operations
+
+	virtual
+	bool
+	getUClosed (const size_t uOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & uKnot,
+	            const std::vector <double> & weight) const;
+
+	virtual
+	bool
+	getVClosed (const size_t vOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & vKnot,
+	            const std::vector <double> & weight) const;
 
 	virtual
 	void
@@ -245,20 +272,6 @@ private:
 
 	size_t
 	getVTessellation (const size_t vDimension) const;
-
-	bool
-	getUClosed (const size_t uOrder,
-	            const size_t uDimension,
-	            const size_t vDimension,
-	            const std::vector <double> & uKnot,
-	            const std::vector <double> & weight) const;
-
-	bool
-	getVClosed (const size_t vOrder,
-	            const size_t uDimension,
-	            const size_t vDimension,
-	            const std::vector <double> & vKnot,
-	            const std::vector <double> & weight) const;
 
 	std::vector <float>
 	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;

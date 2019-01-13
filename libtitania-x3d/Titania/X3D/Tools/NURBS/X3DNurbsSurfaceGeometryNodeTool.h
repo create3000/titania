@@ -67,6 +67,16 @@ public:
 	///  @name Fields
 
 	virtual
+	SFBool &
+	solid () final override
+	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> solid (); }
+
+	virtual
+	const SFBool &
+	solid () const final override
+	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> solid (); }
+
+	virtual
 	SFInt32 &
 	uTessellation () final override
 	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> uTessellation (); }
@@ -105,16 +115,6 @@ public:
 	const SFBool &
 	vClosed () const final override
 	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> vClosed (); }
-
-	virtual
-	SFBool &
-	solid () final override
-	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> solid (); }
-
-	virtual
-	const SFBool &
-	solid () const final override
-	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> solid (); }
 
 	virtual
 	SFInt32 &
@@ -206,6 +206,13 @@ public:
 	controlPoint () const final override
 	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> controlPoint (); }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getControlPoint () const final override
+	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> getControlPoint (); }
+
 	///  @name Destruction
 
 	virtual
@@ -226,8 +233,43 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Operations
+
+	virtual
+	bool
+	getUClosed (const size_t uOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & uKnot,
+	            const std::vector <double> & weight) const final override
+	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> getUClosed (uOrder, uDimension, vDimension, uKnot, weight); }
+
+	virtual
+	bool
+	getVClosed (const size_t vOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & vKnot,
+	            const std::vector <double> & weight) const final override
+	{ return getNode <X3DNurbsSurfaceGeometryNode> () -> getUClosed (vOrder, uDimension, vDimension, vKnot, weight); }
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_load_state ();
+
+	void
+	set_controlPoint ();
+
+	void
+	eventProcessed ();
+
+	///  @name Members
+
+	X3DPtr <IndexedLineSet> controlPointLines;
 
 };
 
