@@ -128,16 +128,6 @@ public:
 	addVertex (std::vector <Vector3d> & vertices, const size_t index) const final override;
 
 	virtual
-	std::vector <Vector4f>
-	getControlPoints (const bool uClosed,
-	                  const bool vClosed,
-	                  const size_t uOrder,
-	                  const size_t vOrder,
-	                  const size_t uDimension,
-	                  const size_t vDimension,
-	                  const std::vector <double> & weight) const final override;
-
-	virtual
 	void
 	erasePoint (const size_t index) final override;
 

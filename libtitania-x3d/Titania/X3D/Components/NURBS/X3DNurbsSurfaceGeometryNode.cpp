@@ -66,10 +66,10 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 	      vClosed (new SFBool ()),
 	       uOrder (new SFInt32 (3)),
 	       vOrder (new SFInt32 (3)),
-	        uKnot (new MFDouble ()),
-	        vKnot (new MFDouble ()),
 	   uDimension (new SFInt32 ()),
 	   vDimension (new SFInt32 ()),
+	        uKnot (new MFDouble ()),
+	        vKnot (new MFDouble ()),
 	       weight (new MFDouble ()),
 	     texCoord (new SFNode ()),
 	 controlPoint (new SFNode ())
@@ -167,21 +167,25 @@ X3DNurbsSurfaceGeometryNode::getVTessellation () const
 }
 
 bool
-X3DNurbsSurfaceGeometryNode::getUClosed () const
+X3DNurbsSurfaceGeometryNode::getUClosed (const size_t uOrder,
+                                         const size_t uDimension,
+                                         const size_t vDimension,
+                                         const std::vector <double> & uKnot,
+                                         const std::vector <double> & weight) const
 {
 	if (not uClosed ())
 		return false;
 
-	const auto haveWeights = weight () .size () == controlPointNode -> getSize ();
+	const auto haveWeights = weight .size () == controlPointNode -> getSize ();
 
-	for (size_t v = 0, size = vDimension (); v < size; ++ v)
+	for (size_t v = 0, size = vDimension; v < size; ++ v)
 	{
-		const auto first = v * uDimension ();
-		const auto last  = v * uDimension () + uDimension () - 1;
+		const auto first = v * uDimension;
+		const auto last  = v * uDimension + uDimension - 1;
 
 		if (haveWeights)
 		{
-			if (weight () [first] not_eq weight () [last])
+			if (weight [first] not_eq weight [last])
 				return false;
 		}
 
@@ -191,29 +195,29 @@ X3DNurbsSurfaceGeometryNode::getUClosed () const
 
 	// Check if knots are periodic.
 
-	if (uKnot () .size () == size_t (uDimension () + uOrder ()))
+	if (uKnot .size () == uDimension + uOrder)
 	{
 		{
 			size_t count = 1;
 	
-			for (size_t i = 1, size = uOrder (); i < size; ++ i)
+			for (size_t i = 1, size = uOrder; i < size; ++ i)
 			{
-				count += uKnot () [i] == uKnot () .front ();
+				count += uKnot [i] == uKnot .front ();
 			}
 	
-			if (count == size_t (uOrder ()))
+			if (count == uOrder)
 				return false;
 		}
 
 		{
 			size_t count = 1;
 	
-			for (size_t i = uKnot () .size () - uOrder (), size = uKnot () .size () - 1; i < size; ++ i)
+			for (size_t i = uKnot .size () - uOrder, size = uKnot .size () - 1; i < size; ++ i)
 			{
-				count += uKnot () [i] == uKnot () .back ();
+				count += uKnot [i] == uKnot .back ();
 			}
 
-			if (count == size_t (uOrder ()))
+			if (count == uOrder)
 				return false;
 		}
 	}
@@ -222,23 +226,27 @@ X3DNurbsSurfaceGeometryNode::getUClosed () const
 }
 
 bool
-X3DNurbsSurfaceGeometryNode::getVClosed () const
+X3DNurbsSurfaceGeometryNode::getVClosed (const size_t vOrder,
+                                         const size_t uDimension,
+                                         const size_t vDimension,
+                                         const std::vector <double> & vKnot,
+                                         const std::vector <double> & weight) const
 {
 	if (not vClosed ())
 		return false;
 
-	const auto haveWeights = weight () .size () == controlPointNode -> getSize ();
+	const auto haveWeights = weight .size () == controlPointNode -> getSize ();
 
-	for (size_t u = 0, size = uDimension (); u < size; ++ u)
+	for (size_t u = 0, size = uDimension; u < size; ++ u)
 	{
 		const auto first = u;
-		const auto last  = (vDimension () - 1) * uDimension () + u;
+		const auto last  = (vDimension - 1) * uDimension + u;
 
 		// Check if first and last weights are unitary.
 
 		if (haveWeights)
 		{
-			if (weight () [first] not_eq weight () [last])
+			if (weight [first] not_eq weight [last])
 				return false;
 		}
 
@@ -250,29 +258,29 @@ X3DNurbsSurfaceGeometryNode::getVClosed () const
 
 	// Check if knots are periodic.
 
-	if (vKnot () .size () == size_t (vDimension () + vOrder ()))
+	if (vKnot .size () == vDimension + vOrder)
 	{
 		{
 			size_t count = 1;
 	
-			for (size_t i = 1, size = vOrder (); i < size; ++ i)
+			for (size_t i = 1, size = vOrder; i < size; ++ i)
 			{
-				count += vKnot () [i] == vKnot () .front ();
+				count += vKnot [i] == vKnot .front ();
 			}
 	
-			if (count == size_t (vOrder ()))
+			if (count == vOrder)
 				return false;
 		}
 
 		{
 			size_t count = 1;
 	
-			for (size_t i = vKnot () .size () - vOrder (), size = vKnot () .size () - 1; i < size; ++ i)
+			for (size_t i = vKnot .size () - vOrder, size = vKnot .size () - 1; i < size; ++ i)
 			{
-				count += vKnot () [i] == vKnot () .back ();
+				count += vKnot [i] == vKnot .back ();
 			}
 
-			if (count == size_t (vOrder ()))
+			if (count == vOrder)
 				return false;
 		}
 	}
@@ -325,25 +333,80 @@ X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const 
 			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
 	}
 
-	// Scale to unit length for correct tessellation.
-
-	normalizeKnots (knots);
-
 	return knots;
 }
 
-void
-X3DNurbsSurfaceGeometryNode::normalizeKnots (std::vector <float> & knots) const
+std::vector <Vector4f>
+X3DNurbsSurfaceGeometryNode::getControlPoints (const bool uClosed,
+                                               const bool vClosed,
+                                               const size_t uOrder,
+                                               const size_t vOrder,
+                                               const size_t uDimension,
+                                               const size_t vDimension,
+                                               const std::vector <double> & weight) const
 {
-	float scale = knots .back () - knots .front ();
+	std::vector <Vector4f> controlPoints;
 
-	if (scale)
+	if (weight .size () not_eq controlPointNode -> getSize ())
 	{
-		scale = 1 / scale;
-	
-		for (auto & value : knots)
-			value *= scale;
+		for (size_t v = 0, i = 0; v < vDimension; ++ v)
+		{
+			for (size_t u = 0; u < uDimension; ++ u, ++ i)
+			{
+				const auto p = controlPointNode -> get1Point (i);
+
+				controlPoints .emplace_back (p .x (),
+				                             p .y (),
+				                             p .z (),
+				                             1);
+			}
+
+			if (uClosed)
+			{
+				const auto first = controlPoints .size () - uDimension;
+
+				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
+					controlPoints .emplace_back (controlPoints [first + i]);
+			}
+		}
+
+		if (vClosed)
+		{
+			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [i]);
+		}
 	}
+	else
+	{
+		for (size_t v = 0, i = 0; v < vDimension; ++ v)
+		{
+			for (size_t u = 0; u < uDimension; ++ u, ++ i)
+			{
+				const auto p = controlPointNode -> get1Point (i);
+
+				controlPoints .emplace_back (p .x (),
+				                             p .y (),
+				                             p .z (),
+				                             weight [i]);
+			}
+
+			if (uClosed)
+			{
+				const auto first = controlPoints .size () - uDimension;
+
+				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
+					controlPoints .emplace_back (controlPoints [first + i]);
+			}
+		}
+
+		if (vClosed)
+		{
+			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [i]);
+		}
+	}
+
+	return controlPoints;
 }
 
 void
@@ -371,45 +434,53 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// ControlPoints
 
-	const auto uClosed = getUClosed ();
-	const auto vClosed = getVClosed ();
-
-	auto controlPoints = controlPointNode -> getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight ());
+	const auto uClosed       = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight ());
+	const auto vClosed       = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight ());
+	auto       controlPoints = getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight ());
 
 	// Knots
 
-	auto uKnots = getKnots (uKnot (), uClosed, uOrder (), uDimension ());
-	auto vKnots = getKnots (vKnot (), vClosed, vOrder (), vDimension ());
+	auto       uKnots = getKnots (uKnot (), uClosed, uOrder (), uDimension ());
+	auto       vKnots = getKnots (vKnot (), vClosed, vOrder (), vDimension ());
+	const auto uScale = uKnots .back () - uKnots .front ();
+	const auto vScale = vKnots .back () - vKnots .front ();
 
 	assert ((uKnots .size () - uOrder ()) * (vKnots .size () - vOrder ()) == controlPoints .size ());
 
 	// TextureCoordinate
-
-	//if (texCoordNode)
-	// texCoordNode -> init (getTexCoords (), reserve);
-	//else if (nurbsTexCoordNode)
-	//else
-	getTexCoords () .emplace_back ();
 
 	// Default unit square
 	std::vector <Vector4f> texControlPoints;
 	std::vector <float>    texUKnot;
 	std::vector <float>    texVKnot;
 
-	texControlPoints .emplace_back (0, 0, 0, 1);
-	texControlPoints .emplace_back (1, 0, 0, 1);
-	texControlPoints .emplace_back (0, 1, 0, 1);
-	texControlPoints .emplace_back (1, 1, 0, 1);
-
-	texUKnot .emplace_back (uKnots .front ());
-	texUKnot .emplace_back (uKnots .front ());
-	texUKnot .emplace_back (uKnots .back ());
-	texUKnot .emplace_back (uKnots .back ());
-
-	texVKnot .emplace_back (vKnots .front ());
-	texVKnot .emplace_back (vKnots .front ());
-	texVKnot .emplace_back (vKnots .back ());
-	texVKnot .emplace_back (vKnots .back ());
+//	if (texCoordNode)
+//	{
+//		texCoordNode -> init (getTexCoords (), 0);
+//	}
+//	else if (nurbsTexCoordNode)
+//	{
+//
+//	}
+//	else
+	{
+		getTexCoords () .emplace_back ();
+	
+		texControlPoints .emplace_back (0, 0, 0, 1);
+		texControlPoints .emplace_back (1, 0, 0, 1);
+		texControlPoints .emplace_back (0, 1, 0, 1);
+		texControlPoints .emplace_back (1, 1, 0, 1);
+	
+		texUKnot .emplace_back (uKnots .front ());
+		texUKnot .emplace_back (uKnots .front ());
+		texUKnot .emplace_back (uKnots .back ());
+		texUKnot .emplace_back (uKnots .back ());
+	
+		texVKnot .emplace_back (vKnots .front ());
+		texVKnot .emplace_back (vKnots .front ());
+		texVKnot .emplace_back (vKnots .back ());
+		texVKnot .emplace_back (vKnots .back ());
+	}
 
 	// Initialize NURBS renderer
 
@@ -435,8 +506,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellation () * 1.5);
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellation () * 1.5);
+	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation () / uScale : 1);
+	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation () / vScale : 1);
 
 	// Options
 	

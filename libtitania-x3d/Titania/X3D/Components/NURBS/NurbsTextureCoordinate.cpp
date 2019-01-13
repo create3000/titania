@@ -62,10 +62,10 @@ const std::string NurbsTextureCoordinate::containerField = "texCoord";
 NurbsTextureCoordinate::Fields::Fields () :
 	      uOrder (new SFInt32 (3)),
 	      vOrder (new SFInt32 (3)),
-	       uKnot (new MFDouble ()),
-	       vKnot (new MFDouble ()),
 	  uDimension (new SFInt32 ()),
 	  vDimension (new SFInt32 ()),
+	       uKnot (new MFDouble ()),
+	       vKnot (new MFDouble ()),
 	      weight (new MFFloat ()),
 	controlPoint (new MFVec2f ())
 { }
@@ -80,10 +80,10 @@ NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const execu
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (initializeOnly, "uOrder",       uOrder ());
 	addField (initializeOnly, "vOrder",       vOrder ());
-	addField (initializeOnly, "uKnot",        uKnot ());
-	addField (initializeOnly, "vKnot",        vKnot ());
 	addField (initializeOnly, "uDimension",   uDimension ());
 	addField (initializeOnly, "vDimension",   vDimension ());
+	addField (initializeOnly, "uKnot",        uKnot ());
+	addField (initializeOnly, "vKnot",        vKnot ());
 	addField (inputOutput,    "weight",       weight ());
 	addField (inputOutput,    "controlPoint", controlPoint ());
 }

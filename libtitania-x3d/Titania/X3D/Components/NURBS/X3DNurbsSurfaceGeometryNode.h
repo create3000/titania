@@ -136,26 +136,6 @@ public:
 	{ return *fields .vOrder; }
 
 	virtual
-	MFDouble &
-	uKnot ()
-	{ return *fields .uKnot; }
-
-	virtual
-	const MFDouble &
-	uKnot () const
-	{ return *fields .uKnot; }
-
-	virtual
-	MFDouble &
-	vKnot ()
-	{ return *fields .vKnot; }
-
-	virtual
-	const MFDouble &
-	vKnot () const
-	{ return *fields .vKnot; }
-
-	virtual
 	SFInt32 &
 	uDimension ()
 	{ return *fields .uDimension; }
@@ -174,6 +154,26 @@ public:
 	const SFInt32 &
 	vDimension () const
 	{ return *fields .vDimension; }
+
+	virtual
+	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	virtual
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
+
+	virtual
+	MFDouble &
+	vKnot ()
+	{ return *fields .vKnot; }
+
+	virtual
+	const MFDouble &
+	vKnot () const
+	{ return *fields .vKnot; }
 
 	virtual
 	MFDouble &
@@ -247,16 +247,30 @@ private:
 	getVTessellation () const;
 
 	bool
-	getUClosed () const;
+	getUClosed (const size_t uOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & uKnot,
+	            const std::vector <double> & weight) const;
 
 	bool
-	getVClosed () const;
+	getVClosed (const size_t vOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & vKnot,
+	            const std::vector <double> & weight) const;
 
 	std::vector <float>
-	getKnots (const std::vector <double> &, const bool closed, const size_t order, const size_t dimension) const;
+	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;
 
-	void
-	normalizeKnots (std::vector <float> & knots) const;
+	std::vector <Vector4f>
+	getControlPoints (const bool uClosed,
+                     const bool vClosed,
+                     const size_t uOrder,
+                     const size_t vOrder,
+                     const size_t uDimension,
+                     const size_t vDimension,
+                     const std::vector <double> & weight) const;
 
 	virtual
 	void
@@ -301,10 +315,10 @@ private:
 		SFBool* const vClosed;
 		SFInt32* const uOrder;
 		SFInt32* const vOrder;
-		MFDouble* const uKnot;
-		MFDouble* const vKnot;
 		SFInt32* const uDimension;
 		SFInt32* const vDimension;
+		MFDouble* const uKnot;
+		MFDouble* const vKnot;
 		MFDouble* const weight;
 		SFNode* const texCoord;
 		SFNode* const controlPoint;

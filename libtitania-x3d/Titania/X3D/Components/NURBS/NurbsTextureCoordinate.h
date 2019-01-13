@@ -102,22 +102,6 @@ public:
 	vOrder () const
 	{ return *fields .vOrder; }
 
-	MFDouble &
-	uKnot ()
-	{ return *fields .uKnot; }
-
-	const MFDouble &
-	uKnot () const
-	{ return *fields .uKnot; }
-
-	MFDouble &
-	vKnot ()
-	{ return *fields .vKnot; }
-
-	const MFDouble &
-	vKnot () const
-	{ return *fields .vKnot; }
-
 	SFInt32 &
 	uDimension ()
 	{ return *fields .uDimension; }
@@ -133,6 +117,22 @@ public:
 	const SFInt32 &
 	vDimension () const
 	{ return *fields .vDimension; }
+
+	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
+
+	MFDouble &
+	vKnot ()
+	{ return *fields .vKnot; }
+
+	const MFDouble &
+	vKnot () const
+	{ return *fields .vKnot; }
 
 	MFFloat &
 	weight ()
@@ -168,10 +168,10 @@ private:
 
 		SFInt32* const uOrder;
 		SFInt32* const vOrder;
-		MFDouble* const uKnot;
-		MFDouble* const vKnot;
 		SFInt32* const uDimension;
 		SFInt32* const vDimension;
+		MFDouble* const uKnot;
+		MFDouble* const vKnot;
 		MFFloat* const weight;
 		MFVec2f* const controlPoint;
 	};

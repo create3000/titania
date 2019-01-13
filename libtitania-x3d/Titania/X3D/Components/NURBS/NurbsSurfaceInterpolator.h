@@ -111,14 +111,6 @@ public:
 	{ return *fields .controlPoint; }
 
 	SFInt32 &
-	uDimension ()
-	{ return *fields .uDimension; }
-
-	const SFInt32 &
-	uDimension () const
-	{ return *fields .uDimension; }
-
-	SFInt32 &
 	uOrder ()
 	{ return *fields .uOrder; }
 
@@ -133,6 +125,22 @@ public:
 	const SFInt32 &
 	vOrder () const
 	{ return *fields .vOrder; }
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
+
+	SFInt32 &
+	vDimension ()
+	{ return *fields .vDimension; }
+
+	const SFInt32 &
+	vDimension () const
+	{ return *fields .vDimension; }
 
 	MFDouble &
 	uKnot ()
@@ -149,14 +157,6 @@ public:
 	const MFDouble &
 	vKnot () const
 	{ return *fields .vKnot; }
-
-	SFInt32 &
-	vDimension ()
-	{ return *fields .vDimension; }
-
-	const SFInt32 &
-	vDimension () const
-	{ return *fields .vDimension; }
 
 	SFVec3f &
 	normal_changed ()
@@ -195,10 +195,10 @@ private:
 		SFNode* const controlPoint;
 		SFInt32* const uOrder;
 		SFInt32* const vOrder;
-		MFDouble* const uKnot;
-		MFDouble* const vKnot;
 		SFInt32* const uDimension;
 		SFInt32* const vDimension;
+		MFDouble* const uKnot;
+		MFDouble* const vKnot;
 		SFVec3f* const normal_changed;
 		SFVec3f* const position_changed;
 	};
