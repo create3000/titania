@@ -336,68 +336,28 @@ X3DNurbsSurfaceGeometryNode::getTexControlPoints (const bool uClosed,
                                                   const size_t uOrder,
                                                   const size_t vOrder,
                                                   const size_t uDimension,
-                                                  const size_t vDimension,
-                                                  const std::vector <double> & weight) const
+                                                  const size_t vDimension) const
 {
 	std::vector <Vector4f> controlPoints;
 
-	if (weight .size () not_eq texCoordNode -> getSize ())
+	for (size_t v = 0, i = 0; v < vDimension; ++ v)
 	{
-		for (size_t v = 0, i = 0; v < vDimension; ++ v)
+		for (size_t u = 0; u < uDimension; ++ u, ++ i)
+			controlPoints .emplace_back (texCoordNode -> get1Point (i));
+
+		if (uClosed)
 		{
-			for (size_t u = 0; u < uDimension; ++ u, ++ i)
-			{
-				const auto p = texCoordNode -> get1Point (i);
+			const auto first = controlPoints .size () - uDimension;
 
-				controlPoints .emplace_back (p .x (),
-				                             p .y (),
-				                             p .z (),
-				                             1);
-			}
-
-			if (uClosed)
-			{
-				const auto first = controlPoints .size () - uDimension;
-
-				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
-					controlPoints .emplace_back (controlPoints [first + i]);
-			}
-		}
-
-		if (vClosed)
-		{
-			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
+			for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [first + i]);
 		}
 	}
-	else
+
+	if (vClosed)
 	{
-		for (size_t v = 0, i = 0; v < vDimension; ++ v)
-		{
-			for (size_t u = 0; u < uDimension; ++ u, ++ i)
-			{
-				const auto p = texCoordNode -> get1Point (i);
-
-				controlPoints .emplace_back (p .x (),
-				                             p .y (),
-				                             p .z (),
-				                             weight [i]);
-			}
-
-			if (uClosed)
-			{
-				const auto first = controlPoints .size () - uDimension;
-
-				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
-					controlPoints .emplace_back (controlPoints [first + i]);
-			}
-		}
-
-		if (vClosed)
-		{
-			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
+		for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
+			controlPoints .emplace_back (controlPoints [i]);
 	}
 
 	return controlPoints;
@@ -535,7 +495,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 			texVStride       = vStride;
 			texUKnot         = uKnots;
 			texVKnot         = vKnots;
-			texControlPoints = getTexControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight ());
+			texControlPoints = getTexControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension ());
 		}
 	}
 //	else if (nurbsTexCoordNode)

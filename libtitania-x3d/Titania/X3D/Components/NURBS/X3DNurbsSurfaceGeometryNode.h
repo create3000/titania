@@ -278,8 +278,7 @@ private:
                         const size_t uOrder,
                         const size_t vOrder,
                         const size_t uDimension,
-                        const size_t vDimension,
-                        const std::vector <double> & weight) const;
+                        const size_t vDimension) const;
 
 	std::vector <Vector4f>
 	getControlPoints (const bool uClosed,
