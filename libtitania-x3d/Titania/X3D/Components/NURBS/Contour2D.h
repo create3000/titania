@@ -127,7 +127,7 @@ public:
 	getBBox () const;
 
 	void
-	trimSurface (GLUnurbs*) const;
+	trimSurface (nurbs_tessellator & tessellator) const;
 
 
 private:
@@ -168,7 +168,7 @@ private:
 
 	Fields fields;
 
-	std::vector <X3DNurbsControlCurveNode*> curves;
+	X3DPtrArray <X3DNurbsControlCurveNode> curves;
 	
 	Box2d bbox;
 

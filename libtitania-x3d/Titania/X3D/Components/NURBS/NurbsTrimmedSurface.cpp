@@ -150,14 +150,14 @@ NurbsTrimmedSurface::getContours () const
 }
 
 void
-NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer) const
+NurbsTrimmedSurface::trimSurface (nurbs_tessellator & tessellator) const
 {
 	std::vector <Contour2D*> contours = getContours ();
 	
 	if (contours .size () < 2)
 		return;
 	
-	contours [0] -> trimSurface (nurbsRenderer);
+	contours [0] -> trimSurface (tessellator);
 
 	for (size_t i = 1, size = contours .size (); i < size; ++ i)
 	{
@@ -170,7 +170,7 @@ NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer) const
 		if (not contours [0] -> getBBox () .contains (contours [i] -> getBBox ()))
 			continue;
 
-		contours [i] -> trimSurface (nurbsRenderer);
+		contours [i] -> trimSurface (tessellator);
 	}
 }
 

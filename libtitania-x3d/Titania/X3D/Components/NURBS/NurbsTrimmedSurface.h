@@ -132,7 +132,7 @@ protected:
 
 	virtual
 	void
-	trimSurface (GLUnurbs*) const final override;
+	trimSurface (nurbs_tessellator & tessellator) const final override;
 
 
 private:

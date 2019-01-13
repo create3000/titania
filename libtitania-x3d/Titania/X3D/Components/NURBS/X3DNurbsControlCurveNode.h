@@ -54,6 +54,8 @@
 #include "../Core/X3DNode.h"
 #include "../../Types/Geometry.h"
 
+#include <Titania/Math/Mesh/NurbsTessellator.h>
+
 namespace titania {
 namespace X3D {
 
@@ -79,7 +81,7 @@ public:
 
 	virtual
 	void
-	draw (GLUnurbs*) const = 0;
+	draw (nurbs_tessellator & tessellator) const = 0;
 
 
 protected:

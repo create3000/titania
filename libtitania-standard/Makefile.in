@@ -175,8 +175,10 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Geometry/Spheroid3.lo \
 	Titania/Math/Geometry/Triangle2.lo \
 	Titania/Math/Geometry/Triangle3.lo \
-	Titania/Math/Mesh/Combine.lo Titania/Math/Numbers/Color3.lo \
-	Titania/Math/Numbers/Color4.lo Titania/Math/Numbers/Matrix2.lo \
+	Titania/Math/Mesh/Combine.lo \
+	Titania/Math/Mesh/NurbsTessellator.lo \
+	Titania/Math/Numbers/Color3.lo Titania/Math/Numbers/Color4.lo \
+	Titania/Math/Numbers/Matrix2.lo \
 	Titania/Math/Numbers/Matrix3.lo \
 	Titania/Math/Numbers/Matrix4.lo \
 	Titania/Math/Numbers/Quaternion.lo \
@@ -259,6 +261,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/Backtrace.Plo \
 	Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo \
 	Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo \
 	Titania/Math/Mesh/$(DEPDIR)/Combine.Plo \
+	Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo \
 	Titania/Math/Numbers/$(DEPDIR)/Color3.Plo \
 	Titania/Math/Numbers/$(DEPDIR)/Color4.Plo \
 	Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo \
@@ -548,6 +551,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Geometry/Triangle2.cpp \
 	Titania/Math/Geometry/Triangle3.cpp \
 	Titania/Math/Mesh/Combine.cpp \
+	Titania/Math/Mesh/NurbsTessellator.cpp \
 	Titania/Math/Numbers/Color3.cpp \
 	Titania/Math/Numbers/Color4.cpp \
 	Titania/Math/Numbers/Matrix2.cpp \
@@ -849,6 +853,9 @@ Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp):
 	@: > Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Mesh/Combine.lo: Titania/Math/Mesh/$(am__dirstamp) \
 	Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
+Titania/Math/Mesh/NurbsTessellator.lo:  \
+	Titania/Math/Mesh/$(am__dirstamp) \
+	Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Numbers/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Math/Numbers
 	@: > Titania/Math/Numbers/$(am__dirstamp)
@@ -1013,6 +1020,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Mesh/$(DEPDIR)/Combine.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Color3.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Color4.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo@am__quote@ # am--include-marker
@@ -1300,6 +1308,7 @@ distclean: distclean-am
 	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo
 	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo
 	-rm -f Titania/Math/Mesh/$(DEPDIR)/Combine.Plo
+	-rm -f Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo
 	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color3.Plo
 	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color4.Plo
 	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo
@@ -1413,6 +1422,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo
 	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo
 	-rm -f Titania/Math/Mesh/$(DEPDIR)/Combine.Plo
+	-rm -f Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo
 	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color3.Plo
 	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color4.Plo
 	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo

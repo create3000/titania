@@ -80,13 +80,7 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	                   fields (),
 	             texCoordNode (),
 	        nurbsTexCoordNode (),
-	         controlPointNode (),
-	                     type (0),
-	                texCoords (),
-	                  normals (),
-	                 vertices (),
-	               vertexMode (0),
-	              numVertices (0)
+	         controlPointNode ()
 {
 	addType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 
@@ -482,261 +476,74 @@ X3DNurbsSurfaceGeometryNode::build ()
 		texVKnot .emplace_back (vKnots .back ());
 	}
 
-	// Initialize NURBS renderer
+	// Initialize NURBS tesselllator
 
-	GLUnurbs* nurbsRenderer = gluNewNurbsRenderer ();
+	nurbs_tessellator tessellator;
 
-	gluNurbsProperty (nurbsRenderer, GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
-
-	gluNurbsCallbackData (nurbsRenderer, this);
-
-	gluNurbsCallback (nurbsRenderer, GLU_NURBS_BEGIN_DATA,         _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessBeginData));
-	gluNurbsCallback (nurbsRenderer, GLU_NURBS_TEXTURE_COORD_DATA, _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessTexCoordData));
-	gluNurbsCallback (nurbsRenderer, GLU_NURBS_NORMAL_DATA,        _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessNormalData));
-	gluNurbsCallback (nurbsRenderer, GLU_NURBS_VERTEX_DATA,        _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessVertexData));
-	gluNurbsCallback (nurbsRenderer, GLU_NURBS_END_DATA,           _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessEndData));
-	gluNurbsCallback (nurbsRenderer, GLU_ERROR,                    _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessError));
-
-	// Tessellation Options
-
-	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_OBJECT_PARAMETRIC_ERROR);
-	//gluNurbsProperty (nurbsRenderer, GLU_PARAMETRIC_TOLERANCE, 0.5);
-
-	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_PATH_LENGTH);
-	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
-
-	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation (uKnots .size () - uOrder ()) / uScale : 1);
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation (vKnots .size () - vOrder ()) / vScale : 1);
-
-	// Options
-	
-	glEnable (GL_AUTO_NORMAL);
+	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+	tessellator .property (GLU_U_STEP, uScale ? getUTessellation (uKnots .size () - uOrder ()) / uScale : 1);
+	tessellator .property (GLU_V_STEP, vScale ? getVTessellation (vKnots .size () - vOrder ()) / vScale : 1);
 
 	// Tessellate
 
-	numVertices = 0;
+	tessellator .begin_surface ();
 
-	gluBeginSurface (nurbsRenderer);
+	tessellator .nurbs_surface (texUKnot .size (), texUKnot .data (),
+	                            texVKnot .size (), texVKnot .data (),
+	                            4, 4 * 2,
+	                            texControlPoints [0] .data (),
+	                            2, 2,
+	                            GL_MAP2_TEXTURE_COORD_4);
 
-	gluNurbsSurface (nurbsRenderer,
-	                 4, texUKnot .data (),
-	                 4, texVKnot .data (),
-	                 4, 4 * 2,
-	                 texControlPoints [0] .data (),
-	                 2, 2,
-	                 GL_MAP2_TEXTURE_COORD_4);
+	tessellator .nurbs_surface (uKnots .size (), uKnots .data (),
+	                            vKnots .size (), vKnots .data (),
+	                            4, 4 * (uDimension () + uClosed * (uOrder () - 2)),
+	                            controlPoints [0] .data (),
+	                            uOrder (), vOrder (),
+	                            GL_MAP2_VERTEX_4);
 
-	gluNurbsSurface (nurbsRenderer,
-	                 uKnots .size (), uKnots .data (),
-	                 vKnots .size (), vKnots .data (),
-	                 4, 4 * (uDimension () + uClosed * (uOrder () - 2)),
-	                 controlPoints [0] .data (),
-	                 uOrder (), vOrder (),
-	                 GL_MAP2_VERTEX_4);
+	trimSurface (tessellator);
 
-	trimSurface (nurbsRenderer);
-
-	gluEndSurface (nurbsRenderer);
-
-	glDisable (GL_AUTO_NORMAL);
-	gluDeleteNurbsRenderer (nurbsRenderer);
+	tessellator .end_surface ();
 
 	// End tessellation
 
-	addElements (vertexMode, numVertices);
+	// Triangles
+
+	getTexCoords () [0] .insert (getTexCoords () [0] .end (),
+	                             tessellator .triangles () .tex_coords () .begin (),
+	                             tessellator .triangles () .tex_coords () .end ());
+
+	getNormals () .insert (getNormals () .end (),
+	                       tessellator .triangles () .normals () .begin (),
+	                       tessellator .triangles () .normals () .end ());
+
+	getVertices () .insert (getVertices () .end (),
+	                        tessellator .triangles () .vertices () .begin (),
+	                        tessellator .triangles () .vertices () .end ());
+
+	addElements (GL_TRIANGLES, tessellator .triangles () .vertices () .size ());
+
+	// Quads
+
+	getTexCoords () [0] .insert (getTexCoords () [0] .end (),
+	                             tessellator .quads () .tex_coords () .begin (),
+	                             tessellator .quads () .tex_coords () .end ());
+
+	getNormals () .insert (getNormals () .end (),
+	                       tessellator .quads () .normals () .begin (),
+	                       tessellator .quads () .normals () .end ());
+
+	getVertices () .insert (getVertices () .end (),
+	                        tessellator .quads () .vertices () .begin (),
+	                        tessellator .quads () .vertices () .end ());
+
+	addElements (GL_QUADS, tessellator .quads () .vertices () .size ());
+
+	// Properties
+
 	setSolid (solid ());
 	setCCW (true);
-}
-
-void
-X3DNurbsSurfaceGeometryNode::tessBeginData (GLenum type, X3DNurbsSurfaceGeometryNode* self)
-{
-	self -> type = type;
-	self -> texCoords .clear ();
-	self -> normals .clear ();
-	self -> vertices .clear ();
-
-	GLenum currentVertexMode = 0;
-
-	switch (type)
-	{
-		case GL_TRIANGLE_FAN:
-			currentVertexMode = GL_TRIANGLES;
-			break;
-		case GL_TRIANGLE_STRIP:
-			currentVertexMode = GL_TRIANGLES;
-			break;
-		case GL_TRIANGLES:
-			currentVertexMode = GL_TRIANGLES;
-			break;
-		case GL_QUAD_STRIP:
-			currentVertexMode = GL_QUADS;
-			break;
-		default:
-			break;
-	}
-
-	if (self -> numVertices and self -> vertexMode not_eq currentVertexMode)
-	{
-		self -> addElements (self -> vertexMode, self -> numVertices);
-		self -> numVertices = 0;
-	}
-
-	self -> vertexMode = currentVertexMode;
-}
-
-void
-X3DNurbsSurfaceGeometryNode::tessTexCoordData (GLfloat* texCoord, X3DNurbsSurfaceGeometryNode* self)
-{
-	self -> texCoords .emplace_back (texCoord [0], texCoord [1], texCoord [2], texCoord [3]);
-}
-
-void
-X3DNurbsSurfaceGeometryNode::tessNormalData (GLfloat* normal, X3DNurbsSurfaceGeometryNode* self)
-{
-	self -> normals .emplace_back (normal [0], normal [1], normal [2]);
-}
-
-void
-X3DNurbsSurfaceGeometryNode::tessVertexData (GLfloat* vertex, X3DNurbsSurfaceGeometryNode* self)
-{
-	self -> vertices .emplace_back (vertex [0], vertex [1], vertex [2]);
-}
-
-void
-X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
-{
-	//	__LOG__
-	//		<< self -> texCoords .size () << " : "
-	//		<< self -> normals .size () << " : "
-	//		<< self -> vertices .size () << " : "
-	//		<< std::endl;
-
-	switch (self -> type)
-	{
-		case GL_TRIANGLE_FAN:
-		{
-		   //__LOG__ << "GL_TRIANGLE_FAN" << std::endl;
-
-		   for (size_t i = 1, size = self -> vertices .size () - 1; i < size; ++ i)
-		   {
-				size_t i1 = 0;
-				size_t i2 = i;
-				size_t i3 = i + 1;
-
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i1]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i2]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i3]);
-
-				self -> getNormals () .emplace_back (self -> normals [i1]);
-				self -> getNormals () .emplace_back (self -> normals [i2]);
-				self -> getNormals () .emplace_back (self -> normals [i3]);
-
-				self -> getVertices () .emplace_back (self -> vertices [i1]);
-				self -> getVertices () .emplace_back (self -> vertices [i2]);
-				self -> getVertices () .emplace_back (self -> vertices [i3]);
-
-				self -> numVertices += 3;      
-		   }
-
-			break;
-		}
-		case GL_TRIANGLE_STRIP:
-		{
-			for (size_t i = 0, size = self -> vertices .size () - 2; i < size; ++ i)
-			{
-				size_t i1, i2, i3;
-				
-				if (is_odd (i))
-				{
-					i1 = i;
-					i2 = i + 1;
-					i3 = i + 2;
-				}
-				else
-				{
-					i1 = i;
-					i2 = i + 2;
-					i3 = i + 1;
-				}
-
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i1]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i2]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i3]);
-
-				self -> getNormals () .emplace_back (self -> normals [i1]);
-				self -> getNormals () .emplace_back (self -> normals [i2]);
-				self -> getNormals () .emplace_back (self -> normals [i3]);
-
-				self -> getVertices () .emplace_back (self -> vertices [i1]);
-				self -> getVertices () .emplace_back (self -> vertices [i2]);
-				self -> getVertices () .emplace_back (self -> vertices [i3]);
-
-				self -> numVertices += 3;      			
-			}
-
-		   //__LOG__ << "GL_TRIANGLE_STRIP" << std::endl;
-			break;
-		}
-		case GL_TRIANGLES:
-		{
-		   //__LOG__ << "GL_TRIANGLES" << std::endl;
-			
-			self -> getTexCoords () [0] .insert (self -> getTexCoords () [0] .end (), 
-			                                     self -> texCoords .cbegin (),
-			                                     self -> texCoords .cend ());
-
-			self -> getNormals () .insert (self -> getNormals () .end (), 
-			                               self -> normals .cbegin (),
-			                               self -> normals .cend ());
-
-			self -> getVertices () .insert (self -> getVertices () .end (), 
-			                                self -> vertices .cbegin (),
-			                                self -> vertices .cend ());
-
-			self -> numVertices += self -> vertices .size ();      
-			break;
-		}
-		case GL_QUAD_STRIP:
-		{
-		   //__LOG__ << "GL_QUAD_STRIP" << std::endl;
-			for (size_t i = 0, size = self -> vertices .size () - 2; i < size; i += 2)
-			{
-				size_t i1 = i;
-				size_t i2 = i + 1;
-				size_t i3 = i + 3;
-				size_t i4 = i + 2;
-
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i1]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i2]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i3]);
-				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i4]);
-
-				self -> getNormals () .emplace_back (self -> normals [i1]);
-				self -> getNormals () .emplace_back (self -> normals [i2]);
-				self -> getNormals () .emplace_back (self -> normals [i3]);
-				self -> getNormals () .emplace_back (self -> normals [i4]);
-
-				self -> getVertices () .emplace_back (self -> vertices [i1]);
-				self -> getVertices () .emplace_back (self -> vertices [i2]);
-				self -> getVertices () .emplace_back (self -> vertices [i3]);
-				self -> getVertices () .emplace_back (self -> vertices [i4]);
-
-				self -> numVertices += 4;
-			}
-
-			break;
-		}
-		default:
-			break;
-	}
-}
-
-void
-X3DNurbsSurfaceGeometryNode::tessError (GLenum errorCode)
-{
-	__LOG__ << gluErrorString (errorCode) << std::endl;
 }
 
 X3DNurbsSurfaceGeometryNode::~X3DNurbsSurfaceGeometryNode ()

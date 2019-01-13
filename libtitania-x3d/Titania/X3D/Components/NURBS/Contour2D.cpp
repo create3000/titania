@@ -80,6 +80,8 @@ Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,   "addChildren",    addChildren ());
 	addField (inputOnly,   "removeChildren", removeChildren ());
 	addField (inputOutput, "children",       children ());
+
+	addChildObjects (curves);
 }
 
 X3DBaseNode*
@@ -130,17 +132,6 @@ Contour2D::getBBox () const
 }
 
 void
-Contour2D::trimSurface (GLUnurbs* nurbsRenderer) const
-{
-	gluBeginTrim (nurbsRenderer);
-
-	for (const auto & curve : curves)
-		curve -> draw (nurbsRenderer);
-
-	gluEndTrim (nurbsRenderer);
-}
-
-void
 Contour2D::set_addChildren ()
 { }
 
@@ -165,6 +156,17 @@ Contour2D::set_children ()
 			curves .emplace_back (curve);
 		}
 	}
+}
+
+void
+Contour2D::trimSurface (nurbs_tessellator & tessellator) const
+{
+	tessellator .begin_trim ();
+
+	for (const auto & curve : curves)
+		curve -> draw (tessellator);
+
+	tessellator .end_trim ();
 }
 
 } // X3D

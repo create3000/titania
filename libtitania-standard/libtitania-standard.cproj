@@ -556,6 +556,7 @@
     <None Include="Titania\Math\Geometry\Triangle2.h" />
     <None Include="Titania\Basic\SubscriptIterator.h" />
     <None Include="Titania\InputOutput\MultiString.h" />
+    <None Include="Titania\Math\Mesh\NurbsTessellator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -626,6 +627,7 @@
     <Compile Include="Titania\Math\Geometry\Triangle3.cpp" />
     <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\InputOutput\MultiString.cpp" />
+    <Compile Include="Titania\Math\Mesh\NurbsTessellator.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -55,6 +55,8 @@
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
 
+#include <Titania/Math/Mesh/NurbsTessellator.h>
+
 namespace titania {
 namespace X3D {
 
@@ -231,7 +233,7 @@ protected:
 
 	virtual
 	void
-	trimSurface (GLUnurbs*) const
+	trimSurface (nurbs_tessellator & tessellator) const
 	{ }
 
 
@@ -283,32 +285,6 @@ private:
 	void
 	build () final override;
 
-	///  @name Tessellator
-	
-	static
-	void
-	tessBeginData (GLenum, X3DNurbsSurfaceGeometryNode*);
-
-	static
-	void
-	tessTexCoordData (GLfloat*, X3DNurbsSurfaceGeometryNode*);
-
-	static
-	void
-	tessNormalData (GLfloat*, X3DNurbsSurfaceGeometryNode*);
-
-	static
-	void
-	tessVertexData (GLfloat*, X3DNurbsSurfaceGeometryNode*);
-
-	static
-	void
-	tessEndData (X3DNurbsSurfaceGeometryNode*);
-
-	static
-	void
-	tessError (GLenum);
-
 	///  @name Members
 	
 	struct Fields
@@ -336,14 +312,6 @@ private:
 	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
 	X3DPtr <NurbsTextureCoordinate>   nurbsTexCoordNode;
 	X3DPtr <X3DCoordinateNode>        controlPointNode;
-
-	GLenum type;
-	std::vector <Vector4f> texCoords;
-	std::vector <Vector3f> normals;
-	std::vector <Vector3d> vertices;
-	
-	GLenum vertexMode;
-	size_t numVertices;
 
 };
 

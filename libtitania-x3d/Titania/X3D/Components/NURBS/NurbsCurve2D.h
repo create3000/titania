@@ -132,7 +132,7 @@ public:
 
 	virtual
 	void
-	draw (GLUnurbs*) const final override;
+	draw (nurbs_tessellator & tessellator) const final override;
 	
 
 private:

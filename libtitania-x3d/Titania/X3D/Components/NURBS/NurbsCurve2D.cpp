@@ -60,8 +60,8 @@ const std::string NurbsCurve2D::typeName       = "NurbsCurve2D";
 const std::string NurbsCurve2D::containerField = "children";
 
 NurbsCurve2D::Fields::Fields () :
-	tessellation (new SFInt32 ()),
 	      closed (new SFBool ()),
+	tessellation (new SFInt32 ()),
 	       order (new SFInt32 (3)),
 	        knot (new MFDouble ()),
 	      weight (new MFDouble ())
@@ -158,7 +158,7 @@ NurbsCurve2D::getControlPoints () const
 }
 
 void
-NurbsCurve2D::draw (GLUnurbs* nurbsRenderer) const
+NurbsCurve2D::draw (nurbs_tessellator & tessellator) const
 {
 	if (order () < 2)
 		return;
@@ -169,11 +169,10 @@ NurbsCurve2D::draw (GLUnurbs* nurbsRenderer) const
 	std::vector <float>    knots         = getKnots (knot (), order (), controlPoint () .size ());
 	std::vector <Vector3f> controlPoints = getControlPoints ();
 
-	gluNurbsCurve (nurbsRenderer,
-	               knots .size (), knots .data (),
-	               3, controlPoints [0] .data (),
-	               order (),
-	               GLU_MAP1_TRIM_3);
+	tessellator .nurbs_curve (knots .size (), knots .data (),
+	                          3, controlPoints [0] .data (),
+	                          order (),
+	                          GLU_MAP1_TRIM_3);
 }
 
 } // X3D

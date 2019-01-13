@@ -56,6 +56,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Geometry/Triangle2.cpp \
 	Titania/Math/Geometry/Triangle3.cpp \
 	Titania/Math/Mesh/Combine.cpp \
+	Titania/Math/Mesh/NurbsTessellator.cpp \
 	Titania/Math/Numbers/Color3.cpp \
 	Titania/Math/Numbers/Color4.cpp \
 	Titania/Math/Numbers/Matrix2.cpp \
