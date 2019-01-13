@@ -273,6 +273,15 @@ private:
 	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;
 
 	std::vector <Vector4f>
+	getTexControlPoints (const bool uClosed,
+                        const bool vClosed,
+                        const size_t uOrder,
+                        const size_t vOrder,
+                        const size_t uDimension,
+                        const size_t vDimension,
+                        const std::vector <double> & weight) const;
+
+	std::vector <Vector4f>
 	getControlPoints (const bool uClosed,
                      const bool vClosed,
                      const size_t uOrder,
