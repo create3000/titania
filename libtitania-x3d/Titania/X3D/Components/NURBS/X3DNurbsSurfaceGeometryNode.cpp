@@ -461,10 +461,10 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// ControlPoints
 
-	const auto uClosed       = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight ());
-	const auto vClosed       = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight ());
-	auto       controlPoints = getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight ());
-	const auto vStride       = (uDimension () + uClosed * (uOrder () - 2));
+	const auto   uClosed       = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight ());
+	const auto   vClosed       = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight ());
+	auto         controlPoints = getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight ());
+	const size_t vStride       = (uDimension () + uClosed * (uOrder () - 2));
 
 	// Knots
 
@@ -477,9 +477,9 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// TextureCoordinate
 
-	int32_t                texUOrder = 0;
-	int32_t                texVOrder = 0;
-	int32_t                texVStride = 0;
+	size_t                 texUOrder = 0;
+	size_t                 texVOrder = 0;
+	size_t                 texVStride = 0;
 	std::vector <float>    texUKnot;
 	std::vector <float>    texVKnot;
 	std::vector <Vector4f> texControlPoints;
