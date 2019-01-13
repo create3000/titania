@@ -219,6 +219,8 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 void
 GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 {
+	const auto & selection = getBrowserWindow () -> getSelection ();
+
 	for (const auto & node : geometryNodes)
 	{
 		try
@@ -312,9 +314,8 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 							X3D::X3DConstants::X3DComposedGeometryNode,
 						});
 
-						const auto editable = node -> isType ({
+						const auto editable = selection -> getSelectGeometry () and node -> isType ({
 							X3D::X3DConstants::IndexedFaceSet,
-							//X3D::X3DConstants::X3DNurbsSurfaceGeometryNode,
 						});
 
 						// Normal
@@ -832,6 +833,9 @@ GeometryEditor::set_selectGeometry ()
 	const auto & selection = getBrowserWindow () -> getSelection ();
 
 	getEditToggleButton () .set_active (selection -> getSelectGeometry ());
+
+	set_geometries (selection -> getNodes ());
+	set_geometries (selection -> getGeometries ());
 }
 
 void

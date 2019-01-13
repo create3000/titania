@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 13 Jan 2019 01:23:34 GMT"
+META "modified" "Sun, 13 Jan 2019 03:13:20 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -178,10 +178,10 @@ Collision {
           whichChoice 0
           children [
             DEF Edges Shape {
-              appearance DEF _2 Appearance {
+              appearance Appearance {
                 material DEF EdgesMaterial Material {
                   diffuseColor 0 0 0
-                  emissiveColor 0.702794 0.852152 1
+                  emissiveColor 0.7 0.85 1
                 }
               }
               geometry DEF EdgesLineSet LineSet {
@@ -189,8 +189,8 @@ Collision {
               }
             }
             DEF Vertices Shape {
-              appearance DEF _3 Appearance {
-                lineProperties LineProperties {
+              appearance Appearance {
+                lineProperties DEF _2 LineProperties {
                   linewidthScaleFactor 5
                 }
                 material USE EdgesMaterial
@@ -207,11 +207,22 @@ Collision {
             Group {
               children [
                 DEF ControlPoints Shape {
-                  appearance USE _3
+                  appearance Appearance {
+                    lineProperties USE _2
+                    material Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.35 0.35 1
+                    }
+                  }
                   geometry DEF ControlPointSet PointSet { }
                 }
                 DEF ControlPointEdges Shape {
-                  appearance USE _2
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.7 0.85 1
+                    }
+                  }
                   geometry USE ControlPointLines
                 }
               ]
@@ -220,7 +231,7 @@ Collision {
         }
         DEF SelectedEdges Shape {
           appearance Appearance {
-            lineProperties DEF _4 LineProperties {
+            lineProperties DEF _3 LineProperties {
               linewidthScaleFactor 2
             }
             material DEF SelectedMaterial Material {
@@ -232,7 +243,7 @@ Collision {
         }
         DEF SelectedPoints Shape {
           appearance Appearance {
-            lineProperties DEF _5 LineProperties {
+            lineProperties DEF _4 LineProperties {
               linewidthScaleFactor 8
             }
             material USE SelectedMaterial
@@ -278,7 +289,7 @@ Collision {
               children [
                 DEF ActiveEdges Shape {
                   appearance Appearance {
-                    lineProperties USE _4
+                    lineProperties USE _3
                     material DEF ActiveMaterial Material {
                       diffuseColor 0 0 0
                       emissiveColor 0.5 0.0792565 0
@@ -291,7 +302,7 @@ Collision {
                     lineProperties LineProperties {
                       linewidthScaleFactor 2
                     }
-                    material DEF HotMaterial_6 Material {
+                    material DEF HotMaterial_5 Material {
                       diffuseColor 0 0 0
                       emissiveColor 0.519546 0.173182 0.865911
                     }
@@ -305,7 +316,7 @@ Collision {
               children [
                 DEF ActivePoints Shape {
                   appearance Appearance {
-                    lineProperties USE _5
+                    lineProperties USE _4
                     material USE ActiveMaterial
                   }
                   geometry PointSet {
@@ -314,8 +325,8 @@ Collision {
                 }
                 DEF HotPoints Shape {
                   appearance Appearance {
-                    lineProperties USE _5
-                    material USE HotMaterial_6
+                    lineProperties USE _4
+                    material USE HotMaterial_5
                   }
                   geometry PointSet {
                     coord DEF HotPointCoord CoordinateDouble { }
@@ -354,7 +365,7 @@ Collision {
                 DEF KnifeStartPoint Transform {
                   children Billboard {
                     axisOfRotation 0 0 0
-                    children DEF _7 ScreenGroup {
+                    children DEF _6 ScreenGroup {
                       children [
                         DepthBuffer {
                           enabled FALSE
@@ -369,7 +380,7 @@ Collision {
                                 diffuseColor 0 0 0
                               }
                             }
-                            geometry DEF _8 Circle2D {
+                            geometry DEF _7 Circle2D {
                               radius 3
                             }
                           }
@@ -384,7 +395,7 @@ Collision {
                                 emissiveColor 1 1 1
                               }
                             }
-                            geometry USE _8
+                            geometry USE _7
                           }
                         }
                       ]
@@ -401,7 +412,7 @@ Collision {
                     DEF KnifeEndPoint Transform {
                       children Billboard {
                         axisOfRotation 0 0 0
-                        children USE _7
+                        children USE _6
                       }
                     }
                     DepthBuffer {
@@ -409,15 +420,15 @@ Collision {
                       depthOffset 1000
                       children Shape {
                         appearance Appearance {
-                          lineProperties DEF _9 LineProperties {
+                          lineProperties DEF _8 LineProperties {
                             linetype 2
                             linewidthScaleFactor 3
                           }
-                          material DEF _10 Material {
+                          material DEF _9 Material {
                             diffuseColor 0 0 0
                           }
                         }
-                        geometry DEF _11 LineSet {
+                        geometry DEF _10 LineSet {
                           vertexCount 2
                           coord DEF KnifeLineCoordinate CoordinateDouble {
                             point [
@@ -433,7 +444,7 @@ Collision {
                       depthOffset 2000
                       children Shape {
                         appearance Appearance {
-                          lineProperties DEF _12 LineProperties {
+                          lineProperties DEF _11 LineProperties {
                             linetype 2
                             linewidthScaleFactor 1
                           }
@@ -442,7 +453,7 @@ Collision {
                             emissiveColor 1 1 1
                           }
                         }
-                        geometry USE _11
+                        geometry USE _10
                       }
                     }
                   ]
@@ -465,7 +476,7 @@ Collision {
                               lineProperties LineProperties {
                                 linewidthScaleFactor 3
                               }
-                              material USE _10
+                              material USE _9
                             }
                             geometry DEF KnifeArcGeometry Arc2D {
                               radius 10
@@ -511,7 +522,7 @@ Collision {
                           diffuseColor 0 0 0
                         }
                       }
-                      geometry DEF _13 Circle2D { }
+                      geometry DEF _12 Circle2D { }
                     }
                   }
                   DepthBuffer {
@@ -524,7 +535,7 @@ Collision {
                           emissiveColor 1 1 1
                         }
                       }
-                      geometry USE _13
+                      geometry USE _12
                     }
                   }
                 ]
@@ -551,11 +562,11 @@ ROUTE MagicPointsSwitch.whichChoice_changed TO MagicFaceSwitch.set_whichChoice
 ROUTE HotEdgesGeometry.coord_changed TO HotFaceGeometry.set_coord
 ROUTE ActiveMaterial.emissiveColor_changed TO ActvieFaceMaterial.set_emissiveColor
 ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveColor
-ROUTE HotMaterial_6.emissiveColor_changed TO HotMaterial.set_emissiveColor
-ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_6.set_emissiveColor
+ROUTE HotMaterial_5.emissiveColor_changed TO HotMaterial.set_emissiveColor
+ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_5.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
-ROUTE _9.linetype_changed TO _12.set_linetype
-ROUTE _12.linetype_changed TO _9.set_linetype
+ROUTE _8.linetype_changed TO _11.set_linetype
+ROUTE _11.linetype_changed TO _8.set_linetype
 ROUTE ToolSwitch.whichChoice_changed TO SelectionSwitch.set_whichChoice
 ROUTE ControlPointSet.coord_changed TO ControlPointLines.set_coord
 
