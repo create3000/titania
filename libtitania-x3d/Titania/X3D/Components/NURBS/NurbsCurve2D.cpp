@@ -90,13 +90,13 @@ NurbsCurve2D::create (X3DExecutionContext* const executionContext) const
 }
 
 std::vector <float>
-NurbsCurve2D::getKnots (const MFDouble & knot, const int32_t order, const int32_t dimension) const
+NurbsCurve2D::getKnots (const std::vector <double> & knot, const size_t order, const size_t dimension) const
 {
 	std::vector <float> knots (knot .cbegin (), knot .cend ());
 
 	bool generateUniform = true;
 
-	if (knots .size () == size_t (dimension + order))
+	if (knots .size () == dimension + order)
 	{
 		generateUniform = false;
 
@@ -109,7 +109,7 @@ NurbsCurve2D::getKnots (const MFDouble & knot, const int32_t order, const int32_
 			else
 				consecutiveKnots = 0;
 
-			if (consecutiveKnots > size_t (order - 1))
+			if (consecutiveKnots > order - 1)
 				generateUniform = true;
 
 			if (knots [i - 1] > knots [i])
@@ -158,7 +158,7 @@ NurbsCurve2D::getControlPoints () const
 }
 
 void
-NurbsCurve2D::draw (nurbs_tessellator & tessellator) const
+NurbsCurve2D::add (nurbs_tessellator & tessellator) const
 {
 	if (order () < 2)
 		return;

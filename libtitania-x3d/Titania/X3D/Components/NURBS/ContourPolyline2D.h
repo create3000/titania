@@ -88,7 +88,7 @@ public:
 
 	virtual
 	void
-	draw (nurbs_tessellator & tessellator) const final override;
+	add (nurbs_tessellator & tessellator) const final override;
 
 
 private:

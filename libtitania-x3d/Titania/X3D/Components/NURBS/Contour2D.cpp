@@ -164,7 +164,7 @@ Contour2D::trimSurface (nurbs_tessellator & tessellator) const
 	tessellator .begin_trim ();
 
 	for (const auto & curve : curves)
-		curve -> draw (tessellator);
+		curve -> add (tessellator);
 
 	tessellator .end_trim ();
 }

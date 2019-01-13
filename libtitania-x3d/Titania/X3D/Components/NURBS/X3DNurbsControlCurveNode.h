@@ -81,7 +81,7 @@ public:
 
 	virtual
 	void
-	draw (nurbs_tessellator & tessellator) const = 0;
+	add (nurbs_tessellator & tessellator) const = 0;
 
 
 protected:

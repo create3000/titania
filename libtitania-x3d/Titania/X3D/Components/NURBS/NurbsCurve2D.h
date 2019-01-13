@@ -132,7 +132,7 @@ public:
 
 	virtual
 	void
-	draw (nurbs_tessellator & tessellator) const final override;
+	add (nurbs_tessellator & tessellator) const final override;
 	
 
 private:
@@ -140,7 +140,7 @@ private:
 	///  @name Operations
 
 	std::vector <float>
-	getKnots (const MFDouble &, const int32_t, const int32_t) const;
+	getKnots (const std::vector <double> & knot, const size_t order, const size_t dimension) const;
 
 	std::vector <Vector3f>
 	getControlPoints () const;
