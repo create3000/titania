@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../NURBS/CoordinateDouble.h"
+#include "../Texturing3D/TextureCoordinate4D.h"
 
 namespace titania {
 namespace X3D {
@@ -122,16 +123,22 @@ SFNode
 X3DParametricGeometryNode::toPrimitive () const
 {
 	const auto geometryNode   = getExecutionContext () -> createNode <IndexedFaceSet> ();
+	const auto texCoordNode   = getExecutionContext () -> createNode <TextureCoordinate4D> ();
 	const auto coordinateNode = getExecutionContext () -> createNode <CoordinateDouble> ();
-	auto       map            = std::map <Vector3d, size_t> ();
+	auto       texCoordMap    = std::map <Vector4d, size_t> ();
+	auto       coordMap       = std::map <Vector3d, size_t> ();
 
 	geometryNode -> creaseAngle () = pi <float>;
 	geometryNode -> solid ()       = getSolid ();
 	geometryNode -> ccw ()         = getCCW ();
+	geometryNode -> texCoord ()    = texCoordNode;
 	geometryNode -> coord ()       = coordinateNode;
 
+	for (const auto & texCoord : getTexCoords () [0])
+		texCoordMap .emplace (texCoord, texCoordMap .size ());
+
 	for (const auto & vertex : getVertices ())
-		map .emplace (vertex, map .size ());
+		coordMap .emplace (vertex, coordMap .size ());
 
 	for (const auto & element : getElements ())
 	{
@@ -141,13 +148,22 @@ X3DParametricGeometryNode::toPrimitive () const
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 				{
+					const auto & texCoord1 = getTexCoords () [0] [i];
+					const auto & texCoord2 = getTexCoords () [0] [i + 1];
+					const auto & texCoord3 = getTexCoords () [0] [i + 2];
+
 					const auto & vertex1 = getVertices () [i];
 					const auto & vertex2 = getVertices () [i + 1];
 					const auto & vertex3 = getVertices () [i + 2];
 
-					geometryNode -> coordIndex () .emplace_back (map [vertex1]);
-					geometryNode -> coordIndex () .emplace_back (map [vertex2]);
-					geometryNode -> coordIndex () .emplace_back (map [vertex3]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord1]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord2]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord3]);
+					geometryNode -> texCoordIndex () .emplace_back (-1);
+
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex1]);
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex2]);
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex3]);
 					geometryNode -> coordIndex () .emplace_back (-1);
 				}
 
@@ -157,15 +173,26 @@ X3DParametricGeometryNode::toPrimitive () const
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 				{
+					const auto & texCoord1 = getTexCoords () [0] [i];
+					const auto & texCoord2 = getTexCoords () [0] [i + 1];
+					const auto & texCoord3 = getTexCoords () [0] [i + 2];
+					const auto & texCoord4 = getTexCoords () [0] [i + 3];
+
 					const auto & vertex1 = getVertices () [i];
 					const auto & vertex2 = getVertices () [i + 1];
 					const auto & vertex3 = getVertices () [i + 2];
 					const auto & vertex4 = getVertices () [i + 3];
 
-					geometryNode -> coordIndex () .emplace_back (map [vertex1]);
-					geometryNode -> coordIndex () .emplace_back (map [vertex2]);
-					geometryNode -> coordIndex () .emplace_back (map [vertex3]);
-					geometryNode -> coordIndex () .emplace_back (map [vertex4]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord1]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord2]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord3]);
+					geometryNode -> texCoordIndex () .emplace_back (texCoordMap [texCoord4]);
+					geometryNode -> texCoordIndex () .emplace_back (-1);
+
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex1]);
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex2]);
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex3]);
+					geometryNode -> coordIndex () .emplace_back (coordMap [vertex4]);
 					geometryNode -> coordIndex () .emplace_back (-1);
 				}
 
@@ -174,7 +201,10 @@ X3DParametricGeometryNode::toPrimitive () const
 		}
 	}
 
-	for (const auto & [point, index] : map)
+	for (const auto & [texCoord, index] : texCoordMap)
+		texCoordNode -> set1Point (index, texCoord);
+
+	for (const auto & [point, index] : coordMap)
 		coordinateNode -> set1Point (index, point);
 
 	return geometryNode;

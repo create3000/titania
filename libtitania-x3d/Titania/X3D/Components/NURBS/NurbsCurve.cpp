@@ -317,24 +317,24 @@ NurbsCurve::toPrimitive () const
 {
 	const auto geometryNode   = getExecutionContext () -> createNode <IndexedLineSet> ();
 	const auto coordinateNode = getExecutionContext () -> createNode <CoordinateDouble> ();
-	auto       map            = std::map <Vector3d, size_t> ();
+	auto       coordMap       = std::map <Vector3d, size_t> ();
 
 	geometryNode -> coord () = coordinateNode;
 
 	for (const auto & vertex : getVertices ())
-		map .emplace (vertex, map .size ());
+		coordMap .emplace (vertex, coordMap .size ());
 
 	for (size_t i = 0, size = getVertices () .size (); i < size; i += 2)
 	{
 		const auto & vertex1 = getVertices () [i];
 		const auto & vertex2 = getVertices () [i + 1];
 
-		geometryNode -> coordIndex () .emplace_back (map [vertex1]);
-		geometryNode -> coordIndex () .emplace_back (map [vertex2]);
+		geometryNode -> coordIndex () .emplace_back (coordMap [vertex1]);
+		geometryNode -> coordIndex () .emplace_back (coordMap [vertex2]);
 		geometryNode -> coordIndex () .emplace_back (-1);
 	}
 
-	for (const auto & [point, index] : map)
+	for (const auto & [point, index] : coordMap)
 		coordinateNode -> set1Point (index, point);
 
 	return geometryNode;
