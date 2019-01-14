@@ -118,13 +118,21 @@ NurbsTrimmedSurface::initialize ()
 void
 NurbsTrimmedSurface::set_addTrimmingContour ()
 {
+	addTrimmingContour () .setTainted (true);
+	addTrimmingContour () .set_difference (removeTrimmingContour ());
 
+	trimmingContour () .insert (trimmingContour () .end (), addTrimmingContour () .cbegin (), addTrimmingContour () .cend ());
+
+	addTrimmingContour () .set ({ });
+	addTrimmingContour () .setTainted (false);
 }
 
 void
 NurbsTrimmedSurface::set_removeTrimmingContour ()
 {
+	trimmingContour () .set_difference (removeTrimmingContour ());
 
+	removeTrimmingContour () .set ({ });
 }
 
 void

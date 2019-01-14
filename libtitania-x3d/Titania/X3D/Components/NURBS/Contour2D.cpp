@@ -95,20 +95,32 @@ Contour2D::initialize ()
 {
 	X3DNode::initialize ();
 
-	addChildren ()    .addInterest (&Contour2D::set_addChildren, this);
+	addChildren ()    .addInterest (&Contour2D::set_addChildren,    this);
 	removeChildren () .addInterest (&Contour2D::set_removeChildren, this);
-	children ()       .addInterest (&Contour2D::set_children, this);
+	children ()       .addInterest (&Contour2D::set_children,       this);
 
 	set_children ();
 }
 
 void
 Contour2D::set_addChildren ()
-{ }
+{
+	addChildren () .setTainted (true);
+	addChildren () .set_difference (children ());
+
+	children () .insert (children () .end (), addChildren () .cbegin (), addChildren () .cend ());
+
+	addChildren () .set ({ });
+	addChildren () .setTainted (false);
+}
 
 void
 Contour2D::set_removeChildren ()
-{ }
+{
+	children () .set_difference (removeChildren ());
+
+	removeChildren () .set ({ });
+}
 
 void
 Contour2D::set_children ()
