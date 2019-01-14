@@ -138,6 +138,11 @@ public:
 	isTransparent () const final override
 	{ return X3DLineGeometryNodeTool::isTransparent (); }
 
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getControlPoint () const final override
+	{ return getNode <NurbsCurve> () -> getControlPoint (); }
+
 	///  @name Destruction
 
 	virtual
@@ -159,7 +164,20 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_load_state ();
+
+	void
+	set_controlPoint ();
+
+	void
+	eventProcessed ();
+
 	///  @name Members
+
+	X3DPtr <IndexedLineSet> controlPointLines;
 
 };
 

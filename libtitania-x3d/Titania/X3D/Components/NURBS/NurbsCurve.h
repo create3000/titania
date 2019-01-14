@@ -155,6 +155,11 @@ public:
 	isTransparent () const override
 	{ return false; }
 
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getControlPoint () const
+	{ return controlPointNode; }
+
 	///  @name Destruction
 
 	virtual

@@ -50,7 +50,12 @@
 
 #include "NurbsCurveTool.h"
 
+#include "../../Components/Grouping/Switch.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Components/Rendering/PointSet.h"
+#include "../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/CoordinateTool.h"
 
 namespace titania {
 namespace X3D {
@@ -60,19 +65,106 @@ NurbsCurveTool::NurbsCurveTool (X3DBaseNode* const node) :
 	                   NurbsCurve (node -> getExecutionContext ()),
 	                  X3DBaseTool (node),
 	X3DParametricGeometryNodeTool (),
-	      X3DLineGeometryNodeTool ()
+	      X3DLineGeometryNodeTool (),
+	            controlPointLines ()
 {
 	addType (X3DConstants::NurbsCurveTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	addChildObjects (controlPointLines);
 }
 
 void
 NurbsCurveTool::initialize ()
 {
 	X3DParametricGeometryNodeTool::initialize ();
+
+	const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
+
+	inlineNode -> checkLoadState () .addInterest (&NurbsCurveTool::set_load_state, this);
+
+	controlPoint () .addInterest (&NurbsCurveTool::set_controlPoint, this);
+
+	getNode <NurbsCurve> () -> addInterest (&NurbsCurveTool::eventProcessed, this);
+
+	set_load_state ();
+}
+
+void
+NurbsCurveTool::set_load_state ()
+{
+	try
+	{
+		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
+	
+		if (inlineNode -> checkLoadState () not_eq COMPLETE_STATE)
+			return;
+	
+		const auto controlPointSwitch = inlineNode -> getExportedNode <Switch> ("ControlPointSwitch");
+
+		controlPointLines = inlineNode -> getExportedNode <IndexedLineSet> ("ControlPointLines");
+
+		controlPointSwitch -> whichChoice () = true;
+
+		set_controlPoint ();
+		eventProcessed ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+NurbsCurveTool::set_controlPoint ()
+{
+	try
+	{
+		const auto & inlineNode      = getCoordinateTool () -> getInlineNode ();
+		const auto   controlPointSet = inlineNode -> getExportedNode <PointSet> ("ControlPointSet");
+
+		controlPointSet -> coord () = controlPoint ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+NurbsCurveTool::eventProcessed ()
+{
+	try
+	{
+		auto & coordIndex = controlPointLines -> coordIndex ();
+
+		coordIndex .clear ();
+
+		const auto & controlPointNode = getControlPoint ();
+
+		if (order () < 2)
+			return;
+	
+		if (not controlPointNode)
+			return;
+	
+		if (controlPointNode -> getSize () < size_t (order ()))
+			return;
+
+		for (size_t i = 0, size = controlPointNode -> getSize () - 1; i < size; ++ i)
+		{
+			coordIndex .emplace_back (i);
+			coordIndex .emplace_back (i + 1);
+			coordIndex .emplace_back (-1);
+		}
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
