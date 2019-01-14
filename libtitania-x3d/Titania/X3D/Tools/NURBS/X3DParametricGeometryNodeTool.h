@@ -68,7 +68,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive () const final override
+	toPrimitive () const override
 	{ return getNode <X3DParametricGeometryNode> () -> toPrimitive (); }
 
 	///  @name Destruction

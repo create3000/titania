@@ -52,6 +52,8 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../NURBS/CoordinateDouble.h"
+#include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Shaders/ComposedShader.h"
 
@@ -302,6 +304,40 @@ NurbsCurve::build ()
 	getVertices () .insert (getVertices () .end (), lines .begin (), lines .end ());
 
 	addElements (GL_LINES, lines .size ());
+}
+
+NodeType
+NurbsCurve::getPrimitiveType () const
+{
+	return X3DConstants::IndexedLineSet;
+}
+
+SFNode
+NurbsCurve::toPrimitive () const
+{
+	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
+	const auto coord    = getExecutionContext () -> createNode <CoordinateDouble> ();
+	auto       map      = std::map <Vector3d, size_t> ();
+
+	geometry -> coord () = coord;
+
+	for (const auto & vertex : getVertices ())
+		map .emplace (vertex, map .size ());
+
+	for (size_t i = 0, size = getVertices () .size (); i < size; i += 2)
+	{
+		const auto & vertex1 = getVertices () [i];
+		const auto & vertex2 = getVertices () [i + 1];
+
+		geometry -> coordIndex () .emplace_back (map [vertex1]);
+		geometry -> coordIndex () .emplace_back (map [vertex2]);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	for (const auto & [point, index] : map)
+		coord -> set1Point (index, point);
+
+	return geometry;
 }
 
 NurbsCurve::~NurbsCurve ()

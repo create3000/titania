@@ -160,6 +160,16 @@ public:
 	getControlPoint () const
 	{ return controlPointNode; }
 
+	///  @name Operations
+
+	virtual
+	NodeType
+	getPrimitiveType () const final override;
+
+	virtual
+	SFNode
+	toPrimitive () const override;
+
 	///  @name Destruction
 
 	virtual

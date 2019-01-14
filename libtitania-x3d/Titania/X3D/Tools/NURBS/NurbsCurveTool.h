@@ -143,6 +143,13 @@ public:
 	getControlPoint () const final override
 	{ return getNode <NurbsCurve> () -> getControlPoint (); }
 
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive () const override
+	{ return getNode <NurbsCurve> () -> toPrimitive (); }
+
 	///  @name Destruction
 
 	virtual

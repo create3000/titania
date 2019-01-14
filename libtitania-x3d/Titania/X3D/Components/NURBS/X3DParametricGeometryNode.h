@@ -65,7 +65,7 @@ public:
 
 	virtual
 	NodeType
-	getPrimitiveType () const final override;
+	getPrimitiveType () const override;
 
 	virtual
 	SFNode
