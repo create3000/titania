@@ -88,14 +88,6 @@ public:
 
 	///  @name Fields
 
-	SFBool &
-	closed ()
-	{ return *fields .closed; }
-
-	const SFBool &
-	closed () const
-	{ return *fields .closed; }
-
 	SFInt32 &
 	tessellation ()
 	{ return *fields .tessellation; }
@@ -103,6 +95,14 @@ public:
 	const SFInt32 &
 	tessellation () const
 	{ return *fields .tessellation; }
+
+	SFBool &
+	closed ()
+	{ return *fields .closed; }
+
+	const SFBool &
+	closed () const
+	{ return *fields .closed; }
 
 	SFInt32 &
 	order ()
@@ -139,11 +139,20 @@ private:
 
 	///  @name Operations
 
+	bool
+	getClosed (const size_t order,
+	           const size_t dimension,
+	           const std::vector <double> & knot,
+	           const std::vector <double> & weight) const;
+
 	std::vector <float>
-	getKnots (const std::vector <double> & knot, const size_t order, const size_t dimension) const;
+	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;
 
 	std::vector <Vector3f>
-	getControlPoints () const;
+	getControlPoints (const bool closed,
+	                  const size_t order,
+	                  const size_t dimension,
+	                  const std::vector <double> & weight) const;
 
 	///  @name Static members
 
@@ -157,8 +166,8 @@ private:
 	{
 		Fields ();
 
-		SFBool* const closed;
 		SFInt32* const tessellation;
+		SFBool* const closed;
 		SFInt32* const order;
 		MFDouble* const knot;
 		MFDouble* const weight;
