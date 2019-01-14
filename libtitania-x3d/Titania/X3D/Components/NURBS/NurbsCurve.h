@@ -52,12 +52,14 @@
 #define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_CURVE_H__
 
 #include "../NURBS/X3DParametricGeometryNode.h"
+#include "../Rendering/X3DLineGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
 class NurbsCurve :
-	virtual public X3DParametricGeometryNode
+	virtual public X3DParametricGeometryNode,
+	virtual public X3DLineGeometryNode
 {
 public:
 
@@ -146,13 +148,61 @@ public:
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
+	///  @name Member access
+
+	virtual
+	bool
+	isTransparent () const override
+	{ return false; }
+
+	///  @name Destruction
+
+	virtual
+	~NurbsCurve () override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShaderNode (X3DBrowser* const browser) final override;
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_controlPoint ();
+
+	///  @name Member access
+
+	size_t
+	getTessellation (const size_t dimension) const;
+
+	bool
+	getClosed (const size_t order,
+	           const size_t dimension,
+	           const std::vector <double> & knot,
+	           const std::vector <double> & weight) const;
+
+	std::vector <Vector4f>
+	getControlPoints (const bool closed,
+	                  const size_t order,
+	                  const size_t dimension,
+	                  const std::vector <double> & weight) const;
+
+	///  @name Construction
 
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 
@@ -160,7 +210,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -175,6 +225,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DCoordinateNode> controlPointNode;
 
 };
 

@@ -105,6 +105,10 @@ public:
 
 	///  @name Member access
 
+	const std::vector <vector3 <float>> &
+	lines () const
+	{ return m_lines; }
+
 	const nurbs_tessellator_elements &
 	triangles () const
 	{ return m_triangles; }
@@ -121,6 +125,21 @@ public:
 	void
 	begin_surface ();
 	
+	void
+	end_surface ();
+
+	void
+	begin_curve ();
+	
+	void
+	end_curve ();
+
+	void
+	begin_trim ();
+	
+	void
+	end_trim ();
+
 	void
 	nurbs_surface (const int32_t sKnotCount,
 	               float* const sKnots,
@@ -146,15 +165,6 @@ public:
               float* const data,
               const int32_t stride,
               const GLenum type);
-
-	void
-	begin_trim ();
-	
-	void
-	end_trim ();
-
-	void
-	end_surface ();
 
 	///  @name Destruction
 
@@ -196,8 +206,9 @@ private:
 	std::vector <vector3 <float>> m_normals;
 	std::vector <vector3 <float>> m_vertices;
 
-	nurbs_tessellator_elements m_triangles;
-	nurbs_tessellator_elements m_quads;
+	std::vector <vector3 <float>> m_lines;
+	nurbs_tessellator_elements    m_triangles;
+	nurbs_tessellator_elements    m_quads;
 
 };
 

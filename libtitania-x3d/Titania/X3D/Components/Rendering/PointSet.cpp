@@ -226,7 +226,7 @@ PointSet::build ()
 		coordNode -> addVertex (getVertices (), i);
 
 	addElements (GL_POINTS, getVertices () .size ());
-	setSolid (true);
+
 	setAttribs (attribNodes, attribArrays);
 }
 

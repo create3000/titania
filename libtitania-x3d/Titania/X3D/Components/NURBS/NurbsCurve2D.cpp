@@ -132,15 +132,15 @@ std::vector <Vector3f>
 NurbsCurve2D::getControlPoints () const
 {
 	std::vector <Vector3f> controlPoints;
-
-	controlPoints .reserve (controlPoint () .size ());
 	
 	if (weight () .size () < controlPoint () .size ())
 	{
 		for (size_t i = 0; i < controlPoint () .size (); i ++)
 		{
-			controlPoints .emplace_back (controlPoint () [i] .x (),
-			                             controlPoint () [i] .y (),
+			const auto p = controlPoint () [i];
+
+			controlPoints .emplace_back (p .x (),
+			                             p .y (),
 			                             1);
 		}
 	}
@@ -148,8 +148,10 @@ NurbsCurve2D::getControlPoints () const
 	{
 		for (size_t i = 0; i < controlPoint () .size (); i ++)
 		{
-			controlPoints .emplace_back (controlPoint () [i] .x (), 
-			                             controlPoint () [i] .y (), 
+			const auto p = controlPoint () [i];
+
+			controlPoints .emplace_back (p .x (), 
+			                             p .y (), 
 			                             weight () [i]);
 		}
 	}

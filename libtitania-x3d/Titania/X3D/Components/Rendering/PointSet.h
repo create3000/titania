@@ -160,12 +160,12 @@ protected:
 	void
 	initialize () override;
 
-
-private:
-
 	virtual
 	const X3DPtr <ComposedShader> &
 	getShaderNode (X3DBrowser* const browser) final override;
+
+
+private:
 
 	///  @name Event handler
 

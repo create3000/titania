@@ -59,6 +59,54 @@ X3DParametricGeometryNode::X3DParametricGeometryNode () :
 	addType (X3DConstants::X3DParametricGeometryNode);
 }
 
+std::vector <float>
+X3DParametricGeometryNode::getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const
+{
+	std::vector <float> knots (knot .cbegin (), knot .cend ());
+
+	// check the knot-vectors. If they are not according to standard
+	// default uniform knot vectors will be generated.
+
+	bool generateUniform = true;
+
+	if (knots .size () == size_t (dimension + order))
+	{
+		generateUniform = false;
+
+		size_t consecutiveKnots = 0;
+
+		for (size_t i = 1; i < knots .size (); ++ i)
+		{
+			if (knots [i] == knots [i - 1])
+				++ consecutiveKnots;
+			else
+				consecutiveKnots = 0;
+
+			if (consecutiveKnots > order - 1)
+				generateUniform = true;
+
+			if (knots [i - 1] > knots [i])
+				generateUniform = true;
+		}
+	}
+
+	if (generateUniform)
+	{
+		knots .resize (dimension + order);
+
+		for (size_t i = 0, size = knots .size (); i < size; ++ i)
+			knots [i] = float (i) / (size - 1);
+	}
+
+	if (closed)
+	{
+		for (size_t i = 1, size = order - 1; i < size; ++ i)
+			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
+	}
+
+	return knots;
+}
+
 NodeType
 X3DParametricGeometryNode::getPrimitiveType () const
 {

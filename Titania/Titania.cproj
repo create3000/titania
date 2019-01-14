@@ -3194,6 +3194,7 @@
     <None Include="share\titania\Library\Effects\ToonShader.x3dv" />
     <None Include="share\titania\Library\Effects\AnisotropicShader.x3dv" />
     <None Include="Titania\ComposedWidgets\EulerAdjustment.h" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

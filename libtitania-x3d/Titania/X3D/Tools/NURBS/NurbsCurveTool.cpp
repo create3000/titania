@@ -55,15 +55,12 @@
 namespace titania {
 namespace X3D {
 
-NurbsCurveTool::Fields::Fields ()
-{ }
-
 NurbsCurveTool::NurbsCurveTool (X3DBaseNode* const node) :
 	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                   NurbsCurve (node -> getExecutionContext ()),
 	                  X3DBaseTool (node),
 	X3DParametricGeometryNodeTool (),
-	                       fields ()
+	      X3DLineGeometryNodeTool ()
 {
 	addType (X3DConstants::NurbsCurveTool);
 

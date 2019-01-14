@@ -61,6 +61,8 @@ class X3DParametricGeometryNode :
 {
 public:
 
+	///  @name Operations
+
 	virtual
 	NodeType
 	getPrimitiveType () const final override;
@@ -72,7 +74,12 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DParametricGeometryNode ();
+
+	std::vector <float>
+	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;
 
 };
 

@@ -52,8 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_SURFACE_GEOMETRY_NODE_H__
 
 #include "../NURBS/X3DParametricGeometryNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 
 #include <Titania/Math/Mesh/NurbsTessellator.h>
 
@@ -269,9 +267,6 @@ private:
 	            const std::vector <double> & vKnot,
 	            const std::vector <double> & weight) const;
 
-	std::vector <float>
-	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;
-
 	std::vector <Vector4f>
 	getTexControlPoints (const bool uClosed,
                         const bool vClosed,
@@ -293,8 +288,8 @@ private:
 	void
 	build () final override;
 
-	///  @name Members
-	
+	///  @name Fields
+
 	struct Fields
 	{
 		Fields ();
@@ -316,6 +311,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 	
 	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
 	X3DPtr <NurbsTextureCoordinate>   nurbsTexCoordNode;

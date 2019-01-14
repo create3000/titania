@@ -53,6 +53,7 @@
 #include "../../Components/Grouping/Switch.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Rendering/PointSet.h"
+#include "../../Components/Rendering/X3DCoordinateNode.h"
 #include "../Rendering/CoordinateTool.h"
 
 namespace titania {

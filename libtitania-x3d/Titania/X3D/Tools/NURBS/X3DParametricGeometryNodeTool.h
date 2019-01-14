@@ -60,7 +60,7 @@ namespace X3D {
 
 class X3DParametricGeometryNodeTool :
 	virtual public X3DParametricGeometryNode,
-	public X3DGeometryNodeTool
+	virtual public X3DGeometryNodeTool
 {
 public:
 

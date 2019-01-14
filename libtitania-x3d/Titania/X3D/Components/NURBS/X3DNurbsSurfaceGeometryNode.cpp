@@ -50,7 +50,10 @@
 
 #include "X3DNurbsSurfaceGeometryNode.h"
 
-#include "NurbsTextureCoordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
+#include "../NURBS/NurbsTextureCoordinate.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
+
 #include "../../Bits/Cast.h"
 
 #include <cassert>
@@ -138,12 +141,12 @@ X3DNurbsSurfaceGeometryNode::getUTessellation (const size_t uDimension) const
 	// Return a tessellation one less to the standard to get the right tessellation.
 
 	if (uTessellation () > 0)
-		return uTessellation ();
+		return uTessellation () + 1;
 		
 	if (uTessellation () < 0)
-		return -uTessellation () * uDimension;
+		return -uTessellation () * uDimension + 1;
 
-	return 2 * uDimension;
+	return 2 * uDimension + 1;
 }
 
 size_t
@@ -152,12 +155,12 @@ X3DNurbsSurfaceGeometryNode::getVTessellation (const size_t vDimension) const
 	// Return a tessellation one less to the standard to get the right tessellation.
 
 	if (vTessellation () > 0)
-		return vTessellation ();
+		return vTessellation () + 1;
 		
 	if (vTessellation () < 0)
-		return -vTessellation () * vDimension;
+		return -vTessellation () * vDimension + 1;
 
-	return 2 * vDimension;
+	return 2 * vDimension + 1;
 }
 
 bool
@@ -177,11 +180,15 @@ X3DNurbsSurfaceGeometryNode::getUClosed (const size_t uOrder,
 		const auto first = v * uDimension;
 		const auto last  = v * uDimension + uDimension - 1;
 
+		// Check if first and last weights are unitary.
+
 		if (haveWeights)
 		{
 			if (weight [first] not_eq weight [last])
 				return false;
 		}
+
+		// Check if first and last point are coincident.
 
 		if (controlPointNode -> get1Point (first) not_eq controlPointNode -> get1Point (last))
 			return false;
@@ -280,54 +287,6 @@ X3DNurbsSurfaceGeometryNode::getVClosed (const size_t vOrder,
 	}
 
 	return true;
-}
-
-std::vector <float>
-X3DNurbsSurfaceGeometryNode::getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const
-{
-	std::vector <float> knots (knot .cbegin (), knot .cend ());
-
-	// check the knot-vectors. If they are not according to standard
-	// default uniform knot vectors will be generated.
-
-	bool generateUniform = true;
-
-	if (knots .size () == size_t (dimension + order))
-	{
-		generateUniform = false;
-
-		size_t consecutiveKnots = 0;
-
-		for (size_t i = 1; i < knots .size (); ++ i)
-		{
-			if (knots [i] == knots [i - 1])
-				++ consecutiveKnots;
-			else
-				consecutiveKnots = 0;
-
-			if (consecutiveKnots > order - 1)
-				generateUniform = true;
-
-			if (knots [i - 1] > knots [i])
-				generateUniform = true;
-		}
-	}
-
-	if (generateUniform)
-	{
-		knots .resize (dimension + order);
-
-		for (size_t i = 0, size = knots .size (); i < size; ++ i)
-			knots [i] = float (i) / (size - 1);
-	}
-
-	if (closed)
-	{
-		for (size_t i = 1, size = order - 1; i < size; ++ i)
-			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
-	}
-
-	return knots;
 }
 
 std::vector <Vector4f>

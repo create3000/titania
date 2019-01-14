@@ -53,13 +53,15 @@
 
 #include "../../Components/NURBS/NurbsCurve.h"
 #include "../NURBS/X3DParametricGeometryNodeTool.h"
+#include "../Rendering/X3DLineGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
 class NurbsCurveTool :
 	virtual public NurbsCurve,
-	public X3DParametricGeometryNodeTool
+	public X3DParametricGeometryNodeTool,
+	public X3DLineGeometryNodeTool
 {
 public:
 
@@ -129,6 +131,13 @@ public:
 	controlPoint () const final override
 	{ return getNode <NurbsCurve> () -> controlPoint (); }
 
+	///  @name Member access
+
+	virtual
+	bool
+	isTransparent () const final override
+	{ return X3DLineGeometryNodeTool::isTransparent (); }
+
 	///  @name Destruction
 
 	virtual
@@ -151,14 +160,6 @@ protected:
 private:
 
 	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-	};
-
-	Fields fields;
 
 };
 

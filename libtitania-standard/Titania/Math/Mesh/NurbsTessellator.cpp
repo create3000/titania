@@ -97,6 +97,36 @@ nurbs_tessellator::begin_surface ()
 }
 
 void
+nurbs_tessellator::end_surface ()
+{
+	gluEndSurface (m_tess);
+}
+
+void
+nurbs_tessellator::begin_curve ()
+{
+	gluBeginCurve (m_tess);
+}
+
+void
+nurbs_tessellator::end_curve ()
+{
+	gluEndCurve (m_tess);
+}
+
+void
+nurbs_tessellator::begin_trim ()
+{
+	gluBeginTrim (m_tess);
+}
+
+void
+nurbs_tessellator::end_trim ()
+{
+	gluEndTrim (m_tess);
+}
+
+void
 nurbs_tessellator::nurbs_surface (const int32_t sKnotCount,
                                   float* const sKnots,
                                   const int32_t tKnotCount,
@@ -152,24 +182,6 @@ nurbs_tessellator::pwl_curve (const int32_t count,
 }
 
 void
-nurbs_tessellator::begin_trim ()
-{
-	gluBeginTrim (m_tess);
-}
-
-void
-nurbs_tessellator::end_trim ()
-{
-	gluEndTrim (m_tess);
-}
-
-void
-nurbs_tessellator::end_surface ()
-{
-	gluEndSurface (m_tess);
-}
-
-void
 nurbs_tessellator::tess_begin_data (const GLenum type, nurbs_tessellator* const self)
 {
 	self -> m_type = type;
@@ -206,8 +218,49 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 
 	switch (self -> m_type)
 	{
+		case GL_LINE_LOOP:
+		{
+			//__LOG__ << std::endl;
+
+			auto & m_lines = self -> m_lines;
+
+			for (size_t i = 1, size = m_vertices .size (); i < size; ++ i)
+			{
+				m_lines .emplace_back (m_vertices [i - 1]);
+				m_lines .emplace_back (m_vertices [i]);
+			}
+
+			m_lines .emplace_back (m_vertices .back ());
+			m_lines .emplace_back (m_vertices .front ());
+			break;
+		}
+		case GL_LINE_STRIP:
+		{
+			//__LOG__ << std::endl;
+
+			auto & m_lines = self -> m_lines;
+
+			for (size_t i = 1, size = m_vertices .size (); i < size; ++ i)
+			{
+				m_lines .emplace_back (m_vertices [i - 1]);
+				m_lines .emplace_back (m_vertices [i]);
+			}
+
+			break;
+		}
+		case GL_LINES:
+		{
+			//__LOG__ << std::endl;
+
+			auto & m_lines = self -> m_lines;
+
+			m_lines .insert (m_lines .end (), m_vertices .begin (), m_vertices .end ());
+			break;
+		}
 		case GL_TRIANGLE_FAN:
 		{
+			//__LOG__ << std::endl;
+
 			auto & m_triangles_tex_coord = self -> m_triangles .m_tex_coords;
 			auto & m_triangles_normals   = self -> m_triangles .m_normals;
 			auto & m_triangles_vertices  = self -> m_triangles .m_vertices;
@@ -235,6 +288,8 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 		}
 		case GL_TRIANGLE_STRIP:
 		{
+			//__LOG__ << std::endl;
+
 			auto & m_triangles_tex_coord = self -> m_triangles .m_tex_coords;
 			auto & m_triangles_normals   = self -> m_triangles .m_normals;
 			auto & m_triangles_vertices  = self -> m_triangles .m_vertices;
@@ -273,6 +328,8 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 		}
 		case GL_TRIANGLES:
 		{
+			//__LOG__ << std::endl;
+
 			auto & m_triangles_tex_coord = self -> m_triangles .m_tex_coords;
 			auto & m_triangles_normals   = self -> m_triangles .m_normals;
 			auto & m_triangles_vertices  = self -> m_triangles .m_vertices;
@@ -293,6 +350,8 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 		}
 		case GL_QUAD_STRIP:
 		{
+			//__LOG__ << std::endl;
+
 			auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
 			auto & m_quads_normals   = self -> m_quads .m_normals;
 			auto & m_quads_vertices  = self -> m_quads .m_vertices;
@@ -324,6 +383,8 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 		}
 		case GL_QUADS:
 		{
+			//__LOG__ << std::endl;
+
 			auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
 			auto & m_quads_normals   = self -> m_quads .m_normals;
 			auto & m_quads_vertices  = self -> m_quads .m_vertices;
