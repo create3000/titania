@@ -64,11 +64,5 @@ X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 	addType (X3DConstants::X3DNurbsControlCurveNode);
 }
 
-Box2d
-X3DNurbsControlCurveNode::getBBox () const
-{
-	return Box2d (controlPoint () .cbegin (), controlPoint () .cend (), iterator_type ());
-}
-
 } // X3D
 } // titania

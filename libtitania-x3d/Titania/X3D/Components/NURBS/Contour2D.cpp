@@ -102,35 +102,6 @@ Contour2D::initialize ()
 	set_children ();
 }
 
-bool
-Contour2D::isClosed () const
-{
-	Vector2d last = curves .back () -> controlPoint () .back ();
-
-	for (const auto & curve : curves)
-	{
-		Vector2d first = curve -> controlPoint () .front ();
-
-		if (last not_eq first)
-			return false;
-
-		last = curve -> controlPoint () .back ();
-	}
-
-	return true;
-}
-
-Box2d
-Contour2D::getBBox () const
-{
-	Box2d bbox;
-
-	for (const auto & curve : curves)
-		bbox += curve -> getBBox ();
-
-	return bbox;
-}
-
 void
 Contour2D::set_addChildren ()
 { }

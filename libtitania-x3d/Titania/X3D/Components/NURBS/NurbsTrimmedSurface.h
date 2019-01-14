@@ -148,18 +148,13 @@ private:
 	void
 	set_trimmingContour ();
 
-	///  @name Operations
-	
-	std::vector <Contour2D*>
-	getContours () const;
-
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -171,6 +166,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtrArray <Contour2D> trimmingContourNodes;
 
 };
 

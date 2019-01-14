@@ -70,7 +70,8 @@ NurbsTrimmedSurface::Fields::Fields () :
 NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNurbsSurfaceGeometryNode (),
-	                     fields ()
+	                     fields (),
+	       trimmingContourNodes ()
 {
 	addType (X3DConstants::NurbsTrimmedSurface);
 
@@ -92,6 +93,8 @@ NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionCo
 	addField (inputOnly,      "addTrimmingContour",    addTrimmingContour ());
 	addField (inputOnly,      "removeTrimmingContour", removeTrimmingContour ());
 	addField (inputOutput,    "trimmingContour",       trimmingContour ());
+
+	addChildObjects (trimmingContourNodes);
 }
 
 X3DBaseNode*
@@ -105,9 +108,9 @@ NurbsTrimmedSurface::initialize ()
 {
 	X3DNurbsSurfaceGeometryNode::initialize ();
 
-	addTrimmingContour ()    .addInterest (&NurbsTrimmedSurface::set_addTrimmingContour, this);
+	addTrimmingContour ()    .addInterest (&NurbsTrimmedSurface::set_addTrimmingContour,    this);
 	removeTrimmingContour () .addInterest (&NurbsTrimmedSurface::set_removeTrimmingContour, this);
-	trimmingContour ()       .addInterest (&NurbsTrimmedSurface::set_trimmingContour, this);
+	trimmingContour ()       .addInterest (&NurbsTrimmedSurface::set_trimmingContour,       this);
 
 	set_trimmingContour ();
 }
@@ -127,51 +130,22 @@ NurbsTrimmedSurface::set_removeTrimmingContour ()
 void
 NurbsTrimmedSurface::set_trimmingContour ()
 {
-	// Watch contours!!!
-}
-
-std::vector <Contour2D*>
-NurbsTrimmedSurface::getContours () const
-{
-	std::vector <Contour2D*> contours;
+	trimmingContourNodes .clear ();
 
 	for (const auto & node : trimmingContour ())
 	{
-		auto contour = x3d_cast <Contour2D*> (node);
-		
-		if (contour)
-			contours .emplace_back (contour);
+		const auto trimmingContourNode = x3d_cast <Contour2D*> (node);
+
+		if (trimmingContourNode)
+			trimmingContourNodes .emplace_back (trimmingContourNode);
 	}
-
-	//if (is_odd (contours .size ()))
-	//	contours .pop_back ();
-
-	return contours;
 }
 
 void
 NurbsTrimmedSurface::trimSurface (nurbs_tessellator & tessellator) const
 {
-	std::vector <Contour2D*> contours = getContours ();
-	
-	if (contours .size () < 2)
-		return;
-	
-	contours [0] -> trimSurface (tessellator);
-
-	for (size_t i = 1, size = contours .size (); i < size; ++ i)
-	{
-		if (contours [i] -> isEmpty ())
-			continue;
-
-		if (not contours [i] -> isClosed ())
-			continue;
-
-		if (not contours [0] -> getBBox () .contains (contours [i] -> getBBox ()))
-			continue;
-
-		contours [i] -> trimSurface (tessellator);
-	}
+	for (const auto & trimmingContourNode : trimmingContourNodes)
+		trimmingContourNode -> trimSurface (tessellator);
 }
 
 } // X3D

@@ -76,9 +76,6 @@ public:
 
 	///  @name Operations
 
-	Box2d
-	getBBox () const;
-
 	virtual
 	void
 	add (nurbs_tessellator & tessellator) const = 0;
@@ -93,7 +90,7 @@ protected:
 
 private:
 
-	///  @name Members
+	///  @name Fiels
 
 	struct Fields
 	{

@@ -112,20 +112,6 @@ public:
 
 	///  @name Operations
 
-	bool
-	isEmpty () const
-	{ return curves .empty (); }
-
-	size_t
-	getSize () const
-	{ return curves .size (); }
-
-	bool
-	isClosed () const;
-	
-	Box2d
-	getBBox () const;
-
 	void
 	trimSurface (nurbs_tessellator & tessellator) const;
 
@@ -155,7 +141,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -168,9 +154,9 @@ private:
 
 	Fields fields;
 
+	///  @name Members
+
 	X3DPtrArray <X3DNurbsControlCurveNode> curves;
-	
-	Box2d bbox;
 
 };
 
