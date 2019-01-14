@@ -54,6 +54,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../NURBS/CoordinateDouble.h"
+#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing3D/TextureCoordinate3D.h"
 #include "../Texturing3D/TextureCoordinate4D.h"
 
 namespace titania {
@@ -123,10 +125,28 @@ SFNode
 X3DParametricGeometryNode::toPrimitive () const
 {
 	const auto geometryNode   = getExecutionContext () -> createNode <IndexedFaceSet> ();
-	const auto texCoordNode   = getExecutionContext () -> createNode <TextureCoordinate4D> ();
 	const auto coordinateNode = getExecutionContext () -> createNode <CoordinateDouble> ();
+	auto       texCoordNode   = X3DPtr <X3DTextureCoordinateNode> ();
 	auto       texCoordMap    = std::map <Vector4d, size_t> ();
 	auto       coordMap       = std::map <Vector3d, size_t> ();
+	bool       tex3D          = false;
+	bool       tex4D          = false;
+
+	for (const auto & texCoord : getTexCoords () [0])
+	{
+		if (std::abs (texCoord .w () - 1) > 1e-5)
+			tex4D = true;
+
+		if (std::abs (texCoord .z ()) > 1e-5)
+			tex3D = true;
+	}
+
+	if (tex4D)
+		texCoordNode = getExecutionContext () -> createNode <TextureCoordinate4D> ();
+	else if (tex3D)
+		texCoordNode = getExecutionContext () -> createNode <TextureCoordinate3D> ();
+	else
+		texCoordNode = getExecutionContext () -> createNode <TextureCoordinate> ();
 
 	geometryNode -> creaseAngle () = pi <float>;
 	geometryNode -> solid ()       = getSolid ();
