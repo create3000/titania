@@ -315,11 +315,11 @@ NurbsCurve::getPrimitiveType () const
 SFNode
 NurbsCurve::toPrimitive () const
 {
-	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
-	const auto coord    = getExecutionContext () -> createNode <CoordinateDouble> ();
-	auto       map      = std::map <Vector3d, size_t> ();
+	const auto geometryNode   = getExecutionContext () -> createNode <IndexedLineSet> ();
+	const auto coordinateNode = getExecutionContext () -> createNode <CoordinateDouble> ();
+	auto       map            = std::map <Vector3d, size_t> ();
 
-	geometry -> coord () = coord;
+	geometryNode -> coord () = coordinateNode;
 
 	for (const auto & vertex : getVertices ())
 		map .emplace (vertex, map .size ());
@@ -329,15 +329,15 @@ NurbsCurve::toPrimitive () const
 		const auto & vertex1 = getVertices () [i];
 		const auto & vertex2 = getVertices () [i + 1];
 
-		geometry -> coordIndex () .emplace_back (map [vertex1]);
-		geometry -> coordIndex () .emplace_back (map [vertex2]);
-		geometry -> coordIndex () .emplace_back (-1);
+		geometryNode -> coordIndex () .emplace_back (map [vertex1]);
+		geometryNode -> coordIndex () .emplace_back (map [vertex2]);
+		geometryNode -> coordIndex () .emplace_back (-1);
 	}
 
 	for (const auto & [point, index] : map)
-		coord -> set1Point (index, point);
+		coordinateNode -> set1Point (index, point);
 
-	return geometry;
+	return geometryNode;
 }
 
 NurbsCurve::~NurbsCurve ()

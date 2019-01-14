@@ -50,6 +50,11 @@
 
 #include "X3DParametricGeometryNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../NURBS/CoordinateDouble.h"
+
 namespace titania {
 namespace X3D {
 
@@ -110,13 +115,69 @@ X3DParametricGeometryNode::getKnots (const std::vector <double> & knot, const bo
 NodeType
 X3DParametricGeometryNode::getPrimitiveType () const
 {
-	throw Error <NOT_SUPPORTED> ("X3DParametricGeometryNode::getPrimitiveType");
+	return X3DConstants::IndexedFaceSet;
 }
 
 SFNode
 X3DParametricGeometryNode::toPrimitive () const
 {
-	throw Error <NOT_SUPPORTED> ("X3DParametricGeometryNode::toPrimitive");
+	const auto geometryNode   = getExecutionContext () -> createNode <IndexedFaceSet> ();
+	const auto coordinateNode = getExecutionContext () -> createNode <CoordinateDouble> ();
+	auto       map            = std::map <Vector3d, size_t> ();
+
+	geometryNode -> creaseAngle () = pi <float>;
+	geometryNode -> solid ()       = getSolid ();
+	geometryNode -> ccw ()         = getCCW ();
+	geometryNode -> coord ()       = coordinateNode;
+
+	for (const auto & vertex : getVertices ())
+		map .emplace (vertex, map .size ());
+
+	for (const auto & element : getElements ())
+	{
+		switch (element .vertexMode ())
+		{
+			case GL_TRIANGLES:
+			{
+				for (size_t i = element .first (), size = element .last (); i < size; i += 3)
+				{
+					const auto & vertex1 = getVertices () [i];
+					const auto & vertex2 = getVertices () [i + 1];
+					const auto & vertex3 = getVertices () [i + 2];
+
+					geometryNode -> coordIndex () .emplace_back (map [vertex1]);
+					geometryNode -> coordIndex () .emplace_back (map [vertex2]);
+					geometryNode -> coordIndex () .emplace_back (map [vertex3]);
+					geometryNode -> coordIndex () .emplace_back (-1);
+				}
+
+				break;
+			}
+			case GL_QUADS:
+			{
+				for (size_t i = element .first (), size = element .last (); i < size; i += 4)
+				{
+					const auto & vertex1 = getVertices () [i];
+					const auto & vertex2 = getVertices () [i + 1];
+					const auto & vertex3 = getVertices () [i + 2];
+					const auto & vertex4 = getVertices () [i + 3];
+
+					geometryNode -> coordIndex () .emplace_back (map [vertex1]);
+					geometryNode -> coordIndex () .emplace_back (map [vertex2]);
+					geometryNode -> coordIndex () .emplace_back (map [vertex3]);
+					geometryNode -> coordIndex () .emplace_back (map [vertex4]);
+					geometryNode -> coordIndex () .emplace_back (-1);
+				}
+
+				break;
+			}
+		}
+	}
+
+	for (const auto & [point, index] : map)
+		coordinateNode -> set1Point (index, point);
+
+	return geometryNode;
 }
 
 } // X3D
