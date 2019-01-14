@@ -3195,6 +3195,9 @@
     <None Include="share\titania\Library\Effects\AnisotropicShader.x3dv" />
     <None Include="Titania\ComposedWidgets\EulerAdjustment.h" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\Contour2D" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\ContourPolyline2D" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve2D" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
