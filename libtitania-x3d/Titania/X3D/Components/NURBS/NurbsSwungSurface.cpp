@@ -50,8 +50,11 @@
 
 #include "NurbsSwungSurface.h"
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/Extrusion.h"
+#include "../NURBS/X3DNurbsControlCurveNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -70,7 +73,9 @@ NurbsSwungSurface::Fields::Fields () :
 NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParametricGeometryNode (),
-	                   fields ()
+	                   fields (),
+	         profileCurveNode (),
+	      trajectoryCurveNode ()
 {
 	addType (X3DConstants::NurbsSwungSurface);
 
@@ -79,6 +84,9 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (inputOutput,    "profileCurve",    profileCurve ());
 	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());
+
+	addChildObjects (profileCurveNode,
+	                 trajectoryCurveNode);
 }
 
 X3DBaseNode*
@@ -88,7 +96,84 @@ NurbsSwungSurface::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+NurbsSwungSurface::initialize ()
+{
+	X3DParametricGeometryNode::initialize ();
+
+	profileCurve ()    .addInterest (&NurbsSwungSurface::set_profileCurve, this);
+	trajectoryCurve () .addInterest (&NurbsSwungSurface::set_trajectoryCurve,   this);
+
+	set_profileCurve ();
+	set_trajectoryCurve ();
+}
+
+void
+NurbsSwungSurface::set_profileCurve ()
+{
+	if (profileCurveNode)
+		profileCurveNode -> removeInterest (this);
+
+	profileCurveNode .set (x3d_cast <X3DNurbsControlCurveNode*> (profileCurve ()));
+
+	if (profileCurveNode)
+		profileCurveNode -> addInterest (this);
+}
+
+void
+NurbsSwungSurface::set_trajectoryCurve ()
+{
+	if (trajectoryCurveNode)
+		trajectoryCurveNode -> removeInterest (this);
+
+	trajectoryCurveNode .set (x3d_cast <X3DNurbsControlCurveNode*> (trajectoryCurve ()));
+
+	if (trajectoryCurveNode)
+		trajectoryCurveNode -> addInterest (this);
+}
+
+void
 NurbsSwungSurface::build ()
+{
+	if (not profileCurveNode)
+		return;
+
+	if (not trajectoryCurveNode)
+		return;
+
+	const auto extrusion       = MakePtr <Extrusion> (getExecutionContext ());
+	const auto trajectoryCurve = trajectoryCurveNode -> tessellate ();
+	auto       spine           = std::vector <Vector3f> ();
+
+	for (const auto & point : trajectoryCurve)
+		spine .emplace_back (point .x (), 0, point .y ());
+
+	extrusion -> beginCap ()     = false;
+	extrusion -> endCap ()       = false;
+	extrusion -> solid ()        = true;
+	extrusion -> ccw ()          = true;
+	extrusion -> convex ()       = true;
+	extrusion -> creaseAngle ()  = pi <float>;
+	extrusion -> crossSection () = profileCurveNode -> tessellate ();
+	extrusion -> spine ()        = std::move (spine);
+
+	extrusion -> setup ();
+
+	getColors ()    = extrusion -> getPolygonColors ();
+	getTexCoords () = extrusion -> getPolygonTexCoords ();
+	getNormals ()   = extrusion -> getPolygonNormals ();
+	getVertices ()  = extrusion -> getPolygonVertices ();
+
+	if (not ccw ())
+		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
+
+	for (const auto & element : extrusion -> getElements ())
+		addElements (element .vertexMode (), element .count ());
+
+	setSolid (solid ());
+	setCCW (ccw ());
+}
+
+NurbsSwungSurface::~NurbsSwungSurface ()
 { }
 
 } // X3D

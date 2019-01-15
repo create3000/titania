@@ -126,13 +126,36 @@ public:
 	trajectoryCurve () const
 	{ return *fields .trajectoryCurve; }
 
+	///  @name Contruction
+
+	virtual
+	~NurbsSwungSurface () override;
+
+
+protected:
+
+	///  @name Contruction
+
+	virtual
+	void
+	initialize () override;
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_profileCurve ();
+	
+	void
+	set_trajectoryCurve ();
+
+	///  @name Operations
 
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 
@@ -140,7 +163,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -153,6 +176,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DNurbsControlCurveNode> profileCurveNode;
+	X3DPtr <X3DNurbsControlCurveNode> trajectoryCurveNode;
 
 };
 
