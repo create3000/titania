@@ -94,5 +94,29 @@ NurbsTextureCoordinate::create (X3DExecutionContext* const executionContext) con
 	return new NurbsTextureCoordinate (executionContext);
 }
 
+bool
+NurbsTextureCoordinate::isValid () const
+{
+	if (uOrder () < 2)
+		return false;
+
+	if (vOrder () < 2)
+		return false;
+
+	if (uDimension () < uOrder ())
+		return false;
+
+	if (vDimension () < vOrder ())
+		return false;
+
+	if (controlPoint () .size () not_eq size_t (uDimension () * vDimension ()))
+		return false;
+
+	return true;
+}
+
+NurbsTextureCoordinate::~NurbsTextureCoordinate ()
+{ }
+
 } // X3D
 } // titania

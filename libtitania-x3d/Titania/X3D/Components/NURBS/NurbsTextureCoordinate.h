@@ -150,8 +150,20 @@ public:
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
+	///  @name Member access
+
+	bool
+	isValid () const;
+
+	///  @name Destruction
+
+	virtual
+	~NurbsTextureCoordinate () final override;
+
 
 private:
+
+	///  @name Operations
 
 	///  @name Static members
 

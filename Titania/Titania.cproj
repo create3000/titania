@@ -3200,6 +3200,7 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve2D" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSweptSurface" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSwungSurface" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTextureCoordinate" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
