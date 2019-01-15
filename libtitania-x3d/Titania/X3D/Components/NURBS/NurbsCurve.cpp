@@ -253,6 +253,34 @@ NurbsCurve::getControlPoints (const bool closed,
 	return controlPoints;
 }
 
+std::vector <Vector3f>
+NurbsCurve::tessellate () const
+{
+	if (order () < 2)
+		return { };
+
+	if (not controlPointNode)
+		return { };
+
+	if (controlPointNode -> getSize () < size_t (order ()))
+		return { };
+
+	// Order and dimension are now positive numbers.
+
+	const auto   dimension = controlPointNode -> getSize ();
+	const auto   closed    = getClosed (order (), dimension, knot (), weight ());
+	const auto & lines     = getVertices ();
+	auto         curve     = std::vector <Vector3f> ();
+
+	for (size_t i = 0, size = lines .size (); i < size; i += 2)
+		curve .emplace_back (lines [i]);
+
+	if (closed)
+		curve .emplace_back (lines .front ());
+
+	return curve;
+}
+
 void
 NurbsCurve::build ()
 {
@@ -283,8 +311,8 @@ NurbsCurve::build ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, scale ? getTessellation (knots .size () - order ()) / scale : 1);
-	tessellator .property (GLU_V_STEP, scale ? getTessellation (knots .size () - order ()) / scale : 1);
+	tessellator .property (GLU_U_STEP, scale ? getTessellation (controlPoints .size ()) / scale : 1);
+	tessellator .property (GLU_V_STEP, scale ? getTessellation (controlPoints .size ()) / scale : 1);
 
 	tessellator .begin_curve ();
 

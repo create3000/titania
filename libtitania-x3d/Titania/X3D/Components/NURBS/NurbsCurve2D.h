@@ -131,6 +131,10 @@ public:
 	///  @name Operations
 
 	virtual
+	std::vector <Vector2f>
+	tessellate () const final override;
+
+	virtual
 	void
 	trim (nurbs_tessellator & tessellator) const final override;
 	
@@ -138,6 +142,9 @@ public:
 private:
 
 	///  @name Operations
+
+	size_t
+	getTessellation (const size_t dimension) const;
 
 	bool
 	getClosed (const size_t order,

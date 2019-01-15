@@ -50,8 +50,12 @@
 
 #include "NurbsSweptSurface.h"
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/Extrusion.h"
+#include "../NURBS/NurbsCurve.h"
+#include "../NURBS/X3DNurbsControlCurveNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -70,7 +74,9 @@ NurbsSweptSurface::Fields::Fields () :
 NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParametricGeometryNode (),
-	                   fields ()
+	                   fields (),
+	    crossSectionCurveNode (),
+	      trajectoryCurveNode ()
 {
 	addType (X3DConstants::NurbsSweptSurface);
 
@@ -79,6 +85,9 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "ccw",               ccw ());
 	addField (inputOutput,    "crossSectionCurve", crossSectionCurve ());
 	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());
+
+	addChildObjects (crossSectionCurveNode,
+	                 trajectoryCurveNode);
 }
 
 X3DBaseNode*
@@ -88,7 +97,79 @@ NurbsSweptSurface::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+NurbsSweptSurface::initialize ()
+{
+	X3DParametricGeometryNode::initialize ();
+
+	crossSectionCurve () .addInterest (&NurbsSweptSurface::set_crossSectionCurve, this);
+	trajectoryCurve ()   .addInterest (&NurbsSweptSurface::set_trajectoryCurve,   this);
+
+	set_crossSectionCurve ();
+	set_trajectoryCurve ();
+}
+
+void
+NurbsSweptSurface::set_crossSectionCurve ()
+{
+	if (crossSectionCurveNode)
+		crossSectionCurveNode -> removeInterest (this);
+
+	crossSectionCurveNode .set (x3d_cast <X3DNurbsControlCurveNode*> (crossSectionCurve ()));
+
+	if (crossSectionCurveNode)
+		crossSectionCurveNode -> addInterest (this);
+}
+
+void
+NurbsSweptSurface::set_trajectoryCurve ()
+{
+	if (trajectoryCurveNode)
+		trajectoryCurveNode -> removeInterest (this);
+
+	trajectoryCurveNode .set (x3d_cast <NurbsCurve*> (trajectoryCurve ()));
+
+	if (trajectoryCurveNode)
+		trajectoryCurveNode -> addInterest (this);
+}
+
+void
 NurbsSweptSurface::build ()
+{
+	if (not crossSectionCurveNode)
+		return;
+
+	if (not trajectoryCurveNode)
+		return;
+
+	const auto extrusion = MakePtr <Extrusion> (getExecutionContext ());
+
+	extrusion -> beginCap ()     = false;
+	extrusion -> endCap ()       = false;
+	extrusion -> solid ()        = true;
+	extrusion -> ccw ()          = true;
+	extrusion -> convex ()       = true;
+	extrusion -> creaseAngle ()  = pi <float>;
+	extrusion -> crossSection () = crossSectionCurveNode -> tessellate ();
+	extrusion -> spine ()        = trajectoryCurveNode   -> tessellate ();
+
+	extrusion -> setup ();
+
+	getColors ()    = extrusion -> getPolygonColors ();
+	getTexCoords () = extrusion -> getPolygonTexCoords ();
+	getNormals ()   = extrusion -> getPolygonNormals ();
+	getVertices ()  = extrusion -> getPolygonVertices ();
+
+	if (not ccw ())
+		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
+
+	for (const auto & element : extrusion -> getElements ())
+		addElements (element .vertexMode (), element .count ());
+
+	setSolid (solid ());
+	setCCW (ccw ());
+}
+
+NurbsSweptSurface::~NurbsSweptSurface ()
 { }
 
 } // X3D

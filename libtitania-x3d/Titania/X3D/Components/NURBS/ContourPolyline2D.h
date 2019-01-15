@@ -87,11 +87,20 @@ public:
 	///  @name Operations
 
 	virtual
+	std::vector <Vector2f>
+	tessellate () const final override;
+
+	virtual
 	void
 	trim (nurbs_tessellator & tessellator) const final override;
 
 
 private:
+
+	///  @name Member access
+
+	std::vector <Vector2f>
+	getControlPoints () const;
 
 	///  @name Static members
 

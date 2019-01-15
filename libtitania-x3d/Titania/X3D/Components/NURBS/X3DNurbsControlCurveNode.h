@@ -77,6 +77,10 @@ public:
 	///  @name Operations
 
 	virtual
+	std::vector <Vector2f>
+	tessellate () const = 0;
+
+	virtual
 	void
 	trim (nurbs_tessellator & tessellator) const = 0;
 

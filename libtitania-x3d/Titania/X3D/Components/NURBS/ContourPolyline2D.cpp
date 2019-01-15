@@ -75,6 +75,23 @@ ContourPolyline2D::create (X3DExecutionContext* const executionContext) const
 	return new ContourPolyline2D (executionContext);
 }
 
+std::vector <Vector2f>
+ContourPolyline2D::getControlPoints () const
+{
+	std::vector <Vector2f> controlPoints;
+
+	for (const auto & value : controlPoint ())
+		controlPoints .emplace_back (value);
+
+	return controlPoints;
+}
+
+std::vector <Vector2f>
+ContourPolyline2D::tessellate () const
+{
+	return getControlPoints ();
+}
+
 void
 ContourPolyline2D::trim (nurbs_tessellator & tessellator) const
 {

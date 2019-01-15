@@ -146,8 +146,13 @@ public:
 	///  @name Operations
 
 	virtual
+	std::vector <Vector3f>
+	tessellate () const final override
+	{ return getNode <NurbsCurve> () -> tessellate (); }
+
+	virtual
 	SFNode
-	toPrimitive () const override
+	toPrimitive () const final override
 	{ return getNode <NurbsCurve> () -> toPrimitive (); }
 
 	///  @name Destruction

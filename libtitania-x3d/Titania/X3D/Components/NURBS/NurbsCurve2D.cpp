@@ -89,6 +89,20 @@ NurbsCurve2D::create (X3DExecutionContext* const executionContext) const
 	return new NurbsCurve2D (executionContext);
 }
 
+size_t
+NurbsCurve2D::getTessellation (const size_t dimension) const
+{
+	// Return a tessellation one less to the standard to get the right tessellation.
+
+	if (tessellation () > 0)
+		return tessellation () + 1;
+		
+	if (tessellation () < 0)
+		return -tessellation () * dimension + 1;
+
+	return 2 * dimension + 1;
+}
+
 bool
 NurbsCurve2D::getClosed (const size_t order,
                          const size_t dimension,
@@ -237,6 +251,66 @@ NurbsCurve2D::getControlPoints (const bool closed,
 	}
 
 	return controlPoints;
+}
+
+std::vector <Vector2f>
+NurbsCurve2D::tessellate () const
+{
+	if (order () < 2)
+		return { };
+
+	if (controlPoint () .size () < (size_t) order ())
+		return { };
+
+	// Order and dimension are now positive numbers.
+
+	const auto closed        = getClosed (order (), controlPoint () .size (), knot (), weight ());
+	auto       controlPoints = getControlPoints (closed, order (), controlPoint () .size (), weight ());
+
+	// Knots
+
+	auto       knots = getKnots (knot (), closed, order (), controlPoint () .size ());
+	const auto scale = knots .back () - knots .front ();
+
+	// Tessellate
+
+	nurbs_tessellator tessellator;
+
+	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+	tessellator .property (GLU_U_STEP, scale ? getTessellation (knots .size () - order ()) / scale : 1);
+	tessellator .property (GLU_V_STEP, scale ? getTessellation (knots .size () - order ()) / scale : 1);
+
+	tessellator .begin_curve ();
+
+	tessellator .nurbs_curve (knots .size (), knots .data (),
+	                          3, controlPoints [0] .data (),
+	                          order (),
+	                          GL_MAP1_VERTEX_3);
+
+	tessellator .end_curve ();
+
+	// End tessellation
+
+	// Lines
+
+	const auto & lines = tessellator .lines ();
+	auto         curve = std::vector <Vector2f> ();
+
+	for (size_t i = 0, size = lines .size (); i < size; i += 2)
+	{
+		const auto & vertex = lines [i];
+
+		curve .emplace_back (vertex .x (), vertex .y ());
+	}
+
+	if (closed)
+	{
+		const auto & vertex = lines .front ();
+
+		curve .emplace_back (vertex .x (), vertex .y ());
+	}
+
+	return curve;
 }
 
 void

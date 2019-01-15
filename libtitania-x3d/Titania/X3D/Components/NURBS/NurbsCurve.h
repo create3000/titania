@@ -163,6 +163,10 @@ public:
 	///  @name Operations
 
 	virtual
+	std::vector <Vector3f>
+	tessellate () const;
+
+	virtual
 	NodeType
 	getPrimitiveType () const final override;
 

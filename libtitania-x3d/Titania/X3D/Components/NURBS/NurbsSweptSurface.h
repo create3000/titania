@@ -61,6 +61,8 @@ class NurbsSweptSurface :
 {
 public:
 
+	///  @name Contruction
+
 	NurbsSweptSurface (X3DExecutionContext* const executionContext);
 
 	virtual
@@ -126,13 +128,36 @@ public:
 	trajectoryCurve () const
 	{ return *fields .trajectoryCurve; }
 
+	///  @name Destruction
+
+	virtual
+	~NurbsSweptSurface () override;
+
+
+protected:
+
+	///  @name Contruction
+
+	virtual
+	void
+	initialize () override;
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_crossSectionCurve ();
+	
+	void
+	set_trajectoryCurve ();
+
+	///  @name Operations
 
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 
@@ -140,7 +165,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -153,6 +178,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DNurbsControlCurveNode> crossSectionCurveNode;
+	X3DPtr <NurbsCurve>               trajectoryCurveNode;
 
 };
 
