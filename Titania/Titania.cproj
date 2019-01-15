@@ -3198,6 +3198,7 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\Contour2D" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\ContourPolyline2D" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve2D" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSweptSurface" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
