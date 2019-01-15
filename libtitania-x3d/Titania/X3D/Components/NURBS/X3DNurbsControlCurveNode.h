@@ -78,7 +78,7 @@ public:
 
 	virtual
 	void
-	add (nurbs_tessellator & tessellator) const = 0;
+	trim (nurbs_tessellator & tessellator) const = 0;
 
 
 protected:

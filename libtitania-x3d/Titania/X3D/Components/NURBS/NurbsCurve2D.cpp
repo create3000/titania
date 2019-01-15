@@ -240,7 +240,7 @@ NurbsCurve2D::getControlPoints (const bool closed,
 }
 
 void
-NurbsCurve2D::add (nurbs_tessellator & tessellator) const
+NurbsCurve2D::trim (nurbs_tessellator & tessellator) const
 {
 	if (order () < 2)
 		return;

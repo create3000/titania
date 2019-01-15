@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_TRIMMED_SURFACE_H__
 
 #include "../NURBS/X3DNurbsSurfaceGeometryNode.h"
-#include "../NURBS/Contour2D.h"
 
 namespace titania {
 namespace X3D {
@@ -118,6 +117,11 @@ public:
 	const MFNode &
 	trimmingContour () const
 	{ return *fields .trimmingContour; }
+
+	///  @name Destruction
+
+	virtual
+	~NurbsTrimmedSurface () override;
 
 
 protected:

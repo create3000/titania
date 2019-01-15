@@ -132,7 +132,7 @@ public:
 
 	virtual
 	void
-	add (nurbs_tessellator & tessellator) const final override;
+	trim (nurbs_tessellator & tessellator) const final override;
 	
 
 private:

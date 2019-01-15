@@ -76,7 +76,7 @@ ContourPolyline2D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-ContourPolyline2D::add (nurbs_tessellator & tessellator) const
+ContourPolyline2D::trim (nurbs_tessellator & tessellator) const
 {
 	std::vector <Vector2f> controlPoints;
 

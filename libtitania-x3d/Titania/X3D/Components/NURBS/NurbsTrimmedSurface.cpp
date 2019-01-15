@@ -52,7 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-
+#include "../NURBS/Contour2D.h"
 
 namespace titania {
 namespace X3D {
@@ -155,6 +155,9 @@ NurbsTrimmedSurface::trimSurface (nurbs_tessellator & tessellator) const
 	for (const auto & trimmingContourNode : trimmingContourNodes)
 		trimmingContourNode -> trimSurface (tessellator);
 }
+
+NurbsTrimmedSurface::~NurbsTrimmedSurface ()
+{ }
 
 } // X3D
 } // titania
