@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.3.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 13 Jan 2019 03:58:53 GMT"
+META "modified" "Tue, 15 Jan 2019 13:52:31 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -208,6 +208,7 @@ Collision {
           children [
             Group { }
             DepthBuffer {
+              enabled FALSE
               children [
                 DEF ControlPoints Shape {
                   appearance Appearance {
