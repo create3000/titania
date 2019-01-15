@@ -169,10 +169,10 @@ nurbs_tessellator::nurbs_curve (const int32_t knotCount,
 }
 
 void
-nurbs_tessellator::pwl_curve (const int32_t count,
-                              float* const data,
-                              const int32_t stride,
-                              const GLenum type)
+nurbs_tessellator::piecewise_linear_curve (const int32_t count,
+                                           float* const data,
+                                           const int32_t stride,
+                                           const GLenum type)
 {
 	gluPwlCurve (m_tess,
 	             count,

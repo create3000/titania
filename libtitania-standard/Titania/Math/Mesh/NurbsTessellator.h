@@ -161,10 +161,10 @@ public:
 	             const GLenum type);
 
 	void
-	pwl_curve (const int32_t count,
-              float* const data,
-              const int32_t stride,
-              const GLenum type);
+	piecewise_linear_curve (const int32_t count,
+                           float* const data,
+                           const int32_t stride,
+                           const GLenum type);
 
 	///  @name Destruction
 

@@ -100,7 +100,7 @@ ContourPolyline2D::trim (nurbs_tessellator & tessellator) const
 	for (const auto & value : controlPoint ())
 		controlPoints .emplace_back (value);
 
-	tessellator .pwl_curve (controlPoints .size (), controlPoints [0] .data (), 2, GLU_MAP1_TRIM_2);
+	tessellator .piecewise_linear_curve (controlPoints .size (), controlPoints [0] .data (), 2, GLU_MAP1_TRIM_2);
 }
 
 } // X3D
