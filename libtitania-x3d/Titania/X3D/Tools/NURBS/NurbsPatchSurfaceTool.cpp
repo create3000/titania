@@ -55,15 +55,11 @@
 namespace titania {
 namespace X3D {
 
-NurbsPatchSurfaceTool::Fields::Fields ()
-{ }
-
 NurbsPatchSurfaceTool::NurbsPatchSurfaceTool (X3DBaseNode* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	              NurbsPatchSurface (node -> getExecutionContext ()),
 	                    X3DBaseTool (node),
-	X3DNurbsSurfaceGeometryNodeTool (),
-	                         fields ()
+	X3DNurbsSurfaceGeometryNodeTool ()
 {
 	addType (X3DConstants::NurbsPatchSurfaceTool);
 

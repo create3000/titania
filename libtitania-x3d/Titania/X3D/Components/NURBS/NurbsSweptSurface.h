@@ -128,6 +128,18 @@ public:
 	trajectoryCurve () const
 	{ return *fields .trajectoryCurve; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <X3DNurbsControlCurveNode> &
+	getCrossSectionCurveNode () const
+	{ return crossSectionCurveNode; }
+
+	virtual
+	const X3DPtr <NurbsCurve> &
+	getTrajectoryCurveNode () const
+	{ return trajectoryCurveNode; }
+
 	///  @name Destruction
 
 	virtual

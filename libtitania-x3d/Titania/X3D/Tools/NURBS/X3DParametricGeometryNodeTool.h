@@ -91,9 +91,6 @@ protected:
 	void
 	initialize () override;
 
-
-private:
-
 };
 
 } // X3D

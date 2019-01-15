@@ -51,19 +51,16 @@
 #include "NurbsSweptSurfaceTool.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-
+#include "../../Components/NURBS/NurbsCurve.h"
+#
 namespace titania {
 namespace X3D {
-
-NurbsSweptSurfaceTool::Fields::Fields ()
-{ }
 
 NurbsSweptSurfaceTool::NurbsSweptSurfaceTool (X3DBaseNode* const node) :
 	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	            NurbsSweptSurface (node -> getExecutionContext ()),
 	                  X3DBaseTool (node),
-	X3DParametricGeometryNodeTool (),
-	                       fields ()
+	X3DParametricGeometryNodeTool ()
 {
 	addType (X3DConstants::NurbsSweptSurfaceTool);
 
@@ -76,6 +73,24 @@ void
 NurbsSweptSurfaceTool::initialize ()
 {
 	X3DParametricGeometryNodeTool::initialize ();
+}
+
+void
+NurbsSweptSurfaceTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	X3DParametricGeometryNodeTool::traverse (type, renderObject);
+
+	if (getTrajectoryCurveNode ())
+		getTrajectoryCurveNode () -> traverse (type, renderObject);
+}
+
+void
+NurbsSweptSurfaceTool::draw (ShapeContainer* const context)
+{
+	X3DParametricGeometryNodeTool::draw (context);
+
+	if (getTrajectoryCurveNode ())
+		getTrajectoryCurveNode () -> draw (context);
 }
 
 void

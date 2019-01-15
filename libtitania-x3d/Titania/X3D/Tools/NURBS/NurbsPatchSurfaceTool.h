@@ -85,19 +85,6 @@ protected:
 	void
 	initialize () final override;
 
-
-private:
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-	};
-
-	Fields fields;
-
 };
 
 } // X3D

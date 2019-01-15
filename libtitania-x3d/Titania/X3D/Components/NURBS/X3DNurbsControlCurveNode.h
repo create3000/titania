@@ -94,7 +94,7 @@ protected:
 
 private:
 
-	///  @name Fiels
+	///  @name Fields
 
 	struct Fields
 	{

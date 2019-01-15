@@ -55,15 +55,11 @@
 namespace titania {
 namespace X3D {
 
-NurbsSwungSurfaceTool::Fields::Fields ()
-{ }
-
 NurbsSwungSurfaceTool::NurbsSwungSurfaceTool (X3DBaseNode* const node) :
 	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	            NurbsSwungSurface (node -> getExecutionContext ()),
 	                  X3DBaseTool (node),
-	X3DParametricGeometryNodeTool (),
-	                       fields ()
+	X3DParametricGeometryNodeTool ()
 {
 	addType (X3DConstants::NurbsSwungSurfaceTool);
 

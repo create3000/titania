@@ -109,6 +109,28 @@ public:
 	trajectoryCurve () const final override
 	{ return getNode <NurbsSweptSurface> () -> trajectoryCurve (); }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <X3DNurbsControlCurveNode> &
+	getCrossSectionCurveNode () const final override
+	{ return getNode <NurbsSweptSurface> () -> getCrossSectionCurveNode (); }
+
+	virtual
+	const X3DPtr <NurbsCurve> &
+	getTrajectoryCurveNode () const final override
+	{ return getNode <NurbsSweptSurface> () -> getTrajectoryCurveNode (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	virtual
+	void
+	draw (ShapeContainer* const) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -126,19 +148,6 @@ protected:
 	virtual
 	void
 	initialize () final override;
-
-
-private:
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-	};
-
-	Fields fields;
 
 };
 
