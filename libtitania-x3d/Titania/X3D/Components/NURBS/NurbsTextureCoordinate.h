@@ -155,6 +155,9 @@ public:
 	bool
 	isValid () const;
 
+	std::vector <Vector4f>
+	getControlPoints () const;
+
 	///  @name Destruction
 
 	virtual

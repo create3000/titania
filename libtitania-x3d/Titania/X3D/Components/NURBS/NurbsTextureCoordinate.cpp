@@ -115,6 +115,27 @@ NurbsTextureCoordinate::isValid () const
 	return true;
 }
 
+std::vector <Vector4f>
+NurbsTextureCoordinate::getControlPoints () const
+{
+	std::vector <Vector4f> controlPoints;
+
+	if (weight () .size () not_eq controlPoint () .size ())
+	{
+		for (const auto & point : controlPoint ())
+			controlPoints .emplace_back (point .x (), point .y (), 0, 1);
+	}
+	else
+	{
+		size_t i = 0;
+
+		for (const auto & point : controlPoint ())
+			controlPoints .emplace_back (point .x (), point .y (), 0, weight () [i ++]);
+	}
+
+	return controlPoints;
+}
+
 NurbsTextureCoordinate::~NurbsTextureCoordinate ()
 { }
 

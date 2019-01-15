@@ -470,18 +470,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 			uKnots = getKnots (nurbsTexCoordNode -> uKnot (), false, nurbsTexCoordNode -> uOrder (), nurbsTexCoordNode -> uDimension ());
 			vKnots = getKnots (nurbsTexCoordNode -> vKnot (), false, nurbsTexCoordNode -> vOrder (), nurbsTexCoordNode -> vDimension ());
 
-			if (nurbsTexCoordNode -> weight () .size () not_eq nurbsTexCoordNode -> controlPoint () .size ())
-			{
-				for (const auto & point : basic::make_const_range (nurbsTexCoordNode -> controlPoint ()))
-					texControlPoints .emplace_back (point .x (), point .y (), 0, 1);
-			}
-			else
-			{
-				size_t i = 0;
-
-				for (const auto & point : basic::make_const_range (nurbsTexCoordNode -> controlPoint ()))
-					texControlPoints .emplace_back (point .x (), point .y (), 0, nurbsTexCoordNode -> weight () [i ++]);
-			}
+			texControlPoints = nurbsTexCoordNode -> getControlPoints ();
 		}
 	}
 
