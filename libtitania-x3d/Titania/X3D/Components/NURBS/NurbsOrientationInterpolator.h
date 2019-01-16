@@ -134,9 +134,51 @@ public:
 	value_changed () const
 	{ return *fields .value_changed; }
 
+	///  @name Destruction
+
+	virtual
+	~NurbsOrientationInterpolator () final override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () final override;
+
 
 private:
 
+	///  @name Member access
+
+	bool
+	getClosed (const size_t order,
+	           const size_t dimension,
+	           const std::vector <double> & knot,
+	           const std::vector <double> & weight) const;
+
+	std::vector <float>
+	getKnots (const bool closed,
+	          const size_t order,
+	          const size_t dimension,
+	          const std::vector <double> & knot) const;
+
+	std::vector <Vector4f>
+	getControlPoints (const bool closed,
+	                  const size_t order,
+	                  const size_t dimension,
+	                  const std::vector <double> & weight) const;
+
+	///  @name Event handlers
+
+	void
+	set_controlPoint ();
+
+	void
+	build ();
+
+	void
+	set_buffer ();
 
 	///  @name Static members
 
@@ -159,6 +201,12 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DCoordinateNode>       controlPointNode;
+	X3DPtr <OrientationInterpolator> interpolator;
+	SFTime                           buffer;
 
 };
 

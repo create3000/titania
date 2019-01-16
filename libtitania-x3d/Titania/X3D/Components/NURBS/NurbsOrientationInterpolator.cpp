@@ -50,7 +50,13 @@
 
 #include "NurbsOrientationInterpolator.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Interpolation/OrientationInterpolator.h"
+#include "../Rendering/X3DCoordinateNode.h"
+
+#include <Titania/Math/Mesh/NurbsTessellator.h>
+#include <cassert>
 
 namespace titania {
 namespace X3D {
@@ -60,18 +66,21 @@ const std::string NurbsOrientationInterpolator::typeName       = "NurbsOrientati
 const std::string NurbsOrientationInterpolator::containerField = "children";
 
 NurbsOrientationInterpolator::Fields::Fields () :
-	set_fraction (new SFFloat ()),
-	       order (new SFInt32 (3)),
-	        knot (new MFDouble ()),
-	      weight (new MFDouble ()),
-	controlPoint (new SFNode ()),
+	 set_fraction (new SFFloat ()),
+	        order (new SFInt32 (3)),
+	         knot (new MFDouble ()),
+	       weight (new MFDouble ()),
+	 controlPoint (new SFNode ()),
 	value_changed (new SFRotation ())
 { }
 
 NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DChildNode (),
-	      fields ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	          fields (),
+	controlPointNode (),
+	    interpolator (new OrientationInterpolator (executionContext)),
+	          buffer ()
 {
 	addType (X3DConstants::NurbsOrientationInterpolator);
 
@@ -82,6 +91,10 @@ NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext*
 	addField (inputOutput, "weight",        weight ());
 	addField (inputOutput, "controlPoint",  controlPoint ());
 	addField (outputOnly,  "value_changed", value_changed ());
+
+	addChildObjects (controlPointNode,
+	                 interpolator,
+	                 buffer);
 }
 
 X3DBaseNode*
@@ -89,6 +102,267 @@ NurbsOrientationInterpolator::create (X3DExecutionContext* const executionContex
 {
 	return new NurbsOrientationInterpolator (executionContext);
 }
+
+void
+NurbsOrientationInterpolator::initialize ()
+{
+	X3DChildNode::initialize ();
+
+	order ()        .addInterest (&NurbsOrientationInterpolator::build,            this);
+	knot ()         .addInterest (&NurbsOrientationInterpolator::build,            this);
+	weight ()       .addInterest (&NurbsOrientationInterpolator::build,            this);
+	controlPoint () .addInterest (&NurbsOrientationInterpolator::set_controlPoint, this);
+
+	set_fraction () .addInterest (interpolator -> set_fraction ());
+	interpolator -> value_changed () .addInterest (value_changed ());
+
+	buffer .addInterest (&NurbsOrientationInterpolator::set_buffer, this);
+
+	set_controlPoint ();
+
+	interpolator -> setup ();
+}
+
+bool
+NurbsOrientationInterpolator::getClosed (const size_t order,
+                                         const size_t dimension,
+                                         const std::vector <double> & knot,
+                                         const std::vector <double> & weight) const
+{
+	const auto haveWeights = weight .size () == controlPointNode -> getSize ();
+
+	// Check if first and last weights are unitary.
+
+	if (haveWeights)
+	{
+		if (weight .front () not_eq weight .back ())
+			return false;
+	}
+
+	// Check if first and last point are coincident.
+
+	if (controlPointNode -> get1Point (0) not_eq controlPointNode -> get1Point (dimension - 1))
+		return false;
+
+	// Check if knots are periodic.
+
+	if (knot .size () == dimension + order)
+	{
+		{
+			size_t count = 1;
+	
+			for (size_t i = 1, size = order; i < size; ++ i)
+			{
+				count += knot [i] == knot .front ();
+			}
+	
+			if (count == order)
+				return false;
+		}
+
+		{
+			size_t count = 1;
+	
+			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
+			{
+				count += knot [i] == knot .back ();
+			}
+
+			if (count == order)
+				return false;
+		}
+	}
+
+	return true;
+}
+
+std::vector <float>
+NurbsOrientationInterpolator::getKnots (const bool closed,
+                                        const size_t order,
+                                        const size_t dimension,
+                                        const std::vector <double> & knot) const
+{
+	std::vector <float> knots (knot .cbegin (), knot .cend ());
+
+	// check the knot-vectors. If they are not according to standard
+	// default uniform knot vectors will be generated.
+
+	bool generateUniform = true;
+
+	if (knots .size () == size_t (dimension + order))
+	{
+		generateUniform = false;
+
+		size_t consecutiveKnots = 0;
+
+		for (size_t i = 1; i < knots .size (); ++ i)
+		{
+			if (knots [i] == knots [i - 1])
+				++ consecutiveKnots;
+			else
+				consecutiveKnots = 0;
+
+			if (consecutiveKnots > order - 1)
+				generateUniform = true;
+
+			if (knots [i - 1] > knots [i])
+				generateUniform = true;
+		}
+	}
+
+	if (generateUniform)
+	{
+		knots .resize (dimension + order);
+
+		for (size_t i = 0, size = knots .size (); i < size; ++ i)
+			knots [i] = float (i) / (size - 1);
+	}
+
+	if (closed)
+	{
+		for (size_t i = 1, size = order - 1; i < size; ++ i)
+			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
+	}
+
+	return knots;
+}
+
+std::vector <Vector4f>
+NurbsOrientationInterpolator::getControlPoints (const bool closed,
+                                                const size_t order,
+                                                const size_t dimension,
+                                                const std::vector <double> & weight) const
+{
+	std::vector <Vector4f> controlPoints;
+
+	if (weight .size () not_eq dimension)
+	{
+		for (size_t i = 0; i < dimension; ++ i)
+		{
+			const auto p = controlPointNode -> get1Point (i);
+
+			controlPoints .emplace_back (p .x (),
+			                             p .y (),
+			                             p .z (),
+			                             1);
+		}
+
+		if (closed)
+		{
+			for (size_t i = 1, size = order - 1; i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [i]);
+		}
+	}
+	else
+	{
+		for (size_t i = 0; i < dimension; ++ i)
+		{
+			const auto p = controlPointNode -> get1Point (i);
+
+			controlPoints .emplace_back (p .x (),
+			                             p .y (),
+			                             p .z (),
+			                             weight [i]);
+		}
+
+		if (closed)
+		{
+			for (size_t i = 1, size = order - 1; i < size; ++ i)
+				controlPoints .emplace_back (controlPoints [i]);
+		}
+	}
+
+	return controlPoints;
+}
+
+void
+NurbsOrientationInterpolator::set_controlPoint ()
+{
+	if (controlPointNode)
+		controlPointNode -> removeInterest (this);
+
+	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
+
+	if (controlPointNode)
+		controlPointNode -> addInterest (this);
+
+	build ();
+}
+
+void
+NurbsOrientationInterpolator::build ()
+{
+	buffer .addEvent ();
+}
+
+void
+NurbsOrientationInterpolator::set_buffer ()
+{
+	if (order () < 2)
+		return;
+
+	if (not controlPointNode)
+		return;
+
+	if (controlPointNode -> getSize () < size_t (order ()))
+		return;
+
+	// Order and dimension are now positive numbers.
+
+	const auto dimension     = controlPointNode -> getSize ();
+	const auto closed        = getClosed (order (), dimension, knot (), weight ());
+	auto       controlPoints = getControlPoints (closed, order (), dimension, weight ());
+
+	// Knots
+
+	auto       knots = getKnots (closed, order (), dimension, knot ());
+	const auto scale = knots .back () - knots .front ();
+
+	assert ((knots .size () - order ()) == dimension);
+
+	// Tessellate
+
+	nurbs_tessellator tessellator;
+
+	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+	tessellator .property (GLU_U_STEP, 16 * dimension);
+
+	tessellator .begin_curve ();
+
+	tessellator .nurbs_curve (knots .size (), knots .data (),
+	                          4, controlPoints [0] .data (),
+	                          order (),
+	                          GL_MAP1_VERTEX_4);
+
+	tessellator .end_curve ();
+
+	// End tessellation
+
+	// Lines
+
+	const auto & lines = tessellator .lines ();
+
+	interpolator -> key ()      .clear ();
+	interpolator -> keyValue () .clear ();
+
+	for (size_t i = 0, size = lines .size (); i < size; i += 2)
+	{
+		const auto direction = Vector3d (lines [i + 1] - lines [i]);
+		const auto rotation  = Rotation4d (Vector3d (0, 0, 1), direction);
+
+		interpolator -> key ()      .emplace_back (knots .front () + (float (i) / float (size - (2 * not closed))) * scale);
+		interpolator -> keyValue () .emplace_back (rotation);
+	}
+
+	if (closed)
+	{
+		interpolator -> key ()      .emplace_back (knots .front () + scale);
+		interpolator -> keyValue () .emplace_back (interpolator -> keyValue () .front ());
+	}
+}
+
+NurbsOrientationInterpolator::~NurbsOrientationInterpolator ()
+{ }
 
 } // X3D
 } // titania

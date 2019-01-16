@@ -315,7 +315,8 @@ NurbsPositionInterpolator::set_buffer ()
 
 	// Knots
 
-	auto knots = getKnots (closed, order (), dimension, knot ());
+	auto       knots = getKnots (closed, order (), dimension, knot ());
+	const auto scale = knots .back () - knots .front ();
 
 	assert ((knots .size () - order ()) == dimension);
 
@@ -346,18 +347,18 @@ NurbsPositionInterpolator::set_buffer ()
 
 	for (size_t i = 0, size = lines .size (); i < size; i += 2)
 	{
-		interpolator -> key ()      .emplace_back (knots .front () + (float (i) / float (size - 2)) * knots .back ());
+		interpolator -> key ()      .emplace_back (knots .front () + (float (i) / float (size)) * scale);
 		interpolator -> keyValue () .emplace_back (lines [i]);
 	}
 
 	if (closed)
 	{
-		interpolator -> key ()      .emplace_back (1);
+		interpolator -> key ()      .emplace_back (knots .front () + scale);
 		interpolator -> keyValue () .emplace_back (lines .front ());
 	}
 	else
 	{
-		interpolator -> key ()      .emplace_back (1);
+		interpolator -> key ()      .emplace_back (knots .front () + scale);
 		interpolator -> keyValue () .emplace_back (lines .back ());
 	}
 }
