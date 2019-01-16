@@ -1,15 +1,14 @@
-#X3D V3.3 utf8 Titania V3.0.0
+#X3D V3.3 utf8 Titania V4.3.9
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 05 Sep 2014 01:58:48 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "generator" "Titania V4.3.9, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/info.x3dv"
-META "modified" "Thu, 02 Mar 2017 20:09:03 GMT"
-META "outputStyle" "nicest"
+META "modified" "Wed, 16 Jan 2019 13:30:11 GMT"
 META "title" "about:info"
 
 EXTERNPROTO Rotor [
@@ -37,34 +36,37 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-            value DEF Copyright Transform {
-              translation 0.262 0.217 1
-              children Shape {
-                appearance Appearance {
-                  material Material {
-                    diffuseColor 0 0 0
-                  }
-                }
-                geometry Text {
-                  string "© 2010 - 2017"
-                  fontStyle DEF _1 FontStyle {
-                    family [
-                      "../../fonts/pt-sans/PTN77F.ttf",
-                      "sans"
-                    ]
-                    style "BOLD"
-                    size 0.03
-                  }
-                }
-              }
-            }
-          }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF VersionNumberScript Script {
+              initializeOnly SFNode text DEF VersionNumberText Text {
+                string "4.3.9"
+                maxExtent 0.65
+                fontStyle FontStyle {
+                  family [
+                    "../../fonts/pt-sans/PTN77F.ttf",
+                    "sans"
+                  ]
+                  style "BOLD"
+                  size 0.34
+                }
+              }
+
+              url "ecmascript:
+
+function initialize ()
+{
+	text .string = new MFString (Browser .version);
+}
+"
+              directOutput TRUE
+            }
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
           }
         ]
       }
@@ -117,6 +119,22 @@ WorldInfo {
               0,
               0
             ]
+          }
+        ]
+      }
+      DEF Page_1 MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
           }
         ]
       }
@@ -249,7 +267,7 @@ DEF about:info LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 -1 3.56414481403479
+                      rotation 0 0 -1 3.64090340004657
                       center 5.6 -5.9 0
                       children Inline {
                         url "library/logo.x3dv"
@@ -257,7 +275,7 @@ DEF about:info LayerSet {
                     }
                   ]
                 }
-                DEF Titania_1 Transform {
+                DEF Titania_2 Transform {
                   translation -0.219 0.3611 1
                   children Shape {
                     appearance Appearance {
@@ -303,7 +321,7 @@ DEF about:info LayerSet {
                   translation 0.197 0.219 1
                   children Shape {
                     appearance Appearance {
-                      material DEF _2 Material {
+                      material Material {
                         diffuseColor 1 1 1
                       }
                     }
@@ -370,7 +388,27 @@ DEF about:info LayerSet {
                     }
                   }
                 }
-                USE Copyright
+                DEF Copyright Transform {
+                  translation 0.262 0.217 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry Text {
+                      string "© 2010 - 2017"
+                      fontStyle FontStyle {
+                        family [
+                          "../../fonts/pt-sans/PTN77F.ttf",
+                          "sans"
+                        ]
+                        style "BOLD"
+                        size 0.03
+                      }
+                    }
+                  }
+                }
                 DEF VersionNumber Transform {
                   translation -0.438782 -0.385263 1
                   children [
@@ -380,29 +418,9 @@ DEF about:info LayerSet {
                           diffuseColor 1 1 1
                         }
                       }
-                      geometry DEF VersionNumberText Text {
-                        string "3.0.0"
-                        maxExtent 0.65
-                        fontStyle FontStyle {
-                          family [
-                            "../../fonts/pt-sans/PTN77F.ttf",
-                            "sans"
-                          ]
-                          style "BOLD"
-                          size 0.34
-                        }
-                      }
+                      geometry USE VersionNumberText
                     }
-                    DEF VersionNumberScript Script {
-                      initializeOnly SFNode text USE VersionNumberText
-
-                      url "vrmlscript:
-function initialize ()
-{
-	text .string = new MFString (Browser .version);
-}
-"
-                    }
+                    USE VersionNumberScript
                   ]
                 }
               ]
@@ -416,6 +434,7 @@ function initialize ()
 
 DEF EnterWorld Script {
   url "ecmascript:
+
 function initialize ()
 {
 	Browser .setBrowserOption ('Dashboard', false);
