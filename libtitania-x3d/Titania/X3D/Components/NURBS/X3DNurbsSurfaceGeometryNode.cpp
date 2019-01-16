@@ -261,6 +261,12 @@ X3DNurbsSurfaceGeometryNode::build ()
 	const auto uScale = uKnots .back () - uKnots .front ();
 	const auto vScale = vKnots .back () - vKnots .front ();
 
+	if (uScale <= 0)
+		return;
+
+	if (vScale <= 0)
+		return;
+
 	assert ((uKnots .size () - uOrder ()) * (vKnots .size () - vOrder ()) == controlPoints .size ());
 
 	// TextureCoordinate

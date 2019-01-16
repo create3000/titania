@@ -214,6 +214,9 @@ NurbsCurve::build ()
 	auto       knots = getKnots (closed, order (), controlPointNode -> getSize (), knot ());
 	const auto scale = knots .back () - knots .front ();
 
+	if (scale <= 0)
+		return;
+
 	assert ((knots .size () - order ()) == controlPoints .size ());
 
 	// Tessellate

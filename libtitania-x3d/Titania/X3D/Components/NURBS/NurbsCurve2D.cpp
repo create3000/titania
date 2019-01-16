@@ -145,6 +145,11 @@ NurbsCurve2D::tessellate () const
 	auto       knots = getKnots (closed, order (), controlPoint () .size (), knot ());
 	const auto scale = knots .back () - knots .front ();
 
+	if (scale <= 0)
+		return;
+
+	assert ((knots .size () - order ()) == controlPoint () .size ());
+
 	// Tessellate
 
 	nurbs_tessellator tessellator;
