@@ -305,9 +305,18 @@ NurbsCurve2D::tessellate () const
 		curve .emplace_back (vertex .x (), vertex .y ());
 	}
 
-	const auto & vertex = lines .back ();
-
-	curve .emplace_back (vertex .x (), vertex .y ());
+	if (closed)
+	{
+		const auto & vertex = lines .front ();
+	
+		curve .emplace_back (vertex .x (), vertex .y ());
+	}
+	else
+	{
+		const auto & vertex = lines .back ();
+	
+		curve .emplace_back (vertex .x (), vertex .y ());
+	}
 
 	return curve;
 }

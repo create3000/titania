@@ -79,7 +79,8 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 	    X3DChildNode (),
 	          fields (),
 	controlPointNode (),
-	    interpolator (new PositionInterpolator (executionContext))
+	    interpolator (new PositionInterpolator (executionContext)),
+	          buffer ()
 {
 	addType (X3DConstants::NurbsPositionInterpolator);
 
@@ -92,7 +93,8 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 	addField (outputOnly,  "value_changed", value_changed ());
 
 	addChildObjects (controlPointNode,
-	                 interpolator);
+	                 interpolator,
+	                 buffer);
 }
 
 X3DBaseNode*
@@ -113,6 +115,8 @@ NurbsPositionInterpolator::initialize ()
 
 	set_fraction () .addInterest (interpolator -> set_fraction ());
 	interpolator -> value_changed () .addInterest (value_changed ());
+
+	buffer .addInterest (&NurbsPositionInterpolator::set_buffer, this);
 
 	set_controlPoint ();
 
@@ -288,6 +292,12 @@ NurbsPositionInterpolator::set_controlPoint ()
 void
 NurbsPositionInterpolator::build ()
 {
+	buffer .addEvent ();
+}
+
+void
+NurbsPositionInterpolator::set_buffer ()
+{
 	if (order () < 2)
 		return;
 
@@ -305,8 +315,7 @@ NurbsPositionInterpolator::build ()
 
 	// Knots
 
-	auto       knots = getKnots (closed, order (), dimension, knot ());
-	const auto scale = knots .back () - knots .front ();
+	auto knots = getKnots (closed, order (), dimension, knot ());
 
 	assert ((knots .size () - order ()) == dimension);
 
@@ -315,7 +324,7 @@ NurbsPositionInterpolator::build ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, scale ? 128 / scale : 128);
+	tessellator .property (GLU_U_STEP, 16 * dimension);
 
 	tessellator .begin_curve ();
 
@@ -337,11 +346,16 @@ NurbsPositionInterpolator::build ()
 
 	for (size_t i = 0, size = lines .size (); i < size; i += 2)
 	{
-		interpolator -> key ()      .emplace_back (knots .front () + (float (i) / float (size - 1 - closed)) * knots .back ());
+		interpolator -> key ()      .emplace_back (knots .front () + (float (i) / float (size - 2)) * knots .back ());
 		interpolator -> keyValue () .emplace_back (lines [i]);
 	}
 
 	if (closed)
+	{
+		interpolator -> key ()      .emplace_back (1);
+		interpolator -> keyValue () .emplace_back (lines .front ());
+	}
+	else
 	{
 		interpolator -> key ()      .emplace_back (1);
 		interpolator -> keyValue () .emplace_back (lines .back ());

@@ -274,7 +274,10 @@ NurbsCurve::tessellate () const
 	for (size_t i = 0, size = lines .size (); i < size; i += 2)
 		curve .emplace_back (lines [i]);
 
-	curve .emplace_back (lines .back ());
+	if (closed)
+		curve .emplace_back (lines .front ());
+	else
+		curve .emplace_back (lines .back ());
 
 	return curve;
 }

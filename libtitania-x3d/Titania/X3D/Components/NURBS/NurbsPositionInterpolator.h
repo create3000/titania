@@ -177,6 +177,9 @@ private:
 	void
 	build ();
 
+	void
+	set_buffer ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -203,6 +206,7 @@ private:
 
 	X3DPtr <X3DCoordinateNode>    controlPointNode;
 	X3DPtr <PositionInterpolator> interpolator;
+	SFTime                        buffer;
 
 };
 
