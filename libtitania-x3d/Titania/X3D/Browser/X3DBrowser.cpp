@@ -69,7 +69,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string X3DBrowser::version = "4.3.9"; // Don't forget to call 'make version'.
+const std::string X3DBrowser::version = "4.3.10"; // Don't forget to call 'make version'.
 
 const std::string X3DBrowser::componentName  = "Titania";
 const std::string X3DBrowser::typeName       = "Browser";
