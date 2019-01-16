@@ -61,14 +61,14 @@ const std::string NurbsSurfaceInterpolator::containerField = "children";
 
 NurbsSurfaceInterpolator::Fields::Fields () :
 	    set_fraction (new SFVec2f ()),
-	          weight (new MFDouble ()),
-	    controlPoint (new SFNode ()),
 	          uOrder (new SFInt32 (3)),
 	          vOrder (new SFInt32 (3)),
 	      uDimension (new SFInt32 ()),
 	      vDimension (new SFInt32 ()),
 	           uKnot (new MFDouble ()),
 	           vKnot (new MFDouble ()),
+	          weight (new MFDouble ()),
+	    controlPoint (new SFNode ()),
 	  normal_changed (new SFVec3f ()),
 	position_changed (new SFVec3f ())
 { }
@@ -82,14 +82,14 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOnly,      "set_fraction",     set_fraction ());
-	addField (inputOutput,    "weight",           weight ());
-	addField (inputOutput,    "controlPoint",     controlPoint ());
 	addField (initializeOnly, "uOrder",           uOrder ());
 	addField (initializeOnly, "vOrder",           vOrder ());
 	addField (initializeOnly, "uDimension",       uDimension ());
 	addField (initializeOnly, "vDimension",       vDimension ());
 	addField (initializeOnly, "uKnot",            uKnot ());
 	addField (initializeOnly, "vKnot",            vKnot ());
+	addField (inputOutput,    "weight",           weight ());
+	addField (inputOutput,    "controlPoint",     controlPoint ());
 	addField (outputOnly,     "normal_changed",   normal_changed ());
 	addField (outputOnly,     "position_changed", position_changed ());
 }
