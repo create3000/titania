@@ -186,6 +186,8 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	static const size_t TESSELLATION;
+
 	///  @name Fields
 
 	struct Fields

@@ -221,7 +221,7 @@ NurbsCurve::build ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, scale ? getTessellation (controlPoints .size ()) / scale : 1);
+	tessellator .property (GLU_U_STEP, getTessellation (controlPoints .size ()) / scale);
 
 	tessellator .begin_curve ();
 

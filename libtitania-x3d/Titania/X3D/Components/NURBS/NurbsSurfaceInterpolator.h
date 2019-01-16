@@ -53,6 +53,8 @@
 
 #include "../Core/X3DChildNode.h"
 
+#include <Titania/Math/Mesh/NurbsTessellator.h>
+
 namespace titania {
 namespace X3D {
 
@@ -189,6 +191,43 @@ protected:
 
 private:
 
+	///  @name Operations
+
+	bool
+	getUClosed (const size_t uOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & uKnot,
+	            const std::vector <double> & weight,
+	            const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
+
+	bool
+	getVClosed (const size_t vOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & vKnot,
+	            const std::vector <double> & weight,
+	            const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
+
+	std::vector <float>
+	getKnots (const bool closed,
+	          const size_t order,
+	          const size_t dimension,
+	          const std::vector <double> & knot) const;
+
+	std::vector <Vector4f>
+	getControlPoints (const bool uClosed,
+                     const bool vClosed,
+                     const size_t uOrder,
+                     const size_t vOrder,
+                     const size_t uDimension,
+                     const size_t vDimension,
+                     const std::vector <double> & weight,
+	                  const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
+
+	std::tuple <size_t, Vector3f, bool>
+	getTriangle (const Vector2f & point, const std::vector <Vector4f> & texCoords) const;
+
 	///  @name Event handlers
 
 	void
@@ -208,6 +247,9 @@ private:
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	static const size_t U_TESSELLATION;
+	static const size_t V_TESSELLATION;
 
 	///  @name Fields
 
@@ -234,6 +276,8 @@ private:
 
 	X3DPtr <X3DCoordinateNode> controlPointNode;
 	SFTime                     buffer;
+
+	std::unique_ptr <nurbs_tessellator> tessellator;
 
 };
 

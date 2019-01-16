@@ -66,6 +66,8 @@ const std::string NurbsOrientationInterpolator::componentName  = "NURBS";
 const std::string NurbsOrientationInterpolator::typeName       = "NurbsOrientationInterpolator";
 const std::string NurbsOrientationInterpolator::containerField = "children";
 
+const size_t NurbsOrientationInterpolator::TESSELLATION = 16;
+
 NurbsOrientationInterpolator::Fields::Fields () :
 	 set_fraction (new SFFloat ()),
 	        order (new SFInt32 (3)),
@@ -200,7 +202,7 @@ NurbsOrientationInterpolator::set_buffer ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, 16 * controlPointNode -> getSize () / scale);
+	tessellator .property (GLU_U_STEP, TESSELLATION * controlPointNode -> getSize () / scale);
 
 	tessellator .begin_curve ();
 

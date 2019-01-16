@@ -3204,6 +3204,7 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSet" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPositionInterpolator" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsOrientationInterpolator" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSurfaceInterpolator" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
