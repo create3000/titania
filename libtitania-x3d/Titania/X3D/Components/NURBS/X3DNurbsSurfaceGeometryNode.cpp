@@ -429,8 +429,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// Knots
 
-	auto       uKnots = getKnots (uKnot (), uClosed, uOrder (), uDimension ());
-	auto       vKnots = getKnots (vKnot (), vClosed, vOrder (), vDimension ());
+	auto       uKnots = getKnots (uClosed, uOrder (), uDimension (), uKnot ());
+	auto       vKnots = getKnots (vClosed, vOrder (), vDimension (), vKnot ());
 	const auto uScale = uKnots .back () - uKnots .front ();
 	const auto vScale = vKnots .back () - vKnots .front ();
 
@@ -469,8 +469,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 			texVOrder  = nurbsTexCoordNode -> vOrder ();
 			texVStride = nurbsTexCoordNode -> uDimension ();
 
-			uKnots = getKnots (nurbsTexCoordNode -> uKnot (), false, nurbsTexCoordNode -> uOrder (), nurbsTexCoordNode -> uDimension ());
-			vKnots = getKnots (nurbsTexCoordNode -> vKnot (), false, nurbsTexCoordNode -> vOrder (), nurbsTexCoordNode -> vDimension ());
+			uKnots = getKnots (false, nurbsTexCoordNode -> uOrder (), nurbsTexCoordNode -> uDimension (), nurbsTexCoordNode -> uKnot ());
+			vKnots = getKnots (false, nurbsTexCoordNode -> vOrder (), nurbsTexCoordNode -> vDimension (), nurbsTexCoordNode -> vKnot ());
 
 			texControlPoints = nurbsTexCoordNode -> getControlPoints ();
 		}

@@ -3202,6 +3202,7 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSwungSurface" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTextureCoordinate" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSet" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPositionInterpolator" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

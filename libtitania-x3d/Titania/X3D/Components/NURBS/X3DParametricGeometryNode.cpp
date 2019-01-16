@@ -68,7 +68,10 @@ X3DParametricGeometryNode::X3DParametricGeometryNode () :
 }
 
 std::vector <float>
-X3DParametricGeometryNode::getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const
+X3DParametricGeometryNode::getKnots (const bool closed,
+                                     const size_t order,
+                                     const size_t dimension,
+                                     const std::vector <double> & knot) const
 {
 	std::vector <float> knots (knot .cbegin (), knot .cend ());
 

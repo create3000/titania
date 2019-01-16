@@ -50,14 +50,13 @@
 
 #include "NurbsCurve.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../NURBS/CoordinateDouble.h"
 #include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Shaders/ComposedShader.h"
-
-#include "../../Bits/Cast.h"
 
 #include <Titania/Math/Mesh/NurbsTessellator.h>
 
@@ -275,8 +274,7 @@ NurbsCurve::tessellate () const
 	for (size_t i = 0, size = lines .size (); i < size; i += 2)
 		curve .emplace_back (lines [i]);
 
-	if (closed)
-		curve .emplace_back (lines .front ());
+	curve .emplace_back (lines .back ());
 
 	return curve;
 }
@@ -301,7 +299,7 @@ NurbsCurve::build ()
 
 	// Knots
 
-	auto       knots = getKnots (knot (), closed, order (), dimension);
+	auto       knots = getKnots (closed, order (), dimension, knot ());
 	const auto scale = knots .back () - knots .front ();
 
 	assert ((knots .size () - order ()) == controlPoints .size ());
@@ -312,7 +310,6 @@ NurbsCurve::build ()
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	tessellator .property (GLU_U_STEP, scale ? getTessellation (controlPoints .size ()) / scale : 1);
-	tessellator .property (GLU_V_STEP, scale ? getTessellation (controlPoints .size ()) / scale : 1);
 
 	tessellator .begin_curve ();
 

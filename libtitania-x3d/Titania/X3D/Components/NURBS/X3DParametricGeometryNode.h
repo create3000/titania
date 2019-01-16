@@ -79,7 +79,10 @@ protected:
 	X3DParametricGeometryNode ();
 
 	std::vector <float>
-	getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const;
+	getKnots (const bool closed,
+	          const size_t order,
+	          const size_t dimension,
+	          const std::vector <double> & knot) const;
 
 };
 

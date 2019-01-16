@@ -160,7 +160,10 @@ NurbsCurve2D::getClosed (const size_t order,
 }
 
 std::vector <float>
-NurbsCurve2D::getKnots (const std::vector <double> & knot, const bool closed, const size_t order, const size_t dimension) const
+NurbsCurve2D::getKnots (const bool closed,
+                        const size_t order,
+                        const size_t dimension,
+                        const std::vector <double> & knot) const
 {
 	std::vector <float> knots (knot .cbegin (), knot .cend ());
 
@@ -269,7 +272,7 @@ NurbsCurve2D::tessellate () const
 
 	// Knots
 
-	auto       knots = getKnots (knot (), closed, order (), controlPoint () .size ());
+	auto       knots = getKnots (closed, order (), controlPoint () .size (), knot ());
 	const auto scale = knots .back () - knots .front ();
 
 	// Tessellate
@@ -278,7 +281,6 @@ NurbsCurve2D::tessellate () const
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	tessellator .property (GLU_U_STEP, scale ? getTessellation (knots .size () - order ()) / scale : 1);
-	tessellator .property (GLU_V_STEP, scale ? getTessellation (knots .size () - order ()) / scale : 1);
 
 	tessellator .begin_curve ();
 
@@ -303,12 +305,9 @@ NurbsCurve2D::tessellate () const
 		curve .emplace_back (vertex .x (), vertex .y ());
 	}
 
-	if (closed)
-	{
-		const auto & vertex = lines .front ();
+	const auto & vertex = lines .back ();
 
-		curve .emplace_back (vertex .x (), vertex .y ());
-	}
+	curve .emplace_back (vertex .x (), vertex .y ());
 
 	return curve;
 }
@@ -324,7 +323,7 @@ NurbsCurve2D::trim (nurbs_tessellator & tessellator) const
 
 	const auto closed        = getClosed (order (), controlPoint () .size (), knot (), weight ());
 	auto       controlPoints = getControlPoints (closed, order (), controlPoint () .size (), weight ());
-	auto       knots         = getKnots (knot (), closed, order (), controlPoint () .size ());
+	auto       knots         = getKnots (closed, order (), controlPoint () .size (), knot ());
 
 	tessellator .nurbs_curve (knots .size (), knots .data (),
 	                          3, controlPoints [0] .data (),
