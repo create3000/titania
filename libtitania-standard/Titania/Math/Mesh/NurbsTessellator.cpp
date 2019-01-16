@@ -58,7 +58,7 @@ namespace math {
 
 nurbs_tessellator::nurbs_tessellator (const bool debug) :
 	          m_tess (gluNewNurbsRenderer ()),
-	m_only_triangles (false),
+	m_only_triangles (true),
 	          m_type (0),
 	    m_tex_coords (),
 	       m_normals (),
