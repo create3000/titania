@@ -1,59 +1,30 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DParametricGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.h" Line="281" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp" Line="248" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Titania" expanded="True">
-            <Node name="libtitania-standard" expanded="True">
+            <Node name="build" expanded="True" />
+            <Node name="experimental" expanded="True" />
+            <Node name="libtitania-ftgl" expanded="True" />
+            <Node name="libtitania-snl" expanded="True">
               <Node name="Titania" expanded="True">
-                <Node name="Math" expanded="True">
-                  <Node name="Mesh" expanded="True" />
-                  <Node name="Primitives" expanded="True" />
-                  <Node name="Utility" expanded="True" />
+                <Node name="SNL" expanded="True">
+                  <Node name="ptrList.h" selected="True" />
                 </Node>
               </Node>
             </Node>
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Browser" expanded="True" />
-                  <Node name="Components" expanded="True">
-                    <Node name="Geometry3D" expanded="True" />
-                    <Node name="NURBS" expanded="True">
-                      <Node name="X3DNurbsSurfaceGeometryNode.cpp" selected="True" />
-                    </Node>
-                    <Node name="Texturing" expanded="True" />
-                  </Node>
-                  <Node name="Tools" expanded="True">
-                    <Node name="Core" expanded="True" />
-                    <Node name="Geometry2D" expanded="True" />
-                    <Node name="Geometry3D" expanded="True">
-                      <Node name="Box" expanded="True" />
-                    </Node>
-                    <Node name="NURBS" expanded="True" />
-                    <Node name="Rendering" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="Editors" expanded="True">
-                  <Node name="GeometryPropertiesEditor" expanded="True">
-                    <Node name="NURBS" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="Revealer" expanded="True">
-                  <Node name="GeometryEditor" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
+            <Node name="libtitania-sqlite" expanded="True" />
+            <Node name="libtitania-standard" expanded="True" />
+            <Node name="libtitania-stream" expanded="True" />
+            <Node name="libtitania-x3d" expanded="True" />
+            <Node name="Titania" expanded="True" />
           </Node>
         </State>
       </Pad>

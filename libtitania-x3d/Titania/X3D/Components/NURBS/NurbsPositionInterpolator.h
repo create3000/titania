@@ -153,9 +153,9 @@ private:
 
 	bool
 	getClosed (const size_t order,
-	           const size_t dimension,
 	           const std::vector <double> & knot,
-	           const std::vector <double> & weight) const;
+	           const std::vector <double> & weight,
+	           const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
 
 	std::vector <float>
 	getKnots (const bool closed,
@@ -166,8 +166,8 @@ private:
 	std::vector <Vector4f>
 	getControlPoints (const bool closed,
 	                  const size_t order,
-	                  const size_t dimension,
-	                  const std::vector <double> & weight) const;
+	                  const std::vector <double> & weight,
+	                  const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
 
 	///  @name Event handlers
 

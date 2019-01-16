@@ -50,13 +50,15 @@
 
 #include "X3DParametricGeometryNode.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../NURBS/CoordinateDouble.h"
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing3D/TextureCoordinate3D.h"
 #include "../Texturing3D/TextureCoordinate4D.h"
+
+#include "../../Browser/NURBS/NURBS.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -73,49 +75,7 @@ X3DParametricGeometryNode::getKnots (const bool closed,
                                      const size_t dimension,
                                      const std::vector <double> & knot) const
 {
-	std::vector <float> knots (knot .cbegin (), knot .cend ());
-
-	// check the knot-vectors. If they are not according to standard
-	// default uniform knot vectors will be generated.
-
-	bool generateUniform = true;
-
-	if (knots .size () == size_t (dimension + order))
-	{
-		generateUniform = false;
-
-		size_t consecutiveKnots = 0;
-
-		for (size_t i = 1; i < knots .size (); ++ i)
-		{
-			if (knots [i] == knots [i - 1])
-				++ consecutiveKnots;
-			else
-				consecutiveKnots = 0;
-
-			if (consecutiveKnots > order - 1)
-				generateUniform = true;
-
-			if (knots [i - 1] > knots [i])
-				generateUniform = true;
-		}
-	}
-
-	if (generateUniform)
-	{
-		knots .resize (dimension + order);
-
-		for (size_t i = 0, size = knots .size (); i < size; ++ i)
-			knots [i] = float (i) / (size - 1);
-	}
-
-	if (closed)
-	{
-		for (size_t i = 1, size = order - 1; i < size; ++ i)
-			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
-	}
-
-	return knots;
+	return NURBS::getKnots (closed, order, dimension, knot);
 }
 
 NodeType

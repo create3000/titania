@@ -48,165 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_ORIENTATION_INTERPOLATOR_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_ORIENTATION_INTERPOLATOR_H__
+#ifndef __TITANIA_X3D_BROWSER_NURBS_NURBS_H__
+#define __TITANIA_X3D_BROWSER_NURBS_NURBS_H__
 
-#include "../Core/X3DChildNode.h"
+#include "../../Types/Pointer.h"
+
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class NurbsOrientationInterpolator :
-	virtual public X3DChildNode
+class NURBS
 {
 public:
 
-	NurbsOrientationInterpolator (X3DExecutionContext* const executionContext);
+	static
+	size_t
+	getTessellation (const size_t tessellation, const size_t dimension);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	set_fraction ()
-	{ return *fields .set_fraction; }
-
-	const SFFloat &
-	set_fraction () const
-	{ return *fields .set_fraction; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
-
-	MFDouble &
-	knot ()
-	{ return *fields .knot; }
-
-	const MFDouble &
-	knot () const
-	{ return *fields .knot; }
-
-	MFDouble &
-	weight ()
-	{ return *fields .weight; }
-
-	const MFDouble &
-	weight () const
-	{ return *fields .weight; }
-
-	SFNode &
-	controlPoint ()
-	{ return *fields .controlPoint; }
-
-	const SFNode &
-	controlPoint () const
-	{ return *fields .controlPoint; }
-
-	SFRotation &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const SFRotation &
-	value_changed () const
-	{ return *fields .value_changed; }
-
-	///  @name Destruction
-
-	virtual
-	~NurbsOrientationInterpolator () final override;
-
-
-protected:
-
-	virtual
-	void
-	initialize () final override;
-
-
-private:
-
-	///  @name Member access
-
+	static
 	bool
 	getClosed (const size_t order,
 	           const std::vector <double> & knot,
 	           const std::vector <double> & weight,
-	           const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
+	           const std::vector <Vector2d> & controlPoint);
 
+	static
+	bool
+	getClosed (const size_t order,
+	           const std::vector <double> & knot,
+	           const std::vector <double> & weight,
+	           const X3DPtr <X3DCoordinateNode> & controlPointNode);
+
+	static
+	bool
+	getUClosed (const size_t uOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & uKnot,
+	            const std::vector <double> & weight,
+	            const X3DPtr <X3DCoordinateNode> & controlPointNode);
+
+	static
+	bool
+	getVClosed (const size_t vOrder,
+	            const size_t uDimension,
+	            const size_t vDimension,
+	            const std::vector <double> & vKnot,
+	            const std::vector <double> & weight,
+	            const X3DPtr <X3DCoordinateNode> & controlPointNode);
+
+	static
 	std::vector <float>
 	getKnots (const bool closed,
 	          const size_t order,
 	          const size_t dimension,
-	          const std::vector <double> & knot) const;
+	          const std::vector <double> & knot);
 
+	static
+	std::vector <Vector3f>
+	getControlPoints (const bool closed,
+	                  const size_t order,
+	                  const std::vector <double> & weight,
+	                  const std::vector <Vector2d> & controlPoint);
+
+	static
 	std::vector <Vector4f>
 	getControlPoints (const bool closed,
 	                  const size_t order,
 	                  const std::vector <double> & weight,
-	                  const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
+	                  const X3DPtr <X3DCoordinateNode> & controlPointNode);
 
-	///  @name Event handlers
-
-	void
-	set_controlPoint ();
-
-	void
-	build ();
-
-	void
-	set_buffer ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const set_fraction;
-		SFInt32* const order;
-		MFDouble* const knot;
-		MFDouble* const weight;
-		SFNode* const controlPoint;
-		SFRotation* const value_changed;
-	};
-
-	Fields fields;
-
-	///  @name Members
-
-	X3DPtr <X3DCoordinateNode>       controlPointNode;
-	X3DPtr <OrientationInterpolator> interpolator;
-	SFTime                           buffer;
+	static
+	std::vector <Vector4f>
+	getControlPoints (const bool uClosed,
+	                  const bool vClosed,
+	                  const size_t uOrder,
+	                  const size_t vOrder,
+	                  const size_t uDimension,
+	                  const size_t vDimension,
+	                  const std::vector <double> & weight,
+	                  const X3DPtr <X3DCoordinateNode> & controlPointNode);
 
 };
 

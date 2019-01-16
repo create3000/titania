@@ -55,6 +55,7 @@
 #include "../Texturing/X3DTextureCoordinateNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/NURBS/NURBS.h"
 
 #include <cassert>
 
@@ -140,29 +141,13 @@ X3DNurbsSurfaceGeometryNode::set_controlPoint ()
 size_t
 X3DNurbsSurfaceGeometryNode::getUTessellation (const size_t uDimension) const
 {
-	// Return a tessellation one less to the standard to get the right tessellation.
-
-	if (uTessellation () > 0)
-		return uTessellation () + 1;
-		
-	if (uTessellation () < 0)
-		return -uTessellation () * uDimension + 1;
-
-	return 2 * uDimension + 1;
+	return NURBS::getTessellation (uTessellation (), uDimension);
 }
 
 size_t
 X3DNurbsSurfaceGeometryNode::getVTessellation (const size_t vDimension) const
 {
-	// Return a tessellation one less to the standard to get the right tessellation.
-
-	if (vTessellation () > 0)
-		return vTessellation () + 1;
-		
-	if (vTessellation () < 0)
-		return -vTessellation () * vDimension + 1;
-
-	return 2 * vDimension + 1;
+	return NURBS::getTessellation (vTessellation (), vDimension);
 }
 
 bool
@@ -170,62 +155,13 @@ X3DNurbsSurfaceGeometryNode::getUClosed (const size_t uOrder,
                                          const size_t uDimension,
                                          const size_t vDimension,
                                          const std::vector <double> & uKnot,
-                                         const std::vector <double> & weight) const
+                                         const std::vector <double> & weight,
+                                         const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
 	if (not uClosed ())
 		return false;
 
-	const auto haveWeights = weight .size () == controlPointNode -> getSize ();
-
-	for (size_t v = 0, size = vDimension; v < size; ++ v)
-	{
-		const auto first = v * uDimension;
-		const auto last  = v * uDimension + uDimension - 1;
-
-		// Check if first and last weights are unitary.
-
-		if (haveWeights)
-		{
-			if (weight [first] not_eq weight [last])
-				return false;
-		}
-
-		// Check if first and last point are coincident.
-
-		if (controlPointNode -> get1Point (first) not_eq controlPointNode -> get1Point (last))
-			return false;
-	}
-
-	// Check if knots are periodic.
-
-	if (uKnot .size () == uDimension + uOrder)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = uOrder; i < size; ++ i)
-			{
-				count += uKnot [i] == uKnot .front ();
-			}
-	
-			if (count == uOrder)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = uKnot .size () - uOrder, size = uKnot .size () - 1; i < size; ++ i)
-			{
-				count += uKnot [i] == uKnot .back ();
-			}
-
-			if (count == uOrder)
-				return false;
-		}
-	}
-
-	return true;
+	return NURBS::getUClosed (uOrder, uDimension, vDimension, uKnot, weight, controlPointNode);
 }
 
 bool
@@ -233,62 +169,13 @@ X3DNurbsSurfaceGeometryNode::getVClosed (const size_t vOrder,
                                          const size_t uDimension,
                                          const size_t vDimension,
                                          const std::vector <double> & vKnot,
-                                         const std::vector <double> & weight) const
+                                         const std::vector <double> & weight,
+                                         const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
 	if (not vClosed ())
 		return false;
 
-	const auto haveWeights = weight .size () == controlPointNode -> getSize ();
-
-	for (size_t u = 0, size = uDimension; u < size; ++ u)
-	{
-		const auto first = u;
-		const auto last  = (vDimension - 1) * uDimension + u;
-
-		// Check if first and last weights are unitary.
-
-		if (haveWeights)
-		{
-			if (weight [first] not_eq weight [last])
-				return false;
-		}
-
-		// Check if first and last point are coincident.
-
-		if (controlPointNode -> get1Point (first) not_eq controlPointNode -> get1Point (last))
-			return false;
-	}
-
-	// Check if knots are periodic.
-
-	if (vKnot .size () == vDimension + vOrder)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = vOrder; i < size; ++ i)
-			{
-				count += vKnot [i] == vKnot .front ();
-			}
-	
-			if (count == vOrder)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = vKnot .size () - vOrder, size = vKnot .size () - 1; i < size; ++ i)
-			{
-				count += vKnot [i] == vKnot .back ();
-			}
-
-			if (count == vOrder)
-				return false;
-		}
-	}
-
-	return true;
+	return NURBS::getUClosed (vOrder, uDimension, vDimension, vKnot, weight, controlPointNode);
 }
 
 std::vector <Vector4f>
@@ -331,70 +218,10 @@ X3DNurbsSurfaceGeometryNode::getControlPoints (const bool uClosed,
                                                const size_t vOrder,
                                                const size_t uDimension,
                                                const size_t vDimension,
-                                               const std::vector <double> & weight) const
+                                               const std::vector <double> & weight,
+                                               const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
-	std::vector <Vector4f> controlPoints;
-
-	if (weight .size () not_eq controlPointNode -> getSize ())
-	{
-		for (size_t v = 0, i = 0; v < vDimension; ++ v)
-		{
-			for (size_t u = 0; u < uDimension; ++ u, ++ i)
-			{
-				const auto p = controlPointNode -> get1Point (i);
-
-				controlPoints .emplace_back (p .x (),
-				                             p .y (),
-				                             p .z (),
-				                             1);
-			}
-
-			if (uClosed)
-			{
-				const auto first = controlPoints .size () - uDimension;
-
-				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
-					controlPoints .emplace_back (controlPoints [first + i]);
-			}
-		}
-
-		if (vClosed)
-		{
-			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
-	}
-	else
-	{
-		for (size_t v = 0, i = 0; v < vDimension; ++ v)
-		{
-			for (size_t u = 0; u < uDimension; ++ u, ++ i)
-			{
-				const auto p = controlPointNode -> get1Point (i);
-
-				controlPoints .emplace_back (p .x (),
-				                             p .y (),
-				                             p .z (),
-				                             weight [i]);
-			}
-
-			if (uClosed)
-			{
-				const auto first = controlPoints .size () - uDimension;
-
-				for (size_t i = 1, size = uOrder - 1; i < size; ++ i)
-					controlPoints .emplace_back (controlPoints [first + i]);
-			}
-		}
-
-		if (vClosed)
-		{
-			for (size_t i = (uDimension + uClosed * (uOrder - 2)), size = (uDimension + uClosed * (uOrder - 2)) * (vOrder - 1); i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
-	}
-
-	return controlPoints;
+	return NURBS::getControlPoints (uClosed, vClosed, uOrder, vOrder, uDimension, vDimension, weight, controlPointNode);
 }
 
 void
@@ -422,9 +249,9 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// ControlPoints
 
-	const auto   uClosed       = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight ());
-	const auto   vClosed       = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight ());
-	auto         controlPoints = getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight ());
+	const auto   uClosed       = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight (), controlPointNode);
+	const auto   vClosed       = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight (), controlPointNode);
+	auto         controlPoints = getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight (), controlPointNode);
 	const size_t vStride       = (uDimension () + uClosed * (uOrder () - 2));
 
 	// Knots

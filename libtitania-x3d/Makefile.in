@@ -188,6 +188,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Networking/config.lo \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.lo \
 	Titania/X3D/Browser/Notification.lo \
+	Titania/X3D/Browser/NURBS/NURBS.lo \
 	Titania/X3D/Browser/ParticleSystems/Random.lo \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.lo \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.lo \
@@ -867,6 +868,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo \
 	Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo \
 	Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo \
+	Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo \
 	Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo \
 	Titania/X3D/Browser/Navigation/$(DEPDIR)/FlyViewer.Plo \
 	Titania/X3D/Browser/Navigation/$(DEPDIR)/LookAtViewer.Plo \
@@ -1795,6 +1797,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Networking/config.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
+	Titania/X3D/Browser/NURBS/NURBS.cpp \
 	Titania/X3D/Browser/ParticleSystems/Random.cpp \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
@@ -2758,6 +2761,15 @@ Titania/X3D/Browser/Networking/X3DNetworkingContext.lo:  \
 Titania/X3D/Browser/Notification.lo:  \
 	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/NURBS/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Browser/NURBS
+	@: > Titania/X3D/Browser/NURBS/$(am__dirstamp)
+Titania/X3D/Browser/NURBS/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Browser/NURBS/$(DEPDIR)
+	@: > Titania/X3D/Browser/NURBS/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/NURBS/NURBS.lo:  \
+	Titania/X3D/Browser/NURBS/$(am__dirstamp) \
+	Titania/X3D/Browser/NURBS/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/ParticleSystems/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/ParticleSystems
 	@: > Titania/X3D/Browser/ParticleSystems/$(am__dirstamp)
@@ -5207,6 +5219,8 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Browser/Layering/*.lo
 	-rm -f Titania/X3D/Browser/Lighting/*.$(OBJEXT)
 	-rm -f Titania/X3D/Browser/Lighting/*.lo
+	-rm -f Titania/X3D/Browser/NURBS/*.$(OBJEXT)
+	-rm -f Titania/X3D/Browser/NURBS/*.lo
 	-rm -f Titania/X3D/Browser/Navigation/*.$(OBJEXT)
 	-rm -f Titania/X3D/Browser/Navigation/*.lo
 	-rm -f Titania/X3D/Browser/Networking/*.$(OBJEXT)
@@ -5458,6 +5472,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/FlyViewer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/LookAtViewer.Plo@am__quote@ # am--include-marker
@@ -6163,6 +6178,7 @@ clean-libtool:
 	-rm -rf Titania/X3D/Browser/KeyDeviceSensor/.libs Titania/X3D/Browser/KeyDeviceSensor/_libs
 	-rm -rf Titania/X3D/Browser/Layering/.libs Titania/X3D/Browser/Layering/_libs
 	-rm -rf Titania/X3D/Browser/Lighting/.libs Titania/X3D/Browser/Lighting/_libs
+	-rm -rf Titania/X3D/Browser/NURBS/.libs Titania/X3D/Browser/NURBS/_libs
 	-rm -rf Titania/X3D/Browser/Navigation/.libs Titania/X3D/Browser/Navigation/_libs
 	-rm -rf Titania/X3D/Browser/Networking/.libs Titania/X3D/Browser/Networking/_libs
 	-rm -rf Titania/X3D/Browser/ParticleSystems/.libs Titania/X3D/Browser/ParticleSystems/_libs
@@ -6409,6 +6425,8 @@ distclean-generic:
 	-rm -f Titania/X3D/Browser/Layering/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Lighting/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Lighting/$(am__dirstamp)
+	-rm -f Titania/X3D/Browser/NURBS/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Browser/NURBS/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Navigation/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Networking/$(DEPDIR)/$(am__dirstamp)
@@ -6666,6 +6684,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo
 	-rm -f Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo
 	-rm -f Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo
+	-rm -f Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/FlyViewer.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/LookAtViewer.Plo
@@ -7392,6 +7411,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo
 	-rm -f Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo
 	-rm -f Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo
+	-rm -f Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/FlyViewer.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/LookAtViewer.Plo

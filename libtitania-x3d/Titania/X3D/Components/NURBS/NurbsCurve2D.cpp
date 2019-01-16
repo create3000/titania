@@ -50,6 +50,7 @@
 
 #include "NurbsCurve2D.h"
 
+#include "../../Browser/NURBS/NURBS.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -92,71 +93,19 @@ NurbsCurve2D::create (X3DExecutionContext* const executionContext) const
 size_t
 NurbsCurve2D::getTessellation (const size_t dimension) const
 {
-	// Return a tessellation one less to the standard to get the right tessellation.
-
-	if (tessellation () > 0)
-		return tessellation () + 1;
-		
-	if (tessellation () < 0)
-		return -tessellation () * dimension + 1;
-
-	return 2 * dimension + 1;
+	return NURBS::getTessellation (tessellation (), dimension);
 }
 
 bool
 NurbsCurve2D::getClosed (const size_t order,
-                         const size_t dimension,
                          const std::vector <double> & knot,
-                         const std::vector <double> & weight) const
+                         const std::vector <double> & weight,
+                         const std::vector <Vector2d> & controlPoint) const
 {
 	if (not closed ())
 		return false;
 
-	const auto haveWeights = weight .size () == controlPoint () .size ();
-
-	// Check if first and last weights are unitary.
-
-	if (haveWeights)
-	{
-		if (weight .front () not_eq weight .back ())
-			return false;
-	}
-
-	// Check if first and last point are coincident.
-
-	if (controlPoint () .front () not_eq controlPoint () .back ())
-		return false;
-
-	// Check if knots are periodic.
-
-	if (knot .size () == dimension + order)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = order; i < size; ++ i)
-			{
-				count += knot [i] == knot .front ();
-			}
-	
-			if (count == order)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
-			{
-				count += knot [i] == knot .back ();
-			}
-
-			if (count == order)
-				return false;
-		}
-	}
-
-	return true;
+	return NURBS::getClosed (order, knot, weight, controlPoint);
 }
 
 std::vector <float>
@@ -165,95 +114,16 @@ NurbsCurve2D::getKnots (const bool closed,
                         const size_t dimension,
                         const std::vector <double> & knot) const
 {
-	std::vector <float> knots (knot .cbegin (), knot .cend ());
-
-	// check the knot-vectors. If they are not according to standard
-	// default uniform knot vectors will be generated.
-
-	bool generateUniform = true;
-
-	if (knots .size () == size_t (dimension + order))
-	{
-		generateUniform = false;
-
-		size_t consecutiveKnots = 0;
-
-		for (size_t i = 1; i < knots .size (); ++ i)
-		{
-			if (knots [i] == knots [i - 1])
-				++ consecutiveKnots;
-			else
-				consecutiveKnots = 0;
-
-			if (consecutiveKnots > order - 1)
-				generateUniform = true;
-
-			if (knots [i - 1] > knots [i])
-				generateUniform = true;
-		}
-	}
-
-	if (generateUniform)
-	{
-		knots .resize (dimension + order);
-
-		for (size_t i = 0, size = knots .size (); i < size; ++ i)
-			knots [i] = float (i) / (size - 1);
-	}
-
-	if (closed)
-	{
-		for (size_t i = 1, size = order - 1; i < size; ++ i)
-			knots .emplace_back (knots .back () + (knots [i] - knots [i - 1]));
-	}
-
-	return knots;
+	return NURBS::getKnots (closed, order, dimension, knot);
 }
 
 std::vector <Vector3f>
 NurbsCurve2D::getControlPoints (const bool closed,
                                 const size_t order,
-                                const size_t dimension,
-                                const std::vector <double> & weight) const
+                                const std::vector <double> & weight,
+                                const std::vector <Vector2d> & controlPoint) const
 {
-	std::vector <Vector3f> controlPoints;
-
-	if (weight .size () not_eq dimension)
-	{
-		for (size_t i = 0; i < dimension; ++ i)
-		{
-			const auto & p = controlPoint () [i];
-
-			controlPoints .emplace_back (p .x (),
-			                             p .y (),
-			                             1);
-		}
-
-		if (closed)
-		{
-			for (size_t i = 1, size = order - 1; i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
-	}
-	else
-	{
-		for (size_t i = 0; i < dimension; ++ i)
-		{
-			const auto & p = controlPoint () [i];
-
-			controlPoints .emplace_back (p .x (),
-			                             p .y (),
-			                             weight [i]);
-		}
-
-		if (closed)
-		{
-			for (size_t i = 1, size = order - 1; i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
-	}
-
-	return controlPoints;
+	return NURBS::getControlPoints (closed, order, weight, controlPoint);
 }
 
 std::vector <Vector2f>
@@ -267,8 +137,8 @@ NurbsCurve2D::tessellate () const
 
 	// Order and dimension are now positive numbers.
 
-	const auto closed        = getClosed (order (), controlPoint () .size (), knot (), weight ());
-	auto       controlPoints = getControlPoints (closed, order (), controlPoint () .size (), weight ());
+	const auto closed        = getClosed (order (), knot (), weight (), controlPoint ());
+	auto       controlPoints = getControlPoints (closed, order (), weight (), controlPoint ());
 
 	// Knots
 
@@ -330,8 +200,8 @@ NurbsCurve2D::trim (nurbs_tessellator & tessellator) const
 	if (controlPoint () .size () < (size_t) order ())
 		return;
 
-	const auto closed        = getClosed (order (), controlPoint () .size (), knot (), weight ());
-	auto       controlPoints = getControlPoints (closed, order (), controlPoint () .size (), weight ());
+	const auto closed        = getClosed (order (), knot (), weight (), controlPoint ());
+	auto       controlPoints = getControlPoints (closed, order (), weight (), controlPoint ());
 	auto       knots         = getKnots (closed, order (), controlPoint () .size (), knot ());
 
 	tessellator .nurbs_curve (knots .size (), knots .data (),

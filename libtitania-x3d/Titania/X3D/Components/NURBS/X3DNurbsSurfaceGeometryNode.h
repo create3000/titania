@@ -272,14 +272,16 @@ private:
 	            const size_t uDimension,
 	            const size_t vDimension,
 	            const std::vector <double> & uKnot,
-	            const std::vector <double> & weight) const;
+	            const std::vector <double> & weight,
+	            const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
 
 	bool
 	getVClosed (const size_t vOrder,
 	            const size_t uDimension,
 	            const size_t vDimension,
 	            const std::vector <double> & vKnot,
-	            const std::vector <double> & weight) const;
+	            const std::vector <double> & weight,
+	            const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
 
 	std::vector <Vector4f>
 	getTexControlPoints (const bool uClosed,
@@ -296,7 +298,8 @@ private:
                      const size_t vOrder,
                      const size_t uDimension,
                      const size_t vDimension,
-                     const std::vector <double> & weight) const;
+                     const std::vector <double> & weight,
+	                  const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
 
 	virtual
 	void

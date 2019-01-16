@@ -63,6 +63,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Networking/config.cpp \
 	Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp \
 	Titania/X3D/Browser/Notification.cpp \
+	Titania/X3D/Browser/NURBS/NURBS.cpp \
 	Titania/X3D/Browser/ParticleSystems/Random.cpp \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \

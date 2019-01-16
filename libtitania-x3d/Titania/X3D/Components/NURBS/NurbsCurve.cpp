@@ -50,13 +50,15 @@
 
 #include "NurbsCurve.h"
 
-#include "../../Bits/Cast.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../NURBS/CoordinateDouble.h"
 #include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Shaders/ComposedShader.h"
+
+#include "../../Bits/Cast.h"
+#include "../../Browser/NURBS/NURBS.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 #include <Titania/Math/Mesh/NurbsTessellator.h>
 
@@ -137,119 +139,28 @@ NurbsCurve::getShaderNode (X3DBrowser* const browser)
 size_t
 NurbsCurve::getTessellation (const size_t dimension) const
 {
-	// Return a tessellation one less to the standard to get the right tessellation.
-
-	if (tessellation () > 0)
-		return tessellation () + 1;
-		
-	if (tessellation () < 0)
-		return -tessellation () * dimension + 1;
-
-	return 2 * dimension + 1;
+	return NURBS::getTessellation (tessellation (), dimension);
 }
 
 bool
 NurbsCurve::getClosed (const size_t order,
-                       const size_t dimension,
                        const std::vector <double> & knot,
-                       const std::vector <double> & weight) const
+                       const std::vector <double> & weight,
+                       const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
 	if (not closed ())
 		return false;
 
-	const auto haveWeights = weight .size () == controlPointNode -> getSize ();
-
-	// Check if first and last weights are unitary.
-
-	if (haveWeights)
-	{
-		if (weight .front () not_eq weight .back ())
-			return false;
-	}
-
-	// Check if first and last point are coincident.
-
-	if (controlPointNode -> get1Point (0) not_eq controlPointNode -> get1Point (dimension - 1))
-		return false;
-
-	// Check if knots are periodic.
-
-	if (knot .size () == dimension + order)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = order; i < size; ++ i)
-			{
-				count += knot [i] == knot .front ();
-			}
-	
-			if (count == order)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
-			{
-				count += knot [i] == knot .back ();
-			}
-
-			if (count == order)
-				return false;
-		}
-	}
-
-	return true;
+	return NURBS::getClosed (order, knot, weight, controlPointNode);
 }
 
 std::vector <Vector4f>
 NurbsCurve::getControlPoints (const bool closed,
                               const size_t order,
-                              const size_t dimension,
-                              const std::vector <double> & weight) const
+                              const std::vector <double> & weight,
+                              const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
-	std::vector <Vector4f> controlPoints;
-
-	if (weight .size () not_eq dimension)
-	{
-		for (size_t i = 0; i < dimension; ++ i)
-		{
-			const auto p = controlPointNode -> get1Point (i);
-
-			controlPoints .emplace_back (p .x (),
-			                             p .y (),
-			                             p .z (),
-			                             1);
-		}
-
-		if (closed)
-		{
-			for (size_t i = 1, size = order - 1; i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
-	}
-	else
-	{
-		for (size_t i = 0; i < dimension; ++ i)
-		{
-			const auto p = controlPointNode -> get1Point (i);
-
-			controlPoints .emplace_back (p .x (),
-			                             p .y (),
-			                             p .z (),
-			                             weight [i]);
-		}
-
-		if (closed)
-		{
-			for (size_t i = 1, size = order - 1; i < size; ++ i)
-				controlPoints .emplace_back (controlPoints [i]);
-		}
-	}
-
-	return controlPoints;
+	return NURBS::getControlPoints (closed, order, weight, controlPointNode);
 }
 
 std::vector <Vector3f>
@@ -266,10 +177,9 @@ NurbsCurve::tessellate () const
 
 	// Order and dimension are now positive numbers.
 
-	const auto   dimension = controlPointNode -> getSize ();
-	const auto   closed    = getClosed (order (), dimension, knot (), weight ());
-	const auto & lines     = getVertices ();
-	auto         curve     = std::vector <Vector3f> ();
+	const auto   closed = getClosed (order (), knot (), weight (), controlPointNode);
+	const auto & lines  = getVertices ();
+	auto         curve  = std::vector <Vector3f> ();
 
 	for (size_t i = 0, size = lines .size (); i < size; i += 2)
 		curve .emplace_back (lines [i]);
@@ -296,13 +206,12 @@ NurbsCurve::build ()
 
 	// Order and dimension are now positive numbers.
 
-	const auto   dimension     = controlPointNode -> getSize ();
-	const auto   closed        = getClosed (order (), dimension, knot (), weight ());
-	auto         controlPoints = getControlPoints (closed, order (), dimension, weight ());
+	const auto closed        = getClosed (order (), knot (), weight (), controlPointNode);
+	auto       controlPoints = getControlPoints (closed, order (), weight (), controlPointNode);
 
 	// Knots
 
-	auto       knots = getKnots (closed, order (), dimension, knot ());
+	auto       knots = getKnots (closed, order (), controlPointNode -> getSize (), knot ());
 	const auto scale = knots .back () - knots .front ();
 
 	assert ((knots .size () - order ()) == controlPoints .size ());

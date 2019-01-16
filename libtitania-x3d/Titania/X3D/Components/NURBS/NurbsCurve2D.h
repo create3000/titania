@@ -148,9 +148,9 @@ private:
 
 	bool
 	getClosed (const size_t order,
-	           const size_t dimension,
 	           const std::vector <double> & knot,
-	           const std::vector <double> & weight) const;
+	           const std::vector <double> & weight,
+	           const std::vector <Vector2d> & controlPoint) const;
 
 	std::vector <float>
 	getKnots (const bool closed,
@@ -161,8 +161,8 @@ private:
 	std::vector <Vector3f>
 	getControlPoints (const bool closed,
 	                  const size_t order,
-	                  const size_t dimension,
-	                  const std::vector <double> & weight) const;
+	                  const std::vector <double> & weight,
+	                  const std::vector <Vector2d> & controlPoint) const;
 
 	///  @name Static members
 

@@ -983,6 +983,7 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExecutionContext.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DBrowser.h" />
+    <None Include="Titania\X3D\Browser\NURBS\NURBS.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1665,6 +1666,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DExecutionContext.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DBrowser.cpp" />
+    <Compile Include="Titania\X3D\Browser\NURBS\NURBS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1771,6 +1773,7 @@
     <Folder Include="Titania\X3D\Tools\SnapTool\" />
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\" />
+    <Folder Include="Titania\X3D\Browser\NURBS\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
