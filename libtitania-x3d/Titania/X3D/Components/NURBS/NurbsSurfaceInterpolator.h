@@ -174,9 +174,34 @@ public:
 	position_changed () const
 	{ return *fields .position_changed; }
 
+	///  @name Destruction
+
+	virtual
+	~NurbsSurfaceInterpolator () final override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () final override;
+
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_controlPoint ();
+
+	void
+	build ();
+
+	void
+	set_buffer ();
+
+	void
+	set_fraction_ ();
 
 	///  @name Static members
 
@@ -204,6 +229,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DCoordinateNode> controlPointNode;
+	SFTime                     buffer;
 
 };
 

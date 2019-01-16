@@ -50,7 +50,10 @@
 
 #include "NurbsSurfaceInterpolator.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/NURBS/NURBS.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -74,9 +77,11 @@ NurbsSurfaceInterpolator::Fields::Fields () :
 { }
 
 NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DChildNode (),
-	      fields ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DChildNode (),
+	          fields (),
+	controlPointNode (),
+	          buffer ()
 {
 	addType (X3DConstants::NurbsSurfaceInterpolator);
 
@@ -92,6 +97,9 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	addField (inputOutput,    "controlPoint",     controlPoint ());
 	addField (outputOnly,     "normal_changed",   normal_changed ());
 	addField (outputOnly,     "position_changed", position_changed ());
+
+	addChildObjects (controlPointNode,
+	                 buffer);
 }
 
 X3DBaseNode*
@@ -99,6 +107,59 @@ NurbsSurfaceInterpolator::create (X3DExecutionContext* const executionContext) c
 {
 	return new NurbsSurfaceInterpolator (executionContext);
 }
+
+void
+NurbsSurfaceInterpolator::initialize ()
+{
+	X3DChildNode::initialize ();
+
+	set_fraction () .addInterest (&NurbsSurfaceInterpolator::set_fraction_,    this);
+	uOrder ()       .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	vOrder ()       .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	uDimension ()   .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	vDimension ()   .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	uKnot ()        .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	vKnot ()        .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	weight ()       .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	controlPoint () .addInterest (&NurbsSurfaceInterpolator::set_controlPoint, this);
+
+	buffer .addInterest (&NurbsSurfaceInterpolator::set_buffer, this);
+
+	set_controlPoint ();
+}
+
+void
+NurbsSurfaceInterpolator::set_controlPoint ()
+{
+	if (controlPointNode)
+		controlPointNode -> removeInterest (this);
+
+	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
+
+	if (controlPointNode)
+		controlPointNode -> addInterest (this);
+
+	build ();
+}
+
+void
+NurbsSurfaceInterpolator::build ()
+{
+	buffer .addEvent ();
+}
+
+void
+NurbsSurfaceInterpolator::set_buffer ()
+{
+}
+
+void
+NurbsSurfaceInterpolator::set_fraction_ ()
+{
+}
+
+NurbsSurfaceInterpolator::~NurbsSurfaceInterpolator ()
+{ }
 
 } // X3D
 } // titania

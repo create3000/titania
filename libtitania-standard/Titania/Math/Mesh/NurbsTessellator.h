@@ -120,6 +120,14 @@ public:
 	///  @name Operations
 
 	void
+	only_triangles (const bool value)
+	{ m_only_triangles = value; }
+
+	bool
+	only_triangles () const
+	{ return m_only_triangles; }
+
+	void
 	property (const GLenum property, const float value);
 
 	void
@@ -200,6 +208,7 @@ private:
 	///  @name Members
 
 	GLUnurbs* const m_tess;
+	bool            m_only_triangles;
 
 	GLenum                        m_type;
 	std::vector <vector4 <float>> m_tex_coords;

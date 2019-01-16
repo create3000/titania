@@ -57,13 +57,14 @@ namespace titania {
 namespace math {
 
 nurbs_tessellator::nurbs_tessellator (const bool debug) :
-	      m_tess (gluNewNurbsRenderer ()),
-	      m_type (0),
-	m_tex_coords (),
-	   m_normals (),
-	  m_vertices (),
-	 m_triangles (),
-	     m_quads ()
+	          m_tess (gluNewNurbsRenderer ()),
+	m_only_triangles (false),
+	          m_type (0),
+	    m_tex_coords (),
+	       m_normals (),
+	      m_vertices (),
+	     m_triangles (),
+	         m_quads ()
 {
 	if (not m_tess)
 		return;
@@ -267,9 +268,9 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 
 		   for (size_t i = 1, size = m_vertices .size () - 1; i < size; ++ i)
 		   {
-				size_t i1 = 0;
-				size_t i2 = i;
-				size_t i3 = i + 1;
+				const size_t i1 = 0;
+				const size_t i2 = i;
+				const size_t i3 = i + 1;
 
 				m_triangles_tex_coord .emplace_back (m_tex_coords [i1]);
 				m_triangles_tex_coord .emplace_back (m_tex_coords [i2]);
@@ -352,31 +353,76 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 		{
 			//__LOG__ << std::endl;
 
-			auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
-			auto & m_quads_normals   = self -> m_quads .m_normals;
-			auto & m_quads_vertices  = self -> m_quads .m_vertices;
-
-			for (size_t i = 0, size = m_vertices .size () - 2; i < size; i += 2)
+			if (self -> m_only_triangles)
 			{
-				size_t i1 = i;
-				size_t i2 = i + 1;
-				size_t i3 = i + 3;
-				size_t i4 = i + 2;
+				auto & m_triangles_tex_coord = self -> m_triangles .m_tex_coords;
+				auto & m_triangles_normals   = self -> m_triangles .m_normals;
+				auto & m_triangles_vertices  = self -> m_triangles .m_vertices;
 
-				m_quads_tex_coord .emplace_back (m_tex_coords [i1]);
-				m_quads_tex_coord .emplace_back (m_tex_coords [i2]);
-				m_quads_tex_coord .emplace_back (m_tex_coords [i3]);
-				m_quads_tex_coord .emplace_back (m_tex_coords [i4]);
+				for (size_t i = 0, size = m_vertices .size () - 2; i < size; i += 2)
+				{
+					const size_t i1 = i;
+					const size_t i2 = i + 1;
+					const size_t i3 = i + 3;
+					const size_t i4 = i + 2;
 
-				m_quads_normals .emplace_back (m_normals [i1]);
-				m_quads_normals .emplace_back (m_normals [i2]);
-				m_quads_normals .emplace_back (m_normals [i3]);
-				m_quads_normals .emplace_back (m_normals [i4]);
+					// Triangle 1
 
-				m_quads_vertices .emplace_back (m_vertices [i1]);
-				m_quads_vertices .emplace_back (m_vertices [i2]);
-				m_quads_vertices .emplace_back (m_vertices [i3]);
-				m_quads_vertices .emplace_back (m_vertices [i4]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i1]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i2]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i3]);
+
+					m_triangles_normals .emplace_back (m_normals [i1]);
+					m_triangles_normals .emplace_back (m_normals [i2]);
+					m_triangles_normals .emplace_back (m_normals [i3]);
+
+					m_triangles_vertices .emplace_back (m_vertices [i1]);
+					m_triangles_vertices .emplace_back (m_vertices [i2]);
+					m_triangles_vertices .emplace_back (m_vertices [i3]);
+
+					// Triangle 2
+
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i1]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i3]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i4]);
+
+					m_triangles_normals .emplace_back (m_normals [i1]);
+					m_triangles_normals .emplace_back (m_normals [i3]);
+					m_triangles_normals .emplace_back (m_normals [i4]);
+
+					m_triangles_vertices .emplace_back (m_vertices [i1]);
+					m_triangles_vertices .emplace_back (m_vertices [i3]);
+					m_triangles_vertices .emplace_back (m_vertices [i4]);
+				}
+			}
+			else
+			{
+				auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
+				auto & m_quads_normals   = self -> m_quads .m_normals;
+				auto & m_quads_vertices  = self -> m_quads .m_vertices;
+	
+				for (size_t i = 0, size = m_vertices .size () - 2; i < size; i += 2)
+				{
+					const size_t i1 = i;
+					const size_t i2 = i + 1;
+					const size_t i3 = i + 3;
+					const size_t i4 = i + 2;
+	
+					m_quads_tex_coord .emplace_back (m_tex_coords [i1]);
+					m_quads_tex_coord .emplace_back (m_tex_coords [i2]);
+					m_quads_tex_coord .emplace_back (m_tex_coords [i3]);
+					m_quads_tex_coord .emplace_back (m_tex_coords [i4]);
+	
+					m_quads_normals .emplace_back (m_normals [i1]);
+					m_quads_normals .emplace_back (m_normals [i2]);
+					m_quads_normals .emplace_back (m_normals [i3]);
+					m_quads_normals .emplace_back (m_normals [i4]);
+	
+					m_quads_vertices .emplace_back (m_vertices [i1]);
+					m_quads_vertices .emplace_back (m_vertices [i2]);
+					m_quads_vertices .emplace_back (m_vertices [i3]);
+					m_quads_vertices .emplace_back (m_vertices [i4]);
+				}
 			}
 
 			break;
@@ -385,21 +431,66 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 		{
 			//__LOG__ << std::endl;
 
-			auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
-			auto & m_quads_normals   = self -> m_quads .m_normals;
-			auto & m_quads_vertices  = self -> m_quads .m_vertices;
+			if (self -> m_only_triangles)
+			{
+				auto & m_triangles_tex_coord = self -> m_triangles .m_tex_coords;
+				auto & m_triangles_normals   = self -> m_triangles .m_normals;
+				auto & m_triangles_vertices  = self -> m_triangles .m_vertices;
 
-			m_quads_tex_coord .insert (m_quads_tex_coord .end (), 
-			                           m_tex_coords .cbegin (),
-			                           m_tex_coords .cend ());
+				for (size_t i = 0, size = m_vertices .size (); i < size; i += 4)
+				{
+					const size_t i1 = i;
+					const size_t i2 = i + 1;
+					const size_t i3 = i + 2;
+					const size_t i4 = i + 3;
 
-			m_quads_normals .insert (m_quads_normals .end (), 
-			                         m_normals .cbegin (),
-			                         m_normals .cend ());
+					// Triangle 1
 
-			m_quads_vertices .insert (m_quads_vertices .end (), 
-			                          m_vertices .cbegin (),
-			                          m_vertices .cend ());
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i1]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i2]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i3]);
+
+					m_triangles_normals .emplace_back (m_normals [i1]);
+					m_triangles_normals .emplace_back (m_normals [i2]);
+					m_triangles_normals .emplace_back (m_normals [i3]);
+
+					m_triangles_vertices .emplace_back (m_vertices [i1]);
+					m_triangles_vertices .emplace_back (m_vertices [i2]);
+					m_triangles_vertices .emplace_back (m_vertices [i3]);
+
+					// Triangle 2
+
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i1]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i3]);
+					m_triangles_tex_coord .emplace_back (m_tex_coords [i4]);
+
+					m_triangles_normals .emplace_back (m_normals [i1]);
+					m_triangles_normals .emplace_back (m_normals [i3]);
+					m_triangles_normals .emplace_back (m_normals [i4]);
+
+					m_triangles_vertices .emplace_back (m_vertices [i1]);
+					m_triangles_vertices .emplace_back (m_vertices [i3]);
+					m_triangles_vertices .emplace_back (m_vertices [i4]);
+				}
+			}
+			else
+			{
+				auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
+				auto & m_quads_normals   = self -> m_quads .m_normals;
+				auto & m_quads_vertices  = self -> m_quads .m_vertices;
+	
+				m_quads_tex_coord .insert (m_quads_tex_coord .end (), 
+				                           m_tex_coords .cbegin (),
+				                           m_tex_coords .cend ());
+	
+				m_quads_normals .insert (m_quads_normals .end (), 
+				                         m_normals .cbegin (),
+				                         m_normals .cend ());
+	
+				m_quads_vertices .insert (m_quads_vertices .end (), 
+				                          m_vertices .cbegin (),
+				                          m_vertices .cend ());
+			}
 
 			break;
 		}
