@@ -325,7 +325,7 @@ NurbsPositionInterpolator::set_buffer ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, 16 * dimension);
+	tessellator .property (GLU_U_STEP, 16 * dimension / scale);
 
 	tessellator .begin_curve ();
 
