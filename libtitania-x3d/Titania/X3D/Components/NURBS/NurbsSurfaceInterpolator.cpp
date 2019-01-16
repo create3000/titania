@@ -155,7 +155,7 @@ NurbsSurfaceInterpolator::getVClosed (const size_t vOrder,
                                       const std::vector <double> & weight,
                                       const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
-	return NURBS::getUClosed (vOrder, uDimension, vDimension, vKnot, weight, controlPointNode);
+	return NURBS::getVClosed (vOrder, uDimension, vDimension, vKnot, weight, controlPointNode);
 }
 
 std::vector <float>

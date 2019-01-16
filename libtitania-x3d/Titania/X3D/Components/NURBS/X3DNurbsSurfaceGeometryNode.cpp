@@ -175,7 +175,7 @@ X3DNurbsSurfaceGeometryNode::getVClosed (const size_t vOrder,
 	if (not vClosed ())
 		return false;
 
-	return NURBS::getUClosed (vOrder, uDimension, vDimension, vKnot, weight, controlPointNode);
+	return NURBS::getVClosed (vOrder, uDimension, vDimension, vKnot, weight, controlPointNode);
 }
 
 std::vector <Vector4f>
