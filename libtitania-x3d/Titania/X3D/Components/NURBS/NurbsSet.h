@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class NurbsSet :
-	virtual public X3DChildNode, public X3DBoundedObject
+	virtual public X3DChildNode,
+	public X3DBoundedObject
 {
 public:
 
@@ -133,14 +134,34 @@ public:
 	void
 	dispose () final override;
 
+	virtual
+	~NurbsSet () final override;
 
-private:
+
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_tessellationScale ();
+	
+	void
+	set_addGeometry ();
+	
+	void
+	set_removeGeometry ();
+	
+	void
+	set_geometry ();
 
 	///  @name Static members
 
@@ -161,6 +182,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtrArray <X3DNurbsSurfaceGeometryNode> geometryNodes;
 
 };
 

@@ -219,6 +219,10 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class NurbsSet;
+
 	///  @name Construction
 
 	X3DNurbsSurfaceGeometryNode ();
@@ -226,6 +230,16 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	void
+	setTessellationScale (const float value)
+	{ tessellationScale = value; }
+
+	float
+	getTessellationScale () const
+	{ return tessellationScale; }
 
 	///  @name Operations
 
@@ -317,6 +331,7 @@ private:
 	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
 	X3DPtr <NurbsTextureCoordinate>   nurbsTexCoordNode;
 	X3DPtr <X3DCoordinateNode>        controlPointNode;
+	SFFloat                           tessellationScale;
 
 };
 

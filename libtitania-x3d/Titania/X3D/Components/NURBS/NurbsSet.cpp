@@ -50,7 +50,9 @@
 
 #include "NurbsSet.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../NURBS/X3DNurbsSurfaceGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -70,7 +72,8 @@ NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DChildNode (),
 	X3DBoundedObject (),
-	          fields ()
+	          fields (),
+	   geometryNodes ()
 {
 	addType (X3DConstants::NurbsSet);
 
@@ -81,6 +84,8 @@ NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addGeometry",       addGeometry ());
 	addField (inputOnly,      "removeGeometry",    removeGeometry ());
 	addField (inputOutput,    "geometry",          geometry ());
+
+	addChildObjects (geometryNodes);
 }
 
 X3DBaseNode*
@@ -94,12 +99,70 @@ NurbsSet::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
+
+	tessellationScale () .addInterest (&NurbsSet::set_tessellationScale, this);
+	addGeometry ()       .addInterest (&NurbsSet::set_addGeometry,       this);
+	removeGeometry ()    .addInterest (&NurbsSet::set_removeGeometry,    this);
+	geometry ()          .addInterest (&NurbsSet::set_geometry,          this);
+
+	set_geometry ();
+}
+
+void
+NurbsSet::set_tessellationScale ()
+{
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> setTessellationScale (tessellationScale ());
+}
+
+void
+NurbsSet::set_addGeometry ()
+{
+	addGeometry () .setTainted (true);
+	addGeometry () .set_difference (geometry ());
+
+	geometry () .insert (geometry () .end (), addGeometry () .cbegin (), addGeometry () .cend ());
+
+	addGeometry () .set ({ });
+	addGeometry () .setTainted (false);
+}
+
+void
+NurbsSet::set_removeGeometry ()
+{
+	geometry () .set_difference (removeGeometry ());
+
+	removeGeometry () .set ({ });
+}
+
+void
+NurbsSet::set_geometry ()
+{
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> setTessellationScale (1);
+
+	geometryNodes .clear ();
+
+	for (const auto & child : geometry ())
+	{
+		auto geometryNode = x3d_cast <X3DNurbsSurfaceGeometryNode*> (child);
+
+		if (geometryNode)
+			geometryNodes .emplace_back (geometryNode);
+	}
+
+	set_tessellationScale ();
 }
 
 Box3d
 NurbsSet::getBBox () const
 {
-	return Box3d ();
+	auto bbox = Box3d ();
+
+	for (const auto & geometryNode : geometryNodes)
+		bbox += geometryNode -> getBBox ();
+
+	return bbox;
 }
 
 void
@@ -108,6 +171,9 @@ NurbsSet::dispose ()
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }
+
+NurbsSet::~NurbsSet ()
+{ }
 
 } // X3D
 } // titania

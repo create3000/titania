@@ -83,13 +83,15 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	                   fields (),
 	             texCoordNode (),
 	        nurbsTexCoordNode (),
-	         controlPointNode ()
+	         controlPointNode (),
+	        tessellationScale (1)
 {
 	addType (X3DConstants::X3DNurbsSurfaceGeometryNode);
 
 	addChildObjects (texCoordNode,
 	                 nurbsTexCoordNode,
-	                 controlPointNode);
+	                 controlPointNode,
+	                 tessellationScale);
 }
 
 void
@@ -505,8 +507,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, uScale ? getUTessellation (uKnots .size () - uOrder ()) / uScale : 1);
-	tessellator .property (GLU_V_STEP, vScale ? getVTessellation (vKnots .size () - vOrder ()) / vScale : 1);
+	tessellator .property (GLU_U_STEP, (uScale ? getUTessellation (uKnots .size () - uOrder ()) / uScale : 1) * tessellationScale);
+	tessellator .property (GLU_V_STEP, (vScale ? getVTessellation (vKnots .size () - vOrder ()) / vScale : 1) * tessellationScale);
 
 	// Tessellate
 

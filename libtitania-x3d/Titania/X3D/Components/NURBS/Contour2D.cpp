@@ -72,7 +72,7 @@ Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNode (),
 	     fields (),
-	     curves ()
+	 curveNodes ()
 {
 	addType (X3DConstants::Contour2D);
 
@@ -81,7 +81,7 @@ Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,   "removeChildren", removeChildren ());
 	addField (inputOutput, "children",       children ());
 
-	addChildObjects (curves);
+	addChildObjects (curveNodes);
 }
 
 X3DBaseNode*
@@ -125,19 +125,14 @@ Contour2D::set_removeChildren ()
 void
 Contour2D::set_children ()
 {
-	curves .clear ();
+	curveNodes .clear ();
 
 	for (const auto & child : children ())
 	{
-		auto curve = x3d_cast <X3DNurbsControlCurveNode*> (child);
+		const auto curveNode = x3d_cast <X3DNurbsControlCurveNode*> (child);
 
-		if (curve)
-		{
-			if (curve -> controlPoint () .empty ())
-				continue;
-
-			curves .emplace_back (curve);
-		}
+		if (curveNode)
+			curveNodes .emplace_back (curveNode);
 	}
 }
 
@@ -146,8 +141,8 @@ Contour2D::trimSurface (nurbs_tessellator & tessellator) const
 {
 	tessellator .begin_trim ();
 
-	for (const auto & curve : curves)
-		curve -> trim (tessellator);
+	for (const auto & curveNode : curveNodes)
+		curveNode -> trim (tessellator);
 
 	tessellator .end_trim ();
 }

@@ -156,7 +156,7 @@ private:
 
 	///  @name Members
 
-	X3DPtrArray <X3DNurbsControlCurveNode> curves;
+	X3DPtrArray <X3DNurbsControlCurveNode> curveNodes;
 
 };
 
