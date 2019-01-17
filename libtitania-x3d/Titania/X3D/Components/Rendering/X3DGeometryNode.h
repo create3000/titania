@@ -357,7 +357,7 @@ protected:
 	addMirrorVertices (const GLenum, const bool);
 
 	void
-	update ();
+	requestRebuild ();
 
 	virtual
 	void
@@ -399,6 +399,9 @@ private:
 	///  @name Build
 
 	void
+	rebuild ();
+
+	void
 	clear ();
 
 	void
@@ -415,6 +418,7 @@ private:
 	///  @name Members
 
 	SFBool                               cameraObject;
+	SFTime                               rebuildOutput;
 	Box3d                                bbox;
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
 	std::vector <Color4f>                colors;

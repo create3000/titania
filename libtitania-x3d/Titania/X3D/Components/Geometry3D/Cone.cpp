@@ -121,7 +121,7 @@ Cone::initialize ()
 	
 		optionsNode .set (MakePtr <ConeOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&Cone::addEvent, this);
+		optionsNode -> addInterest (&Cone::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -137,7 +137,7 @@ void
 Cone::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	if (isInitialized ())
-		getBrowser () -> getConeOptions () .removeInterest (&Cone::addEvent, this);
+		getBrowser () -> getConeOptions () .removeInterest (&Cone::requestRebuild, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
@@ -166,14 +166,14 @@ Cone::set_options ()
 	removeMetaData ("/Cone/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&Cone::addEvent, this);
+		optionsNode -> removeInterest (&Cone::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <ConeOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getConeOptions ());
 
-	optionsNode -> addInterest (&Cone::addEvent, this);
+	optionsNode -> addInterest (&Cone::requestRebuild, this);
 }
 
 void

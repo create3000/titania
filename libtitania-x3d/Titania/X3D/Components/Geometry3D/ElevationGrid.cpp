@@ -160,7 +160,7 @@ void
 ElevationGrid::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this);
+		node -> removeInterest (&ElevationGrid::requestRebuild, this);
 
 	std::vector <X3DVertexAttributeNode*> value;
 
@@ -175,7 +175,7 @@ ElevationGrid::set_attrib ()
 	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this);
+		node -> addInterest (&ElevationGrid::requestRebuild, this);
 }
 
 void
@@ -183,7 +183,7 @@ ElevationGrid::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (&ElevationGrid::requestRebuild,   this);
 		colorNode -> removeInterest (&ElevationGrid::set_transparency, this);
 	}
 
@@ -191,7 +191,7 @@ ElevationGrid::set_color ()
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (this);
+		colorNode -> addInterest (&ElevationGrid::requestRebuild,   this);
 		colorNode -> addInterest (&ElevationGrid::set_transparency, this);
 		
 		set_transparency ();
@@ -210,12 +210,12 @@ void
 ElevationGrid::set_texCoord ()
 {
 	if (texCoordNode)
-		texCoordNode -> removeInterest (this);
+		texCoordNode -> removeInterest (&ElevationGrid::requestRebuild, this);
 
 	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
 
 	if (texCoordNode)
-		texCoordNode -> addInterest (this);
+		texCoordNode -> addInterest (&ElevationGrid::requestRebuild, this);
 
 	setTextureCoordinate (texCoordNode);
 }
@@ -224,12 +224,12 @@ void
 ElevationGrid::set_normal ()
 {
 	if (normalNode)
-		normalNode -> removeInterest (this);
+		normalNode -> removeInterest (&ElevationGrid::requestRebuild, this);
 
 	normalNode .set (x3d_cast <X3DNormalNode*> (normal ()));
 
 	if (normalNode)
-		normalNode -> addInterest (this);
+		normalNode -> addInterest (&ElevationGrid::requestRebuild, this);
 }
 
 Box3d

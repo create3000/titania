@@ -111,7 +111,7 @@ Circle2D::initialize ()
 	
 		optionsNode .set (MakePtr <Circle2DOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&Circle2D::addEvent, this);
+		optionsNode -> addInterest (&Circle2D::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -127,7 +127,7 @@ void
 Circle2D::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	if (isInitialized ())
-		getBrowser () -> getCircle2DOptions () .removeInterest (&Circle2D::addEvent, this);
+		getBrowser () -> getCircle2DOptions () .removeInterest (&Circle2D::requestRebuild, this);
 
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
@@ -155,14 +155,14 @@ Circle2D::set_options ()
 	removeMetaData ("/Circle2D/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&Circle2D::addEvent, this);
+		optionsNode -> removeInterest (&Circle2D::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <Circle2DOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getCircle2DOptions ());
 
-	optionsNode -> addInterest (&Circle2D::addEvent, this);
+	optionsNode -> addInterest (&Circle2D::requestRebuild, this);
 }
 
 void

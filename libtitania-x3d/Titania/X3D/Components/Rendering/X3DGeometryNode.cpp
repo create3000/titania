@@ -71,6 +71,7 @@ const Matrix4d X3DGeometryNode::matrix;
 X3DGeometryNode::X3DGeometryNode () :
 	          X3DNode (),
 	     cameraObject (),
+	    rebuildOutput (),
 	             bbox (),
 	      attribNodes (),
 	           colors (),
@@ -93,27 +94,32 @@ X3DGeometryNode::X3DGeometryNode () :
 {
 	addType (X3DConstants::X3DGeometryNode);
 
-	addChildObjects (cameraObject, texCoordNode);
+	addChildObjects (cameraObject,
+	                 rebuildOutput,
+	                 texCoordNode);
+
+	rebuildOutput .setAccessType (outputOnly);
 }
 
 void
 X3DGeometryNode::setup ()
 {
-	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
-
 	X3DNode::setup ();
 
 	getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
 	isLive () .addInterest (&X3DGeometryNode::set_live, this);
 
+	addInterest (&X3DGeometryNode::requestRebuild, this);
+	rebuildOutput .addInterest (&X3DGeometryNode::rebuild, this);
+
+	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
+
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
 
-	addInterest (&X3DGeometryNode::update, this);
-
 	set_live ();
-	update ();
+	rebuild ();
 }
 
 void
@@ -830,7 +836,7 @@ X3DGeometryNode::set_fixedPipeline ()
 	// to build double face geometry or not.
 
 	if (geometryType == GeometryType::GEOMETRY_2D)
-		update ();
+		requestRebuild ();
 }
 
 void
@@ -938,7 +944,13 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 }
 
 void
-X3DGeometryNode::update ()
+X3DGeometryNode::requestRebuild ()
+{
+	rebuildOutput .addEvent ();
+}
+
+void
+X3DGeometryNode::rebuild ()
 {
 	clear ();
 	build ();

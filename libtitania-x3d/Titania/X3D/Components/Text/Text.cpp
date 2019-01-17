@@ -171,14 +171,14 @@ void
 Text::set_fontStyle ()
 {
 	if (fontStyleNode)
-		fontStyleNode -> removeInterest (this);
+		fontStyleNode -> removeInterest (&Text::requestRebuild, this);
 
 	fontStyleNode .set (x3d_cast <X3DFontStyleNode*> (fontStyle ()));
 
 	if (not fontStyleNode)
 		fontStyleNode .set (getBrowser () -> getDefaultFontStyle ());
 
-	fontStyleNode -> addInterest (this);
+	fontStyleNode -> addInterest (&Text::requestRebuild, this);
 }
 
 void

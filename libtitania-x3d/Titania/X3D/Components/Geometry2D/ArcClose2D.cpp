@@ -124,7 +124,7 @@ ArcClose2D::initialize ()
 	
 		optionsNode .set (MakePtr <ArcClose2DOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&ArcClose2D::addEvent, this);
+		optionsNode -> addInterest (&ArcClose2D::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -140,7 +140,7 @@ void
 ArcClose2D::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	if (isInitialized ())
-		getBrowser () -> getArcClose2DOptions () .removeInterest (&ArcClose2D::addEvent, this);
+		getBrowser () -> getArcClose2DOptions () .removeInterest (&ArcClose2D::requestRebuild, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
@@ -175,14 +175,14 @@ ArcClose2D::set_options ()
 	removeMetaData ("/ArcClose2D/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&ArcClose2D::addEvent, this);
+		optionsNode -> removeInterest (&ArcClose2D::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <ArcClose2DOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getArcClose2DOptions ());
 
-	optionsNode -> addInterest (&ArcClose2D::addEvent, this);
+	optionsNode -> addInterest (&ArcClose2D::requestRebuild, this);
 }
 
 void

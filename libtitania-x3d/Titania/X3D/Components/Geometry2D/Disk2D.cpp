@@ -118,7 +118,7 @@ Disk2D::initialize ()
 	
 		optionsNode .set (MakePtr <Disk2DOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&Disk2D::addEvent, this);
+		optionsNode -> addInterest (&Disk2D::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -134,7 +134,7 @@ void
 Disk2D::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .removeInterest (&Disk2D::addEvent, this);
+		getBrowser () -> getDisk2DOptions () .removeInterest (&Disk2D::requestRebuild, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
@@ -162,14 +162,14 @@ Disk2D::set_options ()
 	removeMetaData ("/Disk2D/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&Disk2D::addEvent, this);
+		optionsNode -> removeInterest (&Disk2D::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <Disk2DOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getDisk2DOptions ());
 
-	optionsNode -> addInterest (&Disk2D::addEvent, this);
+	optionsNode -> addInterest (&Disk2D::requestRebuild, this);
 }
 
 void

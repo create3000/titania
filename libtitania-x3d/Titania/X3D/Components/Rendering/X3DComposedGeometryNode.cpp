@@ -118,7 +118,7 @@ void
 X3DComposedGeometryNode::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this);
+		node -> removeInterest (&X3DComposedGeometryNode::requestRebuild, this);
 
 	std::vector <X3DVertexAttributeNode*> value;
 
@@ -133,7 +133,7 @@ X3DComposedGeometryNode::set_attrib ()
 	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this);
+		node -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
 }
 
 void
@@ -141,7 +141,7 @@ X3DComposedGeometryNode::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild,   this);
 		colorNode -> removeInterest (&X3DComposedGeometryNode::set_transparency, this);
 	}
 
@@ -149,7 +149,7 @@ X3DComposedGeometryNode::set_color ()
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (this);
+		colorNode -> addInterest (&X3DComposedGeometryNode::requestRebuild,   this);
 		colorNode -> addInterest (&X3DComposedGeometryNode::set_transparency, this);
 		
 		set_transparency ();
@@ -168,12 +168,12 @@ void
 X3DComposedGeometryNode::set_texCoord ()
 {
 	if (texCoordNode)
-		texCoordNode -> removeInterest (this);
+		texCoordNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild, this);
 
 	texCoordNode = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
 	if (texCoordNode)
-		texCoordNode -> addInterest (this);
+		texCoordNode -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
 
 	setTextureCoordinate (texCoordNode);
 }
@@ -182,24 +182,24 @@ void
 X3DComposedGeometryNode::set_normal ()
 {
 	if (normalNode)
-		normalNode -> removeInterest (this);
+		normalNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild, this);
 
 	normalNode = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (normalNode)
-		normalNode -> addInterest (this);
+		normalNode -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
 }
 
 void
 X3DComposedGeometryNode::set_coord ()
 {
 	if (coordNode)
-		coordNode -> removeInterest (this);
+		coordNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild, this);
 
 	coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (coordNode)
-		coordNode -> addInterest (this);
+		coordNode -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
 }
 
 void

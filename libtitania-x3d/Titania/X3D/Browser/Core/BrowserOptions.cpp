@@ -115,9 +115,11 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     fields (executionContext),
-	    shading (ShadingType::GOURAUD)
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	          fields (executionContext),
+	  textureQuality (TextureQualityType::MEDIUM),
+	primitiveQuality (PrimitiveQualityType::MEDIUM),
+	         shading (ShadingType::GOURAUD)
 {
 	addType (X3DConstants::BrowserOptions);
 
@@ -140,7 +142,9 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildObjects (shading);
+	addChildObjects (textureQuality,
+	                 primitiveQuality,
+	                 shading);
 }
 
 BrowserOptions*
@@ -219,6 +223,11 @@ BrowserOptions::set_TextureQuality ()
 
 	if (textureQuality == "HIGH")
 	{
+		if (this -> textureQuality == TextureQualityType::HIGH)
+			return;
+
+		this -> textureQuality = TextureQualityType::HIGH;
+
 		textureProperties -> minificationFilter  () = "NICEST";
 		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> textureCompression  () = "NICEST";
@@ -239,6 +248,11 @@ BrowserOptions::set_TextureQuality ()
 
 	if (textureQuality == "LOW")
 	{
+		if (this -> textureQuality == TextureQualityType::LOW)
+			return;
+
+		this -> textureQuality = TextureQualityType::LOW;
+
 		textureProperties -> minificationFilter  () = "AVG_PIXEL_NEAREST_MIPMAP";
 		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> textureCompression  () = "FASTEST";
@@ -258,6 +272,11 @@ BrowserOptions::set_TextureQuality ()
 	}
 
 	// MEDIUM
+
+	if (this -> textureQuality == TextureQualityType::MEDIUM)
+		return;
+
+	this -> textureQuality = TextureQualityType::MEDIUM;
 
 	textureProperties -> minificationFilter  () = "AVG_PIXEL_AVG_MIPMAP";
 	textureProperties -> magnificationFilter () = "NICEST";
@@ -283,6 +302,11 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	if (primitiveQuality == "HIGH")
 	{
+		if (this -> primitiveQuality == PrimitiveQualityType::HIGH)
+			return;
+	
+		this -> primitiveQuality = PrimitiveQualityType::HIGH;
+
 		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 80;
 		getBrowser () -> getArcClose2DOptions () -> dimension ()  = 80;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 80;
@@ -304,6 +328,11 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	if (primitiveQuality == "LOW")
 	{
+		if (this -> primitiveQuality == PrimitiveQualityType::LOW)
+			return;
+	
+		this -> primitiveQuality = PrimitiveQualityType::LOW;
+
 		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 20;
 		getBrowser () -> getArcClose2DOptions () -> dimension ()  = 20;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 20;
@@ -324,6 +353,11 @@ BrowserOptions::set_PrimitiveQuality ()
 	}
 
 	// MEDIUM
+
+	if (this -> primitiveQuality == PrimitiveQualityType::MEDIUM)
+		return;
+
+	this -> primitiveQuality = PrimitiveQualityType::MEDIUM;
 
 	getBrowser () -> getArc2DOptions ()      -> dimension ()  = 40;
 	getBrowser () -> getArcClose2DOptions () -> dimension ()  = 40;

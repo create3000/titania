@@ -159,12 +159,12 @@ void
 GeoElevationGrid::set_color ()
 {
 	if (colorNode)
-		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (&GeoElevationGrid::requestRebuild, this);
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
-		colorNode -> addInterest (this);
+		colorNode -> addInterest (&GeoElevationGrid::requestRebuild, this);
 
 	// Transparent
 
@@ -175,12 +175,12 @@ void
 GeoElevationGrid::set_texCoord ()
 {
 	if (texCoordNode)
-		texCoordNode -> removeInterest (this);
+		texCoordNode -> removeInterest (&GeoElevationGrid::requestRebuild, this);
 
 	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
 
 	if (texCoordNode)
-		texCoordNode -> addInterest (this);
+		texCoordNode -> addInterest (&GeoElevationGrid::requestRebuild, this);
 
 	setTextureCoordinate (texCoordNode);
 }
@@ -189,12 +189,12 @@ void
 GeoElevationGrid::set_normal ()
 {
 	if (normalNode)
-		normalNode -> removeInterest (this);
+		normalNode -> removeInterest (&GeoElevationGrid::requestRebuild, this);
 
 	normalNode .set (x3d_cast <X3DNormalNode*> (normal ()));
 
 	if (normalNode)
-		normalNode -> addInterest (this);
+		normalNode -> addInterest (&GeoElevationGrid::requestRebuild, this);
 }
 
 double

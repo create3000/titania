@@ -163,7 +163,7 @@ void
 IndexedLineSet::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this);
+		node -> removeInterest (&IndexedLineSet::requestRebuild, this);
 
 	std::vector <X3DVertexAttributeNode*> value;
 
@@ -178,7 +178,7 @@ IndexedLineSet::set_attrib ()
 	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this);
+		node -> addInterest (&IndexedLineSet::requestRebuild, this);
 }
 
 void
@@ -186,7 +186,7 @@ IndexedLineSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (&IndexedLineSet::requestRebuild,   this);
 		colorNode -> removeInterest (&IndexedLineSet::set_transparency, this);
 	}
 
@@ -194,7 +194,7 @@ IndexedLineSet::set_color ()
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (this);
+		colorNode -> addInterest (&IndexedLineSet::requestRebuild,   this);
 		colorNode -> addInterest (&IndexedLineSet::set_transparency, this);
 		
 		set_transparency ();
@@ -213,12 +213,12 @@ void
 IndexedLineSet::set_coord ()
 {
 	if (coordNode)
-		coordNode -> removeInterest (this);
+		coordNode -> removeInterest (&IndexedLineSet::requestRebuild, this);
 
 	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
 
 	if (coordNode)
-		coordNode -> addInterest (this);
+		coordNode -> addInterest (&IndexedLineSet::requestRebuild, this);
 }
 
 void

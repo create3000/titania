@@ -111,24 +111,24 @@ void
 NurbsSwungSurface::set_profileCurve ()
 {
 	if (profileCurveNode)
-		profileCurveNode -> removeInterest (this);
+		profileCurveNode -> removeInterest (&NurbsSwungSurface::requestRebuild, this);
 
 	profileCurveNode .set (x3d_cast <X3DNurbsControlCurveNode*> (profileCurve ()));
 
 	if (profileCurveNode)
-		profileCurveNode -> addInterest (this);
+		profileCurveNode -> addInterest (&NurbsSwungSurface::requestRebuild, this);
 }
 
 void
 NurbsSwungSurface::set_trajectoryCurve ()
 {
 	if (trajectoryCurveNode)
-		trajectoryCurveNode -> removeInterest (this);
+		trajectoryCurveNode -> removeInterest (&NurbsSwungSurface::requestRebuild, this);
 
 	trajectoryCurveNode .set (x3d_cast <X3DNurbsControlCurveNode*> (trajectoryCurve ()));
 
 	if (trajectoryCurveNode)
-		trajectoryCurveNode -> addInterest (this);
+		trajectoryCurveNode -> addInterest (&NurbsSwungSurface::requestRebuild, this);
 }
 
 void

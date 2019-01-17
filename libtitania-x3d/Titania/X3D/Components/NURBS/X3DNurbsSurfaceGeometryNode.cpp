@@ -111,31 +111,31 @@ void
 X3DNurbsSurfaceGeometryNode::set_texCoord ()
 {
 	if (texCoordNode)
-		texCoordNode -> removeInterest (this);
+		texCoordNode -> removeInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 
 	if (nurbsTexCoordNode)
-		nurbsTexCoordNode -> removeInterest (this);
+		nurbsTexCoordNode -> removeInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 
 	texCoordNode      .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
 	nurbsTexCoordNode .set (x3d_cast <NurbsTextureCoordinate*>   (texCoord ()));
 
 	if (texCoordNode)
-		texCoordNode -> addInterest (this);
+		texCoordNode -> addInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 
 	if (nurbsTexCoordNode)
-		nurbsTexCoordNode -> addInterest (this);
+		nurbsTexCoordNode -> addInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 }
 
 void
 X3DNurbsSurfaceGeometryNode::set_controlPoint ()
 {
 	if (controlPointNode)
-		controlPointNode -> removeInterest (this);
+		controlPointNode -> removeInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 
 	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
 
 	if (controlPointNode)
-		controlPointNode -> addInterest (this);
+		controlPointNode -> addInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 }
 
 size_t

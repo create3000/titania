@@ -136,7 +136,7 @@ void
 PointSet::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this);
+		node -> removeInterest (&PointSet::requestRebuild, this);
 
 	std::vector <X3DVertexAttributeNode*> value;
 
@@ -151,7 +151,7 @@ PointSet::set_attrib ()
 	attribNodes .set (value .cbegin (), value .cend ());
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this);
+		node -> addInterest (&PointSet::requestRebuild, this);
 }
 
 void
@@ -159,7 +159,7 @@ PointSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (this);
+		colorNode -> removeInterest (&PointSet::requestRebuild,   this);
 		colorNode -> removeInterest (&PointSet::set_transparency, this);
 	}
 
@@ -167,7 +167,7 @@ PointSet::set_color ()
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (this);
+		colorNode -> addInterest (&PointSet::requestRebuild,   this);
 		colorNode -> addInterest (&PointSet::set_transparency, this);
 		
 		set_transparency ();

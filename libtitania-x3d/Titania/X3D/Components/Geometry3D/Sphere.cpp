@@ -117,7 +117,7 @@ Sphere::initialize ()
 		else // QuadSphereProperties
 			optionsNode .set (MakePtr <QuadSphereOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&Sphere::addEvent, this);
+		optionsNode -> addInterest (&Sphere::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -152,14 +152,14 @@ Sphere::set_options ()
 	removeMetaData ("/Sphere/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&Sphere::addEvent, this);
+		optionsNode -> removeInterest (&Sphere::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <X3DSphereOptionsNode*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getSphereOptions ());
 
-	optionsNode -> addInterest (&Sphere::addEvent, this);
+	optionsNode -> addInterest (&Sphere::requestRebuild, this);
 }
 
 void

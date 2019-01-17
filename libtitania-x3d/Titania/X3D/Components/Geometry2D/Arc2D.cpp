@@ -119,7 +119,7 @@ Arc2D::initialize ()
 	
 		optionsNode .set (MakePtr <Arc2DOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&Arc2D::addEvent, this);
+		optionsNode -> addInterest (&Arc2D::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -135,7 +135,7 @@ void
 Arc2D::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	if (isInitialized ())
-		getBrowser () -> getArc2DOptions () .removeInterest (&Arc2D::addEvent, this);
+		getBrowser () -> getArc2DOptions () .removeInterest (&Arc2D::requestRebuild, this);
 
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
@@ -176,14 +176,14 @@ Arc2D::set_options ()
 	removeMetaData ("/Arc2D/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&Arc2D::addEvent, this);
+		optionsNode -> removeInterest (&Arc2D::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <Arc2DOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getArc2DOptions ());
 
-	optionsNode -> addInterest (&Arc2D::addEvent, this);
+	optionsNode -> addInterest (&Arc2D::requestRebuild, this);
 }
 
 void

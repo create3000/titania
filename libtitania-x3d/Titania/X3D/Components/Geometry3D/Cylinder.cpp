@@ -123,7 +123,7 @@ Cylinder::initialize ()
 	
 		optionsNode .set (MakePtr <CylinderOptions> (getExecutionContext ()));
 
-		optionsNode -> addInterest (&Cylinder::addEvent, this);
+		optionsNode -> addInterest (&Cylinder::requestRebuild, this);
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
 
@@ -139,7 +139,7 @@ void
 Cylinder::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	if (isInitialized ())
-		getBrowser () -> getCylinderOptions () .removeInterest (&Cylinder::addEvent, this);
+		getBrowser () -> getCylinderOptions () .removeInterest (&Cylinder::requestRebuild, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
@@ -171,14 +171,14 @@ Cylinder::set_options ()
 	removeMetaData ("/Cylinder/options");
 
 	if (optionsNode)
-		optionsNode -> removeInterest (&Cylinder::addEvent, this);
+		optionsNode -> removeInterest (&Cylinder::requestRebuild, this);
 
 	optionsNode .set (x3d_cast <CylinderOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getCylinderOptions ());
 
-	optionsNode -> addInterest (&Cylinder::addEvent, this);
+	optionsNode -> addInterest (&Cylinder::requestRebuild, this);
 }
 
 void

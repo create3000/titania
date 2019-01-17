@@ -110,8 +110,13 @@ X3DExecutionContext::X3DExecutionContext () :
 	getRootNodes () .setName ("rootNodes");
 	getRootNodes () .addCloneCount (1);
 
-	sceneGraphOutput .setName ("sceneGraphOutput");
-	bboxOutput       .setName ("bboxOutput");
+	namedNodesOutput    .setAccessType (outputOnly);
+	importedNodesOutput .setAccessType (outputOnly);
+	prototypesOutput    .setAccessType (outputOnly);
+	externProtosOutput  .setAccessType (outputOnly);
+	routesOutput        .setAccessType (outputOnly);
+	sceneGraphOutput    .setAccessType (outputOnly);
+	bboxOutput          .setAccessType (outputOnly);
 }
 
 void

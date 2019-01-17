@@ -51,9 +51,12 @@
 #ifndef __TITANIA_X3D_BROWSER_BROWSER_OPTIONS_H__
 #define __TITANIA_X3D_BROWSER_BROWSER_OPTIONS_H__
 
+#include "../Core/TextureQualityType.h"
+#include "../Core/PrimitiveQualityType.h"
+#include "../Shaders/ShadingType.h"
+
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields.h"
-#include "../Shaders/ShadingType.h"
 
 namespace titania {
 namespace X3D {
@@ -221,6 +224,14 @@ public:
 
 	///  @name Member access
 
+	const SFEnum <TextureQualityType> &
+	getTextureQuality () const
+	{ return textureQuality; }
+
+	const SFEnum <PrimitiveQualityType> &
+	getPrimitiveQuality () const
+	{ return primitiveQuality; }
+
 	const SFEnum <ShadingType> &
 	getShading () const
 	{ return shading; }
@@ -287,7 +298,9 @@ private:
 
 	Fields fields;
 
-	SFEnum <ShadingType> shading;
+	SFEnum <TextureQualityType>   textureQuality;
+	SFEnum <PrimitiveQualityType> primitiveQuality;
+	SFEnum <ShadingType>          shading;
 
 };
 

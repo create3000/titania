@@ -122,12 +122,12 @@ void
 NurbsCurve::set_controlPoint ()
 {
 	if (controlPointNode)
-		controlPointNode -> removeInterest (this);
+		controlPointNode -> removeInterest (&NurbsCurve::requestRebuild, this);
 
 	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
 
 	if (controlPointNode)
-		controlPointNode -> addInterest (this);
+		controlPointNode -> addInterest (&NurbsCurve::requestRebuild, this);
 }
 
 const X3DPtr <ComposedShader> &

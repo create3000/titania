@@ -984,6 +984,8 @@
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\X3DBrowser.h" />
     <None Include="Titania\X3D\Browser\NURBS\NURBS.h" />
+    <None Include="Titania\X3D\Browser\Core\PrimitiveQualityType.h" />
+    <None Include="Titania\X3D\Browser\Core\TextureQualityType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

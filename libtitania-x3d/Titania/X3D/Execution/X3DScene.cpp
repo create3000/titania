@@ -110,6 +110,11 @@ X3DScene::X3DScene () :
 	                 metaDataOutput,
 	                 exportedNodesOutput,
 	                 fileChangedOutput);
+
+	unitsOutput         .setAccessType (outputOnly);
+	metaDataOutput      .setAccessType (outputOnly);
+	exportedNodesOutput .setAccessType (outputOnly);
+	fileChangedOutput   .setAccessType (outputOnly);
 }
 
 void

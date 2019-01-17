@@ -112,24 +112,24 @@ void
 NurbsSweptSurface::set_crossSectionCurve ()
 {
 	if (crossSectionCurveNode)
-		crossSectionCurveNode -> removeInterest (this);
+		crossSectionCurveNode -> removeInterest (&NurbsSweptSurface::requestRebuild, this);
 
 	crossSectionCurveNode .set (x3d_cast <X3DNurbsControlCurveNode*> (crossSectionCurve ()));
 
 	if (crossSectionCurveNode)
-		crossSectionCurveNode -> addInterest (this);
+		crossSectionCurveNode -> addInterest (&NurbsSweptSurface::requestRebuild, this);
 }
 
 void
 NurbsSweptSurface::set_trajectoryCurve ()
 {
 	if (trajectoryCurveNode)
-		trajectoryCurveNode -> removeInterest (this);
+		trajectoryCurveNode -> removeInterest (&NurbsSweptSurface::requestRebuild, this);
 
 	trajectoryCurveNode .set (x3d_cast <NurbsCurve*> (trajectoryCurve ()));
 
 	if (trajectoryCurveNode)
-		trajectoryCurveNode -> addInterest (this);
+		trajectoryCurveNode -> addInterest (&NurbsSweptSurface::requestRebuild, this);
 }
 
 void
