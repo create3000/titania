@@ -135,7 +135,7 @@ private:
 
 	static
 	bool
-	isPeriodic (const bool order,
+	isPeriodic (const size_t order,
 	            const size_t dimension,
 	            const std::vector <double> & knot);
 

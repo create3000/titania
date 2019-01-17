@@ -70,6 +70,41 @@ NURBS::getTessellation (const size_t tessellation, const size_t dimension)
 }
 
 bool
+NURBS::isPeriodic (const size_t order,
+                   const size_t dimension,
+                   const std::vector <double> & knot)
+{
+	if (knot .size () == dimension + order)
+	{
+		{
+			size_t count = 1;
+	
+			for (size_t i = 1, size = order; i < size; ++ i)
+			{
+				count += knot [i] == knot .front ();
+			}
+	
+			if (count == order)
+				return false;
+		}
+
+		{
+			size_t count = 1;
+	
+			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
+			{
+				count += knot [i] == knot .back ();
+			}
+
+			if (count == order)
+				return false;
+		}
+	}
+
+	return true;
+}
+
+bool
 NURBS::getClosed (const size_t order,
                   const std::vector <double> & knot,
                   const std::vector <double> & weight,
@@ -203,39 +238,6 @@ NURBS::getVClosed (const size_t vOrder,
 	return true;
 }
 
-bool
-NURBS::isPeriodic (const bool order, const size_t dimension, const std::vector <double> & knot)
-{
-	if (knot .size () == dimension + order)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = order; i < size; ++ i)
-			{
-				count += knot [i] == knot .front ();
-			}
-	
-			if (count == order)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
-			{
-				count += knot [i] == knot .back ();
-			}
-
-			if (count == order)
-				return false;
-		}
-	}
-
-	return true;
-}
-
 std::vector <float>
 NURBS::getKnots (const bool closed,
                  const size_t order,
@@ -255,7 +257,7 @@ NURBS::getKnots (const bool closed,
 
 		size_t consecutiveKnots = 0;
 
-		for (size_t i = 1; i < knots .size (); ++ i)
+		for (size_t i = 1, size = knots .size (); i < size; ++ i)
 		{
 			if (knots [i] == knots [i - 1])
 				++ consecutiveKnots;
