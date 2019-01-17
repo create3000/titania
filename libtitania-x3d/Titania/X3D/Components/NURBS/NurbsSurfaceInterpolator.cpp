@@ -307,6 +307,8 @@ NurbsSurfaceInterpolator::set_buffer ()
 std::tuple <size_t, Vector3f, bool>
 NurbsSurfaceInterpolator::getTriangle (const Vector2f & point, const std::vector <Vector4f> & texCoords) const
 {
+	//TODO: Use a BVH (QuadTree) for this query.
+
 	for (size_t i = 0, size = texCoords .size (); i < size; i += 3)
 	{
 		const Triangle2f triangle2 (Vector2f (texCoords [i + 0] .x (), texCoords [i + 0] .y ()),

@@ -516,11 +516,14 @@ Context::initialize ()
 	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
 	isLive () .addInterest (this, &Context::set_live);
 
-	shutdown () .addInterest (&Context::set_shutdown, this);
-
 	set_live ();
 
-	call ("initialize");
+	if (getExecutionContext () -> isLive () and isLive ())
+	{
+		call ("initialize");
+
+		shutdown () .addInterest (&Context::set_shutdown, this);
+	}
 
 	JS_GC (cx);
 }

@@ -70,6 +70,66 @@ NURBS::getTessellation (const size_t tessellation, const size_t dimension)
 }
 
 bool
+NURBS::getClosed (const size_t order,
+                  const std::vector <double> & knot,
+                  const std::vector <double> & weight,
+                  const X3DPtr <X3DCoordinateNode> & controlPointNode)
+{
+	const auto dimension   = controlPointNode -> getSize ();
+	const auto haveWeights = weight .size () == dimension;
+
+	// Check if first and last weights are unitary.
+
+	if (haveWeights)
+	{
+		if (weight .front () not_eq weight .back ())
+			return false;
+	}
+
+	// Check if first and last point are coincident.
+
+	if (controlPointNode -> get1Point (0) not_eq controlPointNode -> get1Point (dimension - 1))
+		return false;
+
+	// Check if knots are periodic.
+
+	if (not isPeriodic (order, dimension, knot))
+		return false;
+
+	return true;
+}
+
+bool
+NURBS::getClosed (const size_t order,
+                  const std::vector <double> & knot,
+                  const std::vector <double> & weight,
+                  const std::vector <Vector2d> & controlPoint)
+{
+	const auto dimension   = controlPoint .size ();
+	const auto haveWeights = weight .size () == dimension;
+
+	// Check if first and last weights are unitary.
+
+	if (haveWeights)
+	{
+		if (weight .front () not_eq weight .back ())
+			return false;
+	}
+
+	// Check if first and last point are coincident.
+
+	if (controlPoint .front () not_eq controlPoint .back ())
+		return false;
+
+	// Check if knots are periodic.
+
+	if (not isPeriodic (order, dimension, knot))
+		return false;
+
+	return true;
+}
+
+bool
 NURBS::getUClosed (const size_t uOrder,
                    const size_t uDimension,
                    const size_t vDimension,
@@ -100,140 +160,8 @@ NURBS::getUClosed (const size_t uOrder,
 
 	// Check if knots are periodic.
 
-	if (uKnot .size () == uDimension + uOrder)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = uOrder; i < size; ++ i)
-			{
-				count += uKnot [i] == uKnot .front ();
-			}
-	
-			if (count == uOrder)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = uKnot .size () - uOrder, size = uKnot .size () - 1; i < size; ++ i)
-			{
-				count += uKnot [i] == uKnot .back ();
-			}
-
-			if (count == uOrder)
-				return false;
-		}
-	}
-
-	return true;
-}
-
-bool
-NURBS::getClosed (const size_t order,
-                  const std::vector <double> & knot,
-                  const std::vector <double> & weight,
-                  const X3DPtr <X3DCoordinateNode> & controlPointNode)
-{
-	const auto dimension   = controlPointNode -> getSize ();
-	const auto haveWeights = weight .size () == dimension;
-
-	// Check if first and last weights are unitary.
-
-	if (haveWeights)
-	{
-		if (weight .front () not_eq weight .back ())
-			return false;
-	}
-
-	// Check if first and last point are coincident.
-
-	if (controlPointNode -> get1Point (0) not_eq controlPointNode -> get1Point (dimension - 1))
+	if (not isPeriodic (uOrder, uDimension, uKnot))
 		return false;
-
-	// Check if knots are periodic.
-
-	if (knot .size () == dimension + order)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = order; i < size; ++ i)
-			{
-				count += knot [i] == knot .front ();
-			}
-	
-			if (count == order)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
-			{
-				count += knot [i] == knot .back ();
-			}
-
-			if (count == order)
-				return false;
-		}
-	}
-
-	return true;
-}
-
-bool
-NURBS::getClosed (const size_t order,
-                  const std::vector <double> & knot,
-                  const std::vector <double> & weight,
-                  const std::vector <Vector2d> & controlPoint)
-{
-	const auto dimension   = controlPoint .size ();
-	const auto haveWeights = weight .size () == dimension;
-
-	// Check if first and last weights are unitary.
-
-	if (haveWeights)
-	{
-		if (weight .front () not_eq weight .back ())
-			return false;
-	}
-
-	// Check if first and last point are coincident.
-
-	if (controlPoint .front () not_eq controlPoint .back ())
-		return false;
-
-	// Check if knots are periodic.
-
-	if (knot .size () == dimension + order)
-	{
-		{
-			size_t count = 1;
-	
-			for (size_t i = 1, size = order; i < size; ++ i)
-			{
-				count += knot [i] == knot .front ();
-			}
-	
-			if (count == order)
-				return false;
-		}
-
-		{
-			size_t count = 1;
-	
-			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
-			{
-				count += knot [i] == knot .back ();
-			}
-
-			if (count == order)
-				return false;
-		}
-	}
 
 	return true;
 }
@@ -269,29 +197,38 @@ NURBS::getVClosed (const size_t vOrder,
 
 	// Check if knots are periodic.
 
-	if (vKnot .size () == vDimension + vOrder)
+	if (not isPeriodic (vOrder, vDimension, vKnot))
+		return false;
+
+	return true;
+}
+
+bool
+NURBS::isPeriodic (const bool order, const size_t dimension, const std::vector <double> & knot)
+{
+	if (knot .size () == dimension + order)
 	{
 		{
 			size_t count = 1;
 	
-			for (size_t i = 1, size = vOrder; i < size; ++ i)
+			for (size_t i = 1, size = order; i < size; ++ i)
 			{
-				count += vKnot [i] == vKnot .front ();
+				count += knot [i] == knot .front ();
 			}
 	
-			if (count == vOrder)
+			if (count == order)
 				return false;
 		}
 
 		{
 			size_t count = 1;
 	
-			for (size_t i = vKnot .size () - vOrder, size = vKnot .size () - 1; i < size; ++ i)
+			for (size_t i = knot .size () - order, size = knot .size () - 1; i < size; ++ i)
 			{
-				count += vKnot [i] == vKnot .back ();
+				count += knot [i] == knot .back ();
 			}
 
-			if (count == vOrder)
+			if (count == order)
 				return false;
 		}
 	}

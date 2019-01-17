@@ -100,9 +100,9 @@ X3DNurbsSurfaceGeometryNode::initialize ()
 {
 	X3DParametricGeometryNode::initialize ();
 
-	texCoord ()     .addInterest (&X3DNurbsSurfaceGeometryNode::set_texCoord, this);
+	texCoord ()     .addInterest (&X3DNurbsSurfaceGeometryNode::set_texCoord,     this);
 	controlPoint () .addInterest (&X3DNurbsSurfaceGeometryNode::set_controlPoint, this);
-	
+
 	set_texCoord ();
 	set_controlPoint ();
 }

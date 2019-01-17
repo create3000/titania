@@ -130,6 +130,15 @@ public:
 	                  const std::vector <double> & weight,
 	                  const X3DPtr <X3DCoordinateNode> & controlPointNode);
 
+
+private:
+
+	static
+	bool
+	isPeriodic (const bool order,
+	            const size_t dimension,
+	            const std::vector <double> & knot);
+
 };
 
 } // X3D
