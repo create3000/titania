@@ -261,10 +261,10 @@ private:
 
 	///  @name Operations
 
-	size_t
+	float
 	getUTessellation (const size_t uDimension) const;
 
-	size_t
+	float
 	getVTessellation (const size_t vDimension) const;
 
 	bool

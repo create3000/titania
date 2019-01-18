@@ -175,10 +175,10 @@ private:
 	set_controlPoint ();
 
 	void
-	build ();
+	requestRebuild ();
 
 	void
-	set_buffer ();
+	build ();
 
 	///  @name Static members
 
@@ -208,7 +208,7 @@ private:
 
 	X3DPtr <X3DCoordinateNode>       controlPointNode;
 	X3DPtr <OrientationInterpolator> interpolator;
-	SFTime                           buffer;
+	SFTime                           rebuildOutput;
 
 };
 

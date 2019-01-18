@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPositionInterpolator.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DParametricGeometryNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp" Line="249" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/PolylineEmitter.cpp" Line="137" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/SurfaceEmitter.cpp" Line="215" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/VolumeEmitter.cpp" Line="143" Column="55" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/Contour2D.cpp" Line="140" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPositionInterpolator.h" Line="211" Column="45" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPositionInterpolator.cpp" Line="242" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsOrientationInterpolator.h" Line="211" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsOrientationInterpolator.cpp" Line="238" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

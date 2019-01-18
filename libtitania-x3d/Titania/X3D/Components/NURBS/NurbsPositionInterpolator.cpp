@@ -83,7 +83,7 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 	          fields (),
 	controlPointNode (),
 	    interpolator (new PositionInterpolator (executionContext)),
-	          buffer ()
+	   rebuildOutput ()
 {
 	addType (X3DConstants::NurbsPositionInterpolator);
 
@@ -97,7 +97,7 @@ NurbsPositionInterpolator::NurbsPositionInterpolator (X3DExecutionContext* const
 
 	addChildObjects (controlPointNode,
 	                 interpolator,
-	                 buffer);
+	                 rebuildOutput);
 }
 
 X3DBaseNode*
@@ -111,19 +111,19 @@ NurbsPositionInterpolator::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	order ()        .addInterest (&NurbsPositionInterpolator::build,            this);
-	knot ()         .addInterest (&NurbsPositionInterpolator::build,            this);
-	weight ()       .addInterest (&NurbsPositionInterpolator::build,            this);
+	order ()        .addInterest (&NurbsPositionInterpolator::requestRebuild,   this);
+	knot ()         .addInterest (&NurbsPositionInterpolator::requestRebuild,   this);
+	weight ()       .addInterest (&NurbsPositionInterpolator::requestRebuild,   this);
 	controlPoint () .addInterest (&NurbsPositionInterpolator::set_controlPoint, this);
+
+	rebuildOutput .addInterest (&NurbsPositionInterpolator::build, this);
 
 	set_fraction () .addInterest (interpolator -> set_fraction ());
 	interpolator -> value_changed () .addInterest (value_changed ());
 
-	buffer .addInterest (&NurbsPositionInterpolator::set_buffer, this);
+	interpolator -> setup ();
 
 	set_controlPoint ();
-
-	interpolator -> setup ();
 }
 
 bool
@@ -132,7 +132,7 @@ NurbsPositionInterpolator::getClosed (const size_t order,
                                       const std::vector <double> & weight,
                                       const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
-	return NURBS::getClosed (order, knot, weight, controlPointNode);
+	return false and NURBS::getClosed (order, knot, weight, controlPointNode);
 }
 
 std::vector <float>
@@ -157,24 +157,24 @@ void
 NurbsPositionInterpolator::set_controlPoint ()
 {
 	if (controlPointNode)
-		controlPointNode -> removeInterest (this);
+		controlPointNode -> removeInterest (&NurbsPositionInterpolator::requestRebuild, this);
 
 	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
 
 	if (controlPointNode)
-		controlPointNode -> addInterest (this);
+		controlPointNode -> addInterest (&NurbsPositionInterpolator::requestRebuild, this);
 
-	build ();
+	requestRebuild ();
+}
+
+void
+NurbsPositionInterpolator::requestRebuild ()
+{
+	rebuildOutput .addEvent ();
 }
 
 void
 NurbsPositionInterpolator::build ()
-{
-	buffer .addEvent ();
-}
-
-void
-NurbsPositionInterpolator::set_buffer ()
 {
 	if (order () < 2)
 		return;

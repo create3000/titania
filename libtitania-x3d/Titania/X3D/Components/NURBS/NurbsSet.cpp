@@ -108,11 +108,24 @@ NurbsSet::initialize ()
 	set_geometry ();
 }
 
+Box3d
+NurbsSet::getBBox () const
+{
+	auto bbox = Box3d ();
+
+	for (const auto & geometryNode : geometryNodes)
+		bbox += geometryNode -> getBBox ();
+
+	return bbox;
+}
+
 void
 NurbsSet::set_tessellationScale ()
 {
+	const auto value = std::max <float> (0, tessellationScale ());
+
 	for (const auto & geometryNode : geometryNodes)
-		geometryNode -> setTessellationScale (tessellationScale ());
+		geometryNode -> setTessellationScale (value);
 }
 
 void
@@ -152,17 +165,6 @@ NurbsSet::set_geometry ()
 	}
 
 	set_tessellationScale ();
-}
-
-Box3d
-NurbsSet::getBBox () const
-{
-	auto bbox = Box3d ();
-
-	for (const auto & geometryNode : geometryNodes)
-		bbox += geometryNode -> getBBox ();
-
-	return bbox;
 }
 
 void

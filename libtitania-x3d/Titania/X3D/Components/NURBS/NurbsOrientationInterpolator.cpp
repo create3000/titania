@@ -83,7 +83,7 @@ NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext*
 	          fields (),
 	controlPointNode (),
 	    interpolator (new OrientationInterpolator (executionContext)),
-	          buffer ()
+	   rebuildOutput ()
 {
 	addType (X3DConstants::NurbsOrientationInterpolator);
 
@@ -97,7 +97,7 @@ NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext*
 
 	addChildObjects (controlPointNode,
 	                 interpolator,
-	                 buffer);
+	                 rebuildOutput);
 }
 
 X3DBaseNode*
@@ -111,19 +111,19 @@ NurbsOrientationInterpolator::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	order ()        .addInterest (&NurbsOrientationInterpolator::build,            this);
-	knot ()         .addInterest (&NurbsOrientationInterpolator::build,            this);
-	weight ()       .addInterest (&NurbsOrientationInterpolator::build,            this);
+	order ()        .addInterest (&NurbsOrientationInterpolator::requestRebuild,   this);
+	knot ()         .addInterest (&NurbsOrientationInterpolator::requestRebuild,   this);
+	weight ()       .addInterest (&NurbsOrientationInterpolator::requestRebuild,   this);
 	controlPoint () .addInterest (&NurbsOrientationInterpolator::set_controlPoint, this);
+
+	rebuildOutput .addInterest (&NurbsOrientationInterpolator::build, this);
 
 	set_fraction () .addInterest (interpolator -> set_fraction ());
 	interpolator -> value_changed () .addInterest (value_changed ());
 
-	buffer .addInterest (&NurbsOrientationInterpolator::set_buffer, this);
+	interpolator -> setup ();
 
 	set_controlPoint ();
-
-	interpolator -> setup ();
 }
 
 bool
@@ -132,7 +132,7 @@ NurbsOrientationInterpolator::getClosed (const size_t order,
                                          const std::vector <double> & weight,
                                          const X3DPtr <X3DCoordinateNode> & controlPointNode) const
 {
-	return NURBS::getClosed (order, knot, weight, controlPointNode);
+	return false and NURBS::getClosed (order, knot, weight, controlPointNode);
 }
 
 std::vector <float>
@@ -157,24 +157,24 @@ void
 NurbsOrientationInterpolator::set_controlPoint ()
 {
 	if (controlPointNode)
-		controlPointNode -> removeInterest (this);
+		controlPointNode -> removeInterest (&NurbsOrientationInterpolator::requestRebuild, this);
 
 	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
 
 	if (controlPointNode)
-		controlPointNode -> addInterest (this);
+		controlPointNode -> addInterest (&NurbsOrientationInterpolator::requestRebuild, this);
 
-	build ();
+	requestRebuild ();
+}
+
+void
+NurbsOrientationInterpolator::requestRebuild ()
+{
+	rebuildOutput .addEvent ();
 }
 
 void
 NurbsOrientationInterpolator::build ()
-{
-	buffer .addEvent ();
-}
-
-void
-NurbsOrientationInterpolator::set_buffer ()
 {
 	if (order () < 2)
 		return;

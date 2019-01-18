@@ -138,16 +138,16 @@ X3DNurbsSurfaceGeometryNode::set_controlPoint ()
 		controlPointNode -> addInterest (&X3DNurbsSurfaceGeometryNode::requestRebuild, this);
 }
 
-size_t
+float
 X3DNurbsSurfaceGeometryNode::getUTessellation (const size_t uDimension) const
 {
-	return NURBS::getTessellation (uTessellation (), uDimension);
+	return NURBS::getTessellation (uTessellation (), uDimension) * tessellationScale;
 }
 
-size_t
+float
 X3DNurbsSurfaceGeometryNode::getVTessellation (const size_t vDimension) const
 {
-	return NURBS::getTessellation (vTessellation (), vDimension);
+	return NURBS::getTessellation (vTessellation (), vDimension) * tessellationScale;
 }
 
 bool
@@ -334,8 +334,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 	nurbs_tessellator tessellator;
 
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator .property (GLU_U_STEP, getUTessellation (uKnots .size () - uOrder ()) / uScale * tessellationScale);
-	tessellator .property (GLU_V_STEP, getVTessellation (vKnots .size () - vOrder ()) / vScale * tessellationScale);
+	tessellator .property (GLU_U_STEP, getUTessellation (uKnots .size () - uOrder ()) / uScale);
+	tessellator .property (GLU_V_STEP, getVTessellation (vKnots .size () - vOrder ()) / vScale);
 
 	// Tessellate
 
