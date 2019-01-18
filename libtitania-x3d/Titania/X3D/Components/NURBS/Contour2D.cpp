@@ -125,6 +125,9 @@ Contour2D::set_removeChildren ()
 void
 Contour2D::set_children ()
 {
+	for (const auto & curveNode : curveNodes)
+		curveNode -> removeInterest (this);
+
 	curveNodes .clear ();
 
 	for (const auto & child : children ())
@@ -134,6 +137,9 @@ Contour2D::set_children ()
 		if (curveNode)
 			curveNodes .emplace_back (curveNode);
 	}
+
+	for (const auto & curveNode : curveNodes)
+		curveNode -> addInterest (this);
 }
 
 void
