@@ -196,7 +196,7 @@ void
 CollidableShape::set_geometry ()
 {
 	if (geometryNode)
-		geometryNode -> removeInterest (&CollidableShape::set_collidableGeometry, this);
+		geometryNode -> rebuilded () .removeInterest (&CollidableShape::set_collidableGeometry, this);
 
 	if (shapeNode)
 		geometryNode .set (shapeNode -> getGeometry ());
@@ -204,7 +204,7 @@ CollidableShape::set_geometry ()
 		geometryNode .set (nullptr);
 
 	if (geometryNode)
-		geometryNode -> addInterest (&CollidableShape::set_collidableGeometry, this);
+		geometryNode -> rebuilded () .addInterest (&CollidableShape::set_collidableGeometry, this);
 
 	set_collidableGeometry ();
 }
