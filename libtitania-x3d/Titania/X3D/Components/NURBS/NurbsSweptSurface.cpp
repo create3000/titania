@@ -76,7 +76,8 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	X3DParametricGeometryNode (),
 	                   fields (),
 	    crossSectionCurveNode (),
-	      trajectoryCurveNode ()
+	      trajectoryCurveNode (),
+	            extrusionNode (new Extrusion (executionContext))
 {
 	addType (X3DConstants::NurbsSweptSurface);
 
@@ -87,7 +88,8 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());
 
 	addChildObjects (crossSectionCurveNode,
-	                 trajectoryCurveNode);
+	                 trajectoryCurveNode,
+	                 extrusionNode);
 }
 
 X3DBaseNode*
@@ -103,6 +105,19 @@ NurbsSweptSurface::initialize ()
 
 	crossSectionCurve () .addInterest (&NurbsSweptSurface::set_crossSectionCurve, this);
 	trajectoryCurve ()   .addInterest (&NurbsSweptSurface::set_trajectoryCurve,   this);
+
+	extrusionNode -> beginCap ()    = false;
+	extrusionNode -> endCap ()      = false;
+	extrusionNode -> solid ()       = true;
+	extrusionNode -> ccw ()         = true;
+	extrusionNode -> convex ()      = true;
+	extrusionNode -> creaseAngle () = pi <float>;
+
+	extrusionNode -> setup ();
+
+	// Prevent automatic rebuild when field are set.
+	extrusionNode -> crossSection () .setTainted (true);
+	extrusionNode -> spine ()        .setTainted (true);
 
 	set_crossSectionCurve ();
 	set_trajectoryCurve ();
@@ -124,12 +139,12 @@ void
 NurbsSweptSurface::set_trajectoryCurve ()
 {
 	if (trajectoryCurveNode)
-		trajectoryCurveNode -> removeInterest (&NurbsSweptSurface::requestRebuild, this);
+		trajectoryCurveNode -> rebuilded () .removeInterest (&NurbsSweptSurface::requestRebuild, this);
 
 	trajectoryCurveNode .set (x3d_cast <NurbsCurve*> (trajectoryCurve ()));
 
 	if (trajectoryCurveNode)
-		trajectoryCurveNode -> addInterest (&NurbsSweptSurface::requestRebuild, this);
+		trajectoryCurveNode -> rebuilded () .addInterest (&NurbsSweptSurface::requestRebuild, this);
 }
 
 void
@@ -141,28 +156,20 @@ NurbsSweptSurface::build ()
 	if (not trajectoryCurveNode)
 		return;
 
-	const auto extrusion = MakePtr <Extrusion> (getExecutionContext ());
+	extrusionNode -> crossSection () = crossSectionCurveNode -> tessellate ();
+	extrusionNode -> spine ()        = trajectoryCurveNode   -> tessellate ();
 
-	extrusion -> beginCap ()     = false;
-	extrusion -> endCap ()       = false;
-	extrusion -> solid ()        = true;
-	extrusion -> ccw ()          = true;
-	extrusion -> convex ()       = true;
-	extrusion -> creaseAngle ()  = pi <float>;
-	extrusion -> crossSection () = crossSectionCurveNode -> tessellate ();
-	extrusion -> spine ()        = trajectoryCurveNode   -> tessellate ();
+	extrusionNode -> rebuild ();
 
-	extrusion -> setup ();
-
-	getColors ()    = extrusion -> getPolygonColors ();
-	getTexCoords () = extrusion -> getPolygonTexCoords ();
-	getNormals ()   = extrusion -> getPolygonNormals ();
-	getVertices ()  = extrusion -> getPolygonVertices ();
+	getColors ()    = extrusionNode -> getPolygonColors ();
+	getTexCoords () = extrusionNode -> getPolygonTexCoords ();
+	getNormals ()   = extrusionNode -> getPolygonNormals ();
+	getVertices ()  = extrusionNode -> getPolygonVertices ();
 
 	if (not ccw ())
 		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
 
-	for (const auto & element : extrusion -> getElements ())
+	for (const auto & element : extrusionNode -> getElements ())
 		addElements (element .vertexMode (), element .count ());
 
 	setSolid (solid ());

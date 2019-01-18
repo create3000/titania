@@ -190,12 +190,12 @@ void
 SurfaceEmitter::set_surface ()
 {
 	if (surfaceNode)
-		surfaceNode -> removeInterest (&SurfaceEmitter::set_geometry, this);
+		surfaceNode -> rebuilded () .removeInterest (&SurfaceEmitter::set_geometry, this);
 
 	surfaceNode .set (x3d_cast <X3DGeometryNode*> (surface ()));
 
 	if (surfaceNode)
-		surfaceNode -> addInterest (&SurfaceEmitter::set_geometry, this);
+		surfaceNode -> rebuilded () .addInterest (&SurfaceEmitter::set_geometry, this);
 
 	set_geometry ();
 }

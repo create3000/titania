@@ -215,6 +215,15 @@ public:
 
 	virtual
 	void
+	rebuild ();
+
+	virtual
+	const SFTime &
+	rebuilded () const
+	{ return rebuildOutput; }
+
+	virtual
+	void
 	depth (const X3DShapeContainer* const context);
 
 	virtual
@@ -397,9 +406,6 @@ private:
 	set_shading (const ShadingType & value);
 
 	///  @name Build
-
-	void
-	rebuild ();
 
 	void
 	clear ();

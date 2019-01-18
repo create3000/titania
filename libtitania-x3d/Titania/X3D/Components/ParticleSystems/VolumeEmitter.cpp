@@ -149,7 +149,7 @@ VolumeEmitter::initialize ()
 	surfaceNode -> coord ()       = coord ();
 
 	surfaceNode -> setup ();
-	surfaceNode -> addInterest (&VolumeEmitter::set_geometry, this);
+	surfaceNode -> rebuilded () .addInterest (&VolumeEmitter::set_geometry, this);
 
 	set_geometry ();
 }

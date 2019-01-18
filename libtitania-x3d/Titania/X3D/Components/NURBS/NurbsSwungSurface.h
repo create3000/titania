@@ -181,6 +181,7 @@ private:
 
 	X3DPtr <X3DNurbsControlCurveNode> profileCurveNode;
 	X3DPtr <X3DNurbsControlCurveNode> trajectoryCurveNode;
+	X3DPtr <Extrusion>                extrusionNode;
 
 };
 

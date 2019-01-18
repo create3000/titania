@@ -108,36 +108,6 @@ bool
 NURBS::getClosed (const size_t order,
                   const std::vector <double> & knot,
                   const std::vector <double> & weight,
-                  const X3DPtr <X3DCoordinateNode> & controlPointNode)
-{
-	const auto dimension   = controlPointNode -> getSize ();
-	const auto haveWeights = weight .size () == dimension;
-
-	// Check if first and last weights are unitary.
-
-	if (haveWeights)
-	{
-		if (weight .front () not_eq weight .back ())
-			return false;
-	}
-
-	// Check if first and last point are coincident.
-
-	if (controlPointNode -> get1Point (0) not_eq controlPointNode -> get1Point (dimension - 1))
-		return false;
-
-	// Check if knots are periodic.
-
-	if (not isPeriodic (order, dimension, knot))
-		return false;
-
-	return true;
-}
-
-bool
-NURBS::getClosed (const size_t order,
-                  const std::vector <double> & knot,
-                  const std::vector <double> & weight,
                   const std::vector <Vector2d> & controlPoint)
 {
 	const auto dimension   = controlPoint .size ();
@@ -154,6 +124,36 @@ NURBS::getClosed (const size_t order,
 	// Check if first and last point are coincident.
 
 	if (controlPoint .front () not_eq controlPoint .back ())
+		return false;
+
+	// Check if knots are periodic.
+
+	if (not isPeriodic (order, dimension, knot))
+		return false;
+
+	return true;
+}
+
+bool
+NURBS::getClosed (const size_t order,
+                  const std::vector <double> & knot,
+                  const std::vector <double> & weight,
+                  const X3DPtr <X3DCoordinateNode> & controlPointNode)
+{
+	const auto dimension   = controlPointNode -> getSize ();
+	const auto haveWeights = weight .size () == dimension;
+
+	// Check if first and last weights are unitary.
+
+	if (haveWeights)
+	{
+		if (weight .front () not_eq weight .back ())
+			return false;
+	}
+
+	// Check if first and last point are coincident.
+
+	if (controlPointNode -> get1Point (0) not_eq controlPointNode -> get1Point (dimension - 1))
 		return false;
 
 	// Check if knots are periodic.

@@ -75,7 +75,8 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	X3DParametricGeometryNode (),
 	                   fields (),
 	         profileCurveNode (),
-	      trajectoryCurveNode ()
+	      trajectoryCurveNode (),
+	            extrusionNode (new Extrusion (executionContext))
 {
 	addType (X3DConstants::NurbsSwungSurface);
 
@@ -86,7 +87,8 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());
 
 	addChildObjects (profileCurveNode,
-	                 trajectoryCurveNode);
+	                 trajectoryCurveNode,
+	                 extrusionNode);
 }
 
 X3DBaseNode*
@@ -102,6 +104,19 @@ NurbsSwungSurface::initialize ()
 
 	profileCurve ()    .addInterest (&NurbsSwungSurface::set_profileCurve, this);
 	trajectoryCurve () .addInterest (&NurbsSwungSurface::set_trajectoryCurve,   this);
+
+	extrusionNode -> beginCap ()    = false;
+	extrusionNode -> endCap ()      = false;
+	extrusionNode -> solid ()       = true;
+	extrusionNode -> ccw ()         = true;
+	extrusionNode -> convex ()      = true;
+	extrusionNode -> creaseAngle () = pi <float>;
+
+	extrusionNode -> setup ();
+
+	// Prevent automatic rebuild when field are set.
+	extrusionNode -> crossSection () .setTainted (true);
+	extrusionNode -> spine ()        .setTainted (true);
 
 	set_profileCurve ();
 	set_trajectoryCurve ();
@@ -147,26 +162,22 @@ NurbsSwungSurface::build ()
 	for (const auto & point : trajectoryCurve)
 		spine .emplace_back (point .x (), 0, point .y ());
 
-	extrusion -> beginCap ()     = false;
-	extrusion -> endCap ()       = false;
-	extrusion -> solid ()        = true;
-	extrusion -> ccw ()          = true;
-	extrusion -> convex ()       = true;
-	extrusion -> creaseAngle ()  = pi <float>;
-	extrusion -> crossSection () = profileCurveNode -> tessellate ();
-	extrusion -> spine ()        = std::move (spine);
+	extrusionNode -> crossSection () = profileCurveNode -> tessellate ();
+	extrusionNode -> spine ()        = std::move (spine);
 
-	extrusion -> setup ();
+	extrusionNode -> rebuild ();
 
-	getColors ()    = extrusion -> getPolygonColors ();
-	getTexCoords () = extrusion -> getPolygonTexCoords ();
-	getNormals ()   = extrusion -> getPolygonNormals ();
-	getVertices ()  = extrusion -> getPolygonVertices ();
+	__LOG__ << this << std::endl;
+
+	getColors ()    = extrusionNode -> getPolygonColors ();
+	getTexCoords () = extrusionNode -> getPolygonTexCoords ();
+	getNormals ()   = extrusionNode -> getPolygonNormals ();
+	getVertices ()  = extrusionNode -> getPolygonVertices ();
 
 	if (not ccw ())
 		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
 
-	for (const auto & element : extrusion -> getElements ())
+	for (const auto & element : extrusionNode -> getElements ())
 		addElements (element .vertexMode (), element .count ());
 
 	setSolid (solid ());

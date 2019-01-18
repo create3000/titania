@@ -200,6 +200,16 @@ public:
 
 	virtual
 	void
+	rebuild () final override
+	{ getNode <X3DGeometryNode> () -> rebuild (); }
+
+	virtual
+	const SFTime &
+	rebuilded () const final override
+	{ return getNode <X3DGeometryNode> () -> rebuilded (); }
+
+	virtual
+	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	virtual

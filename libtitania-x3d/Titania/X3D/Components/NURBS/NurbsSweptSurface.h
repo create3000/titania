@@ -195,6 +195,7 @@ private:
 
 	X3DPtr <X3DNurbsControlCurveNode> crossSectionCurveNode;
 	X3DPtr <NurbsCurve>               trajectoryCurveNode;
+	X3DPtr <Extrusion>                extrusionNode;
 
 };
 

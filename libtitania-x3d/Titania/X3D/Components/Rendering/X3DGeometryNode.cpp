@@ -946,7 +946,7 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 void
 X3DGeometryNode::requestRebuild ()
 {
-	rebuildOutput .addEvent ();
+	rebuildOutput = getCurrentTime ();
 }
 
 void
