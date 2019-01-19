@@ -191,53 +191,7 @@ protected:
 
 private:
 
-	///  @name Operations
-
-	bool
-	getUClosed (const size_t uOrder,
-	            const size_t uDimension,
-	            const size_t vDimension,
-	            const std::vector <double> & uKnot,
-	            const std::vector <double> & weight,
-	            const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
-
-	bool
-	getVClosed (const size_t vOrder,
-	            const size_t uDimension,
-	            const size_t vDimension,
-	            const std::vector <double> & vKnot,
-	            const std::vector <double> & weight,
-	            const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
-
-	std::vector <float>
-	getKnots (const bool closed,
-	          const size_t order,
-	          const size_t dimension,
-	          const std::vector <double> & knot) const;
-
-	std::vector <Vector4f>
-	getControlPoints (const bool uClosed,
-                     const bool vClosed,
-                     const size_t uOrder,
-                     const size_t vOrder,
-                     const size_t uDimension,
-                     const size_t vDimension,
-                     const std::vector <double> & weight,
-	                  const X3DPtr <X3DCoordinateNode> & controlPointNode) const;
-
-	std::tuple <size_t, Vector3f, bool>
-	getTriangle (const Vector2f & point, const std::vector <Vector4f> & texCoords) const;
-
 	///  @name Event handlers
-
-	void
-	set_controlPoint ();
-
-	void
-	requestRebuild ();
-
-	void
-	build ();
 
 	void
 	set_fraction_ ();
@@ -275,9 +229,7 @@ private:
 	///  @name Members
 
 	X3DPtr <X3DCoordinateNode> controlPointNode;
-	SFTime                     rebuildOutput;
-
-	std::unique_ptr <nurbs_tessellator> tessellator;
+	X3DPtr <NurbsPatchSurface> geometry;
 
 };
 

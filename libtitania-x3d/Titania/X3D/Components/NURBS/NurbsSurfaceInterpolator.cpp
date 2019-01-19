@@ -51,8 +51,8 @@
 #include "NurbsSurfaceInterpolator.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/NURBS/NURBS.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../NURBS/NurbsPatchSurface.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
 #include <Titania/Math/Algorithms/Barycentric.h>
@@ -66,8 +66,8 @@ const std::string NurbsSurfaceInterpolator::componentName  = "NURBS";
 const std::string NurbsSurfaceInterpolator::typeName       = "NurbsSurfaceInterpolator";
 const std::string NurbsSurfaceInterpolator::containerField = "children";
 
-const size_t NurbsSurfaceInterpolator::U_TESSELLATION = 8;
-const size_t NurbsSurfaceInterpolator::V_TESSELLATION = 8;
+const size_t NurbsSurfaceInterpolator::U_TESSELLATION = 128;
+const size_t NurbsSurfaceInterpolator::V_TESSELLATION = 128;
 
 NurbsSurfaceInterpolator::Fields::Fields () :
 	    set_fraction (new SFVec2f ()),
@@ -88,8 +88,7 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	    X3DChildNode (),
 	          fields (),
 	controlPointNode (),
-	   rebuildOutput (),
-	     tessellator ()
+	        geometry (new NurbsPatchSurface (executionContext))
 {
 	addType (X3DConstants::NurbsSurfaceInterpolator);
 
@@ -107,7 +106,7 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	addField (outputOnly,     "position_changed", position_changed ());
 
 	addChildObjects (controlPointNode,
-	                 rebuildOutput);
+	                 geometry);
 }
 
 X3DBaseNode*
@@ -122,192 +121,42 @@ NurbsSurfaceInterpolator::initialize ()
 	X3DChildNode::initialize ();
 
 	set_fraction () .addInterest (&NurbsSurfaceInterpolator::set_fraction_,    this);
-	uOrder ()       .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	vOrder ()       .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	uDimension ()   .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	vDimension ()   .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	uKnot ()        .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	vKnot ()        .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	weight ()       .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
-	controlPoint () .addInterest (&NurbsSurfaceInterpolator::set_controlPoint, this);
 
-	rebuildOutput .addInterest (&NurbsSurfaceInterpolator::build, this);
+	uOrder ()       .addInterest (geometry -> uOrder ());
+	vOrder ()       .addInterest (geometry -> vOrder ());
+	uDimension ()   .addInterest (geometry -> uDimension ());
+	vDimension ()   .addInterest (geometry -> vDimension ());
+	uKnot ()        .addInterest (geometry -> uKnot ());
+	vKnot ()        .addInterest (geometry -> vKnot ());
+	weight ()       .addInterest (geometry -> weight ());
+	controlPoint () .addInterest (geometry -> controlPoint ());
 
-	set_controlPoint ();
-}
+	geometry -> uTessellation () = U_TESSELLATION;
+	geometry -> vTessellation () = V_TESSELLATION;
+	geometry -> uOrder ()        = uOrder ();
+	geometry -> vOrder ()        = vOrder ();
+	geometry -> uDimension ()    = uDimension ();
+	geometry -> vDimension ()    = vDimension ();
+	geometry -> uKnot ()         = uKnot ();
+	geometry -> vKnot ()         = vKnot ();
+	geometry -> weight ()        = weight ();
+	geometry -> controlPoint ()  = controlPoint ();
 
-bool
-NurbsSurfaceInterpolator::getUClosed (const size_t uOrder,
-                                      const size_t uDimension,
-                                      const size_t vDimension,
-                                      const std::vector <double> & uKnot,
-                                      const std::vector <double> & weight,
-                                      const X3DPtr <X3DCoordinateNode> & controlPointNode) const
-{
-	return NURBS::getUClosed (uOrder, uDimension, vDimension, uKnot, weight, controlPointNode);
-}
-
-bool
-NurbsSurfaceInterpolator::getVClosed (const size_t vOrder,
-                                      const size_t uDimension,
-                                      const size_t vDimension,
-                                      const std::vector <double> & vKnot,
-                                      const std::vector <double> & weight,
-                                      const X3DPtr <X3DCoordinateNode> & controlPointNode) const
-{
-	return NURBS::getVClosed (vOrder, uDimension, vDimension, vKnot, weight, controlPointNode);
-}
-
-std::vector <float>
-NurbsSurfaceInterpolator::getKnots (const bool closed,
-                                    const size_t order,
-                                    const size_t dimension,
-                                    const std::vector <double> & knot) const
-{
-	return NURBS::getKnots (closed, order, dimension, knot);
-}
-
-std::vector <Vector4f>
-NurbsSurfaceInterpolator::getControlPoints (const bool uClosed,
-                                            const bool vClosed,
-                                            const size_t uOrder,
-                                            const size_t vOrder,
-                                            const size_t uDimension,
-                                            const size_t vDimension,
-                                            const std::vector <double> & weight,
-                                            const X3DPtr <X3DCoordinateNode> & controlPointNode) const
-{
-	return NURBS::getControlPoints (uClosed, vClosed, uOrder, vOrder, uDimension, vDimension, weight, controlPointNode);
+	geometry -> setup ();
 }
 
 void
-NurbsSurfaceInterpolator::set_controlPoint ()
+NurbsSurfaceInterpolator::set_fraction_ ()
 {
-	if (controlPointNode)
-		controlPointNode -> removeInterest (&NurbsSurfaceInterpolator::requestRebuild, this);
+	const auto & fraction       = set_fraction () .getValue ();
+	const auto & multiTexCoords = geometry -> getPolygonTexCoords ();
+	const auto & normals        = geometry -> getPolygonNormals ();
+	const auto & vertices       = geometry -> getPolygonVertices ();
 
-	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
-
-	if (controlPointNode)
-		controlPointNode -> addInterest (&NurbsSurfaceInterpolator::requestRebuild, this);
-
-	build ();
-}
-
-void
-NurbsSurfaceInterpolator::requestRebuild ()
-{
-	rebuildOutput .addEvent ();
-}
-
-void
-NurbsSurfaceInterpolator::build ()
-{
-	if (uOrder () < 2)
+	if (multiTexCoords .empty ())
 		return;
 
-	if (vOrder () < 2)
-		return;
-
-	if (uDimension () < uOrder ())
-		return;
-
-	if (vDimension () < vOrder ())
-		return;
-
-	if (not controlPointNode)
-		return;
-
-	if (controlPointNode -> getSize () not_eq size_t (uDimension () * vDimension ()))
-		return;
-
-	// Order and dimension are now positive numbers.
-
-	// ControlPoints
-
-	const auto   uClosed       = getUClosed (uOrder (), uDimension (), vDimension (), uKnot (), weight (), controlPointNode);
-	const auto   vClosed       = getVClosed (vOrder (), uDimension (), vDimension (), vKnot (), weight (), controlPointNode);
-	auto         controlPoints = getControlPoints (uClosed, vClosed, uOrder (), vOrder (), uDimension (), vDimension (), weight (), controlPointNode);
-	const size_t vStride       = (uDimension () + uClosed * (uOrder () - 2));
-
-	// Knots
-
-	auto       uKnots = getKnots (uClosed, uOrder (), uDimension (), uKnot ());
-	auto       vKnots = getKnots (vClosed, vOrder (), vDimension (), vKnot ());
-	const auto uScale = uKnots .back () - uKnots .front ();
-	const auto vScale = vKnots .back () - vKnots .front ();
-
-	assert ((uKnots .size () - uOrder ()) * (vKnots .size () - vOrder ()) == controlPoints .size ());
-
-	// TextureCoordinate
-
-	size_t                 texUOrder = 0;
-	size_t                 texVOrder = 0;
-	size_t                 texVStride = 0;
-	std::vector <float>    texUKnots;
-	std::vector <float>    texVKnots;
-	std::vector <Vector4f> texControlPoints;
-
-	{
-		// Default unit square
-
-		texUOrder  = 2;
-		texVOrder  = 2;
-		texVStride = 2;
-
-		texControlPoints .emplace_back (0, 0, 0, 1);
-		texControlPoints .emplace_back (1, 0, 0, 1);
-		texControlPoints .emplace_back (0, 1, 0, 1);
-		texControlPoints .emplace_back (1, 1, 0, 1);
-	
-		texUKnots .emplace_back (uKnots .front ());
-		texUKnots .emplace_back (uKnots .front ());
-		texUKnots .emplace_back (uKnots .back ());
-		texUKnots .emplace_back (uKnots .back ());
-	
-		texVKnots .emplace_back (vKnots .front ());
-		texVKnots .emplace_back (vKnots .front ());
-		texVKnots .emplace_back (vKnots .back ());
-		texVKnots .emplace_back (vKnots .back ());
-	}
-
-	// Initialize NURBS tesselllator
-
-	tessellator = std::make_unique <nurbs_tessellator> ();
-
-	tessellator -> only_triangles (true);
-
-	tessellator -> property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	tessellator -> property (GLU_U_STEP, U_TESSELLATION * (uKnots .size () - uOrder ()) / uScale);
-	tessellator -> property (GLU_V_STEP, V_TESSELLATION * (vKnots .size () - vOrder ()) / vScale);
-
-	// Tessellate
-
-	tessellator -> begin_surface ();
-
-	tessellator -> nurbs_surface (texUKnots .size (), texUKnots .data (),
-	                            texVKnots .size (), texVKnots .data (),
-	                            4, 4 * texVStride,
-	                            texControlPoints [0] .data (),
-	                            texUOrder, texVOrder,
-	                            GL_MAP2_TEXTURE_COORD_4);
-
-	tessellator -> nurbs_surface (uKnots .size (), uKnots .data (),
-	                            vKnots .size (), vKnots .data (),
-	                            4, 4 * vStride,
-	                            controlPoints [0] .data (),
-	                            uOrder (), vOrder (),
-	                            GL_MAP2_VERTEX_4);
-
-	tessellator -> end_surface ();
-
-	// End tessellation
-}
-
-std::tuple <size_t, Vector3f, bool>
-NurbsSurfaceInterpolator::getTriangle (const Vector2f & point, const std::vector <Vector4f> & texCoords) const
-{
-	//TODO: Use a BVH (QuadTree) for this query.
+	const auto & texCoords = multiTexCoords .front ();
 
 	for (size_t i = 0, size = texCoords .size (); i < size; i += 3)
 	{
@@ -315,39 +164,21 @@ NurbsSurfaceInterpolator::getTriangle (const Vector2f & point, const std::vector
 		                            Vector2f (texCoords [i + 1] .x (), texCoords [i + 1] .y ()),
 		                            Vector2f (texCoords [i + 2] .x (), texCoords [i + 2] .y ()));
 
-		if (triangle2 .contains (point))
+		if (triangle2 .contains (fraction))
 		{
-			const Line3f line (Vector3f (point .x (), point .y (), 0), Vector3f (0, 0, 1));
+			const Line3f line (Vector3f (fraction .x (), fraction .y (), 0), Vector3f (0, 0, 1));
 
-			const auto & [intersection, intersected] = line .intersects (Vector3f (texCoords [i + 0] .x (), texCoords [i + 0] .y (), 0),
-			                                                             Vector3f (texCoords [i + 1] .x (), texCoords [i + 1] .y (), 0),
-			                                                             Vector3f (texCoords [i + 2] .x (), texCoords [i + 2] .y (), 0));
+			const auto & [uvt, intersected] = line .intersects (Vector3f (texCoords [i + 0] .x (), texCoords [i + 0] .y (), 0),
+			                                                    Vector3f (texCoords [i + 1] .x (), texCoords [i + 1] .y (), 0),
+			                                                    Vector3f (texCoords [i + 2] .x (), texCoords [i + 2] .y (), 0));
 
-			return std::tuple (i, intersection, intersected);
+			if (intersected)
+			{
+				normal_changed ()   = normalize (from_barycentric <float> (uvt, normals [i], normals [i + 1], normals [i + 2]));
+				position_changed () = from_barycentric <double> (uvt, vertices [i], vertices [i + 1], vertices [i + 2]);
+			}
 		}
 	}
-
-	return std::tuple (0, Vector3f (), false);
-}
-
-void
-NurbsSurfaceInterpolator::set_fraction_ ()
-{
-	if (not tessellator)
-		return;
-
-	const auto & triangles = tessellator -> triangles ();
-	const auto & texCoords = triangles .tex_coords ();
-	const auto & normals   = triangles .normals ();
-	const auto & vertices  = triangles .vertices ();
-
-	const auto & [index, uvt, intersected] = getTriangle (set_fraction (), texCoords);
-
-	if (not intersected)
-		return;
-
-	normal_changed ()   = normalize (from_barycentric <float> (uvt, normals [index], normals [index + 1], normals [index + 2]));
-	position_changed () = from_barycentric (uvt, vertices [index], vertices [index + 1], vertices [index + 2]);
 }
 
 NurbsSurfaceInterpolator::~NurbsSurfaceInterpolator ()
