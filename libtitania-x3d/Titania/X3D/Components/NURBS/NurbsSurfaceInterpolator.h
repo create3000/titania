@@ -234,10 +234,10 @@ private:
 	set_controlPoint ();
 
 	void
-	build ();
+	requestRebuild ();
 
 	void
-	set_buffer ();
+	build ();
 
 	void
 	set_fraction_ ();
@@ -275,7 +275,7 @@ private:
 	///  @name Members
 
 	X3DPtr <X3DCoordinateNode> controlPointNode;
-	SFTime                     buffer;
+	SFTime                     rebuildOutput;
 
 	std::unique_ptr <nurbs_tessellator> tessellator;
 

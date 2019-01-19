@@ -88,7 +88,7 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	    X3DChildNode (),
 	          fields (),
 	controlPointNode (),
-	          buffer (),
+	   rebuildOutput (),
 	     tessellator ()
 {
 	addType (X3DConstants::NurbsSurfaceInterpolator);
@@ -107,7 +107,7 @@ NurbsSurfaceInterpolator::NurbsSurfaceInterpolator (X3DExecutionContext* const e
 	addField (outputOnly,     "position_changed", position_changed ());
 
 	addChildObjects (controlPointNode,
-	                 buffer);
+	                 rebuildOutput);
 }
 
 X3DBaseNode*
@@ -122,16 +122,16 @@ NurbsSurfaceInterpolator::initialize ()
 	X3DChildNode::initialize ();
 
 	set_fraction () .addInterest (&NurbsSurfaceInterpolator::set_fraction_,    this);
-	uOrder ()       .addInterest (&NurbsSurfaceInterpolator::build,            this);
-	vOrder ()       .addInterest (&NurbsSurfaceInterpolator::build,            this);
-	uDimension ()   .addInterest (&NurbsSurfaceInterpolator::build,            this);
-	vDimension ()   .addInterest (&NurbsSurfaceInterpolator::build,            this);
-	uKnot ()        .addInterest (&NurbsSurfaceInterpolator::build,            this);
-	vKnot ()        .addInterest (&NurbsSurfaceInterpolator::build,            this);
-	weight ()       .addInterest (&NurbsSurfaceInterpolator::build,            this);
+	uOrder ()       .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
+	vOrder ()       .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
+	uDimension ()   .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
+	vDimension ()   .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
+	uKnot ()        .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
+	vKnot ()        .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
+	weight ()       .addInterest (&NurbsSurfaceInterpolator::requestRebuild,   this);
 	controlPoint () .addInterest (&NurbsSurfaceInterpolator::set_controlPoint, this);
 
-	buffer .addInterest (&NurbsSurfaceInterpolator::set_buffer, this);
+	rebuildOutput .addInterest (&NurbsSurfaceInterpolator::build, this);
 
 	set_controlPoint ();
 }
@@ -184,24 +184,24 @@ void
 NurbsSurfaceInterpolator::set_controlPoint ()
 {
 	if (controlPointNode)
-		controlPointNode -> removeInterest (this);
+		controlPointNode -> removeInterest (&NurbsSurfaceInterpolator::requestRebuild, this);
 
 	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
 
 	if (controlPointNode)
-		controlPointNode -> addInterest (this);
+		controlPointNode -> addInterest (&NurbsSurfaceInterpolator::requestRebuild, this);
 
 	build ();
 }
 
 void
-NurbsSurfaceInterpolator::build ()
+NurbsSurfaceInterpolator::requestRebuild ()
 {
-	buffer .addEvent ();
+	rebuildOutput .addEvent ();
 }
 
 void
-NurbsSurfaceInterpolator::set_buffer ()
+NurbsSurfaceInterpolator::build ()
 {
 	if (uOrder () < 2)
 		return;
