@@ -1,12 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DParametricGeometryNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsSurfaceInterpolator.h" Line="278" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsSurfaceInterpolator.cpp" Line="190" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/X3DNurbsSurfaceGeometryNode.cpp" Line="303" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsSurfaceInterpolator.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsSurfaceInterpolator.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsTextureCoordinate.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

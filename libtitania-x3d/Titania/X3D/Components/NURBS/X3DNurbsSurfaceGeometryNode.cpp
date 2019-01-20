@@ -296,10 +296,12 @@ X3DNurbsSurfaceGeometryNode::build ()
 			texVOrder  = nurbsTexCoordNode -> vOrder ();
 			texVStride = nurbsTexCoordNode -> uDimension ();
 
-			uKnots = getKnots (false, nurbsTexCoordNode -> uOrder (), nurbsTexCoordNode -> uDimension (), nurbsTexCoordNode -> uKnot ());
-			vKnots = getKnots (false, nurbsTexCoordNode -> vOrder (), nurbsTexCoordNode -> vDimension (), nurbsTexCoordNode -> vKnot ());
+			texUKnots = getKnots (false, nurbsTexCoordNode -> uOrder (), nurbsTexCoordNode -> uDimension (), nurbsTexCoordNode -> uKnot ());
+			texVKnots = getKnots (false, nurbsTexCoordNode -> vOrder (), nurbsTexCoordNode -> vDimension (), nurbsTexCoordNode -> vKnot ());
 
 			texControlPoints = nurbsTexCoordNode -> getControlPoints ();
+
+			assert ((texUKnots .size () - nurbsTexCoordNode -> uOrder ()) * (texVKnots .size () - nurbsTexCoordNode -> vOrder ()) == texControlPoints .size ());
 		}
 	}
 
@@ -318,15 +320,15 @@ X3DNurbsSurfaceGeometryNode::build ()
 		texControlPoints .emplace_back (0, 1, 0, 1);
 		texControlPoints .emplace_back (1, 1, 0, 1);
 	
-		texUKnots .emplace_back (uKnots .front ());
-		texUKnots .emplace_back (uKnots .front ());
-		texUKnots .emplace_back (uKnots .back ());
-		texUKnots .emplace_back (uKnots .back ());
-	
-		texVKnots .emplace_back (vKnots .front ());
-		texVKnots .emplace_back (vKnots .front ());
-		texVKnots .emplace_back (vKnots .back ());
-		texVKnots .emplace_back (vKnots .back ());
+		texUKnots .emplace_back (0);
+		texUKnots .emplace_back (1.0 / 3.0);
+		texUKnots .emplace_back (2.0 / 3.0);
+		texUKnots .emplace_back (1);
+
+		texVKnots .emplace_back (0);
+		texVKnots .emplace_back (1.0 / 3.0);
+		texVKnots .emplace_back (2.0 / 3.0);
+		texVKnots .emplace_back (1);
 	}
 
 	// Initialize NURBS tesselllator
