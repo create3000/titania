@@ -3205,6 +3205,17 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPositionInterpolator" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsOrientationInterpolator" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSurfaceInterpolator" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\ContourPolyline2D" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsCurve" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsCurve2D" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsOrientationInterpolator" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsPatchSurface" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsPositionInterpolator" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSet" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSurfaceInterpolator" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSweptSurface" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSwungSurface" />
+    <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsTextureCoordinate" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
