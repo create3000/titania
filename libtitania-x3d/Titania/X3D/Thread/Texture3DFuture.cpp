@@ -151,16 +151,12 @@ Texture3DFuture::loadAsync (const MFString & url,
 			checkForInterrupt ();
 
 			getBrowser () -> getConsole () -> error (error .what (), "\n");
-
-			throw;
 		}
 		catch (const std::exception & error)
 		{
 			checkForInterrupt ();
 
 			getBrowser () -> getConsole () -> error ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .raw ()), "'\n");
-
-			throw;
 		}
 	}
 

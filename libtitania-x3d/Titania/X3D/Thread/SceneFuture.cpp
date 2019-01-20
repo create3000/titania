@@ -155,92 +155,75 @@ SceneFuture::wait ()
 X3DScenePtr
 SceneFuture::loadAsync (const MFString & url)
 {
-	try
+	checkForInterrupt ();
+
+	const auto mutex = getBrowser () -> getDownloadMutex ();
+
+	checkForInterrupt ();
+
+	std::lock_guard <std::mutex> lock (*mutex);
+
+	if (externproto)
 	{
-		checkForInterrupt ();
-
-		const auto mutex = getBrowser () -> getDownloadMutex ();
-
-		checkForInterrupt ();
-
-		std::lock_guard <std::mutex> lock (*mutex);
-
-		if (externproto)
+		for (const auto & URL : url)
 		{
-			for (const auto & URL : url)
+			try
 			{
-				try
+				checkForInterrupt ();
+	
+				const auto scene = getBrowser () -> createScene (false);
+	
+				checkForInterrupt ();
+	
+				loader .parseIntoScene (scene, { URL });
+	
+				if (externproto)
 				{
-					checkForInterrupt ();
-		
-					const auto scene = getBrowser () -> createScene (false);
-		
-					checkForInterrupt ();
-		
-					loader .parseIntoScene (scene, { URL });
-		
-					if (externproto)
+					const auto protoName = basic::uri (URL) .fragment ();
+
+					if (protoName .empty ())
 					{
-						const auto protoName = basic::uri (URL) .fragment ();
-	
-						if (protoName .empty ())
+						if (scene -> getProtoDeclarations () .empty ())
 						{
-							if (scene -> getProtoDeclarations () .empty ())
-							{
-								getBrowser () -> getConsole () -> error ("No PROTO found\n");
-								continue;
-							}
+							getBrowser () -> getConsole () -> error ("No PROTO found\n");
+							continue;
 						}
-						else
-							scene -> getProtoDeclaration (protoName);
 					}
-	
-					checkForInterrupt ();
-			
-					getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
-			
-					checkForInterrupt ();
-			
-					return scene;
+					else
+						scene -> getProtoDeclaration (protoName);
 				}
-				catch (const Error <INVALID_NAME> & error)
-				{
-					getBrowser () -> getConsole () -> error (error .what (), "\n");
-					continue;
-				}
-				catch (const X3DError & error)
-				{
-					continue;
-				}
+
+				checkForInterrupt ();
+		
+				getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
+		
+				checkForInterrupt ();
+		
+				return scene;
 			}
-	
-			throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + "\n");
+			catch (const X3DError & error)
+			{
+				getBrowser () -> getConsole () -> error (error .what (), "\n");
+			}
 		}
-		else
-		{
-			const auto scene = getBrowser () -> createScene (false);
-	
-			checkForInterrupt ();
-	
-			loader .parseIntoScene (scene, url);
-	
-			checkForInterrupt ();
-	
-			getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
-	
-			checkForInterrupt ();
-	
-			return scene;
-		}
+
+		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + "\n");
 	}
-	catch (const InterruptThreadException &)
+	else
 	{
-		throw;
-	}
-	catch (const std::exception & error)
-	{
+		const auto scene = getBrowser () -> createScene (false);
+
 		checkForInterrupt ();
-		throw;
+
+		loader .parseIntoScene (scene, url);
+
+		checkForInterrupt ();
+
+		getBrowser () -> getConsole () -> log ("Done loading scene '", loader .getWorldURL (), "'.\n");
+
+		checkForInterrupt ();
+
+		return scene;
 	}
 }
 
