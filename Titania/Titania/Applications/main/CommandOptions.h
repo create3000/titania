@@ -73,6 +73,7 @@ public:
 		       fixedPipeline (false),
 		      exportFilename (),
 		         exportStyle (),
+		         exportInfer (false),
 		exportRemoveMetadata (false),
 		                list (),
 		                help (false)
@@ -85,6 +86,7 @@ public:
 		Glib::OptionEntry optionFixedPipeline;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
+		Glib::OptionEntry optionExportInfer;
 		Glib::OptionEntry optionExportRemoveMetadata;
 		Glib::OptionEntry optionList;
 		Glib::OptionEntry optionHelp;
@@ -134,6 +136,10 @@ public:
 		optionExportStyle .set_arg_description ("nicest|compact|small|smallest");
 		optionExportStyle .set_description ("Set output style for export.");
 
+		optionExportInfer .set_short_name ('n');
+		optionExportInfer .set_long_name ("infer");
+		optionExportInfer .set_description ("Infer profile and components.");
+
 		optionExportRemoveMetadata .set_short_name ('m');
 		optionExportRemoveMetadata .set_long_name ("remove-metadata");
 		optionExportRemoveMetadata .set_description ("Set whether to export metadata.");
@@ -154,6 +160,7 @@ public:
 		imageGroup  .add_entry (optionFixedPipeline,        fixedPipeline);
 		exportGroup .add_entry (optionExportFilename,       exportFilename);
 		exportGroup .add_entry (optionExportStyle,          exportStyle);
+		exportGroup .add_entry (optionExportInfer,          exportInfer);
 		exportGroup .add_entry (optionExportRemoveMetadata, exportRemoveMetadata);
 		listGroup   .add_entry (optionList,                 list);
 
@@ -177,6 +184,7 @@ public:
 	bool                        fixedPipeline;
 	Glib::ustring               exportFilename;
 	Glib::ustring               exportStyle;
+	bool                        exportInfer;
 	bool                        exportRemoveMetadata;
 	Glib::ustring               list;
 	bool                        help;

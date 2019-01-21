@@ -80,6 +80,9 @@ public:
 		const auto browser = X3D::getBrowser ();
 		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
 
+		if (options .exportInfer)
+			scene -> inferProfileAndComponents ();
+
 		if (outputFilename == "-" or outputFilename == outputFilename .extension ())
 		{
 			const auto extension = outputFilename == "-" ? inputFilename .extension () : outputFilename .extension ();
