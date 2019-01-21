@@ -210,8 +210,8 @@ X3DProfileComponentsEditor::on_infer_profile_and_components_toggled ()
 {
 	const auto active = getInferProfileAndComponentsButton () .get_active ();
 
-	getProfileExpander ()    .set_sensitive (not active);
-	getComponentsExpander () .set_sensitive (not active);
+	getProfileBox ()    .set_sensitive (not active);
+	getComponentsBox () .set_sensitive (not active);
 
 	if (changing)
 		return;

@@ -222,20 +222,32 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
-                      <object class="GtkComboBoxText" id="ProfileButton">
+                      <object class="GtkBox" id="ProfileBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <items>
-                          <item>CADInterchange</item>
-                          <item>Core</item>
-                          <item>Full</item>
-                          <item>Immersive</item>
-                          <item>Interactive</item>
-                          <item>Interchange</item>
-                          <item>MedicalInterchange</item>
-                          <item id="&lt;Geben Sie die Kennung ein&gt;">MPEG-4</item>
-                        </items>
-                        <signal name="changed" handler="on_profile_changed" swapped="no"/>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkComboBoxText" id="ProfileButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <items>
+                              <item>CADInterchange</item>
+                              <item>Core</item>
+                              <item>Full</item>
+                              <item>Immersive</item>
+                              <item>Interactive</item>
+                              <item>Interchange</item>
+                              <item>MedicalInterchange</item>
+                              <item id="&lt;Geben Sie die Kennung ein&gt;">MPEG-4</item>
+                            </items>
+                            <signal name="changed" handler="on_profile_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                     <child type="label">
@@ -260,7 +272,7 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
-                      <object class="GtkBox">
+                      <object class="GtkBox" id="ComponentsBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="vexpand">True</property>

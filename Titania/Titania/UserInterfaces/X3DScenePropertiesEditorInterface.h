@@ -181,6 +181,10 @@ public:
 	getProfileExpander () const
 	{ return *m_ProfileExpander; }
 
+	Gtk::Box &
+	getProfileBox () const
+	{ return *m_ProfileBox; }
+
 	Gtk::ComboBoxText &
 	getProfileButton () const
 	{ return *m_ProfileButton; }
@@ -188,6 +192,10 @@ public:
 	Gtk::Expander &
 	getComponentsExpander () const
 	{ return *m_ComponentsExpander; }
+
+	Gtk::Box &
+	getComponentsBox () const
+	{ return *m_ComponentsBox; }
 
 	Gtk::TreeView &
 	getComponentsTreeView () const
@@ -482,8 +490,10 @@ private:
 	Gtk::Notebook* m_Notebook;
 	Gtk::Box* m_ProfileComponentsBox;
 	Gtk::Expander* m_ProfileExpander;
+	Gtk::Box* m_ProfileBox;
 	Gtk::ComboBoxText* m_ProfileButton;
 	Gtk::Expander* m_ComponentsExpander;
+	Gtk::Box* m_ComponentsBox;
 	Gtk::TreeView* m_ComponentsTreeView;
 	Gtk::Button* m_ComponentsAddButton;
 	Gtk::Button* m_ComponentsRemoveButton;

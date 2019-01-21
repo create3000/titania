@@ -103,8 +103,10 @@ X3DScenePropertiesEditorInterface::create ()
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("ProfileComponentsBox", m_ProfileComponentsBox);
 	m_builder -> get_widget ("ProfileExpander", m_ProfileExpander);
+	m_builder -> get_widget ("ProfileBox", m_ProfileBox);
 	m_builder -> get_widget ("ProfileButton", m_ProfileButton);
 	m_builder -> get_widget ("ComponentsExpander", m_ComponentsExpander);
+	m_builder -> get_widget ("ComponentsBox", m_ComponentsBox);
 	m_builder -> get_widget ("ComponentsTreeView", m_ComponentsTreeView);
 	m_builder -> get_widget ("ComponentsAddButton", m_ComponentsAddButton);
 	m_builder -> get_widget ("ComponentsRemoveButton", m_ComponentsRemoveButton);
