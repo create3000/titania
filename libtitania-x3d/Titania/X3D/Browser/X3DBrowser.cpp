@@ -323,9 +323,7 @@ X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArra
 	const X3DScenePtr scene = createScene (setup);
 
 	scene -> setProfile (profile);
-
-	for (const auto & component : components)
-		scene -> updateComponent (component);
+	scene -> setComponents (components);
 
 	return scene;
 }

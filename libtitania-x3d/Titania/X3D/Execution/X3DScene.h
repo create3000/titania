@@ -139,8 +139,7 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setProfile (const ProfileInfoPtr & value)
-	{ profile = value; }
+	setProfile (const ProfileInfoPtr & value);
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
@@ -148,16 +147,26 @@ public:
 	getProfile () const final override
 	{ return profile; }
 
+	const SFTime &
+	profile_changed () const
+	{ return profileOutput; }
+
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
 	void
-	updateComponent (const ComponentInfoPtr & component) final override;
+	setComponents (const ComponentInfoArray & value);
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
 	const ComponentInfoArray &
 	getComponents () const final override
 	{ return *components; }
+
+	void
+	inferProfileAndComponents ();
+
+	const SFTime &
+	components_changed () const
+	{ return componentsOutput; }
 
 	///  @name Unit handling
 
@@ -351,7 +360,9 @@ private:
 	std::string                     characterEncoding;
 	std::string                     comment;
 	ProfileInfoPtr                  profile;
+	SFTime                          profileOutput;
 	ComponentInfoArrayPtr           components;
+	SFTime                          componentsOutput;
 	UnitArray                       units;
 	SFTime                          unitsOutput;
 	MetaDataIndex                   metadatas;

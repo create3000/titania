@@ -426,6 +426,10 @@ X3DBrowserNotebook::save (const X3D::X3DScenePtr & scene, const basic::uri & wor
 		// Known file type must be also added to BrowserWindow::on_save_activated.
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> ("Save A Copy Undo Step");
+		const auto infer    = createWorldInfo (scene) -> getMetaData <bool> ("/Titania/Scene/inferProfileAndComponents", true);
+
+		if (infer)
+			scene -> inferProfileAndComponents ();
 
 		if (getConfig () -> getItem <bool> ("addStandardMetaData"))
 			scene -> addStandardMetaData ();

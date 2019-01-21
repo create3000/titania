@@ -134,16 +134,8 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	void
-	updateComponent (const ComponentInfoPtr & component) = 0;
-
-	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
 	const ComponentInfoArray &
 	getComponents () const = 0;
-
-	bool
-	hasComponent (const std::string & componentName) const;
 
 	///  @name Unit handling
 

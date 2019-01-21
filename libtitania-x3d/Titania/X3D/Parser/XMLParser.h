@@ -227,6 +227,7 @@ private:
 
 	const std::unique_ptr <xmlpp::DomParser> xmlParser;
 
+	ComponentInfoArray            components;
 	std::vector <X3DChildObject*> parents;
 
 };

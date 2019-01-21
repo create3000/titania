@@ -128,6 +128,7 @@ XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::is
 	                  uri (uri),
 	              istream (istream),
 	            xmlParser (new xmlpp::DomParser ()),
+	           components (),
 	              parents ()
 {
 	xmlParser -> set_throw_messages (true);
@@ -241,6 +242,8 @@ XMLParser::headElement (xmlpp::Element* const xmlElement)
 	for (const auto & xmlNode : xmlElement -> get_children ())
 		headElementChild (dynamic_cast <xmlpp::Element*> (xmlNode));
 
+	scene -> setComponents (components);
+
 	try
 	{
 		scene -> setWorldURL (scene -> getMetaData ("titania-identifier"));
@@ -283,9 +286,7 @@ XMLParser::componentElement (xmlpp::Element* const xmlElement)
 		{
 			try
 			{
-				const auto component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
-
-				scene -> updateComponent (component);
+				components .emplace_back (getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel));
 				return;
 			}
 			catch (const X3D::X3DError & error)

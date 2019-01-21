@@ -78,6 +78,8 @@ void
 X3DScenePropertiesEditorInterface::create ()
 {
 	// Get objects.
+	m_ComponentListStore           = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ComponentListStore"));
+	m_ComponentsListStore          = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ComponentsListStore"));
 	m_MetaDataListStore            = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MetaDataListStore"));
 	m_UnitAngleAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitAngleAdjustment"));
 	m_UnitForceAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitForceAdjustment"));
@@ -85,6 +87,9 @@ X3DScenePropertiesEditorInterface::create ()
 	m_UnitMassAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitMassAdjustment"));
 	m_WorldInfoInfoTextBuffer      = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("WorldInfoInfoTextBuffer"));
 	m_WorldInfoInfoTitleTextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("WorldInfoInfoTitleTextBuffer"));
+	m_ComponentsTeeSelection       = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ComponentsTeeSelection"));
+	m_ComponentsColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ComponentsColumn"));
+	m_ComponentCellRenderer        = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("ComponentCellRenderer"));
 	m_MetaDataTreeSelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("MetaDataTreeSelection"));
 	m_MetaDataNameColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MetaDataNameColumn"));
 	m_CellRendererMetaDataName     = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererMetaDataName"));
@@ -96,6 +101,14 @@ X3DScenePropertiesEditorInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("ProfileComponentsBox", m_ProfileComponentsBox);
+	m_builder -> get_widget ("ProfileExpander", m_ProfileExpander);
+	m_builder -> get_widget ("ProfileButton", m_ProfileButton);
+	m_builder -> get_widget ("ComponentsExpander", m_ComponentsExpander);
+	m_builder -> get_widget ("ComponentsTreeView", m_ComponentsTreeView);
+	m_builder -> get_widget ("ComponentsAddButton", m_ComponentsAddButton);
+	m_builder -> get_widget ("ComponentsRemoveButton", m_ComponentsRemoveButton);
+	m_builder -> get_widget ("InferProfileAndComponentsButton", m_InferProfileAndComponentsButton);
 	m_builder -> get_widget ("UnitsExpander", m_UnitsExpander);
 	m_builder -> get_widget ("UnitMassCombo", m_UnitMassCombo);
 	m_builder -> get_widget ("UnitMassEntry", m_UnitMassEntry);
@@ -126,6 +139,26 @@ X3DScenePropertiesEditorInterface::create ()
 	m_UnitForceAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_unit_force_changed));
 	m_UnitLengthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_unit_length_changed));
 	m_UnitMassAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
+
+	// Connect object Gtk::Box with id 'ProfileComponentsBox'.
+	m_ProfileComponentsBox -> signal_map () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_profile_components_map));
+	m_ProfileComponentsBox -> signal_unmap () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_profile_components_unmap));
+
+	// Connect object Gtk::ComboBoxText with id 'ProfileButton'.
+	m_ProfileButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_profile_changed));
+
+	// Connect object Gtk::TreeSelection with id 'ComponentsTeeSelection'.
+	m_ComponentsTeeSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_components_selection_changed));
+
+	// Connect object Gtk::CellRendererCombo with id 'ComponentCellRenderer'.
+	m_ComponentCellRenderer -> signal_edited () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_component_edited));
+
+	// Connect object Gtk::Button with id 'ComponentsAddButton'.
+	m_ComponentsAddButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_add_component_clicked));
+	m_ComponentsRemoveButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_remove_component_clicked));
+
+	// Connect object Gtk::CheckButton with id 'InferProfileAndComponentsButton'.
+	m_InferProfileAndComponentsButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_infer_profile_and_components_toggled));
 
 	// Connect object Gtk::Entry with id 'UnitMassEntry'.
 	m_UnitMassEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
@@ -158,8 +191,8 @@ X3DScenePropertiesEditorInterface::create ()
 	m_RemoveMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_remove_meta_data_clicked));
 
 	// Connect object Gtk::Box with id 'WorldInfoBox'.
-	m_WorldInfoBox -> signal_map () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_map));
-	m_WorldInfoBox -> signal_unmap () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_unmap));
+	m_WorldInfoBox -> signal_map () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_world_info_map));
+	m_WorldInfoBox -> signal_unmap () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_world_info_unmap));
 
 	// Connect object Gtk::Button with id 'MetaDataCancelButton'.
 	m_MetaDataCancelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_add_meta_data_cancel_clicked));

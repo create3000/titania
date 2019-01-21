@@ -236,20 +236,28 @@ JSONParser::componentArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
+	ComponentInfoArray componentStatements;
+	ComponentInfoPtr   componentStatement;
+
 	const int32_t size = json_object_array_length (jobj);
 
 	for (int32_t i = 0; i < size; ++ i)
-		componentObject (json_object_array_get_idx (jobj, i));
+	{
+		if (componentObject (json_object_array_get_idx (jobj, i), componentStatement))
+			componentStatements .emplace_back (std::move (componentStatement));
+	}
+
+	scene -> setComponents (componentStatements);
 }
 
-void
-JSONParser::componentObject (json_object* const jobj)
+bool
+JSONParser::componentObject (json_object* const jobj, ComponentInfoPtr & component)
 {
 	if (not jobj)
-		return;
+		return false;
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
-		return;
+		return false;
 
 	std::string componentNameCharacters;
 
@@ -261,15 +269,13 @@ JSONParser::componentObject (json_object* const jobj)
 		{
 			try
 			{
-				const auto component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
-
-				scene -> updateComponent (component);
-				return;
+				component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
+				return true;
 			}
 			catch (const X3D::X3DError & error)
 			{
 				getBrowser () -> getConsole () -> warn (error .what (), "\n");
-				return;
+				return false;
 			}
 		}
 		else
@@ -277,6 +283,8 @@ JSONParser::componentObject (json_object* const jobj)
 	}
 	else
 		getBrowser () -> getConsole () -> warn ("Expected a component name.\n");
+
+	return false;
 }
 
 void

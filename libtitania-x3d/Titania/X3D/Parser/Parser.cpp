@@ -394,15 +394,16 @@ void
 Parser::componentStatements ()
 {
 	//__LOG__ << this << " " << std::endl;
-
+	ComponentInfoArray _componentStatements;
 	ComponentInfoPtr _componentStatement = componentStatement ();
 
 	while (_componentStatement)
 	{
-		scene -> updateComponent (_componentStatement);
+		_componentStatements .emplace_back (std::move (_componentStatement));
 		_componentStatement = componentStatement ();
 	}
 
+	scene -> setComponents (_componentStatements);
 }
 
 ComponentInfoPtr

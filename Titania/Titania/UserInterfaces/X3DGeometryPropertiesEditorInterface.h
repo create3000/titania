@@ -938,36 +938,20 @@ public:
 	{ return *m_NurbsCurveExpander; }
 
 	Gtk::SpinButton &
-	getNurbsCurveTessellationSpinButton () const
-	{ return *m_NurbsCurveTessellationSpinButton; }
+	getNurbsCurveOrderSpinButton () const
+	{ return *m_NurbsCurveOrderSpinButton; }
 
 	Gtk::CheckButton &
 	getNurbsCurveClosedCheckButton () const
 	{ return *m_NurbsCurveClosedCheckButton; }
 
 	Gtk::SpinButton &
-	getNurbsCurveOrderSpinButton () const
-	{ return *m_NurbsCurveOrderSpinButton; }
+	getNurbsCurveTessellationSpinButton () const
+	{ return *m_NurbsCurveTessellationSpinButton; }
 
 	Gtk::Expander &
 	getNurbsTrimmedSurfaceExpander () const
 	{ return *m_NurbsTrimmedSurfaceExpander; }
-
-	Gtk::SpinButton &
-	getNurbsTrimmedSurfaceUTessellationSpinButton () const
-	{ return *m_NurbsTrimmedSurfaceUTessellationSpinButton; }
-
-	Gtk::SpinButton &
-	getNurbsTrimmedSurfaceVTessellationSpinButton () const
-	{ return *m_NurbsTrimmedSurfaceVTessellationSpinButton; }
-
-	Gtk::CheckButton &
-	getNurbsTrimmedSurfaceUClosedCheckButton () const
-	{ return *m_NurbsTrimmedSurfaceUClosedCheckButton; }
-
-	Gtk::CheckButton &
-	getNurbsTrimmedSurfaceVClosedCheckButton () const
-	{ return *m_NurbsTrimmedSurfaceVClosedCheckButton; }
 
 	Gtk::SpinButton &
 	getNurbsTrimmedSurfaceUOrderSpinButton () const
@@ -985,25 +969,25 @@ public:
 	getNurbsTrimmedSurfaceVDimensionSpinButton () const
 	{ return *m_NurbsTrimmedSurfaceVDimensionSpinButton; }
 
+	Gtk::CheckButton &
+	getNurbsTrimmedSurfaceUClosedCheckButton () const
+	{ return *m_NurbsTrimmedSurfaceUClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceUTessellationSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceUTessellationSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsTrimmedSurfaceVClosedCheckButton () const
+	{ return *m_NurbsTrimmedSurfaceVClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceVTessellationSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceVTessellationSpinButton; }
+
 	Gtk::Expander &
 	getNurbsPatchSurfaceExpander () const
 	{ return *m_NurbsPatchSurfaceExpander; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceUTessellationSpinButton () const
-	{ return *m_NurbsPatchSurfaceUTessellationSpinButton; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceVTessellationSpinButton () const
-	{ return *m_NurbsPatchSurfaceVTessellationSpinButton; }
-
-	Gtk::CheckButton &
-	getNurbsPatchSurfaceUClosedCheckButton () const
-	{ return *m_NurbsPatchSurfaceUClosedCheckButton; }
-
-	Gtk::CheckButton &
-	getNurbsPatchSurfaceVClosedCheckButton () const
-	{ return *m_NurbsPatchSurfaceVClosedCheckButton; }
 
 	Gtk::SpinButton &
 	getNurbsPatchSurfaceUOrderSpinButton () const
@@ -1020,6 +1004,22 @@ public:
 	Gtk::SpinButton &
 	getNurbsPatchSurfaceVDimensionSpinButton () const
 	{ return *m_NurbsPatchSurfaceVDimensionSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsPatchSurfaceUClosedCheckButton () const
+	{ return *m_NurbsPatchSurfaceUClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUTessellationSpinButton () const
+	{ return *m_NurbsPatchSurfaceUTessellationSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsPatchSurfaceVClosedCheckButton () const
+	{ return *m_NurbsPatchSurfaceVClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVTessellationSpinButton () const
+	{ return *m_NurbsPatchSurfaceVTessellationSpinButton; }
 
 	Gtk::Box &
 	getIndexedLineSetBox () const
@@ -1691,27 +1691,27 @@ private:
 	Gtk::Button* m_GeoElevationGridHeightMapImageRemoveButton;
 	Gtk::Label* m_GeoElevationGridHeightMapLoadStateLabel;
 	Gtk::Expander* m_NurbsCurveExpander;
-	Gtk::SpinButton* m_NurbsCurveTessellationSpinButton;
-	Gtk::CheckButton* m_NurbsCurveClosedCheckButton;
 	Gtk::SpinButton* m_NurbsCurveOrderSpinButton;
+	Gtk::CheckButton* m_NurbsCurveClosedCheckButton;
+	Gtk::SpinButton* m_NurbsCurveTessellationSpinButton;
 	Gtk::Expander* m_NurbsTrimmedSurfaceExpander;
-	Gtk::SpinButton* m_NurbsTrimmedSurfaceUTessellationSpinButton;
-	Gtk::SpinButton* m_NurbsTrimmedSurfaceVTessellationSpinButton;
-	Gtk::CheckButton* m_NurbsTrimmedSurfaceUClosedCheckButton;
-	Gtk::CheckButton* m_NurbsTrimmedSurfaceVClosedCheckButton;
 	Gtk::SpinButton* m_NurbsTrimmedSurfaceUOrderSpinButton;
 	Gtk::SpinButton* m_NurbsTrimmedSurfaceVOrderSpinButton;
 	Gtk::SpinButton* m_NurbsTrimmedSurfaceUDimensionSpinButton;
 	Gtk::SpinButton* m_NurbsTrimmedSurfaceVDimensionSpinButton;
+	Gtk::CheckButton* m_NurbsTrimmedSurfaceUClosedCheckButton;
+	Gtk::SpinButton* m_NurbsTrimmedSurfaceUTessellationSpinButton;
+	Gtk::CheckButton* m_NurbsTrimmedSurfaceVClosedCheckButton;
+	Gtk::SpinButton* m_NurbsTrimmedSurfaceVTessellationSpinButton;
 	Gtk::Expander* m_NurbsPatchSurfaceExpander;
-	Gtk::SpinButton* m_NurbsPatchSurfaceUTessellationSpinButton;
-	Gtk::SpinButton* m_NurbsPatchSurfaceVTessellationSpinButton;
-	Gtk::CheckButton* m_NurbsPatchSurfaceUClosedCheckButton;
-	Gtk::CheckButton* m_NurbsPatchSurfaceVClosedCheckButton;
 	Gtk::SpinButton* m_NurbsPatchSurfaceUOrderSpinButton;
 	Gtk::SpinButton* m_NurbsPatchSurfaceVOrderSpinButton;
 	Gtk::SpinButton* m_NurbsPatchSurfaceUDimensionSpinButton;
 	Gtk::SpinButton* m_NurbsPatchSurfaceVDimensionSpinButton;
+	Gtk::CheckButton* m_NurbsPatchSurfaceUClosedCheckButton;
+	Gtk::SpinButton* m_NurbsPatchSurfaceUTessellationSpinButton;
+	Gtk::CheckButton* m_NurbsPatchSurfaceVClosedCheckButton;
+	Gtk::SpinButton* m_NurbsPatchSurfaceVTessellationSpinButton;
 	Gtk::Box* m_IndexedLineSetBox;
 	Gtk::Expander* m_IndexedLineSetOptionsExpander;
 	Gtk::ComboBoxText* m_IndexedLineSetTypeButton;

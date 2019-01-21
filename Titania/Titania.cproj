@@ -376,6 +376,7 @@
     <Compile Include="Titania\UserInterfaces\X3DOpenEditorsEditorInterface.cpp" />
     <Compile Include="Titania\Editors\ProjectsEditor\OpenEditorsEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\EulerAdjustment.cpp" />
+    <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DProfileComponentsEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -3216,6 +3217,7 @@
     <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSweptSurface" />
     <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSwungSurface" />
     <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsTextureCoordinate" />
+    <None Include="Titania\Editors\ScenePropertiesEditor\X3DProfileComponentsEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -1030,3 +1030,5 @@ Box::leave_notify_event
   virtual bool on_leave_notify_event(GdkEventCrossing* crossing_event);
 EventBox::leave_notify_event
   virtual bool on_leave_notify_event(GdkEventCrossing* crossing_event);
+CellRendererCombo::edited
+  virtual void on_edited(const Glib::ustring& path, const Glib::ustring& new_text);

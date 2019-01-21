@@ -279,6 +279,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/Editors/PrototypeEditor/PrototypeEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.$(OBJEXT) \
+	Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.$(OBJEXT) \
 	Titania/Editors/SculpToolEditor/SculpToolEditor.$(OBJEXT) \
@@ -616,6 +617,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DMetaDataEditor.Po \
+	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DProfileComponentsEditor.Po \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DWorldInfoEditor.Po \
 	Titania/Editors/SculpToolEditor/$(DEPDIR)/SculpToolEditor.Po \
@@ -1143,6 +1145,7 @@ titania_SOURCES = \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp \
+	Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.cpp \
 	Titania/Editors/SculpToolEditor/SculpToolEditor.cpp \
@@ -2191,6 +2194,9 @@ Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.$(OBJEXT):  \
 Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.$(OBJEXT):  \
 	Titania/Editors/ScenePropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.$(OBJEXT):  \
+	Titania/Editors/ScenePropertiesEditor/$(am__dirstamp) \
+	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.$(OBJEXT):  \
 	Titania/Editors/ScenePropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/$(am__dirstamp)
@@ -2941,6 +2947,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DMetaDataEditor.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DProfileComponentsEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DWorldInfoEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SculpToolEditor/$(DEPDIR)/SculpToolEditor.Po@am__quote@ # am--include-marker
@@ -3550,6 +3557,7 @@ distclean: distclean-am
 	-rm -f Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DMetaDataEditor.Po
+	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DProfileComponentsEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DWorldInfoEditor.Po
 	-rm -f Titania/Editors/SculpToolEditor/$(DEPDIR)/SculpToolEditor.Po
@@ -3905,6 +3913,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DMetaDataEditor.Po
+	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DProfileComponentsEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po
 	-rm -f Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DWorldInfoEditor.Po
 	-rm -f Titania/Editors/SculpToolEditor/$(DEPDIR)/SculpToolEditor.Po

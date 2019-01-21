@@ -124,8 +124,7 @@ SupportedComponents::get (const std::string & name, const size_t level) const
 	if (level <= component -> getLevel ())
 		return ComponentInfoPtr (new ComponentInfo (component -> getTitle (), name, level));
 
-	else
-		throw Error <NOT_SUPPORTED> ("Component '" + name + "' at level '" + basic::to_string (level, std::locale::classic ()) + "' is not supported.");
+	throw Error <NOT_SUPPORTED> ("Component '" + name + "' at level '" + basic::to_string (level, std::locale::classic ()) + "' is not supported.");
 }
 
 ///  throws Error <NOT_SUPPORTED>

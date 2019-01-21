@@ -2,6 +2,128 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="ComponentListStore">
+    <columns>
+      <!-- column-name Component -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">CADGeometry</col>
+      </row>
+      <row>
+        <col id="0">Core</col>
+      </row>
+      <row>
+        <col id="0">CubeMapTexturing</col>
+      </row>
+      <row>
+        <col id="0">DIS</col>
+      </row>
+      <row>
+        <col id="0">EnvironmentalEffects</col>
+      </row>
+      <row>
+        <col id="0">EnvironmentalSensor</col>
+      </row>
+      <row>
+        <col id="0">EventUtilities</col>
+      </row>
+      <row>
+        <col id="0">Followers</col>
+      </row>
+      <row>
+        <col id="0">Geometry2D</col>
+      </row>
+      <row>
+        <col id="0">Geometry3D</col>
+      </row>
+      <row>
+        <col id="0">Geospatial</col>
+      </row>
+      <row>
+        <col id="0">Grouping</col>
+      </row>
+      <row>
+        <col id="0">H-Anim</col>
+      </row>
+      <row>
+        <col id="0">Interpolation</col>
+      </row>
+      <row>
+        <col id="0">KeyDeviceSensor</col>
+      </row>
+      <row>
+        <col id="0">Layering</col>
+      </row>
+      <row>
+        <col id="0">Layout</col>
+      </row>
+      <row>
+        <col id="0">Lighting</col>
+      </row>
+      <row>
+        <col id="0">Navigation</col>
+      </row>
+      <row>
+        <col id="0">Networking</col>
+      </row>
+      <row>
+        <col id="0">NURBS</col>
+      </row>
+      <row>
+        <col id="0">ParticleSystems</col>
+      </row>
+      <row>
+        <col id="0">Picking</col>
+      </row>
+      <row>
+        <col id="0">PointingDeviceSensor</col>
+      </row>
+      <row>
+        <col id="0">Shaders</col>
+      </row>
+      <row>
+        <col id="0">Rendering</col>
+      </row>
+      <row>
+        <col id="0">RigidBodyPhysics</col>
+      </row>
+      <row>
+        <col id="0">Scripting</col>
+      </row>
+      <row>
+        <col id="0">Shape</col>
+      </row>
+      <row>
+        <col id="0">Sound</col>
+      </row>
+      <row>
+        <col id="0">Text</col>
+      </row>
+      <row>
+        <col id="0">Texturing</col>
+      </row>
+      <row>
+        <col id="0">Texturing3D</col>
+      </row>
+      <row>
+        <col id="0">Time</col>
+      </row>
+      <row>
+        <col id="0">VolumeRendering</col>
+      </row>
+      <row>
+        <col id="0">X_ITE</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="ComponentsListStore">
+    <columns>
+      <!-- column-name Component -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="MetaDataListStore">
     <columns>
       <!-- column-name Name -->
@@ -85,69 +207,101 @@
             <property name="tab_pos">bottom</property>
             <property name="enable_popup">True</property>
             <child>
-              <object class="GtkScrolledWindow">
-                <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
-                <child>
-                  <object class="GtkViewport">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="border_width">8</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel" id="label9">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Profile</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="menu_label">Profile</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label4">
+              <object class="GtkBox" id="ProfileComponentsBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Profile</property>
-              </object>
-              <packing>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
+                <property name="border_width">8</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
+                <signal name="map" handler="on_profile_components_map" swapped="no"/>
+                <signal name="unmap" handler="on_profile_components_unmap" swapped="no"/>
                 <child>
-                  <object class="GtkViewport">
+                  <object class="GtkExpander" id="ProfileExpander">
+                    <property name="name">ProfileExpander</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
+                    <child>
+                      <object class="GtkComboBoxText" id="ProfileButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <items>
+                          <item>CADInterchange</item>
+                          <item>Core</item>
+                          <item>Full</item>
+                          <item>Immersive</item>
+                          <item>Interactive</item>
+                          <item>Interchange</item>
+                          <item>MedicalInterchange</item>
+                          <item id="&lt;Geben Sie die Kennung ein&gt;">MPEG-4</item>
+                        </items>
+                        <signal name="changed" handler="on_profile_changed" swapped="no"/>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label22">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">Profile</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkExpander" id="ComponentsExpander">
+                    <property name="name">ComponentsExpander</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="border_width">8</property>
+                        <property name="vexpand">True</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
                         <child>
-                          <object class="GtkLabel" id="label8">
+                          <object class="GtkScrolledWindow">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Components</property>
+                            <property name="can_focus">True</property>
+                            <property name="shadow_type">in</property>
+                            <child>
+                              <object class="GtkTreeView" id="ComponentsTreeView">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="model">ComponentsListStore</property>
+                                <property name="headers_visible">False</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="ComponentsTeeSelection">
+                                    <signal name="changed" handler="on_components_selection_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="ComponentsColumn">
+                                    <property name="sizing">autosize</property>
+                                    <property name="title" translatable="yes">Component</property>
+                                    <child>
+                                      <object class="GtkCellRendererCombo" id="ComponentCellRenderer">
+                                        <property name="editable">True</property>
+                                        <property name="has_entry">False</property>
+                                        <property name="model">ComponentListStore</property>
+                                        <property name="text_column">0</property>
+                                        <signal name="edited" handler="on_component_edited" swapped="no"/>
+                                      </object>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -155,24 +309,103 @@
                             <property name="position">0</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkBox" id="box5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">2</property>
+                            <child>
+                              <object class="GtkButton" id="ComponentsAddButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_add_component_clicked" swapped="no"/>
+                                <child>
+                                  <object class="GtkImage" id="image3">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-add</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="ComponentsRemoveButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_remove_component_clicked" swapped="no"/>
+                                <child>
+                                  <object class="GtkImage" id="image4">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-remove</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">Components</property>
                       </object>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="InferProfileAndComponentsButton">
+                    <property name="label" translatable="yes">Infer Profile And Components</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Infer profile and components when file is saved.</property>
+                    <property name="halign">start</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="on_infer_profile_and_components_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
                 </child>
               </object>
-              <packing>
-                <property name="menu_label">Components</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Components</property>
+                <property name="label" translatable="yes">Profile &amp; Components</property>
               </object>
               <packing>
-                <property name="position">1</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -491,7 +724,7 @@
               </object>
               <packing>
                 <property name="menu_label">Units</property>
-                <property name="position">2</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child type="tab">
@@ -501,7 +734,7 @@
                 <property name="label" translatable="yes">Units</property>
               </object>
               <packing>
-                <property name="position">2</property>
+                <property name="position">1</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -721,7 +954,7 @@
               </object>
               <packing>
                 <property name="menu_label">Meta Data</property>
-                <property name="position">3</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child type="tab">
@@ -731,7 +964,7 @@
                 <property name="label" translatable="yes">Meta Data</property>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">2</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -751,8 +984,8 @@
                         <property name="border_width">8</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">8</property>
-                        <signal name="map" handler="on_map" swapped="no"/>
-                        <signal name="unmap" handler="on_unmap" swapped="no"/>
+                        <signal name="map" handler="on_world_info_map" swapped="no"/>
+                        <signal name="unmap" handler="on_world_info_unmap" swapped="no"/>
                         <child>
                           <object class="GtkExpander" id="WorldInfoExpander">
                             <property name="name">WorldInfoExpander</property>
@@ -855,7 +1088,7 @@
               </object>
               <packing>
                 <property name="menu_label">World Info</property>
-                <property name="position">4</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child type="tab">
@@ -865,7 +1098,7 @@
                 <property name="label" translatable="yes">World Info</property>
               </object>
               <packing>
-                <property name="position">4</property>
+                <property name="position">3</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

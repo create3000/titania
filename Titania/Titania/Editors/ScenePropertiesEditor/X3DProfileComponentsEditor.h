@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_X3DWORLD_INFO_EDITOR_H__
-#define __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_X3DWORLD_INFO_EDITOR_H__
+#ifndef __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_X3DPROFILE_COMPONENTS_EDITOR_H__
+#define __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_X3DPROFILE_COMPONENTS_EDITOR_H__
 
 #include "../../UserInterfaces/X3DScenePropertiesEditorInterface.h"
 
@@ -59,7 +59,7 @@
 namespace titania {
 namespace puck {
 
-class X3DWorldInfoEditor :
+class X3DProfileComponentsEditor :
 	virtual public X3DScenePropertiesEditorInterface
 {
 public:
@@ -67,14 +67,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DWorldInfoEditor () override;
+	~X3DProfileComponentsEditor () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DWorldInfoEditor ();
+	X3DProfileComponentsEditor ();
 
 	virtual
 	void
@@ -93,26 +93,58 @@ protected:
 
 private:
 
+	///  @name Member type
+
+	struct Columns;
+
 	///  @name Event handlers
 
 	virtual
 	void
-	on_world_info_map () final override;
+	on_profile_components_map () final override;
 
 	virtual
 	void
-	on_world_info_unmap () final override;
+	on_profile_components_unmap () final override;
 
 	void
 	set_current_scene ();
 
 	void
-	set_node ();
+	set_profile ();
+
+	void
+	set_components ();
+
+	virtual
+	void
+	on_profile_changed () final override;
+
+	virtual
+	void
+	on_component_edited (const Glib::ustring & path, const Glib::ustring & text) final override;
+
+	virtual
+	void
+	on_add_component_clicked () final override;
+	
+	virtual
+	void
+	on_remove_component_clicked () final override;
+	
+	virtual
+	void
+	on_components_selection_changed () final override;
+
+	virtual
+	void
+	on_infer_profile_and_components_toggled () final override;
+
+	void
+	updateComponents ();
 
 	///  @name Members
 
-	SFStringTextView title;
-	MFStringTextView info;
 	X3D::X3DScenePtr scene;
 	bool             changing;
 

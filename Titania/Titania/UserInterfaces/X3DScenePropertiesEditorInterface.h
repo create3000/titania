@@ -90,6 +90,14 @@ public:
 	{ return m_builder; }
 
 	const Glib::RefPtr <Gtk::ListStore> &
+	getComponentListStore () const
+	{ return m_ComponentListStore; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getComponentsListStore () const
+	{ return m_ComponentsListStore; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
 	getMetaDataListStore () const
 	{ return m_MetaDataListStore; }
 
@@ -116,6 +124,18 @@ public:
 	const Glib::RefPtr <Gtk::TextBuffer> &
 	getWorldInfoInfoTitleTextBuffer () const
 	{ return m_WorldInfoInfoTitleTextBuffer; }
+
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getComponentsTeeSelection () const
+	{ return m_ComponentsTeeSelection; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getComponentsColumn () const
+	{ return m_ComponentsColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererCombo> &
+	getComponentCellRenderer () const
+	{ return m_ComponentCellRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeSelection> &
 	getMetaDataTreeSelection () const
@@ -152,6 +172,38 @@ public:
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
+
+	Gtk::Box &
+	getProfileComponentsBox () const
+	{ return *m_ProfileComponentsBox; }
+
+	Gtk::Expander &
+	getProfileExpander () const
+	{ return *m_ProfileExpander; }
+
+	Gtk::ComboBoxText &
+	getProfileButton () const
+	{ return *m_ProfileButton; }
+
+	Gtk::Expander &
+	getComponentsExpander () const
+	{ return *m_ComponentsExpander; }
+
+	Gtk::TreeView &
+	getComponentsTreeView () const
+	{ return *m_ComponentsTreeView; }
+
+	Gtk::Button &
+	getComponentsAddButton () const
+	{ return *m_ComponentsAddButton; }
+
+	Gtk::Button &
+	getComponentsRemoveButton () const
+	{ return *m_ComponentsRemoveButton; }
+
+	Gtk::CheckButton &
+	getInferProfileAndComponentsButton () const
+	{ return *m_InferProfileAndComponentsButton; }
 
 	Gtk::Expander &
 	getUnitsExpander () const
@@ -269,6 +321,38 @@ public:
 
 	virtual
 	void
+	on_profile_components_map () = 0;
+
+	virtual
+	void
+	on_profile_components_unmap () = 0;
+
+	virtual
+	void
+	on_profile_changed () = 0;
+
+	virtual
+	void
+	on_components_selection_changed () = 0;
+
+	virtual
+	void
+	on_component_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_add_component_clicked () = 0;
+
+	virtual
+	void
+	on_remove_component_clicked () = 0;
+
+	virtual
+	void
+	on_infer_profile_and_components_toggled () = 0;
+
+	virtual
+	void
 	on_unit_mass_delete_text (int start_pos, int end_pos) = 0;
 
 	virtual
@@ -333,11 +417,11 @@ public:
 
 	virtual
 	void
-	on_map () = 0;
+	on_world_info_map () = 0;
 
 	virtual
 	void
-	on_unmap () = 0;
+	on_world_info_unmap () = 0;
 
 	virtual
 	void
@@ -375,6 +459,8 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ComponentListStore;
+	Glib::RefPtr <Gtk::ListStore> m_ComponentsListStore;
 	Glib::RefPtr <Gtk::ListStore> m_MetaDataListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_UnitAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_UnitForceAdjustment;
@@ -382,6 +468,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_UnitMassAdjustment;
 	Glib::RefPtr <Gtk::TextBuffer> m_WorldInfoInfoTextBuffer;
 	Glib::RefPtr <Gtk::TextBuffer> m_WorldInfoInfoTitleTextBuffer;
+	Glib::RefPtr <Gtk::TreeSelection> m_ComponentsTeeSelection;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_ComponentsColumn;
+	Glib::RefPtr <Gtk::CellRendererCombo> m_ComponentCellRenderer;
 	Glib::RefPtr <Gtk::TreeSelection> m_MetaDataTreeSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_MetaDataNameColumn;
 	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererMetaDataName;
@@ -391,6 +480,14 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_Notebook;
+	Gtk::Box* m_ProfileComponentsBox;
+	Gtk::Expander* m_ProfileExpander;
+	Gtk::ComboBoxText* m_ProfileButton;
+	Gtk::Expander* m_ComponentsExpander;
+	Gtk::TreeView* m_ComponentsTreeView;
+	Gtk::Button* m_ComponentsAddButton;
+	Gtk::Button* m_ComponentsRemoveButton;
+	Gtk::CheckButton* m_InferProfileAndComponentsButton;
 	Gtk::Expander* m_UnitsExpander;
 	Gtk::ComboBoxText* m_UnitMassCombo;
 	Gtk::Entry* m_UnitMassEntry;

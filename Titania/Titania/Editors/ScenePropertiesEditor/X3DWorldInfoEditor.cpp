@@ -68,7 +68,7 @@ X3DWorldInfoEditor::initialize ()
 { }
 
 void
-X3DWorldInfoEditor::on_map ()
+X3DWorldInfoEditor::on_world_info_map ()
 {
 	getCurrentScene () .addInterest (&X3DWorldInfoEditor::set_current_scene, this);
 
@@ -76,7 +76,7 @@ X3DWorldInfoEditor::on_map ()
 }
 
 void
-X3DWorldInfoEditor::on_unmap ()
+X3DWorldInfoEditor::on_world_info_unmap ()
 {
 	getCurrentScene () .removeInterest (&X3DWorldInfoEditor::set_current_scene, this);
 }

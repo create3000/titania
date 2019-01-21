@@ -184,6 +184,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp \
+	Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.cpp \
 	Titania/Editors/SculpToolEditor/SculpToolEditor.cpp \

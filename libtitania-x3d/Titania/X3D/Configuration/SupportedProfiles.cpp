@@ -172,25 +172,25 @@ SupportedProfiles::SupportedProfiles (const std::shared_ptr <SupportedComponents
 		supportedComponents -> get ("EnvironmentalEffects", 1)
 	});
 
-//	add ("Medical interchange", "MedicalInterchange", {
-//	        supportedComponents -> get ("Core",                 1),
-//	        supportedComponents -> get ("Time",                 1),
-//	        supportedComponents -> get ("Networking",           2),
-//	        supportedComponents -> get ("Grouping",             3),
-//	        supportedComponents -> get ("Rendering",            5),
-//	        supportedComponents -> get ("Shape",                3),
-//	        supportedComponents -> get ("Geometry3D",           2),
-//	        supportedComponents -> get ("Geometry2D",           2),
-//	        supportedComponents -> get ("Text",                 1),
-//	        supportedComponents -> get ("Lighting",             1),
-//	        supportedComponents -> get ("Texturing",            2),
-//	        supportedComponents -> get ("Interpolation",        2),
-//	        supportedComponents -> get ("Navigation",           3),
-//	        supportedComponents -> get ("EnvironmentalEffects", 1),
-//	        supportedComponents -> get ("EventUtilities",       1),
-//	        supportedComponents -> get ("Texturing3D",          2),
-//	        supportedComponents -> get ("VolumeRendering",      4)
-//		  });
+	add ("Medical interchange", "MedicalInterchange", {
+	        supportedComponents -> get ("Core",                 1),
+	        supportedComponents -> get ("Time",                 1),
+	        supportedComponents -> get ("Networking",           2),
+	        supportedComponents -> get ("Grouping",             3),
+	        supportedComponents -> get ("Rendering",            5),
+	        supportedComponents -> get ("Shape",                3),
+	        supportedComponents -> get ("Geometry3D",           2),
+	        supportedComponents -> get ("Geometry2D",           2),
+	        supportedComponents -> get ("Text",                 1),
+	        supportedComponents -> get ("Lighting",             1),
+	        supportedComponents -> get ("Texturing",            2),
+	        supportedComponents -> get ("Interpolation",        2),
+	        supportedComponents -> get ("Navigation",           3),
+	        supportedComponents -> get ("EnvironmentalEffects", 1),
+	        supportedComponents -> get ("EventUtilities",       1),
+	        supportedComponents -> get ("Texturing3D",          2),
+	        supportedComponents -> get ("VolumeRendering",      4)
+		  });
 
 	add ("MPEG-4 interactive", "MPEG-4", {
 		supportedComponents -> get ("Core",                 1),

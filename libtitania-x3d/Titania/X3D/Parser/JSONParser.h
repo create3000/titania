@@ -109,8 +109,8 @@ private:
 	void
 	componentArray (json_object* const jobj);
 
-	void
-	componentObject (json_object* const jobj);
+	bool
+	componentObject (json_object* const jobj, ComponentInfoPtr & component);
 
 	bool
 	componentNameString (json_object* const jobj, std::string & componentNameCharacters)
