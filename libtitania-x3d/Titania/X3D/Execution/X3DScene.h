@@ -319,6 +319,9 @@ private:
 
 	///  @name Monitor file changes
 
+	ComponentInfoArray
+	getComponents (const ProfileInfoPtr & profile) const;
+
 	void
 	monitorFile (const basic::uri & URL);
 

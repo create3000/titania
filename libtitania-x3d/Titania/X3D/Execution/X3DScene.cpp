@@ -51,6 +51,7 @@
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
+#include "../Bits/Traverse.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/WorldInfo.h"
 #include "../Execution/ExportedNode.h"
@@ -215,6 +216,51 @@ X3DScene::updateComponent (const ComponentInfoPtr & component)
 	{
 		*iter = component;
 	}
+}
+
+ComponentInfoArray
+X3DScene::getComponents (const ProfileInfoPtr & profile) const
+{
+	const auto & supportedComponents   = getBrowser () -> getSupportedComponents ();
+	auto         profileComponentIndex = std::set <std::string> ();
+	auto         componentIndex        = std::set <std::string> ();
+	auto         components            = ComponentInfoArray ();
+
+	X3D::traverse (const_cast <X3DScene*> (this), [&] (SFNode & node)
+	{
+		// Protos are component 'Titania'.
+		if (node -> getComponentName () == "Titania")
+			return true;
+
+		componentIndex .emplace (node -> getComponentName ());
+		return true;
+	},
+	TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	TRAVERSE_PROTO_DECLARATIONS |
+	TRAVERSE_PROTO_DECLARATION_BODY |
+	TRAVERSE_ROOT_NODES);
+
+	for (const auto & component : profile -> getComponents ())
+		profileComponentIndex .emplace (component -> getName ());
+
+	for (const auto & componentName : componentIndex)
+	{
+		if (profileComponentIndex .count (componentName))
+			continue;
+
+		const auto iter = std::find_if (supportedComponents .cbegin (), supportedComponents .cend (),
+		[&] (const ComponentInfoPtr & component)
+		{
+			return component -> getName () == componentName;
+		});
+
+		if (iter == supportedComponents .cend ())
+			continue;
+
+		components .emplace_back (*iter);
+	}
+
+	return components;
 }
 
 // Unit handling
@@ -630,17 +676,17 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	if (specificationVersion not_eq VRML_V2_0)
 	{
-		if (getProfile ())
-		{
-			ostream
-				<< *getProfile ()
-				<< Generator::Break
-				<< Generator::TidyBreak;
-		}
+		const auto profile    = getBrowser () -> getProfile ("Interchange");
+		const auto components = getComponents (profile);
 
-		if (not getComponents () .empty ())
+		ostream
+			<< *profile
+			<< Generator::Break
+			<< Generator::TidyBreak;
+
+		if (not components .empty ())
 		{
-			for (const auto & component : getComponents ())
+			for (const auto & component : components)
 			{
 				ostream
 					<< *component
@@ -742,7 +788,9 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	auto specificationVersion = getSpecificationVersion ();
+	const auto profile              = getBrowser () -> getProfile ("Interchange");
+	const auto components           = getComponents (profile);
+	auto       specificationVersion = getSpecificationVersion ();
 
 	if (specificationVersion == VRML_V2_0)
 		specificationVersion = LATEST_VERSION;
@@ -767,7 +815,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< "<X3D"
 		<< Generator::Space
 		<< "profile='"
-		<< (getProfile () ? getProfile () -> getName () : "Full")
+		<< profile -> getName ()
 		<< "'"
 		<< Generator::Space
 		<< "version='"
@@ -790,7 +838,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	// <head>
 
-	for (const auto & component : getComponents ())
+	for (const auto & component : components)
 	{
 		ostream
 			<< XMLEncode (component)
@@ -877,7 +925,9 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	auto specificationVersion = getSpecificationVersion ();
+	const auto profile              = getBrowser () -> getProfile ("Interchange");
+	const auto components           = getComponents (profile);
+	auto       specificationVersion = getSpecificationVersion ();
 
 	if (specificationVersion == VRML_V2_0)
 		specificationVersion = LATEST_VERSION;
@@ -931,7 +981,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		<< ':'
 		<< Generator::TidySpace
 		<< '"'
-		<< (getProfile () ? getProfile () -> getName () : "Full")
+		<< profile -> getName ()
 		<< '"'
 		<< ','
 		<< Generator::TidyBreak;
@@ -995,7 +1045,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			outputUnits = true;
 	}
 
-	if (not getMetaDatas () .empty () or not getComponents () .empty () or outputUnits)
+	if (not getMetaDatas () .empty () or not components .empty () or outputUnits)
 	{
 		bool headLastProperty = false;
 	
@@ -1092,7 +1142,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 		// Components
 
-		if (not getComponents () .empty ())
+		if (not components .empty ())
 		{
 			if (headLastProperty)
 			{
@@ -1118,13 +1168,13 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 			// Components
 
-			for (const auto & component : getComponents ())
+			for (const auto & component : components)
 			{
 				ostream << Generator::Indent;
 
 				component -> toJSONStream (ostream);
 
-				if (component not_eq getComponents () .back ())
+				if (component not_eq components .back ())
 					ostream << ',';
 		
 				ostream << Generator::TidyBreak;
