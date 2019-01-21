@@ -123,7 +123,7 @@ X3DProfileComponentsEditor::set_profile ()
 
 	const auto & profile = getCurrentScene () -> getProfile ();
 
-	getProfileButton () .set_active_text (profile ? profile -> getName () : "");
+	getProfileButton () .set_active_text (profile ? profile -> getName () : "Full");
 
 	changing = false;
 }

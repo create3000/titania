@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="619" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="324" Column="1" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.h" Line="114" Column="13" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.cpp" Line="65" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
