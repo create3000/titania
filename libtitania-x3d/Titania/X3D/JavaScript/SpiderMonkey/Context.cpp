@@ -523,8 +523,6 @@ Context::initialize ()
 
 		shutdown () .addInterest (&Context::set_shutdown, this);
 	}
-
-	JS_GC (cx);
 }
 
 void
