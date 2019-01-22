@@ -123,8 +123,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   protos (size_t (ObjectType::SIZE)),
 	                  objects (),
 	               references (),
-	                  futures (),
-	                   lastGC (X3D::SFTime::now ())
+	                  futures ()
 {
 	if (not cx)
 		throw std::runtime_error ("Couldn't create JavaScript context.");
@@ -651,17 +650,7 @@ Context::collectGarbage ()
 
 	//__LOG__ << objects .size () << std::endl;
 
-	const auto now = X3D::SFTime::now ();
-
-	if (objects .size () > MAX_OBJECTS or now - lastGC > GC_INTERVAL)
-	{
-		lastGC = now;
-		JS_GC (cx);
-	}
-	else
-	{
-		JS_MaybeGC (cx);
-	}
+	JS_MaybeGC (cx);
 }
 
 void

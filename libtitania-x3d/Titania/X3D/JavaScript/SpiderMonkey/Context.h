@@ -246,8 +246,6 @@ private:
 	References                                                                 references;
 
 	X3D::X3DPtrArray <X3D::SceneFuture> futures;
-
-	time_type lastGC;
 };
 
 } // spidermonkey
