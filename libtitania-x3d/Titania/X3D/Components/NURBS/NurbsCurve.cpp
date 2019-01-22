@@ -166,20 +166,24 @@ NurbsCurve::getControlPoints (const bool closed,
 std::vector <Vector3f>
 NurbsCurve::tessellate () const
 {
+	auto curve = std::vector <Vector3f> ();
+
 	if (order () < 2)
-		return { };
+		return curve;
 
 	if (not controlPointNode)
-		return { };
+		return curve;
 
 	if (controlPointNode -> getSize () < size_t (order ()))
-		return { };
+		return curve;
 
 	// Order and dimension are now positive numbers.
 
 	const auto   closed = getClosed (order (), knot (), weight (), controlPointNode);
 	const auto & lines  = getVertices ();
-	auto         curve  = std::vector <Vector3f> ();
+
+	if (lines .empty ())
+		return curve;
 
 	for (size_t i = 0, size = lines .size (); i < size; i += 2)
 		curve .emplace_back (lines [i]);

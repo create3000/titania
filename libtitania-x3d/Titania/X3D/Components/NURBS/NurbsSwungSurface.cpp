@@ -167,8 +167,6 @@ NurbsSwungSurface::build ()
 
 	extrusionNode -> rebuild ();
 
-	__LOG__ << this << std::endl;
-
 	getColors ()    = extrusionNode -> getPolygonColors ();
 	getTexCoords () = extrusionNode -> getPolygonTexCoords ();
 	getNormals ()   = extrusionNode -> getPolygonNormals ();
