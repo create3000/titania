@@ -635,11 +635,11 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 void
 Context::set_shutdown ()
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
-	const JS::AutoSaveExceptionState ases (cx);
-
-	call ("shutdown");
+//	const JSAutoRequest ar (cx);
+//	const JSAutoCompartment ac (cx, *global);
+//	const JS::AutoSaveExceptionState ases (cx);
+//
+//	call ("shutdown");
 }
 
 void
