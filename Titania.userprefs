@@ -3,7 +3,10 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.h" Line="114" Column="13" />
-      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.cpp" Line="126" Column="79" />
+      <File FileName="Titania/Titania/Editors/ScenePropertiesEditor/X3DProfileComponentsEditor.cpp" Line="54" Column="1" />
+      <File FileName="Titania/Titania/Applications/main/CommandOptions.h" Line="138" Column="1" />
+      <File FileName="Titania/Titania/Applications/Tidy/Tidy.h" Line="85" Column="1" />
+      <File FileName="Titania/share/man/man1/titania.1" Line="79" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

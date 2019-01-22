@@ -143,6 +143,9 @@ private:
 	void
 	updateComponents ();
 
+	void
+	sortComponents (X3D::ComponentInfoArray & components) const;
+
 	///  @name Members
 
 	X3D::X3DScenePtr scene;

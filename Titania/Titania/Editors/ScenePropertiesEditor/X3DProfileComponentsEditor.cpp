@@ -137,11 +137,7 @@ X3DProfileComponentsEditor::set_components ()
 
 	auto components = getCurrentScene () -> getComponents ();
 
-	std::sort (components .begin (), components .end (),
-	[] (const X3D::ComponentInfoPtr & lhs, const X3D::ComponentInfoPtr & rhs)
-	{
-		return lhs -> getName () < rhs -> getName ();
-	});
+	sortComponents (components);
 
 	for (const auto & component : components)
 	{
@@ -251,13 +247,19 @@ X3DProfileComponentsEditor::updateComponents ()
 		{ }
 	}
 
+	sortComponents (components);
+
+	getCurrentScene () -> setComponents (components);
+}
+
+void
+X3DProfileComponentsEditor::sortComponents (X3D::ComponentInfoArray & components) const
+{
 	std::sort (components .begin (), components .end (),
 	[] (const X3D::ComponentInfoPtr & lhs, const X3D::ComponentInfoPtr & rhs)
 	{
 		return lhs -> getName () < rhs -> getName ();
 	});
-
-	getCurrentScene () -> setComponents (components);
 }
 
 X3DProfileComponentsEditor::~X3DProfileComponentsEditor ()
