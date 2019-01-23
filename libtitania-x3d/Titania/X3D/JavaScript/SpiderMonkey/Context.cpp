@@ -708,10 +708,11 @@ Context::dispose ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	futures .clear ();
-	fields  .clear ();
-	protos  .clear ();
-	global  .reset ();
+	futures          .clear ();
+	shutdownFunction .reset ();
+	fields           .clear ();
+	protos           .clear ();
+	global           .reset ();
 
 	// finalize is not called for global values, probably the global object is not disposed.
 
