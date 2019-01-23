@@ -244,6 +244,7 @@ private:
 	std::vector <std::unique_ptr <JS::PersistentRooted <JSObject*>>>           protos;
 	Objects                                                                    objects;
 	References                                                                 references;
+	std::unique_ptr <JS::PersistentRooted <JS::Value>>                         shutdownFunction;
 
 	X3D::X3DPtrArray <X3D::SceneFuture> futures;
 };

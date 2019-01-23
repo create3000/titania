@@ -123,6 +123,7 @@ Context::Context (JSContext* const cx, X3D::Script* const script, const std::str
 	                   protos (size_t (ObjectType::SIZE)),
 	                  objects (),
 	               references (),
+	         shutdownFunction (),
 	                  futures ()
 {
 	if (not cx)
@@ -521,6 +522,11 @@ Context::initialize ()
 	{
 		call ("initialize");
 
+		shutdownFunction = std::make_unique <JS::PersistentRooted <JS::Value>> (cx);
+
+		if (not getFunction ("shutdown", shutdownFunction .get ()))
+			shutdownFunction .reset ();
+
 		shutdown () .addInterest (&Context::set_shutdown, this);
 	}
 
@@ -533,7 +539,7 @@ Context::set_live ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	if (getExecutionContext () -> isLive () and isLive ())
+	if ((getExecutionContext () -> isLive () and isLive ()) or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 	{
 		const auto prepareEvents   = std::make_shared <JS::PersistentRooted <JS::Value>> (cx);
 		const auto eventsProcessed = std::make_shared <JS::PersistentRooted <JS::Value>> (cx);
@@ -635,11 +641,12 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 void
 Context::set_shutdown ()
 {
-//	const JSAutoRequest ar (cx);
-//	const JSAutoCompartment ac (cx, *global);
-//	const JS::AutoSaveExceptionState ases (cx);
-//
-//	call ("shutdown");
+	const JSAutoRequest ar (cx);
+	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState ases (cx);
+
+	if (shutdownFunction)
+		call (*shutdownFunction);
 }
 
 void
