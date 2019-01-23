@@ -518,7 +518,7 @@ Context::initialize ()
 
 	set_live ();
 
-	if ((getExecutionContext () -> isLive () and isLive ()) or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+	if ((getExecutionContext () -> isLive () or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance })) and isLive ())
 	{
 		call ("initialize");
 
@@ -539,7 +539,7 @@ Context::set_live ()
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
 
-	if ((getExecutionContext () -> isLive () and isLive ()) or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+	if ((getExecutionContext () -> isLive () or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance })) and isLive ())
 	{
 		const auto prepareEvents   = std::make_shared <JS::PersistentRooted <JS::Value>> (cx);
 		const auto eventsProcessed = std::make_shared <JS::PersistentRooted <JS::Value>> (cx);

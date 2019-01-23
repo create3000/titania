@@ -53,6 +53,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <regex>
+
 namespace titania {
 namespace X3D {
 
@@ -98,11 +100,21 @@ X3DUrlObject::initialize ()
 void
 X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
 {
+	static const std::regex ECMAScript (R"/((^\s*(?:ecmascript|javascript|vrmlscript)\:))/");
+
 	MFString transformed = url;
 
 	for (MFString::reference value : transformed)
 	{
+		std::smatch match;
+	
+		if (std::regex_search (value .get () .raw (), match, ECMAScript))
+			continue;
+
 		const basic::uri URL (value .get ());
+	
+		if (URL .scheme () == "data")
+			continue;
 
 		if (URL .is_relative () and not URL .filename (true) .empty ())
 		{

@@ -63,11 +63,11 @@ XMLGenerator::Encode (std::ostream & ostream, const bool value, const UnitCatego
 }
 
 void
-XMLGenerator::Encode (std::ostream & ostream, const String & string, const UnitCategory unitCategory)
+XMLGenerator::Encode (std::ostream & ostream, const String & value, const UnitCategory unitCategory)
 {
-	for (const auto & c : string .raw ())
+	for (const auto & character : value .raw ())
 	{
-		switch (c)
+		switch (character)
 		{
 			case '\t' :
 			{
@@ -116,7 +116,7 @@ XMLGenerator::Encode (std::ostream & ostream, const String & string, const UnitC
 			}
 			default:
 			{
-				ostream << c;
+				ostream << character;
 				break;
 			}
 		}

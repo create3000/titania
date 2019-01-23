@@ -144,28 +144,37 @@ JSONGenerator::Encode (std::ostream & ostream, const String & value, const UnitC
 	{
 		switch (character)
 		{
-			case '"':
-			case '\\':
-			{
-				ostream
-					<< '\\'
-					<< character;
-				break;
-			}
 			case '\r':
+			{
 				ostream << "\\r";
 				break;
+			}
 			case '\n':
+			{
 				ostream << "\\n";
 				break;
+			}
 			case '\t':
+			{
 				ostream << "\\t";
 				break;
+			}
+			case '"':
+			{
+				ostream << "\\\"";
+				break;
+			}
+			case '\\':
+			{
+				ostream << "\\\\";
+				break;
+			}
 			default:
+			{
 				ostream << character;
 				break;
+			}
 		}
-
 	}
 
 	ostream << '"';

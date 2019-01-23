@@ -100,21 +100,30 @@ VRMLGenerator::Encode (std::ostream & ostream, const String & value, const UnitC
 {
 	ostream << '"';
 
+__LOG__ << value << std::endl;
+__LOG__ << value .size () << std::endl;
+backtrace ();
+
 	for (const auto & character : value .raw ())
 	{
 		switch (character)
 		{
 			case '"':
+			{
+				ostream << "\\\"";
+				break;
+			}
 			case '\\':
 			{
-				ostream << '\\';
+				ostream << "\\\\";
 				break;
 			}
 			default:
+			{
+				ostream << character;
 				break;
+			}
 		}
-
-		ostream << character;
 	}
 
 	ostream << '"';
