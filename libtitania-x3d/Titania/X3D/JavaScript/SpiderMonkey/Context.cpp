@@ -517,7 +517,7 @@ Context::initialize ()
 
 	set_live ();
 
-	if (getExecutionContext () -> isLive () and isLive ())
+	if ((getExecutionContext () -> isLive () and isLive ()) or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 	{
 		call ("initialize");
 
