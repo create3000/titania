@@ -243,7 +243,7 @@ X3DScene::inferProfileAndComponents ()
 	{
 		const auto numComponents = std::get <2> (profiles [i]);
 
-		if (numComponents < lowestTotal)
+		if (numComponents <= lowestTotal)
 		{
 			lowestTotal = numComponents;
 			index       = i;
