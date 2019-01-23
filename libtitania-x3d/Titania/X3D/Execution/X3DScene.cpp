@@ -220,13 +220,55 @@ X3DScene::setComponents (const ComponentInfoArray & value)
 	componentsOutput = getCurrentTime ();
 }
 
-ComponentInfoArray
-X3DScene::getComponents (const ProfileInfoPtr & profile) const
+void
+X3DScene::inferProfileAndComponents ()
 {
-	const auto & supportedComponents   = getBrowser () -> getSupportedComponents ();
-	auto         profileComponentIndex = std::set <std::string> ();
-	auto         componentIndex        = std::set <std::string> ();
-	auto         components            = ComponentInfoArray ();
+	const auto usedComponents = getUsedComponents ();
+	const auto profilesNames  = std::vector <std::string> ({ "Interchange", "Interactive", "Immersive", "CADInterchange", "MedicalInterchange" });
+
+	auto profiles = std::vector <std::tuple <ProfileInfoPtr, ComponentInfoArray, size_t>> ();
+
+	for (const auto & profileName : profilesNames)
+	{
+		auto profile                     = getBrowser () -> getProfile (profileName);
+		auto [components, numComponents] = getComponents (profile, usedComponents);
+
+		profiles .emplace_back (std::move (profile), std::move (components), std::move (numComponents));
+	}
+
+	size_t lowest = -1;
+	size_t index  = 0;
+
+	for (size_t i = 0, size = profiles .size (); i < size; ++ i)
+	{
+		const auto numComponents = std::get <2> (profiles [i]);
+
+		if (numComponents < lowest)
+		{
+			lowest = numComponents;
+			index  = i;
+		}
+	}
+
+	const auto & [profile, components, numComponents] = profiles [index];
+	const auto   full                                 = getBrowser () -> getProfile ("Full");
+
+	if (numComponents == full -> getComponents () .size ())
+	{
+		setProfile (full);
+		setComponents ({ });
+	}
+	else
+	{
+		setProfile (profile);
+		setComponents (components);
+	}
+}
+
+std::set <std::string>
+X3DScene::getUsedComponents () const
+{
+	auto usedComponents = std::set <std::string> ();
 
 	X3D::traverse (const_cast <X3DScene*> (this), [&] (SFNode & node)
 	{
@@ -234,7 +276,7 @@ X3DScene::getComponents (const ProfileInfoPtr & profile) const
 		if (node -> getComponentName () == "Titania")
 			return true;
 
-		componentIndex .emplace (node -> getComponentName ());
+		usedComponents .emplace (node -> getComponentName ());
 		return true;
 	},
 	TRAVERSE_EXTERNPROTO_DECLARATIONS |
@@ -242,10 +284,20 @@ X3DScene::getComponents (const ProfileInfoPtr & profile) const
 	TRAVERSE_PROTO_DECLARATION_BODY |
 	TRAVERSE_ROOT_NODES);
 
+	return usedComponents;
+}
+
+std::pair <ComponentInfoArray, size_t>
+X3DScene::getComponents (const ProfileInfoPtr & profile, const std::set <std::string> & usedComponents) const
+{
+	const auto & supportedComponents   = getBrowser () -> getSupportedComponents ();
+	auto         profileComponentIndex = std::set <std::string> ();
+	auto         components            = ComponentInfoArray ();
+
 	for (const auto & component : profile -> getComponents ())
 		profileComponentIndex .emplace (component -> getName ());
 
-	for (const auto & componentName : componentIndex)
+	for (const auto & componentName : usedComponents)
 	{
 		if (profileComponentIndex .count (componentName))
 			continue;
@@ -262,17 +314,15 @@ X3DScene::getComponents (const ProfileInfoPtr & profile) const
 		components .emplace_back (*iter);
 	}
 
-	return components;
-}
+	auto difference = std::vector <std::string> ();
 
-void
-X3DScene::inferProfileAndComponents ()
-{
-	const auto profile    = getBrowser () -> getProfile ("Interchange");
-	const auto components = getComponents (profile);
+	std::set_difference (profileComponentIndex .cbegin (),
+	                     profileComponentIndex .cend (),
+	                     usedComponents .cbegin (),
+	                     usedComponents .cend (),
+	                     std::back_inserter (difference));
 
-	setProfile (profile);
-	setComponents (components);
+	return std::pair (components, usedComponents .size () + difference .size ());
 }
 
 // Unit handling

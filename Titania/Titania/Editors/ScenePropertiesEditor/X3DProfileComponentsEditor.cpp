@@ -58,6 +58,7 @@ namespace puck {
 struct X3DProfileComponentsEditor::Columns
 {
 	static constexpr int32_t COMPONENT = 0;
+	static constexpr int32_t LEVEL     = 1;
 };
 
 X3DProfileComponentsEditor::X3DProfileComponentsEditor () :
@@ -144,6 +145,7 @@ X3DProfileComponentsEditor::set_components ()
 		const auto row = getComponentsListStore () -> append ();
 
 		row -> set_value (Columns::COMPONENT, component -> getName ());
+		row -> set_value (Columns::LEVEL,     basic::to_string (component -> getLevel (), std::locale::classic ()));
 	}
 }
 

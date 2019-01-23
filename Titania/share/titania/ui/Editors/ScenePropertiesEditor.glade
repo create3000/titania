@@ -122,6 +122,8 @@
     <columns>
       <!-- column-name Component -->
       <column type="gchararray"/>
+      <!-- column-name Level -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkListStore" id="MetaDataListStore">
@@ -288,7 +290,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="model">ComponentsListStore</property>
-                                <property name="headers_visible">False</property>
                                 <child internal-child="selection">
                                   <object class="GtkTreeSelection" id="ComponentsTeeSelection">
                                     <signal name="changed" handler="on_components_selection_changed" swapped="no"/>
@@ -298,6 +299,7 @@
                                   <object class="GtkTreeViewColumn" id="ComponentsColumn">
                                     <property name="sizing">autosize</property>
                                     <property name="title" translatable="yes">Component</property>
+                                    <property name="expand">True</property>
                                     <child>
                                       <object class="GtkCellRendererCombo" id="ComponentCellRenderer">
                                         <property name="editable">True</property>
@@ -308,6 +310,17 @@
                                       </object>
                                       <attributes>
                                         <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="LevelColumn">
+                                    <property name="title" translatable="yes">Level</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="LevelCellRenderer"/>
+                                      <attributes>
+                                        <attribute name="text">1</attribute>
                                       </attributes>
                                     </child>
                                   </object>

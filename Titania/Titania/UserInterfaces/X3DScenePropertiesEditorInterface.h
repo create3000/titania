@@ -137,6 +137,14 @@ public:
 	getComponentCellRenderer () const
 	{ return m_ComponentCellRenderer; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getLevelColumn () const
+	{ return m_LevelColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getLevelCellRenderer () const
+	{ return m_LevelCellRenderer; }
+
 	const Glib::RefPtr <Gtk::TreeSelection> &
 	getMetaDataTreeSelection () const
 	{ return m_MetaDataTreeSelection; }
@@ -479,6 +487,8 @@ private:
 	Glib::RefPtr <Gtk::TreeSelection> m_ComponentsTeeSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ComponentsColumn;
 	Glib::RefPtr <Gtk::CellRendererCombo> m_ComponentCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_LevelColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_LevelCellRenderer;
 	Glib::RefPtr <Gtk::TreeSelection> m_MetaDataTreeSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_MetaDataNameColumn;
 	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererMetaDataName;

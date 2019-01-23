@@ -328,8 +328,11 @@ private:
 
 	///  @name Monitor file changes
 
-	ComponentInfoArray
-	getComponents (const ProfileInfoPtr & profile) const;
+	std::set <std::string>
+	getUsedComponents () const;
+
+	std::pair <ComponentInfoArray, size_t>
+	getComponents (const ProfileInfoPtr & profile, const std::set <std::string> & usedComponents) const;
 
 	void
 	monitorFile (const basic::uri & URL);

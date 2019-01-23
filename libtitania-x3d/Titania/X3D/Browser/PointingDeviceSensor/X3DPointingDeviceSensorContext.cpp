@@ -306,8 +306,8 @@ X3DPointingDeviceSensorContext::motion ()
 	{
 		// overSensors and sensors are always sorted.
 
-		std::set_difference (overSensors .begin (), overSensors .end (),
-		                     nearestHit -> getSensors () .begin (), nearestHit -> getSensors () .end (),
+		std::set_difference (overSensors .cbegin (), overSensors .cend (),
+		                     nearestHit -> getSensors () .cbegin (), nearestHit -> getSensors () .cend (),
 		                     std::back_inserter (difference),
 									[ ] (const PointingDeviceSensorContainerPtr & lhs, const PointingDeviceSensorContainerPtr & rhs)
 		{

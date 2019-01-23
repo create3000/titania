@@ -90,6 +90,8 @@ X3DScenePropertiesEditorInterface::create ()
 	m_ComponentsTeeSelection       = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("ComponentsTeeSelection"));
 	m_ComponentsColumn             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ComponentsColumn"));
 	m_ComponentCellRenderer        = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("ComponentCellRenderer"));
+	m_LevelColumn                  = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("LevelColumn"));
+	m_LevelCellRenderer            = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("LevelCellRenderer"));
 	m_MetaDataTreeSelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("MetaDataTreeSelection"));
 	m_MetaDataNameColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MetaDataNameColumn"));
 	m_CellRendererMetaDataName     = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererMetaDataName"));
