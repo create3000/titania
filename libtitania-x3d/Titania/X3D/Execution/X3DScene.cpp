@@ -224,7 +224,7 @@ void
 X3DScene::inferProfileAndComponents ()
 {
 	const auto usedComponents = getUsedComponents ();
-	const auto profilesNames  = std::vector <std::string> ({ "Interchange", "Interactive", "Immersive", "CADInterchange", "MedicalInterchange" });
+	const auto profilesNames  = std::vector <std::string> ({ "Interchange", "Interactive", "Immersive" });
 
 	auto profiles = std::vector <std::tuple <ProfileInfoPtr, ComponentInfoArray, size_t>> ();
 
@@ -236,17 +236,17 @@ X3DScene::inferProfileAndComponents ()
 		profiles .emplace_back (std::move (profile), std::move (components), std::move (numComponents));
 	}
 
-	size_t lowest = -1;
-	size_t index  = 0;
+	size_t lowestTotal = -1;
+	size_t index       = 0;
 
 	for (size_t i = 0, size = profiles .size (); i < size; ++ i)
 	{
 		const auto numComponents = std::get <2> (profiles [i]);
 
-		if (numComponents < lowest)
+		if (numComponents < lowestTotal)
 		{
-			lowest = numComponents;
-			index  = i;
+			lowestTotal = numComponents;
+			index       = i;
 		}
 	}
 
