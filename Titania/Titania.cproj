@@ -3223,6 +3223,11 @@
     <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimJoint" />
     <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimSegment" />
     <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimSite" />
+    <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimDisplacer" />
+    <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimHumanoid" />
+    <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimJoint" />
+    <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimSegment" />
+    <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimSite" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3394,6 +3399,7 @@
     <Folder Include="share\titania\Library\Primitives\Geospatial\" />
     <Folder Include="Titania\Editors\PolygonColoringEditor\" />
     <Folder Include="assets\" />
+    <Folder Include="share\titania\Library\Components\H-Anim\.X_ITE\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
