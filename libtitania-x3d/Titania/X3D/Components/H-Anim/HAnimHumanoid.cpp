@@ -145,6 +145,10 @@ HAnimHumanoid::initialize ()
 	skeletonNode   -> children () = skeleton ();
 	skinNode       -> children () = skin ();
 
+	viewpointsNode -> setPrivate (true);
+	skeletonNode   -> setPrivate (true);
+	skinNode       -> setPrivate (true);
+
 	// Transform
 
 	translation ()      .addInterest (transformNode -> translation ());
