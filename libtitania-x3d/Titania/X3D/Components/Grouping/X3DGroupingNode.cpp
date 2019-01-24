@@ -79,6 +79,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	               fields (),
 	               hidden (false),
 	              visible (),
+	         allowedTypes (),
 	pointingDeviceSensors (),
 	        cameraObjects (),
 	           clipPlanes (),
@@ -136,6 +137,12 @@ X3DGroupingNode::isHidden (const bool value)
 
 		set_children ();
 	}
+}
+
+void
+X3DGroupingNode::setAllowedTypes (const NodeTypeSet & value)
+{
+	allowedTypes = value;
 }
 
 void
@@ -215,6 +222,12 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 
 	for (const auto & node : children)
 	{
+		if (allowedTypes .size ())
+		{
+			if (not node -> isType (allowedTypes))
+				continue;
+		}
+
 		if (node and (i >= getVisible () .size () or getVisible () [i]))
 		{
 			try

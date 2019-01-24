@@ -131,6 +131,10 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class HAnimHumanoid;
+
 	///  @name Construction
 
 	X3DGroupingNode ();
@@ -142,7 +146,7 @@ protected:
 	///  @name Visibility
 
 	void
-	isHidden (const bool);
+	isHidden (const bool value);
 
 	bool
 	isHidden () const
@@ -153,6 +157,13 @@ protected:
 	const MFBool &
 	getVisible () const
 	{ return visible; }
+
+	void
+	setAllowedTypes (const NodeTypeSet & value);
+
+	const NodeTypeSet &
+	getAllowedTypes () const
+	{ return allowedTypes; }
 
 	///  @name Event handlers
 
@@ -213,6 +224,7 @@ private:
 
 	bool                                      hidden;
 	MFBool                                    visible;
+	NodeTypeSet                               allowedTypes;
 	X3DPtrArray <X3DPointingDeviceSensorNode> pointingDeviceSensors;
 	X3DPtrArray <X3DChildNode>                cameraObjects;
 	X3DPtrArray <ClipPlane>                   clipPlanes;

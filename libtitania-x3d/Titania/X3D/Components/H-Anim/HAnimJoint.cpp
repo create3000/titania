@@ -99,6 +99,10 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
+
+	setAllowedTypes ({ X3DConstants::HAnimJoint,
+	                   X3DConstants::HAnimSegment,
+	                   X3DConstants::HAnimSite });
 }
 
 X3DBaseNode*

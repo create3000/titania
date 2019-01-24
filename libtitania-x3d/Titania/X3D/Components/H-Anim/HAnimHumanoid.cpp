@@ -137,6 +137,9 @@ HAnimHumanoid::initialize ()
 
 	// Groups
 
+	viewpointsNode -> setAllowedTypes ({ X3DConstants::HAnimSite });
+	skeletonNode   -> setAllowedTypes ({ X3DConstants::HAnimJoint, X3DConstants::HAnimSite });
+
 	viewpoints () .addInterest (viewpointsNode -> children ());
 	skeleton ()   .addInterest (skeletonNode   -> children ());
 	skin ()       .addInterest (skinNode       -> children ());
