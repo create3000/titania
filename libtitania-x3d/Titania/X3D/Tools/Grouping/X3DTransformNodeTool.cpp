@@ -417,13 +417,8 @@ X3DTransformNodeTool::set_active ()
 	{
 		// Begin undo.
 
-		beginUndo ();
-
 		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
 		{
-			if (node == this)
-				continue;
-
 			const X3DPtr <X3DNodeTool> tool (node);
 
 			if (tool)
@@ -455,13 +450,8 @@ X3DTransformNodeTool::set_active ()
 
 		const auto undoStep = std::make_shared <UndoStep> (description);
 
-		endUndo (undoStep);
-
 		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
 		{
-			if (node == this)
-				continue;
-
 			const X3DPtr <X3DNodeTool> tool (node);
 
 			if (tool)

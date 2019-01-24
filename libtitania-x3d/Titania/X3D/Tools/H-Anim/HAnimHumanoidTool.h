@@ -245,19 +245,19 @@ public:
 
 	virtual
 	Box3d
-	getBBox () const override
+	getBBox () const final override
 	{ return getNode <HAnimHumanoid> () -> getBBox (); }
 
 	virtual
 	const X3DPtr <Transform> &
-	getTransform () const
+	getTransform () const final override
 	{ return getNode <HAnimHumanoid> () -> getTransform (); }
 
 	/// @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ return getNode <HAnimHumanoid> () -> traverse (type, renderObject); }
 
 	virtual
@@ -268,11 +268,21 @@ public:
 		X3DChildNodeTool::removeTool (really);
 	}
 
+	virtual
+	void
+	beginUndo () final override
+	{ getTransformTools () [0] -> beginUndo (); }
+	
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override
+	{ getTransformTools () [0] -> endUndo (undoStep); }
+
 	/// @name Destruction
 
 	virtual
 	void
-	dispose () override
+	dispose () final override
 	{
 		X3DBoundedObjectTool::dispose ();
 		X3DChildNodeTool::dispose ();
@@ -284,11 +294,11 @@ protected:
 
 	virtual
 	void
-	initialize () override
+	initialize () final override
 	{
-		setTransformTool (0, getTransform ());
-
 		X3DChildNodeTool::initialize ();
+
+		setTransformTool (0, getTransform ());
 	}
 
 };
