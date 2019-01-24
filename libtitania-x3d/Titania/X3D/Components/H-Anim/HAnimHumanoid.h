@@ -294,6 +294,9 @@ private:
 	set_joints ();
 	
 	void
+	set_skinNormal ();
+	
+	void
 	set_skinCoord ();
 	
 	///  @name Operations
@@ -340,7 +343,9 @@ private:
 	X3DPtr <Group>             skinNode;
 	X3DPtr <Transform>         transformNode;
 	X3DPtrArray <HAnimJoint>   jointNodes;
+	X3DPtr <X3DNormalNode>     skinNormalNode;
 	X3DPtr <X3DCoordinateNode> skinCoordNode;
+	X3DPtr <X3DNormalNode>     normalNode;
 	X3DPtr <X3DCoordinateNode> coordNode;
 };
 

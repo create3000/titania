@@ -58,6 +58,7 @@
 #include "../Grouping/Transform.h"
 #include "../H-Anim/HAnimJoint.h"
 #include "../Rendering/X3DCoordinateNode.h"
+#include "../Rendering/X3DNormalNode.h"
 
 namespace titania {
 namespace X3D {
@@ -95,7 +96,9 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	                  skinNode (new Group (executionContext)),
 	             transformNode (new Transform (executionContext)),
 	                jointNodes (),
+	            skinNormalNode (),
 	             skinCoordNode (),
+	                normalNode (),
 	                 coordNode ()
 {
 	addType (X3DConstants::HAnimHumanoid);
@@ -127,7 +130,9 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	                 skinNode,
 	                 transformNode,
 	                 jointNodes,
+	                 skinNormalNode,
 	                 skinCoordNode,
+	                 normalNode,
 	                 coordNode);
 }
 
@@ -198,8 +203,9 @@ HAnimHumanoid::initialize ()
 
 	// 
 
-	joints ()    .addInterest (&HAnimHumanoid::set_joints,    this);
-	skinCoord () .addInterest (&HAnimHumanoid::set_skinCoord, this);
+	joints ()     .addInterest (&HAnimHumanoid::set_joints,     this);
+	skinNormal () .addInterest (&HAnimHumanoid::set_skinNormal, this);
+	skinCoord ()  .addInterest (&HAnimHumanoid::set_skinCoord,  this);
 
 	set_joints ();
 	set_skinCoord ();
@@ -223,6 +229,17 @@ HAnimHumanoid::set_joints ()
 		if (jointNode)
 			jointNodes .emplace_back (jointNode);
 	}
+}
+
+void
+HAnimHumanoid::set_skinNormal ()
+{
+	normalNode = nullptr;
+
+	skinNormalNode = x3d_cast <X3DNormalNode*> (skinCoord ());
+
+	if (skinNormalNode)
+		normalNode = X3DPtr <X3DNormalNode> (skinNormalNode -> copy (CopyType::FLAT_COPY));
 }
 
 void
@@ -260,6 +277,7 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 		for (const auto & jointNode : jointNodes)
 		{
 			const auto   jointMatrix     = jointNode -> getModelMatrix () * invModelMatrix;
+			const auto   normalMatrix    = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
 			const auto & skinCoordIndex  = jointNode -> skinCoordIndex ();
 			const auto & skinCoordWeight = jointNode -> skinCoordWeight ();
 	
@@ -267,6 +285,9 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 			{
 				const auto index  = skinCoordIndex [i];
 				const auto weight = false and i < skinCoordWeight .size () ? skinCoordWeight [i] : 1.0;
+
+				if (skinNormalNode)
+					skinNormalNode -> set1Vector (index, normalNode -> get1Vector (index) * normalMatrix);
 
 				skinCoordNode -> set1Point (index, weight * coordNode -> get1Point (index) * jointMatrix);
 			}
