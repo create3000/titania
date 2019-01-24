@@ -74,13 +74,13 @@ HAnimHumanoid::Fields::Fields () :
 	scaleOrientation (new SFRotation ()),
 	          center (new SFVec3f ()),
 	      viewpoints (new MFNode ()),
-	      skinNormal (new SFNode ()),
-	       skinCoord (new SFNode ()),
-	            skin (new MFNode ()),
 	           sites (new MFNode ()),
 	          joints (new MFNode ()),
 	        segments (new MFNode ()),
-	        skeleton (new MFNode ())
+	        skeleton (new MFNode ()),
+	      skinNormal (new SFNode ()),
+	       skinCoord (new SFNode ()),
+	            skin (new MFNode ())
 { }
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
@@ -89,8 +89,8 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	          X3DBoundedObject (),
 	                    fields (),
 	            viewpointsNode (new Group (executionContext)),
-	                  skinNode (new Group (executionContext)),
 	              skeletonNode (new Group (executionContext)),
+	                  skinNode (new Group (executionContext)),
 	             transformNode (new Transform (executionContext))
 {
 	addType (X3DConstants::HAnimHumanoid);
@@ -109,18 +109,18 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 
 	addField (inputOutput,    "viewpoints",       viewpoints ());
-	addField (inputOutput,    "skinNormal",       skinNormal ());
-	addField (inputOutput,    "skinCoord",        skinCoord ());
-	addField (inputOutput,    "skin",             skin ());
 	addField (inputOutput,    "sites",            sites ());
 	addField (inputOutput,    "joints",           joints ());
 	addField (inputOutput,    "segments",         segments ());
 	addField (inputOutput,    "skeleton",         skeleton ());
+	addField (inputOutput,    "skinNormal",       skinNormal ());
+	addField (inputOutput,    "skinCoord",        skinCoord ());
+	addField (inputOutput,    "skin",             skin ());
 
-	addChildObjects (transformNode,
+	addChildObjects (viewpointsNode,
+	                 skeletonNode,
 	                 skinNode,
-	                 viewpointsNode,
-	                 skeletonNode);
+	                 transformNode);
 }
 
 X3DBaseNode*
@@ -138,12 +138,12 @@ HAnimHumanoid::initialize ()
 	// Groups
 
 	viewpoints () .addInterest (viewpointsNode -> children ());
-	skin ()       .addInterest (skinNode       -> children ());
 	skeleton ()   .addInterest (skeletonNode   -> children ());
+	skin ()       .addInterest (skinNode       -> children ());
 
 	viewpointsNode -> children () = viewpoints ();
-	skinNode       -> children () = skin ();
 	skeletonNode   -> children () = skeleton ();
+	skinNode       -> children () = skin ();
 
 	// Transform
 
@@ -170,15 +170,15 @@ HAnimHumanoid::initialize ()
 	transformNode -> center ()           = center ();
 	transformNode -> bboxSize ()         = bboxSize ();
 	transformNode -> bboxCenter ()       = bboxCenter ();
-	transformNode -> children ()         = { viewpointsNode, skinNode, skeletonNode };
+	transformNode -> children ()         = { viewpointsNode, skeletonNode, skinNode };
 
 	transformNode -> isCameraObject () .addInterest (&HAnimHumanoid::setCameraObject, static_cast <X3DChildNode*> (this));
 
 	// Setup
 
 	viewpointsNode -> setup ();
-	skinNode       -> setup ();
 	skeletonNode   -> setup ();
+	skinNode       -> setup ();
 	transformNode  -> setup ();
 }
 

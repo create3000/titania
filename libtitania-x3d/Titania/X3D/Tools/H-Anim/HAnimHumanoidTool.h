@@ -172,36 +172,6 @@ public:
 	{ return getNode <HAnimHumanoid> () -> viewpoints (); }
 
 	virtual
-	SFNode &
-	skinNormal () final override
-	{ return getNode <HAnimHumanoid> () -> skinNormal (); }
-
-	virtual
-	const SFNode &
-	skinNormal () const final override
-	{ return getNode <HAnimHumanoid> () -> skinNormal (); }
-
-	virtual
-	SFNode &
-	skinCoord () final override
-	{ return getNode <HAnimHumanoid> () -> skinCoord (); }
-
-	virtual
-	const SFNode &
-	skinCoord () const final override
-	{ return getNode <HAnimHumanoid> () -> skinCoord (); }
-
-	virtual
-	MFNode &
-	skin () final override
-	{ return getNode <HAnimHumanoid> () -> skin (); }
-
-	virtual
-	const MFNode &
-	skin () const final override
-	{ return getNode <HAnimHumanoid> () -> skin (); }
-
-	virtual
 	MFNode &
 	sites () final override
 	{ return getNode <HAnimHumanoid> () -> sites (); }
@@ -240,6 +210,36 @@ public:
 	const MFNode &
 	skeleton () const final override
 	{ return getNode <HAnimHumanoid> () -> skeleton (); }
+
+	virtual
+	SFNode &
+	skinNormal () final override
+	{ return getNode <HAnimHumanoid> () -> skinNormal (); }
+
+	virtual
+	const SFNode &
+	skinNormal () const final override
+	{ return getNode <HAnimHumanoid> () -> skinNormal (); }
+
+	virtual
+	SFNode &
+	skinCoord () final override
+	{ return getNode <HAnimHumanoid> () -> skinCoord (); }
+
+	virtual
+	const SFNode &
+	skinCoord () const final override
+	{ return getNode <HAnimHumanoid> () -> skinCoord (); }
+
+	virtual
+	MFNode &
+	skin () final override
+	{ return getNode <HAnimHumanoid> () -> skin (); }
+
+	virtual
+	const MFNode &
+	skin () const final override
+	{ return getNode <HAnimHumanoid> () -> skin (); }
 
 	/// @name Member access
 

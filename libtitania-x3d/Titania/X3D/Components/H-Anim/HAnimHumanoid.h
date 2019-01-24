@@ -181,36 +181,6 @@ public:
 	{ return *fields .viewpoints; }
 
 	virtual
-	SFNode &
-	skinNormal ()
-	{ return *fields .skinNormal; }
-
-	virtual
-	const SFNode &
-	skinNormal () const
-	{ return *fields .skinNormal; }
-
-	virtual
-	SFNode &
-	skinCoord ()
-	{ return *fields .skinCoord; }
-
-	virtual
-	const SFNode &
-	skinCoord () const
-	{ return *fields .skinCoord; }
-
-	virtual
-	MFNode &
-	skin ()
-	{ return *fields .skin; }
-
-	virtual
-	const MFNode &
-	skin () const
-	{ return *fields .skin; }
-
-	virtual
 	MFNode &
 	sites ()
 	{ return *fields .sites; }
@@ -249,6 +219,36 @@ public:
 	const MFNode &
 	skeleton () const
 	{ return *fields .skeleton; }
+
+	virtual
+	SFNode &
+	skinNormal ()
+	{ return *fields .skinNormal; }
+
+	virtual
+	const SFNode &
+	skinNormal () const
+	{ return *fields .skinNormal; }
+
+	virtual
+	SFNode &
+	skinCoord ()
+	{ return *fields .skinCoord; }
+
+	virtual
+	const SFNode &
+	skinCoord () const
+	{ return *fields .skinCoord; }
+
+	virtual
+	MFNode &
+	skin ()
+	{ return *fields .skin; }
+
+	virtual
+	const MFNode &
+	skin () const
+	{ return *fields .skin; }
 
 	///  @name Member access
 
@@ -309,13 +309,13 @@ private:
 		SFRotation* const scaleOrientation;
 		SFVec3f* const center;
 		MFNode* const viewpoints;
-		SFNode* const skinNormal;
-		SFNode* const skinCoord;
-		MFNode* const skin;
 		MFNode* const sites;
 		MFNode* const joints;
 		MFNode* const segments;
 		MFNode* const skeleton;
+		SFNode* const skinNormal;
+		SFNode* const skinCoord;
+		MFNode* const skin;
 	};
 
 	Fields fields;
@@ -323,8 +323,8 @@ private:
 	///  @name Fields
 
 	X3DPtr <Group>     viewpointsNode;
-	X3DPtr <Group>     skinNode;
 	X3DPtr <Group>     skeletonNode;
+	X3DPtr <Group>     skinNode;
 	X3DPtr <Transform> transformNode;
 
 };
