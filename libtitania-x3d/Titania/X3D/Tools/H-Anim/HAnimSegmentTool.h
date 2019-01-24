@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_H_ANIM_H_ANIM_SEGMENT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_H_ANIM_H_ANIM_SEGMENT_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_H_ANIM_HANIM_SEGMENT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_H_ANIM_HANIM_SEGMENT_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
 #include "../ToolColors.h"
@@ -73,7 +73,7 @@ public:
 		        X3DBaseTool (node),
 		X3DGroupingNodeTool (ToolColors::GREEN)
 	{
-		addType (X3DConstants::GroupTool);
+		//addType (X3DConstants::HAnimSegmentTool);
 	}
 
 	///  @name Fields
@@ -137,6 +137,19 @@ public:
 	const SFNode &
 	coord () const final override
 	{ return getNode <HAnimSegment> () -> coord (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
+
+	///  @name Destruction
+
+	virtual
+	~HAnimSegmentTool () final override
+	{ }
 
 
 protected:

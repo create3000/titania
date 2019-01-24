@@ -117,6 +117,12 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
 
+	///  @name Destruction
+
+	virtual
+	~SwitchTool () final override
+	{ }
+
 
 protected:
 

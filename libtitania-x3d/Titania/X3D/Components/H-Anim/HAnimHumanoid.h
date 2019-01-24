@@ -53,12 +53,14 @@
 
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class HAnimHumanoid :
 	virtual public X3DChildNode,
+	public X3DTransformMatrix3DObject,
 	public X3DBoundedObject
 {
 public:
@@ -224,6 +226,12 @@ public:
 	Box3d
 	getBBox () const final override;
 
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -244,6 +252,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_segments ();
 
 	///  @name Static members
 
@@ -276,6 +289,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Fields
+
+	X3DPtrArray <HAnimSegment> segmentNodes;
 
 };
 

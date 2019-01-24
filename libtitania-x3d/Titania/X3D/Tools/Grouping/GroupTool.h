@@ -76,6 +76,12 @@ public:
 		addType (X3DConstants::GroupTool);
 	}
 
+	///  @name Destruction
+
+	virtual
+	~GroupTool () final override
+	{ }
+
 };
 
 } // X3D

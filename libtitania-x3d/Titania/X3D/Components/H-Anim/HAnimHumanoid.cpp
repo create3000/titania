@@ -50,7 +50,11 @@
 
 #include "HAnimHumanoid.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
+
+#include "../H-Anim/HAnimSegment.h"
 
 namespace titania {
 namespace X3D {
@@ -79,10 +83,12 @@ HAnimHumanoid::Fields::Fields () :
 { }
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DChildNode (),
-	X3DBoundedObject (),
-	          fields ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	              X3DChildNode (),
+	X3DTransformMatrix3DObject (),
+	          X3DBoundedObject (),
+	                    fields (),
+	              segmentNodes ()
 {
 	addType (X3DConstants::HAnimHumanoid);
 
@@ -107,6 +113,8 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "skinNormal",       skinNormal ());
 	addField (inputOutput,    "skinCoord",        skinCoord ());
 	addField (inputOutput,    "skin",             skin ());
+
+	addChildObjects (segmentNodes);
 }
 
 X3DBaseNode*
@@ -119,7 +127,12 @@ void
 HAnimHumanoid::initialize ()
 {
 	X3DChildNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
 	X3DBoundedObject::initialize ();
+
+	segments () .addInterest (&HAnimHumanoid::set_segments, this);
+
+	set_segments ();
 }
 
 Box3d
@@ -129,9 +142,36 @@ HAnimHumanoid::getBBox () const
 }
 
 void
+HAnimHumanoid::set_segments ()
+{
+	segmentNodes .clear ();
+
+	for (const auto & node : segments ())
+	{
+		const auto segmentNode = x3d_cast <HAnimSegment*> (node);
+
+		if (segmentNode)
+			segmentNodes .emplace_back (segmentNode);
+	}
+}
+
+void
+HAnimHumanoid::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+	for (const auto & segmentNode : segmentNodes)
+		segmentNode -> traverse (type, renderObject);
+
+	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
 HAnimHumanoid::dispose ()
 {
 	X3DBoundedObject::dispose ();
+	X3DTransformMatrix3DObject::dispose ();
 	X3DChildNode::dispose ();
 }
 
