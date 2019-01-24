@@ -278,6 +278,26 @@ public:
 	endUndo (const UndoStepPtr & undoStep) final override
 	{ getTransformTools () [0] -> endUndo (undoStep); }
 
+	///  @name Input/Output
+
+	///  Inserts this object into @a ostream in VRML Classic Encoding.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override
+	{ return getNode <HAnimHumanoid> () -> toStream (ostream); }
+
+	///  Inserts this object into @a ostream in X3D XML Encoding.
+	virtual
+	void
+	toXMLStream (std::ostream & ostream) const override
+	{ return getNode <HAnimHumanoid> () -> toXMLStream (ostream); }
+
+	///  Inserts this object into @a ostream in X3D JSON Encoding.
+	virtual
+	void
+	toJSONStream (std::ostream & ostream) const override
+	{ return getNode <HAnimHumanoid> () -> toJSONStream (ostream); }
+
 	/// @name Destruction
 
 	virtual

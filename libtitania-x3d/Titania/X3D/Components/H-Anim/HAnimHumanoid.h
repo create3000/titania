@@ -267,6 +267,23 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
+	///  @name Input/Output
+
+	///  Inserts this object into @a ostream in VRML Classic Encoding.
+	virtual
+	void
+	toStream (std::ostream & ostream) const override;
+
+	///  Inserts this object into @a ostream in X3D XML Encoding.
+	virtual
+	void
+	toXMLStream (std::ostream & ostream) const override;
+
+	///  Inserts this object into @a ostream in X3D JSON Encoding.
+	virtual
+	void
+	toJSONStream (std::ostream & ostream) const override;
+
 	///  @name Destruction
 
 	virtual

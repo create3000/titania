@@ -298,6 +298,33 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 }
 
 void
+HAnimHumanoid::toStream (std::ostream & ostream) const
+{
+	skinNormalNode -> assign (normalNode);
+	skinCoordNode  -> assign (coordNode);
+
+	X3DChildNode::toJSONStream (ostream);
+}
+
+void
+HAnimHumanoid::toXMLStream (std::ostream & ostream) const
+{
+	skinNormalNode -> assign (normalNode);
+	skinCoordNode  -> assign (coordNode);
+
+	X3DChildNode::toJSONStream (ostream);
+}
+
+void
+HAnimHumanoid::toJSONStream (std::ostream & ostream) const
+{
+	skinNormalNode -> assign (normalNode);
+	skinCoordNode  -> assign (coordNode);
+
+	X3DChildNode::toJSONStream (ostream);
+}
+
+void
 HAnimHumanoid::dispose ()
 {
 	X3DBoundedObject::dispose ();
