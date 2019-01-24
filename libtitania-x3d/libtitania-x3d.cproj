@@ -987,6 +987,7 @@
     <None Include="Titania\X3D\Browser\Core\PrimitiveQualityType.h" />
     <None Include="Titania\X3D\Browser\Core\TextureQualityType.h" />
     <None Include="Titania\X3D\Tools\H-Anim\HAnimSegmentTool.h" />
+    <None Include="Titania\X3D\Tools\H-Anim\HAnimHumanoidTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

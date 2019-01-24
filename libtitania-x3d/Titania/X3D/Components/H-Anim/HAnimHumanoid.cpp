@@ -171,18 +171,6 @@ HAnimHumanoid::traverse (const TraverseType type, X3DRenderObject* const renderO
 }
 
 void
-HAnimHumanoid::addTool ()
-{
-	transformNode -> addTool ();
-}
-
-void
-HAnimHumanoid::removeTool (const bool really)
-{
-	transformNode -> removeTool (really);
-}
-
-void
 HAnimHumanoid::dispose ()
 {
 	X3DBoundedObject::dispose ();

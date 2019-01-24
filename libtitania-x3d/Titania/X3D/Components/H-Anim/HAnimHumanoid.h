@@ -59,7 +59,7 @@ namespace X3D {
 
 class HAnimHumanoid :
 	virtual public X3DChildNode,
-	public X3DBoundedObject
+	virtual public X3DBoundedObject
 {
 public:
 
@@ -90,130 +90,162 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	name ()
 	{ return *fields .name; }
 
+	virtual
 	const SFString &
 	name () const
 	{ return *fields .name; }
 
+	virtual
 	SFString &
 	version ()
 	{ return *fields .version; }
 
+	virtual
 	const SFString &
 	version () const
 	{ return *fields .version; }
 
+	virtual
 	MFString &
 	info ()
 	{ return *fields .info; }
 
+	virtual
 	const MFString &
 	info () const
 	{ return *fields .info; }
 
+	virtual
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
 
+	virtual
 	const SFVec3f &
 	translation () const
 	{ return *fields .translation; }
 
+	virtual
 	SFRotation &
 	rotation ()
 	{ return *fields .rotation; }
 
+	virtual
 	const SFRotation &
 	rotation () const
 	{ return *fields .rotation; }
 
+	virtual
 	SFVec3f &
 	scale ()
 	{ return *fields .scale; }
 
+	virtual
 	const SFVec3f &
 	scale () const
 	{ return *fields .scale; }
 
+	virtual
 	SFRotation &
 	scaleOrientation ()
 	{ return *fields .scaleOrientation; }
 
+	virtual
 	const SFRotation &
 	scaleOrientation () const
 	{ return *fields .scaleOrientation; }
 
+	virtual
 	SFVec3f &
 	center ()
 	{ return *fields .center; }
 
+	virtual
 	const SFVec3f &
 	center () const
 	{ return *fields .center; }
 
+	virtual
 	MFNode &
 	viewpoints ()
 	{ return *fields .viewpoints; }
 
+	virtual
 	const MFNode &
 	viewpoints () const
 	{ return *fields .viewpoints; }
 
+	virtual
 	SFNode &
 	skinNormal ()
 	{ return *fields .skinNormal; }
 
+	virtual
 	const SFNode &
 	skinNormal () const
 	{ return *fields .skinNormal; }
 
+	virtual
 	SFNode &
 	skinCoord ()
 	{ return *fields .skinCoord; }
 
+	virtual
 	const SFNode &
 	skinCoord () const
 	{ return *fields .skinCoord; }
 
+	virtual
 	MFNode &
 	skin ()
 	{ return *fields .skin; }
 
+	virtual
 	const MFNode &
 	skin () const
 	{ return *fields .skin; }
 
+	virtual
 	MFNode &
 	sites ()
 	{ return *fields .sites; }
 
+	virtual
 	const MFNode &
 	sites () const
 	{ return *fields .sites; }
 
+	virtual
 	MFNode &
 	joints ()
 	{ return *fields .joints; }
 
+	virtual
 	const MFNode &
 	joints () const
 	{ return *fields .joints; }
 
+	virtual
 	MFNode &
 	skeleton ()
 	{ return *fields .skeleton; }
 
+	virtual
 	const MFNode &
 	skeleton () const
 	{ return *fields .skeleton; }
 
+	virtual
 	MFNode &
 	segments ()
 	{ return *fields .segments; }
 
+	virtual
 	const MFNode &
 	segments () const
 	{ return *fields .segments; }
@@ -222,30 +254,27 @@ public:
 
 	virtual
 	Box3d
-	getBBox () const final override;
+	getBBox () const override;
+
+	virtual
+	const X3DPtr <Transform> &
+	getTransform () const
+	{ return transformNode; }
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
-
-	virtual
-	void
-	addTool () final override;
-
-	virtual
-	void
-	removeTool (const bool = false) final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 	virtual
-	~HAnimHumanoid () final override;
+	~HAnimHumanoid () override;
 
 
 protected:
@@ -254,7 +283,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:

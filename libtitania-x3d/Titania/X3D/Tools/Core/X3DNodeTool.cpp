@@ -104,6 +104,8 @@ X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const size_t index
 void
 X3DNodeTool::set_undo (const UndoStepContainerPtr & undoStepContainer)
 {
+__LOG__ << undoStepContainer -> getUndoStep () -> getDescription () << std::endl;
+
 	undoStepContainer -> getUndoStep () -> setDescription (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
 
 	undo_changed () = undoStepContainer;

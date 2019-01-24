@@ -88,6 +88,7 @@
 #include "../../Tools/Grouping/SwitchTool.h"
 #include "../../Tools/Grouping/TransformTool.h"
 
+#include "../../Tools/H-Anim/HAnimHumanoidTool.h"
 #include "../../Tools/H-Anim/HAnimSegmentTool.h"
 
 #include "../../Tools/Layout/LayoutGroupTool.h"
@@ -167,6 +168,7 @@ SupportedTools::SupportedTools () :
 	addTool ("GeoTransform",            [ ] (X3DBaseNode* const node) { return new GeoTransformTool            (node); });
 	addTool ("GeoViewpoint",            [ ] (X3DBaseNode* const node) { return new GeoViewpointTool            (node); });
 	addTool ("Group",                   [ ] (X3DBaseNode* const node) { return new GroupTool                   (node); });
+	addTool ("HAnimHumanoid",           [ ] (X3DBaseNode* const node) { return new HAnimHumanoidTool           (node); });
 	addTool ("HAnimSegment",            [ ] (X3DBaseNode* const node) { return new HAnimSegmentTool            (node); });
 	addTool ("IndexedFaceSet",          [ ] (X3DBaseNode* const node) { return new IndexedFaceSetTool          (node); });
 	addTool ("IndexedLineSet",          [ ] (X3DBaseNode* const node) { return new IndexedLineSetTool          (node); });

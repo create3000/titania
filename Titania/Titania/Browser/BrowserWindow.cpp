@@ -2108,7 +2108,7 @@ BrowserWindow::on_primitive_clicked (const std::string & description, const std:
 	try
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (description);
-		const auto nodes    = getBrowserWindow () -> import ({ find_data_file (path) }, undoStep);
+		const auto nodes    = getBrowserWindow () -> import ({ "file://" + find_data_file (path) }, undoStep);
 	
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
