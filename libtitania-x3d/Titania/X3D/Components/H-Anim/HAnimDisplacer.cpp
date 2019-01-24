@@ -61,9 +61,9 @@ const std::string HAnimDisplacer::containerField = "displacers";
 
 HAnimDisplacer::Fields::Fields () :
 	         name (new SFString ()),
+	   coordIndex (new MFInt32 ()),
 	       weight (new SFFloat ()),
-	displacements (new MFVec3f ()),
-	   coordIndex (new MFInt32 ())
+	displacements (new MFVec3f ())
 { }
 
 HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
@@ -75,9 +75,9 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "name",          name ());
+	addField (inputOutput, "coordIndex",    coordIndex ());
 	addField (inputOutput, "weight",        weight ());
 	addField (inputOutput, "displacements", displacements ());
-	addField (inputOutput, "coordIndex",    coordIndex ());
 }
 
 X3DBaseNode*

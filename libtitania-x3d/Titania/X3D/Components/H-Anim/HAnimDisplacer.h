@@ -96,6 +96,14 @@ public:
 	name () const
 	{ return *fields .name; }
 
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
 	SFFloat &
 	weight ()
 	{ return *fields .weight; }
@@ -111,14 +119,6 @@ public:
 	const MFVec3f &
 	displacements () const
 	{ return *fields .displacements; }
-
-	MFInt32 &
-	coordIndex ()
-	{ return *fields .coordIndex; }
-
-	const MFInt32 &
-	coordIndex () const
-	{ return *fields .coordIndex; }
 
 	///  @name Destruction
 
@@ -150,9 +150,9 @@ private:
 		Fields ();
 
 		SFString* const name;
+		MFInt32* const coordIndex;
 		SFFloat* const weight;
 		MFVec3f* const displacements;
-		MFInt32* const coordIndex;
 	};
 
 	Fields fields;
