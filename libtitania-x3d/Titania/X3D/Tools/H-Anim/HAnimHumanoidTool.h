@@ -223,16 +223,6 @@ public:
 
 	virtual
 	MFNode &
-	skeleton () final override
-	{ return getNode <HAnimHumanoid> () -> skeleton (); }
-
-	virtual
-	const MFNode &
-	skeleton () const final override
-	{ return getNode <HAnimHumanoid> () -> skeleton (); }
-
-	virtual
-	MFNode &
 	segments () final override
 	{ return getNode <HAnimHumanoid> () -> segments (); }
 
@@ -240,6 +230,16 @@ public:
 	const MFNode &
 	segments () const final override
 	{ return getNode <HAnimHumanoid> () -> segments (); }
+
+	virtual
+	MFNode &
+	skeleton () final override
+	{ return getNode <HAnimHumanoid> () -> skeleton (); }
+
+	virtual
+	const MFNode &
+	skeleton () const final override
+	{ return getNode <HAnimHumanoid> () -> skeleton (); }
 
 	/// @name Member access
 

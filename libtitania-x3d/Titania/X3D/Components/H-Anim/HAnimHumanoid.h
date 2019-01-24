@@ -232,16 +232,6 @@ public:
 
 	virtual
 	MFNode &
-	skeleton ()
-	{ return *fields .skeleton; }
-
-	virtual
-	const MFNode &
-	skeleton () const
-	{ return *fields .skeleton; }
-
-	virtual
-	MFNode &
 	segments ()
 	{ return *fields .segments; }
 
@@ -249,6 +239,16 @@ public:
 	const MFNode &
 	segments () const
 	{ return *fields .segments; }
+
+	virtual
+	MFNode &
+	skeleton ()
+	{ return *fields .skeleton; }
+
+	virtual
+	const MFNode &
+	skeleton () const
+	{ return *fields .skeleton; }
 
 	///  @name Member access
 
@@ -314,8 +314,8 @@ private:
 		MFNode* const skin;
 		MFNode* const sites;
 		MFNode* const joints;
-		MFNode* const skeleton;
 		MFNode* const segments;
+		MFNode* const skeleton;
 	};
 
 	Fields fields;

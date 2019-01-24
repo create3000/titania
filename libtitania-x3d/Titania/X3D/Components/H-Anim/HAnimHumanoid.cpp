@@ -78,8 +78,8 @@ HAnimHumanoid::Fields::Fields () :
 	            skin (new MFNode ()),
 	           sites (new MFNode ()),
 	          joints (new MFNode ()),
-	        skeleton (new MFNode ()),
-	        segments (new MFNode ())
+	        segments (new MFNode ()),
+	        skeleton (new MFNode ())
 { }
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
@@ -110,8 +110,8 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "skin",             skin ());
 	addField (inputOutput,    "sites",            sites ());
 	addField (inputOutput,    "joints",           joints ());
-	addField (inputOutput,    "skeleton",         skeleton ());
 	addField (inputOutput,    "segments",         segments ());
+	addField (inputOutput,    "skeleton",         skeleton ());
 
 	addChildObjects (transformNode);
 }
@@ -135,7 +135,7 @@ HAnimHumanoid::initialize ()
 	center ()           .addInterest (transformNode -> center ());
 	bboxSize ()         .addInterest (transformNode -> bboxSize ());
 	bboxCenter ()       .addInterest (transformNode -> bboxCenter ());
-	segments ()         .addInterest (transformNode -> children ());
+	skeleton ()         .addInterest (transformNode -> children ());
 
 	transformNode -> translation ()      .addInterest (translation ());
 	transformNode -> rotation ()         .addInterest (rotation ());
@@ -144,7 +144,7 @@ HAnimHumanoid::initialize ()
 	transformNode -> center ()           .addInterest (center ());
 	transformNode -> bboxSize ()         .addInterest (bboxSize ());
 	transformNode -> bboxCenter ()       .addInterest (bboxCenter ());
-	transformNode -> children ()         .addInterest (segments ());
+	transformNode -> children ()         .addInterest (skeleton ());
 
 	transformNode -> translation ()      = translation ();
 	transformNode -> rotation ()         = rotation ();
@@ -153,7 +153,7 @@ HAnimHumanoid::initialize ()
 	transformNode -> center ()           = center ();
 	transformNode -> bboxSize ()         = bboxSize ();
 	transformNode -> bboxCenter ()       = bboxCenter ();
-	transformNode -> children ()         = segments ();
+	transformNode -> children ()         = skeleton ();
 
 	transformNode -> setup ();
 }
