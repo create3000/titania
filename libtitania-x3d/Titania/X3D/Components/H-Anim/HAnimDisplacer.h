@@ -61,6 +61,8 @@ class HAnimDisplacer :
 {
 public:
 
+	///  @name Construction
+
 	HAnimDisplacer (X3DExecutionContext* const executionContext);
 
 	virtual
@@ -86,22 +88,6 @@ public:
 
 	///  @name Fields
 
-	MFInt32 &
-	coordIndex ()
-	{ return *fields .coordIndex; }
-
-	const MFInt32 &
-	coordIndex () const
-	{ return *fields .coordIndex; }
-
-	MFVec3f &
-	displacements ()
-	{ return *fields .displacements; }
-
-	const MFVec3f &
-	displacements () const
-	{ return *fields .displacements; }
-
 	SFString &
 	name ()
 	{ return *fields .name; }
@@ -118,9 +104,38 @@ public:
 	weight () const
 	{ return *fields .weight; }
 
+	MFVec3f &
+	displacements ()
+	{ return *fields .displacements; }
+
+	const MFVec3f &
+	displacements () const
+	{ return *fields .displacements; }
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+	///  @name Destruction
+
+	virtual
+	~HAnimDisplacer () final override;
+
+
+protected:
+
+	///  @name Contruction
+
+	virtual
+	void
+	initialize () final override;
+
 
 private:
-
 
 	///  @name Static members
 
@@ -128,16 +143,16 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
-		MFInt32* const coordIndex;
-		MFVec3f* const displacements;
 		SFString* const name;
 		SFFloat* const weight;
+		MFVec3f* const displacements;
+		MFInt32* const coordIndex;
 	};
 
 	Fields fields;

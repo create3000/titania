@@ -61,6 +61,8 @@ class HAnimSegment :
 {
 public:
 
+	///  @name Construction
+
 	HAnimSegment (X3DExecutionContext* const executionContext);
 
 	virtual
@@ -86,29 +88,13 @@ public:
 
 	///  @name Fields
 
-	SFVec3f &
-	centerOfMass ()
-	{ return *fields .centerOfMass; }
+	SFString &
+	name ()
+	{ return *fields .name; }
 
-	const SFVec3f &
-	centerOfMass () const
-	{ return *fields .centerOfMass; }
-
-	SFNode &
-	coord ()
-	{ return *fields .coord; }
-
-	const SFNode &
-	coord () const
-	{ return *fields .coord; }
-
-	MFNode &
-	displacers ()
-	{ return *fields .displacers; }
-
-	const MFNode &
-	displacers () const
-	{ return *fields .displacers; }
+	const SFString &
+	name () const
+	{ return *fields .name; }
 
 	SFFloat &
 	mass ()
@@ -118,6 +104,14 @@ public:
 	mass () const
 	{ return *fields .mass; }
 
+	SFVec3f &
+	centerOfMass ()
+	{ return *fields .centerOfMass; }
+
+	const SFVec3f &
+	centerOfMass () const
+	{ return *fields .centerOfMass; }
+
 	MFFloat &
 	momentsOfInertia ()
 	{ return *fields .momentsOfInertia; }
@@ -126,17 +120,38 @@ public:
 	momentsOfInertia () const
 	{ return *fields .momentsOfInertia; }
 
-	SFString &
-	name ()
-	{ return *fields .name; }
+	MFNode &
+	displacers ()
+	{ return *fields .displacers; }
 
-	const SFString &
-	name () const
-	{ return *fields .name; }
+	const MFNode &
+	displacers () const
+	{ return *fields .displacers; }
+
+	SFNode &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode &
+	coord () const
+	{ return *fields .coord; }
+
+	///  @name Destruction
+
+	virtual
+	~HAnimSegment () final override;
+
+
+protected:
+
+	///  @name Contruction
+
+	virtual
+	void
+	initialize () final override;
 
 
 private:
-
 
 	///  @name Static members
 
@@ -144,18 +159,18 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
-		SFVec3f* const centerOfMass;
-		SFNode* const coord;
-		MFNode* const displacers;
-		SFFloat* const mass;
-		MFFloat* const momentsOfInertia;
 		SFString* const name;
+		SFFloat* const mass;
+		SFVec3f* const centerOfMass;
+		MFFloat* const momentsOfInertia;
+		MFNode* const displacers;
+		SFNode* const coord;
 	};
 
 	Fields fields;

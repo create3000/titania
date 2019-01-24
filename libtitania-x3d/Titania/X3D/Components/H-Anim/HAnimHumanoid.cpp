@@ -60,22 +60,22 @@ const std::string HAnimHumanoid::typeName       = "HAnimHumanoid";
 const std::string HAnimHumanoid::containerField = "children";
 
 HAnimHumanoid::Fields::Fields () :
-	center (new SFVec3f ()),
-	info (new MFString ()),
-	joints (new MFNode ()),
-	name (new SFString ()),
-	rotation (new SFRotation ()),
-	scale (new SFVec3f (1, 1, 1)),
+	            name (new SFString ()),
+	         version (new SFString ()),
+	            info (new MFString ()),
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	segments (new MFNode ()),
-	sites (new MFNode ()),
-	skeleton (new MFNode ()),
-	skin (new MFNode ()),
-	skinCoord (new SFNode ()),
-	skinNormal (new SFNode ()),
-	translation (new SFVec3f ()),
-	version (new SFString ()),
-	viewpoints (new MFNode ())
+	          center (new SFVec3f ()),
+	      viewpoints (new MFNode ()),
+	          joints (new MFNode ()),
+	        segments (new MFNode ()),
+	           sites (new MFNode ()),
+	        skeleton (new MFNode ()),
+	      skinNormal (new SFNode ()),
+	       skinCoord (new SFNode ()),
+	            skin (new MFNode ())
 { }
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
@@ -87,24 +87,26 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::HAnimHumanoid);
 
 	addField (inputOutput,    "metadata",         metadata ());
-	addField (initializeOnly, "bboxSize",         bboxSize ());
-	addField (initializeOnly, "bboxCenter",       bboxCenter ());
-	addField (inputOutput,    "center",           center ());
-	addField (inputOutput,    "info",             info ());
-	addField (inputOutput,    "joints",           joints ());
 	addField (inputOutput,    "name",             name ());
+	addField (inputOutput,    "version",          version ());
+	addField (inputOutput,    "info",             info ());
+
+	addField (inputOutput,    "translation",      translation ());
 	addField (inputOutput,    "rotation",         rotation ());
 	addField (inputOutput,    "scale",            scale ());
 	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "center",           center ());
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+
+	addField (inputOutput,    "viewpoints",       viewpoints ());
+	addField (inputOutput,    "joints",           joints ());
 	addField (inputOutput,    "segments",         segments ());
 	addField (inputOutput,    "sites",            sites ());
 	addField (inputOutput,    "skeleton",         skeleton ());
-	addField (inputOutput,    "skin",             skin ());
-	addField (inputOutput,    "skinCoord",        skinCoord ());
 	addField (inputOutput,    "skinNormal",       skinNormal ());
-	addField (inputOutput,    "translation",      translation ());
-	addField (inputOutput,    "version",          version ());
-	addField (inputOutput,    "viewpoints",       viewpoints ());
+	addField (inputOutput,    "skinCoord",        skinCoord ());
+	addField (inputOutput,    "skin",             skin ());
 }
 
 X3DBaseNode*
@@ -132,6 +134,9 @@ HAnimHumanoid::dispose ()
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }
+
+HAnimHumanoid::~HAnimHumanoid ()
+{ }
 
 } // X3D
 } // titania

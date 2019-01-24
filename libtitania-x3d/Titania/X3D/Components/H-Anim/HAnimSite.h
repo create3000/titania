@@ -61,6 +61,8 @@ class HAnimSite :
 {
 public:
 
+	///  @name Construction
+
 	HAnimSite (X3DExecutionContext* const executionContext);
 
 	virtual
@@ -86,14 +88,6 @@ public:
 
 	///  @name Fields
 
-	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
-
 	SFString &
 	name ()
 	{ return *fields .name; }
@@ -101,6 +95,14 @@ public:
 	const SFString &
 	name () const
 	{ return *fields .name; }
+
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
 
 	SFRotation &
 	rotation ()
@@ -127,16 +129,29 @@ public:
 	{ return *fields .scaleOrientation; }
 
 	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
+	center ()
+	{ return *fields .center; }
 
 	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
+	center () const
+	{ return *fields .center; }
+
+	///  @name Destruction
+
+	virtual
+	~HAnimSite () final override;
+
+
+protected:
+
+	///  @name Contruction
+
+	virtual
+	void
+	initialize () final override;
 
 
 private:
-
 
 	///  @name Static members
 
@@ -144,18 +159,18 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
-		SFVec3f* const center;
 		SFString* const name;
+		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
 		SFRotation* const scaleOrientation;
-		SFVec3f* const translation;
+		SFVec3f* const center;
 	};
 
 	Fields fields;

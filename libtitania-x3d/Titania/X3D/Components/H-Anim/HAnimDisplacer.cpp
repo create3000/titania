@@ -60,10 +60,10 @@ const std::string HAnimDisplacer::typeName       = "HAnimDisplacer";
 const std::string HAnimDisplacer::containerField = "displacers";
 
 HAnimDisplacer::Fields::Fields () :
-	coordIndex (new MFInt32 ()),
+	         name (new SFString ()),
+	       weight (new SFFloat ()),
 	displacements (new MFVec3f ()),
-	name (new SFString ()),
-	weight (new SFFloat ())
+	   coordIndex (new MFInt32 ())
 { }
 
 HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
@@ -74,10 +74,10 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::HAnimDisplacer);
 
 	addField (inputOutput, "metadata",      metadata ());
-	addField (inputOutput, "coordIndex",    coordIndex ());
-	addField (inputOutput, "displacements", displacements ());
 	addField (inputOutput, "name",          name ());
 	addField (inputOutput, "weight",        weight ());
+	addField (inputOutput, "displacements", displacements ());
+	addField (inputOutput, "coordIndex",    coordIndex ());
 }
 
 X3DBaseNode*
@@ -85,6 +85,15 @@ HAnimDisplacer::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimDisplacer (executionContext);
 }
+
+void
+HAnimDisplacer::initialize ()
+{
+	X3DGeometricPropertyNode::initialize ();
+}
+
+HAnimDisplacer::~HAnimDisplacer ()
+{ }
 
 } // X3D
 } // titania

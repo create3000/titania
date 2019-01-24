@@ -60,12 +60,12 @@ const std::string HAnimSite::typeName       = "HAnimSite";
 const std::string HAnimSite::containerField = "children";
 
 HAnimSite::Fields::Fields () :
-	center (new SFVec3f ()),
-	name (new SFString ()),
-	rotation (new SFRotation ()),
-	scale (new SFVec3f (1, 1, 1)),
+	            name (new SFString ()),
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	translation (new SFVec3f ())
+	          center (new SFVec3f ())
 { }
 
 HAnimSite::HAnimSite (X3DExecutionContext* const executionContext) :
@@ -76,17 +76,18 @@ HAnimSite::HAnimSite (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::HAnimSite);
 
 	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOutput,    "name",             name ());
+
+	addField (inputOutput,    "translation",      translation ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "center",           center ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-	addField (inputOutput,    "center",           center ());
-	addField (inputOutput,    "name",             name ());
-	addField (inputOutput,    "rotation",         rotation ());
-	addField (inputOutput,    "scale",            scale ());
-	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
-	addField (inputOutput,    "translation",      translation ());
 }
 
 X3DBaseNode*
@@ -94,6 +95,15 @@ HAnimSite::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimSite (executionContext);
 }
+
+void
+HAnimSite::initialize ()
+{
+	X3DGroupingNode::initialize ();
+}
+
+HAnimSite::~HAnimSite ()
+{ }
 
 } // X3D
 } // titania

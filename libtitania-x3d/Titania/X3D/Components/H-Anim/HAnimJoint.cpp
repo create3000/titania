@@ -60,19 +60,19 @@ const std::string HAnimJoint::typeName       = "HAnimJoint";
 const std::string HAnimJoint::containerField = "children";
 
 HAnimJoint::Fields::Fields () :
-	center (new SFVec3f ()),
-	displacers (new MFNode ()),
-	limitOrientation (new SFRotation ()),
-	llimit (new MFFloat ()),
-	name (new SFString ()),
-	rotation (new SFRotation ()),
-	scale (new SFVec3f (1, 1, 1)),
+	            name (new SFString ()),
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	skinCoordIndex (new MFInt32 ()),
-	skinCoordWeight (new MFFloat ()),
-	stiffness (new MFFloat ({ 0, 0, 0 })),
-	translation (new SFVec3f ()),
-	ulimit (new MFFloat ())
+	          center (new SFVec3f ()),
+	          llimit (new MFFloat ()),
+	          ulimit (new MFFloat ()),
+	limitOrientation (new SFRotation ()),
+	       stiffness (new MFFloat ({ 0, 0, 0 })),
+	  skinCoordIndex (new MFInt32 ()),
+	 skinCoordWeight (new MFFloat ()),
+	      displacers (new MFNode ())
 { }
 
 HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
@@ -83,24 +83,26 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::HAnimJoint);
 
 	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOutput,    "name",             name ());
+
+	addField (inputOutput,    "translation",      translation ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "center",           center ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-	addField (inputOutput,    "center",           center ());
-	addField (inputOutput,    "displacers",       displacers ());
-	addField (inputOutput,    "limitOrientation", limitOrientation ());
+
 	addField (inputOutput,    "llimit",           llimit ());
-	addField (inputOutput,    "name",             name ());
-	addField (inputOutput,    "rotation",         rotation ());
-	addField (inputOutput,    "scale",            scale ());
-	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "ulimit",           ulimit ());
+	addField (inputOutput,    "limitOrientation", limitOrientation ());
+	addField (inputOutput,    "stiffness",        stiffness ());
 	addField (inputOutput,    "skinCoordIndex",   skinCoordIndex ());
 	addField (inputOutput,    "skinCoordWeight",  skinCoordWeight ());
-	addField (inputOutput,    "stiffness",        stiffness ());
-	addField (inputOutput,    "translation",      translation ());
-	addField (inputOutput,    "ulimit",           ulimit ());
+	addField (inputOutput,    "displacers",       displacers ());
 }
 
 X3DBaseNode*
@@ -108,6 +110,15 @@ HAnimJoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimJoint (executionContext);
 }
+
+void
+HAnimJoint::initialize ()
+{
+	X3DGroupingNode::initialize ();
+}
+
+HAnimJoint::~HAnimJoint ()
+{ }
 
 } // X3D
 } // titania

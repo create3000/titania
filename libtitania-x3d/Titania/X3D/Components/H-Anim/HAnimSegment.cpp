@@ -60,12 +60,12 @@ const std::string HAnimSegment::typeName       = "HAnimSegment";
 const std::string HAnimSegment::containerField = "children";
 
 HAnimSegment::Fields::Fields () :
-	centerOfMass (new SFVec3f ()),
-	coord (new SFNode ()),
-	displacers (new MFNode ()),
-	mass (new SFFloat ()),
+	            name (new SFString ()),
+	            mass (new SFFloat ()),
+	    centerOfMass (new SFVec3f ()),
 	momentsOfInertia (new MFFloat ({ 0, 0, 0, 0, 0, 0, 0, 0, 0 })),
-	name (new SFString ())
+	      displacers (new MFNode ()),
+	           coord (new SFNode ())
 { }
 
 HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
@@ -76,17 +76,19 @@ HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::HAnimSegment);
 
 	addField (inputOutput,    "metadata",         metadata ());
+	addField (inputOutput,    "name",             name ());
+
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-	addField (inputOutput,    "centerOfMass",     centerOfMass ());
-	addField (inputOutput,    "coord",            coord ());
-	addField (inputOutput,    "displacers",       displacers ());
+
 	addField (inputOutput,    "mass",             mass ());
+	addField (inputOutput,    "centerOfMass",     centerOfMass ());
 	addField (inputOutput,    "momentsOfInertia", momentsOfInertia ());
-	addField (inputOutput,    "name",             name ());
+	addField (inputOutput,    "displacers",       displacers ());
+	addField (inputOutput,    "coord",            coord ());
 }
 
 X3DBaseNode*
@@ -94,6 +96,15 @@ HAnimSegment::create (X3DExecutionContext* const executionContext) const
 {
 	return new HAnimSegment (executionContext);
 }
+
+void
+HAnimSegment::initialize ()
+{
+	X3DGroupingNode::initialize ();
+}
+
+HAnimSegment::~HAnimSegment ()
+{ }
 
 } // X3D
 } // titania
