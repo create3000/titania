@@ -89,6 +89,7 @@
 #include "../../Tools/Grouping/TransformTool.h"
 
 #include "../../Tools/H-Anim/HAnimHumanoidTool.h"
+#include "../../Tools/H-Anim/HAnimJointTool.h"
 #include "../../Tools/H-Anim/HAnimSegmentTool.h"
 
 #include "../../Tools/Layout/LayoutGroupTool.h"
@@ -169,6 +170,7 @@ SupportedTools::SupportedTools () :
 	addTool ("GeoViewpoint",            [ ] (X3DBaseNode* const node) { return new GeoViewpointTool            (node); });
 	addTool ("Group",                   [ ] (X3DBaseNode* const node) { return new GroupTool                   (node); });
 	addTool ("HAnimHumanoid",           [ ] (X3DBaseNode* const node) { return new HAnimHumanoidTool           (node); });
+	addTool ("HAnimJoint",              [ ] (X3DBaseNode* const node) { return new HAnimJointTool              (node); });
 	addTool ("HAnimSegment",            [ ] (X3DBaseNode* const node) { return new HAnimSegmentTool            (node); });
 	addTool ("IndexedFaceSet",          [ ] (X3DBaseNode* const node) { return new IndexedFaceSetTool          (node); });
 	addTool ("IndexedLineSet",          [ ] (X3DBaseNode* const node) { return new IndexedLineSetTool          (node); });

@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class HAnimJoint :
-	public X3DTransformNode
+	virtual public X3DTransformNode
 {
 public:
 
@@ -88,66 +88,82 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	name ()
 	{ return *fields .name; }
 
+	virtual
 	const SFString &
 	name () const
 	{ return *fields .name; }
 
+	virtual
 	MFFloat &
 	llimit ()
 	{ return *fields .llimit; }
 
+	virtual
 	const MFFloat &
 	llimit () const
 	{ return *fields .llimit; }
 
+	virtual
 	MFFloat &
 	ulimit ()
 	{ return *fields .ulimit; }
 
+	virtual
 	const MFFloat &
 	ulimit () const
 	{ return *fields .ulimit; }
 
+	virtual
 	SFRotation &
 	limitOrientation ()
 	{ return *fields .limitOrientation; }
 
+	virtual
 	const SFRotation &
 	limitOrientation () const
 	{ return *fields .limitOrientation; }
 
+	virtual
 	MFFloat &
 	stiffness ()
 	{ return *fields .stiffness; }
 
+	virtual
 	const MFFloat &
 	stiffness () const
 	{ return *fields .stiffness; }
 
+	virtual
 	MFInt32 &
 	skinCoordIndex ()
 	{ return *fields .skinCoordIndex; }
 
+	virtual
 	const MFInt32 &
 	skinCoordIndex () const
 	{ return *fields .skinCoordIndex; }
 
+	virtual
 	MFFloat &
 	skinCoordWeight ()
 	{ return *fields .skinCoordWeight; }
 
+	virtual
 	const MFFloat &
 	skinCoordWeight () const
 	{ return *fields .skinCoordWeight; }
 
+	virtual
 	MFNode &
 	displacers ()
 	{ return *fields .displacers; }
 
+	virtual
 	const MFNode &
 	displacers () const
 	{ return *fields .displacers; }
@@ -155,7 +171,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~HAnimJoint () final override;
+	~HAnimJoint () override;
 
 
 protected:
@@ -164,7 +180,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:
