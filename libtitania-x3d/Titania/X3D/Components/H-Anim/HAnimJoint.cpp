@@ -51,6 +51,7 @@
 #include "HAnimJoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -73,7 +74,9 @@ HAnimJoint::Fields::Fields () :
 HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTransformNode (),
-	          fields ()
+	          fields (),
+	    cameraObject (),
+	     modelMatrix ()
 {
 	addType (X3DConstants::HAnimJoint);
 
@@ -115,6 +118,26 @@ void
 HAnimJoint::initialize ()
 {
 	X3DTransformNode::initialize ();
+
+	X3DTransformNode::isCameraObject () .addInterest (&HAnimJoint::set_cameraObject, this);
+	skinCoordIndex ()                   .addInterest (&HAnimJoint::set_cameraObject, this);
+
+	set_cameraObject ();
+}
+
+void
+HAnimJoint::set_cameraObject ()
+{
+	cameraObject = not skinCoordIndex () .empty () or X3DTransformNode::isCameraObject ();
+}
+
+void
+HAnimJoint::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	if (type == TraverseType::CAMERA)
+		modelMatrix = getMatrix () * renderObject -> getModelViewMatrix () .get ();
+
+	X3DTransformNode::traverse (type, renderObject);
 }
 
 HAnimJoint::~HAnimJoint ()

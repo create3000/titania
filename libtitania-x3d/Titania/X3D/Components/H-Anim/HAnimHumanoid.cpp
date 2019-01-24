@@ -56,6 +56,8 @@
 
 #include "../Grouping/Group.h"
 #include "../Grouping/Transform.h"
+#include "../H-Anim/HAnimJoint.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -91,7 +93,10 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	            viewpointsNode (new Group (executionContext)),
 	              skeletonNode (new Group (executionContext)),
 	                  skinNode (new Group (executionContext)),
-	             transformNode (new Transform (executionContext))
+	             transformNode (new Transform (executionContext)),
+	                jointNodes (),
+	             skinCoordNode (),
+	                 coordNode ()
 {
 	addType (X3DConstants::HAnimHumanoid);
 
@@ -120,7 +125,10 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addChildObjects (viewpointsNode,
 	                 skeletonNode,
 	                 skinNode,
-	                 transformNode);
+	                 transformNode,
+	                 jointNodes,
+	                 skinCoordNode,
+	                 coordNode);
 }
 
 X3DBaseNode*
@@ -187,6 +195,14 @@ HAnimHumanoid::initialize ()
 	skeletonNode   -> setup ();
 	skinNode       -> setup ();
 	transformNode  -> setup ();
+
+	// 
+
+	joints ()    .addInterest (&HAnimHumanoid::set_joints,    this);
+	skinCoord () .addInterest (&HAnimHumanoid::set_skinCoord, this);
+
+	set_joints ();
+	set_skinCoord ();
 }
 
 Box3d
@@ -196,9 +212,68 @@ HAnimHumanoid::getBBox () const
 }
 
 void
+HAnimHumanoid::set_joints ()
+{
+	jointNodes .clear ();
+
+	for (const auto & node : joints ())
+	{
+		const auto jointNode = x3d_cast <HAnimJoint*> (node);
+
+		if (jointNode)
+			jointNodes .emplace_back (jointNode);
+	}
+}
+
+void
+HAnimHumanoid::set_skinCoord ()
+{
+	coordNode = nullptr;
+
+	skinCoordNode = x3d_cast <X3DCoordinateNode*> (skinCoord ());
+
+	if (skinCoordNode)
+		coordNode = X3DPtr <X3DCoordinateNode> (skinCoordNode -> copy (CopyType::FLAT_COPY));
+}
+
+void
 HAnimHumanoid::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	transformNode -> traverse (type, renderObject);
+
+	skinning (type, renderObject);
+}
+
+void
+HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	try
+	{
+		if (type not_eq TraverseType::CAMERA)
+			return;
+
+		if (not skinCoordNode)
+			return;
+
+		const auto invModelMatrix = inverse (transformNode -> getMatrix () * renderObject -> getModelViewMatrix () .get ());
+
+		for (const auto & jointNode : jointNodes)
+		{
+			const auto   jointMatrix     = jointNode -> getModelMatrix () * invModelMatrix;
+			const auto & skinCoordIndex  = jointNode -> skinCoordIndex ();
+			const auto & skinCoordWeight = jointNode -> skinCoordWeight ();
+	
+			for (size_t i = 0, size = skinCoordIndex .size (); i < size; ++ i)
+			{
+				const auto index  = skinCoordIndex [i];
+				const auto weight = false and i < skinCoordWeight .size () ? skinCoordWeight [i] : 1.0;
+
+				skinCoordNode -> set1Point (index, weight * coordNode -> get1Point (index) * jointMatrix);
+			}
+		}
+	}
+	catch (const std::domain_error & error)
+	{ }
 }
 
 void

@@ -288,6 +288,19 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_joints ();
+	
+	void
+	set_skinCoord ();
+	
+	///  @name Operations
+
+	void
+	skinning (const TraverseType type, X3DRenderObject* const renderObject);
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -320,13 +333,15 @@ private:
 
 	Fields fields;
 
-	///  @name Fields
+	///  @name Members
 
-	X3DPtr <Group>     viewpointsNode;
-	X3DPtr <Group>     skeletonNode;
-	X3DPtr <Group>     skinNode;
-	X3DPtr <Transform> transformNode;
-
+	X3DPtr <Group>             viewpointsNode;
+	X3DPtr <Group>             skeletonNode;
+	X3DPtr <Group>             skinNode;
+	X3DPtr <Transform>         transformNode;
+	X3DPtrArray <HAnimJoint>   jointNodes;
+	X3DPtr <X3DCoordinateNode> skinCoordNode;
+	X3DPtr <X3DCoordinateNode> coordNode;
 };
 
 } // X3D

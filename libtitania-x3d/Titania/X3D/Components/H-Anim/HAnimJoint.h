@@ -168,6 +168,24 @@ public:
 	displacers () const
 	{ return *fields .displacers; }
 
+	///  @name Member access
+
+	virtual
+	const SFBool &
+	isCameraObject () const override
+	{ return cameraObject; }
+
+	virtual
+	const Matrix4d &
+	getModelMatrix () const
+	{ return modelMatrix; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
 	///  @name Destruction
 
 	virtual
@@ -184,6 +202,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_cameraObject ();
 
 	///  @name Static members
 
@@ -208,6 +231,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	SFBool   cameraObject;
+	Matrix4d modelMatrix;
 
 };
 

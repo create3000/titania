@@ -287,7 +287,7 @@ public:
 
 	virtual
 	const SFBool &
-	isCameraObject () const final override
+	isCameraObject () const override
 	{ return X3DChildNode::isCameraObject (); }
 
 	virtual
