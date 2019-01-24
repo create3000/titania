@@ -91,6 +91,7 @@
 #include "../../Tools/H-Anim/HAnimHumanoidTool.h"
 #include "../../Tools/H-Anim/HAnimJointTool.h"
 #include "../../Tools/H-Anim/HAnimSegmentTool.h"
+#include "../../Tools/H-Anim/HAnimSiteTool.h"
 
 #include "../../Tools/Layout/LayoutGroupTool.h"
 #include "../../Tools/Layout/ScreenGroupTool.h"
@@ -172,6 +173,7 @@ SupportedTools::SupportedTools () :
 	addTool ("HAnimHumanoid",           [ ] (X3DBaseNode* const node) { return new HAnimHumanoidTool           (node); });
 	addTool ("HAnimJoint",              [ ] (X3DBaseNode* const node) { return new HAnimJointTool              (node); });
 	addTool ("HAnimSegment",            [ ] (X3DBaseNode* const node) { return new HAnimSegmentTool            (node); });
+	addTool ("HAnimSite",               [ ] (X3DBaseNode* const node) { return new HAnimSiteTool               (node); });
 	addTool ("IndexedFaceSet",          [ ] (X3DBaseNode* const node) { return new IndexedFaceSetTool          (node); });
 	addTool ("IndexedLineSet",          [ ] (X3DBaseNode* const node) { return new IndexedLineSetTool          (node); });
 	addTool ("IndexedQuadSet",          [ ] (X3DBaseNode* const node) { return new IndexedQuadSetTool          (node); });

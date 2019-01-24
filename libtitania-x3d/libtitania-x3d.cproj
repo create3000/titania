@@ -989,6 +989,7 @@
     <None Include="Titania\X3D\Tools\H-Anim\HAnimSegmentTool.h" />
     <None Include="Titania\X3D\Tools\H-Anim\HAnimHumanoidTool.h" />
     <None Include="Titania\X3D\Tools\H-Anim\HAnimJointTool.h" />
+    <None Include="Titania\X3D\Tools\H-Anim\HAnimSiteTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

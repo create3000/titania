@@ -48,89 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H_ANIM_HANIM_SITE_H__
-#define __TITANIA_X3D_COMPONENTS_H_ANIM_HANIM_SITE_H__
+#ifndef __TITANIA_X3D_TOOLS_H_ANIM_HANIM_SITE_TOOL_TOOL_H__
+#define __TITANIA_X3D_TOOLS_H_ANIM_HANIM_SITE_TOOL_TOOL_H__
 
-#include "../Grouping/X3DTransformNode.h"
+#include "../Grouping/X3DTransformNodeTool.h"
+
+#include "../../Components/H-Anim/HAnimSite.h"
 
 namespace titania {
 namespace X3D {
 
-class HAnimSite :
-	virtual public X3DTransformNode
+class HAnimSiteTool :
+	virtual public HAnimSite,
+	public X3DTransformNodeTool
 {
 public:
 
 	///  @name Construction
 
-	HAnimSite (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	HAnimSiteTool (X3DBaseNode* const node) :
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           HAnimSite (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		X3DTransformNodeTool ()
+	{
+		//addType (X3DConstants::HAnimSiteTool);
+	}
 
 	///  @name Fields
 
 	virtual
 	SFString &
-	name ()
-	{ return *fields .name; }
+	name () final override
+	{ return getNode <HAnimSite> () -> name (); }
 
 	virtual
 	const SFString &
-	name () const
-	{ return *fields .name; }
+	name () const final override
+	{ return getNode <HAnimSite> () -> name (); }
 
-	///  @name Destruction
-
-	virtual
-	~HAnimSite () override;
-
-
-protected:
-
-	///  @name Contruction
+	/// @name Operations
 
 	virtual
 	void
-	initialize () override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ X3DTransformNodeTool::traverse (type, renderObject); }
+
+	/// @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DTransformNodeTool::dispose (); }
 
 
 private:
 
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFString* const name;
-	};
-
-	Fields fields;
+	virtual
+	void
+	initialize () final override
+	{ X3DTransformNodeTool::initialize (); }
 
 };
 
