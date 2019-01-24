@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_H_ANIM_HANIM_SITE_H__
 #define __TITANIA_X3D_COMPONENTS_H_ANIM_HANIM_SITE_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformNode.h"
 
 namespace titania {
 namespace X3D {
 
 class HAnimSite :
-	public X3DGroupingNode
+	public X3DTransformNode
 {
 public:
 
@@ -96,46 +96,6 @@ public:
 	name () const
 	{ return *fields .name; }
 
-	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
-
-	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
-
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
-	SFVec3f &
-	scale ()
-	{ return *fields .scale; }
-
-	const SFVec3f &
-	scale () const
-	{ return *fields .scale; }
-
-	SFRotation &
-	scaleOrientation ()
-	{ return *fields .scaleOrientation; }
-
-	const SFRotation &
-	scaleOrientation () const
-	{ return *fields .scaleOrientation; }
-
-	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
-
 	///  @name Destruction
 
 	virtual
@@ -166,11 +126,6 @@ private:
 		Fields ();
 
 		SFString* const name;
-		SFVec3f* const translation;
-		SFRotation* const rotation;
-		SFVec3f* const scale;
-		SFRotation* const scaleOrientation;
-		SFVec3f* const center;
 	};
 
 	Fields fields;

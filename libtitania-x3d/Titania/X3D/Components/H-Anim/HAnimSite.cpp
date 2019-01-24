@@ -60,18 +60,13 @@ const std::string HAnimSite::typeName       = "HAnimSite";
 const std::string HAnimSite::containerField = "children";
 
 HAnimSite::Fields::Fields () :
-	            name (new SFString ()),
-	     translation (new SFVec3f ()),
-	        rotation (new SFRotation ()),
-	           scale (new SFVec3f (1, 1, 1)),
-	scaleOrientation (new SFRotation ()),
-	          center (new SFVec3f ())
+	name (new SFString ())
 { }
 
 HAnimSite::HAnimSite (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTransformNode (),
+	          fields ()
 {
 	addType (X3DConstants::HAnimSite);
 
@@ -83,6 +78,7 @@ HAnimSite::HAnimSite (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "scale",            scale ());
 	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
 	addField (inputOutput,    "center",           center ());
+
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (inputOnly,      "addChildren",      addChildren ());
@@ -99,7 +95,7 @@ HAnimSite::create (X3DExecutionContext* const executionContext) const
 void
 HAnimSite::initialize ()
 {
-	X3DGroupingNode::initialize ();
+	X3DTransformNode::initialize ();
 }
 
 HAnimSite::~HAnimSite ()

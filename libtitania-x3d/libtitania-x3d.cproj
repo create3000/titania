@@ -986,6 +986,7 @@
     <None Include="Titania\X3D\Browser\NURBS\NURBS.h" />
     <None Include="Titania\X3D\Browser\Core\PrimitiveQualityType.h" />
     <None Include="Titania\X3D\Browser\Core\TextureQualityType.h" />
+    <None Include="Titania\X3D\Tools\H-Anim\HAnimSegmentTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1776,6 +1777,7 @@
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\" />
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\" />
     <Folder Include="Titania\X3D\Browser\NURBS\" />
+    <Folder Include="Titania\X3D\Tools\H-Anim\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

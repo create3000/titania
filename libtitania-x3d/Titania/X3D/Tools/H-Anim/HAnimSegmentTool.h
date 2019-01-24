@@ -48,150 +48,103 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H_ANIM_HANIM_JOINT_H__
-#define __TITANIA_X3D_COMPONENTS_H_ANIM_HANIM_JOINT_H__
+#ifndef __TITANIA_X3D_TOOLS_H_ANIM_H_ANIM_SEGMENT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_H_ANIM_H_ANIM_SEGMENT_TOOL_H__
 
-#include "../Grouping/X3DTransformNode.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
+#include "../ToolColors.h"
+
+#include "../../Components/H-Anim/HAnimSegment.h"
 
 namespace titania {
 namespace X3D {
 
-class HAnimJoint :
-	public X3DTransformNode
+class HAnimSegmentTool :
+	virtual public HAnimSegment,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Construction
 
-	HAnimJoint (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	HAnimSegmentTool (X3DBaseNode* const node) :
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		       HAnimSegment (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::GREEN)
+	{
+		addType (X3DConstants::GroupTool);
+	}
 
 	///  @name Fields
 
+	virtual
 	SFString &
-	name ()
-	{ return *fields .name; }
-
-	const SFString &
-	name () const
-	{ return *fields .name; }
-
-	MFFloat &
-	llimit ()
-	{ return *fields .llimit; }
-
-	const MFFloat &
-	llimit () const
-	{ return *fields .llimit; }
-
-	MFFloat &
-	ulimit ()
-	{ return *fields .ulimit; }
-
-	const MFFloat &
-	ulimit () const
-	{ return *fields .ulimit; }
-
-	SFRotation &
-	limitOrientation ()
-	{ return *fields .limitOrientation; }
-
-	const SFRotation &
-	limitOrientation () const
-	{ return *fields .limitOrientation; }
-
-	MFFloat &
-	stiffness ()
-	{ return *fields .stiffness; }
-
-	const MFFloat &
-	stiffness () const
-	{ return *fields .stiffness; }
-
-	MFInt32 &
-	skinCoordIndex ()
-	{ return *fields .skinCoordIndex; }
-
-	const MFInt32 &
-	skinCoordIndex () const
-	{ return *fields .skinCoordIndex; }
-
-	MFFloat &
-	skinCoordWeight ()
-	{ return *fields .skinCoordWeight; }
-
-	const MFFloat &
-	skinCoordWeight () const
-	{ return *fields .skinCoordWeight; }
-
-	MFNode &
-	displacers ()
-	{ return *fields .displacers; }
-
-	const MFNode &
-	displacers () const
-	{ return *fields .displacers; }
-
-	///  @name Destruction
+	name () final override
+	{ return getNode <HAnimSegment> () -> name (); }
 
 	virtual
-	~HAnimJoint () final override;
+	const SFString &
+	name () const final override
+	{ return getNode <HAnimSegment> () -> name (); }
+
+	virtual
+	SFFloat &
+	mass () final override
+	{ return getNode <HAnimSegment> () -> mass (); }
+
+	virtual
+	const SFFloat &
+	mass () const final override
+	{ return getNode <HAnimSegment> () -> mass (); }
+
+	virtual
+	SFVec3f &
+	centerOfMass () final override
+	{ return getNode <HAnimSegment> () -> centerOfMass (); }
+
+	virtual
+	const SFVec3f &
+	centerOfMass () const final override
+	{ return getNode <HAnimSegment> () -> centerOfMass (); }
+
+	virtual
+	MFFloat &
+	momentsOfInertia () final override
+	{ return getNode <HAnimSegment> () -> momentsOfInertia (); }
+
+	virtual
+	const MFFloat &
+	momentsOfInertia () const final override
+	{ return getNode <HAnimSegment> () -> momentsOfInertia (); }
+
+	virtual
+	MFNode &
+	displacers () final override
+	{ return getNode <HAnimSegment> () -> displacers (); }
+
+	virtual
+	const MFNode &
+	displacers () const final override
+	{ return getNode <HAnimSegment> () -> displacers (); }
+
+	virtual
+	SFNode &
+	coord () final override
+	{ return getNode <HAnimSegment> () -> coord (); }
+
+	virtual
+	const SFNode &
+	coord () const final override
+	{ return getNode <HAnimSegment> () -> coord (); }
 
 
 protected:
 
-	///  @name Contruction
-
 	virtual
 	void
-	initialize () final override;
-
-
-private:
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFString* const name;
-		MFFloat* const llimit;
-		MFFloat* const ulimit;
-		SFRotation* const limitOrientation;
-		MFFloat* const stiffness;
-		MFInt32* const skinCoordIndex;
-		MFFloat* const skinCoordWeight;
-		MFNode* const displacers;
-	};
-
-	Fields fields;
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
 
 };
 

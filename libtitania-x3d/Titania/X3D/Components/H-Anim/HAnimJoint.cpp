@@ -61,11 +61,6 @@ const std::string HAnimJoint::containerField = "children";
 
 HAnimJoint::Fields::Fields () :
 	            name (new SFString ()),
-	     translation (new SFVec3f ()),
-	        rotation (new SFRotation ()),
-	           scale (new SFVec3f (1, 1, 1)),
-	scaleOrientation (new SFRotation ()),
-	          center (new SFVec3f ()),
 	          llimit (new MFFloat ()),
 	          ulimit (new MFFloat ()),
 	limitOrientation (new SFRotation ()),
@@ -76,9 +71,9 @@ HAnimJoint::Fields::Fields () :
 { }
 
 HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTransformNode (),
+	          fields ()
 {
 	addType (X3DConstants::HAnimJoint);
 
@@ -90,11 +85,6 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "scale",            scale ());
 	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
 	addField (inputOutput,    "center",           center ());
-	addField (initializeOnly, "bboxSize",         bboxSize ());
-	addField (initializeOnly, "bboxCenter",       bboxCenter ());
-	addField (inputOnly,      "addChildren",      addChildren ());
-	addField (inputOnly,      "removeChildren",   removeChildren ());
-	addField (inputOutput,    "children",         children ());
 
 	addField (inputOutput,    "llimit",           llimit ());
 	addField (inputOutput,    "ulimit",           ulimit ());
@@ -103,6 +93,12 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "skinCoordIndex",   skinCoordIndex ());
 	addField (inputOutput,    "skinCoordWeight",  skinCoordWeight ());
 	addField (inputOutput,    "displacers",       displacers ());
+
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
 }
 
 X3DBaseNode*
@@ -114,7 +110,7 @@ HAnimJoint::create (X3DExecutionContext* const executionContext) const
 void
 HAnimJoint::initialize ()
 {
-	X3DGroupingNode::initialize ();
+	X3DTransformNode::initialize ();
 }
 
 HAnimJoint::~HAnimJoint ()

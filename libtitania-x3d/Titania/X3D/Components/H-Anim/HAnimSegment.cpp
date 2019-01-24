@@ -78,17 +78,17 @@ HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "name",             name ());
 
-	addField (initializeOnly, "bboxSize",         bboxSize ());
-	addField (initializeOnly, "bboxCenter",       bboxCenter ());
-	addField (inputOnly,      "addChildren",      addChildren ());
-	addField (inputOnly,      "removeChildren",   removeChildren ());
-	addField (inputOutput,    "children",         children ());
-
 	addField (inputOutput,    "mass",             mass ());
 	addField (inputOutput,    "centerOfMass",     centerOfMass ());
 	addField (inputOutput,    "momentsOfInertia", momentsOfInertia ());
 	addField (inputOutput,    "displacers",       displacers ());
 	addField (inputOutput,    "coord",            coord ());
+
+	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (initializeOnly, "bboxCenter",       bboxCenter ());
+	addField (inputOnly,      "addChildren",      addChildren ());
+	addField (inputOnly,      "removeChildren",   removeChildren ());
+	addField (inputOutput,    "children",         children ());
 }
 
 X3DBaseNode*

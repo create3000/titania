@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class HAnimSegment :
-	public X3DGroupingNode
+	virtual public X3DGroupingNode
 {
 public:
 
@@ -88,50 +88,62 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	name ()
 	{ return *fields .name; }
 
+	virtual
 	const SFString &
 	name () const
 	{ return *fields .name; }
 
+	virtual
 	SFFloat &
 	mass ()
 	{ return *fields .mass; }
 
+	virtual
 	const SFFloat &
 	mass () const
 	{ return *fields .mass; }
 
+	virtual
 	SFVec3f &
 	centerOfMass ()
 	{ return *fields .centerOfMass; }
 
+	virtual
 	const SFVec3f &
 	centerOfMass () const
 	{ return *fields .centerOfMass; }
 
+	virtual
 	MFFloat &
 	momentsOfInertia ()
 	{ return *fields .momentsOfInertia; }
 
+	virtual
 	const MFFloat &
 	momentsOfInertia () const
 	{ return *fields .momentsOfInertia; }
 
+	virtual
 	MFNode &
 	displacers ()
 	{ return *fields .displacers; }
 
+	virtual
 	const MFNode &
 	displacers () const
 	{ return *fields .displacers; }
 
+	virtual
 	SFNode &
 	coord ()
 	{ return *fields .coord; }
 
+	virtual
 	const SFNode &
 	coord () const
 	{ return *fields .coord; }
@@ -139,7 +151,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~HAnimSegment () final override;
+	~HAnimSegment () override;
 
 
 protected:
@@ -148,7 +160,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:
