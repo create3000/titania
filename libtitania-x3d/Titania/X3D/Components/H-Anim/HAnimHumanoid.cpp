@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 
+#include "../Grouping/Group.h"
 #include "../Grouping/Transform.h"
 
 namespace titania {
@@ -87,6 +88,9 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	              X3DChildNode (),
 	          X3DBoundedObject (),
 	                    fields (),
+	            viewpointsNode (new Group (executionContext)),
+	                  skinNode (new Group (executionContext)),
+	              skeletonNode (new Group (executionContext)),
 	             transformNode (new Transform (executionContext))
 {
 	addType (X3DConstants::HAnimHumanoid);
@@ -113,7 +117,10 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "segments",         segments ());
 	addField (inputOutput,    "skeleton",         skeleton ());
 
-	addChildObjects (transformNode);
+	addChildObjects (transformNode,
+	                 skinNode,
+	                 viewpointsNode,
+	                 skeletonNode);
 }
 
 X3DBaseNode*
@@ -128,6 +135,18 @@ HAnimHumanoid::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
+	// Groups
+
+	viewpoints () .addInterest (viewpointsNode -> children ());
+	skin ()       .addInterest (skinNode       -> children ());
+	skeleton ()   .addInterest (skeletonNode   -> children ());
+
+	viewpointsNode -> children () = viewpoints ();
+	skinNode       -> children () = skin ();
+	skeletonNode   -> children () = skeleton ();
+
+	// Transform
+
 	translation ()      .addInterest (transformNode -> translation ());
 	rotation ()         .addInterest (transformNode -> rotation ());
 	scale ()            .addInterest (transformNode -> scale ());
@@ -135,7 +154,6 @@ HAnimHumanoid::initialize ()
 	center ()           .addInterest (transformNode -> center ());
 	bboxSize ()         .addInterest (transformNode -> bboxSize ());
 	bboxCenter ()       .addInterest (transformNode -> bboxCenter ());
-	skeleton ()         .addInterest (transformNode -> children ());
 
 	transformNode -> translation ()      .addInterest (translation ());
 	transformNode -> rotation ()         .addInterest (rotation ());
@@ -144,7 +162,6 @@ HAnimHumanoid::initialize ()
 	transformNode -> center ()           .addInterest (center ());
 	transformNode -> bboxSize ()         .addInterest (bboxSize ());
 	transformNode -> bboxCenter ()       .addInterest (bboxCenter ());
-	transformNode -> children ()         .addInterest (skeleton ());
 
 	transformNode -> translation ()      = translation ();
 	transformNode -> rotation ()         = rotation ();
@@ -153,9 +170,16 @@ HAnimHumanoid::initialize ()
 	transformNode -> center ()           = center ();
 	transformNode -> bboxSize ()         = bboxSize ();
 	transformNode -> bboxCenter ()       = bboxCenter ();
-	transformNode -> children ()         = skeleton ();
+	transformNode -> children ()         = { viewpointsNode, skinNode, skeletonNode };
 
-	transformNode -> setup ();
+	transformNode -> isCameraObject () .addInterest (&HAnimHumanoid::setCameraObject, static_cast <X3DChildNode*> (this));
+
+	// Setup
+
+	viewpointsNode -> setup ();
+	skinNode       -> setup ();
+	skeletonNode   -> setup ();
+	transformNode  -> setup ();
 }
 
 Box3d

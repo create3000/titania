@@ -322,6 +322,9 @@ private:
 
 	///  @name Fields
 
+	X3DPtr <Group>     viewpointsNode;
+	X3DPtr <Group>     skinNode;
+	X3DPtr <Group>     skeletonNode;
 	X3DPtr <Transform> transformNode;
 
 };
