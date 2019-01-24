@@ -53,14 +53,12 @@
 
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
-#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class HAnimHumanoid :
 	virtual public X3DChildNode,
-	public X3DTransformMatrix3DObject,
 	public X3DBoundedObject
 {
 public:
@@ -164,38 +162,6 @@ public:
 	viewpoints () const
 	{ return *fields .viewpoints; }
 
-	MFNode &
-	joints ()
-	{ return *fields .joints; }
-
-	const MFNode &
-	joints () const
-	{ return *fields .joints; }
-
-	MFNode &
-	segments ()
-	{ return *fields .segments; }
-
-	const MFNode &
-	segments () const
-	{ return *fields .segments; }
-
-	MFNode &
-	sites ()
-	{ return *fields .sites; }
-
-	const MFNode &
-	sites () const
-	{ return *fields .sites; }
-
-	MFNode &
-	skeleton ()
-	{ return *fields .skeleton; }
-
-	const MFNode &
-	skeleton () const
-	{ return *fields .skeleton; }
-
 	SFNode &
 	skinNormal ()
 	{ return *fields .skinNormal; }
@@ -220,6 +186,38 @@ public:
 	skin () const
 	{ return *fields .skin; }
 
+	MFNode &
+	sites ()
+	{ return *fields .sites; }
+
+	const MFNode &
+	sites () const
+	{ return *fields .sites; }
+
+	MFNode &
+	joints ()
+	{ return *fields .joints; }
+
+	const MFNode &
+	joints () const
+	{ return *fields .joints; }
+
+	MFNode &
+	skeleton ()
+	{ return *fields .skeleton; }
+
+	const MFNode &
+	skeleton () const
+	{ return *fields .skeleton; }
+
+	MFNode &
+	segments ()
+	{ return *fields .segments; }
+
+	const MFNode &
+	segments () const
+	{ return *fields .segments; }
+
 	///  @name Member access
 
 	virtual
@@ -231,6 +229,14 @@ public:
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	virtual
+	void
+	addTool () final override;
+
+	virtual
+	void
+	removeTool (const bool = false) final override;
 
 	///  @name Destruction
 
@@ -253,11 +259,6 @@ protected:
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_segments ();
-
 	///  @name Static members
 
 	static const std::string componentName;
@@ -279,20 +280,20 @@ private:
 		SFRotation* const scaleOrientation;
 		SFVec3f* const center;
 		MFNode* const viewpoints;
-		MFNode* const joints;
-		MFNode* const segments;
-		MFNode* const sites;
-		MFNode* const skeleton;
 		SFNode* const skinNormal;
 		SFNode* const skinCoord;
 		MFNode* const skin;
+		MFNode* const sites;
+		MFNode* const joints;
+		MFNode* const skeleton;
+		MFNode* const segments;
 	};
 
 	Fields fields;
 
 	///  @name Fields
 
-	X3DPtrArray <HAnimSegment> segmentNodes;
+	X3DPtr <Transform> transformNode;
 
 };
 

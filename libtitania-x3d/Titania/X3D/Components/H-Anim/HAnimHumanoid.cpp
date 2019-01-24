@@ -54,7 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 
-#include "../H-Anim/HAnimSegment.h"
+#include "../Grouping/Transform.h"
 
 namespace titania {
 namespace X3D {
@@ -73,22 +73,21 @@ HAnimHumanoid::Fields::Fields () :
 	scaleOrientation (new SFRotation ()),
 	          center (new SFVec3f ()),
 	      viewpoints (new MFNode ()),
-	          joints (new MFNode ()),
-	        segments (new MFNode ()),
-	           sites (new MFNode ()),
-	        skeleton (new MFNode ()),
 	      skinNormal (new SFNode ()),
 	       skinCoord (new SFNode ()),
-	            skin (new MFNode ())
+	            skin (new MFNode ()),
+	           sites (new MFNode ()),
+	          joints (new MFNode ()),
+	        skeleton (new MFNode ()),
+	        segments (new MFNode ())
 { }
 
 HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	              X3DChildNode (),
-	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	              segmentNodes ()
+	             transformNode (new Transform (executionContext))
 {
 	addType (X3DConstants::HAnimHumanoid);
 
@@ -106,15 +105,15 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 
 	addField (inputOutput,    "viewpoints",       viewpoints ());
-	addField (inputOutput,    "joints",           joints ());
-	addField (inputOutput,    "segments",         segments ());
-	addField (inputOutput,    "sites",            sites ());
-	addField (inputOutput,    "skeleton",         skeleton ());
 	addField (inputOutput,    "skinNormal",       skinNormal ());
 	addField (inputOutput,    "skinCoord",        skinCoord ());
 	addField (inputOutput,    "skin",             skin ());
+	addField (inputOutput,    "sites",            sites ());
+	addField (inputOutput,    "joints",           joints ());
+	addField (inputOutput,    "skeleton",         skeleton ());
+	addField (inputOutput,    "segments",         segments ());
 
-	addChildObjects (segmentNodes);
+	addChildObjects (transformNode);
 }
 
 X3DBaseNode*
@@ -127,51 +126,66 @@ void
 HAnimHumanoid::initialize ()
 {
 	X3DChildNode::initialize ();
-	X3DTransformMatrix3DObject::initialize ();
 	X3DBoundedObject::initialize ();
 
-	segments () .addInterest (&HAnimHumanoid::set_segments, this);
+	translation ()      .addInterest (transformNode -> translation ());
+	rotation ()         .addInterest (transformNode -> rotation ());
+	scale ()            .addInterest (transformNode -> scale ());
+	scaleOrientation () .addInterest (transformNode -> scaleOrientation ());
+	center ()           .addInterest (transformNode -> center ());
+	bboxSize ()         .addInterest (transformNode -> bboxSize ());
+	bboxCenter ()       .addInterest (transformNode -> bboxCenter ());
+	segments ()         .addInterest (transformNode -> children ());
 
-	set_segments ();
+	transformNode -> translation ()      .addInterest (translation ());
+	transformNode -> rotation ()         .addInterest (rotation ());
+	transformNode -> scale ()            .addInterest (scale ());
+	transformNode -> scaleOrientation () .addInterest (scaleOrientation ());
+	transformNode -> center ()           .addInterest (center ());
+	transformNode -> bboxSize ()         .addInterest (bboxSize ());
+	transformNode -> bboxCenter ()       .addInterest (bboxCenter ());
+	transformNode -> children ()         .addInterest (segments ());
+
+	transformNode -> translation ()      = translation ();
+	transformNode -> rotation ()         = rotation ();
+	transformNode -> scale ()            = scale ();
+	transformNode -> scaleOrientation () = scaleOrientation ();
+	transformNode -> center ()           = center ();
+	transformNode -> bboxSize ()         = bboxSize ();
+	transformNode -> bboxCenter ()       = bboxCenter ();
+	transformNode -> children ()         = segments ();
+
+	transformNode -> setup ();
 }
 
 Box3d
 HAnimHumanoid::getBBox () const
 {
-	return Box3d ();
-}
-
-void
-HAnimHumanoid::set_segments ()
-{
-	segmentNodes .clear ();
-
-	for (const auto & node : segments ())
-	{
-		const auto segmentNode = x3d_cast <HAnimSegment*> (node);
-
-		if (segmentNode)
-			segmentNodes .emplace_back (segmentNode);
-	}
+	return transformNode -> getBBox ();
 }
 
 void
 HAnimHumanoid::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	renderObject -> getModelViewMatrix () .push ();
-	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	transformNode -> traverse (type, renderObject);
+}
 
-	for (const auto & segmentNode : segmentNodes)
-		segmentNode -> traverse (type, renderObject);
+void
+HAnimHumanoid::addTool ()
+{
+	transformNode -> addTool ();
+}
 
-	renderObject -> getModelViewMatrix () .pop ();
+void
+HAnimHumanoid::removeTool (const bool really)
+{
+	transformNode -> removeTool (really);
 }
 
 void
 HAnimHumanoid::dispose ()
 {
 	X3DBoundedObject::dispose ();
-	X3DTransformMatrix3DObject::dispose ();
 	X3DChildNode::dispose ();
 }
 
