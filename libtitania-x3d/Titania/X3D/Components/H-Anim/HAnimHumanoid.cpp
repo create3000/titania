@@ -284,7 +284,7 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 			for (size_t i = 0, size = skinCoordIndex .size (); i < size; ++ i)
 			{
 				const auto index  = skinCoordIndex [i];
-				const auto weight = false and i < skinCoordWeight .size () ? skinCoordWeight [i] : 1.0;
+				const auto weight = false and i < skinCoordWeight .size () ? skinCoordWeight [i] : 1.0; // TODO: How are weights applied?
 
 				if (skinNormalNode)
 					skinNormalNode -> set1Vector (index, normalNode -> get1Vector (index) * normalMatrix);
