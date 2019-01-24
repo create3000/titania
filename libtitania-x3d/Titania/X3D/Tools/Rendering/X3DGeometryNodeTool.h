@@ -272,7 +272,7 @@ private:
 	set_pickable ();
 
 	void
-	eventProcessed ();
+	set_rebuild ();
 
 	///  @name Members
 

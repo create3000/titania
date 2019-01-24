@@ -1,6 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench>
+    <Files>
+      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.h" Line="293" Column="41" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp" Line="125" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

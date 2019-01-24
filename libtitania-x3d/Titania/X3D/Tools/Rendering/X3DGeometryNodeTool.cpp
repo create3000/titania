@@ -134,8 +134,8 @@ X3DGeometryNodeTool::initialize ()
 	selection .addInterest (&X3DGeometryNodeTool::set_selection, this);
 
 	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_normal_loadState, this);
-	normalToolNode -> length () .addInterest (&X3DGeometryNodeTool::eventProcessed, this);
-	getNode <X3DGeometryNode> () -> addInterest (&X3DGeometryNodeTool::eventProcessed, this);
+	normalToolNode -> length () .addInterest (&X3DGeometryNodeTool::set_rebuild, this);
+	getNode <X3DGeometryNode> () -> rebuilded () .addInterest (&X3DGeometryNodeTool::set_rebuild, this);
 
 	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_coord_loadState, this);
 	coordToolNode -> load () = true; // Always load coord tool.
@@ -167,7 +167,7 @@ X3DGeometryNodeTool::set_normal_loadState ()
 			normalsCoord   = nullptr;
 		}
 
-		eventProcessed ();
+		set_rebuild ();
 	}
 	catch (const X3DError & error)
 	{
@@ -199,7 +199,7 @@ X3DGeometryNodeTool::set_coord_loadState ()
 
 		set_toolType ();
 		set_pickable ();
-		eventProcessed ();
+		set_rebuild ();
 	}
 	catch (const X3DError & error)
 	{
@@ -262,7 +262,7 @@ X3DGeometryNodeTool::set_pickable ()
 }
 
 void
-X3DGeometryNodeTool::eventProcessed ()
+X3DGeometryNodeTool::set_rebuild ()
 {
 	const auto & normals  = getNode <X3DGeometryNode> () -> getPolygonNormals ();
 	const auto & vertices = getNode <X3DGeometryNode> () -> getPolygonVertices ();

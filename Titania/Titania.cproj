@@ -3218,6 +3218,11 @@
     <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsSwungSurface" />
     <None Include="share\titania\Library\Components\NURBS\.X_ITE\NurbsTextureCoordinate" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DProfileComponentsEditor.h" />
+    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimDisplacer" />
+    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimHumanoid" />
+    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimJoint" />
+    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimSegment" />
+    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimSite" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
