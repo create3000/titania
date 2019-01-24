@@ -236,7 +236,7 @@ HAnimHumanoid::set_skinNormal ()
 {
 	normalNode = nullptr;
 
-	skinNormalNode = x3d_cast <X3DNormalNode*> (skinCoord ());
+	skinNormalNode = x3d_cast <X3DNormalNode*> (skinNormal ());
 
 	if (skinNormalNode)
 		normalNode = X3DPtr <X3DNormalNode> (skinNormalNode -> copy (CopyType::FLAT_COPY));
