@@ -395,13 +395,13 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
+		getWorld () -> bind ();
 
 		if (initialized ())
 		{
 			get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 			getLoadCount () .addInterest (&X3DBrowser::set_loadCount, this);
 			set_loadCount ();
-			initialized () = true;
 		}
 	}
 }
@@ -409,7 +409,9 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 void
 X3DBrowser::set_initialized ()
 {
-	getWorld () -> bind ();
+	#ifdef TITANIA_DEBUG
+	std::clog << "Replacing world done." << std::endl;
+	#endif
 }
 
 void
@@ -419,10 +421,7 @@ X3DBrowser::set_loadCount ()
 		return;
 
 	get_style_context () -> remove_class ("titania-private-invisible");
-
-	#ifdef TITANIA_DEBUG
-	std::clog << "Replacing world done." << std::endl;
-	#endif
+	initialized () = true;
 }
 
 ///  throws Error <INVALID_DOCUMENT>, Error <INVALID_OPERATION_TIMING>, Error <NOT_SUPPORTED>, Error <DISPOSED>
