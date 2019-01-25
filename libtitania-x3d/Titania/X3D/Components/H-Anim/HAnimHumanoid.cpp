@@ -273,7 +273,18 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 		if (not skinCoordNode)
 			return;
 
+		// Reset skin normals and coords.
+
+		if (skinNormalNode)
+			skinNormalNode -> assign (normalNode);
+
+		skinCoordNode -> assign (coordNode);
+
+		// Determine inverse model matrix of humanoid.
+
 		const auto invModelMatrix = inverse (transformNode -> getMatrix () * renderObject -> getModelViewMatrix () .get ());
+
+		// Apply joint transformations.
 
 		for (const auto & jointNode : jointNodes)
 		{
@@ -283,18 +294,26 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 			if (skinCoordIndex .empty ())
 				continue;
 
-			const auto jointMatrix     = jointNode -> getModelMatrix () * invModelMatrix;
-			const auto normalMatrix    = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
-	
+			const auto jointMatrix  = jointNode -> getModelMatrix () * invModelMatrix;
+			const auto normalMatrix = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
+
 			for (size_t i = 0, size = skinCoordIndex .size (); i < size; ++ i)
 			{
 				const auto index  = skinCoordIndex [i];
-				const auto weight = false and i < skinCoordWeight .size () ? skinCoordWeight [i] : 1.0; // TODO: How are weights applied?
+				const auto weight = i < skinCoordWeight .size () ? skinCoordWeight [i] : 1.0f;
 
 				if (skinNormalNode)
-					skinNormalNode -> set1Vector (index, normalNode -> get1Vector (index) * normalMatrix);
+				{
+					const auto rest = normalNode -> get1Vector (index);
+					const auto skin = skinNormalNode -> get1Vector (index);
 
-				skinCoordNode -> set1Point (index, weight * coordNode -> get1Point (index) * jointMatrix);
+					skinNormalNode -> set1Vector (index, (rest * normalMatrix - rest) * weight + skin);
+				}
+
+				const auto rest = coordNode -> get1Point (index);
+				const auto skin = skinCoordNode -> get1Point (index);
+
+				skinCoordNode -> set1Point (index, (rest * jointMatrix - rest) * double (weight) + skin);
 			}
 		}
 	}
