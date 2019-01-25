@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp" Line="312" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimJoint.h" Line="182" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimJoint.cpp" Line="57" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp" Line="64" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimJoint.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimJoint.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
