@@ -222,17 +222,17 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 
 	for (const auto & node : children)
 	{
-		if (allowedTypes .size ())
-		{
-			if (not node -> isType (allowedTypes))
-				continue;
-		}
-
 		if (node and (i >= getVisible () .size () or getVisible () [i]))
 		{
 			try
 			{
 				const auto innerNode = node -> getInnerNode ();
+
+				if (allowedTypes .size ())
+				{
+					if (not innerNode -> isType (allowedTypes))
+						continue;
+				}
 
 				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{

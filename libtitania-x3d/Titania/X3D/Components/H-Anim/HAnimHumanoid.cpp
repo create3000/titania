@@ -201,13 +201,14 @@ HAnimHumanoid::initialize ()
 	skinNode       -> setup ();
 	transformNode  -> setup ();
 
-	// 
+	// Skinning
 
 	joints ()     .addInterest (&HAnimHumanoid::set_joints,     this);
 	skinNormal () .addInterest (&HAnimHumanoid::set_skinNormal, this);
 	skinCoord ()  .addInterest (&HAnimHumanoid::set_skinCoord,  this);
 
 	set_joints ();
+	set_skinNormal ();
 	set_skinCoord ();
 }
 
@@ -276,10 +277,14 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 
 		for (const auto & jointNode : jointNodes)
 		{
-			const auto   jointMatrix     = jointNode -> getModelMatrix () * invModelMatrix;
-			const auto   normalMatrix    = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
 			const auto & skinCoordIndex  = jointNode -> skinCoordIndex ();
 			const auto & skinCoordWeight = jointNode -> skinCoordWeight ();
+
+			if (skinCoordIndex .empty ())
+				continue;
+
+			const auto jointMatrix     = jointNode -> getModelMatrix () * invModelMatrix;
+			const auto normalMatrix    = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
 	
 			for (size_t i = 0, size = skinCoordIndex .size (); i < size; ++ i)
 			{

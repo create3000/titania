@@ -134,7 +134,7 @@ HAnimJoint::set_cameraObject ()
 void
 HAnimJoint::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type == TraverseType::CAMERA)
+	if (type == TraverseType::CAMERA and not skinCoordIndex () .empty ())
 		modelMatrix = getMatrix () * renderObject -> getModelViewMatrix () .get ();
 
 	X3DTransformNode::traverse (type, renderObject);
