@@ -99,8 +99,8 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	                jointNodes (),
 	            skinNormalNode (),
 	             skinCoordNode (),
-	                normalNode (),
-	                 coordNode ()
+	            restNormalNode (),
+	             restCoordNode ()
 {
 	addType (X3DConstants::HAnimHumanoid);
 
@@ -133,8 +133,8 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	                 jointNodes,
 	                 skinNormalNode,
 	                 skinCoordNode,
-	                 normalNode,
-	                 coordNode);
+	                 restNormalNode,
+	                 restCoordNode);
 }
 
 X3DBaseNode*
@@ -238,23 +238,23 @@ HAnimHumanoid::set_joints ()
 void
 HAnimHumanoid::set_skinNormal ()
 {
-	normalNode = nullptr;
+	restNormalNode = nullptr;
 
 	skinNormalNode = x3d_cast <X3DNormalNode*> (skinNormal ());
 
 	if (skinNormalNode)
-		normalNode = X3DPtr <X3DNormalNode> (skinNormalNode -> copy (CopyType::FLAT_COPY));
+		restNormalNode = X3DPtr <X3DNormalNode> (skinNormalNode -> copy (CopyType::FLAT_COPY));
 }
 
 void
 HAnimHumanoid::set_skinCoord ()
 {
-	coordNode = nullptr;
+	restCoordNode = nullptr;
 
 	skinCoordNode = x3d_cast <X3DCoordinateNode*> (skinCoord ());
 
 	if (skinCoordNode)
-		coordNode = X3DPtr <X3DCoordinateNode> (skinCoordNode -> copy (CopyType::FLAT_COPY));
+		restCoordNode = X3DPtr <X3DCoordinateNode> (skinCoordNode -> copy (CopyType::FLAT_COPY));
 }
 
 void
@@ -279,9 +279,9 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 		// Reset skin normals and coords.
 
 		if (skinNormalNode)
-			skinNormalNode -> assign (normalNode);
+			skinNormalNode -> assign (restNormalNode);
 
-		skinCoordNode -> assign (coordNode);
+		skinCoordNode -> assign (restCoordNode);
 
 		// Determine inverse model matrix of humanoid.
 
@@ -324,13 +324,13 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 
 				if (skinNormalNode)
 				{
-					const auto rest = normalNode -> get1Vector (index);
+					const auto rest = restNormalNode -> get1Vector (index);
 					const auto skin = skinNormalNode -> get1Vector (index);
 
 					skinNormalNode -> set1Vector (index, (rest * normalMatrix - rest) * weight + skin);
 				}
 
-				const auto rest = coordNode -> get1Point (index);
+				const auto rest = restCoordNode -> get1Point (index);
 				const auto skin = skinCoordNode -> get1Point (index);
 
 				skinCoordNode -> set1Point (index, (rest * jointMatrix - rest) * double (weight) + skin);
@@ -345,10 +345,10 @@ void
 HAnimHumanoid::toStream (std::ostream & ostream) const
 {
 	if (skinNormalNode)
-		skinNormalNode -> assign (normalNode);
+		skinNormalNode -> assign (restNormalNode);
 
 	if (skinCoordNode)
-		skinCoordNode -> assign (coordNode);
+		skinCoordNode -> assign (restCoordNode);
 
 	X3DChildNode::toStream (ostream);
 }
@@ -357,10 +357,10 @@ void
 HAnimHumanoid::toXMLStream (std::ostream & ostream) const
 {
 	if (skinNormalNode)
-		skinNormalNode -> assign (normalNode);
+		skinNormalNode -> assign (restNormalNode);
 
 	if (skinCoordNode)
-		skinCoordNode -> assign (coordNode);
+		skinCoordNode -> assign (restCoordNode);
 
 	X3DChildNode::toXMLStream (ostream);
 }
@@ -369,10 +369,10 @@ void
 HAnimHumanoid::toJSONStream (std::ostream & ostream) const
 {
 	if (skinNormalNode)
-		skinNormalNode -> assign (normalNode);
+		skinNormalNode -> assign (restNormalNode);
 
 	if (skinCoordNode)
-		skinCoordNode -> assign (coordNode);
+		skinCoordNode -> assign (restCoordNode);
 
 	X3DChildNode::toJSONStream (ostream);
 }

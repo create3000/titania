@@ -362,8 +362,8 @@ private:
 	X3DPtrArray <HAnimJoint>   jointNodes;
 	X3DPtr <X3DNormalNode>     skinNormalNode;
 	X3DPtr <X3DCoordinateNode> skinCoordNode;
-	X3DPtr <X3DNormalNode>     normalNode;
-	X3DPtr <X3DCoordinateNode> coordNode;
+	X3DPtr <X3DNormalNode>     restNormalNode;
+	X3DPtr <X3DCoordinateNode> restCoordNode;
 };
 
 } // X3D
