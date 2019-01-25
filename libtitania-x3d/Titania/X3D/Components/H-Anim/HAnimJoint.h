@@ -176,6 +176,11 @@ public:
 	{ return cameraObject; }
 
 	virtual
+	const X3DPtrArray <HAnimDisplacer> &
+	getDisplacers () const
+	{ return displacerNodes; }
+
+	virtual
 	const Matrix4d &
 	getModelMatrix () const
 	{ return modelMatrix; }
@@ -208,6 +213,9 @@ private:
 	void
 	set_cameraObject ();
 
+	void
+	set_displacers ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -234,8 +242,9 @@ private:
 
 	///  @name Members
 
-	SFBool   cameraObject;
-	Matrix4d modelMatrix;
+	SFBool                       cameraObject;
+	X3DPtrArray <HAnimDisplacer> displacerNodes;
+	Matrix4d                     modelMatrix;
 
 };
 

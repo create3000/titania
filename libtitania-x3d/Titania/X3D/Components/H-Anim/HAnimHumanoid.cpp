@@ -56,6 +56,7 @@
 
 #include "../Grouping/Group.h"
 #include "../Grouping/Transform.h"
+#include "../H-Anim/HAnimDisplacer.h"
 #include "../H-Anim/HAnimJoint.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DNormalNode.h"
@@ -288,14 +289,31 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 
 		for (const auto & jointNode : jointNodes)
 		{
-			const auto & skinCoordIndex  = jointNode -> skinCoordIndex ();
-			const auto & skinCoordWeight = jointNode -> skinCoordWeight ();
+			const auto & skinCoordIndex = jointNode -> skinCoordIndex ();
 
 			if (skinCoordIndex .empty ())
 				continue;
 
-			const auto jointMatrix  = jointNode -> getModelMatrix () * invModelMatrix;
-			const auto normalMatrix = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
+			const auto jointMatrix = jointNode -> getModelMatrix () * invModelMatrix;
+
+			for (const auto & displacerNode : jointNode -> getDisplacers ())
+			{
+				const auto & coordIndex    = displacerNode -> coordIndex ();
+				const auto   weight        = double (displacerNode -> weight ());
+				const auto & displacements = displacerNode -> displacements ();
+
+				for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
+				{
+					const auto index        = coordIndex [i];
+					const auto displacement = i < displacements .size () ? displacements [i] : Vector3f ();
+					const auto skin         = skinCoordNode -> get1Point (index);
+
+					skinCoordNode -> set1Point (index, skin + jointMatrix .mult_dir_matrix (displacement) * weight);
+				}
+			}
+
+			const auto   normalMatrix    = Matrix3f (inverse (transpose (jointMatrix .submatrix ())));
+			const auto & skinCoordWeight = jointNode -> skinCoordWeight ();
 
 			for (size_t i = 0, size = skinCoordIndex .size (); i < size; ++ i)
 			{

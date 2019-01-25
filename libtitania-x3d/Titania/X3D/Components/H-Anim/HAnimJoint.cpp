@@ -53,6 +53,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 
+#include "../H-Anim/HAnimDisplacer.h"
+
 namespace titania {
 namespace X3D {
 
@@ -76,6 +78,7 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	X3DTransformNode (),
 	          fields (),
 	    cameraObject (),
+	  displacerNodes (),
 	     modelMatrix ()
 {
 	addType (X3DConstants::HAnimJoint);
@@ -103,6 +106,8 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
 
+	addChildObjects (displacerNodes);
+
 	setAllowedTypes ({ X3DConstants::HAnimJoint,
 	                   X3DConstants::HAnimSegment,
 	                   X3DConstants::HAnimSite });
@@ -121,14 +126,30 @@ HAnimJoint::initialize ()
 
 	X3DTransformNode::isCameraObject () .addInterest (&HAnimJoint::set_cameraObject, this);
 	skinCoordIndex ()                   .addInterest (&HAnimJoint::set_cameraObject, this);
+	displacers ()                       .addInterest (&HAnimJoint::set_displacers,   this);
 
 	set_cameraObject ();
+	set_displacers ();
 }
 
 void
 HAnimJoint::set_cameraObject ()
 {
 	cameraObject = not skinCoordIndex () .empty () or X3DTransformNode::isCameraObject ();
+}
+
+void
+HAnimJoint::set_displacers ()
+{
+	displacerNodes .clear ();
+
+	for (const auto & node : displacers ())
+	{
+		const auto displacerNode = x3d_cast <HAnimDisplacer*> (node);
+
+		if (displacerNode)
+			displacerNodes .emplace_back (displacerNode);
+	}
 }
 
 void
