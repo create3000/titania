@@ -55,6 +55,7 @@
 
 #include "../Components/Layering/Layer.h"
 #include "../Components/Layering/LayerSet.h"
+#include "../Routing/Router.h"
 
 namespace titania {
 namespace X3D {
@@ -98,8 +99,6 @@ World::initialize ()
 	layer0 -> isLayer0 (true);
 	layer0 -> setPrivate (true);
 	layer0 -> setup ();
-
-	bind ();
 }
 
 void

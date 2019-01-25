@@ -138,8 +138,8 @@ X3DBrowser::initialize ()
 
 	// Add necessary routes.
 
-	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents,    this);
-	executionContext .addInterest (&X3DBrowser::set_executionContext, this);
+	initialized ()   .addInterest (&X3DBrowser::set_initialized,   this);
+	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents, this);
 
 	getLoadSensor () -> isLoaded () .addInterest (&X3DBrowser::set_loaded, this);
 
@@ -384,7 +384,6 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 		getBrowserOptions () -> assign (browserOptions, true);
 
 		resetLoadCount ();
-		prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 
 		executionContext = value ? value : createScene (false);
 
@@ -402,8 +401,15 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 			get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 			getLoadCount () .addInterest (&X3DBrowser::set_loadCount, this);
 			set_loadCount ();
+			initialized () = true;
 		}
 	}
+}
+
+void
+X3DBrowser::set_initialized ()
+{
+	getWorld () -> bind ();
 }
 
 void
@@ -412,25 +418,8 @@ X3DBrowser::set_loadCount ()
 	if (getLoadCount ())
 		return;
 
-	getLoadCount () .removeInterest (&X3DBrowser::set_loadCount, this);
-	prepareEvents () .addInterest (&X3DBrowser::bind, this);
-	addEvent ();
-}
-
-void
-X3DBrowser::bind ()
-{
-	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
-
 	get_style_context () -> remove_class ("titania-private-invisible");
 
-	if (initialized ())
-		initialized () = true;
-}
-
-void
-X3DBrowser::set_executionContext ()
-{
 	#ifdef TITANIA_DEBUG
 	std::clog << "Replacing world done." << std::endl;
 	#endif
@@ -465,7 +454,6 @@ X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
 
 	get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 
-	prepareEvents () .removeInterest (&X3DBrowser::bind, this);
 	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
 	setLoadState (IN_PROGRESS_STATE);

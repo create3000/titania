@@ -106,6 +106,9 @@ public:
 
 	///  @name Operations
 
+	void
+	bind ();
+
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
@@ -132,9 +135,6 @@ private:
 
 	void
 	set_rootNodes ();
-
-	void
-	bind ();
 
 	///  @name Static members
 

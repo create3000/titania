@@ -274,13 +274,10 @@ private:
 	set_prepareEvents ();
 
 	void
+	set_initialized ();
+
+	void
 	set_loadCount ();
-
-	void
-	bind ();
-
-	void
-	set_executionContext ();
 
 	void
 	set_scene_async (X3DScenePtr &&);

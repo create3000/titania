@@ -202,6 +202,8 @@ HAnimHumanoid::initialize ()
 	skinNode       -> setup ();
 	transformNode  -> setup ();
 
+	setCameraObject (transformNode -> isCameraObject ());
+
 	// Skinning
 
 	joints ()     .addInterest (&HAnimHumanoid::set_joints,     this);
@@ -348,7 +350,7 @@ HAnimHumanoid::toStream (std::ostream & ostream) const
 	if (skinCoordNode)
 		skinCoordNode -> assign (coordNode);
 
-	X3DChildNode::toJSONStream (ostream);
+	X3DChildNode::toStream (ostream);
 }
 
 void
@@ -360,7 +362,7 @@ HAnimHumanoid::toXMLStream (std::ostream & ostream) const
 	if (skinCoordNode)
 		skinCoordNode -> assign (coordNode);
 
-	X3DChildNode::toJSONStream (ostream);
+	X3DChildNode::toXMLStream (ostream);
 }
 
 void
