@@ -59,6 +59,7 @@ namespace X3D {
 enum class ShadingType :
 	uint8_t
 {
+	DEFAULT,
 	POINT,
 	WIREFRAME,
 	FLAT,

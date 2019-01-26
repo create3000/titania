@@ -117,9 +117,9 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	          fields (executionContext),
-	  textureQuality (TextureQualityType::MEDIUM),
-	primitiveQuality (PrimitiveQualityType::MEDIUM),
-	         shading (ShadingType::GOURAUD)
+	  textureQuality (TextureQualityType::DEFAULT),
+	primitiveQuality (PrimitiveQualityType::DEFAULT),
+	         shading (ShadingType::DEFAULT)
 {
 	addType (X3DConstants::BrowserOptions);
 
@@ -223,8 +223,8 @@ BrowserOptions::set_TextureQuality ()
 
 	if (textureQuality == "HIGH")
 	{
-//		if (this -> textureQuality == TextureQualityType::HIGH)
-//			return;
+		if (this -> textureQuality == TextureQualityType::HIGH)
+			return;
 
 		this -> textureQuality = TextureQualityType::HIGH;
 
@@ -248,8 +248,8 @@ BrowserOptions::set_TextureQuality ()
 
 	if (textureQuality == "LOW")
 	{
-//		if (this -> textureQuality == TextureQualityType::LOW)
-//			return;
+		if (this -> textureQuality == TextureQualityType::LOW)
+			return;
 
 		this -> textureQuality = TextureQualityType::LOW;
 
@@ -273,8 +273,8 @@ BrowserOptions::set_TextureQuality ()
 
 	// MEDIUM
 
-//	if (this -> textureQuality == TextureQualityType::MEDIUM)
-//		return;
+	if (this -> textureQuality == TextureQualityType::MEDIUM)
+		return;
 
 	this -> textureQuality = TextureQualityType::MEDIUM;
 

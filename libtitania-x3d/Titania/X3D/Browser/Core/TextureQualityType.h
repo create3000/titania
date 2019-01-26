@@ -59,6 +59,7 @@ namespace X3D {
 enum class TextureQualityType :
 	uint8_t
 {
+	DEFAULT,
 	LOW,
 	MEDIUM,
 	HIGH
