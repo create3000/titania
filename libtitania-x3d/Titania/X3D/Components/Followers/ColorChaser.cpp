@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ColorChaser::componentName  = "Followers";
+const Component   ColorChaser::component      = Component ("Followers", 1);
 const std::string ColorChaser::typeName       = "ColorChaser";
 const std::string ColorChaser::containerField = "children";
 

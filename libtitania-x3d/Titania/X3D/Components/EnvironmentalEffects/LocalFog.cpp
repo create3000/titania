@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LocalFog::componentName  = "EnvironmentalEffects";
+const Component   LocalFog::component      = Component ("EnvironmentalEffects", 4);
 const std::string LocalFog::typeName       = "LocalFog";
 const std::string LocalFog::containerField = "children";
 

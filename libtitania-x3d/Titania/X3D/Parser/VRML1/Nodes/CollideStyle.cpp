@@ -59,7 +59,7 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const std::string CollideStyle::componentName  = "Titania";
+const Component   CollideStyle::component      = Component ("Titania", 1);
 const std::string CollideStyle::typeName       = "CollideStyle";
 const std::string CollideStyle::containerField = "children";
 

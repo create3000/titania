@@ -84,7 +84,7 @@ struct LSystem::Values
 	const int32_t  coordIndex;
 };
 
-const std::string LSystem::componentName  = "Titania";
+const Component   LSystem::component      = Component ("Titania", 1);
 const std::string LSystem::typeName       = "L-System";
 const std::string LSystem::containerField = "options";
 

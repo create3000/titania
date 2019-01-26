@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TransformMatrix3D::componentName  = "Titania";
+const Component   TransformMatrix3D::component      = Component ("Titania", 1);
 const std::string TransformMatrix3D::typeName       = "TransformMatrix3D";
 const std::string TransformMatrix3D::containerField = "children";
 

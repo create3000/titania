@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string WalkViewer::componentName  = "Titania";
+const Component   WalkViewer::component      = Component ("Titania", 1);
 const std::string WalkViewer::typeName       = "WalkViewer";
 const std::string WalkViewer::containerField = "viewer";
 

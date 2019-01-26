@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string QuadSphereOptions::componentName  = "Titania";
+const Component   QuadSphereOptions::component      = Component ("Titania", 1);
 const std::string QuadSphereOptions::typeName       = "QuadSphereOptions";
 const std::string QuadSphereOptions::containerField = "options";
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string BallJoint::componentName  = "RigidBodyPhysics";
+const Component   BallJoint::component      = Component ("RigidBodyPhysics", 2);
 const std::string BallJoint::typeName       = "BallJoint";
 const std::string BallJoint::containerField = "joints";
 

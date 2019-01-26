@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TouchGroup::componentName  = "Titania";
+const Component   TouchGroup::component      = Component ("Titania", 1);
 const std::string TouchGroup::typeName       = "TouchGroup";
 const std::string TouchGroup::containerField = "children";
 

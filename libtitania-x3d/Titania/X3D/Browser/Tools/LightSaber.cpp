@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LightSaber::componentName  = "Titania";
+const Component   LightSaber::component      = Component ("Titania", 1);
 const std::string LightSaber::typeName       = "LightSaber";
 const std::string LightSaber::containerField = "viewer";
 

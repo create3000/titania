@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string MetadataString::componentName  = "Core";
+const Component   MetadataString::component      = Component ("Core", 1);
 const std::string MetadataString::typeName       = "MetadataString";
 const std::string MetadataString::containerField = "metadata";
 

@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string Switch::componentName  = "Titania";
+const Component   Switch::component      = Component ("Titania", 1);
 const std::string Switch::typeName       = "Switch";
 const std::string Switch::containerField = "children";
 

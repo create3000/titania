@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Normal::componentName  = "Rendering";
+const Component   Normal::component      = Component ("Rendering", 2);
 const std::string Normal::typeName       = "Normal";
 const std::string Normal::containerField = "normal";
 

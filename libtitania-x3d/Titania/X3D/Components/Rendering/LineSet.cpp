@@ -63,7 +63,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LineSet::componentName  = "Rendering";
+const Component   LineSet::component      = Component ("Rendering", 1);
 const std::string LineSet::typeName       = "LineSet";
 const std::string LineSet::containerField = "geometry";
 

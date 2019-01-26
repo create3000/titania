@@ -68,7 +68,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string X3DPrototypeInstance::componentName  = "Core";
+const Component   X3DPrototypeInstance::component      = Component ("Core", 2);
 const std::string X3DPrototypeInstance::containerField = "children";
 
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoDeclarationNodePtr & p_protoNode) :

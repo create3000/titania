@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TriangleStripSet::componentName  = "Rendering";
+const Component   TriangleStripSet::component      = Component ("Rendering", 3);
 const std::string TriangleStripSet::typeName       = "TriangleStripSet";
 const std::string TriangleStripSet::containerField = "geometry";
 

@@ -138,7 +138,13 @@ private:
 			std::cout
 			   << '\t'
 			   << "componentName = "
-			   << node -> getComponentName ()
+			   << node -> getComponent () .first
+			   << std::endl;
+
+			std::cout
+			   << '\t'
+			   << "componentLevel = "
+			   << node -> getComponent () .second
 			   << std::endl;
 
 			std::cout << std::endl;

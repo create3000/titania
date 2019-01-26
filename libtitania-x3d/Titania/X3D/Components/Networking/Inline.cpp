@@ -61,7 +61,7 @@ namespace X3D {
 
 static constexpr bool X3D_PARALLEL = true;
 
-const std::string Inline::componentName  = "Networking";
+const Component   Inline::component      = Component ("Networking", 3);
 const std::string Inline::typeName       = "Inline";
 const std::string Inline::containerField = "children";
 

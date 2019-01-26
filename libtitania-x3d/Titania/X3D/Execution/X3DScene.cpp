@@ -241,11 +241,11 @@ X3DScene::inferProfileAndComponents ()
 
 	for (size_t i = 0, size = profiles .size (); i < size; ++ i)
 	{
-		const auto numComponents = std::get <2> (profiles [i]);
+		const auto numExtraComponents = std::get <1> (profiles [i]) .size ();
 
-		if (numComponents <= lowestTotal)
+		if (numExtraComponents < lowestTotal)
 		{
-			lowestTotal = numComponents;
+			lowestTotal = numExtraComponents;
 			index       = i;
 		}
 	}
@@ -265,18 +265,20 @@ X3DScene::inferProfileAndComponents ()
 	}
 }
 
-std::set <std::string>
+std::map <std::string, size_t>
 X3DScene::getUsedComponents () const
 {
-	auto usedComponents = std::set <std::string> ();
+	auto usedComponents = std::map <std::string, size_t> ();
 
 	X3D::traverse (const_cast <X3DScene*> (this), [&] (SFNode & node)
 	{
+		const auto & component = node -> getComponent ();
+
 		// Protos are component 'Titania'.
-		if (node -> getComponentName () == "Titania")
+		if (component .first == "Titania")
 			return true;
 
-		usedComponents .emplace (node -> getComponentName ());
+		usedComponents .emplace (component .first, component .second);
 		return true;
 	},
 	TRAVERSE_EXTERNPROTO_DECLARATIONS |
@@ -288,39 +290,42 @@ X3DScene::getUsedComponents () const
 }
 
 std::pair <ComponentInfoArray, size_t>
-X3DScene::getComponents (const ProfileInfoPtr & profile, const std::set <std::string> & usedComponents) const
+X3DScene::getComponents (const ProfileInfoPtr & profileInfo, const std::map <std::string, size_t> & usedComponents) const
 {
-	const auto & supportedComponents   = getBrowser () -> getSupportedComponents ();
-	auto         profileComponentIndex = std::set <std::string> ();
-	auto         components            = ComponentInfoArray ();
+	auto profileComponents = std::map <std::string, size_t> ();
+	auto components        = ComponentInfoArray ();
 
-	for (const auto & component : profile -> getComponents ())
-		profileComponentIndex .emplace (component -> getName ());
+	for (const auto & componentInfo : profileInfo -> getComponents ())
+		profileComponents .emplace (componentInfo -> getName (), componentInfo -> getLevel ());
 
-	for (const auto & componentName : usedComponents)
+	for (const auto & [componentName, level] : usedComponents)
 	{
-		if (profileComponentIndex .count (componentName))
-			continue;
-
-		const auto iter = std::find_if (supportedComponents .cbegin (), supportedComponents .cend (),
-		[&] (const ComponentInfoPtr & component)
+		try
 		{
-			return component -> getName () == componentName;
-		});
-
-		if (iter == supportedComponents .cend ())
-			continue;
-
-		components .emplace_back (*iter);
+			const auto profile = profileComponents .find (componentName);
+	
+			if (profile not_eq profileComponents .end () and profile -> second >= level)
+				continue;
+	
+			components .emplace_back (getBrowser () -> getComponent (componentName, level));
+		}
+		catch (const X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;	
+		}
 	}
 
-	auto difference = std::vector <std::string> ();
+	auto difference = std::vector <Component> ();
 
-	std::set_difference (profileComponentIndex .cbegin (),
-	                     profileComponentIndex .cend (),
+	std::set_difference (profileComponents .cbegin (),
+	                     profileComponents .cend (),
 	                     usedComponents .cbegin (),
 	                     usedComponents .cend (),
-	                     std::back_inserter (difference));
+	                     std::back_inserter (difference),
+	[] (const Component & lhs, const Component & rhs)
+	{
+		return lhs .first < rhs .first;
+	});
 
 	return std::pair (components, usedComponents .size () + difference .size ());
 }

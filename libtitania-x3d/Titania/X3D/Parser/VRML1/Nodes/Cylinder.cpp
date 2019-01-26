@@ -72,7 +72,7 @@ static const std::regex sides (R"/(ALL|SIDES)/");
 static const std::regex top (R"/(ALL|TOP)/");
 static const std::regex bottom (R"/(ALL|BOTTOM)/");
 
-const std::string Cylinder::componentName  = "Titania";
+const Component   Cylinder::component      = Component ("Titania", 1);
 const std::string Cylinder::typeName       = "Cylinder";
 const std::string Cylinder::containerField = "children";
 

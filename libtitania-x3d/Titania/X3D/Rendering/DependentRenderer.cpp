@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string DependentRenderer::componentName  = "Titania";
+const Component   DependentRenderer::component      = Component ("Titania", 1);
 const std::string DependentRenderer::typeName       = "DependentRenderer";
 const std::string DependentRenderer::containerField = "renderer";
 

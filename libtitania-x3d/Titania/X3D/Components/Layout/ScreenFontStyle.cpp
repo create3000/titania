@@ -65,7 +65,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ScreenText::componentName  = "Titania";
+const Component   ScreenText::component      = Component ("Titania", 2);
 const std::string ScreenText::typeName       = "ScreenText";
 const std::string ScreenText::containerField = "textGeometry";
 
@@ -479,7 +479,7 @@ ScreenText::toPrimitive () const
 ScreenText::~ScreenText ()
 { }
 
-const std::string ScreenFontStyle::componentName  = "Layout";
+const Component   ScreenFontStyle::component      = Component ("Titania", 2);
 const std::string ScreenFontStyle::typeName       = "ScreenFontStyle";
 const std::string ScreenFontStyle::containerField = "fontStyle";
 

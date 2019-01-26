@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string PrimitivePickSensor::componentName  = "Picking";
+const Component   PrimitivePickSensor::component      = Component ("Picking", 3);
 const std::string PrimitivePickSensor::typeName       = "PrimitivePickSensor";
 const std::string PrimitivePickSensor::containerField = "children";
 

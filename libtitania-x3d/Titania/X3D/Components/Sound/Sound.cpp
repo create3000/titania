@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Sound::componentName  = "Sound";
+const Component   Sound::component      = Component ("Sound", 1);
 const std::string Sound::typeName       = "Sound";
 const std::string Sound::containerField = "children";
 

@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Contour2D::componentName  = "NURBS";
+const Component   Contour2D::component      = Component ("NURBS", 4);
 const std::string Contour2D::typeName       = "Contour2D";
 const std::string Contour2D::containerField = "trimmingContour";
 

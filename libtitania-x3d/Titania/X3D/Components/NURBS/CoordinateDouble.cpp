@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string CoordinateDouble::componentName  = "NURBS";
+const Component   CoordinateDouble::component      = Component ("NURBS", 1);
 const std::string CoordinateDouble::typeName       = "CoordinateDouble";
 const std::string CoordinateDouble::containerField = "coord";
 

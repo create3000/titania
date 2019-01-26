@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string AngleGridTool::componentName  = "Titania";
+const Component   AngleGridTool::component      = Component ("Titania", 1);
 const std::string AngleGridTool::typeName       = "AngleGridTool";
 const std::string AngleGridTool::containerField = "grid";
 

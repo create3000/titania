@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ColorInterpolator::componentName  = "Interpolation";
+const Component   ColorInterpolator::component      = Component ("Interpolation", 2);
 const std::string ColorInterpolator::typeName       = "ColorInterpolator";
 const std::string ColorInterpolator::containerField = "children";
 

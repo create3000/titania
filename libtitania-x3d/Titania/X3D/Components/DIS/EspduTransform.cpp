@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string EspduTransform::componentName  = "DIS";
+const Component   EspduTransform::component      = Component ("DIS", 1);
 const std::string EspduTransform::typeName       = "EspduTransform";
 const std::string EspduTransform::containerField = "children";
 

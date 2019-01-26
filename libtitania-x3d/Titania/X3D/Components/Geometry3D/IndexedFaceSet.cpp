@@ -72,7 +72,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string IndexedFaceSet::componentName  = "Geometry3D";
+const Component   IndexedFaceSet::component      = Component ("Geometry3D", 2);
 const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
 const std::string IndexedFaceSet::containerField = "geometry";
 

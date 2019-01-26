@@ -87,9 +87,9 @@ public:
 	///  @name Common members
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	const Component &
+	getComponent () const final override
+	{ return component; }
 
 	virtual
 	const std::string &
@@ -231,7 +231,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string componentName;
+	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
 
@@ -243,7 +243,7 @@ private:
 };
 
 template <class Type>
-const std::string X3DBindableNodeList <Type>::componentName = "Titania";
+const Component X3DBindableNodeList <Type>::component = Component ("Titania", 1);
 
 template <class Type>
 const std::string X3DBindableNodeList <Type>::typeName = "X3DBindableNodeList";

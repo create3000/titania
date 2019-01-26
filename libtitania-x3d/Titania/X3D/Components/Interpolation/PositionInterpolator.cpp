@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string PositionInterpolator::componentName  = "Interpolation";
+const Component   PositionInterpolator::component      = Component ("Interpolation", 1);
 const std::string PositionInterpolator::typeName       = "PositionInterpolator";
 const std::string PositionInterpolator::containerField = "children";
 

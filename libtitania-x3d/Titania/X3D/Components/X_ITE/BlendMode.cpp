@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string BlendMode::componentName  = "X_ITE";
+const Component   BlendMode::component      = Component ("X_ITE", 1);
 const std::string BlendMode::typeName       = "BlendMode";
 const std::string BlendMode::containerField = "blendMode";
 

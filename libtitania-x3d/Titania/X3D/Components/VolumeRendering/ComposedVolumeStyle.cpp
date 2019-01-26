@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ComposedVolumeStyle::componentName  = "VolumeRendering";
+const Component   ComposedVolumeStyle::component      = Component ("VolumeRendering", 2);
 const std::string ComposedVolumeStyle::typeName       = "ComposedVolumeStyle";
 const std::string ComposedVolumeStyle::containerField = "renderStyle";
 

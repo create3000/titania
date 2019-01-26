@@ -65,7 +65,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Disk2D::componentName  = "Geometry2D";
+const Component   Disk2D::component      = Component ("Geometry2D", 2);
 const std::string Disk2D::typeName       = "Disk2D";
 const std::string Disk2D::containerField = "geometry";
 

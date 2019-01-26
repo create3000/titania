@@ -77,7 +77,7 @@ namespace X3D {
 // TextureMemory           Float                The amount of memory in megabytes available for textures to be placed on the video card.
 // LogarithmicDepthBuffer  Boolean              True or false if logarithmic depth buffer is currently enabled or not.
 
-const std::string RenderingProperties::componentName  = "Titania";
+const Component   RenderingProperties::component      = Component ("Titania", 1);
 const std::string RenderingProperties::typeName       = "RenderingProperties";
 const std::string RenderingProperties::containerField = "renderingProperties";
 

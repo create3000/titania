@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Viewport::componentName  = "Layering";
+const Component   Viewport::component      = Component ("Layering", 1);
 const std::string Viewport::typeName       = "Viewport";
 const std::string Viewport::containerField = "viewport";
 

@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string WindPhysicsModel::componentName  = "ParticleSystems";
+const Component   WindPhysicsModel::component      = Component ("ParticleSystems", 1);
 const std::string WindPhysicsModel::typeName       = "WindPhysicsModel";
 const std::string WindPhysicsModel::containerField = "physics";
 

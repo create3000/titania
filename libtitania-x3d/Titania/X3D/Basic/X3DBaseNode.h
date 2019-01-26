@@ -65,12 +65,12 @@
 namespace titania {
 namespace X3D {
 
-typedef std::map <std::string, X3DFieldDefinition*> FieldIndex;
-
 class X3DBrowser;
 class X3DScene;
 class X3DExecutionContext;
 class X3DRenderObject;
+
+using Component = std::pair <std::string, size_t>;
 
 /**
  *  Class to represent an object that is the base for all nodes.
@@ -151,8 +151,8 @@ public:
 	///  Returns the component name this node belongs to.
 	///  throws Error <DISPOSED>
 	virtual
-	const std::string &
-	getComponentName () const = 0;
+	const Component &
+	getComponent () const = 0;
 
 	///  Returns a array of types of this node.
 	///  throws Error <DISPOSED>
@@ -530,6 +530,7 @@ private:
 
 	struct FlatCopyType { };
 
+	using FieldIndex      = std::map <std::string, X3DFieldDefinition*>;
 	using FieldAliasIndex = std::map <SpecificationVersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
 
 	///  @name Construction

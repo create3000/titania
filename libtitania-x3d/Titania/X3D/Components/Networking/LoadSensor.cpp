@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LoadSensor::componentName  = "Networking";
+const Component   LoadSensor::component      = Component ("Networking", 3);
 const std::string LoadSensor::typeName       = "LoadSensor";
 const std::string LoadSensor::containerField = "children";
 

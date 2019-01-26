@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ShaderPart::componentName  = "Shaders";
+const Component   ShaderPart::component      = Component ("Shaders", 1);
 const std::string ShaderPart::typeName       = "ShaderPart";
 const std::string ShaderPart::containerField = "parts";
 

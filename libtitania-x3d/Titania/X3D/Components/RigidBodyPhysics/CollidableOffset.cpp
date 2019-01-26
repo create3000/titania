@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string CollidableOffset::componentName  = "RigidBodyPhysics";
+const Component   CollidableOffset::component      = Component ("RigidBodyPhysics", 1);
 const std::string CollidableOffset::typeName       = "CollidableOffset";
 const std::string CollidableOffset::containerField = "children";
 

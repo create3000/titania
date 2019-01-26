@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string PointSet::componentName  = "Rendering";
+const Component   PointSet::component      = Component ("Rendering", 1);
 const std::string PointSet::typeName       = "PointSet";
 const std::string PointSet::containerField = "geometry";
 

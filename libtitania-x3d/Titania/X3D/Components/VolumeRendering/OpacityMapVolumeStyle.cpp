@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string OpacityMapVolumeStyle::componentName  = "VolumeRendering";
+const Component   OpacityMapVolumeStyle::component      = Component ("VolumeRendering", 2);
 const std::string OpacityMapVolumeStyle::typeName       = "OpacityMapVolumeStyle";
 const std::string OpacityMapVolumeStyle::containerField = "renderStyle";
 

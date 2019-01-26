@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string Separator::componentName  = "Titania";
+const Component   Separator::component      = Component ("Titania", 1);
 const std::string Separator::typeName       = "Separator";
 const std::string Separator::containerField = "children";
 

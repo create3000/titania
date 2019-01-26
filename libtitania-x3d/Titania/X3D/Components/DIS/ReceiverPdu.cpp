@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ReceiverPdu::componentName  = "DIS";
+const Component   ReceiverPdu::component      = Component ("DIS", 1);
 const std::string ReceiverPdu::typeName       = "ReceiverPdu";
 const std::string ReceiverPdu::containerField = "children";
 

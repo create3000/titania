@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TwoSidedMaterial::componentName  = "Shape";
+const Component   TwoSidedMaterial::component      = Component ("Shape", 4);
 const std::string TwoSidedMaterial::typeName       = "TwoSidedMaterial";
 const std::string TwoSidedMaterial::containerField = "material";
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LineProperties::componentName  = "Shape";
+const Component   LineProperties::component      = Component ("Shape", 2);
 const std::string LineProperties::typeName       = "LineProperties";
 const std::string LineProperties::containerField = "lineProperties";
 

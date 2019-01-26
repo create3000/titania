@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string IndexedTriangleFanSet::componentName  = "Rendering";
+const Component   IndexedTriangleFanSet::component      = Component ("Rendering", 3);
 const std::string IndexedTriangleFanSet::typeName       = "IndexedTriangleFanSet";
 const std::string IndexedTriangleFanSet::containerField = "geometry";
 

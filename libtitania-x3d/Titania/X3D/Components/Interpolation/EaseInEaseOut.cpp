@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string EaseInEaseOut::componentName  = "Interpolation";
+const Component   EaseInEaseOut::component      = Component ("Interpolation", 4);
 const std::string EaseInEaseOut::typeName       = "EaseInEaseOut";
 const std::string EaseInEaseOut::containerField = "children";
 

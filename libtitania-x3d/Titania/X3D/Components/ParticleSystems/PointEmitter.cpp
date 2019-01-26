@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string PointEmitter::componentName  = "ParticleSystems";
+const Component   PointEmitter::component      = Component ("ParticleSystems", 1);
 const std::string PointEmitter::typeName       = "PointEmitter";
 const std::string PointEmitter::containerField = "emitter";
 

@@ -55,9 +55,9 @@
 namespace titania {
 namespace puck {
 
-const std::string OutlineSeparator::componentName  = "Titania";
-const std::string OutlineSeparator::typeName       = "OutlineSeparator";
-const std::string OutlineSeparator::containerField = "children";
+const X3D::Component OutlineSeparator::component      = X3D::Component ("Titania", 1);
+const std::string    OutlineSeparator::typeName       = "OutlineSeparator";
+const std::string    OutlineSeparator::containerField = "children";
 
 OutlineSeparator::OutlineSeparator (X3D::X3DExecutionContext* const executionContext, const std::string & name) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext)

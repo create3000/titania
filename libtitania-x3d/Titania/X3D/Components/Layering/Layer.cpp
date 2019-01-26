@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Layer::componentName  = "Layering";
+const Component   Layer::component      = Component ("Layering", 2);
 const std::string Layer::typeName       = "Layer";
 const std::string Layer::containerField = "layers";
 

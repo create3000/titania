@@ -66,7 +66,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Appearance::componentName  = "Shape";
+const Component   Appearance::component      = Component ("Shape", 4);
 const std::string Appearance::typeName       = "Appearance";
 const std::string Appearance::containerField = "appearance";
 

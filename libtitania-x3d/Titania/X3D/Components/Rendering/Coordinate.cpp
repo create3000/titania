@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Coordinate::componentName  = "Rendering";
+const Component   Coordinate::component      = Component ("Rendering", 1);
 const std::string Coordinate::typeName       = "Coordinate";
 const std::string Coordinate::containerField = "coord";
 

@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string NurbsCurve2D::componentName  = "NURBS";
+const Component   NurbsCurve2D::component      = Component ("NURBS", 3);
 const std::string NurbsCurve2D::typeName       = "NurbsCurve2D";
 const std::string NurbsCurve2D::containerField = "children";
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string GeoCoordinate::componentName  = "Geospatial";
+const Component   GeoCoordinate::component      = Component ("Geospatial", 1);
 const std::string GeoCoordinate::typeName       = "GeoCoordinate";
 const std::string GeoCoordinate::containerField = "coord";
 

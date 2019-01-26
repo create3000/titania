@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ClipPlane::componentName  = "Rendering";
+const Component   ClipPlane::component      = Component ("Rendering", 5);
 const std::string ClipPlane::typeName       = "ClipPlane";
 const std::string ClipPlane::containerField = "children";
 

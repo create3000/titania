@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string FloatVertexAttribute::componentName  = "Shaders";
+const Component   FloatVertexAttribute::component      = Component ("Shaders", 1);
 const std::string FloatVertexAttribute::typeName       = "FloatVertexAttribute";
 const std::string FloatVertexAttribute::containerField = "attrib";
 

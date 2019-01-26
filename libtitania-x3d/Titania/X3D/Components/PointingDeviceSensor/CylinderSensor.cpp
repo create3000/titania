@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string CylinderSensor::componentName  = "PointingDeviceSensor";
+const Component   CylinderSensor::component      = Component ("PointingDeviceSensor", 1);
 const std::string CylinderSensor::typeName       = "CylinderSensor";
 const std::string CylinderSensor::containerField = "children";
 

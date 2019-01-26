@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Color::componentName  = "Rendering";
+const Component   Color::component      = Component ("Rendering", 1);
 const std::string Color::typeName       = "Color";
 const std::string Color::containerField = "color";
 

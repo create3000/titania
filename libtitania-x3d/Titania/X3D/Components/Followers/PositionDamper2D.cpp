@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string PositionDamper2D::componentName  = "Followers";
+const Component   PositionDamper2D::component      = Component ("Followers", 1);
 const std::string PositionDamper2D::typeName       = "PositionDamper2D";
 const std::string PositionDamper2D::containerField = "children";
 

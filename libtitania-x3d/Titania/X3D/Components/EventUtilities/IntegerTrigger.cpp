@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string IntegerTrigger::componentName  = "EventUtilities";
+const Component   IntegerTrigger::component      = Component ("EventUtilities", 1);
 const std::string IntegerTrigger::typeName       = "IntegerTrigger";
 const std::string IntegerTrigger::containerField = "children";
 

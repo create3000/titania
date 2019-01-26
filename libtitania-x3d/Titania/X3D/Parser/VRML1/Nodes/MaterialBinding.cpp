@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string MaterialBinding::componentName  = "Titania";
+const Component   MaterialBinding::component      = Component ("Titania", 1);
 const std::string MaterialBinding::typeName       = "MaterialBinding";
 const std::string MaterialBinding::containerField = "children";
 

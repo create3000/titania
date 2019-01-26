@@ -61,7 +61,7 @@ namespace X3D {
 // node is tolerated but can be ignored in X3D scenes having version 3.0, 3.1 or 3.2.
 // GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
 
-const std::string GeoOrigin::componentName  = "Geospatial";
+const Component   GeoOrigin::component      = Component ("Geospatial", 1);
 const std::string GeoOrigin::typeName       = "GeoOrigin";
 const std::string GeoOrigin::containerField = "geoOrigin";
 

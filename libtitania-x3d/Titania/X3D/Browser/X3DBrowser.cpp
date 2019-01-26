@@ -71,7 +71,7 @@ namespace X3D {
 
 const std::string X3DBrowser::version = "4.3.11"; // Don't forget to call 'make version'.
 
-const std::string X3DBrowser::componentName  = "Titania";
+const Component   X3DBrowser::component      = Component ("Titania", 1);
 const std::string X3DBrowser::typeName       = "Browser";
 const std::string X3DBrowser::containerField = "browser";
 
@@ -138,7 +138,6 @@ X3DBrowser::initialize ()
 
 	// Add necessary routes.
 
-	initialized ()   .addInterest (&X3DBrowser::set_initialized,   this);
 	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents, this);
 
 	getLoadSensor () -> isLoaded () .addInterest (&X3DBrowser::set_loaded, this);
@@ -384,6 +383,7 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 		getBrowserOptions () -> assign (browserOptions, true);
 
 		resetLoadCount ();
+		prepareEvents () .removeInterest (&X3DBrowser::set_initialized, this);
 
 		executionContext = value ? value : createScene (false);
 
@@ -407,21 +407,30 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 }
 
 void
-X3DBrowser::set_initialized ()
+X3DBrowser::set_loadCount ()
 {
+	if (getLoadCount ())
+		return;
+
+	prepareEvents () .addInterest (&X3DBrowser::set_initialized, this);
+	addEvent ();
+
 	#ifdef TITANIA_DEBUG
 	std::clog << "Replacing world done." << std::endl;
 	#endif
 }
 
 void
-X3DBrowser::set_loadCount ()
+X3DBrowser::set_initialized ()
 {
-	if (getLoadCount ())
-		return;
+	prepareEvents () .removeInterest (&X3DBrowser::set_initialized, this);
 
 	get_style_context () -> remove_class ("titania-private-invisible");
 	initialized () = true;
+
+	#ifdef TITANIA_DEBUG
+	std::clog << "Replacing world done." << std::endl;
+	#endif
 }
 
 ///  throws Error <INVALID_DOCUMENT>, Error <INVALID_OPERATION_TIMING>, Error <NOT_SUPPORTED>, Error <DISPOSED>
@@ -453,6 +462,7 @@ X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
 
 	get_style_context () -> add_class ("titania-private-invisible"); // getBrowserOptions () -> SplashScreen ()
 
+	prepareEvents () .removeInterest (&X3DBrowser::set_initialized, this);
 	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
 	setLoadState (IN_PROGRESS_STATE);

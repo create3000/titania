@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string DoubleAxisHingeJoint::componentName  = "RigidBodyPhysics";
+const Component   DoubleAxisHingeJoint::component      = Component ("RigidBodyPhysics", 2);
 const std::string DoubleAxisHingeJoint::typeName       = "DoubleAxisHingeJoint";
 const std::string DoubleAxisHingeJoint::containerField = "joints";
 

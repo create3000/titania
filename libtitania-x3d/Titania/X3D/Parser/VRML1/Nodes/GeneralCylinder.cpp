@@ -73,7 +73,7 @@ namespace VRML1 {
 static const std::regex sides (R"/(ALL|BOTTOM)/");
 static const std::regex bottom (R"/(ALL|TOP)/");
 
-const std::string GeneralCylinder::componentName  = "Titania";
+const Component   GeneralCylinder::component      = Component ("Titania", 1);
 const std::string GeneralCylinder::typeName       = "GeneralCylinder";
 const std::string GeneralCylinder::containerField = "children";
 

@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ComposedTexture3D::componentName  = "Texturing3D";
+const Component   ComposedTexture3D::component      = Component ("Texturing3D", 1);
 const std::string ComposedTexture3D::typeName       = "ComposedTexture3D";
 const std::string ComposedTexture3D::containerField = "texture";
 

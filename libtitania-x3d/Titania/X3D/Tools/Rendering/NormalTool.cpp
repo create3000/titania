@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string NormalTool::componentName  = "Titania";
+const Component   NormalTool::component      = Component ("Titania", 1);
 const std::string NormalTool::typeName       = "NormalTool";
 const std::string NormalTool::containerField = "normalTool";
 

@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string IsoSurfaceVolumeData::componentName  = "VolumeRendering";
+const Component   IsoSurfaceVolumeData::component      = Component ("VolumeRendering", 2);
 const std::string IsoSurfaceVolumeData::typeName       = "IsoSurfaceVolumeData";
 const std::string IsoSurfaceVolumeData::containerField = "children";
 

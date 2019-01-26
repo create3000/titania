@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Arc2DOptions::componentName  = "Titania";
+const Component   Arc2DOptions::component      = Component ("Titania", 1);
 const std::string Arc2DOptions::typeName       = "Arc2DOptions";
 const std::string Arc2DOptions::containerField = "options";
 

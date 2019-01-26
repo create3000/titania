@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string FieldSet::componentName  = "Titania";
+const Component   FieldSet::component      = Component ("Titania", 1);
 const std::string FieldSet::typeName       = "FieldSet";
 const std::string FieldSet::containerField = "fieldContainer";
 

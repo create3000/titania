@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SplinePositionInterpolator::componentName  = "Interpolation";
+const Component   SplinePositionInterpolator::component      = Component ("Interpolation", 4);
 const std::string SplinePositionInterpolator::typeName       = "SplinePositionInterpolator";
 const std::string SplinePositionInterpolator::containerField = "children";
 

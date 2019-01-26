@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string TextLanguage::componentName  = "Titania";
+const Component   TextLanguage::component      = Component ("Titania", 1);
 const std::string TextLanguage::typeName       = "TextLanguage";
 const std::string TextLanguage::containerField = "children";
 

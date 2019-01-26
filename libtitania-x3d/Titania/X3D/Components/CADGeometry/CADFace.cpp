@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string CADFace::componentName  = "CADGeometry";
+const Component   CADFace::component      = Component ("CADGeometry", 2);
 const std::string CADFace::typeName       = "CADFace";
 const std::string CADFace::containerField = "children";
 

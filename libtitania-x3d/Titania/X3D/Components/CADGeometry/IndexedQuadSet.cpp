@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string IndexedQuadSet::componentName  = "CADGeometry";
+const Component   IndexedQuadSet::component      = Component ("CADGeometry", 1);
 const std::string IndexedQuadSet::typeName       = "IndexedQuadSet";
 const std::string IndexedQuadSet::containerField = "geometry";
 

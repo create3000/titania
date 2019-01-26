@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SurfaceEmitter::componentName  = "ParticleSystems";
+const Component   SurfaceEmitter::component      = Component ("ParticleSystems", 2);
 const std::string SurfaceEmitter::typeName       = "SurfaceEmitter";
 const std::string SurfaceEmitter::containerField = "emitter";
 

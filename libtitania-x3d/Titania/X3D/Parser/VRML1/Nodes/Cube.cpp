@@ -66,7 +66,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string Cube::componentName  = "Titania";
+const Component   Cube::component      = Component ("Titania", 1);
 const std::string Cube::typeName       = "Cube";
 const std::string Cube::containerField = "children";
 

@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string NurbsOrientationInterpolator::componentName  = "NURBS";
+const Component   NurbsOrientationInterpolator::component      = Component ("NURBS", 1);
 const std::string NurbsOrientationInterpolator::typeName       = "NurbsOrientationInterpolator";
 const std::string NurbsOrientationInterpolator::containerField = "children";
 

@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string FontStyleOptions::componentName  = "Titania";
+const Component   FontStyleOptions::component      = Component ("Titania", 1);
 const std::string FontStyleOptions::typeName       = "FontStyleOptions";
 const std::string FontStyleOptions::containerField = "fontStyleOptions";
 

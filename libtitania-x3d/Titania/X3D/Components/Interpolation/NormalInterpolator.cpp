@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string NormalInterpolator::componentName  = "Interpolation";
+const Component   NormalInterpolator::component      = Component ("Interpolation", 2);
 const std::string NormalInterpolator::typeName       = "NormalInterpolator";
 const std::string NormalInterpolator::containerField = "children";
 

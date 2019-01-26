@@ -67,7 +67,7 @@ static constexpr double    SCROLL_FACTOR     = 1.0 / 50.0;
 static constexpr time_type FRAME_RATE        = 60;
 static constexpr double    MAX_ANGLE         = 0.97;
 
-const std::string X3DExamineViewer::componentName  = "Titania";
+const Component   X3DExamineViewer::component      = Component ("Titania", 1);
 const std::string X3DExamineViewer::typeName       = "X3DExamineViewer";
 const std::string X3DExamineViewer::containerField = "viewer";
 

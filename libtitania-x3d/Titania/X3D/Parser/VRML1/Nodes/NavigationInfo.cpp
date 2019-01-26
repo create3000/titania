@@ -59,7 +59,7 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const std::string NavigationInfo::componentName  = "Titania";
+const Component   NavigationInfo::component      = Component ("Titania", 1);
 const std::string NavigationInfo::typeName       = "NavigationInfo";
 const std::string NavigationInfo::containerField = "children";
 

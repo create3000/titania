@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Console::componentName  = "Titania";
+const Component   Console::component      = Component ("Titania", 1);
 const std::string Console::typeName       = "Console";
 const std::string Console::containerField = "console";
 

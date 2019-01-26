@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SquadOrientationInterpolator::componentName  = "Interpolation";
+const Component   SquadOrientationInterpolator::component      = Component ("Interpolation", 5);
 const std::string SquadOrientationInterpolator::typeName       = "SquadOrientationInterpolator";
 const std::string SquadOrientationInterpolator::containerField = "children";
 

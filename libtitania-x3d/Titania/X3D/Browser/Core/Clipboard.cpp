@@ -62,7 +62,7 @@ Clipboard::Fields::Fields () :
 	string_changed (new SFString ())
 { }
 
-const std::string Clipboard::componentName  = "Titania";
+const Component   Clipboard::component      = Component ("Titania", 1);
 const std::string Clipboard::typeName       = "Clipboard";
 const std::string Clipboard::containerField = "clipboard";
 

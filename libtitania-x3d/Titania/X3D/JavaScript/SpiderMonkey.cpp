@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SpiderMonkey::componentName  = "Titania";
+const Component   SpiderMonkey::component      = Component ("Titania", 1);
 const std::string SpiderMonkey::typeName       = "SpiderMonkey";
 const std::string SpiderMonkey::containerField = "javaScript";
 

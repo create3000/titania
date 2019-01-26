@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string SpotLight::componentName  = "Titania";
+const Component   SpotLight::component      = Component ("Titania", 1);
 const std::string SpotLight::typeName       = "SpotLight";
 const std::string SpotLight::containerField = "children";
 

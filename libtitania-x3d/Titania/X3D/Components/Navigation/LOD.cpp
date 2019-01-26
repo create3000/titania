@@ -63,7 +63,7 @@ static constexpr size_t  FRAMES         = 180; // Number of frames after wich a 
 static constexpr double  FRAME_RATE_MIN = 20;  // Lowest level of detail.
 static constexpr double  FRAME_RATE_MAX = 55;  // Highest level of detail.
 
-const std::string LOD::componentName  = "Navigation";
+const Component   LOD::component      = Component ("Navigation", 2);
 const std::string LOD::typeName       = "LOD";
 const std::string LOD::containerField = "children";
 

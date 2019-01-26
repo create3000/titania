@@ -60,7 +60,7 @@ namespace X3D {
 
 // See GL_ARB_texture_env_combine for blending textures
 
-const std::string MultiTextureCoordinate::componentName  = "Texturing";
+const Component   MultiTextureCoordinate::component      = Component ("Texturing", 2);
 const std::string MultiTextureCoordinate::typeName       = "MultiTextureCoordinate";
 const std::string MultiTextureCoordinate::containerField = "texCoord";
 

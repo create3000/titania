@@ -62,7 +62,7 @@ namespace X3D {
 // See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
 // how to handle the profile and component arguments/statements of inline nodes.
 
-const std::string SceneFuture::componentName  = "Titania";
+const Component   SceneFuture::component      = Component ("Titania", 1);
 const std::string SceneFuture::typeName       = "SceneFuture";
 const std::string SceneFuture::containerField = "future";
 

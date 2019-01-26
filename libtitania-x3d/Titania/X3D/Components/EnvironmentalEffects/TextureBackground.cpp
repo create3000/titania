@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TextureBackground::componentName  = "EnvironmentalEffects";
+const Component   TextureBackground::component      = Component ("EnvironmentalEffects", 3);
 const std::string TextureBackground::typeName       = "TextureBackground";
 const std::string TextureBackground::containerField = "children";
 

@@ -84,7 +84,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-const std::string Context::componentName  = "Titania";
+const Component   Context::component      = Component ("Titania", 1);
 const std::string Context::typeName       = "SpiderMonkeyContext";
 const std::string Context::containerField = "context";
 

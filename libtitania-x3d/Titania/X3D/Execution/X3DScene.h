@@ -328,11 +328,11 @@ private:
 
 	///  @name Monitor file changes
 
-	std::set <std::string>
+	std::map <std::string, size_t>
 	getUsedComponents () const;
 
 	std::pair <ComponentInfoArray, size_t>
-	getComponents (const ProfileInfoPtr & profile, const std::set <std::string> & usedComponents) const;
+	getComponents (const ProfileInfoPtr & profile, const std::map <std::string, size_t> & usedComponents) const;
 
 	void
 	monitorFile (const basic::uri & URL);

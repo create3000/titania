@@ -75,9 +75,9 @@ public:
 	///  @name Common members
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	const Component &
+	getComponent () const final override
+	{ return component; }
 
 	virtual
 	const std::string &
@@ -120,7 +120,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string componentName;
+	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
 
@@ -148,9 +148,9 @@ public:
 	///  @name Common members
 
 	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	const Component &
+	getComponent () const final override
+	{ return component; }
 
 	virtual
 	const std::string &
@@ -231,7 +231,7 @@ private:
 
 	///  @name Static members
 
-	static const std::string componentName;
+	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
 

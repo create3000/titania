@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string GeoProximitySensor::componentName  = "Geospatial";
+const Component   GeoProximitySensor::component      = Component ("Geospatial", 2);
 const std::string GeoProximitySensor::typeName       = "GeoProximitySensor";
 const std::string GeoProximitySensor::containerField = "children";
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string VisibilitySensor::componentName  = "EnvironmentalSensor";
+const Component   VisibilitySensor::component      = Component ("EnvironmentalSensor", 2);
 const std::string VisibilitySensor::typeName       = "VisibilitySensor";
 const std::string VisibilitySensor::containerField = "children";
 

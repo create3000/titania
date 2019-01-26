@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SilhouetteEnhancementVolumeStyle::componentName  = "VolumeRendering";
+const Component   SilhouetteEnhancementVolumeStyle::component      = Component ("VolumeRendering", 2);
 const std::string SilhouetteEnhancementVolumeStyle::typeName       = "SilhouetteEnhancementVolumeStyle";
 const std::string SilhouetteEnhancementVolumeStyle::containerField = "renderStyle";
 

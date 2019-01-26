@@ -62,7 +62,7 @@ constexpr size_t WIDTH      = 1;
 constexpr size_t HEIGHT     = 2;
 constexpr size_t DEPTH      = 3;
 
-const std::string PixelTexture3D::componentName  = "Texturing3D";
+const Component   PixelTexture3D::component      = Component ("Texturing3D", 1);
 const std::string PixelTexture3D::typeName       = "PixelTexture3D";
 const std::string PixelTexture3D::containerField = "texture";
 

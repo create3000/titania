@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string NurbsTrimmedSurface::componentName  = "NURBS";
+const Component   NurbsTrimmedSurface::component      = Component ("NURBS", 4);
 const std::string NurbsTrimmedSurface::typeName       = "NurbsTrimmedSurface";
 const std::string NurbsTrimmedSurface::containerField = "geometry";
 

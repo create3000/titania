@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string DepthBuffer::componentName  = "Titania";
+const Component   DepthBuffer::component      = Component ("Titania", 1);
 const std::string DepthBuffer::typeName       = "DepthBuffer";
 const std::string DepthBuffer::containerField = "children";
 

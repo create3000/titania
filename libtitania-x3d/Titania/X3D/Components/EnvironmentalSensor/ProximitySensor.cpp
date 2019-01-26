@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ProximitySensor::componentName  = "EnvironmentalSensor";
+const Component   ProximitySensor::component      = Component ("EnvironmentalSensor", 2);
 const std::string ProximitySensor::typeName       = "ProximitySensor";
 const std::string ProximitySensor::containerField = "children";
 

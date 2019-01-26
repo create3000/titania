@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string ShapeHints::componentName  = "Titania";
+const Component   ShapeHints::component      = Component ("Titania", 1);
 const std::string ShapeHints::typeName       = "ShapeHints";
 const std::string ShapeHints::containerField = "children";
 

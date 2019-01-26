@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Extrusion::componentName  = "Geometry3D";
+const Component   Extrusion::component      = Component ("Geometry3D", 4);
 const std::string Extrusion::typeName       = "Extrusion";
 const std::string Extrusion::containerField = "geometry";
 

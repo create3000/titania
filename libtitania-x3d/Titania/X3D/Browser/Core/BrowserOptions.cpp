@@ -93,7 +93,7 @@ namespace X3D {
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 // LogarithmicDepthBuffer  Boolean                                  False                        Whether to use a logarithmic depth buffer. It may be neccesary to use this if dealing with huge differences in scale in a single scene.
 
-const std::string BrowserOptions::componentName  = "Titania";
+const Component   BrowserOptions::component      = Component ("Titania", 1);
 const std::string BrowserOptions::typeName       = "BrowserOptions";
 const std::string BrowserOptions::containerField = "browserOptions";
 
@@ -223,8 +223,8 @@ BrowserOptions::set_TextureQuality ()
 
 	if (textureQuality == "HIGH")
 	{
-		if (this -> textureQuality == TextureQualityType::HIGH)
-			return;
+//		if (this -> textureQuality == TextureQualityType::HIGH)
+//			return;
 
 		this -> textureQuality = TextureQualityType::HIGH;
 
@@ -248,8 +248,8 @@ BrowserOptions::set_TextureQuality ()
 
 	if (textureQuality == "LOW")
 	{
-		if (this -> textureQuality == TextureQualityType::LOW)
-			return;
+//		if (this -> textureQuality == TextureQualityType::LOW)
+//			return;
 
 		this -> textureQuality = TextureQualityType::LOW;
 
@@ -273,8 +273,8 @@ BrowserOptions::set_TextureQuality ()
 
 	// MEDIUM
 
-	if (this -> textureQuality == TextureQualityType::MEDIUM)
-		return;
+//	if (this -> textureQuality == TextureQualityType::MEDIUM)
+//		return;
 
 	this -> textureQuality = TextureQualityType::MEDIUM;
 

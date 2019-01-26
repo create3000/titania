@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string OrthoViewpoint::componentName  = "Navigation";
+const Component   OrthoViewpoint::component      = Component ("Navigation", 2);
 const std::string OrthoViewpoint::typeName       = "OrthoViewpoint";
 const std::string OrthoViewpoint::containerField = "children";
 

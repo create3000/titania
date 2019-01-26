@@ -59,7 +59,7 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const std::string ElevationGrid::componentName  = "Titania";
+const Component   ElevationGrid::component      = Component ("Titania", 1);
 const std::string ElevationGrid::typeName       = "ElevationGrid";
 const std::string ElevationGrid::containerField = "children";
 

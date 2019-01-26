@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string TextureCoordinate2::componentName  = "Titania";
+const Component   TextureCoordinate2::component      = Component ("Titania", 1);
 const std::string TextureCoordinate2::typeName       = "TextureCoordinate2";
 const std::string TextureCoordinate2::containerField = "children";
 

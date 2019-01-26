@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Transform::componentName  = "Grouping";
+const Component   Transform::component      = Component ("Grouping", 1);
 const std::string Transform::typeName       = "Transform";
 const std::string Transform::containerField = "children";
 

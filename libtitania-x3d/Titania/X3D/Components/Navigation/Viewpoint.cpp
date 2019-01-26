@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Viewpoint::componentName  = "Navigation";
+const Component   Viewpoint::component      = Component ("Navigation", 2);
 const std::string Viewpoint::typeName       = "Viewpoint";
 const std::string Viewpoint::containerField = "children";
 

@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Matrix4VertexAttribute::componentName  = "Shaders";
+const Component   Matrix4VertexAttribute::component      = Component ("Shaders", 1);
 const std::string Matrix4VertexAttribute::typeName       = "Matrix4VertexAttribute";
 const std::string Matrix4VertexAttribute::containerField = "attrib";
 

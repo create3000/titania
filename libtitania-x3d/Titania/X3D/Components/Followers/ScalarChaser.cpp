@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ScalarChaser::componentName  = "Followers";
+const Component   ScalarChaser::component      = Component ("Followers", 1);
 const std::string ScalarChaser::typeName       = "ScalarChaser";
 const std::string ScalarChaser::containerField = "children";
 

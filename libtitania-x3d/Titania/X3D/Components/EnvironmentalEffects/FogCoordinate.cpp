@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string FogCoordinate::componentName  = "EnvironmentalEffects";
+const Component   FogCoordinate::component      = Component ("EnvironmentalEffects", 4);
 const std::string FogCoordinate::typeName       = "FogCoordinate";
 const std::string FogCoordinate::containerField = "fogCoord";
 

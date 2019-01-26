@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string CADPart::componentName  = "CADGeometry";
+const Component   CADPart::component      = Component ("CADGeometry", 2);
 const std::string CADPart::typeName       = "CADPart";
 const std::string CADPart::containerField = "children";
 

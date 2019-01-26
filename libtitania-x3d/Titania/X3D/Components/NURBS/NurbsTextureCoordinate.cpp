@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string NurbsTextureCoordinate::componentName  = "NURBS";
+const Component   NurbsTextureCoordinate::component      = Component ("NURBS", 1);
 const std::string NurbsTextureCoordinate::typeName       = "NurbsTextureCoordinate";
 const std::string NurbsTextureCoordinate::containerField = "texCoord";
 

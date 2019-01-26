@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string LOD::componentName  = "Titania";
+const Component   LOD::component      = Component ("Titania", 1);
 const std::string LOD::typeName       = "LOD";
 const std::string LOD::containerField = "children";
 

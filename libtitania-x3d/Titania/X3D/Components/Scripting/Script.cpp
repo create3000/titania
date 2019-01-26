@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Script::componentName  = "Scripting";
+const Component   Script::component      = Component ("Scripting", 1);
 const std::string Script::typeName       = "Script";
 const std::string Script::containerField = "children";
 

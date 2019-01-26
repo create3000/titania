@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TouchSensor::componentName  = "PointingDeviceSensor";
+const Component   TouchSensor::component      = Component ("PointingDeviceSensor", 1);
 const std::string TouchSensor::typeName       = "TouchSensor";
 const std::string TouchSensor::containerField = "children";
 

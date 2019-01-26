@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string RigidBodyCollection::componentName  = "RigidBodyPhysics";
+const Component   RigidBodyCollection::component      = Component ("RigidBodyPhysics", 2);
 const std::string RigidBodyCollection::typeName       = "RigidBodyCollection";
 const std::string RigidBodyCollection::containerField = "children";
 

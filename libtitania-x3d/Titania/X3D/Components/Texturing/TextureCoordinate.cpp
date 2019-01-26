@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TextureCoordinate::componentName  = "Texturing";
+const Component   TextureCoordinate::component      = Component ("Texturing", 1);
 const std::string TextureCoordinate::typeName       = "TextureCoordinate";
 const std::string TextureCoordinate::containerField = "texCoord";
 

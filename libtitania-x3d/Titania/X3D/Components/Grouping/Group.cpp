@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Group::componentName  = "Grouping";
+const Component   Group::component      = Component ("Grouping", 3);
 const std::string Group::typeName       = "Group";
 const std::string Group::containerField = "children";
 

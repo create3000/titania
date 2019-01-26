@@ -64,7 +64,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Arc2D::componentName  = "Geometry2D";
+const Component   Arc2D::component      = Component ("Geometry2D", 2);
 const std::string Arc2D::typeName       = "Arc2D";
 const std::string Arc2D::containerField = "geometry";
 

@@ -61,7 +61,7 @@ MotionBlur::Fields::Fields () :
 	intensity (new SFFloat (0.7))
 { }
 
-const std::string MotionBlur::componentName  = "Titania";
+const Component   MotionBlur::component      = Component ("Titania", 1);
 const std::string MotionBlur::typeName       = "MotionBlur";
 const std::string MotionBlur::containerField = "motionBlur";
 

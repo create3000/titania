@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string VolumePickSensor::componentName  = "Picking";
+const Component   VolumePickSensor::component      = Component ("Picking", 3);
 const std::string VolumePickSensor::typeName       = "VolumePickSensor";
 const std::string VolumePickSensor::containerField = "children";
 

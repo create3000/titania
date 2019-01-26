@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TimeSensor::componentName  = "Time";
+const Component   TimeSensor::component      = Component ("Time", 2);
 const std::string TimeSensor::typeName       = "TimeSensor";
 const std::string TimeSensor::containerField = "children";
 

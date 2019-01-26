@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string UndoStepContainer::componentName  = "Titania";
+const Component   UndoStepContainer::component      = Component ("Titania", 1);
 const std::string UndoStepContainer::typeName       = "UndoStepContainer";
 const std::string UndoStepContainer::containerField = "undoStep";
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string WorldInfo::componentName  = "Core";
+const Component   WorldInfo::component      = Component ("Core", 1);
 const std::string WorldInfo::typeName       = "WorldInfo";
 const std::string WorldInfo::containerField = "children";
 

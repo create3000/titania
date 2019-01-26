@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Box::componentName  = "Geometry3D";
+const Component   Box::component      = Component ("Geometry3D", 1);
 const std::string Box::typeName       = "Box";
 const std::string Box::containerField = "geometry";
 

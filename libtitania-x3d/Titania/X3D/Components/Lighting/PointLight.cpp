@@ -66,7 +66,7 @@ namespace X3D {
 
 static constexpr int32_t POINT_LIGHT = 2;
 
-const std::string PointLight::componentName  = "Lighting";
+const Component   PointLight::component      = Component ("Lighting", 2);
 const std::string PointLight::typeName       = "PointLight";
 const std::string PointLight::containerField = "children";
 

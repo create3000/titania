@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LayoutGroup::componentName  = "Layout";
+const Component   LayoutGroup::component      = Component ("Layout", 1);
 const std::string LayoutGroup::typeName       = "LayoutGroup";
 const std::string LayoutGroup::containerField = "children";
 

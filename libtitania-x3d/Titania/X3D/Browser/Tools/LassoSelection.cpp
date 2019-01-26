@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string LassoSelection::componentName  = "Titania";
+const Component   LassoSelection::component      = Component ("Titania", 1);
 const std::string LassoSelection::typeName       = "LassoSelection";
 const std::string LassoSelection::containerField = "viewer";
 

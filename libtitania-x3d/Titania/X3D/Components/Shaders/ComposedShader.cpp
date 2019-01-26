@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ComposedShader::componentName  = "Shaders";
+const Component   ComposedShader::component      = Component ("Shaders", 1);
 const std::string ComposedShader::typeName       = "ComposedShader";
 const std::string ComposedShader::containerField = "shaders";
 

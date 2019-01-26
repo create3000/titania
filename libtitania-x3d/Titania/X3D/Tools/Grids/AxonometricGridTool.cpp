@@ -60,7 +60,7 @@ namespace X3D {
 
 using namespace math_literals;
 
-const std::string AxonometricGridTool::componentName  = "Titania";
+const Component   AxonometricGridTool::component      = Component ("Titania", 1);
 const std::string AxonometricGridTool::typeName       = "AxonometricGridTool";
 const std::string AxonometricGridTool::containerField = "grid";
 

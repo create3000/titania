@@ -59,7 +59,7 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const std::string Background::componentName  = "Titania";
+const Component   Background::component      = Component ("Titania", 1);
 const std::string Background::typeName       = "Background";
 const std::string Background::containerField = "children";
 

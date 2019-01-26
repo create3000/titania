@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string CylinderOptions::componentName  = "Titania";
+const Component   CylinderOptions::component      = Component ("Titania", 1);
 const std::string CylinderOptions::typeName       = "CylinderOptions";
 const std::string CylinderOptions::containerField = "options";
 

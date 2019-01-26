@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string WWWInline::componentName  = "Titania";
+const Component   WWWInline::component      = Component ("Titania", 1);
 const std::string WWWInline::typeName       = "WWWInline";
 const std::string WWWInline::containerField = "children";
 

@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TexCoordChaser2D::componentName  = "Followers";
+const Component   TexCoordChaser2D::component      = Component ("Followers", 1);
 const std::string TexCoordChaser2D::typeName       = "TexCoordChaser2D";
 const std::string TexCoordChaser2D::containerField = "children";
 

@@ -59,7 +59,7 @@ namespace VRML1 {
 
 // VRML 1.1
 
-const std::string DirectedSound::componentName  = "Titania";
+const Component   DirectedSound::component      = Component ("Titania", 1);
 const std::string DirectedSound::typeName       = "DirectedSound";
 const std::string DirectedSound::containerField = "children";
 

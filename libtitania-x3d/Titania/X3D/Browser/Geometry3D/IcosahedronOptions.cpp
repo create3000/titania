@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string IcosahedronOptions::componentName  = "Titania";
+const Component   IcosahedronOptions::component      = Component ("Titania", 1);
 const std::string IcosahedronOptions::typeName       = "IcosahedronOptions";
 const std::string IcosahedronOptions::containerField = "options";
 

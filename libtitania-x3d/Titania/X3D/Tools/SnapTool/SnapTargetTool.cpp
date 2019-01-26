@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SnapTargetTool::componentName  = "Titania";
+const Component   SnapTargetTool::component      = Component ("Titania", 1);
 const std::string SnapTargetTool::typeName       = "SnapTargetTool";
 const std::string SnapTargetTool::containerField = "SnapTool";
 

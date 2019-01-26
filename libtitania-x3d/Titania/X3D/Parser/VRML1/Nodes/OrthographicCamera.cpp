@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string OrthographicCamera::componentName  = "Titania";
+const Component   OrthographicCamera::component      = Component ("Titania", 1);
 const std::string OrthographicCamera::typeName       = "OrthographicCamera";
 const std::string OrthographicCamera::containerField = "children";
 

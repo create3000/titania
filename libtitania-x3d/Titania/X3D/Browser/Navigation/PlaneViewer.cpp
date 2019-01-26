@@ -61,7 +61,7 @@ namespace X3D {
 
 static constexpr double SCROLL_FACTOR = 0.05;
 
-const std::string PlaneViewer::componentName  = "Titania";
+const Component   PlaneViewer::component      = Component ("Titania", 1);
 const std::string PlaneViewer::typeName       = "PlaneViewer";
 const std::string PlaneViewer::containerField = "viewer";
 

@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string VolumeData::componentName  = "VolumeRendering";
+const Component   VolumeData::component      = Component ("VolumeRendering", 2);
 const std::string VolumeData::typeName       = "VolumeData";
 const std::string VolumeData::containerField = "children";
 

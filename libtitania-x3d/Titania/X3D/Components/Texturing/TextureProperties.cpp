@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TextureProperties::componentName  = "Texturing";
+const Component   TextureProperties::component      = Component ("Texturing", 2);
 const std::string TextureProperties::typeName       = "TextureProperties";
 const std::string TextureProperties::containerField = "textureProperties";
 

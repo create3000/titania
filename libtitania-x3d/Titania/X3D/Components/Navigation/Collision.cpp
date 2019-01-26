@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Collision::componentName  = "Navigation";
+const Component   Collision::component      = Component ("Navigation", 2);
 const std::string Collision::typeName       = "Collision";
 const std::string Collision::containerField = "children";
 

@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string HAnimJoint::componentName  = "H-Anim";
+const Component   HAnimJoint::component      = Component ("H-Anim", 1);
 const std::string HAnimJoint::typeName       = "HAnimJoint";
 const std::string HAnimJoint::containerField = "children";
 

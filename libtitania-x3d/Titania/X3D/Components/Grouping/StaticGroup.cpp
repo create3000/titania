@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string StaticGroup::componentName  = "Grouping";
+const Component   StaticGroup::component      = Component ("Grouping", 3);
 const std::string StaticGroup::typeName       = "StaticGroup";
 const std::string StaticGroup::containerField = "children";
 

@@ -62,7 +62,7 @@ namespace X3D {
 
 static constexpr size_t MAX_TEXTURES = 8;
 
-const std::string MultiTexture::componentName  = "Texturing";
+const Component   MultiTexture::component      = Component ("Texturing", 2);
 const std::string MultiTexture::typeName       = "MultiTexture";
 const std::string MultiTexture::containerField = "texture";
 

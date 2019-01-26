@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Billboard::componentName  = "Navigation";
+const Component   Billboard::component      = Component ("Navigation", 2);
 const std::string Billboard::typeName       = "Billboard";
 const std::string Billboard::containerField = "children";
 

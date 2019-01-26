@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string TimeTrigger::componentName  = "EventUtilities";
+const Component   TimeTrigger::component      = Component ("EventUtilities", 1);
 const std::string TimeTrigger::typeName       = "TimeTrigger";
 const std::string TimeTrigger::containerField = "children";
 

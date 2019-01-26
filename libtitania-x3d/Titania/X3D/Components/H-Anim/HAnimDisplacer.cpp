@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string HAnimDisplacer::componentName  = "H-Anim";
+const Component   HAnimDisplacer::component      = Component ("H-Anim", 1);
 const std::string HAnimDisplacer::typeName       = "HAnimDisplacer";
 const std::string HAnimDisplacer::containerField = "displacers";
 

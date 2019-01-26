@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string WWWAnchor::componentName  = "Titania";
+const Component   WWWAnchor::component      = Component ("Titania", 1);
 const std::string WWWAnchor::typeName       = "WWWAnchor";
 const std::string WWWAnchor::containerField = "children";
 

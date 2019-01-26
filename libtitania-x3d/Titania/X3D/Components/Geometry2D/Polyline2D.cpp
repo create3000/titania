@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Polyline2D::componentName  = "Geometry2D";
+const Component   Polyline2D::component      = Component ("Geometry2D", 3);
 const std::string Polyline2D::typeName       = "Polyline2D";
 const std::string Polyline2D::containerField = "geometry";
 

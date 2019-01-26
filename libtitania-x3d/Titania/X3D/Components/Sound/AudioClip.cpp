@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string AudioClip::componentName  = "Sound";
+const Component   AudioClip::component      = Component ("Sound", 1);
 const std::string AudioClip::typeName       = "AudioClip";
 const std::string AudioClip::containerField = "source";
 

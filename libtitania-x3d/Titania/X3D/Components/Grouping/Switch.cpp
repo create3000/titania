@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string Switch::componentName  = "Grouping";
+const Component   Switch::component      = Component ("Grouping", 2);
 const std::string Switch::typeName       = "Switch";
 const std::string Switch::containerField = "children";
 

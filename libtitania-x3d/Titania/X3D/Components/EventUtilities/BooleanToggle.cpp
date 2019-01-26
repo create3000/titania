@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string BooleanToggle::componentName  = "EventUtilities";
+const Component   BooleanToggle::component      = Component ("EventUtilities", 1);
 const std::string BooleanToggle::typeName       = "BooleanToggle";
 const std::string BooleanToggle::containerField = "children";
 

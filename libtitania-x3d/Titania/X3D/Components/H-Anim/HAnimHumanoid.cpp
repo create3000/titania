@@ -64,7 +64,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string HAnimHumanoid::componentName  = "H-Anim";
+const Component   HAnimHumanoid::component      = Component ("H-Anim", 1);
 const std::string HAnimHumanoid::typeName       = "HAnimHumanoid";
 const std::string HAnimHumanoid::containerField = "children";
 

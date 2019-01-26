@@ -70,7 +70,7 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const std::string IndexedFaceSet::componentName  = "Titania";
+const Component   IndexedFaceSet::component      = Component ("Titania", 1);
 const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
 const std::string IndexedFaceSet::containerField = "children";
 

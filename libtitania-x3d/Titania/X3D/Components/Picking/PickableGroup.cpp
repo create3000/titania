@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string PickableGroup::componentName  = "Picking";
+const Component   PickableGroup::component      = Component ("Picking", 1);
 const std::string PickableGroup::typeName       = "PickableGroup";
 const std::string PickableGroup::containerField = "children";
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string SliderJoint::componentName  = "RigidBodyPhysics";
+const Component   SliderJoint::component      = Component ("RigidBodyPhysics", 2);
 const std::string SliderJoint::typeName       = "SliderJoint";
 const std::string SliderJoint::containerField = "joints";
 

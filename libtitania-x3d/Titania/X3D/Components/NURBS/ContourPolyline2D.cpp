@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string ContourPolyline2D::componentName  = "NURBS";
+const Component   ContourPolyline2D::component      = Component ("NURBS", 3);
 const std::string ContourPolyline2D::typeName       = "ContourPolyline2D";
 const std::string ContourPolyline2D::containerField = "children";
 

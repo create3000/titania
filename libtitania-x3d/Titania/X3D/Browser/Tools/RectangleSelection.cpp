@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string RectangleSelection::componentName  = "Titania";
+const Component   RectangleSelection::component      = Component ("Titania", 1);
 const std::string RectangleSelection::typeName       = "RectangleSelection";
 const std::string RectangleSelection::containerField = "viewer";
 

@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string KeyDevice::componentName  = "Titania";
+const Component   KeyDevice::component      = Component ("Titania", 1);
 const std::string KeyDevice::typeName       = "KeyDevice";
 const std::string KeyDevice::containerField = "keyDevice";
 
