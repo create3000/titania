@@ -2356,12 +2356,12 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::Node
 	const bool editor    = getArrowButton () .get_active ();
 	const bool dashboard = getCurrentBrowser () -> getBrowserOptions () -> Dashboard ();
 
-	bool examine = editor;
-	bool walk    = editor;
-	bool fly     = editor;
-	bool plane   = editor;
-	bool none    = editor;
-	bool lookat  = editor;
+	bool examine = getCurrentBrowser () -> getActiveViewpoint ();
+	bool walk    = getCurrentBrowser () -> getActiveViewpoint ();
+	bool fly     = getCurrentBrowser () -> getActiveViewpoint ();
+	bool plane   = getCurrentBrowser () -> getActiveViewpoint ();
+	bool none    = getCurrentBrowser () -> getActiveViewpoint ();
+	bool lookat  = getCurrentBrowser () -> getActiveViewpoint ();
 
 	for (const auto & viewer : availableViewers)
 	{

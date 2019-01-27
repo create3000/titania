@@ -226,8 +226,8 @@ X3DNavigationContext::set_active_navigationInfo ()
 	if (activeNavigationInfo)
 		return;
 
-	viewer = X3DConstants::NoneViewer;
-	availableViewers .clear ();
+	viewer           = X3DConstants::NoneViewer;
+	availableViewers = { X3DConstants::NoneViewer };
 }
 
 void
