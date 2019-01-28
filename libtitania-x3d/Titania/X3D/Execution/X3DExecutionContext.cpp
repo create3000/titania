@@ -1845,10 +1845,14 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 void
 X3DExecutionContext::dispose ()
 {
-	namedNodes    .clear ();
-	importedNodes .clear ();
-	
-	rootNodes -> clear ();
+	namedNodes         .clear ();
+	importedNodes      .clear ();
+	uninitializedNodes .clear ();
+
+	prototypes   -> clear ();
+	externProtos -> clear ();
+	routes       -> clear ();
+	rootNodes    -> clear ();
 }
 
 X3DExecutionContext::~X3DExecutionContext ()
