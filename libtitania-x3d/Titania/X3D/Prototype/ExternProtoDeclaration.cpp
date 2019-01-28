@@ -64,7 +64,7 @@ namespace X3D {
 
 static constexpr bool X3D_PARALLEL = true;
 
-const Component   ExternProtoDeclaration::component      = Component ("Titania", 1);
+const Component   ExternProtoDeclaration::component      = Component ("Core", 2);
 const std::string ExternProtoDeclaration::typeName       = "EXTERNPROTO";
 const std::string ExternProtoDeclaration::containerField = "externProto";
 

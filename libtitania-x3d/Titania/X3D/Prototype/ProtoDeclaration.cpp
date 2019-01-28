@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-const Component   ProtoDeclaration::component      = Component ("Titania", 1);
+const Component   ProtoDeclaration::component      = Component ("Core", 2);
 const std::string ProtoDeclaration::typeName       = "PROTO";
 const std::string ProtoDeclaration::containerField = "proto";
 
