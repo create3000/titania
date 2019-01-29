@@ -214,8 +214,7 @@ IndexedFaceSet::build ()
 
 	for (const auto & polygon : polygons)
 	{
-		const auto & vertices = polygon .vertices;
-		const auto & face     = polygon .face;
+		const auto face = polygon .face;
 
 		for (const auto & element : polygon .elements)
 		{
@@ -232,9 +231,8 @@ IndexedFaceSet::build ()
 				vertexMode  = currentVertexMode;
 			}
 
-			for (const auto & v : element)
+			for (const auto & i : element)
 			{
-				const auto   i     = vertices [v];
 				const size_t index = coordIndex () [i];
 
 				for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
@@ -319,8 +317,8 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 				if (not vertices .empty ())
 				{
 					// Closed polygon.
-					if (vertices .front () == vertices .back ())
-						vertices .pop_back ();
+					//if (coordIndex () [vertices .front ()] == coordIndex () [vertices .back ()])
+					//	vertices .pop_back ();
 
 					switch (vertices .size ())
 					{
@@ -337,7 +335,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 
 							// Add polygon with one triangle.
 
-							polygons .back () .elements .emplace_back (Vertices ({ 0, 1, 2 }));
+							polygons .back () .elements .emplace_back (vertices);
 							polygons .emplace_back ();
 							break;
 						}
@@ -376,11 +374,7 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 
 	if (not tessellator)
 	{
-		Vertices element (vertices .size ());
-
-		std::iota (element .begin (), element .end (), 0);
-
-		elements .emplace_back (std::move (element));
+		elements .emplace_back (vertices);
 		return;
 	}
 
@@ -389,7 +383,10 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 	tessellator -> begin_contour ();
 
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
-		getCoord () -> addVertex (*tessellator, coordIndex () [vertices [i]], i);
+	{
+		const auto index = vertices [i];
+		getCoord () -> addVertex (*tessellator, coordIndex () [index], index);
+	}
 
 	tessellator -> end_contour ();
 	tessellator -> end_polygon ();
@@ -447,7 +444,6 @@ void
 IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 {
 	const auto normals = createNormals (polygons);
-	size_t     first   = 0;
 
 	for (const auto & polygon : polygons)
 	{
@@ -455,11 +451,9 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 		{
 			for (const auto & i : element)
 			{
-				getNormals () .emplace_back (normals [first + i]);
+				getNormals () .emplace_back (normals [i]);
 			}
 		}
-
-		first += polygon .vertices .size ();
 	}
 }
 
@@ -649,19 +643,18 @@ IndexedFaceSet::addNormals ()
 	normalIndex () .clear ();
 	normal () = normalNode;
 
-	size_t i      = 0;
-	auto   normal = normals .cbegin ();
-
-	for (const auto & index : basic::make_const_range (coordIndex ()))
+	for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
 	{
+		const auto index = coordIndex () [i];
+
 		if (index < 0)
 		{
 			normalIndex () .emplace_back (-1);
 		}
 		else
 		{
-			normalIndex () .emplace_back (i ++);
-			normalNode -> vector () .emplace_back (*normal++);
+			normalIndex () .emplace_back (normalNode -> vector () .size ());
+			normalNode -> vector () .emplace_back (normals [i]);
 		}
 	}
 }
@@ -707,7 +700,7 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 			normalIndex [coordIndex () [vertices [i]]] .emplace_back (normals .size () + i);
 
 		// Add this normal for each vertex
-		normals .resize (normals .size () + vertices .size (), normal);
+		normals .resize (normals .size () + vertices .size () + 1, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
