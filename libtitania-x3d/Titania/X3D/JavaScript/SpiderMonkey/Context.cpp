@@ -597,35 +597,34 @@ Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>>
 	const JSAutoCompartment ac (cx, *global);
 	const JS::AutoSaveExceptionState ases (cx);
 
-	call (*functionValue);
+	JS::RootedValue     rval (cx);
+	JS::AutoValueVector args (cx);
+
+	args .append (JS::DoubleValue (getCurrentTime ()));
+
+	JS_CallFunctionValue (cx, *global, *functionValue, args, &rval);
+	reportException ();
 }
 
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr <JS::PersistentRooted <JS::Value>> & inputFunction)
 {
-	try
-	{
-		const JSAutoRequest ar (cx);
-		const JSAutoCompartment ac (cx, *global);
-		const JS::AutoSaveExceptionState ases (cx);
+	const JSAutoRequest ar (cx);
+	const JSAutoCompartment ac (cx, *global);
+	const JS::AutoSaveExceptionState ases (cx);
 
-		field -> setTainted (true);
+	field -> setTainted (true);
 
-		JS::RootedValue     rval (cx);
-		JS::AutoValueVector args (cx);
+	JS::RootedValue     rval (cx);
+	JS::AutoValueVector args (cx);
 
-		args .append (getValue (cx, field));
-		args .append (JS::DoubleValue (getCurrentTime ()));
+	args .append (getValue (cx, field));
+	args .append (JS::DoubleValue (getCurrentTime ()));
 
-		JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
-		reportException ();
+	JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
+	reportException ();
 
-		field -> setTainted (false);
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	field -> setTainted (false);
 }
 
 void
