@@ -99,12 +99,12 @@ void
 BoundedPhysicsModel::set_geometry ()
 {
 	if (geometryNode)
-		geometryNode -> removeInterest (this);
+		geometryNode -> rebuilded () .removeInterest (&BoundedPhysicsModel::addEvent, this);
 
 	geometryNode .set (x3d_cast <X3DGeometryNode*> (geometry ()));
 
 	if (geometryNode)
-		geometryNode -> addInterest (this);
+		geometryNode -> rebuilded () .addInterest (&BoundedPhysicsModel::addEvent, this);
 }
 
 void
