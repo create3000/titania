@@ -423,6 +423,7 @@ BrowserOptions::set_Shading ()
 			glShadeModel (GL_FLAT);
 			break;
 		}
+		case ShadingType::DEFAULT:
 		case ShadingType::GOURAUD:
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);

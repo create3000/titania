@@ -85,6 +85,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_FogColor (-1),
 	     x3d_FogVisibilityRange (-1),
 	              x3d_FogMatrix (-1),
+	               x3d_FogCoord (-1),
 	   x3d_LinewidthScaleFactor (-1),
 	               x3d_Lighting (-1),
 	          x3d_ColorMaterial (-1),
@@ -129,6 +130,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	           x3d_NormalMatrix (-1),
 	          x3d_TextureMatrix (-1),
 	      x3d_CameraSpaceMatrix (-1),
+	               x3d_FogDepth (-1),
 	                  x3d_Color (-1),
 	               x3d_TexCoord (-1),
 	                 x3d_Normal (-1),
@@ -213,6 +215,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_FogColor           = getUniformLocation (program, "x3d_Fog.color",           "x3d_FogColor");
 	x3d_FogVisibilityRange = getUniformLocation (program, "x3d_Fog.visibilityRange", "x3d_FogVisibilityRange");
 	x3d_FogMatrix          = getUniformLocation (program, "x3d_Fog.matrix",          "x3d_FogMatrix");
+	x3d_FogCoord           = getUniformLocation (program, "x3d_Fog.fogCoord",        "x3d_FogCoord");
 
 	x3d_LinewidthScaleFactor = glGetUniformLocation (program, "x3d_LinewidthScaleFactor");
 
@@ -272,6 +275,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_TextureMatrix     = glGetUniformLocation (program, "x3d_TextureMatrix");
 	x3d_CameraSpaceMatrix = glGetUniformLocation (program, "x3d_CameraSpaceMatrix");
 
+	x3d_FogDepth = glGetAttribLocation (program, "x3d_FogDepth");
 	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
 	x3d_TexCoord = glGetAttribLocation (program, "x3d_TexCoord");
 	x3d_Normal   = glGetAttribLocation (program, "x3d_Normal");
@@ -1095,6 +1099,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	// Fog
 
 	context -> getFog () -> setShaderUniforms (this);
+	glUniform1i (x3d_FogCoord, context -> getFogCoord ());
 
 	// Appearance
 
@@ -1321,6 +1326,27 @@ X3DProgrammableShaderObject::disableMatrix4Attrib (const std::string & name)
 	glDisableVertexAttribArray (location + 1);
 	glDisableVertexAttribArray (location + 2);
 	glDisableVertexAttribArray (location + 3);
+}
+
+void
+X3DProgrammableShaderObject::enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
+{
+	if (x3d_FogDepth == -1)
+		return;
+
+	glEnableVertexAttribArray (x3d_FogDepth);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (x3d_FogDepth, 1, type, false, stride, pointer);
+}
+
+void
+X3DProgrammableShaderObject::disableFogDepthAttrib ()
+{
+	if (x3d_FogDepth == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_FogDepth);
 }
 
 void

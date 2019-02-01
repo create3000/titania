@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
@@ -80,6 +81,7 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	X3DLineGeometryNode (),
 	             fields (),
 	        attribNodes (),
+	       fogCoordNode (),
 	          colorNode (),
 	          coordNode (),
 	        transparent (false)
@@ -94,6 +96,7 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "coord",       coord ());
 
 	addChildObjects (attribNodes,
+	                 fogCoordNode,
 	                 colorNode,
 	                 coordNode);
 
@@ -111,11 +114,13 @@ LineSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	attrib () .addInterest (&LineSet::set_attrib, this);
-	color ()  .addInterest (&LineSet::set_color, this);
-	coord ()  .addInterest (&LineSet::set_coord, this);
+	attrib ()   .addInterest (&LineSet::set_attrib,   this);
+	fogCoord () .addInterest (&LineSet::set_fogCoord, this);
+	color ()    .addInterest (&LineSet::set_color,    this);
+	coord ()    .addInterest (&LineSet::set_coord,    this);
 
 	set_attrib ();
+	set_fogCoord ();
 	set_color ();
 	set_coord ();
 }
@@ -146,6 +151,18 @@ LineSet::set_attrib ()
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (&LineSet::requestRebuild, this);
+}
+
+void
+LineSet::set_fogCoord ()
+{
+	if (fogCoordNode)
+		fogCoordNode -> removeInterest (&LineSet::requestRebuild, this);
+
+	fogCoordNode = x3d_cast <FogCoordinate*> (fogCoord ());
+
+	if (fogCoordNode)
+		fogCoordNode -> addInterest (&LineSet::requestRebuild, this);
 }
 
 void
@@ -214,6 +231,9 @@ LineSet::build ()
 			{
 				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
 					attribNodes [a] -> addValue (attribArrays [a], index);
+
+				if (fogCoordNode)
+					fogCoordNode -> addDepth (getFogDepths (), index);
 
 				if (colorNode)
 					colorNode -> addColor (getColors (), index);

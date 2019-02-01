@@ -307,6 +307,20 @@ ProgramShader::disableMatrix4Attrib (const std::string & name)
 }
 
 void
+ProgramShader::enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableFogDepthAttrib (buffer, type, stride, pointer);
+}
+
+void
+ProgramShader::disableFogDepthAttrib ()
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableFogDepthAttrib ();
+}
+
+void
 ProgramShader::enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	for (const auto & programNode : programNodes)

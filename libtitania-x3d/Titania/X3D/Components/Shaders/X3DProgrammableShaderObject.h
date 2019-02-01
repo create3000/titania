@@ -361,6 +361,14 @@ public:
 
 	virtual
 	void
+	enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
+	
+	virtual
+	void
+	disableFogDepthAttrib ();
+
+	virtual
+	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
 	
 	virtual
@@ -479,6 +487,7 @@ private:
 	GLint x3d_FogColor;
 	GLint x3d_FogVisibilityRange;
 	GLint x3d_FogMatrix;
+	GLint x3d_FogCoord;
 
 	GLint x3d_LinewidthScaleFactor;
 
@@ -533,6 +542,7 @@ private:
 	GLint x3d_TextureMatrix;
 	GLint x3d_CameraSpaceMatrix;
 
+	GLint x3d_FogDepth;
 	GLint x3d_Color;
 	GLint x3d_TexCoord;
 	GLint x3d_Normal;

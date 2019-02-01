@@ -158,6 +158,14 @@ public:
 
 	virtual
 	void
+	enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) = 0;
+
+	virtual
+	void
+	disableFogDepthAttrib () = 0;
+
+	virtual
+	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) = 0;
 
 	virtual

@@ -74,6 +74,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	    rebuildOutput (),
 	             bbox (),
 	      attribNodes (),
+	        fogDepths (),
 	           colors (),
 	     texCoordNode (),
 	        texCoords (),
@@ -86,6 +87,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	      flatShading (false),
 	         elements (),
 	  attribBufferIds (),
+	 fogDepthBufferId (0),
 	    colorBufferId (0),
 	texCoordBufferIds (),
 	   normalBufferId (0),
@@ -114,6 +116,7 @@ X3DGeometryNode::setup ()
 
 	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 
+	glGenBuffers (1, &fogDepthBufferId);
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
@@ -988,6 +991,7 @@ X3DGeometryNode::clear ()
 	if (not texCoordBufferIds .empty ())
 		glDeleteBuffers (texCoordBufferIds .size (), texCoordBufferIds .data ());
 
+	fogDepths   .clear ();
 	colors      .clear ();
 	texCoords   .clear ();
 	normals     .clear ();
@@ -999,6 +1003,12 @@ X3DGeometryNode::clear ()
 void
 X3DGeometryNode::transfer ()
 {
+	if (not fogDepths .empty ())
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, fogDepthBufferId);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (float) * fogDepths .size (), fogDepths .data (), GL_STATIC_COPY);
+	}
+
 	if (not colors .empty ())
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
@@ -1054,9 +1064,10 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		// Upload normals or flat normals.
 		set_shading (browser -> getBrowserOptions () -> getShading ());
 
-		context -> setGeometryType  (geometryType);
+		context -> setGeometryType (geometryType);
+		context -> setFogCoord (not fogDepths .empty ());
 		context -> setColorMaterial (not colors .empty ());
-	
+
 		if (browser -> getFixedPipelineRequired ())
 		{
 			// Enable colors, texture coords, normals and vertices.
@@ -1102,6 +1113,9 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 				attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
+
+			if (not fogDepths .empty ())
+				shaderNode -> enableFogDepthAttrib (fogDepthBufferId, GL_FLOAT, 0, nullptr);
 
 			if (not colors .empty ())
 				shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
@@ -1182,6 +1196,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		
 			// Disable shader
 		
+			shaderNode -> disableFogDepthAttrib ();
 			shaderNode -> disableColorAttrib ();
 			shaderNode -> disableTexCoordAttrib ();
 			shaderNode -> disableNormalAttrib ();
@@ -1211,7 +1226,8 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		// Upload normals or flat normals.
 		set_shading (browser -> getBrowserOptions () -> getShading ());
 
-		context -> setGeometryType  (geometryType);
+		context -> setGeometryType (geometryType);
+		context -> setFogCoord (not fogDepths .empty ());
 		context -> setColorMaterial (not colors .empty ());
 
 		// Setup shader
@@ -1223,6 +1239,9 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
+
+		if (not fogDepths .empty ())
+			shaderNode -> enableFogDepthAttrib (fogDepthBufferId, GL_FLOAT, 0, nullptr);
 
 		if (not colors .empty ())
 			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
@@ -1301,6 +1320,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 		// Disable shader
 
+		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableTexCoordAttrib ();
 		shaderNode -> disableNormalAttrib ();

@@ -82,5 +82,15 @@ FogCoordinate::create (X3DExecutionContext* const executionContext) const
 	return new FogCoordinate (executionContext);
 }
 
+void
+FogCoordinate::addDepth (std::vector <float> & depths, const size_t index) const
+{
+	if (index < depth () .size ())
+		depths .emplace_back (depth () [index]);
+
+	else if (depth () .size ())
+		depths .emplace_back (depth () .back ());
+}
+
 } // X3D
 } // titania

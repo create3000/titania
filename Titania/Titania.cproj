@@ -3228,6 +3228,7 @@
     <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimJoint" />
     <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimSegment" />
     <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimSite" />
+    <None Include="share\titania\Library\Components\EnvironmentalEffects\.Titania\FogCoordinate" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

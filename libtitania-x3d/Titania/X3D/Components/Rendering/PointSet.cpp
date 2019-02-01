@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Shaders/ComposedShader.h"
@@ -78,6 +79,7 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	X3DLineGeometryNode (),
 	             fields (),
 	        attribNodes (),
+	       fogCoordNode (),
 	          colorNode (),
 	          coordNode (),
 	        transparent (false)
@@ -91,6 +93,7 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "coord",    coord ());
 
 	addChildObjects (attribNodes,
+	                 fogCoordNode,
 	                 colorNode,
 	                 coordNode);
 
@@ -108,11 +111,13 @@ PointSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	attrib () .addInterest (&PointSet::set_attrib, this);
-	color ()  .addInterest (&PointSet::set_color, this);
-	coord ()  .addInterest (&PointSet::set_coord, this);
+	attrib ()   .addInterest (&PointSet::set_attrib,   this);
+	fogCoord () .addInterest (&PointSet::set_fogCoord, this);
+	color ()    .addInterest (&PointSet::set_color,    this);
+	coord ()    .addInterest (&PointSet::set_coord,    this);
 
 	set_attrib ();
+	set_fogCoord ();
 	set_color ();
 	set_coord ();
 }
@@ -152,6 +157,18 @@ PointSet::set_attrib ()
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (&PointSet::requestRebuild, this);
+}
+
+void
+PointSet::set_fogCoord ()
+{
+	if (fogCoordNode)
+		fogCoordNode -> removeInterest (&PointSet::requestRebuild, this);
+
+	fogCoordNode = x3d_cast <FogCoordinate*> (fogCoord ());
+
+	if (fogCoordNode)
+		fogCoordNode -> addInterest (&PointSet::requestRebuild, this);
 }
 
 void
@@ -210,14 +227,20 @@ PointSet::build ()
 			attribNodes [a] -> addValue (attribArrays [a], i);
 	}
 
+	if (fogCoordNode)
+	{
+		getFogDepths () .reserve (coordNode -> getSize ());
+
+		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+			fogCoordNode -> addDepth (getFogDepths (), i);
+	}
+
 	if (colorNode)
 	{
 		getColors () .reserve (coordNode -> getSize ());
 
 		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
 			colorNode -> addColor (getColors (), i);
-
-		getColors () .resize  (coordNode -> getSize (), Color4f (1, 1, 1, 1));
 	}
 
 	getVertices () .reserve (coordNode -> getSize ());

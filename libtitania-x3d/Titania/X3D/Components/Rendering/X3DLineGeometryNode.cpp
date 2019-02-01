@@ -119,16 +119,20 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	
 		// Setup shader.
 	
-		context -> setGeometryType  (getGeometryType ());
+		context -> setGeometryType (getGeometryType ());
+		context -> setFogCoord (not getFogDepths () .empty ());
 		context -> setColorMaterial (not getColors () .empty ());
 	
 		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
-	
+
 		// Setup vertex attributes.
 	
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
+	
+		if (not getFogDepths () .empty ())
+			shaderNode -> enableFogDepthAttrib (getFogDepthBufferId (), GL_FLOAT, 0, nullptr);
 	
 		if (not getColors () .empty ())
 			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
@@ -148,6 +152,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> disable (shaderNode);
 	
+		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableVertexAttrib ();
 		shaderNode -> disable ();
@@ -178,15 +183,19 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		// Setup shader.
 	
 		context -> setGeometryType  (getGeometryType ());
+		context -> setFogCoord (not getFogDepths () .empty ());
 		context -> setColorMaterial (not getColors () .empty ());
 	
 		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
-	
+
 		// Setup vertex attributes.
 	
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
+	
+		if (not getFogDepths () .empty ())
+			shaderNode -> enableFogDepthAttrib (getFogDepthBufferId (), GL_FLOAT, 0, nullptr);
 	
 		if (not getColors () .empty ())
 			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
@@ -220,6 +229,7 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> disable (shaderNode);
 	
+		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableVertexAttrib ();
 		shaderNode -> disable ();

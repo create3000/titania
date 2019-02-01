@@ -176,6 +176,11 @@ public:
 	{ return attribNodes; }
 
 	virtual
+	const X3DPtr <FogCoordinate> &
+	getFogCoord () const
+	{ return fogCoordNode; }
+
+	virtual
 	const X3DPtr <X3DColorNode> &
 	getColor () const
 	{ return colorNode; }
@@ -226,6 +231,9 @@ protected:
 
 	void
 	set_attrib ();
+
+	void
+	set_fogCoord ();
 
 	void
 	set_color ();
@@ -294,6 +302,7 @@ private:
 	Fields fields;
 
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
+	X3DPtr <FogCoordinate>               fogCoordNode;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	X3DPtr <X3DNormalNode>               normalNode;

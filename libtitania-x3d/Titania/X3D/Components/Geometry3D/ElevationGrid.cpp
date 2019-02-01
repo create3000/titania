@@ -52,6 +52,8 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../Rendering/Coordinate.h"
 #include "../Rendering/Normal.h"
@@ -92,6 +94,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields (),
 	    attribNodes (),
+	   fogCoordNode (),
 	      colorNode (),
 	   texCoordNode (),
 	     normalNode (),
@@ -127,6 +130,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	height ()      .setUnit (UnitCategory::LENGTH);
 
 	addChildObjects (attribNodes,
+	                 fogCoordNode,
 	                 colorNode,
 	                 texCoordNode,
 	                 normalNode,
@@ -145,12 +149,14 @@ ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	attrib ()   .addInterest (&ElevationGrid::set_attrib, this);
-	color ()    .addInterest (&ElevationGrid::set_color, this);
+	attrib ()   .addInterest (&ElevationGrid::set_attrib,   this);
+	fogCoord () .addInterest (&ElevationGrid::set_fogCoord, this);
+	color ()    .addInterest (&ElevationGrid::set_color,    this);
 	texCoord () .addInterest (&ElevationGrid::set_texCoord, this);
-	normal ()   .addInterest (&ElevationGrid::set_normal, this);
+	normal ()   .addInterest (&ElevationGrid::set_normal,   this);
 
 	set_attrib ();
+	set_fogCoord ();
 	set_color ();
 	set_texCoord ();
 	set_normal ();
@@ -176,6 +182,18 @@ ElevationGrid::set_attrib ()
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (&ElevationGrid::requestRebuild, this);
+}
+
+void
+ElevationGrid::set_fogCoord ()
+{
+	if (fogCoordNode)
+		fogCoordNode -> removeInterest (&ElevationGrid::requestRebuild, this);
+
+	fogCoordNode = x3d_cast <FogCoordinate*> (fogCoord ());
+
+	if (fogCoordNode)
+		fogCoordNode -> addInterest (&ElevationGrid::requestRebuild, this);
 }
 
 void
@@ -386,6 +404,11 @@ ElevationGrid::build ()
 
 	// Color
 
+	if (fogCoordNode)
+		getFogDepths () .reserve (coordIndex .size ());
+
+	// Color
+
 	if (colorNode)
 		getColors () .reserve (coordIndex .size ());
 
@@ -424,11 +447,8 @@ ElevationGrid::build ()
 			for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
 				attribNodes [a] -> addValue (attribArrays [a], i);
 
-			if (texCoordNode)
-				texCoordNode -> addTexCoord (getTexCoords (), i);
-
-			else
-				getTexCoords () [0] .emplace_back (texCoords [i]);
+			if (fogCoordNode)
+				fogCoordNode -> addDepth (getFogDepths (), i);
 
 			if (colorNode)
 			{
@@ -438,6 +458,12 @@ ElevationGrid::build ()
 				else
 					colorNode -> addColor (getColors (), face);
 			}
+
+			if (texCoordNode)
+				texCoordNode -> addTexCoord (getTexCoords (), i);
+
+			else
+				getTexCoords () [0] .emplace_back (texCoords [i]);
 
 			if (normalNode)
 			{

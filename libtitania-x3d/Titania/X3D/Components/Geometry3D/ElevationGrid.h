@@ -303,6 +303,9 @@ private:
 	set_attrib ();
 
 	void
+	set_fogCoord ();
+
+	void
 	set_color ();
 
 	void
@@ -383,6 +386,7 @@ private:
 	///  @name Members
 
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
+	X3DPtr <FogCoordinate>               fogCoordNode;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	X3DPtr <X3DNormalNode>               normalNode;

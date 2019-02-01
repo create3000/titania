@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Geospatial/GeoCoordinate.h"
 #include "../NURBS/CoordinateDouble.h"
 #include "../Rendering/IndexedLineSet.h"
@@ -237,6 +238,9 @@ IndexedFaceSet::build ()
 
 				for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
 					getAttrib () [a] -> addValue (attribArrays [a], index);
+
+				if (getFogCoord ())
+					getFogCoord () -> addDepth (getFogDepths (), index);
 
 				if (getColor ())
 				{

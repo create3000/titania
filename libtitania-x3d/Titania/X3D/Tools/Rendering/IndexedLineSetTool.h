@@ -164,6 +164,11 @@ public:
 	{ return getNode <IndexedLineSet> () -> getAttrib (); }
 
 	virtual
+	const X3DPtr <FogCoordinate> &
+	getFogCoord () const final override
+	{ return getNode <IndexedLineSet> () -> getFogCoord (); }
+
+	virtual
 	const X3DPtr <X3DColorNode> &
 	getColor () const final override
 	{ return getNode <IndexedLineSet> () -> getColor (); }

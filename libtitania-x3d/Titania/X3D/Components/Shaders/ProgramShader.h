@@ -159,6 +159,14 @@ public:
 
 	virtual
 	void
+	enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override;
+	
+	virtual
+	void
+	disableFogDepthAttrib () final override;
+
+	virtual
+	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override;
 	
 	virtual

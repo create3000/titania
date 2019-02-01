@@ -56,6 +56,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 
 #include "../Core/MetadataSet.h"
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Rendering/PointSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
@@ -85,6 +86,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	X3DLineGeometryNode (),
 	             fields (),
 	        attribNodes (),
+	       fogCoordNode (),
 	          colorNode (),
 	          coordNode (),
 	        optionsNode (),
@@ -103,6 +105,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "options",        options ());
 
 	addChildObjects (attribNodes,
+	                 fogCoordNode,
 	                 colorNode,
 	                 coordNode,
 	                 optionsNode);
@@ -123,13 +126,15 @@ IndexedLineSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	attrib ()   .addInterest (&IndexedLineSet::set_attrib,  this);
-	color ()    .addInterest (&IndexedLineSet::set_color,   this);
-	coord ()    .addInterest (&IndexedLineSet::set_coord,   this);
-	options ()  .addInterest (&IndexedLineSet::set_options, this);
+	attrib ()   .addInterest (&IndexedLineSet::set_attrib,   this);
+	fogCoord () .addInterest (&IndexedLineSet::set_fogCoord, this);
+	color ()    .addInterest (&IndexedLineSet::set_color,    this);
+	coord ()    .addInterest (&IndexedLineSet::set_coord,    this);
+	options ()  .addInterest (&IndexedLineSet::set_options,  this);
 	shutdown () .addInterest (&IndexedLineSet::set_shutdown, this);
 
 	set_attrib ();
+	set_fogCoord ();
 	set_color ();
 	set_coord ();
 
@@ -179,6 +184,18 @@ IndexedLineSet::set_attrib ()
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (&IndexedLineSet::requestRebuild, this);
+}
+
+void
+IndexedLineSet::set_fogCoord ()
+{
+	if (fogCoordNode)
+		fogCoordNode -> removeInterest (&IndexedLineSet::requestRebuild, this);
+
+	fogCoordNode = x3d_cast <FogCoordinate*> (fogCoord ());
+
+	if (fogCoordNode)
+		fogCoordNode -> addInterest (&IndexedLineSet::requestRebuild, this);
 }
 
 void
@@ -342,13 +359,17 @@ IndexedLineSet::build ()
 		{
 			for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
 			{
-				for (size_t index = line, end = line + 2; index < end; ++ index)
+				for (size_t p = line, end = line + 2; p < end; ++ p)
 				{
-					const auto i = polyline [index];
+					const auto i     = polyline [p];
+					const auto index = coordIndex () [i];
 	
 					for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
-						attribNodes [a] -> addValue (attribArrays [a], coordIndex () [i]);
+						attribNodes [a] -> addValue (attribArrays [a], index);
 	
+					if (fogCoordNode)
+						fogCoordNode -> addDepth (getFogDepths (), index);
+
 					if (colorNode)
 					{
 						if (colorPerVertex ())
@@ -358,7 +379,7 @@ IndexedLineSet::build ()
 							colorNode -> addColor (getColors (), getColorIndex (face));
 					}
 	
-					coordNode -> addVertex (getVertices (), coordIndex () [i]);
+					coordNode -> addVertex (getVertices (), index);
 				}
 			}
 		}

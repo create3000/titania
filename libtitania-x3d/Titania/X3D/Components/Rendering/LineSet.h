@@ -183,6 +183,9 @@ private:
 	set_attrib ();
 
 	void
+	set_fogCoord ();
+
+	void
 	set_color ();
 
 	void
@@ -203,7 +206,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -216,9 +219,12 @@ private:
 		SFNode* const coord;
 	};
 
+	///  @name Members
+
 	Fields fields;
 
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
+	X3DPtr <FogCoordinate>               fogCoordNode;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DCoordinateNode>           coordNode;
 	bool                                 transparent;

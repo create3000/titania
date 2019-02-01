@@ -180,6 +180,11 @@ public:
 	{ return getNode <X3DComposedGeometryNode> () -> getAttrib (); }
 
 	virtual
+	const X3DPtr <FogCoordinate> &
+	getFogCoord () const final override
+	{ return getNode <X3DComposedGeometryNode> () -> getFogCoord (); }
+
+	virtual
 	const X3DPtr <X3DColorNode> &
 	getColor () const final override
 	{ return getNode <X3DComposedGeometryNode> () -> getColor (); }

@@ -94,9 +94,17 @@ public:
 	depth () const
 	{ return *fields .depth; }
 
+	///  @name Member access
+
+	void
+	addDepth (std::vector <float> & depths, const size_t index) const;
+
+	size_t
+	getSize () const
+	{ return depth () .size (); }
+
 
 private:
-
 
 	///  @name Static members
 
@@ -104,7 +112,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{

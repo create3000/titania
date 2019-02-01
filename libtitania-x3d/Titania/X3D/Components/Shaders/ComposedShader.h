@@ -186,6 +186,16 @@ public:
 
 	virtual
 	void
+	enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
+	{ X3DProgrammableShaderObject::enableFogDepthAttrib (buffer, type, stride, pointer); }
+	
+	virtual
+	void
+	disableFogDepthAttrib () final override
+	{ X3DProgrammableShaderObject::disableFogDepthAttrib (); }
+
+	virtual
+	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ X3DProgrammableShaderObject::enableColorAttrib (buffer, type, stride, pointer); }
 	

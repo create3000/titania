@@ -125,6 +125,14 @@ public:
 	{ return geometryType; }
 
 	void
+	setFogCoord (const bool value)
+	{ fogCoord = value; }
+
+	bool
+	getFogCoord () const
+	{ return fogCoord; }
+
+	void
 	setColorMaterial (const bool value)
 	{ colorMaterial = value; }
 
@@ -156,6 +164,7 @@ private:
 	LightContainerArray     localLights;
 	bool                    shadow;
 	GeometryType            geometryType;
+	bool                    fogCoord;
 	bool                    colorMaterial;
 	double                  distance;
 

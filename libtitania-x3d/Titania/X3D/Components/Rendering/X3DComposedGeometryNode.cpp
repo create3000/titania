@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../EnvironmentalEffects/FogCoordinate.h"
 #include "../Geometry3D/IndexedFaceSet.h"
 #include "../Rendering/Normal.h"
 #include "../Rendering/X3DColorNode.h"
@@ -81,6 +82,7 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	X3DGeometryNode (),
 	         fields (),
 	    attribNodes (),
+	   fogCoordNode (),
 	      colorNode (),
 	   texCoordNode (),
 	     normalNode (),
@@ -90,6 +92,7 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	addType (X3DConstants::X3DComposedGeometryNode);
 
 	addChildObjects (attribNodes,
+	                 fogCoordNode,
 	                 colorNode,
 	                 texCoordNode,
 	                 normalNode,
@@ -101,13 +104,15 @@ X3DComposedGeometryNode::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	attrib ()   .addInterest (&X3DComposedGeometryNode::set_attrib, this);
-	color ()    .addInterest (&X3DComposedGeometryNode::set_color, this);
+	attrib ()   .addInterest (&X3DComposedGeometryNode::set_attrib,   this);
+	fogCoord () .addInterest (&X3DComposedGeometryNode::set_fogCoord, this);
+	color ()    .addInterest (&X3DComposedGeometryNode::set_color,    this);
 	texCoord () .addInterest (&X3DComposedGeometryNode::set_texCoord, this);
-	normal ()   .addInterest (&X3DComposedGeometryNode::set_normal, this);
-	coord ()    .addInterest (&X3DComposedGeometryNode::set_coord, this);
+	normal ()   .addInterest (&X3DComposedGeometryNode::set_normal,   this);
+	coord ()    .addInterest (&X3DComposedGeometryNode::set_coord,    this);
 
 	set_attrib ();
+	set_fogCoord ();
 	set_color ();
 	set_texCoord ();
 	set_normal ();
@@ -134,6 +139,18 @@ X3DComposedGeometryNode::set_attrib ()
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
+}
+
+void
+X3DComposedGeometryNode::set_fogCoord ()
+{
+	if (fogCoordNode)
+		fogCoordNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild, this);
+
+	fogCoordNode = x3d_cast <FogCoordinate*> (fogCoord ());
+
+	if (fogCoordNode)
+		fogCoordNode -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
 }
 
 void
@@ -247,6 +264,9 @@ X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 
 			for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
 				getAttrib () [a] -> addValue (attribArrays [a], index);
+
+			if (getFogCoord ())
+				getFogCoord () -> addDepth (getFogDepths (), index);
 
 			if (colorNode)
 			{

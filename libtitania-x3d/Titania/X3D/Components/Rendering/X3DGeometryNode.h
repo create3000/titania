@@ -271,6 +271,14 @@ protected:
 	getAttribs () const
 	{ return attribNodes; }
 
+	std::vector <float> &
+	getFogDepths ()
+	{ return fogDepths; }
+	
+	const std::vector <float> &
+	getFogDepths () const
+	{ return fogDepths; }
+
 	std::vector <Color4f> &
 	getColors ()
 	{ return colors; }
@@ -328,6 +336,10 @@ protected:
 	const std::vector <GLuint> &
 	getAttribBufferIds () const
 	{ return attribBufferIds; }
+
+	GLuint
+	getFogDepthBufferId () const
+	{ return fogDepthBufferId; }
 
 	GLuint
 	getColorBufferId () const
@@ -427,6 +439,7 @@ private:
 	SFTime                               rebuildOutput;
 	Box3d                                bbox;
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
+	std::vector <float>                  fogDepths;
 	std::vector <Color4f>                colors;
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	TexCoordArray                        texCoords;
@@ -440,6 +453,7 @@ private:
 	std::vector <Element>                elements;
 
 	std::vector <GLuint> attribBufferIds;
+	GLuint               fogDepthBufferId;
 	GLuint               colorBufferId;
 	std::vector <GLuint> texCoordBufferIds;
 	GLuint               normalBufferId;
