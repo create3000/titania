@@ -1029,16 +1029,18 @@ IndexedFaceSet::rebuildTexCoord ()
 	{
 	   case X3DConstants::MultiTextureCoordinate:
 		{
-			const X3DPtr <MultiTextureCoordinate> texCoordNode (texCoordNode);
+			const X3DPtr <MultiTextureCoordinate> multiTexCoordNode (texCoordNode);
 
-			for (const auto & node : texCoordNode -> getTexCoord ())
-			   rebuildTexCoord (node, map);
+			for (const auto & texCoordNode : multiTexCoordNode -> getTexCoord ())
+			   rebuildTexCoord (texCoordNode, map);
 
 			break;
 		}
 	   default:
+		{
 	      rebuildTexCoord (texCoordNode, map);
 	      break;
+		}
 	}
 
 	return map;

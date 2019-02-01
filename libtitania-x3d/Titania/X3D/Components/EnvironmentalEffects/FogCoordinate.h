@@ -107,6 +107,10 @@ public:
 	void
 	addDepth (std::vector <float> & depths, const size_t index) const;
 
+	bool
+	isEmpty () const
+	{ return depth () .empty (); }
+
 	size_t
 	getSize () const
 	{ return depth () .size (); }
