@@ -174,6 +174,11 @@ public:
 
 	virtual
 	void
+	addFogCoords () final override
+	{ getNode <IndexedFaceSet> () -> addFogCoords (); }
+
+	virtual
+	void
 	addColors () final override
 	{ getNode <IndexedFaceSet> () -> addColors (); }
 

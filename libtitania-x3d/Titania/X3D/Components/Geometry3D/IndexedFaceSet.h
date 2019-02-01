@@ -196,6 +196,10 @@ public:
 
 	virtual
 	void
+	addFogCoords ();
+
+	virtual
+	void
 	addColors ();
 
 	virtual

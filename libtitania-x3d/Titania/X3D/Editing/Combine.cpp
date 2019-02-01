@@ -51,6 +51,7 @@
 #include "Combine.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Components/EnvironmentalEffects/FogCoordinate.h"
 #include "../Components/Grouping/X3DGroupingNode.h"
 #include "../Components/Texturing/TextureCoordinate.h"
 #include "../Components/Rendering/Coordinate.h"
@@ -366,12 +367,16 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 	// Add colors, texCoords and normals if needed.
 
+	bool addFogCoord  = targetGeometry -> getFogCoord ();
 	bool addColors    = targetGeometry -> getColor ();
 	bool addTexCoords = targetGeometry -> getTexCoord ();
 	bool addNormals   = targetGeometry -> getNormal ();
 
 	for (const auto & geometryNode : geometryNodes)
 	{
+		if (geometryNode -> getFogCoord ())
+			addFogCoord = true;
+	
 		if (geometryNode -> getColor ())
 			addColors = true;
 	
@@ -386,6 +391,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	const size_t numFaces    = targetGeometry -> colorPerVertex () or targetGeometry -> normalPerVertex ()
 	                         ? std::count_if (targetGeometry -> coordIndex () .cbegin (), targetGeometry -> coordIndex () .cend (), [ ] (const int32_t i) { return i < 0; })
 	                         : 0;
+
+	if (addFogCoord)
+	{
+		if (not targetGeometry -> getFogCoord ())
+			targetGeometry -> addFogCoords ();
+	}
 
 	if (addColors)
 	{
@@ -449,6 +460,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	                            ? std::count_if (geometryNode -> coordIndex () .cbegin (), geometryNode -> coordIndex () .cend (), [ ] (const int32_t i) { return i < 0; })
 	                            : 0;
 
+		if (addFogCoord)
+		{
+			if (not geometryNode -> getFogCoord ())
+				geometryNode -> addFogCoords ();
+		}
+
 		if (addColors)
 		{
 			if (geometryNode -> getColor ())
@@ -502,6 +519,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	// Combine
 
 	// We must get the nodes in this way because we have probably called addColor/TexCoord/Normal.
+	const auto targetFogCoord = X3DPtr <FogCoordinate> (targetGeometry -> fogCoord ());
 	const auto targetColor    = X3DPtr <X3DColorNode> (targetGeometry -> color ());
 	const auto targetTexCoord = X3DPtr <TextureCoordinate> (targetGeometry -> texCoord ());
 	const auto targetNormal   = X3DPtr <X3DNormalNode> (targetGeometry -> normal ());
@@ -514,6 +532,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			continue;
 
 		// We must get the nodes in this way because we have probably called addColor/TexCoord/Normal.
+		const auto fogCoord = X3DPtr <FogCoordinate> (geometryNode -> fogCoord ());
 		const auto color    = X3DPtr <X3DColorNode> (geometryNode -> color ());
 		const auto texCoord = X3DPtr <TextureCoordinate> (geometryNode -> texCoord ());
 		const auto normal   = X3DPtr <X3DNormalNode> (geometryNode -> normal ());
@@ -678,6 +697,14 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 			targetGeometry -> coordIndex () .emplace_back (point);
 			points .emplace_back (point);
+		}
+
+		if (targetFogCoord)
+		{
+			targetFogCoord -> resize (targetCoord -> getSize ());
+
+			for (const auto & index : basic::reverse (coordArray))
+				targetFogCoord -> set1Depth (targetFogCoord -> getSize (), fogCoord -> get1Depth (index .second));
 		}
 
 		if (targetColor)

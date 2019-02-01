@@ -577,6 +577,12 @@ IndexedFaceSet::getIndex (const bool perVertex, const bool currentPerVertex, con
 }
 
 void
+IndexedFaceSet::addFogCoords ()
+{
+	fogCoord () = getExecutionContext () -> createNode <FogCoordinate> ();
+}
+
+void
 IndexedFaceSet::addColors ()
 {
 	const auto colorNode = getExecutionContext () -> createNode <ColorRGBA> ();
