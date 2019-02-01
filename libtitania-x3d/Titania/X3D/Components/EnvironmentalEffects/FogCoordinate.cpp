@@ -83,6 +83,31 @@ FogCoordinate::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+FogCoordinate::set1Depth (const size_t index, const float value)
+{
+	if (not depth () .empty ())
+	{
+		if (index >= depth () .size ())
+			depth () .resize (index, depth () .back ());
+	}
+
+	depth () .set1Value (index, value);
+}
+
+float
+FogCoordinate::get1Depth (const size_t index) const
+{
+	if (index < depth () .size ())
+		return depth () [index];
+
+	else if (depth () .size ())
+		return depth () .back ();
+
+	else
+		return 0;
+}
+
+void
 FogCoordinate::addDepth (std::vector <float> & depths, const size_t index) const
 {
 	if (index < depth () .size ())

@@ -96,6 +96,14 @@ public:
 
 	///  @name Member access
 
+	virtual
+	void
+	set1Depth (const size_t index, const float value);
+
+	virtual
+	float
+	get1Depth (const size_t index) const;
+
 	void
 	addDepth (std::vector <float> & depths, const size_t index) const;
 
