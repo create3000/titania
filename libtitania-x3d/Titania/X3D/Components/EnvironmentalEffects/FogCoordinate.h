@@ -115,6 +115,11 @@ public:
 	getSize () const
 	{ return depth () .size (); }
 
+	///  @name Operations
+
+	void
+	resize (size_t size);
+
 
 private:
 

@@ -117,5 +117,15 @@ FogCoordinate::addDepth (std::vector <float> & depths, const size_t index) const
 		depths .emplace_back (depth () .back ());
 }
 
+void
+FogCoordinate::resize (size_t size)
+{
+	if (depth () .empty ())
+		depth () .resize (size);
+
+	else
+		depth () .resize (size, depth () .back ());
+}
+
 } // X3D
 } // titania

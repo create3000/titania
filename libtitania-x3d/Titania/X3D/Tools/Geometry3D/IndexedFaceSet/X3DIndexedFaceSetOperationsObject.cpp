@@ -51,6 +51,7 @@
 #include "X3DIndexedFaceSetOperationsObject.h"
 
 #include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/EnvironmentalEffects/FogCoordinate.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/NURBS/CoordinateDouble.h"
 #include "../../../Components/Rendering/X3DColorNode.h"
@@ -93,17 +94,17 @@ X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 void
 X3DIndexedFaceSetOperationsObject::initialize ()
 {
-	cutGeometry ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_cutGeometry, this);
-	copyGeometry ()         .addInterest (&X3DIndexedFaceSetOperationsObject::set_copyGeometry, this);
-	pasteGeometry ()        .addInterest (&X3DIndexedFaceSetOperationsObject::set_pasteGeometry, this);
-	mergePoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_mergePoints, this);
-	splitPoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_splitPoints, this);
-	formNewFace ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_formNewFace, this);
+	cutGeometry ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_cutGeometry,          this);
+	copyGeometry ()         .addInterest (&X3DIndexedFaceSetOperationsObject::set_copyGeometry,         this);
+	pasteGeometry ()        .addInterest (&X3DIndexedFaceSetOperationsObject::set_pasteGeometry,        this);
+	mergePoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_mergePoints,          this);
+	splitPoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_splitPoints,          this);
+	formNewFace ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_formNewFace,          this);
 	extrudeSelectedEdges () .addInterest (&X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges, this);
 	extrudeSelectedFaces () .addInterest (&X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces, this);
-	chipOfSelectedFaces ()  .addInterest (&X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces, this);
-	flipVertexOrdering ()   .addInterest (&X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering, this);
-	deleteSelectedFaces ()  .addInterest (&X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces, this);
+	chipOfSelectedFaces ()  .addInterest (&X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces,  this);
+	flipVertexOrdering ()   .addInterest (&X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering,   this);
+	deleteSelectedFaces ()  .addInterest (&X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces,  this);
 }
 
 void
@@ -164,10 +165,17 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 
 	// Generate nodes, we do not setup the nodes as it is not needed for stringification.
 
+	X3DPtr <FogCoordinate> fogCoord;
 	X3DPtr <X3DColorNode> color;
 	X3DPtr <X3DTextureCoordinateNode> texCoord;
 	X3DPtr <X3DNormalNode> normal;
 	X3DPtr <X3DCoordinateNode> coord;
+		
+	if (getFogCoord ())
+	{
+		geometry -> fogCoord () = getFogCoord () -> create (getExecutionContext ());
+		fogCoord = geometry -> fogCoord ();
+	}
 
 	if (getColor ())
 	{
@@ -329,6 +337,14 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 	}
 
 	// Generate points
+
+	if (fogCoord)
+	{
+		fogCoord -> resize (coord -> getSize ());
+
+		for (const auto & index : basic::reverse (coordArray))
+			fogCoord -> set1Depth (fogCoord -> getSize (), getFogCoord () -> get1Depth (index .second));
+	}
 
 	if (color)
 	{
@@ -845,8 +861,9 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 
 	for (const auto & index : selectedPoints)
 	{
-		const auto point   = getCoord () -> get1Point (index);
-		const auto indices = getFaceSelection () -> getSharedVertices (index);
+		const auto fogDepth = getFogCoord () -> get1Depth (index);
+		const auto point    = getCoord () -> get1Point (index);
+		const auto indices  = getFaceSelection () -> getSharedVertices (index);
 		
 		if (indices .empty ())
 			continue;
@@ -861,7 +878,8 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 			
 			coordIndex () .set1Value (index, size);
 
-			getCoord () -> set1Point (size, point);
+			getFogCoord () -> set1Depth (size, fogDepth);
+			getCoord ()    -> set1Point (size, point);
 		}
 	}
 
@@ -962,7 +980,8 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 		points .emplace (point .first, size);
 
-		getCoord () -> set1Point (size, getCoord () -> get1Point (point .first));
+		getFogCoord () -> set1Depth (size, getFogCoord () -> get1Depth (point .first));
+		getCoord ()    -> set1Point (size, getCoord ()    -> get1Point (point .first));
 	}
 
 	size_t numFaces = getFaceSelection () -> getNumFaces ();
@@ -1114,15 +1133,17 @@ X3DIndexedFaceSetOperationsObject::chipOf (const std::vector <size_t> & selected
 
 	for (const auto & pair : pointIndex)
 	{
-		const auto point = getCoord () -> get1Point (pair .first);
-		const auto size  = getCoord () -> getSize ();
+		const auto fogDepth = getFogCoord () -> get1Depth (pair .first);
+		const auto point    = getCoord () -> get1Point (pair .first);
+		const auto size     = getCoord () -> getSize ();
 	
 		points .emplace_back (size);
 	
 		for (const auto & vertex : pair .second)
 			coordIndex () .set1Value (vertex, size);
 
-		getCoord () -> set1Point (size, point);
+		getFogCoord () -> set1Depth (size, fogDepth);
+		getCoord ()    -> set1Point (size, point);
 	}
 
 	return points;
