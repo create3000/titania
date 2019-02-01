@@ -37,7 +37,6 @@ varying float depth;
 void
 clip ()
 {
-	#pragma unroll_loop
 	for (int i = 0; i < x3d_MaxClipPlanes; ++ i)
 	{
 		if (i == x3d_NumClipPlanes)

@@ -2,7 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="84" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DComposedGeometryNode.h" Line="119" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DComposedGeometryNode.cpp" Line="267" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
