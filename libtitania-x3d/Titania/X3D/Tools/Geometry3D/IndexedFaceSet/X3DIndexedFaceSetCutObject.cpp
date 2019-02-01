@@ -53,6 +53,7 @@
 #include "../../Rendering/CoordinateTool.h"
 
 #include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/EnvironmentalEffects/FogCoordinate.h"
 #include "../../../Components/Geometry2D/Arc2D.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Grouping/Switch.h"
@@ -205,6 +206,15 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 			}
 			
 			startPoint = getCoord () -> getSize ();
+
+			if (getFogCoord ())
+			{
+				const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index0));
+				const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index1));
+
+				getFogCoord () -> set1Depth (startPoint, lerp (depth1, depth2, t));
+			}
+
 			getCoord () -> set1Point (startPoint, cutEdge .first);
 
 			startVertex1   = startEdge .index1;
@@ -289,6 +299,15 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 			}
 			
 			endPoint = getCoord () -> getSize ();
+
+			if (getFogCoord ())
+			{
+				const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index0));
+				const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index1));
+
+				getFogCoord () -> set1Depth (endPoint, lerp (depth1, depth2, t));
+			}
+
 			getCoord () -> set1Point (endPoint, cutEdge .second);
 
 			endVertex1     = endEdge .index0;
@@ -840,6 +859,15 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				if (iter == points .end ())
 				{
 					startPoint = getCoord () -> getSize ();
+
+					if (getFogCoord ())
+					{
+						const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index0));
+						const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index1));
+					
+						getFogCoord () -> set1Depth (startPoint, lerp (depth1, depth2, t));
+					}
+
 					getCoord () -> set1Point (startPoint, cutEdge [0]);
 
 					points .emplace (sortedPoints, startPoint);
@@ -969,6 +997,15 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				if (iter == points .end ())
 				{
 					endPoint = getCoord () -> getSize ();
+
+					if (getFogCoord ())
+					{
+						const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index0));
+						const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index1));
+
+						getFogCoord () -> set1Depth (endPoint, lerp (depth1, depth2, t));
+					}
+
 					getCoord () -> set1Point (endPoint, cutEdge [1]);
 
 					points .emplace (sortedPoints, endPoint);
