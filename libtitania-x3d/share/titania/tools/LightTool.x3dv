@@ -1,13 +1,16 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/LightTool.x3dv"
-META "modified" "Sun, 06 Jan 2019 12:46:48 GMT"
+META "modified" "Sat, 02 Feb 2019 19:41:42 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -97,6 +100,7 @@ WorldInfo {
                       emissiveColor 1 1 1
                       shininess 1
                     }
+                    shaders DEF _3 ToolShader { }
                   }
                   geometry Cone {
                     bottom FALSE
@@ -134,6 +138,7 @@ WorldInfo {
                         material Material {
                           transparency 1
                         }
+                        shaders USE _3
                       }
                       geometry Box {
                         size 60 60 60
@@ -334,20 +339,20 @@ USE Tool
 Collision {
   enabled FALSE
   children [
-    DEF _3 BooleanSwitch {
+    DEF _4 BooleanSwitch {
       whichChoice TRUE
       children [
-        DEF _4 Group { }
+        DEF _5 Group { }
         USE TransformTool
       ]
     }
-    DEF _5 Transform {
+    DEF _6 Transform {
       children ScreenGroup {
         children DEF Lights Transform {
           translation 0 0 1.26218e-29
           scale 12 12 12
           scaleOrientation 0 0 -1 0.785398163397448
-          children DEF _6 Switch {
+          children DEF _7 Switch {
             whichChoice 2
             children [
               DEF DirectionalLight Transform {
@@ -412,84 +417,85 @@ Collision {
                       }
                     }
                   }
-                  DEF Box_7 Transform {
+                  DEF Box_8 Transform {
                     scale 1 0.61803 0.1
                     children Shape {
-                      appearance DEF _8 Appearance {
+                      appearance DEF _9 Appearance {
                         material USE _2
+                        shaders USE _3
                       }
                       geometry Box { }
                     }
                   }
                   DEF Cones Transform {
                     children [
-                      DEF Cone_9 Transform {
+                      DEF Cone_10 Transform {
                         translation 0 0 1.225
                         rotation 0.999999999993426 3.62584999997617e-06 -1.62382999998933e-10 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation 0.999999999986306 2.43262999996669e-06 4.63356999993655e-06 0.785354
-                        children DEF _10 Shape {
-                          appearance USE _8
+                        children DEF _11 Shape {
+                          appearance USE _9
                           geometry Cone {
                             height 3
                           }
                         }
                       }
-                      DEF Cone_11 Transform {
+                      DEF Cone_12 Transform {
                         translation 1 -4.44089e-16 1.225
                         rotation 0.999999999993431 3.62461999997619e-06 -9.72235999993613e-11 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation 0.984439559917005 -0.046643779148406 0.169419924262666 0.398651
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_12 Transform {
+                      DEF Cone_13 Transform {
                         translation -1 -8.88178e-16 1.225
                         rotation 0.999999999993444 3.62108999997626e-06 -4.7589199999688e-09 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation -0.132251066233268 -0.367121183859658 -0.920723461111775 1.57758
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_13 Transform {
+                      DEF Cone_14 Transform {
                         translation -3.55271e-14 -0.61803 1.225
                         rotation 0.999999999993423 3.62695999997614e-06 -1.86050999998776e-09 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation -0.9994523954216 -0.0259091102506351 -0.0205822081431089 0.784698
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_14 Transform {
+                      DEF Cone_15 Transform {
                         translation 1 -0.61803 1.225
                         rotation 0.999999999993422 3.62709999997614e-06 1.10498999999273e-08 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation 0.0538396818233784 -0.995172664023332 -0.0820527722984583 0.797265
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_15 Transform {
+                      DEF Cone_16 Transform {
                         translation -1 -0.61803 1.225
                         rotation 0.999999999993491 3.60801999997652e-06 7.93031999994838e-09 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation -0.852006943637186 -0.180680988047411 0.491363967494801 0.720824
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_16 Transform {
+                      DEF Cone_17 Transform {
                         translation -2.84217e-14 0.618029 1.225
                         rotation 0.999999999993423 3.62695999997614e-06 -1.86050999998776e-09 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation -0.9994523954216 -0.0259091102506351 -0.0205822081431089 0.784698
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_17 Transform {
+                      DEF Cone_18 Transform {
                         translation 1 0.618029 1.225
                         rotation 0.999999999993422 3.62709999997614e-06 1.10498999999273e-08 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation 0.0538396818233784 -0.995172664023332 -0.0820527722984583 0.797265
-                        children USE _10
+                        children USE _11
                       }
-                      DEF Cone_18 Transform {
+                      DEF Cone_19 Transform {
                         translation -1 0.618029 1.225
                         rotation 0.999999999993491 3.60801999997652e-06 7.93031999994838e-09 1.5708
                         scale 0.15 0.15 0.15
                         scaleOrientation -0.852006943637186 -0.180680988047411 0.491363967494801 0.720824
-                        children USE _10
+                        children USE _11
                       }
                     ]
                   }
@@ -499,7 +505,7 @@ Collision {
                 children [
                   DEF Ray1 Transform {
                     scale 2 2 2
-                    children DEF _19 Shape {
+                    children DEF _20 Shape {
                       appearance USE _1
                       geometry IndexedLineSet {
                         coordIndex [
@@ -530,16 +536,16 @@ Collision {
                     rotation 0.28108510281603 -0.678597248219043 -0.678599248219775 1.09606
                     scale 2 2 2
                     scaleOrientation -0.174907009752728 -0.321006017899136 -0.930786051900166 0.279268999999999
-                    children USE _19
+                    children USE _20
                   }
                   DEF Ray3 Transform {
                     rotation -0.281083991080502 0.678599978466327 -0.678596978466422 1.09606
                     scale 2 2 2
                     scaleOrientation -0.985767661913664 0.161218944707131 -0.0476504836574296 0.470038
-                    children USE _19
+                    children USE _20
                   }
                   DEF Sphere Shape {
-                    appearance USE _8
+                    appearance USE _9
                     geometry Sphere { }
                   }
                 ]
@@ -550,11 +556,11 @@ Collision {
                   DEF Bulb Transform {
                     translation 0 0 1.46147
                     children [
-                      DEF Sphere_20 Shape {
-                        appearance USE _8
+                      DEF Sphere_21 Shape {
+                        appearance USE _9
                         geometry Sphere { }
                       }
-                      DEF Ray1_21 Transform {
+                      DEF Ray1_22 Transform {
                         scale 2 2 2
                         children Shape {
                           appearance USE _1
@@ -583,7 +589,7 @@ Collision {
                           }
                         }
                       }
-                      DEF Ray2_22 Transform {
+                      DEF Ray2_23 Transform {
                         rotation 0.28108510281603 -0.678597248219043 -0.678599248219775 1.09606
                         scale 2 2 2
                         scaleOrientation 0.747418900311875 -0.663392911518968 0.035704795237819 1.19385
@@ -614,7 +620,7 @@ Collision {
                           }
                         }
                       }
-                      DEF Ray3_23 Transform {
+                      DEF Ray3_24 Transform {
                         rotation -0.281083991080502 0.678599978466327 -0.678596978466422 1.09606
                         scale 2 2 2
                         scaleOrientation -0.805953410514892 -0.138029070305539 0.575662293215391 0.849512
@@ -659,10 +665,10 @@ Collision {
 
 ROUTE Tool.diffuseColor_changed TO _2.set_diffuseColor
 ROUTE Tool.emissiveColor_changed TO _2.set_emissiveColor
-ROUTE Tool.whichChoice_changed TO _6.set_whichChoice
-ROUTE Tool.selected_changed TO _3.set_whichChoice
-ROUTE TransformTool.translation_changed TO _5.set_translation
-ROUTE TransformTool.rotation_changed TO _5.set_rotation
+ROUTE Tool.whichChoice_changed TO _7.set_whichChoice
+ROUTE Tool.selected_changed TO _4.set_whichChoice
+ROUTE TransformTool.translation_changed TO _6.set_translation
+ROUTE TransformTool.rotation_changed TO _6.set_rotation
 
 EXPORT Tool
 EXPORT TransformTool

@@ -1,13 +1,16 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Grouping : 3
+COMPONENT Layout : 2
 
 META "comment" "World of Titania"
 META "created" "Fri, 29 Aug 2014 13:13:27 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/BoundingBox.x3dv"
-META "modified" "Sun, 06 Jan 2019 12:50:12 GMT"
+META "modified" "Sat, 02 Feb 2019 19:36:46 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -76,7 +79,7 @@ WorldInfo {
                         material Material {
                           diffuseColor 1 0 0
                         }
-                        shaders ToolShader { }
+                        shaders DEF _1 ToolShader { }
                       }
                       geometry DEF Arrow Cone {
                         height 12
@@ -96,7 +99,7 @@ WorldInfo {
                         material Material {
                           diffuseColor 0 1 0
                         }
-                        shaders ToolShader { }
+                        shaders USE _1
                       }
                       geometry USE Arrow
                     }
@@ -114,7 +117,7 @@ WorldInfo {
                         material Material {
                           diffuseColor 0 0 1
                         }
-                        shaders ToolShader { }
+                        shaders USE _1
                       }
                       geometry USE Arrow
                     }
@@ -154,13 +157,14 @@ Collision {
       children [
         DEF Box Shape {
           appearance Appearance {
-            lineProperties DEF _1 LineProperties {
+            lineProperties DEF _2 LineProperties {
               linetype 3
               linewidthScaleFactor 2
             }
             material DEF BBoxMaterial Material {
               emissiveColor 0.35 1 0.7
             }
+            shaders USE _1
           }
           geometry IndexedLineSet {
             coordIndex [
@@ -203,7 +207,7 @@ Collision {
             }
           }
         }
-        DEF Axes_2 Shape {
+        DEF Axes_3 Shape {
           geometry IndexedLineSet {
             colorPerVertex FALSE
             coordIndex [
@@ -258,6 +262,7 @@ Collision {
                 material DEF Yellow Material {
                   diffuseColor 1 1 0
                 }
+                shaders USE _1
               }
               geometry DEF CenterIndexedLineSet IndexedLineSet {
                 coordIndex [
@@ -279,7 +284,7 @@ Collision {
                 }
               }
             }
-            DEF _3 Transform {
+            DEF _4 Transform {
               children [
                 DEF CenterPoint ScreenGroup {
                   children Shape {
@@ -287,7 +292,7 @@ Collision {
                       material Material {
                         diffuseColor 1 1 0
                       }
-                      shaders ToolShader { }
+                      shaders USE _1
                     }
                     geometry Sphere {
                       radius 5
@@ -305,15 +310,16 @@ Collision {
       ]
     }
     DEF Rectangle Switch {
-      children DEF _4 Transform {
-        children DEF Box_5 Shape {
+      children DEF _5 Transform {
+        children DEF Box_6 Shape {
           appearance Appearance {
             lineProperties LineProperties {
               linewidthScaleFactor 2
             }
-            material DEF BBoxMaterial_6 Material {
+            material DEF BBoxMaterial_7 Material {
               emissiveColor 0 1 0
             }
+            shaders USE _1
           }
           geometry IndexedLineSet {
             coordIndex [
@@ -418,7 +424,7 @@ function eventsProcessed ()
 DEF AxisOfRotationScript Script {
   inputOutput    SFVec3f vector 0 0 0
   initializeOnly SFVec3f zAxis 0 0 1
-  initializeOnly SFNode  transform USE _3
+  initializeOnly SFNode  transform USE _4
   initializeOnly SFNode  inline USE Vector
 
   url "ecmascript:
@@ -452,12 +458,12 @@ ROUTE Tool.bboxCenter_changed TO CenterScript.set_bboxCenter
 ROUTE Tool.bboxSize_changed TO CenterScript.set_bboxSize
 ROUTE Tool.displayCenter_changed TO CenterScript.set_displayCenter
 ROUTE CenterScript.whichChoice_changed TO Center.set_whichChoice
-ROUTE Tool.linetype_changed TO _1.set_linetype
-ROUTE Tool.center_changed TO _3.set_translation
+ROUTE Tool.linetype_changed TO _2.set_linetype
+ROUTE Tool.center_changed TO _4.set_translation
 ROUTE Tool.axisOfRotation_changed TO AxisOfRotationScript.set_vector
 ROUTE Tool.rectangle_changed TO BBoxScript.set_rectangle
 ROUTE Tool.rectangle_changed TO Rectangle.set_whichChoice
 ROUTE Tool.rectangleBBoxSize_changed TO BBoxScript.set_rectangleBBoxSize
-ROUTE Tool.rectangleBBoxCenter_changed TO _4.set_translation
+ROUTE Tool.rectangleBBoxCenter_changed TO _5.set_translation
 
 EXPORT Tool

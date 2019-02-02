@@ -1,15 +1,17 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
 
-COMPONENT Titania : 1
+COMPONENT Grouping : 3
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/GridTool.x3dv"
-META "modified" "Sun, 06 Jan 2019 12:49:53 GMT"
+META "modified" "Sat, 02 Feb 2019 19:36:41 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"

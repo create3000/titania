@@ -9,6 +9,9 @@ META "generator" "Titania V4.3.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/EnvironmentalSensor.x3dv"
 META "modified" "Sun, 06 Jan 2019 12:50:05 GMT"
 
+EXTERNPROTO ToolShader [ ]
+"library/ToolShader.x3dv"
+
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
   initializeOnly SFVec3f bboxSize
@@ -49,6 +52,7 @@ WorldInfo {
                     material Material {
                       transparency 1
                     }
+shaders DEF _9999 ToolShader {}
                   }
                   geometry Box {
                     size 1 1 1
@@ -176,6 +180,7 @@ Collision {
       children Shape {
         appearance Appearance {
           material USE BoxMaterial
+shaders USE _9999
         }
         geometry Box {
           size 1 1 1
