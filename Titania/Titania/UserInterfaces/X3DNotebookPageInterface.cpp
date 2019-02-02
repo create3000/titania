@@ -78,29 +78,34 @@ void
 X3DNotebookPageInterface::create ()
 {
 	// Get objects.
+	m_FogDepthAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FogDepthAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("TabWidget", m_TabWidget);
-	m_builder -> get_widget ("TabImage", m_TabImage);
-	m_builder -> get_widget ("TabLabel", m_TabLabel);
-	m_builder -> get_widget ("MuteButton", m_MuteButton);
-	m_builder -> get_widget ("MuteImage", m_MuteImage);
-	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Box1", m_Box1);
 	m_builder -> get_widget ("Box2", m_Box2);
 	m_builder -> get_widget ("Box3", m_Box3);
 	m_builder -> get_widget ("Box4", m_Box4);
+	m_builder -> get_widget ("GeometryToolbar", m_GeometryToolbar);
+	m_builder -> get_widget ("FogCoordCheckButton", m_FogCoordCheckButton);
+	m_builder -> get_widget ("FogDepthBox", m_FogDepthBox);
+	m_builder -> get_widget ("FogDepthSpinButton", m_FogDepthSpinButton);
+	m_builder -> get_widget ("TabWidget", m_TabWidget);
+	m_builder -> get_widget ("TabImage", m_TabImage);
+	m_builder -> get_widget ("TabLabel", m_TabLabel);
+	m_builder -> get_widget ("MuteButton", m_MuteButton);
+	m_builder -> get_widget ("MuteImage", m_MuteImage);
+	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
+
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
 
 	// Connect object Gtk::Image with id 'TabImage'.
 	m_TabImage -> signal_query_tooltip () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_tab_image_query_tooltip));
 
 	// Connect object Gtk::ToggleButton with id 'MuteButton'.
 	m_MuteButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_mute_toggled));
-
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
 }
 
 X3DNotebookPageInterface::~X3DNotebookPageInterface ()

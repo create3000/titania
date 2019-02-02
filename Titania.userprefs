@@ -3,12 +3,6 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="73" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Combine.cpp" Line="466" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="199" Column="18" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="86" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="221" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/PointSet.fs" Line="50" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Wireframe.fs" Line="48" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -579,7 +579,12 @@ IndexedFaceSet::getIndex (const bool perVertex, const bool currentPerVertex, con
 void
 IndexedFaceSet::addFogCoords ()
 {
-	fogCoord () = getExecutionContext () -> createNode <FogCoordinate> ();
+	const auto fogCoordNode = getExecutionContext () -> createNode <FogCoordinate> ();
+
+	fogCoord () = fogCoordNode;
+
+	if (getCoord ())
+		fogCoordNode -> resize (getCoord () -> getSize ());
 }
 
 void

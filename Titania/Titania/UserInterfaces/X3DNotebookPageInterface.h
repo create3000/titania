@@ -89,29 +89,9 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
-	Gtk::Box &
-	getTabWidget () const
-	{ return *m_TabWidget; }
-
-	Gtk::Image &
-	getTabImage () const
-	{ return *m_TabImage; }
-
-	Gtk::Label &
-	getTabLabel () const
-	{ return *m_TabLabel; }
-
-	Gtk::ToggleButton &
-	getMuteButton () const
-	{ return *m_MuteButton; }
-
-	Gtk::Image &
-	getMuteImage () const
-	{ return *m_MuteImage; }
-
-	Gtk::Button &
-	getTabCloseButton () const
-	{ return *m_TabCloseButton; }
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFogDepthAdjustment () const
+	{ return m_FogDepthAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -137,7 +117,51 @@ public:
 	getBox4 () const
 	{ return *m_Box4; }
 
+	Gtk::Toolbar &
+	getGeometryToolbar () const
+	{ return *m_GeometryToolbar; }
+
+	Gtk::CheckButton &
+	getFogCoordCheckButton () const
+	{ return *m_FogCoordCheckButton; }
+
+	Gtk::Box &
+	getFogDepthBox () const
+	{ return *m_FogDepthBox; }
+
+	Gtk::SpinButton &
+	getFogDepthSpinButton () const
+	{ return *m_FogDepthSpinButton; }
+
+	Gtk::Box &
+	getTabWidget () const
+	{ return *m_TabWidget; }
+
+	Gtk::Image &
+	getTabImage () const
+	{ return *m_TabImage; }
+
+	Gtk::Label &
+	getTabLabel () const
+	{ return *m_TabLabel; }
+
+	Gtk::ToggleButton &
+	getMuteButton () const
+	{ return *m_MuteButton; }
+
+	Gtk::Image &
+	getMuteImage () const
+	{ return *m_MuteImage; }
+
+	Gtk::Button &
+	getTabCloseButton () const
+	{ return *m_TabCloseButton; }
+
 	///  @name Signal handlers
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* key_event) = 0;
 
 	virtual
 	bool
@@ -146,10 +170,6 @@ public:
 	virtual
 	void
 	on_mute_toggled () = 0;
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey* key_event) = 0;
 
 	///  @name Destruction
 
@@ -175,18 +195,23 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Box* m_TabWidget;
-	Gtk::Image* m_TabImage;
-	Gtk::Label* m_TabLabel;
-	Gtk::ToggleButton* m_MuteButton;
-	Gtk::Image* m_MuteImage;
-	Gtk::Button* m_TabCloseButton;
+	Glib::RefPtr <Gtk::Adjustment> m_FogDepthAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Viewport* m_Box1;
 	Gtk::Viewport* m_Box2;
 	Gtk::Viewport* m_Box3;
 	Gtk::Viewport* m_Box4;
+	Gtk::Toolbar* m_GeometryToolbar;
+	Gtk::CheckButton* m_FogCoordCheckButton;
+	Gtk::Box* m_FogDepthBox;
+	Gtk::SpinButton* m_FogDepthSpinButton;
+	Gtk::Box* m_TabWidget;
+	Gtk::Image* m_TabImage;
+	Gtk::Label* m_TabLabel;
+	Gtk::ToggleButton* m_MuteButton;
+	Gtk::Image* m_MuteImage;
+	Gtk::Button* m_TabCloseButton;
 
 };
 
