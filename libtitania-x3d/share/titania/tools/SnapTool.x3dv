@@ -1,13 +1,16 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Mon, 12 Oct 2015 11:18:05 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SnapTool.x3dv"
-META "modified" "Sun, 06 Jan 2019 12:48:03 GMT"
+META "modified" "Sat, 02 Feb 2019 19:55:57 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv#ToolShader"
@@ -59,6 +62,9 @@ PROTO SnapTool [
               translation 0 1 0
               scale 12 1 12
               children Shape {
+                appearance Appearance {
+                  shaders ToolShader { }
+                }
                 geometry IndexedLineSet {
                   colorPerVertex FALSE
                   colorIndex [
