@@ -1,15 +1,18 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 UNIT angle degree 0.0174532925199433
 
 META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Sun, 06 Jan 2019 12:52:07 GMT"
+META "modified" "Sat, 02 Feb 2019 18:55:40 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -111,7 +114,42 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value NULL
+            value DEF XYZ Shape {
+              appearance DEF _1 Appearance {
+                shaders DEF _2 ToolShader { }
+              }
+              geometry IndexedLineSet {
+                colorPerVertex FALSE
+                coordIndex [
+                  0,
+                  1,
+                  -1,
+                  2,
+                  3,
+                  -1,
+                  4,
+                  5,
+                  -1
+                ]
+                color Color {
+                  color [
+                    1 0 0,
+                    0 1 0,
+                    0 0 1
+                  ]
+                }
+                coord DEF Axes Coordinate {
+                  point [
+                    -0.5 0 0,
+                    0.5 0 0,
+                    0 0.5 0,
+                    0 -0.5 0,
+                    0 0 -0.5,
+                    0 0 0.5
+                  ]
+                }
+              }
+            }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -148,46 +186,15 @@ Collision {
       children DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
-        children DEF _1 Transform {
+        children DEF _3 Transform {
           children [
             DEF ToolModeSwitch Switch {
               whichChoice 0
               children [
-                DEF XYZ Shape {
-                  geometry IndexedLineSet {
-                    colorPerVertex FALSE
-                    coordIndex [
-                      0,
-                      1,
-                      -1,
-                      2,
-                      3,
-                      -1,
-                      4,
-                      5,
-                      -1
-                    ]
-                    color Color {
-                      color [
-                        1 0 0,
-                        0 1 0,
-                        0 0 1
-                      ]
-                    }
-                    coord DEF Axes Coordinate {
-                      point [
-                        -0.5 0 0,
-                        0.5 0 0,
-                        0 0.5 0,
-                        0 -0.5 0,
-                        0 0 -0.5,
-                        0 0 0.5
-                      ]
-                    }
-                  }
-                }
+                USE XYZ
                 ScreenGroup {
-                  children DEF XYZ_2 Shape {
+                  children DEF XYZ_4 Shape {
+                    appearance USE _1
                     geometry IndexedLineSet {
                       colorPerVertex FALSE
                       coordIndex [
@@ -208,7 +215,7 @@ Collision {
                           0 0 1
                         ]
                       }
-                      coord DEF Axes_3 Coordinate {
+                      coord DEF Axes_5 Coordinate {
                         point [
                           -50 0 0,
                           50 0 0,
@@ -228,9 +235,10 @@ Collision {
                 lineProperties DEF LineProperties LineProperties {
                   linewidthScaleFactor 1
                 }
-                material DEF _4 Material {
+                material DEF _6 Material {
                   emissiveColor 0.35 1 0.7
                 }
+                shaders USE _2
               }
               geometry IndexedLineSet {
                 coordIndex [
@@ -273,12 +281,12 @@ Collision {
                 }
               }
             }
-            DEF _5 BooleanSwitch {
+            DEF _7 BooleanSwitch {
               whichChoice TRUE
               bboxSize 0 0 0
               children [
-                DEF _6 Group { }
-                DEF _7 Group {
+                DEF _8 Group { }
+                DEF _9 Group {
                   children [
                     DEF Front Transform {
                       scale 0 0 1
@@ -292,6 +300,7 @@ Collision {
                               material Material {
                                 transparency 1
                               }
+                              shaders USE _2
                             }
                             geometry Rectangle2D {
                               size 1 1
@@ -370,19 +379,19 @@ Collision {
     }
     DEF HandlesTouchGroup TouchGroup {
       children [
-        DEF _8 DepthBuffer {
+        DEF _10 DepthBuffer {
           enabled FALSE
           depthOffset 1000000000
           children DEF AdjustmentHandles Transform {
             children [
-              DEF ToolModeSwitch_9 Switch {
+              DEF ToolModeSwitch_11 Switch {
                 whichChoice 0
                 children [
                   Group {
                     children [
                       DEF X Group {
                         children [
-                          DEF Front_10 Group {
+                          DEF Front_12 Group {
                             children [
                               DEF XHandle Transform {
                                 translation 0.5 0 0
@@ -393,14 +402,14 @@ Collision {
                                       Transform {
                                         translation 10.5 0 0
                                         rotation 0 0 -1 90.0002104591497
-                                        children DEF _11 Shape {
+                                        children DEF _13 Shape {
                                           appearance DEF Red Appearance {
                                             material Material {
                                               ambientIntensity 0
                                               diffuseColor 1 0 0
                                               shininess 0
                                             }
-                                            shaders ToolShader { }
+                                            shaders USE _2
                                           }
                                           geometry DEF Arrow Cone {
                                             height 21
@@ -410,32 +419,32 @@ Collision {
                                       }
                                       Transform {
                                         translation 8 0 0
-                                        children DEF _12 Shape {
+                                        children DEF _14 Shape {
                                           appearance USE Red
                                           geometry DEF Sphere Sphere {
                                             radius 8
                                           }
                                         }
                                       }
-                                      DEF _13 BooleanSwitch {
+                                      DEF _15 BooleanSwitch {
                                         whichChoice TRUE
                                         children [
-                                          DEF _14 Transform {
+                                          DEF _16 Transform {
                                             translation 6 0 0
                                             rotation 0 0 -1 90.0002104591497
-                                            children DEF _15 Shape {
+                                            children DEF _17 Shape {
                                               appearance USE Red
-                                              geometry DEF _16 Cone {
+                                              geometry DEF _18 Cone {
                                                 height 12
                                                 bottomRadius 4
                                               }
                                             }
                                           }
-                                          DEF _17 Transform {
+                                          DEF _19 Transform {
                                             translation 6 0 0
                                             rotation 0.999364381620497 0 0.0356487411879094 1.70754729250319e-06
                                             scaleOrientation -0.357406744336593 0.862856209461017 -0.357406744336593 258.947302582207
-                                            children DEF _18 Shape {
+                                            children DEF _20 Shape {
                                               appearance USE Red
                                               geometry DEF Box Box {
                                                 size 12 12 12
@@ -462,44 +471,44 @@ Collision {
                               }
                             ]
                           }
-                          DEF Back_19 Group {
+                          DEF Back_21 Group {
                             children [
                               DEF XBack Transform {
                                 translation -0.5 0 0
                                 children ScreenGroup {
-                                  children DEF _20 Switch {
+                                  children DEF _22 Switch {
                                     whichChoice 0
                                     children [
-                                      DEF _21 Transform {
+                                      DEF _23 Transform {
                                         translation -3.5 0 0
                                         rotation 0 0 -1 90.0002104591497
-                                        children DEF _22 Shape {
+                                        children DEF _24 Shape {
                                           appearance USE Red
-                                          geometry DEF _23 Cylinder {
+                                          geometry DEF _25 Cylinder {
                                             height 8
                                             radius 7
                                           }
                                         }
                                       }
-                                      USE _21
-                                      DEF _24 BooleanSwitch {
+                                      USE _23
+                                      DEF _26 BooleanSwitch {
                                         whichChoice TRUE
                                         children [
-                                          DEF _25 Transform {
+                                          DEF _27 Transform {
                                             translation -2.5 0 0
                                             rotation 0 0 -1 90.0002104591497
-                                            children DEF _26 Shape {
+                                            children DEF _28 Shape {
                                               appearance USE Red
-                                              geometry DEF _27 Cylinder {
+                                              geometry DEF _29 Cylinder {
                                                 height 5
                                                 radius 4
                                               }
                                             }
                                           }
-                                          DEF _28 Transform {
+                                          DEF _30 Transform {
                                             translation -4 0 0
                                             scale 0.666667 1 1
-                                            children USE _18
+                                            children USE _20
                                           }
                                         ]
                                       }
@@ -521,7 +530,7 @@ Collision {
                       }
                       DEF Y Group {
                         children [
-                          DEF Front_29 Group {
+                          DEF Front_31 Group {
                             children [
                               DEF YHandle Transform {
                                 translation 0 0.5 0
@@ -531,37 +540,37 @@ Collision {
                                     children [
                                       Transform {
                                         translation 0 10.5 0
-                                        children DEF _30 Shape {
+                                        children DEF _32 Shape {
                                           appearance DEF Green Appearance {
                                             material Material {
                                               ambientIntensity 0
                                               diffuseColor 0 1 0
                                               shininess 0
                                             }
-                                            shaders ToolShader { }
+                                            shaders USE _2
                                           }
                                           geometry USE Arrow
                                         }
                                       }
                                       Transform {
                                         translation 0 8 0
-                                        children DEF _31 Shape {
+                                        children DEF _33 Shape {
                                           appearance USE Green
                                           geometry USE Sphere
                                         }
                                       }
-                                      DEF _32 BooleanSwitch {
+                                      DEF _34 BooleanSwitch {
                                         children [
-                                          DEF _33 Transform {
-                                            translation 0 6 0
-                                            children DEF _34 Shape {
-                                              appearance USE Green
-                                              geometry USE _16
-                                            }
-                                          }
                                           DEF _35 Transform {
                                             translation 0 6 0
                                             children DEF _36 Shape {
+                                              appearance USE Green
+                                              geometry USE _18
+                                            }
+                                          }
+                                          DEF _37 Transform {
+                                            translation 0 6 0
+                                            children DEF _38 Shape {
                                               appearance USE Green
                                               geometry USE Box
                                             }
@@ -586,36 +595,36 @@ Collision {
                               }
                             ]
                           }
-                          DEF Back_37 Group {
+                          DEF Back_39 Group {
                             children [
                               DEF YBack Transform {
                                 translation 0 -0.5 0
                                 children ScreenGroup {
-                                  children DEF _38 Switch {
+                                  children DEF _40 Switch {
                                     whichChoice 0
                                     children [
-                                      DEF _39 Transform {
+                                      DEF _41 Transform {
                                         translation 0 -3.5 0
-                                        children DEF _40 Shape {
+                                        children DEF _42 Shape {
                                           appearance USE Green
-                                          geometry USE _23
+                                          geometry USE _25
                                         }
                                       }
-                                      USE _39
-                                      DEF _41 BooleanSwitch {
+                                      USE _41
+                                      DEF _43 BooleanSwitch {
                                         whichChoice TRUE
                                         children [
-                                          DEF _42 Transform {
+                                          DEF _44 Transform {
                                             translation 0 -2.5 0
-                                            children DEF _43 Shape {
+                                            children DEF _45 Shape {
                                               appearance USE Green
-                                              geometry USE _27
+                                              geometry USE _29
                                             }
                                           }
-                                          DEF _44 Transform {
+                                          DEF _46 Transform {
                                             translation 0 -4 0
                                             scale 1 0.666667 1
-                                            children USE _36
+                                            children USE _38
                                           }
                                         ]
                                       }
@@ -637,7 +646,7 @@ Collision {
                       }
                       DEF Z Group {
                         children [
-                          DEF Front_45 Group {
+                          DEF Front_47 Group {
                             children [
                               DEF ZHandle Transform {
                                 translation 0 0 0.5
@@ -648,38 +657,38 @@ Collision {
                                       Transform {
                                         translation 0 0 10.5
                                         rotation 1 0 0 90.0002104591497
-                                        children DEF _46 Shape {
+                                        children DEF _48 Shape {
                                           appearance DEF Blue Appearance {
                                             material Material {
                                               ambientIntensity 0
                                               diffuseColor 0 0 1
                                               shininess 0
                                             }
-                                            shaders ToolShader { }
+                                            shaders USE _2
                                           }
                                           geometry USE Arrow
                                         }
                                       }
                                       Transform {
                                         translation 0 0 8
-                                        children DEF _47 Shape {
+                                        children DEF _49 Shape {
                                           appearance USE Blue
                                           geometry USE Sphere
                                         }
                                       }
-                                      DEF _48 BooleanSwitch {
+                                      DEF _50 BooleanSwitch {
                                         children [
-                                          DEF _49 Transform {
-                                            translation 0 0 6
-                                            rotation 1 0 0 90.0002104591497
-                                            children DEF _50 Shape {
-                                              appearance USE Blue
-                                              geometry USE _16
-                                            }
-                                          }
                                           DEF _51 Transform {
                                             translation 0 0 6
+                                            rotation 1 0 0 90.0002104591497
                                             children DEF _52 Shape {
+                                              appearance USE Blue
+                                              geometry USE _18
+                                            }
+                                          }
+                                          DEF _53 Transform {
+                                            translation 0 0 6
+                                            children DEF _54 Shape {
                                               appearance USE Blue
                                               geometry USE Box
                                             }
@@ -706,38 +715,38 @@ Collision {
                               }
                             ]
                           }
-                          DEF Back_53 Group {
+                          DEF Back_55 Group {
                             children [
                               DEF ZBack Transform {
                                 translation 0 0 -0.5
                                 children ScreenGroup {
-                                  children DEF _54 Switch {
+                                  children DEF _56 Switch {
                                     whichChoice 0
                                     children [
-                                      DEF _55 Transform {
+                                      DEF _57 Transform {
                                         translation 0 0 -3.5
                                         rotation 1 0 0 90.0002104591497
-                                        children DEF _56 Shape {
+                                        children DEF _58 Shape {
                                           appearance USE Blue
-                                          geometry USE _23
+                                          geometry USE _25
                                         }
                                       }
-                                      USE _55
-                                      DEF _57 BooleanSwitch {
+                                      USE _57
+                                      DEF _59 BooleanSwitch {
                                         whichChoice TRUE
                                         children [
-                                          DEF _58 Transform {
+                                          DEF _60 Transform {
                                             translation 0 0 -2.5
                                             rotation 1 0 0 90.0002104591497
-                                            children DEF _59 Shape {
+                                            children DEF _61 Shape {
                                               appearance USE Blue
-                                              geometry USE _27
+                                              geometry USE _29
                                             }
                                           }
-                                          DEF _60 Transform {
+                                          DEF _62 Transform {
                                             translation 0 0 -4
                                             scale 1 1 0.666667
-                                            children USE _52
+                                            children USE _54
                                           }
                                         ]
                                       }
@@ -765,29 +774,29 @@ Collision {
                       DEF XFront Group {
                         children [
                           ScreenGroup {
-                            children DEF XSwitch_61 Switch {
+                            children DEF XSwitch_63 Switch {
                               whichChoice 0
                               children [
                                 Transform {
                                   translation 60.5 0 0
                                   rotation 0 0 -1 90.0002104591497
-                                  children USE _11
+                                  children USE _13
                                 }
                                 Transform {
                                   translation 58 0 0
-                                  children USE _12
+                                  children USE _14
                                 }
-                                DEF _62 BooleanSwitch {
+                                DEF _64 BooleanSwitch {
                                   whichChoice TRUE
                                   children [
-                                    DEF _63 Transform {
+                                    DEF _65 Transform {
                                       translation 56 0 0
                                       rotation 0 0 -1 90.0002104591497
-                                      children USE _15
+                                      children USE _17
                                     }
-                                    DEF _64 Transform {
+                                    DEF _66 Transform {
                                       translation 56 0 0
-                                      children USE _18
+                                      children USE _20
                                     }
                                   ]
                                 }
@@ -799,30 +808,30 @@ Collision {
                           USE XScaleSensor
                         ]
                       }
-                      DEF XBack_65 Group {
+                      DEF XBack_67 Group {
                         children [
                           ScreenGroup {
-                            children DEF _66 Switch {
+                            children DEF _68 Switch {
                               whichChoice 0
                               children [
-                                DEF _67 Transform {
+                                DEF _69 Transform {
                                   translation -53.5 0 0
                                   rotation 0 0 -1 90.0002104591497
-                                  children USE _22
+                                  children USE _24
                                 }
-                                USE _67
-                                DEF _68 BooleanSwitch {
+                                USE _69
+                                DEF _70 BooleanSwitch {
                                   whichChoice TRUE
                                   children [
-                                    DEF _69 Transform {
+                                    DEF _71 Transform {
                                       translation -52.5 0 0
                                       rotation 0 0 -1 90.0002104591497
-                                      children USE _26
+                                      children USE _28
                                     }
-                                    DEF _70 Transform {
+                                    DEF _72 Transform {
                                       translation -54 0 0
                                       scale 0.666667 1 1
-                                      children USE _18
+                                      children USE _20
                                     }
                                   ]
                                 }
@@ -837,27 +846,27 @@ Collision {
                       DEF YFront Group {
                         children [
                           ScreenGroup {
-                            children DEF YSwitch_71 Switch {
+                            children DEF YSwitch_73 Switch {
                               whichChoice 0
                               children [
                                 Transform {
                                   translation 0 60.5 0
-                                  children USE _30
+                                  children USE _32
                                 }
                                 Transform {
                                   translation 0 58 0
-                                  children USE _31
+                                  children USE _33
                                 }
-                                DEF _72 BooleanSwitch {
+                                DEF _74 BooleanSwitch {
                                   whichChoice TRUE
                                   children [
-                                    DEF _73 Transform {
-                                      translation 0 56 0
-                                      children USE _34
-                                    }
-                                    DEF _74 Transform {
+                                    DEF _75 Transform {
                                       translation 0 56 0
                                       children USE _36
+                                    }
+                                    DEF _76 Transform {
+                                      translation 0 56 0
+                                      children USE _38
                                     }
                                   ]
                                 }
@@ -869,28 +878,28 @@ Collision {
                           USE YScaleSensor
                         ]
                       }
-                      DEF YBack_75 Group {
+                      DEF YBack_77 Group {
                         children [
                           ScreenGroup {
-                            children DEF _76 Switch {
+                            children DEF _78 Switch {
                               whichChoice 0
                               children [
-                                DEF _77 Transform {
+                                DEF _79 Transform {
                                   translation 0 -53.5 0
-                                  children USE _40
+                                  children USE _42
                                 }
-                                USE _77
-                                DEF _78 BooleanSwitch {
+                                USE _79
+                                DEF _80 BooleanSwitch {
                                   whichChoice TRUE
                                   children [
-                                    DEF _79 Transform {
+                                    DEF _81 Transform {
                                       translation 0 -52.5 0
-                                      children USE _43
+                                      children USE _45
                                     }
-                                    DEF _80 Transform {
+                                    DEF _82 Transform {
                                       translation 0 -54 0
                                       scale 1 0.666667 1
-                                      children USE _36
+                                      children USE _38
                                     }
                                   ]
                                 }
@@ -905,29 +914,29 @@ Collision {
                       DEF ZFront Group {
                         children [
                           ScreenGroup {
-                            children DEF ZSwitch_81 Switch {
+                            children DEF ZSwitch_83 Switch {
                               whichChoice 0
                               children [
                                 Transform {
                                   translation 0 0 60.5
                                   rotation 1 0 0 90.0002104591497
-                                  children USE _46
+                                  children USE _48
                                 }
                                 Transform {
                                   translation 0 0 58
-                                  children USE _47
+                                  children USE _49
                                 }
-                                DEF _82 BooleanSwitch {
+                                DEF _84 BooleanSwitch {
                                   whichChoice TRUE
                                   children [
-                                    DEF _83 Transform {
+                                    DEF _85 Transform {
                                       translation 0 0 56
                                       rotation 1 0 0 90.0002104591497
-                                      children USE _50
-                                    }
-                                    DEF _84 Transform {
-                                      translation 0 0 56
                                       children USE _52
+                                    }
+                                    DEF _86 Transform {
+                                      translation 0 0 56
+                                      children USE _54
                                     }
                                   ]
                                 }
@@ -939,30 +948,30 @@ Collision {
                           USE ZScaleSensor
                         ]
                       }
-                      DEF ZBack_85 Group {
+                      DEF ZBack_87 Group {
                         children [
                           ScreenGroup {
-                            children DEF _86 Switch {
+                            children DEF _88 Switch {
                               whichChoice 0
                               children [
-                                DEF _87 Transform {
+                                DEF _89 Transform {
                                   translation 0 0 -53.5
                                   rotation 1 0 0 90.0002104591497
-                                  children USE _56
+                                  children USE _58
                                 }
-                                USE _87
-                                DEF _88 BooleanSwitch {
+                                USE _89
+                                DEF _90 BooleanSwitch {
                                   whichChoice TRUE
                                   children [
-                                    DEF _89 Transform {
+                                    DEF _91 Transform {
                                       translation 0 0 -52.5
                                       rotation 1 0 0 90.0002104591497
-                                      children USE _59
+                                      children USE _61
                                     }
-                                    DEF _90 Transform {
+                                    DEF _92 Transform {
                                       translation 0 0 -54
                                       scale 1 1 0.666667
-                                      children USE _52
+                                      children USE _54
                                     }
                                   ]
                                 }
@@ -983,9 +992,9 @@ Collision {
                 children [
                   Group { }
                   Group { }
-                  DEF _91 BooleanSwitch {
+                  DEF _93 BooleanSwitch {
                     children [
-                      DEF _92 Group { }
+                      DEF _94 Group { }
                       DEF ScaleHandlesSwitch Switch {
                         whichChoice 0
                         children [
@@ -1008,7 +1017,7 @@ Collision {
                                             diffuseColor 1 1 1
                                             shininess 0
                                           }
-                                          shaders ToolShader { }
+                                          shaders USE _2
                                         }
                                         geometry USE Box
                                       }
@@ -1097,36 +1106,36 @@ Collision {
             ]
           }
         }
-        DEF _93 DepthBuffer {
+        DEF _95 DepthBuffer {
           enabled FALSE
           depthOffset 1000000000
           children [
             DEF CenterPoint Transform {
               children [
-                DEF _94 TouchSensor { }
-                DEF _95 BooleanSwitch {
+                DEF _96 TouchSensor { }
+                DEF _97 BooleanSwitch {
                   children [
-                    DEF _96 Group { }
-                    DEF _97 ScreenGroup {
-                      children DEF _98 BooleanSwitch {
+                    DEF _98 Group { }
+                    DEF _99 ScreenGroup {
+                      children DEF _100 BooleanSwitch {
                         bboxSize 0 0 0
                         children [
-                          DEF _99 Shape {
+                          DEF _101 Shape {
                             appearance Appearance {
                               material Material {
                                 ambientIntensity 0
                                 diffuseColor 1 1 0
                                 shininess 0
                               }
-                              shaders ToolShader { }
+                              shaders USE _2
                             }
-                            geometry DEF _100 Sphere {
+                            geometry DEF _102 Sphere {
                               radius 5
                             }
                           }
-                          DEF _101 Shape {
+                          DEF _103 Shape {
                             appearance USE Red
-                            geometry USE _100
+                            geometry USE _102
                           }
                         ]
                       }
@@ -1163,6 +1172,7 @@ Collision {
                                     material Material {
                                       emissiveColor 1 0 0
                                     }
+                                    shaders USE _2
                                   }
                                   geometry DEF Circle Circle2D { }
                                 }
@@ -1174,6 +1184,7 @@ Collision {
                                         emissiveColor 1 0 0
                                         transparency 1
                                       }
+                                      shaders USE _2
                                     }
                                     geometry DEF Disk Disk2D { }
                                   }
@@ -1197,6 +1208,7 @@ Collision {
                                     material Material {
                                       emissiveColor 0 1 0
                                     }
+                                    shaders USE _2
                                   }
                                   geometry USE Circle
                                 }
@@ -1208,6 +1220,7 @@ Collision {
                                         emissiveColor 0 1 0
                                         transparency 1
                                       }
+                                      shaders USE _2
                                     }
                                     geometry USE Disk
                                   }
@@ -1231,6 +1244,7 @@ Collision {
                                     material Material {
                                       emissiveColor 0 0 1
                                     }
+                                    shaders USE _2
                                   }
                                   geometry USE Circle
                                 }
@@ -1242,6 +1256,7 @@ Collision {
                                         emissiveColor 0 0 1
                                         transparency 1
                                       }
+                                      shaders USE _2
                                     }
                                     geometry USE Disk
                                   }
@@ -1257,9 +1272,9 @@ Collision {
                 }
               ]
             }
-            DEF _102 BooleanSwitch {
+            DEF _104 BooleanSwitch {
               children [
-                DEF _103 Group { }
+                DEF _105 Group { }
                 DEF CenterLine Shape {
                   appearance Appearance {
                     lineProperties LineProperties {
@@ -1267,8 +1282,9 @@ Collision {
                       linewidthScaleFactor 1
                     }
                     material DEF Yellow Material {
-                      diffuseColor 1 1 0
+                      emissiveColor 1 1 0
                     }
+                    shaders USE _2
                   }
                   geometry DEF CenterIndexedLineSet IndexedLineSet {
                     coordIndex [
@@ -1276,12 +1292,6 @@ Collision {
                       1,
                       -1
                     ]
-                    color Color {
-                      color [
-                        1 1 0,
-                        1 1 0
-                      ]
-                    }
                     coord DEF CenterLineCoord Coordinate { }
                   }
                 }
@@ -1299,6 +1309,7 @@ Collision {
                 material Material {
                   emissiveColor 0 1 1
                 }
+                shaders USE _2
               }
               geometry PointSet {
                 coord Coordinate {
@@ -1313,9 +1324,9 @@ Collision {
   ]
 }
 
-DEF _104 BooleanFilter { }
+DEF _106 BooleanFilter { }
 
-DEF _105 TimeTrigger { }
+DEF _107 TimeTrigger { }
 
 DEF ModeDoubleClick DoubleClick { }
 
@@ -2387,8 +2398,8 @@ ROUTE ModeDoubleClick.doubleClickTime TO ModeScript.set_time
 ROUTE ModeScript.move TO XTranslationSensor.set_enabled
 ROUTE ModeScript.move TO YTranslationSensor.set_enabled
 ROUTE ModeScript.move TO ZTranslationSensor.set_enabled
-ROUTE ModeScript.whichChoice_changed TO XSwitch_61.set_whichChoice
-ROUTE ModeScript.whichChoice_changed TO YSwitch_71.set_whichChoice
+ROUTE ModeScript.whichChoice_changed TO XSwitch_63.set_whichChoice
+ROUTE ModeScript.whichChoice_changed TO YSwitch_73.set_whichChoice
 ROUTE ModeScript.whichChoice_changed TO RotationHandlesSwitch.set_whichChoice
 
 # Move Tool
@@ -2470,36 +2481,36 @@ ROUTE ScaleSensor5.translation_changed TO ScaleScript.set_scale5
 ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
 ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
 ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-ROUTE _94.touchTime TO CenterDoubleClick.set_time
+ROUTE _96.touchTime TO CenterDoubleClick.set_time
 ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
 ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-ROUTE CenterScript.keepCenter_changed TO _98.set_whichChoice
+ROUTE CenterScript.keepCenter_changed TO _100.set_whichChoice
 ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-ROUTE _105.triggerTime TO ModeDoubleClick.set_time
-ROUTE XRotationSensor.isActive TO _104.set_boolean
-ROUTE YRotationSensor.isActive TO _104.set_boolean
-ROUTE ZRotationSensor.isActive TO _104.set_boolean
-ROUTE _104.inputFalse TO _105.set_boolean
-ROUTE ScaleSensor1.isActive TO _104.set_boolean
-ROUTE ScaleSensor2.isActive TO _104.set_boolean
-ROUTE ScaleSensor3.isActive TO _104.set_boolean
-ROUTE ScaleSensor4.isActive TO _104.set_boolean
-ROUTE ScaleSensor5.isActive TO _104.set_boolean
-ROUTE ScaleSensor6.isActive TO _104.set_boolean
-ROUTE ScaleSensor7.isActive TO _104.set_boolean
-ROUTE ScaleSensor8.isActive TO _104.set_boolean
+ROUTE _107.triggerTime TO ModeDoubleClick.set_time
+ROUTE XRotationSensor.isActive TO _106.set_boolean
+ROUTE YRotationSensor.isActive TO _106.set_boolean
+ROUTE ZRotationSensor.isActive TO _106.set_boolean
+ROUTE _106.inputFalse TO _107.set_boolean
+ROUTE ScaleSensor1.isActive TO _106.set_boolean
+ROUTE ScaleSensor2.isActive TO _106.set_boolean
+ROUTE ScaleSensor3.isActive TO _106.set_boolean
+ROUTE ScaleSensor4.isActive TO _106.set_boolean
+ROUTE ScaleSensor5.isActive TO _106.set_boolean
+ROUTE ScaleSensor6.isActive TO _106.set_boolean
+ROUTE ScaleSensor7.isActive TO _106.set_boolean
+ROUTE ScaleSensor8.isActive TO _106.set_boolean
 ROUTE XScaleBackSensor.translation_changed TO ScaleScript.set_xScaleBack
 ROUTE YScaleBackSensor.translation_changed TO ScaleScript.set_yScaleBack
 ROUTE ZScaleBackSensor.translation_changed TO ScaleScript.set_zScaleBack
 ROUTE ZScaleBackSensor.isActive TO ScaleScript.set_active
 ROUTE YScaleBackSensor.isActive TO ScaleScript.set_active
 ROUTE XScaleBackSensor.isActive TO ScaleScript.set_active
-ROUTE XSwitch_61.whichChoice_changed TO _66.set_whichChoice
-ROUTE YSwitch_71.whichChoice_changed TO _76.set_whichChoice
-ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _93.set_depthOffset
-ROUTE BBoxScript.handlesDepthOffset_changed TO _8.set_depthOffset
+ROUTE XSwitch_63.whichChoice_changed TO _68.set_whichChoice
+ROUTE YSwitch_73.whichChoice_changed TO _78.set_whichChoice
+ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _95.set_depthOffset
+ROUTE BBoxScript.handlesDepthOffset_changed TO _10.set_depthOffset
 ROUTE BBoxScript.scaleToolWhichChoice_changed TO ScaleHandlesSwitch.set_whichChoice
-ROUTE Tool.bboxCenter_changed TO _1.set_translation
+ROUTE Tool.bboxCenter_changed TO _3.set_translation
 ROUTE FrontSensor.isActive TO Tool.set_isActive
 ROUTE RightSensor.isActive TO Tool.set_isActive
 ROUTE BackSensor.isActive TO Tool.set_isActive
@@ -2525,7 +2536,7 @@ ROUTE ScaleSensor5.isActive TO Tool.set_isActive
 ROUTE ScaleSensor6.isActive TO Tool.set_isActive
 ROUTE ScaleSensor7.isActive TO Tool.set_isActive
 ROUTE ScaleSensor8.isActive TO Tool.set_isActive
-ROUTE _94.touchTime TO Tool.set_touchTime
+ROUTE _96.touchTime TO Tool.set_touchTime
 ROUTE XRotationSensor.isActive TO Tool.set_isActive
 ROUTE YRotationSensor.isActive TO Tool.set_isActive
 ROUTE ZRotationSensor.isActive TO Tool.set_isActive
@@ -2557,36 +2568,36 @@ ROUTE Tool.bboxSize_changed TO ScaleScript.set_bboxSize
 ROUTE Tool.bboxCenter_changed TO ScaleScript.set_bboxCenter
 ROUTE Tool.transform_changed TO ScaleScript.set_transform
 ROUTE ScaleScript.activeTool_changed TO Tool.set_activeTool_changed
-ROUTE ModeScript.whichChoice_changed TO ZSwitch_81.set_whichChoice
-ROUTE ZSwitch_81.whichChoice_changed TO _86.set_whichChoice
-ROUTE ZSwitch.whichChoice_changed TO _54.set_whichChoice
-ROUTE YSwitch.whichChoice_changed TO _38.set_whichChoice
-ROUTE XSwitch.whichChoice_changed TO _20.set_whichChoice
-ROUTE XSwitch_61.whichChoice_changed TO XSwitch.set_whichChoice
-ROUTE YSwitch_71.whichChoice_changed TO YSwitch.set_whichChoice
-ROUTE ZSwitch_81.whichChoice_changed TO ZSwitch.set_whichChoice
+ROUTE ModeScript.whichChoice_changed TO ZSwitch_83.set_whichChoice
+ROUTE ZSwitch_83.whichChoice_changed TO _88.set_whichChoice
+ROUTE ZSwitch.whichChoice_changed TO _56.set_whichChoice
+ROUTE YSwitch.whichChoice_changed TO _40.set_whichChoice
+ROUTE XSwitch.whichChoice_changed TO _22.set_whichChoice
+ROUTE XSwitch_63.whichChoice_changed TO XSwitch.set_whichChoice
+ROUTE YSwitch_73.whichChoice_changed TO YSwitch.set_whichChoice
+ROUTE ZSwitch_83.whichChoice_changed TO ZSwitch.set_whichChoice
 ROUTE Tool.toolMode_changed TO ToolModeSwitch.set_whichChoice
-ROUTE Tool.toolMode_changed TO ToolModeSwitch_9.set_whichChoice
+ROUTE Tool.toolMode_changed TO ToolModeSwitch_11.set_whichChoice
 ROUTE Tool.tools_changed TO ModeScript.set_tools
-ROUTE Tool.displayBBox_changed TO _5.set_whichChoice
-ROUTE Tool.displayCenter_changed TO _102.set_whichChoice
-ROUTE Tool.displayCenter_changed TO _95.set_whichChoice
-ROUTE Tool.color_changed TO _4.set_emissiveColor
+ROUTE Tool.displayBBox_changed TO _7.set_whichChoice
+ROUTE Tool.displayCenter_changed TO _104.set_whichChoice
+ROUTE Tool.displayCenter_changed TO _97.set_whichChoice
+ROUTE Tool.color_changed TO _6.set_emissiveColor
 ROUTE Tool.controlKey_changed TO ScaleScript.set_controlKey
 ROUTE Tool.scaleFromEdge_changed TO ScaleScript.set_scaleFromEdge
-ROUTE Tool.scaleXAxis_changed TO _62.set_whichChoice
-ROUTE Tool.scaleYAxis_changed TO _72.set_whichChoice
-ROUTE Tool.scaleZAxis_changed TO _82.set_whichChoice
+ROUTE Tool.scaleXAxis_changed TO _64.set_whichChoice
+ROUTE Tool.scaleYAxis_changed TO _74.set_whichChoice
+ROUTE Tool.scaleZAxis_changed TO _84.set_whichChoice
 ROUTE Tool.scaleXAxis_changed TO ModeScript.set_scaleXAxis
 ROUTE Tool.scaleYAxis_changed TO ModeScript.set_scaleYAxis
 ROUTE Tool.scaleZAxis_changed TO ModeScript.set_scaleZAxis
-ROUTE Tool.scaleZAxis_changed TO _48.set_whichChoice
-ROUTE Tool.scaleYAxis_changed TO _32.set_whichChoice
-ROUTE Tool.scaleXAxis_changed TO _13.set_whichChoice
+ROUTE Tool.scaleZAxis_changed TO _50.set_whichChoice
+ROUTE Tool.scaleYAxis_changed TO _34.set_whichChoice
+ROUTE Tool.scaleXAxis_changed TO _15.set_whichChoice
 ROUTE ModeScript.scaleZ TO ZScaleSensor.set_enabled
 ROUTE ModeScript.scaleY TO YScaleSensor.set_enabled
 ROUTE ModeScript.scaleX TO XScaleSensor.set_enabled
-ROUTE ModeScript.scale TO _91.set_whichChoice
+ROUTE ModeScript.scale TO _93.set_whichChoice
 ROUTE Tool.scaleUniform_changed TO ModeScript.set_scaleUniform
 ROUTE Tool.connectedAxes_changed TO ScaleScript.set_connectedAxes
 ROUTE Tool.scaleXBackAxis_changed TO ModeScript.set_scaleXBackAxis
@@ -2595,12 +2606,12 @@ ROUTE Tool.scaleZBackAxis_changed TO ModeScript.set_scaleZBackAxis
 ROUTE ModeScript.scaleXBack TO XScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleYBack TO YScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleZBack TO ZScaleBackSensor.set_enabled
-ROUTE Tool.scaleXBackAxis_changed TO _68.set_whichChoice
-ROUTE Tool.scaleXBackAxis_changed TO _24.set_whichChoice
-ROUTE Tool.scaleYBackAxis_changed TO _78.set_whichChoice
-ROUTE Tool.scaleYBackAxis_changed TO _41.set_whichChoice
-ROUTE Tool.scaleZBackAxis_changed TO _88.set_whichChoice
-ROUTE Tool.scaleZBackAxis_changed TO _57.set_whichChoice
+ROUTE Tool.scaleXBackAxis_changed TO _70.set_whichChoice
+ROUTE Tool.scaleXBackAxis_changed TO _26.set_whichChoice
+ROUTE Tool.scaleYBackAxis_changed TO _80.set_whichChoice
+ROUTE Tool.scaleYBackAxis_changed TO _43.set_whichChoice
+ROUTE Tool.scaleZBackAxis_changed TO _90.set_whichChoice
+ROUTE Tool.scaleZBackAxis_changed TO _59.set_whichChoice
 ROUTE Tool.scaleFromCenter_changed TO ScaleScript.set_scaleFromCenter
 
 EXPORT BoundingBoxTouchGroup
