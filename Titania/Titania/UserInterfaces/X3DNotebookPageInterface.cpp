@@ -101,7 +101,7 @@ X3DNotebookPageInterface::create ()
 	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
 
 	// Connect object Gtk::Adjustment with id 'FogDepthAdjustment'.
-	m_FogDepthAdjustment -> signal_changed () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_fog_depth_changed));
+	m_FogDepthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_fog_depth_changed));
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);

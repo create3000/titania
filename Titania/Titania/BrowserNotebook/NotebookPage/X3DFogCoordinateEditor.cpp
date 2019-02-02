@@ -245,16 +245,16 @@ X3DFogCoordinateEditor::on_fog_depth_changed ()
 
 	for (const auto & indexedFaceSetNode : indexedFaceSetNodes)
 	{
+		if (not indexedFaceSetNode -> getFogCoord ())
+			continue;
+
 		const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (indexedFaceSetNode);
 
 		if (not tool)
 			continue;
 
 		for (const auto & [index, point] : tool -> getSelectedPoints ())
-		{
-			if (indexedFaceSetNode -> getFogCoord ())
-				indexedFaceSetNode -> getFogCoord () -> set1Depth (index, fogDepth);
-		}
+			indexedFaceSetNode -> getFogCoord () -> set1Depth (index, fogDepth);
 	}
 
 	addRedoFunction <X3D::MFFloat> (fogCoords, "depth", fogDepthUndoStep);
