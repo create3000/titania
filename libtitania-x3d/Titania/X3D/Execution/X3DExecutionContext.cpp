@@ -154,7 +154,7 @@ void
 X3DExecutionContext::initialize ()
 {
 	sceneGraphOutput .addInterest (&X3DExecutionContext::set_sceneGraph, this);
-	bboxOutput       .addInterest (&X3DExecutionContext::set_bbox, this);
+	bboxOutput       .addInterest (&X3DExecutionContext::set_bbox,       this);
 
 	uninitializedNodes .setTainted (true); // !!! Prevent generating events when protos add nodes.
 
