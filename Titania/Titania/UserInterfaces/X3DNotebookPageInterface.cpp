@@ -88,6 +88,7 @@ X3DNotebookPageInterface::create ()
 	m_builder -> get_widget ("Box2", m_Box2);
 	m_builder -> get_widget ("Box3", m_Box3);
 	m_builder -> get_widget ("Box4", m_Box4);
+	m_builder -> get_widget ("GeometryToolbarRevealer", m_GeometryToolbarRevealer);
 	m_builder -> get_widget ("GeometryToolbar", m_GeometryToolbar);
 	m_builder -> get_widget ("FogCoordCheckButton", m_FogCoordCheckButton);
 	m_builder -> get_widget ("FogDepthBox", m_FogDepthBox);

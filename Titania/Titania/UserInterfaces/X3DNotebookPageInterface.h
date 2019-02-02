@@ -121,6 +121,10 @@ public:
 	getBox4 () const
 	{ return *m_Box4; }
 
+	Gtk::Revealer &
+	getGeometryToolbarRevealer () const
+	{ return *m_GeometryToolbarRevealer; }
+
 	Gtk::Toolbar &
 	getGeometryToolbar () const
 	{ return *m_GeometryToolbar; }
@@ -215,6 +219,7 @@ private:
 	Gtk::Viewport* m_Box2;
 	Gtk::Viewport* m_Box3;
 	Gtk::Viewport* m_Box4;
+	Gtk::Revealer* m_GeometryToolbarRevealer;
 	Gtk::Toolbar* m_GeometryToolbar;
 	Gtk::CheckButton* m_FogCoordCheckButton;
 	Gtk::Box* m_FogDepthBox;

@@ -133,7 +133,7 @@ X3DFogCoordinateEditor::set_geometries ()
 		}
 	}
 
-	getGeometryToolbar () .set_visible (getBrowserWindow () -> getSelection () -> getSelectGeometry () and indexedFaceSetNodes .size ());
+	getGeometryToolbarRevealer () .set_reveal_child (getBrowserWindow () -> getSelection () -> getSelectGeometry () and indexedFaceSetNodes .size ());
 
 	set_fogCoord ();
 }
