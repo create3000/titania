@@ -138,9 +138,6 @@ private:
 	set_geometries (const X3D::MFNode & geometryNodes);
 
 	void
-	set_indexedFaceSet (const X3D::MFNode & geometryNodes);
-
-	void
 	set_viewer ();
 
 	void
@@ -162,18 +159,6 @@ private:
 
 	void
 	set_selectedHoles ();
-
-	void
-	set_fogCoord ();
-
-	void
-	on_fog_coord_toggled ();
-
-	void
-	on_fog_depth_changed ();
-
-	X3D::X3DPtr <X3D::IndexedFaceSetTool>
-	getCurrentTool () const;
 
 	///  @name Geometry handling
 
@@ -300,10 +285,9 @@ private:
 
 	X3DFieldToggleButton <X3D::SFBool> normalEnabled;
 
-	X3D::BrowserPtr                        browser;
-	X3D::SFNode                            normalEditor;
-	X3D::SFNode                            coordEditor;
-	X3D::X3DPtrArray <X3D::IndexedFaceSet> indexedFaceSetNodes;
+	X3D::BrowserPtr browser;
+	X3D::SFNode     normalEditor;
+	X3D::SFNode     coordEditor;
 
 	X3D::NodeType    privateViewer;
 	SelectorType     selector;
@@ -312,8 +296,6 @@ private:
 	size_t           numSelectedHoles;
 	size_t           numSelectedFaces;
 	X3D::time_type   copyTime;
-	X3D::UndoStepPtr fogCoordUndoStep;
-	X3D::UndoStepPtr fogDepthUndoStep;
 	bool             changing;
 
 };

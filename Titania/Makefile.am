@@ -33,6 +33,7 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
+	Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \

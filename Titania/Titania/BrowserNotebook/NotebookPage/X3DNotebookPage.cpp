@@ -67,7 +67,7 @@ namespace titania {
 namespace puck {
 
 X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
-	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
+	X3DNotebookPageInterface (),
 	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { startUrl .escape () .str () })),
 	             masterScene (mainBrowser -> getExecutionContext ()),
 	                   scene (mainBrowser -> getExecutionContext ()),
@@ -110,8 +110,6 @@ X3DNotebookPage::X3DNotebookPage (const basic::uri & startUrl) :
 void
 X3DNotebookPage::initialize ()
 {
-	X3DNotebookPageInterface::initialize ();
-
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_initialized,  this);
 	mainBrowser -> initialized ()     .addInterest (&X3DNotebookPage::set_loaded,       this);
 	mainBrowser -> getSoundSources () .addInterest (&X3DNotebookPage::set_soundSources, this);
@@ -520,8 +518,6 @@ X3DNotebookPage::dispose ()
 
 	undoHistory .reset ();
 	backgroundImage .reset ();
-
-	X3DNotebookPageInterface::dispose ();
 }
 
 X3DNotebookPage::~X3DNotebookPage ()

@@ -83,6 +83,7 @@ X3DNotebookPageInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("Box1", m_Box1);
 	m_builder -> get_widget ("Box2", m_Box2);
 	m_builder -> get_widget ("Box3", m_Box3);
@@ -98,8 +99,14 @@ X3DNotebookPageInterface::create ()
 	m_builder -> get_widget ("MuteImage", m_MuteImage);
 	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
 
+	// Connect object Gtk::Adjustment with id 'FogDepthAdjustment'.
+	m_FogDepthAdjustment -> signal_changed () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_fog_depth_changed));
+
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
+
+	// Connect object Gtk::CheckButton with id 'FogCoordCheckButton'.
+	m_FogCoordCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_fog_coord_toggled));
 
 	// Connect object Gtk::Image with id 'TabImage'.
 	m_TabImage -> signal_query_tooltip () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_tab_image_query_tooltip));

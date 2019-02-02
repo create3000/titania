@@ -209,6 +209,8 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("PerspectiveViewpointOrientationPopover", m_PerspectiveViewpointOrientationPopover);
 	m_builder -> get_widget ("PerspectiveViewpointOrientationAxisAngleButton", m_PerspectiveViewpointOrientationAxisAngleButton);
 	m_builder -> get_widget ("PerspectiveViewpointOrientationEulerButton", m_PerspectiveViewpointOrientationEulerButton);
+
+	// Connect object Gtk::Button with id 'NewViewpointPopupButton'.
 	m_NewViewpointPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_viewpoint_popup_clicked));
 	m_RemoveViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_remove_viewpoint_clicked));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));

@@ -377,6 +377,7 @@
     <Compile Include="Titania\Editors\ProjectsEditor\OpenEditorsEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\EulerAdjustment.cpp" />
     <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DProfileComponentsEditor.cpp" />
+    <Compile Include="Titania\BrowserNotebook\NotebookPage\X3DFogCoordinateEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2817,7 +2818,6 @@
     <None Include="Titania\Dialogs\OpenLocationDialog\OpenLocationDialog.h" />
     <None Include="Titania\Editors\NodeIndex\NodeIndex.h" />
     <None Include="share\titania\ui\Editors\NodeIndex.glade" />
-    <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
     <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\NotebookPage.h" />
     <None Include="Titania\BrowserNotebook\NotebookPage\X3DNotebookPage.h" />
@@ -3230,6 +3230,8 @@
     <None Include="share\titania\Library\Components\H-Anim\.X_ITE\HAnimSite" />
     <None Include="share\titania\Library\Components\EnvironmentalEffects\.Titania\FogCoordinate" />
     <None Include="share\titania\Library\Components\EnvironmentalEffects\.X_ITE\FogCoordinate" />
+    <None Include="Titania\BrowserNotebook\NotebookPage\X3DFogCoordinateEditor.h" />
+    <None Include="share\titania\ui\Editors\NotebookPage.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

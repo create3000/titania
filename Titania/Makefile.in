@@ -128,6 +128,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.$(OBJEXT) \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT) \
+	Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT) \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT) \
@@ -466,6 +467,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po \
 	Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po \
 	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po \
+	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po \
 	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po \
 	Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po \
@@ -994,6 +996,7 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
+	Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
@@ -1502,6 +1505,9 @@ Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/NotebookPage/$(DEPDIR)
 	@: > Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT):  \
+	Titania/BrowserNotebook/NotebookPage/$(am__dirstamp) \
+	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp)
+Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.$(OBJEXT):  \
 	Titania/BrowserNotebook/NotebookPage/$(am__dirstamp) \
 	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT):  \
@@ -2796,6 +2802,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po@am__quote@ # am--include-marker
@@ -3406,6 +3413,7 @@ distclean: distclean-am
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po
+	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po
 	-rm -f Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po
@@ -3762,6 +3770,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po
+	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po
 	-rm -f Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po

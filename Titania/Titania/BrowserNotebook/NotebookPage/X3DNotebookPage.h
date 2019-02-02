@@ -61,7 +61,7 @@ namespace puck {
 class BackgroundImage;
 
 class X3DNotebookPage :
-	public X3DNotebookPageInterface
+	virtual public X3DNotebookPageInterface
 {
 public:
 

@@ -48,134 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
-#define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
+#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DFOG_COORDINATE_EDITOR_H__
+#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DFOG_COORDINATE_EDITOR_H__
 
-#include "X3DNotebookPage.h"
-#include "X3DFogCoordinateEditor.h"
+#include "../../UserInterfaces/X3DNotebookPageInterface.h"
+#include "../../Base/X3DEditorObject.h"
 
-#include "PanelType.h"
+#include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
 namespace puck {
 
-class X3DPanelInterface;
-
-class NotebookPage :
-	virtual public X3DNotebookPageInterface,
-	public X3DNotebookPage,
-	public X3DFogCoordinateEditor
+class X3DFogCoordinateEditor :
+	virtual public X3DNotebookPageInterface
 {
 public:
-
-	///  @name Member types
-
-	using PanelPtr   = std::shared_ptr <X3DPanelInterface>;
-	using PanelArray = std::vector <PanelPtr>;
-
-	///  @name Construction
-
-	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
-
-	///  @name Member access
-
-	const PanelPtr &
-	getActivePanel () const
-	{ return panels [activeView]; }
-
-	const PanelArray &
-	getPanels () const
-	{ return panels; }
-
-	void
-	setMultiView (const bool value, const bool modify);
-
-	const X3D::SFBool &
-	getMultiView () const
-	{ return multiView; }
-
-	void
-	setBrowserRatioSet (const bool value);
-
-	bool
-	getBrowserRatioSet () const;
-
-	void
-	setBrowserRatio (const double value);
-
-	double
-	getBrowserRatio () const;
-
-	///  @name Operations
-
-	void
-	lookAtSelection ();
-
-	void
-	lookAtAll ();
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 	virtual
-	~NotebookPage () final override;
+	~X3DFogCoordinateEditor () override;
 
 
-private:
+protected:
+
+	///  @name Construction
+
+	X3DFogCoordinateEditor ();
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
-	virtual
-	void
-	loaded () final override;
+
+private:
 
 	///  @name Event handlers
 
 	void
-	set_scene ();
+	set_select_geometries ();
+
+	void
+	set_geometries ();
+
+	void
+	set_fogCoord ();
 
 	virtual
-	bool
-	on_key_release_event (GdkEventKey* event);
-
 	void
-	setPanelType (const size_t id, const PanelType panelType);
-	
-	PanelType
-	getPanelType (const size_t id) const;
+	on_fog_coord_toggled () final override;
 
+	virtual
 	void
-	setPanel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
+	on_fog_depth_changed () final override;
 
-	void
-	set_panel (const size_t id, const PanelType panelType, Gtk::Viewport & box);
-
-	void
-	set_focus (const size_t id);
-
-	void
-	setActiveView (const size_t value, const bool modify);
-
-	size_t
-	getActiveView () const
-	{ return activeView; }
-
-	void
-	set_browser_ratio ();
+	X3D::X3DPtr <X3D::IndexedFaceSetTool>
+	getCurrentTool () const;
 
 	///  @name Members
 
-	std::vector <Gtk::Widget*> boxes;
-	PanelArray                 panels;
-	size_t                     activeView;
-	X3D::SFBool                multiView;
+	X3D::X3DPtrArray <X3D::IndexedFaceSet> indexedFaceSetNodes;
+	X3D::UndoStepPtr                       fogCoordUndoStep;
+	X3D::UndoStepPtr                       fogDepthUndoStep;
+	bool                                   changing;
+
 
 };
 

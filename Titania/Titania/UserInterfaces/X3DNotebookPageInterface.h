@@ -51,7 +51,7 @@
 #ifndef __TMP_GLAD2CPP_NOTEBOOK_PAGE_H__
 #define __TMP_GLAD2CPP_NOTEBOOK_PAGE_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DEditorInterface.h"
 
 #include <gtkmm.h>
 #include <string>
@@ -63,24 +63,24 @@ namespace puck {
  *  Gtk Interface for NotebookPage.
  */
 class X3DNotebookPageInterface :
-	public X3DUserInterface
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DNotebookPageInterface () :
-		X3DUserInterface ()
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DNotebookPageInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DNotebookPageInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -100,6 +100,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::Viewport &
 	getBox1 () const
@@ -160,8 +164,16 @@ public:
 	///  @name Signal handlers
 
 	virtual
+	void
+	on_fog_depth_changed () = 0;
+
+	virtual
 	bool
 	on_key_release_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_fog_coord_toggled () = 0;
 
 	virtual
 	bool
@@ -198,6 +210,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_FogDepthAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Viewport* m_Box1;
 	Gtk::Viewport* m_Box2;
 	Gtk::Viewport* m_Box3;
