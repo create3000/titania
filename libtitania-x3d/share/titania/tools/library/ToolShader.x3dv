@@ -9,7 +9,7 @@ META "created" "Sun, 03 Aug 2014 14:00:40 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/ToolShader.x3dv"
-META "modified" "Sat, 02 Feb 2019 18:37:41 GMT"
+META "modified" "Sat, 02 Feb 2019 19:15:46 GMT"
 
 PROTO ToolShader [ ]
 {
@@ -26,6 +26,8 @@ uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
 uniform mat3 x3d_NormalMatrix;
 
+uniform float x3d_LinewidthScaleFactor;
+
 attribute vec4 x3d_Vertex;
 attribute vec3 x3d_Normal;
 attribute vec4 x3d_Color;
@@ -37,6 +39,8 @@ varying vec4 C;
 void
 main ()
 {
+	gl_PointSize = x3d_LinewidthScaleFactor + 1.0;
+
 	v  = vec3 (x3d_ModelViewMatrix * x3d_Vertex);
 	vN = normalize (x3d_NormalMatrix * x3d_Normal);
 	C  = x3d_Color;
@@ -51,6 +55,8 @@ main ()
 
 precision mediump float;
 
+uniform int x3d_GeometryType;
+uniform float x3d_LinewidthScaleFactor;
 uniform bool x3d_Lighting;
 uniform x3d_MaterialParameters x3d_FrontMaterial;  
 uniform bool x3d_ColorMaterial;
@@ -64,6 +70,9 @@ main ()
 {
 	vec3  finalColor = vec3 (0.0, 0.0, 0.0);
 	float alpha      = 1.0;
+	
+	float lw = (x3d_LinewidthScaleFactor + 1.0) / 2.0;
+	float t  = x3d_GeometryType == x3d_GeometryPoints ? distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * lw - lw + 1.0 : 0.0;
 
 	if (x3d_Lighting)
 	{
@@ -80,12 +89,12 @@ main ()
 		vec3  specularTerm   = x3d_FrontMaterial .specularColor * specularFactor;
 		
 		finalColor += diffuseTerm + specularTerm + x3d_FrontMaterial .emissiveColor;
-		alpha       = 1.0 - x3d_FrontMaterial .transparency;
+		alpha       = mix (1.0 - x3d_FrontMaterial .transparency, 0.0, clamp (t, 0.0, 1.0));
 	}
 	else
 	{
 		finalColor += x3d_ColorMaterial ? C .rgb : x3d_FrontMaterial .emissiveColor;
-		alpha       = C .a;
+		alpha       = mix (C .a, 0.0, clamp (t, 0.0, 1.0));
 	}
 
 	gl_FragColor = vec4 (finalColor, alpha);
@@ -179,4 +188,32 @@ WorldInfo {
     ]
   }
   title "ToolShader"
+}
+
+DEF PointSet Transform {
+  children Shape {
+    appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 20
+      }
+      material Material {
+        emissiveColor 1 0 0
+      }
+      shaders ToolShader { }
+    }
+    geometry PointSet {
+      coord Coordinate {
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 -1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1
+        ]
+      }
+    }
+  }
 }
