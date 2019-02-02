@@ -208,6 +208,9 @@ Collision {
           }
         }
         DEF Axes_3 Shape {
+          appearance Appearance {
+            shaders USE _1
+          }
           geometry IndexedLineSet {
             colorPerVertex FALSE
             coordIndex [
