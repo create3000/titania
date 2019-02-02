@@ -204,24 +204,14 @@ Route::disconnect ()
 void
 Route::erase ()
 {
-	try
-	{
-		getExecutionContext () -> deleteRoute (this);
-	}
-	catch (const Error <DISPOSED> & error)
-	{ }
+	getExecutionContext () -> deleteRoute (this);
 }
 
 void
 Route::set_node ()
 {
-	try
-	{
-		if (not sourceNode or not destinationNode)
-			getExecutionContext () -> deleteRoute (this);
-	}
-	catch (const Error <DISPOSED> & error)
-	{ }
+	if (not sourceNode or not destinationNode)
+		getExecutionContext () -> deleteRoute (this);
 }
 
 //throw Error <INVALID_NODE>,

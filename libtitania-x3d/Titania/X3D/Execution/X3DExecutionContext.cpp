@@ -1208,6 +1208,9 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 {
 	try
 	{
+		if (not routes)
+			return;
+
 		if (not sourceNode)
 			return;
 
@@ -1219,10 +1222,13 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 		const auto iter = std::remove_if (routes -> begin (), routes -> end (),
 		[&routeKey] (const RoutePtr & route)
 		{
-			if (routeKey not_eq route -> getKey ())
-				return false;
+			if (route)
+			{
+				if (routeKey not_eq route -> getKey ())
+					return false;
 
-			route -> disconnect ();
+				route -> disconnect ();
+			}
 
 			return true;
 		});
@@ -1239,6 +1245,9 @@ X3DExecutionContext::deleteRoute (const SFNode & sourceNode,      const std::str
 void
 X3DExecutionContext::deleteRoute (Route* const route)
 {
+	if (not routes)
+		return;
+
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
 
@@ -1252,7 +1261,10 @@ X3DExecutionContext::deleteRoute (Route* const route)
 	const auto iter = std::remove_if (routes -> begin (), routes -> end (),
 	[&routeKey] (const RoutePtr & route)
 	{
-		return routeKey == route -> getKey ();
+		if (route)
+			return routeKey == route -> getKey ();
+
+		return true;
 	});
 
 	routes -> erase (iter, routes -> end ());
