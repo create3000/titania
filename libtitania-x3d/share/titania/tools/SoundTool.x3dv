@@ -12,7 +12,7 @@ META "created" "Thu, 18 Feb 2016 08:47:54 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SoundTool.x3dv"
-META "modified" "Sat, 02 Feb 2019 19:47:56 GMT"
+META "modified" "Sat, 02 Feb 2019 19:51:44 GMT"
 
 EXTERNPROTO QuadSphere [
   inputOutput    SFInt32 uDimension
@@ -173,6 +173,7 @@ Collision {
                   appearance DEF _7 Appearance {
                     material Material {
                       diffuseColor 0.2 0.2 0.2
+                      specularColor 1 1 1
                     }
                     shaders USE _5
                   }
