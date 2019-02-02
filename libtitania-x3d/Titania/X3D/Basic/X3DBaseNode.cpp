@@ -160,10 +160,8 @@ X3DBaseNode::setup ()
 
 	executionContext -> addParent (this);
 
-	for (const auto & pair : fields)
+	for (const auto & [name, field] : fields)
 	{
-		const auto & field = pair .second;
-
 		field -> updateReferences ();
 		field -> setTainted (false);
 	}
@@ -927,13 +925,13 @@ X3DBaseNode::setPrivate (const bool value)
 
 	if (privateState)
 	{
-		for (const auto & pair : fields)
-			pair .second -> removeCloneCount (1);
+		for (const auto & [name, field] : fields)
+			field -> removeCloneCount (1);
 	}
 	else
 	{
-		for (const auto & pair : fields)
-			pair .second -> addCloneCount (1);
+		for (const auto & [name, field] : fields)
+			field -> addCloneCount (1);
 	}
 }
 
@@ -2343,10 +2341,8 @@ X3DBaseNode::dispose ()
 {
 	X3DParentObject::dispose ();
 
-	for (const auto & pair : fields)
+	for (const auto & [name, field] : fields)
 	{
-		const auto & field = pair .second;
-
 		if (not privateState)
 			field -> removeCloneCount (1);
 
