@@ -114,8 +114,6 @@ X3DIndexedFaceSetTransformObject::initialize ()
 	selectionTransform -> setup ();
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetTransformObject::set_loadState, this);
-
-	set_loadState ();
 }
 
 void

@@ -174,7 +174,6 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 
 	//set_select ();
 	set_selectionType ();
-	set_loadState ();
 	set_coord ();
 }
 

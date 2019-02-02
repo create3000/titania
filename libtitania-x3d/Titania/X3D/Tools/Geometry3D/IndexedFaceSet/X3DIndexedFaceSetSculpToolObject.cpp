@@ -94,7 +94,6 @@ X3DIndexedFaceSetSculpToolObject::initialize ()
 
 	getCoord () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_coord, this);
 
-	set_loadState ();
 	set_coord ();
 }
 

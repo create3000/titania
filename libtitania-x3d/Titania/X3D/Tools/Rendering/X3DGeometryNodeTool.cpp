@@ -144,9 +144,6 @@ X3DGeometryNodeTool::initialize ()
 	coordToolNode  -> setup ();
 
 	toolType () .addInterest (&X3DGeometryNodeTool::set_toolType, this);
-
-	set_normal_loadState ();
-	set_coord_loadState ();
 }
 
 void

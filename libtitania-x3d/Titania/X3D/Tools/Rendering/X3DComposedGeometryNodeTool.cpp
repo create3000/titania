@@ -73,8 +73,6 @@ X3DComposedGeometryNodeTool::initialize ()
 	X3DGeometryNodeTool::initialize ();
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DComposedGeometryNodeTool::set_loadState, this);
-
-	set_loadState ();
 }
 
 void

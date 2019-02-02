@@ -91,7 +91,6 @@ X3DIndexedFaceSetBrushObject::initialize ()
 	toolType () .addInterest (&X3DIndexedFaceSetBrushObject::set_toolType, this);
 	brush ()    .addInterest (&X3DIndexedFaceSetBrushObject::set_brush, this);
 
-	set_loadState ();
 	set_brush ();
 }
 
