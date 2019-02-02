@@ -1,14 +1,134 @@
-#X3D V3.3 utf8 Titania V0.7.1
+#X3D V3.3 utf8 Titania V4.4.0
+
+PROFILE Immersive
+
+COMPONENT Geometry2D : 2
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 14:43:17 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.1, http://titania.create3000.de"
-META "modified" "Sun, 03 Aug 2014 14:43:17 GMT"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/Vector.x3dv"
+META "modified" "Sat, 02 Feb 2019 19:29:36 GMT"
 
-EXTERNPROTO ToolShader [
-]
+EXTERNPROTO ToolShader [ ]
 "ToolShader.x3dv"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF Grid Transform {
+              scale 15 1 15
+              children Shape {
+                appearance Appearance {
+                  shaders ToolShader { }
+                }
+                geometry IndexedLineSet {
+                  colorPerVertex FALSE
+                  colorIndex [
+                    0,
+                    1,
+                    2
+                  ]
+                  coordIndex [
+                    0,
+                    1,
+                    2,
+                    3,
+                    0,
+                    -1,
+                    4,
+                    5,
+                    -1,
+                    6,
+                    7,
+                    -1,
+                    8,
+                    9,
+                    -1,
+                    10,
+                    11,
+                    -1,
+                    12,
+                    13,
+                    -1,
+                    14,
+                    15,
+                    -1
+                  ]
+                  color Color {
+                    color [
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2,
+                      1 0.2 0.2
+                    ]
+                  }
+                  coord Coordinate {
+                    point [
+                      -2 0 2,
+                      2 0 2,
+                      2 0 -2,
+                      -2 0 -2,
+                      -1 0 2,
+                      -1 0 -2,
+                      0 0 2,
+                      0 0 -2,
+                      1 0 2,
+                      1 0 -2,
+                      -2 0 1,
+                      2 0 1,
+                      -2 0 0,
+                      2 0 0,
+                      -2 0 -1,
+                      2 0 -1
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  title "Vector"
+}
 
 DEF Vector ScreenGroup {
   children Transform {
@@ -22,8 +142,7 @@ DEF Vector ScreenGroup {
             material Material {
               diffuseColor 0.8 0.8 0.16
             }
-            shaders ToolShader {
-             }
+            shaders DEF _2 ToolShader { }
           }
           geometry Cone { }
         }
@@ -46,37 +165,23 @@ DEF Vector ScreenGroup {
       Switch {
         whichChoice 1
         children [
-          DEF Grid Transform {
-            scale 15 1 15
-            children Shape {
-              geometry IndexedLineSet {
-                colorPerVertex FALSE
-                colorIndex [ 0, 1, 2 ]
-                coordIndex [ 0, 1, 2, 3, 0, -1, 4, 5, -1, 6, 7, -1, 8, 9, -1, 10, 11, -1, 12, 13, -1, 14, 15, -1 ]
-                color Color {
-                  color [ 1 0.2 0.2, 1 0.2 0.2, 1 0.2 0.2, 1 0.2 0.2, 1 0.2 0.2, 1 0.2 0.2, 1 0.2 0.2 ]
-                }
-                coord Coordinate {
-                  point [ -2 0 2, 2 0 2, 2 0 -2, -2 0 -2, -1 0 2, -1 0 -2, 0 0 2, 0 0 -2, 1 0 2, 1 0 -2, -2 0 1, 2 0 1, -2 0 0, 2 0 0, -2 0 -1, 2 0 -1 ]
-                }
-              }
-            }
-          }
+          USE Grid
           DEF Circles Transform {
             rotation 1 0 0 4.71239
             children [
               Shape {
-                appearance DEF _2 Appearance {
+                appearance DEF _3 Appearance {
                   material Material {
                     emissiveColor 1 0.2 0.2
                   }
+                  shaders USE _2
                 }
                 geometry Circle2D {
                   radius 18
                 }
               }
               Shape {
-                appearance USE _2
+                appearance USE _3
                 geometry Circle2D {
                   radius 12
                 }
@@ -84,13 +189,31 @@ DEF Vector ScreenGroup {
               Shape {
                 geometry IndexedLineSet {
                   colorPerVertex FALSE
-                  colorIndex [ 0, 1, 2 ]
-                  coordIndex [ 0, 1, -1, 2, 3 ]
+                  colorIndex [
+                    0,
+                    1,
+                    2
+                  ]
+                  coordIndex [
+                    0,
+                    1,
+                    -1,
+                    2,
+                    3
+                  ]
                   color Color {
-                    color [ 1 0.2 0.2, 1 0.2 0.2 ]
+                    color [
+                      1 0.2 0.2,
+                      1 0.2 0.2
+                    ]
                   }
                   coord Coordinate {
-                    point [ 0 -18 0, 0 18 0, -18 0 0, 18 0 0 ]
+                    point [
+                      0 -18 0,
+                      0 18 0,
+                      -18 0 0,
+                      18 0 0
+                    ]
                   }
                 }
               }

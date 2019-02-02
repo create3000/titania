@@ -1,17 +1,20 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
 
-COMPONENT Titania : 1
+COMPONENT Shape : 4
 
 UNIT angle degree 0.0174532925199432958
 
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AxonometricGrid.x3dv"
-META "modified" "Tue, 20 Jun 2017 04:57:37 GMT"
+META "modified" "Sat, 02 Feb 2019 19:28:23 GMT"
+
+EXTERNPROTO ToolShader [ ]
+"ToolShader.x3dv"
 
 PROTO AxonometricGrid [
   inputOutput    SFVec3f    translation 0 0 0
@@ -56,6 +59,7 @@ PROTO AxonometricGrid [
               emissiveColor IS color
               transparency IS transparency
             }
+            shaders DEF _1 ToolShader { }
           }
           geometry IndexedFaceSet {
             solid IS solid
@@ -86,8 +90,9 @@ PROTO AxonometricGrid [
               emissiveColor IS majorLineColor
               transparency IS majorLineTransparency
             }
+            shaders USE _1
           }
-          geometry DEF MajorGrid_1 IndexedLineSet {
+          geometry DEF MajorGrid_2 IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -147,8 +152,9 @@ PROTO AxonometricGrid [
               emissiveColor IS lineColor
               transparency IS lineTransparency
             }
+            shaders USE _1
           }
-          geometry DEF MinorGrid_1 IndexedLineSet {
+          geometry DEF MinorGrid_3 IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -283,8 +289,9 @@ PROTO AxonometricGrid [
               linewidthScaleFactor 6
             }
             material USE MajorMaterial
+            shaders USE _1
           }
-          geometry DEF MajorPoints_1 PointSet {
+          geometry DEF MajorPoints_4 PointSet {
             coord Coordinate {
               point [
                 0 -5 0,
@@ -300,8 +307,9 @@ PROTO AxonometricGrid [
               linewidthScaleFactor 4
             }
             material USE MinorMaterial
+            shaders USE _1
           }
-          geometry DEF MinorPoints_1 PointSet {
+          geometry DEF MinorPoints_5 PointSet {
             coord Coordinate {
               point [
                 0 -4 0,
@@ -326,10 +334,10 @@ PROTO AxonometricGrid [
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  hexagon USE HexagonCoord
-    initializeOnly SFNode  majorGrid USE MajorGrid_1
-    initializeOnly SFNode  minorGrid USE MinorGrid_1
-    initializeOnly SFNode  majorPoints USE MajorPoints_1
-    initializeOnly SFNode  minorPoints USE MinorPoints_1
+    initializeOnly SFNode  majorGrid USE MajorGrid_2
+    initializeOnly SFNode  minorGrid USE MinorGrid_3
+    initializeOnly SFNode  majorPoints USE MajorPoints_4
+    initializeOnly SFNode  minorPoints USE MinorPoints_5
 
     url "ecmascript:
 
@@ -619,7 +627,7 @@ WorldInfo {
       DEF AngleGrid MetadataSet {
         name "AngleGrid"
         reference "http://titania.create3000.de"
-        value DEF enabled_1 MetadataBoolean {
+        value DEF enabled_6 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value FALSE
@@ -629,12 +637,12 @@ WorldInfo {
         name "AxonometricGrid"
         reference "http://titania.create3000.de"
         value [
-          DEF enabled_2 MetadataBoolean {
+          DEF enabled_7 MetadataBoolean {
             name "enabled"
             reference "http://titania.create3000.de"
             value FALSE
           }
-          DEF dimension_1 MetadataInteger {
+          DEF dimension_8 MetadataInteger {
             name "dimension"
             reference "http://titania.create3000.de"
             value [
@@ -657,7 +665,7 @@ WorldInfo {
               0
             ]
           }
-          DEF majorLineOffset_1 MetadataInteger {
+          DEF majorLineOffset_9 MetadataInteger {
             name "majorLineOffset"
             reference "http://titania.create3000.de"
             value [
@@ -701,7 +709,7 @@ WorldInfo {
               0.4
             ]
           }
-          DEF scale_1 MetadataFloat {
+          DEF scale_10 MetadataFloat {
             name "scale"
             reference "http://titania.create3000.de"
             value [
@@ -710,7 +718,7 @@ WorldInfo {
               1
             ]
           }
-          DEF translation_1 MetadataFloat {
+          DEF translation_11 MetadataFloat {
             name "translation"
             reference "http://titania.create3000.de"
             value [

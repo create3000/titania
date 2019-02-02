@@ -1,14 +1,20 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Geometry2D : 2
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Thu, 15 Jun 2017 07:19:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AngleGrid.x3dv"
-META "modified" "Tue, 20 Jun 2017 04:58:34 GMT"
+META "modified" "Sat, 02 Feb 2019 19:28:19 GMT"
 META "titania-add-world-info" "true"
+
+EXTERNPROTO ToolShader [ ]
+"ToolShader.x3dv"
 
 PROTO AngleGrid [
   inputOutput    SFVec3f    translation 0 0 0
@@ -54,6 +60,7 @@ PROTO AngleGrid [
                 emissiveColor IS color
                 transparency IS transparency
               }
+              shaders DEF _1 ToolShader { }
             }
             geometry Disk2D {
               solid IS solid
@@ -66,10 +73,11 @@ PROTO AngleGrid [
             Transform {
               children Shape {
                 appearance DEF MinorAppearance Appearance {
-                  material DEF _1 Material {
+                  material DEF _2 Material {
                     emissiveColor IS lineColor
                     transparency IS lineTransparency
                   }
+                  shaders USE _1
                 }
                 geometry Circle2D { }
               }
@@ -103,6 +111,7 @@ PROTO AngleGrid [
                     emissiveColor IS majorLineColor
                     transparency IS majorLineTransparency
                   }
+                  shaders USE _1
                 }
                 geometry Circle2D { }
               }
@@ -111,7 +120,7 @@ PROTO AngleGrid [
         }
         DEF MinorLines Shape {
           appearance USE MinorAppearance
-          geometry DEF MinorLines_1 IndexedLineSet {
+          geometry DEF MinorLines_3 IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -155,7 +164,7 @@ PROTO AngleGrid [
         }
         DEF MajorLines Shape {
           appearance USE MajorAppearance
-          geometry DEF MajorLines_1 IndexedLineSet {
+          geometry DEF MajorLines_4 IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -202,9 +211,10 @@ PROTO AngleGrid [
             lineProperties LineProperties {
               linewidthScaleFactor 4
             }
-            material USE _1
+            material USE _2
+            shaders USE _1
           }
-          geometry DEF MinorPoints_1 PointSet {
+          geometry DEF MinorPoints_5 PointSet {
             coord Coordinate {
               point [
                 0 -4 0,
@@ -225,8 +235,9 @@ PROTO AngleGrid [
               linewidthScaleFactor 6
             }
             material USE MajorMaterial
+            shaders USE _1
           }
-          geometry DEF MajorPoints_1 PointSet {
+          geometry DEF MajorPoints_6 PointSet {
             coord Coordinate {
               point [
                 0 -5 0,
@@ -246,10 +257,10 @@ PROTO AngleGrid [
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  disk USE Disk
     initializeOnly SFNode  rings USE Rings
-    initializeOnly SFNode  minorLines USE MinorLines_1
-    initializeOnly SFNode  majorLines USE MajorLines_1
-    initializeOnly SFNode  minorPoints USE MinorPoints_1
-    initializeOnly SFNode  majorPoints USE MajorPoints_1
+    initializeOnly SFNode  minorLines USE MinorLines_3
+    initializeOnly SFNode  majorLines USE MajorLines_4
+    initializeOnly SFNode  minorPoints USE MinorPoints_5
+    initializeOnly SFNode  majorPoints USE MajorPoints_6
     initializeOnly SFNode  minorAppearance USE MinorAppearance
     initializeOnly SFNode  majorAppearance USE MajorAppearance
 
@@ -431,7 +442,7 @@ WorldInfo {
       DEF Grid MetadataSet {
         name "Grid"
         reference "http://titania.create3000.de"
-        value DEF enabled_1 MetadataBoolean {
+        value DEF enabled_7 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value TRUE

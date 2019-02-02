@@ -1,15 +1,18 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.4.0
 
-PROFILE Full
+PROFILE Immersive
 
-COMPONENT Titania : 1
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/Grid.x3dv"
-META "modified" "Tue, 20 Jun 2017 04:56:52 GMT"
+META "modified" "Sat, 02 Feb 2019 19:28:28 GMT"
+
+EXTERNPROTO ToolShader [ ]
+"ToolShader.x3dv"
 
 PROTO Grid [
   inputOutput    SFVec3f    translation 0 0 0
@@ -55,6 +58,7 @@ PROTO Grid [
                 emissiveColor IS color
                 transparency IS transparency
               }
+              shaders DEF _1 ToolShader { }
             }
             geometry Rectangle2D {
               size 1 1
@@ -68,8 +72,9 @@ PROTO Grid [
               emissiveColor IS majorLineColor
               transparency IS majorLineTransparency
             }
+            shaders USE _1
           }
-          geometry DEF MajorGrid_1 IndexedLineSet {
+          geometry DEF MajorGrid_2 IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -114,8 +119,9 @@ PROTO Grid [
               emissiveColor IS lineColor
               transparency IS lineTransparency
             }
+            shaders USE _1
           }
-          geometry DEF MinorGrid_1 IndexedLineSet {
+          geometry DEF MinorGrid_3 IndexedLineSet {
             coordIndex [
               0,
               1,
@@ -210,8 +216,9 @@ PROTO Grid [
               linewidthScaleFactor 6
             }
             material USE MajorMaterial
+            shaders USE _1
           }
-          geometry DEF MajorPoints_1 PointSet {
+          geometry DEF MajorPoints_4 PointSet {
             coord Coordinate {
               point [
                 0 -5 0,
@@ -227,8 +234,9 @@ PROTO Grid [
               linewidthScaleFactor 4
             }
             material USE MinorMaterial
+            shaders USE _1
           }
-          geometry DEF MinorPoints_1 PointSet {
+          geometry DEF MinorPoints_5 PointSet {
             coord Coordinate {
               point [
                 0 -4 0,
@@ -252,10 +260,10 @@ PROTO Grid [
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  plane USE Plane
-    initializeOnly SFNode  majorGrid USE MajorGrid_1
-    initializeOnly SFNode  minorGrid USE MinorGrid_1
-    initializeOnly SFNode  majorPoints USE MajorPoints_1
-    initializeOnly SFNode  minorPoints USE MinorPoints_1
+    initializeOnly SFNode  majorGrid USE MajorGrid_2
+    initializeOnly SFNode  minorGrid USE MinorGrid_3
+    initializeOnly SFNode  majorPoints USE MajorPoints_4
+    initializeOnly SFNode  minorPoints USE MinorPoints_5
 
     url "ecmascript:
 
