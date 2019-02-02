@@ -9,7 +9,7 @@ META "created" "Sun, 03 Aug 2014 14:00:40 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/ToolShader.x3dv"
-META "modified" "Sat, 02 Feb 2019 19:15:46 GMT"
+META "modified" "Sat, 02 Feb 2019 19:18:01 GMT"
 
 PROTO ToolShader [ ]
 {
@@ -188,32 +188,4 @@ WorldInfo {
     ]
   }
   title "ToolShader"
-}
-
-DEF PointSet Transform {
-  children Shape {
-    appearance Appearance {
-      lineProperties LineProperties {
-        linewidthScaleFactor 20
-      }
-      material Material {
-        emissiveColor 1 0 0
-      }
-      shaders ToolShader { }
-    }
-    geometry PointSet {
-      coord Coordinate {
-        point [
-          -1 1 1,
-          -1 -1 1,
-          1 -1 1,
-          1 1 1,
-          -1 1 -1,
-          -1 -1 -1,
-          1 -1 -1,
-          1 1 -1
-        ]
-      }
-    }
-  }
 }

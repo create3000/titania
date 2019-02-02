@@ -13,7 +13,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sat, 02 Feb 2019 19:16:30 GMT"
+META "modified" "Sat, 02 Feb 2019 19:22:38 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -73,7 +73,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF _1 ToolShader { }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -94,7 +93,7 @@ WorldInfo {
       DEF Grid MetadataSet {
         name "Grid"
         reference "http://titania.create3000.de"
-        value DEF enabled_2 MetadataBoolean {
+        value DEF enabled_1 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value TRUE
@@ -133,7 +132,7 @@ Collision {
               material Material {
                 transparency 1
               }
-              shaders USE _1
+              shaders DEF _2 ToolShader { }
             }
           }
         }
@@ -179,7 +178,7 @@ Collision {
               emissiveColor 1 1 0.7
               transparency 0.6
             }
-            shaders USE _1
+            shaders USE _2
           }
           geometry DEF SelectedFacesGeometry IndexedFaceSet {
             solid FALSE
@@ -194,7 +193,7 @@ Collision {
                   diffuseColor 0 0 0
                   emissiveColor 0.7 0.85 1
                 }
-                shaders USE _1
+                shaders USE _2
               }
               geometry DEF EdgesLineSet LineSet {
                 coord DEF EdgesCoord CoordinateDouble { }
@@ -206,7 +205,7 @@ Collision {
                   linewidthScaleFactor 5
                 }
                 material USE EdgesMaterial
-                shaders USE _1
+                shaders USE _2
               }
               geometry PointSet {
                 coord DEF VerticesCoord CoordinateDouble { }
@@ -227,14 +226,14 @@ Collision {
                       diffuseColor 0 0 0
                       emissiveColor 0.35 0.35 1
                     }
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry DEF ControlPointSet PointSet { }
                 }
                 DEF ControlPointEdges Shape {
                   appearance Appearance {
                     material USE PrimitiveMaterial
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry DEF ControlPointLines IndexedLineSet { }
                 }
@@ -251,7 +250,7 @@ Collision {
               diffuseColor 0 0 0
               emissiveColor 1 0.75154 0
             }
-            shaders USE _1
+            shaders USE _2
           }
           geometry DEF SelectedEdgesGeometry IndexedLineSet { }
         }
@@ -261,7 +260,7 @@ Collision {
               linewidthScaleFactor 8
             }
             material USE SelectedMaterial
-            shaders USE _1
+            shaders USE _2
           }
           geometry PointSet {
             coord DEF SelectionCoord CoordinateDouble { }
@@ -280,7 +279,7 @@ Collision {
                       emissiveColor 0.5 0.0792565 0
                       transparency 0.635417
                     }
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry DEF ActiveFaceGeometry IndexedFaceSet {
                     solid FALSE
@@ -293,7 +292,7 @@ Collision {
                       emissiveColor 0.519546 0.173182 0.865911
                       transparency 0.635417
                     }
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry DEF HotFaceGeometry IndexedFaceSet {
                     solid FALSE
@@ -311,7 +310,7 @@ Collision {
                       diffuseColor 0 0 0
                       emissiveColor 0.5 0.0792565 0
                     }
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry DEF ActiveEdgesGeometry IndexedLineSet { }
                 }
@@ -324,7 +323,7 @@ Collision {
                       diffuseColor 0 0 0
                       emissiveColor 0.519546 0.173182 0.865911
                     }
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry DEF HotEdgesGeometry IndexedLineSet { }
                 }
@@ -337,7 +336,7 @@ Collision {
                   appearance Appearance {
                     lineProperties USE _5
                     material USE ActiveMaterial
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry PointSet {
                     coord DEF ActivePointCoord CoordinateDouble { }
@@ -347,7 +346,7 @@ Collision {
                   appearance Appearance {
                     lineProperties USE _5
                     material USE HotMaterial_6
-                    shaders USE _1
+                    shaders USE _2
                   }
                   geometry PointSet {
                     coord DEF HotPointCoord CoordinateDouble { }
@@ -400,7 +399,7 @@ Collision {
                               material Material {
                                 diffuseColor 0 0 0
                               }
-                              shaders USE _1
+                              shaders USE _2
                             }
                             geometry DEF _8 Circle2D {
                               radius 3
@@ -416,7 +415,7 @@ Collision {
                                 diffuseColor 0 0 0
                                 emissiveColor 1 1 1
                               }
-                              shaders USE _1
+                              shaders USE _2
                             }
                             geometry USE _8
                           }
@@ -450,7 +449,7 @@ Collision {
                           material DEF _10 Material {
                             diffuseColor 0 0 0
                           }
-                          shaders USE _1
+                          shaders USE _2
                         }
                         geometry DEF _11 LineSet {
                           vertexCount 2
@@ -476,7 +475,7 @@ Collision {
                             diffuseColor 0 0 0
                             emissiveColor 1 1 1
                           }
-                          shaders USE _1
+                          shaders USE _2
                         }
                         geometry USE _11
                       }
@@ -502,7 +501,7 @@ Collision {
                                 linewidthScaleFactor 3
                               }
                               material USE _10
-                              shaders USE _1
+                              shaders USE _2
                             }
                             geometry DEF KnifeArcGeometry Arc2D {
                               radius 10
@@ -518,7 +517,7 @@ Collision {
                                 diffuseColor 0 0 0
                                 emissiveColor 1 1 1
                               }
-                              shaders USE _1
+                              shaders USE _2
                             }
                             geometry USE KnifeArcGeometry
                           }
@@ -548,7 +547,7 @@ Collision {
                         material Material {
                           diffuseColor 0 0 0
                         }
-                        shaders USE _1
+                        shaders USE _2
                       }
                       geometry DEF _13 Circle2D { }
                     }
@@ -562,7 +561,7 @@ Collision {
                           diffuseColor 0 0 0
                           emissiveColor 1 1 1
                         }
-                        shaders USE _1
+                        shaders USE _2
                       }
                       geometry USE _13
                     }
@@ -582,8 +581,6 @@ Collision {
     }
   ]
 }
-
-USE _1
 
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedFacesGeometry.set_coord
 ROUTE ActiveEdgesGeometry.coord_changed TO ActiveFaceGeometry.set_coord
