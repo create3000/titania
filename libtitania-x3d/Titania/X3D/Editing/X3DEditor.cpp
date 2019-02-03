@@ -59,6 +59,7 @@
 #include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/EnvironmentalEffects/Background.h"
+#include "../Components/EnvironmentalEffects/FogCoordinate.h"
 #include "../Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
 #include "../Components/Geometry3D/Extrusion.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
@@ -4106,7 +4107,8 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
 	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode -> normalIndex   ());
 	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> coordIndex    ()), geometryNode -> coordIndex    ());
 
-	undoSetCoord (geometryNode -> getCoord (), undoStep);
+	undoSetFogCoord (geometryNode -> getFogCoord (), undoStep);
+	undoSetCoord    (geometryNode -> getCoord (),    undoStep);
 
 	geometryNode -> mergePoints (distance);
 
@@ -4115,7 +4117,8 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
 	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode -> normalIndex   ());
 	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> coordIndex    ()), geometryNode -> coordIndex    ());
 
-	redoSetCoord (geometryNode -> getCoord (), undoStep);
+	redoSetCoord    (geometryNode -> getCoord (),    undoStep);
+	redoSetFogCoord (geometryNode -> getFogCoord (), undoStep);
 
 	// Prototype support
 
@@ -4131,6 +4134,18 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
  *
  *
  */
+
+void
+X3DEditor::undoSetFogCoord (const X3DPtr <FogCoordinate> & fogCoordNode, const UndoStepPtr & undoStep)
+{
+	if (not fogCoordNode)
+	   return;
+
+	undoStep -> addObjects (fogCoordNode);
+	undoStep -> addUndoFunction (&MFFloat::setValue, std::ref (fogCoordNode -> depth ()), fogCoordNode -> depth ());
+
+	requestUpdateInstances (fogCoordNode, undoStep);
+}
 
 void
 X3DEditor::undoSetColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
@@ -4289,6 +4304,20 @@ X3DEditor::undoSetCoord (const X3DPtr <X3DCoordinateNode> & coordNode, const Und
 	// Prototype support
 
 	requestUpdateInstances (coordNode, undoStep);
+}
+
+void
+X3DEditor::redoSetFogCoord (const X3DPtr <FogCoordinate> & fogCoordNode, const UndoStepPtr & undoStep)
+{
+	if (not fogCoordNode)
+	   return;
+
+	undoStep -> addObjects (fogCoordNode);
+	undoStep -> addRedoFunction (&MFFloat::setValue, std::ref (fogCoordNode -> depth ()), fogCoordNode -> depth ());
+
+	// Prototype support
+
+	requestUpdateInstances (fogCoordNode, undoStep);
 }
 
 void

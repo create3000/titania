@@ -1205,7 +1205,17 @@ IndexedFaceSet::rebuildCoord ()
 	}
 
 	// Rebuild node
-	   
+
+	if (getFogCoord ())
+	{
+		std::vector <float> depths;
+
+		for (const auto & pair : map)
+		   depths .emplace_back (getFogCoord () -> get1Depth (pair .first));
+
+		getFogCoord () -> depth () .assign (depths .cbegin (), depths .cend ());
+	}
+
 	switch (coordNode -> getType () .back ())
 	{
 		case X3DConstants::Coordinate:
@@ -1266,23 +1276,23 @@ IndexedFaceSet::mergePoints (const double distance)
 	if (not coordNode)
 		return;
 
-	std::map <Vector3d, int32_t, std::function <bool (const Vector3d &, const Vector3d &)>> map (Compare);
+	std::map <Vector3d, std::pair <int32_t, int32_t>, std::function <bool (const Vector3d &, const Vector3d &)>> map (Compare);
 
 	// Create points map.
 
 	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
-	   map .emplace (coordNode -> get1Point (i), map .size ());
+	   map .emplace (coordNode -> get1Point (i), std::pair (i, map .size ()));
 	
 	// Rewrite coordIndex.
 
 	for (MFInt32::reference index : coordIndex ())
 	{
-		if (index < 0)
-			continue;
-		
 		try
 		{
-			index = map .at (coordNode -> get1Point (index));
+			if (index < 0)
+				continue;
+
+			index = map .at (coordNode -> get1Point (index)) .second;
 		}
 		catch (const std::out_of_range &)
 		{
@@ -1292,8 +1302,18 @@ IndexedFaceSet::mergePoints (const double distance)
 
 	// Rewrite coord point.
 
-	for (const auto & pair : map)
-		coordNode -> set1Point (pair .second, pair .first);
+	if (getFogCoord ())
+	{
+		std::vector <float> depths (map .size ());
+
+		for (const auto & [point, indices] : map)
+			depths [indices .second] = getFogCoord () -> get1Depth (indices .first);
+	
+		getFogCoord () -> depth () .assign (depths .begin (), depths .end ());
+	}
+
+	for (const auto & [point, indices] : map)
+		coordNode -> set1Point (indices .second, point);
 
 	coordNode -> resize (map .size ());
 

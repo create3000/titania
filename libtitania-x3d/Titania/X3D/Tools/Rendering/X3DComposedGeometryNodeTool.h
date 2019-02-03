@@ -225,28 +225,34 @@ protected:
 	///  @name Undo/Redo handling
 
 	void
-	undoSetColor (const UndoStepPtr &);
+	undoSetFogCoord (const UndoStepPtr & undoStep);
 
 	void
-	undoSetTexCoord (const UndoStepPtr &);
+	undoSetColor (const UndoStepPtr & undoStep);
 
 	void
-	undoSetNormal (const UndoStepPtr &);
+	undoSetTexCoord (const UndoStepPtr & undoStep);
 
 	void
-	undoSetCoord (const UndoStepPtr &);
+	undoSetNormal (const UndoStepPtr & undoStep);
 
 	void
-	redoSetColor (const UndoStepPtr &);
+	undoSetCoord (const UndoStepPtr & undoStep);
 
 	void
-	redoSetTexCoord (const UndoStepPtr &);
+	redoSetFogCoord (const UndoStepPtr & undoStep);
 
 	void
-	redoSetNormal (const UndoStepPtr &);
+	redoSetColor (const UndoStepPtr & undoStep);
 
 	void
-	redoSetCoord (const UndoStepPtr &);
+	redoSetTexCoord (const UndoStepPtr & undoStep);
+
+	void
+	redoSetNormal (const UndoStepPtr & undoStep);
+
+	void
+	redoSetCoord (const UndoStepPtr & undoStep);
 
 
 private:

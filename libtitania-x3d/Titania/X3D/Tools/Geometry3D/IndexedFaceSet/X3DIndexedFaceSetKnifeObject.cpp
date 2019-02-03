@@ -614,6 +614,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
+	undoSetFogCoord      (undoStep);
 	undoSetColor         (undoStep);
 	undoSetTexCoord      (undoStep);
 	undoSetNormal        (undoStep);
@@ -638,6 +639,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	redoSetNormal        (undoStep);
 	redoSetTexCoord      (undoStep);
 	redoSetColor         (undoStep);
+	redoSetFogCoord      (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);

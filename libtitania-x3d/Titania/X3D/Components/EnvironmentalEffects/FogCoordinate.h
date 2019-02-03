@@ -118,6 +118,9 @@ public:
 	///  @name Operations
 
 	void
+	eraseDepth (const size_t index);
+
+	void
 	resize (size_t size);
 
 

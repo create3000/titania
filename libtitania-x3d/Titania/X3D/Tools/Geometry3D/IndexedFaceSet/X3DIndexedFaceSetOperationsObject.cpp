@@ -120,6 +120,7 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
+	undoSetFogCoord      (undoStep);
 	undoSetColor         (undoStep);
 	undoSetTexCoord      (undoStep);
 	undoSetNormal        (undoStep);
@@ -139,6 +140,7 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	redoSetNormal        (undoStep);
 	redoSetTexCoord      (undoStep);
 	redoSetColor         (undoStep);
+	redoSetFogCoord      (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
@@ -396,6 +398,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		undoSetTexCoordIndex (undoStep);
 		undoSetNormalIndex   (undoStep);
 		undoSetCoordIndex    (undoStep);
+		undoSetFogCoord      (undoStep);
 		undoSetColor         (undoStep);
 		undoSetTexCoord      (undoStep);
 		undoSetNormal        (undoStep);
@@ -407,6 +410,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		redoSetNormal        (undoStep);
 		redoSetTexCoord      (undoStep);
 		redoSetColor         (undoStep);
+		redoSetFogCoord      (undoStep);
 		redoSetCoordIndex    (undoStep);
 		redoSetNormalIndex   (undoStep);
 		redoSetTexCoordIndex (undoStep);
@@ -439,6 +443,7 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
+	undoSetFogCoord      (undoStep);
 	undoSetColor         (undoStep);
 	undoSetTexCoord      (undoStep);
 	undoSetNormal        (undoStep);
@@ -501,6 +506,7 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	redoSetNormal        (undoStep);
 	redoSetTexCoord      (undoStep);
 	redoSetColor         (undoStep);
+	redoSetFogCoord      (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
@@ -522,6 +528,7 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
+	undoSetFogCoord      (undoStep);
 	undoSetCoord         (undoStep);
 
 	std::vector <int32_t> points;
@@ -536,6 +543,7 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 	const auto selection = splitPoints (points);
 
 	redoSetCoord         (undoStep);
+	redoSetFogCoord      (undoStep);
 	redoSetCoordIndex    (undoStep);
 
 	redoRestoreSelectedPoints (selection, undoStep);
@@ -578,12 +586,16 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 		return;
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Extrude Selected Edges"));
+
 	undoRestoreSelection (undoStep);
+
 	if (colorIndex    () .size ()) undoSetColorIndex    (undoStep);
 	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);
 	if (normalIndex   () .size ()) undoSetNormalIndex   (undoStep);
+
 	undoSetCoordIndex (undoStep);
-	undoSetCoord (undoStep);
+	undoSetFogCoord   (undoStep);
+	undoSetCoord      (undoStep);
 
 	std::vector <std::pair <size_t, size_t>> edges;
 
@@ -605,8 +617,10 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	const auto selection = extrudeSelectedEdges (edges, true, { }, false);
 
-	redoSetCoord (undoStep);
+	redoSetCoord      (undoStep);
+	redoSetFogCoord   (undoStep);
 	redoSetCoordIndex (undoStep);
+
 	if (normalIndex   () .size ()) redoSetNormalIndex   (undoStep);
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
@@ -626,11 +640,14 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Extrude Selected Faces"));
 
 	undoRestoreSelection (undoStep);
+
 	if (colorIndex    () .size ()) undoSetColorIndex    (undoStep);
 	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);
 	if (normalIndex   () .size ()) undoSetNormalIndex   (undoStep);
+
 	undoSetCoordIndex (undoStep);
-	undoSetCoord (undoStep);
+	undoSetFogCoord   (undoStep);
+	undoSetCoord      (undoStep);
 
 	bool flatFaces = false;
 
@@ -682,8 +699,10 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	rewriteArray (rebuildCoord (), selection);
 
-	redoSetCoord (undoStep);
+	redoSetCoord      (undoStep);
+	redoSetFogCoord   (undoStep);
 	redoSetCoordIndex (undoStep);
+
 	if (normalIndex   () .size ()) redoSetNormalIndex   (undoStep);
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex    () .size ()) redoSetColorIndex    (undoStep);
@@ -704,6 +723,7 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
+	undoSetFogCoord      (undoStep);
 	undoSetCoord         (undoStep);
 
 	std::vector <size_t> vertices;
@@ -725,8 +745,9 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 
 	rewriteArray (rebuildCoord (), selection);
 
-	redoSetCoord         (undoStep);
-	redoSetCoordIndex    (undoStep);
+	redoSetCoord      (undoStep);
+	redoSetFogCoord   (undoStep);
+	redoSetCoordIndex (undoStep);
 
 	redoRestoreSelectedFaces (selection, undoStep);
 	replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
@@ -785,6 +806,7 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex   (undoStep);
 	undoSetCoordIndex    (undoStep);
+	undoSetFogCoord      (undoStep);
 	undoSetColor         (undoStep);
 	undoSetTexCoord      (undoStep);
 	undoSetNormal        (undoStep);
@@ -810,6 +832,7 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	redoSetNormal        (undoStep);
 	redoSetTexCoord      (undoStep);
 	redoSetColor         (undoStep);
+	redoSetFogCoord      (undoStep);
 	redoSetCoordIndex    (undoStep);
 	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
@@ -861,7 +884,7 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 
 	for (const auto & index : selectedPoints)
 	{
-		const auto fogDepth = getFogCoord () -> get1Depth (index);
+		const auto fogDepth = getFogCoord () ? getFogCoord () -> get1Depth (index) : 0.0f;
 		const auto point    = getCoord () -> get1Point (index);
 		const auto indices  = getFaceSelection () -> getSharedVertices (index);
 		
@@ -878,8 +901,10 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 			
 			coordIndex () .set1Value (index, size);
 
-			getFogCoord () -> set1Depth (size, fogDepth);
-			getCoord ()    -> set1Point (size, point);
+			if (getFogCoord ())
+				getFogCoord () -> set1Depth (size, fogDepth);
+
+			getCoord () -> set1Point (size, point);
 		}
 	}
 
@@ -980,8 +1005,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 		points .emplace (point .first, size);
 
-		getFogCoord () -> set1Depth (size, getFogCoord () -> get1Depth (point .first));
-		getCoord ()    -> set1Point (size, getCoord ()    -> get1Point (point .first));
+		if (getFogCoord ())
+			getFogCoord () -> set1Depth (size, getFogCoord () -> get1Depth (point .first));
+
+		getCoord () -> set1Point (size, getCoord () -> get1Point (point .first));
 	}
 
 	size_t numFaces = getFaceSelection () -> getNumFaces ();
@@ -1133,17 +1160,18 @@ X3DIndexedFaceSetOperationsObject::chipOf (const std::vector <size_t> & selected
 
 	for (const auto & pair : pointIndex)
 	{
-		const auto fogDepth = getFogCoord () -> get1Depth (pair .first);
-		const auto point    = getCoord () -> get1Point (pair .first);
-		const auto size     = getCoord () -> getSize ();
+		const auto point = getCoord () -> get1Point (pair .first);
+		const auto size  = getCoord () -> getSize ();
 	
 		points .emplace_back (size);
 	
 		for (const auto & vertex : pair .second)
 			coordIndex () .set1Value (vertex, size);
 
-		getFogCoord () -> set1Depth (size, fogDepth);
-		getCoord ()    -> set1Point (size, point);
+		if (getFogCoord ())
+			getFogCoord () -> set1Depth (size, getFogCoord () -> get1Depth (pair .first));
+
+		getCoord () -> set1Point (size, point);
 	}
 
 	return points;
@@ -1198,7 +1226,12 @@ void
 X3DIndexedFaceSetOperationsObject::erasePoints (const std::vector <int32_t> & points)
 {
 	for (auto & point : basic::make_reverse_range (points))
+	{
+		if (getFogCoord ())
+			getFogCoord () -> eraseDepth (point);
+
 	   getCoord () -> erasePoint (point);
+	}
 
 	// Update coordIndex
 

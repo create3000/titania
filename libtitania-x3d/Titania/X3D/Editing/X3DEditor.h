@@ -463,12 +463,16 @@ public:
 	void
 	mergePoints (const X3DPtr <IndexedFaceSet> &, const double, const UndoStepPtr & undoStep);
 
+	///  @name X3DComposedGeometryNode
+	
+	static
+	void
+	undoSetFogCoord (const X3DPtr <FogCoordinate> &, const UndoStepPtr & undoStep);
+	
 	static
 	void
 	undoSetColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
 
-	///  @name X3DComposedGeometryNode
-	
 	static
 	void
 	undoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
@@ -480,6 +484,10 @@ public:
 	static
 	void
 	undoSetCoord (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
+	
+	static
+	void
+	redoSetFogCoord (const X3DPtr <FogCoordinate> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
