@@ -2,11 +2,93 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkAdjustment" id="FogDepthAdjustment">
-    <property name="upper">1000000000</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
-    <signal name="value-changed" handler="on_fog_depth_changed" swapped="no"/>
+  <object class="GtkBox" id="TabWidget">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="spacing">4</property>
+    <child>
+      <object class="GtkViewport">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkImage" id="TabImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="stock">gtk-missing-image</property>
+            <property name="icon_size">3</property>
+            <signal name="query-tooltip" handler="on_tab_image_query_tooltip" swapped="no"/>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="TabLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">label</property>
+        <property name="ellipsize">end</property>
+        <property name="width_chars">14</property>
+        <property name="single_line_mode">True</property>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkToggleButton" id="MuteButton">
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <signal name="toggled" handler="on_mute_toggled" swapped="no"/>
+        <child>
+          <object class="GtkImage" id="MuteImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="stock">audio-volume-high</property>
+            <property name="icon_size">1</property>
+          </object>
+        </child>
+        <style>
+          <class name="titania-tab-button"/>
+        </style>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="TabCloseButton">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="tooltip_text" translatable="yes">Close Tab</property>
+        <property name="always_show_image">True</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="stock">gtk-close</property>
+            <property name="icon_size">1</property>
+          </object>
+        </child>
+        <style>
+          <class name="titania-tab-button"/>
+        </style>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
@@ -105,188 +187,7 @@
             <property name="position">1</property>
           </packing>
         </child>
-        <child>
-          <object class="GtkRevealer" id="GeometryToolbarRevealer">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="transition_type">slide-up</property>
-            <property name="transition_duration">600</property>
-            <child>
-              <object class="GtkToolbar" id="GeometryToolbar">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkToolItem">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkCheckButton" id="FogCoordCheckButton">
-                        <property name="label" translatable="yes">FogCoordinate</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_fog_coord_toggled" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSeparatorToolItem">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToolItem">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkBox" id="FogDepthBox">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
-                        <property name="spacing">16</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Fog Depth:</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSpinButton" id="FogDepthSpinButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="adjustment">FogDepthAdjustment</property>
-                            <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
       </object>
-    </child>
-  </object>
-  <object class="GtkBox" id="TabWidget">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="spacing">4</property>
-    <child>
-      <object class="GtkViewport">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkImage" id="TabImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="stock">gtk-missing-image</property>
-            <property name="icon_size">3</property>
-            <signal name="query-tooltip" handler="on_tab_image_query_tooltip" swapped="no"/>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="TabLabel">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">label</property>
-        <property name="ellipsize">end</property>
-        <property name="width_chars">14</property>
-        <property name="single_line_mode">True</property>
-      </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkToggleButton" id="MuteButton">
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <signal name="toggled" handler="on_mute_toggled" swapped="no"/>
-        <child>
-          <object class="GtkImage" id="MuteImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="stock">audio-volume-high</property>
-            <property name="icon_size">1</property>
-          </object>
-        </child>
-        <style>
-          <class name="titania-tab-button"/>
-        </style>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkButton" id="TabCloseButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="tooltip_text" translatable="yes">Close Tab</property>
-        <property name="always_show_image">True</property>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="stock">gtk-close</property>
-            <property name="icon_size">1</property>
-          </object>
-        </child>
-        <style>
-          <class name="titania-tab-button"/>
-        </style>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
-      </packing>
     </child>
   </object>
 </interface>

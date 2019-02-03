@@ -59,6 +59,7 @@ namespace titania {
 namespace puck {
 
 class Console;
+class FogCoordinateEditor;
 class Footer;
 class GeometryEditor;
 class OutlineTreeViewEditor;
@@ -168,6 +169,10 @@ private:
 
 	virtual
 	void
+	on_fog_coordinate_editor_toggled () final override;
+
+	virtual
+	void
 	on_geometry_editor_clicked () final override;
 
 	void
@@ -178,12 +183,13 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <GeometryEditor> geometryEditor;
-	std::shared_ptr <Sidebar>        sidebar;
-	std::shared_ptr <Footer>         footer;
-	std::shared_ptr <X3DGridTool>    gridTool;
-	std::shared_ptr <X3DGridTool>    angleGridTool;
-	std::shared_ptr <X3DGridTool>    axonometricGridTool;
+	std::shared_ptr <GeometryEditor>      geometryEditor;
+	std::shared_ptr <FogCoordinateEditor> fogCoordinateEditor;
+	std::shared_ptr <Sidebar>             sidebar;
+	std::shared_ptr <Footer>              footer;
+	std::shared_ptr <X3DGridTool>         gridTool;
+	std::shared_ptr <X3DGridTool>         angleGridTool;
+	std::shared_ptr <X3DGridTool>         axonometricGridTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

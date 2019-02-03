@@ -102,6 +102,10 @@ public:
 	{ return m_ActivateSnapTargetAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getEditFogCoordinatesAction () const
+	{ return m_EditFogCoordinatesAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFollowPrimarySelectionAction () const
 	{ return m_FollowPrimarySelectionAction; }
 
@@ -544,6 +548,10 @@ public:
 	Gtk::ImageMenuItem &
 	getBrowserTransformToZeroMenuItem () const
 	{ return *m_BrowserTransformToZeroMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserFogCoordinateEditorMenuItem () const
+	{ return *m_BrowserFogCoordinateEditorMenuItem; }
 
 	Gtk::MenuItem &
 	getBrowserLayoutMenuItem () const
@@ -1001,6 +1009,10 @@ public:
 	getTransformToZeroMenuItem () const
 	{ return *m_TransformToZeroMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getFogCoordinateEditorMenuItem () const
+	{ return *m_FogCoordinateEditorMenuItem; }
+
 	Gtk::MenuItem &
 	getLayoutMenuItem () const
 	{ return *m_LayoutMenuItem; }
@@ -1334,6 +1346,10 @@ public:
 	virtual
 	void
 	on_activate_snap_target_toggled () = 0;
+
+	virtual
+	void
+	on_fog_coordinate_editor_toggled () = 0;
 
 	virtual
 	void
@@ -1906,6 +1922,7 @@ private:
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapSourceAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapTargetAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_EditFogCoordinatesAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LogarithmicDepthBufferAction;
@@ -2017,6 +2034,7 @@ private:
 	Gtk::ImageMenuItem* m_BrowserExclusionMenuItem;
 	Gtk::ImageMenuItem* m_BrowserCombineMenuItem;
 	Gtk::ImageMenuItem* m_BrowserTransformToZeroMenuItem;
+	Gtk::CheckMenuItem* m_BrowserFogCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_BrowserLayoutMenuItem;
 	Gtk::ImageMenuItem* m_BrowserBrowserSizeMenuItem;
 	Gtk::ImageMenuItem* m_BrowserBackgroundImageMenuItem;
@@ -2131,6 +2149,7 @@ private:
 	Gtk::ImageMenuItem* m_ExclusionMenuItem;
 	Gtk::ImageMenuItem* m_CombineMenuItem;
 	Gtk::ImageMenuItem* m_TransformToZeroMenuItem;
+	Gtk::CheckMenuItem* m_FogCoordinateEditorMenuItem;
 	Gtk::MenuItem* m_LayoutMenuItem;
 	Gtk::ImageMenuItem* m_BrowserSizeMenuItem;
 	Gtk::ImageMenuItem* m_BackgroundImageMenuItem;

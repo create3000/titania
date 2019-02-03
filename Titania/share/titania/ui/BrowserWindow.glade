@@ -9,6 +9,9 @@
   <object class="GtkToggleAction" id="ActivateSnapTargetAction">
     <signal name="toggled" handler="on_activate_snap_target_toggled" swapped="no"/>
   </object>
+  <object class="GtkToggleAction" id="EditFogCoordinatesAction">
+    <signal name="toggled" handler="on_fog_coordinate_editor_toggled" swapped="no"/>
+  </object>
   <object class="GtkImage" id="FileImportImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1428,6 +1431,22 @@
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_transform_to_zero_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem18">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkCheckMenuItem" id="BrowserFogCoordinateEditorMenuItem">
+                <property name="related_action">EditFogCoordinatesAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="accel_path">&lt;Titania&gt;/Geometry/Edit Fog Coordinates</property>
+                <property name="label" translatable="yes">Edit Fog Coordinates</property>
+                <property name="use_underline">True</property>
               </object>
             </child>
           </object>
@@ -2887,6 +2906,22 @@
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_transform_to_zero_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="FogCoordinateEditorMenuItem">
+                                <property name="related_action">EditFogCoordinatesAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="accel_path">&lt;Titania&gt;/Geometry/Edit Fog Coordinates</property>
+                                <property name="label" translatable="yes">Edit Fog Coordinates</property>
+                                <property name="use_underline">True</property>
                               </object>
                             </child>
                           </object>

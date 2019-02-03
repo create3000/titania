@@ -48,76 +48,134 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DFOG_COORDINATE_EDITOR_H__
-#define __TITANIA_BROWSER_NOTEBOOK_NOTEBOOK_PAGE_X3DFOG_COORDINATE_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_FOG_COORDINATE_EDITOR_H__
+#define __TMP_GLAD2CPP_FOG_COORDINATE_EDITOR_H__
 
-#include "../../UserInterfaces/X3DNotebookPageInterface.h"
-#include "../../Base/X3DEditorObject.h"
+#include "../Base/X3DRevealerInterface.h"
 
-#include <Titania/X3D/Editing/Undo/UndoHistory.h>
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DFogCoordinateEditor :
-	virtual public X3DNotebookPageInterface
+/**
+ *  Gtk Interface for FogCoordinateEditor.
+ */
+class X3DFogCoordinateEditorInterface :
+	public X3DRevealerInterface
 {
 public:
+
+	///  @name Construction
+
+	X3DFogCoordinateEditorInterface () :
+		X3DRevealerInterface ()
+	{ }
+
+	template <class ... Arguments>
+	X3DFogCoordinateEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DRevealerInterface (arguments ...)
+	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DFogCoordinateEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DRevealerInterface (arguments ...)
+	{ create (filenames); }
+
+	///  @name Member access
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFogDepthAdjustment () const
+	{ return m_FogDepthAdjustment; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Revealer &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getFogCoordinateEditorBox () const
+	{ return *m_FogCoordinateEditorBox; }
+
+	Gtk::Button &
+	getTitleButton () const
+	{ return *m_TitleButton; }
+
+	Gtk::Toolbar &
+	getFogCoordinateToolbar () const
+	{ return *m_FogCoordinateToolbar; }
+
+	Gtk::CheckButton &
+	getFogCoordCheckButton () const
+	{ return *m_FogCoordCheckButton; }
+
+	Gtk::Box &
+	getFogDepthBox () const
+	{ return *m_FogDepthBox; }
+
+	Gtk::SpinButton &
+	getFogDepthSpinButton () const
+	{ return *m_FogDepthSpinButton; }
+
+	///  @name Signal handlers
+
+	virtual
+	void
+	on_fog_depth_changed () = 0;
+
+	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
+	on_fog_coord_toggled () = 0;
 
 	///  @name Destruction
 
 	virtual
-	void
-	dispose () override;
-
-	virtual
-	~X3DFogCoordinateEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DFogCoordinateEditor ();
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
+	~X3DFogCoordinateEditorInterface () override;
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
 
 	void
-	set_select_geometries ();
+	create (const std::string &);
 
 	void
-	set_geometries ();
+	create (std::initializer_list <std::string>);
 
 	void
-	set_fogCoord ();
+	create ();
 
-	virtual
-	void
-	on_fog_coord_toggled () final override;
-
-	virtual
-	void
-	on_fog_depth_changed () final override;
-
-	X3D::X3DPtr <X3D::IndexedFaceSetTool>
-	getCurrentTool () const;
+	///  @name Static members
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::IndexedFaceSet> indexedFaceSetNodes;
-	X3D::UndoStepPtr                       fogCoordUndoStep;
-	X3D::UndoStepPtr                       fogDepthUndoStep;
-	bool                                   changing;
-
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_FogDepthAdjustment;
+	Gtk::Window* m_Window;
+	Gtk::Revealer* m_Widget;
+	Gtk::Box* m_FogCoordinateEditorBox;
+	Gtk::Button* m_TitleButton;
+	Gtk::Toolbar* m_FogCoordinateToolbar;
+	Gtk::CheckButton* m_FogCoordCheckButton;
+	Gtk::Box* m_FogDepthBox;
+	Gtk::SpinButton* m_FogDepthSpinButton;
 
 };
 

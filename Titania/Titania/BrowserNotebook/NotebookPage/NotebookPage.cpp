@@ -63,7 +63,6 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNotebookPageInterface (get_ui ("Editors/NotebookPage.glade")),
 	         X3DNotebookPage (startUrl),
-	  X3DFogCoordinateEditor (),
 	                   boxes ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),
 	                  panels (4),
 	              activeView (1),
@@ -81,7 +80,6 @@ NotebookPage::initialize ()
 {
 	X3DNotebookPageInterface::initialize ();
 	X3DNotebookPage::initialize ();
-	X3DFogCoordinateEditor::initialize ();
 }
 
 void
@@ -328,7 +326,6 @@ NotebookPage::lookAtAll ()
 void
 NotebookPage::dispose ()
 {
-	X3DFogCoordinateEditor::dispose ();
 	X3DNotebookPage::dispose ();
 	X3DNotebookPageInterface::dispose ();
 }

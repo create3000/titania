@@ -52,7 +52,6 @@
 #define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
 
 #include "X3DNotebookPage.h"
-#include "X3DFogCoordinateEditor.h"
 
 #include "PanelType.h"
 
@@ -63,8 +62,7 @@ class X3DPanelInterface;
 
 class NotebookPage :
 	virtual public X3DNotebookPageInterface,
-	public X3DNotebookPage,
-	public X3DFogCoordinateEditor
+	public X3DNotebookPage
 {
 public:
 

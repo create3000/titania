@@ -33,7 +33,6 @@ titania_SOURCES =  \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
-	Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
@@ -224,6 +223,7 @@ titania_SOURCES =  \
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp \
+	Titania/Revealer/FogCoordinateEditor/FogCoordinateEditor.cpp \
 	Titania/Revealer/GeometryEditor/GeometryEditor.cpp \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
@@ -242,6 +242,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFilesEditorInterface.cpp \
+	Titania/UserInterfaces/X3DFogCoordinateEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFogEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFontChooserDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \

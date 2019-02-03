@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#include "X3DNotebookPageInterface.h"
+#include "X3DFogCoordinateEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 void
-X3DNotebookPageInterface::create (const std::string & filename)
+X3DFogCoordinateEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
@@ -63,7 +63,7 @@ X3DNotebookPageInterface::create (const std::string & filename)
 }
 
 void
-X3DNotebookPageInterface::create (std::initializer_list <std::string> filenames)
+X3DFogCoordinateEditorInterface::create (std::initializer_list <std::string> filenames)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create ();
@@ -75,36 +75,38 @@ X3DNotebookPageInterface::create (std::initializer_list <std::string> filenames)
 }
 
 void
-X3DNotebookPageInterface::create ()
+X3DFogCoordinateEditorInterface::create ()
 {
 	// Get objects.
+	m_FogDepthAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FogDepthAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("TabWidget", m_TabWidget);
-	m_builder -> get_widget ("TabImage", m_TabImage);
-	m_builder -> get_widget ("TabLabel", m_TabLabel);
-	m_builder -> get_widget ("MuteButton", m_MuteButton);
-	m_builder -> get_widget ("MuteImage", m_MuteImage);
-	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
-	m_builder -> get_widget ("Box1", m_Box1);
-	m_builder -> get_widget ("Box2", m_Box2);
-	m_builder -> get_widget ("Box3", m_Box3);
-	m_builder -> get_widget ("Box4", m_Box4);
+	m_builder -> get_widget ("FogCoordinateEditorBox", m_FogCoordinateEditorBox);
+	m_builder -> get_widget ("TitleButton", m_TitleButton);
+	m_builder -> get_widget ("FogCoordinateToolbar", m_FogCoordinateToolbar);
+	m_builder -> get_widget ("FogCoordCheckButton", m_FogCoordCheckButton);
+	m_builder -> get_widget ("FogDepthBox", m_FogDepthBox);
+	m_builder -> get_widget ("FogDepthSpinButton", m_FogDepthSpinButton);
 
-	// Connect object Gtk::Image with id 'TabImage'.
-	m_TabImage -> signal_query_tooltip () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_tab_image_query_tooltip));
+	// Connect object Gtk::Adjustment with id 'FogDepthAdjustment'.
+	m_FogDepthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_fog_depth_changed));
 
-	// Connect object Gtk::ToggleButton with id 'MuteButton'.
-	m_MuteButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_mute_toggled));
+	// Connect object Gtk::Revealer with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_unmap));
 
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
+	// Connect object Gtk::Button with id 'TitleButton'.
+	m_TitleButton -> signal_button_press_event () .connect (sigc::bind (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_title_button_press_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_button_release_event () .connect (sigc::bind (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_title_button_release_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_motion_notify_event () .connect (sigc::bind (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_title_button_motion_notify_event), sigc::ref (*m_TitleButton)), false);
+
+	// Connect object Gtk::CheckButton with id 'FogCoordCheckButton'.
+	m_FogCoordCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DFogCoordinateEditorInterface::on_fog_coord_toggled));
 }
 
-X3DNotebookPageInterface::~X3DNotebookPageInterface ()
+X3DFogCoordinateEditorInterface::~X3DFogCoordinateEditorInterface ()
 {
 	delete m_Window;
 }

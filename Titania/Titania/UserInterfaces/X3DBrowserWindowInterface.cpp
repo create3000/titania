@@ -81,6 +81,7 @@ X3DBrowserWindowInterface::create ()
 	m_AccelGroup                   = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 	m_ActivateSnapSourceAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ActivateSnapSourceAction"));
 	m_ActivateSnapTargetAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ActivateSnapTargetAction"));
+	m_EditFogCoordinatesAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditFogCoordinatesAction"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
 	m_LogarithmicDepthBufferAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LogarithmicDepthBufferAction"));
@@ -194,6 +195,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserExclusionMenuItem", m_BrowserExclusionMenuItem);
 	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
 	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
+	m_builder -> get_widget ("BrowserFogCoordinateEditorMenuItem", m_BrowserFogCoordinateEditorMenuItem);
 	m_builder -> get_widget ("BrowserLayoutMenuItem", m_BrowserLayoutMenuItem);
 	m_builder -> get_widget ("BrowserBrowserSizeMenuItem", m_BrowserBrowserSizeMenuItem);
 	m_builder -> get_widget ("BrowserBackgroundImageMenuItem", m_BrowserBackgroundImageMenuItem);
@@ -308,6 +310,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ExclusionMenuItem", m_ExclusionMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
+	m_builder -> get_widget ("FogCoordinateEditorMenuItem", m_FogCoordinateEditorMenuItem);
 	m_builder -> get_widget ("LayoutMenuItem", m_LayoutMenuItem);
 	m_builder -> get_widget ("BrowserSizeMenuItem", m_BrowserSizeMenuItem);
 	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
@@ -393,6 +396,7 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::ToggleAction with id 'ActivateSnapSourceAction'.
 	m_ActivateSnapSourceAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_activate_snap_source_toggled));
 	m_ActivateSnapTargetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_activate_snap_target_toggled));
+	m_EditFogCoordinatesAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fog_coordinate_editor_toggled));
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
 	m_LogarithmicDepthBufferAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_logarithmic_depth_buffer_toggled));

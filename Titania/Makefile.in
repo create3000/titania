@@ -128,7 +128,6 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.$(OBJEXT) \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT) \
-	Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.$(OBJEXT) \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT) \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.$(OBJEXT) \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.$(OBJEXT) \
@@ -319,6 +318,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.$(OBJEXT) \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.$(OBJEXT) \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.$(OBJEXT) \
+	Titania/Revealer/FogCoordinateEditor/FogCoordinateEditor.$(OBJEXT) \
 	Titania/Revealer/GeometryEditor/GeometryEditor.$(OBJEXT) \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.$(OBJEXT) \
@@ -337,6 +337,7 @@ am_titania_OBJECTS = Titania/Applications/BrowserApplication/BrowserApplication.
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFilesEditorInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DFogCoordinateEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFogEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFontChooserDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFooterInterface.$(OBJEXT) \
@@ -467,7 +468,6 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po \
 	Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po \
 	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po \
-	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po \
 	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po \
 	Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po \
 	Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po \
@@ -658,6 +658,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DGeoViewpointEditor.Po \
 	Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DOrthoViewpointEditor.Po \
 	Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DViewpointEditor.Po \
+	Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/FogCoordinateEditor.Po \
 	Titania/Revealer/GeometryEditor/$(DEPDIR)/GeometryEditor.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DAnimationEditorInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DAppearanceEditorInterface.Po \
@@ -676,6 +677,7 @@ am__depfiles_remade = Titania/Applications/BrowserApplication/$(DEPDIR)/BrowserA
 	Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveDialogInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveWarningDialogInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DFilesEditorInterface.Po \
+	Titania/UserInterfaces/$(DEPDIR)/X3DFogCoordinateEditorInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DFogEditorInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DFontChooserDialogInterface.Po \
 	Titania/UserInterfaces/$(DEPDIR)/X3DFooterInterface.Po \
@@ -996,7 +998,6 @@ titania_SOURCES = \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanel.cpp \
 	Titania/BrowserNotebook/BrowserPanel/X3DBrowserPanelMenuBar.cpp \
 	Titania/BrowserNotebook/NotebookPage/NotebookPage.cpp \
-	Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.cpp \
 	Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.cpp \
 	Titania/BrowserNotebook/PanelMenu/PanelMenu.cpp \
 	Titania/BrowserNotebook/RenderPanel/RenderPanel.cpp \
@@ -1187,6 +1188,7 @@ titania_SOURCES = \
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp \
+	Titania/Revealer/FogCoordinateEditor/FogCoordinateEditor.cpp \
 	Titania/Revealer/GeometryEditor/GeometryEditor.cpp \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
@@ -1205,6 +1207,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFilesEditorInterface.cpp \
+	Titania/UserInterfaces/X3DFogCoordinateEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFogEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFontChooserDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
@@ -1505,9 +1508,6 @@ Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/BrowserNotebook/NotebookPage/$(DEPDIR)
 	@: > Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/NotebookPage/NotebookPage.$(OBJEXT):  \
-	Titania/BrowserNotebook/NotebookPage/$(am__dirstamp) \
-	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp)
-Titania/BrowserNotebook/NotebookPage/X3DFogCoordinateEditor.$(OBJEXT):  \
 	Titania/BrowserNotebook/NotebookPage/$(am__dirstamp) \
 	Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/$(am__dirstamp)
 Titania/BrowserNotebook/NotebookPage/X3DNotebookPage.$(OBJEXT):  \
@@ -2359,6 +2359,15 @@ Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.$(OBJEXT):  \
 Titania/Editors/ViewpointEditor/X3DViewpointEditor.$(OBJEXT):  \
 	Titania/Editors/ViewpointEditor/$(am__dirstamp) \
 	Titania/Editors/ViewpointEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Revealer/FogCoordinateEditor/$(am__dirstamp):
+	@$(MKDIR_P) Titania/Revealer/FogCoordinateEditor
+	@: > Titania/Revealer/FogCoordinateEditor/$(am__dirstamp)
+Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/Revealer/FogCoordinateEditor/$(DEPDIR)
+	@: > Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Revealer/FogCoordinateEditor/FogCoordinateEditor.$(OBJEXT):  \
+	Titania/Revealer/FogCoordinateEditor/$(am__dirstamp) \
+	Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Revealer/GeometryEditor/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Revealer/GeometryEditor
 	@: > Titania/Revealer/GeometryEditor/$(am__dirstamp)
@@ -2423,6 +2432,9 @@ Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DFilesEditorInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DFogCoordinateEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DFogEditorInterface.$(OBJEXT):  \
@@ -2760,6 +2772,7 @@ mostlyclean-compile:
 	-rm -f Titania/Editors/TextureMappingEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/UndoHistoryEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/ViewpointEditor/*.$(OBJEXT)
+	-rm -f Titania/Revealer/FogCoordinateEditor/*.$(OBJEXT)
 	-rm -f Titania/Revealer/GeometryEditor/*.$(OBJEXT)
 	-rm -f Titania/UserInterfaces/*.$(OBJEXT)
 	-rm -f Titania/Widgets/AnimationEditor/*.$(OBJEXT)
@@ -2802,7 +2815,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po@am__quote@ # am--include-marker
@@ -2993,6 +3005,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DGeoViewpointEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DOrthoViewpointEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DViewpointEditor.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/FogCoordinateEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Revealer/GeometryEditor/$(DEPDIR)/GeometryEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DAnimationEditorInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DAppearanceEditorInterface.Po@am__quote@ # am--include-marker
@@ -3011,6 +3024,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveDialogInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveWarningDialogInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFilesEditorInterface.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFogCoordinateEditorInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFogEditorInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFontChooserDialogInterface.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFooterInterface.Po@am__quote@ # am--include-marker
@@ -3356,6 +3370,8 @@ distclean-generic:
 	-rm -f Titania/Editors/UndoHistoryEditor/$(am__dirstamp)
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Editors/ViewpointEditor/$(am__dirstamp)
+	-rm -f Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/Revealer/FogCoordinateEditor/$(am__dirstamp)
 	-rm -f Titania/Revealer/GeometryEditor/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Revealer/GeometryEditor/$(am__dirstamp)
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
@@ -3413,7 +3429,6 @@ distclean: distclean-am
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po
-	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po
 	-rm -f Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po
@@ -3604,6 +3619,7 @@ distclean: distclean-am
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DGeoViewpointEditor.Po
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DOrthoViewpointEditor.Po
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DViewpointEditor.Po
+	-rm -f Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/FogCoordinateEditor.Po
 	-rm -f Titania/Revealer/GeometryEditor/$(DEPDIR)/GeometryEditor.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DAnimationEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DAppearanceEditorInterface.Po
@@ -3622,6 +3638,7 @@ distclean: distclean-am
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveWarningDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFilesEditorInterface.Po
+	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFogCoordinateEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFogEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFontChooserDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFooterInterface.Po
@@ -3770,7 +3787,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanel.Po
 	-rm -f Titania/BrowserNotebook/BrowserPanel/$(DEPDIR)/X3DBrowserPanelMenuBar.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/NotebookPage.Po
-	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DFogCoordinateEditor.Po
 	-rm -f Titania/BrowserNotebook/NotebookPage/$(DEPDIR)/X3DNotebookPage.Po
 	-rm -f Titania/BrowserNotebook/PanelMenu/$(DEPDIR)/PanelMenu.Po
 	-rm -f Titania/BrowserNotebook/RenderPanel/$(DEPDIR)/RenderPanel.Po
@@ -3961,6 +3977,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DGeoViewpointEditor.Po
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DOrthoViewpointEditor.Po
 	-rm -f Titania/Editors/ViewpointEditor/$(DEPDIR)/X3DViewpointEditor.Po
+	-rm -f Titania/Revealer/FogCoordinateEditor/$(DEPDIR)/FogCoordinateEditor.Po
 	-rm -f Titania/Revealer/GeometryEditor/$(DEPDIR)/GeometryEditor.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DAnimationEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DAppearanceEditorInterface.Po
@@ -3979,6 +3996,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveWarningDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFilesEditorInterface.Po
+	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFogCoordinateEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFogEditorInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFontChooserDialogInterface.Po
 	-rm -f Titania/UserInterfaces/$(DEPDIR)/X3DFooterInterface.Po

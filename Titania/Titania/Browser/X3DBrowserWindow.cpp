@@ -57,6 +57,7 @@
 #include "../Editors/GridEditor/AxonometricGridTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
+#include "../Revealer/FogCoordinateEditor/FogCoordinateEditor.h"
 #include "../Revealer/GeometryEditor/GeometryEditor.h"
 
 #include "../Widgets/Console/Console.h"
@@ -78,6 +79,7 @@ namespace puck {
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	   X3DBrowserEditor (defaultBrowser),
 	     geometryEditor (new GeometryEditor (this)),
+	fogCoordinateEditor (new FogCoordinateEditor (this)),
 	            sidebar (new Sidebar (this)),
 	             footer (new Footer (this)),
 	           gridTool (new GridTool (this)),
@@ -94,9 +96,10 @@ X3DBrowserWindow::initialize ()
 
 	geometryEditor -> getWidget () .property_reveal_child () .signal_changed () .connect (sigc::mem_fun (this, &X3DBrowserWindow::on_geometry_editor_reveal_child_changed));
 
-	geometryEditor -> reparent (getBrowserOverlay (), getWindow ());
-	sidebar        -> reparent (getSidebarBox (),     getWindow ());
-	footer         -> reparent (getFooterBox (),      getWindow ());
+	fogCoordinateEditor -> reparent (getBrowserOverlay (), getWindow ());
+	geometryEditor      -> reparent (getBrowserOverlay (), getWindow ());
+	sidebar             -> reparent (getSidebarBox (),     getWindow ());
+	footer              -> reparent (getFooterBox (),      getWindow ());
 }
 
 void
@@ -104,6 +107,7 @@ X3DBrowserWindow::configure ()
 {
 	X3DBrowserEditor::configure ();
 
+	getEditFogCoordinatesAction () -> set_active (getConfig () -> getItem <bool> ("fogCoordinateEditor"));
 	geometryEditor -> getWidget () .set_reveal_child (getConfig () -> getItem <bool> ("geometryEditor"));
 }
 
@@ -177,6 +181,13 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 	using ScrollToRow = void (OutlineTreeViewEditor::*) (const Gtk::TreePath &, float);
 
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (getOutlineTreeView () .get (), (ScrollToRow) &OutlineTreeViewEditor::scroll_to_row), paths .front (), 2 - math::phi <double>));
+}
+
+void
+X3DBrowserWindow::on_fog_coordinate_editor_toggled ()
+{
+	fogCoordinateEditor -> getWidget () .set_reveal_child (getEditFogCoordinatesAction () -> get_active ());
+	getConfig () -> setItem ("fogCoordinateEditor", getEditFogCoordinatesAction () -> get_active ());
 }
 
 void

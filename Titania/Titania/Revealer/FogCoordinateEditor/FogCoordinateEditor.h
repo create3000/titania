@@ -48,66 +48,72 @@
  *
  ******************************************************************************/
 
-#include "X3DNotebookPageInterface.h"
+#ifndef __TITANIA_REVEALER_FOG_COORDINATE_EDITOR_FOG_COORDINATE_EDITOR_H__
+#define __TITANIA_REVEALER_FOG_COORDINATE_EDITOR_FOG_COORDINATE_EDITOR_H__
+
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DFogCoordinateEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-void
-X3DNotebookPageInterface::create (const std::string & filename)
+class FogCoordinateEditor :
+	virtual public X3DFogCoordinateEditorInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	create ();
-}
+	///  @name Construction
 
-void
-X3DNotebookPageInterface::create (std::initializer_list <std::string> filenames)
-{
-	// Create Builder.
-	m_builder = Gtk::Builder::create ();
+	FogCoordinateEditor (X3DBrowserWindow* const browserWindow);
 
-	for (const auto & filename : filenames)
-		m_builder -> add_from_file (filename);
+	///  @name Destruction
 
-	create ();
-}
+	virtual
+	~FogCoordinateEditor () final override;
 
-void
-X3DNotebookPageInterface::create ()
-{
-	// Get objects.
 
-	// Get widgets.
-	m_builder -> get_widget ("TabWidget", m_TabWidget);
-	m_builder -> get_widget ("TabImage", m_TabImage);
-	m_builder -> get_widget ("TabLabel", m_TabLabel);
-	m_builder -> get_widget ("MuteButton", m_MuteButton);
-	m_builder -> get_widget ("MuteImage", m_MuteImage);
-	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
-	m_builder -> get_widget ("Box1", m_Box1);
-	m_builder -> get_widget ("Box2", m_Box2);
-	m_builder -> get_widget ("Box3", m_Box3);
-	m_builder -> get_widget ("Box4", m_Box4);
+private:
 
-	// Connect object Gtk::Image with id 'TabImage'.
-	m_TabImage -> signal_query_tooltip () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_tab_image_query_tooltip));
+	///  @name Event handlers
 
-	// Connect object Gtk::ToggleButton with id 'MuteButton'.
-	m_MuteButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_mute_toggled));
+	virtual
+	void
+	on_map () final override;
 
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DNotebookPageInterface::on_key_release_event), false);
-}
+	virtual
+	void
+	on_unmap () final override;
 
-X3DNotebookPageInterface::~X3DNotebookPageInterface ()
-{
-	delete m_Window;
-}
+	void
+	set_select_geometries ();
+
+	void
+	set_geometries ();
+
+	void
+	set_fogCoord ();
+
+	virtual
+	void
+	on_fog_coord_toggled () final override;
+
+	virtual
+	void
+	on_fog_depth_changed () final override;
+
+	X3D::X3DPtr <X3D::IndexedFaceSetTool>
+	getCurrentTool () const;
+
+	///  @name Members
+
+	X3D::X3DPtrArray <X3D::IndexedFaceSet> indexedFaceSetNodes;
+	X3D::UndoStepPtr                       fogCoordUndoStep;
+	X3D::UndoStepPtr                       fogDepthUndoStep;
+	bool                                   changing;
+
+};
 
 } // puck
 } // titania
+
+#endif

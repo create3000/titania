@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#include "X3DFogCoordinateEditor.h"
+#include "FogCoordinateEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
+#include "../../Configuration/config.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/FogCoordinate.h>
 #include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>
@@ -60,46 +60,55 @@
 namespace titania {
 namespace puck {
 
-X3DFogCoordinateEditor::X3DFogCoordinateEditor () :
-	X3DNotebookPageInterface (),
-	     indexedFaceSetNodes (),
-	        fogCoordUndoStep (),
-	        fogDepthUndoStep (),
-	                changing (false)
+FogCoordinateEditor::FogCoordinateEditor (X3DBrowserWindow* const browserWindow) :
+	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DFogCoordinateEditorInterface (get_ui ("Revealer/FogCoordinateEditor.glade")),
+	            indexedFaceSetNodes (),
+	               fogCoordUndoStep (),
+	               fogDepthUndoStep (),
+	                       changing (false)
 {
 	addChildObjects (indexedFaceSetNodes);
+
+	setup ();
 }
 
 void
-X3DFogCoordinateEditor::initialize ()
+FogCoordinateEditor::on_map ()
 {
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&X3DFogCoordinateEditor::set_select_geometries, this);
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&FogCoordinateEditor::set_select_geometries, this);
 
 	set_select_geometries ();
 }
 
 void
-X3DFogCoordinateEditor::set_select_geometries ()
+FogCoordinateEditor::on_unmap ()
+{
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .removeInterest (&FogCoordinateEditor::set_select_geometries, this);
+}
+
+void
+FogCoordinateEditor::set_select_geometries ()
 {
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DFogCoordinateEditor::set_geometries, this);
+		getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&FogCoordinateEditor::set_geometries, this);
 	}
 	else
 	{
-		getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&X3DFogCoordinateEditor::set_geometries, this);
+		getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&FogCoordinateEditor::set_geometries, this);
 	}
 
 	set_geometries ();
 }
 
 void
-X3DFogCoordinateEditor::set_geometries ()
+FogCoordinateEditor::set_geometries ()
 {
 	// Disconnect.
 
 	for (const auto & indexedFaceSetNode : indexedFaceSetNodes)
-		indexedFaceSetNode -> getFogCoord () .removeInterest (&X3DFogCoordinateEditor::set_fogCoord, this);
+		indexedFaceSetNode -> getFogCoord () .removeInterest (&FogCoordinateEditor::set_fogCoord, this);
 
 	indexedFaceSetNodes .clear ();
 
@@ -119,10 +128,10 @@ X3DFogCoordinateEditor::set_geometries ()
 
 					// Fog coord.
 
-					indexedFaceSetNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .addInterest (&X3DFogCoordinateEditor::set_fogCoord, this);
-					indexedFaceSetNode -> getField <X3D::SFTime>  ("touchTime")              .addInterest (&X3DFogCoordinateEditor::set_fogCoord, this);
+					indexedFaceSetNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .addInterest (&FogCoordinateEditor::set_fogCoord, this);
+					indexedFaceSetNode -> getField <X3D::SFTime>  ("touchTime")              .addInterest (&FogCoordinateEditor::set_fogCoord, this);
 
-					indexedFaceSetNode -> getFogCoord () .addInterest (&X3DFogCoordinateEditor::set_fogCoord, this);
+					indexedFaceSetNode -> getFogCoord () .addInterest (&FogCoordinateEditor::set_fogCoord, this);
 					break;
 				}
 				default:
@@ -133,17 +142,15 @@ X3DFogCoordinateEditor::set_geometries ()
 		}
 	}
 
-	getGeometryToolbarRevealer () .set_reveal_child (getBrowserWindow () -> getSelection () -> getSelectGeometry () and indexedFaceSetNodes .size ());
+	getFogCoordinateToolbar () .set_sensitive (getBrowserWindow () -> getSelection () -> getSelectGeometry () and indexedFaceSetNodes .size ());
 
 	set_fogCoord ();
 }
 
 void
-X3DFogCoordinateEditor::set_fogCoord ()
+FogCoordinateEditor::set_fogCoord ()
 {
 	changing = true;
-
-	const auto & currentPage = getBrowserWindow () -> getCurrentPage ();
 
 	fogDepthUndoStep .reset ();
 
@@ -151,11 +158,11 @@ X3DFogCoordinateEditor::set_fogCoord ()
 	{
 		case 0:
 		{
-			currentPage -> getFogCoordCheckButton () .set_inconsistent (false);
-			currentPage -> getFogCoordCheckButton () .set_active (false);
-			currentPage -> getFogCoordCheckButton () .set_sensitive (false);
+			getFogCoordCheckButton () .set_inconsistent (false);
+			getFogCoordCheckButton () .set_active (false);
+			getFogCoordCheckButton () .set_sensitive (false);
 
-			currentPage -> getFogDepthBox () .set_sensitive (false);
+			getFogDepthBox () .set_sensitive (false);
 			break;
 		}
 		default:
@@ -169,21 +176,21 @@ X3DFogCoordinateEditor::set_fogCoord ()
 			for (const auto & indexedFaceSetNode : indexedFaceSetNodes)
 				numFogCoord += bool (indexedFaceSetNode -> getFogCoord ());
 
-			currentPage -> getFogCoordCheckButton () .set_inconsistent (numFogCoord and numFogCoord not_eq indexedFaceSetNodes .size ());
-			currentPage -> getFogCoordCheckButton () .set_active (numFogCoord and numFogCoord == indexedFaceSetNodes .size ());
-			currentPage -> getFogCoordCheckButton () .set_sensitive (true);
+			getFogCoordCheckButton () .set_inconsistent (numFogCoord and numFogCoord not_eq indexedFaceSetNodes .size ());
+			getFogCoordCheckButton () .set_active (numFogCoord and numFogCoord == indexedFaceSetNodes .size ());
+			getFogCoordCheckButton () .set_sensitive (true);
 
-			currentPage -> getFogDepthBox () .set_sensitive (hasFogCoord and numSelectedPoints);
+			getFogDepthBox () .set_sensitive (hasFogCoord and numSelectedPoints);
 
 			if (hasFogCoord and numSelectedPoints)
 			{
 				const auto index = currentTool -> getSelectedPoints () .begin () -> first;
 
-				currentPage -> getFogDepthAdjustment () -> set_value (currentTool -> getFogCoord () -> get1Depth (index));
+				getFogDepthAdjustment () -> set_value (currentTool -> getFogCoord () -> get1Depth (index));
 			}
 			else
 			{
-				currentPage -> getFogDepthAdjustment () -> set_value (0);
+				getFogDepthAdjustment () -> set_value (0);
 			}
 
 			break;
@@ -194,7 +201,7 @@ X3DFogCoordinateEditor::set_fogCoord ()
 }
 
 void
-X3DFogCoordinateEditor::on_fog_coord_toggled ()
+FogCoordinateEditor::on_fog_coord_toggled ()
 {
 	if (changing)
 		return;
@@ -202,14 +209,13 @@ X3DFogCoordinateEditor::on_fog_coord_toggled ()
 	if (indexedFaceSetNodes .empty ())
 		return;
 
-	const auto & currentPage = getBrowserWindow () -> getCurrentPage ();
-	const auto   nodes       = X3D::MFNode (indexedFaceSetNodes);
+	const auto nodes = X3D::MFNode (indexedFaceSetNodes);
 
-	currentPage -> getFogCoordCheckButton () .set_inconsistent (false);
+	getFogCoordCheckButton () .set_inconsistent (false);
 
 	addUndoFunction <X3D::SFNode> (nodes, "fogCoord", fogCoordUndoStep);
 
-	if (currentPage -> getFogCoordCheckButton () .get_active ())
+	if (getFogCoordCheckButton () .get_active ())
 	{
 		for (const auto & indexedFaceSetNode : indexedFaceSetNodes)
 		{
@@ -229,25 +235,24 @@ X3DFogCoordinateEditor::on_fog_coord_toggled ()
 }
 
 void
-X3DFogCoordinateEditor::on_fog_depth_changed ()
+FogCoordinateEditor::on_fog_depth_changed ()
 {
 	if (changing)
 		return;
 
-	const auto & currentPage = getBrowserWindow () -> getCurrentPage ();
-	const auto   fogDepth    = currentPage -> getFogDepthAdjustment () -> get_value ();
-	auto         fogCoords   = X3D::MFNode ();
+	const auto fogDepth      = getFogDepthAdjustment () -> get_value ();
+	auto       fogCoordNodes = X3D::MFNode ();
 
 	for (const auto & indexedFaceSetNode : indexedFaceSetNodes)
 	{
 		if (indexedFaceSetNode -> getFogCoord ())
-			fogCoords .emplace_back (indexedFaceSetNode -> getFogCoord ());
+			fogCoordNodes .emplace_back (indexedFaceSetNode -> getFogCoord ());
 	}
 
-	if (fogCoords .empty ())
+	if (fogCoordNodes .empty ())
 		return;
 
-	addUndoFunction <X3D::MFFloat> (fogCoords, "depth", fogDepthUndoStep);
+	addUndoFunction <X3D::MFFloat> (fogCoordNodes, "depth", fogDepthUndoStep);
 
 	for (const auto & indexedFaceSetNode : indexedFaceSetNodes)
 	{
@@ -263,11 +268,11 @@ X3DFogCoordinateEditor::on_fog_depth_changed ()
 			indexedFaceSetNode -> getFogCoord () -> set1Depth (index, fogDepth);
 	}
 
-	addRedoFunction <X3D::MFFloat> (fogCoords, "depth", fogDepthUndoStep);
+	addRedoFunction <X3D::MFFloat> (fogCoordNodes, "depth", fogDepthUndoStep);
 }
 
 X3D::X3DPtr <X3D::IndexedFaceSetTool>
-X3DFogCoordinateEditor::getCurrentTool () const
+FogCoordinateEditor::getCurrentTool () const
 {
 	const auto result = std::max_element (indexedFaceSetNodes .begin (),
 	                                      indexedFaceSetNodes .end (),
@@ -279,12 +284,10 @@ X3DFogCoordinateEditor::getCurrentTool () const
 	return X3D::X3DPtr <X3D::IndexedFaceSetTool> (*result);
 }
 
-void
-X3DFogCoordinateEditor::dispose ()
-{ }
-
-X3DFogCoordinateEditor::~X3DFogCoordinateEditor ()
-{ }
+FogCoordinateEditor::~FogCoordinateEditor ()
+{
+	dispose ();
+}
 
 } // puck
 } // titania
