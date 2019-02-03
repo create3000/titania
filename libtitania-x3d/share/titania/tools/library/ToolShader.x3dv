@@ -72,7 +72,7 @@ main ()
 	float alpha      = 1.0;
 	
 	float lw = (x3d_LinewidthScaleFactor + 1.0) / 2.0;
-	float t  = x3d_GeometryType == x3d_GeometryPoints ? distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * lw - lw + 1.0 : 0.0;
+	float t  = x3d_GeometryType == x3d_Points ? distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * lw - lw + 1.0 : 0.0;
 
 	if (x3d_Lighting)
 	{

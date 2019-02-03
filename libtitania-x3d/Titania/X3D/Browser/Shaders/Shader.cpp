@@ -242,10 +242,10 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	definitions << "#define x3d_None 0\n";
 
-	definitions << "#define x3d_GeometryPoints  0\n";
-	definitions << "#define x3d_GeometryLines   1\n";
-	definitions << "#define x3d_Geometry2D      2\n";
-	definitions << "#define x3d_Geometry3D      3\n";
+	definitions << "#define x3d_Points     0\n";
+	definitions << "#define x3d_Lines      1\n";
+	definitions << "#define x3d_Geometry2D 2\n";
+	definitions << "#define x3d_Geometry3D 3\n";
 
 	definitions << "#define x3d_MaxClipPlanes  " << browser -> getMaxClipPlanes () << "\n";
 
@@ -270,15 +270,19 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	// Legacy
 
-	definitions << "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
-	definitions << "#define x3d_NoneFog        0\n";
-	definitions << "#define x3d_NoneLight      0\n";
-	definitions << "#define x3d_NoneTexture    0\n";
+	definitions << "#define x3d_GeometryPoints  0\n";
+	definitions << "#define x3d_GeometryLines   1\n";
+	definitions << "#define x3d_NoneClipPlane   vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
+	definitions << "#define x3d_NoneFog         0\n";
+	definitions << "#define x3d_NoneLight       0\n";
+	definitions << "#define x3d_NoneTexture     0\n";
 
-	depreciatedWarning (browser, source, "x3d_NoneClipPlane", "x3d_NumClipPlanes");
-	depreciatedWarning (browser, source, "x3d_NoneFog",       "x3d_None");
-	depreciatedWarning (browser, source, "x3d_NoneLight",     "x3d_NumLights");
-	depreciatedWarning (browser, source, "x3d_NoneTexture",   "x3d_NumTextures");
+	depreciatedWarning (browser, source, "x3d_GeometryPoints", "x3d_Points");
+	depreciatedWarning (browser, source, "x3d_GeometryLines",  "x3d_Lines");
+	depreciatedWarning (browser, source, "x3d_NoneClipPlane",  "x3d_NumClipPlanes");
+	depreciatedWarning (browser, source, "x3d_NoneFog",        "x3d_None");
+	depreciatedWarning (browser, source, "x3d_NoneLight",      "x3d_NumLights");
+	depreciatedWarning (browser, source, "x3d_NoneTexture",    "x3d_NumTextures");
 
 	// Types
 

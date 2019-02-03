@@ -137,8 +137,6 @@ IndexedFaceSetTool::setExecutionContext (X3DExecutionContext* const executionCon
 void
 IndexedFaceSetTool::dispose ()
 {
-	const auto t0 = SFTime::now ();
-
 	X3DIndexedFaceSetSculpToolObject::dispose ();
 	X3DIndexedFaceSetLightSaberObject::dispose ();
 	X3DIndexedFaceSetKnifeObject::dispose ();
@@ -148,8 +146,6 @@ IndexedFaceSetTool::dispose ()
 	X3DIndexedFaceSetBrushObject::dispose ();
 	X3DIndexedFaceSetSelectionObject::dispose ();
 	X3DIndexedFaceSetTool::dispose ();
-
-	__LOG__ << SFTime::now () - t0 << std::endl;
 }
 
 IndexedFaceSetTool::~IndexedFaceSetTool ()

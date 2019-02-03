@@ -1,8 +1,9 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="73" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/tools/AngleGridTool.x3dv" Line="86" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp" Line="279" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
