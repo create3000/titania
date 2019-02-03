@@ -141,6 +141,8 @@ X3DRevealerInterface::on_title_button_press_event (GdkEventButton* event, Gtk::B
 
 	position = X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ());
 	pointer  = X3D::Vector2d (x, y);
+
+	getBrowserWindow () -> getBrowserOverlay () .reorder_overlay (getWidget (), getBrowserWindow () -> getBrowserOverlay () .get_children () .size () - 1);
 	return true;
 }
 
