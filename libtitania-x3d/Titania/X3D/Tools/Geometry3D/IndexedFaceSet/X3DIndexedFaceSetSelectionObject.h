@@ -257,6 +257,10 @@ public:
 
 	///  @name Member access
 
+	int32_t
+	getMasterPoint () const
+	{ return masterPoint; }
+
 	const std::map <int32_t, Vector3d> &
 	getSelectedPoints () const
 	{ return selectedPoints; }
@@ -371,10 +375,6 @@ protected:
 	SelectionType
 	getSelectionType () const
 	{ return type; }
-
-	int32_t
-	getMasterPoint () const
-	{ return masterPoint; }
 
 	const SelectedEdges &
 	getSelectedEdges () const

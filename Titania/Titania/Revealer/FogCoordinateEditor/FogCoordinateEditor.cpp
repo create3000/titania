@@ -184,9 +184,10 @@ FogCoordinateEditor::set_fogCoord ()
 
 			if (hasFogCoord and numSelectedPoints)
 			{
-				const auto index = currentTool -> getSelectedPoints () .begin () -> first;
+				const auto index = currentTool -> getMasterPoint ();
 
-				getFogDepthAdjustment () -> set_value (currentTool -> getFogCoord () -> get1Depth (index));
+				if (index >= 0)
+					getFogDepthAdjustment () -> set_value (currentTool -> getFogCoord () -> get1Depth (index));
 			}
 			else
 			{
