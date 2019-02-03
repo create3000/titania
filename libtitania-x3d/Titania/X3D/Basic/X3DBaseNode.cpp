@@ -436,8 +436,11 @@ X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 {
 	if (value not_eq executionContext)
 	{
-		value -> addParent (this);
-		executionContext -> removeParent (this);
+		if (isInitialized ())
+		{
+			value -> addParent (this);
+			executionContext -> removeParent (this);
+		}
 
 		executionContext = value;
 	}
@@ -445,7 +448,9 @@ X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 	// Replace browser as last step!
 
 	setBrowser (executionContext -> getBrowser ());
-	getBrowser () -> addEvent ();
+
+	if (isInitialized ())
+		getBrowser () -> addEvent ();
 }
 
 /***

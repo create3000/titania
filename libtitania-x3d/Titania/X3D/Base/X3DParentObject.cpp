@@ -99,36 +99,43 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 	if (value == browser)
 		return;
 
-	// Collect and remove events.
-
-	std::vector <ChildrenList::value_type> objects;
-
-	for (const auto & event : events)
+	if (initialized)
 	{
-		if (browser -> getRouter () -> isValid (event))
-			objects .emplace_back (*event .iter);
-	}
-
-	const bool tainted = browser -> getRouter () -> isValid (parentId);
-
-	removeEvents ();
-
-	// Replace browser.
-
-	value -> addParent (this);
-	browser -> removeParent (this);
-
-	browser = value;
-
-	// Add events.
+		// Collect and remove events.
 	
-	setTainted (false);
-
-	for (const auto & object : objects)
-		addEventObject (object .first, object .second);
-
-	if (tainted)
-		addEvent ();
+		std::vector <ChildrenList::value_type> objects;
+	
+		for (const auto & event : events)
+		{
+			if (browser -> getRouter () -> isValid (event))
+				objects .emplace_back (*event .iter);
+		}
+	
+		const bool tainted = browser -> getRouter () -> isValid (parentId);
+	
+		removeEvents ();
+	
+		// Replace browser.
+	
+		value -> addParent (this);
+		browser -> removeParent (this);
+	
+		browser = value;
+	
+		// Add events.
+		
+		setTainted (false);
+	
+		for (const auto & object : objects)
+			addEventObject (object .first, object .second);
+	
+		if (tainted)
+			addEvent ();
+	}
+	else
+	{
+		browser = value;
+	}
 }
 
 /***
