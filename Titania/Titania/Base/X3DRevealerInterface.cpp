@@ -87,9 +87,17 @@ X3DRevealerInterface::configure ()
 {
 	X3DUserInterface::configure ();
 
+	int32_t minimumWidth  = 0;
+	int32_t naturalWidth  = 0;
+	int32_t minimumHeight = 0;
+	int32_t naturalHeight = 0;
+
+	getWidget () .get_child () -> get_preferred_width  (minimumWidth,  naturalWidth); 
+	getWidget () .get_child () -> get_preferred_height (minimumHeight, naturalHeight); 
+
 	const auto boxWidth       = getBrowserWindow () -> getBrowserOverlay () .get_width ();
 	const auto boxHeight      = getBrowserWindow () -> getBrowserOverlay () .get_height ();
-	const auto defaultMarigin = X3D::Vector2d (boxWidth / 2, boxHeight / 2);
+	const auto defaultMarigin = X3D::Vector2d (boxWidth / 2 - minimumWidth / 2, boxHeight / 2 - minimumHeight / 2);
 	const auto margin         = getConfig () -> getItem <X3D::Vector2d> ("margin", defaultMarigin);
 
 	getWidget () .set_margin_left (margin .x ());
