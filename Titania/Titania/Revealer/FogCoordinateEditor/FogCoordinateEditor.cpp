@@ -85,6 +85,7 @@ void
 FogCoordinateEditor::on_unmap ()
 {
 	getBrowserWindow () -> getSelection () -> getSelectGeometry () .removeInterest (&FogCoordinateEditor::set_select_geometries, this);
+	getBrowserWindow () -> getSelection () -> getGeometries ()     .removeInterest (&FogCoordinateEditor::set_geometries,        this);
 }
 
 void
