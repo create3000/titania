@@ -199,6 +199,9 @@ X3DFogCoordinateEditor::on_fog_coord_toggled ()
 	if (changing)
 		return;
 
+	if (indexedFaceSetNodes .empty ())
+		return;
+
 	const auto & currentPage = getBrowserWindow () -> getCurrentPage ();
 	const auto   nodes       = X3D::MFNode (indexedFaceSetNodes);
 
@@ -240,6 +243,9 @@ X3DFogCoordinateEditor::on_fog_depth_changed ()
 		if (indexedFaceSetNode -> getFogCoord ())
 			fogCoords .emplace_back (indexedFaceSetNode -> getFogCoord ());
 	}
+
+	if (fogCoords .empty ())
+		return;
 
 	addUndoFunction <X3D::MFFloat> (fogCoords, "depth", fogDepthUndoStep);
 
