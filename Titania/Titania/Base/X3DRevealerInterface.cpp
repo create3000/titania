@@ -51,7 +51,6 @@
 #include "X3DRevealerInterface.h"
 
 #include "../Browser/X3DBrowserWindow.h"
-#include "../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 namespace titania {
 namespace puck {
@@ -88,7 +87,10 @@ X3DRevealerInterface::configure ()
 {
 	X3DUserInterface::configure ();
 
-	const auto margin = getConfig () -> getItem <X3D::Vector2d> ("margin");
+	const auto boxWidth       = getBrowserWindow () -> getBrowserOverlay () .get_width ();
+	const auto boxHeight      = getBrowserWindow () -> getBrowserOverlay () .get_height ();
+	const auto defaultMarigin = X3D::Vector2d (boxWidth / 2, boxHeight / 2);
+	const auto margin         = getConfig () -> getItem <X3D::Vector2d> ("margin", defaultMarigin);
 
 	getWidget () .set_margin_left (margin .x ());
 	getWidget () .set_margin_top  (margin .y ());
@@ -148,10 +150,12 @@ X3DRevealerInterface::on_title_button_motion_notify_event (GdkEventMotion* event
 
 	getWidget () .translate_coordinates (getBrowserWindow () -> getWidget (), event -> x, event -> y, x, y);
 
-	const auto margin = position + X3D::Vector2d (x, y) - pointer;
+	const auto boxWidth  = getBrowserWindow () -> getBrowserOverlay () .get_width ();
+	const auto boxHeight = getBrowserWindow () -> getBrowserOverlay () .get_height ();
+	const auto margin    = position + X3D::Vector2d (x, y) - pointer;
 
-	getWidget () .set_margin_left (std::clamp <double> (margin .x (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_width  () - getWidget () .get_width ()));
-	getWidget () .set_margin_top  (std::clamp <double> (margin .y (), 0, getBrowserWindow () -> getCurrentPage () -> getWidget () .get_height () - getWidget () .get_height ()));
+	getWidget () .set_margin_left (std::clamp <double> (margin .x (), 0, boxWidth  - getWidget () .get_width ()));
+	getWidget () .set_margin_top  (std::clamp <double> (margin .y (), 0, boxHeight - getWidget () .get_height ()));
 	return true;
 }
 
