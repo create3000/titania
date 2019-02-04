@@ -1346,6 +1346,9 @@ X3DGeometryNode::dispose ()
 		if (not attribBufferIds .empty ())
 			glDeleteBuffers (attribBufferIds .size (), attribBufferIds .data ());
 
+		if (fogDepthBufferId)
+			glDeleteBuffers (1, &fogDepthBufferId);
+
 		if (colorBufferId)
 			glDeleteBuffers (1, &colorBufferId);
 
