@@ -533,6 +533,7 @@ ElevationGrid::setHeightMapImage (Magick::Image & image, const float minHeight, 
 
 	image .filterType (Magick::LanczosFilter);
 	image .zoom (geometry);
+	image .flip ();
 
 	// Get image data.
 
