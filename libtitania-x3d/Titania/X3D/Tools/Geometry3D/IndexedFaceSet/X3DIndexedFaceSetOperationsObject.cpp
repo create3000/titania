@@ -158,9 +158,17 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 	const auto modelMatrix = X3DEditor::getModelMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
 	const auto geometry    = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
+	// Save indices and add one if not exits.
+
+	const auto colorIndex    = this -> colorIndex ();
+	const auto texCoordIndex = this -> texCoordIndex ();
+	const auto normalIndex   = this -> normalIndex ();
+
 	addColorIndex ();
 	addTexCoordIndex ();
 	addNormalIndex ();
+
+	// Build geometry.
 
 	geometry -> solid ()           = solid ();
 	geometry -> ccw ()             = determinant (modelMatrix) >= 0 ? ccw () : not ccw ();
@@ -385,6 +393,12 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 		for (const auto & index : basic::reverse (coordArray))
 			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second) * modelMatrix);
 	}
+
+	// Reset indices.
+
+	this -> colorIndex ()    = colorIndex;
+	this -> texCoordIndex () = texCoordIndex;
+	this -> normalIndex ()   = normalIndex;
 
 	// Print out geometry
 
