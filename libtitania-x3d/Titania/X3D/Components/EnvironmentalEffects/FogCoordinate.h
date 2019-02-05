@@ -118,6 +118,9 @@ public:
 	///  @name Operations
 
 	void
+	assignDepths (const std::vector <float> & depths);
+
+	void
 	eraseDepth (const size_t index);
 
 	void

@@ -118,6 +118,12 @@ FogCoordinate::addDepth (std::vector <float> & depths, const size_t index) const
 }
 
 void
+FogCoordinate::assignDepths (const std::vector <float> & depths)
+{
+	depth () .assign (depths .begin (), depths .end ());
+}
+
+void
 FogCoordinate::eraseDepth (const size_t index)
 {
 	if (index < depth () .size ())

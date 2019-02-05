@@ -1308,8 +1308,8 @@ IndexedFaceSet::mergePoints (const double distance)
 
 		for (const auto & [point, indices] : map)
 			depths [indices .second] = getFogCoord () -> get1Depth (indices .first);
-	
-		getFogCoord () -> depth () .assign (depths .begin (), depths .end ());
+
+		getFogCoord () -> assignDepths (depths);
 	}
 
 	for (const auto & [point, indices] : map)
