@@ -500,6 +500,56 @@ IndexedFaceSet::isPerVertex (const MFInt32 & indices) const
 	return false;
 }
 
+void
+IndexedFaceSet::addColorIndex ()
+{
+	if (colorIndex () .size ())
+		return;
+
+	if (colorPerVertex ())
+	{
+		colorIndex () = coordIndex ();
+	}
+	else
+	{
+		size_t face = 0;
+
+		for (const auto & index : coordIndex ())
+		{
+			if (index < 0)
+				colorIndex () .emplace_back (face ++);
+		}
+	}
+}
+
+void
+IndexedFaceSet::addTexCoordIndex ()
+{
+	texCoordIndex () = coordIndex ();
+}
+
+void
+IndexedFaceSet::addNormalIndex ()
+{
+	if (normalIndex () .size ())
+		return;
+
+	if (normalPerVertex ())
+	{
+		normalIndex () = coordIndex ();
+	}
+	else
+	{
+		size_t face = 0;
+
+		for (const auto & index : coordIndex ())
+		{
+			if (index < 0)
+				normalIndex () .emplace_back (face ++);
+		}
+	}
+}
+
 MFInt32
 IndexedFaceSet::getColorIndex (const bool colorPerVertex) const
 {
@@ -823,7 +873,7 @@ IndexedFaceSet::rebuildIndices ()
 			rebuildIndices (faceIndex, faceNumber, count, indices, faceNumbers);
 
 			faceIndex  += count + 1;
-			faceNumber += index == -1;
+			faceNumber += 1;
 			count       = 0;
 			continue;
 		}
@@ -893,36 +943,6 @@ IndexedFaceSet::rebuildIndices ()
 	texCoordIndex () = texCoord;
 	normalIndex ()   = normal;
 	coordIndex ()    = coord;
-
-	if (getColor () and getColor () -> getSize ())
-	{
-		if (not colorPerVertex () and colorIndex () .empty ())
-		{
-			std::vector <Color4f> colors;
-
-			for (const auto & faceNumber : faceNumbers)
-			{
-				colors .emplace_back (getColor () -> get1Color (faceNumber));
-			}
-
-			getColor () -> assignColors (colors);
-		}
-	}
-
-	if (getNormal () and getNormal () -> getSize ())
-	{
-		if (not normalPerVertex () and normalIndex () .empty ())
-		{
-			std::vector <Vector3f> vectors;
-
-			for (const auto & faceNumber : faceNumbers)
-			{
-				vectors .emplace_back (getNormal () -> get1Vector (faceNumber));
-			}
-
-			getNormal () -> assignVectors (vectors);
-		}
-	}
 }
 
 void
@@ -963,9 +983,6 @@ IndexedFaceSet::rebuildColor ()
 	const X3DPtr <X3DColorNode> colorNode (color ());
 
 	if (not colorNode)
-	   return map;
-
-	if (not colorPerVertex () and colorIndex () .empty ())
 	   return map;
 
 	// Build indices map
@@ -1127,9 +1144,6 @@ IndexedFaceSet::rebuildNormal ()
 	if (not normalNode)
 	   return map;
 
-	if (not normalPerVertex () and normalIndex () .empty ())
-	   return map;
-
 	// Build indices map
 
 	for (const auto & index : basic::make_const_range (normalIndex () .empty () ? coordIndex () : normalIndex ()))
@@ -1213,32 +1227,6 @@ IndexedFaceSet::rebuildCoord ()
 		   depths .emplace_back (getFogCoord () -> get1Depth (pair .first));
 
 		getFogCoord () -> assignDepths (depths);
-	}
-
-	if (getColor () and getColor () -> getSize ())
-	{
-		if (colorPerVertex () and colorIndex () .empty ())
-		{
-			std::vector <Color4f> colors;
-	
-			for (const auto & pair : map)
-			   colors .emplace_back (getColor () -> get1Color (pair .first));
-	
-			getColor () -> assignColors (colors);
-		}
-	}
-
-	if (getNormal () and getNormal () -> getSize ())
-	{
-		if (normalPerVertex () and normalIndex () .empty ())
-		{
-			std::vector <Vector3f> vectors;
-	
-			for (const auto & pair : map)
-			   vectors .emplace_back (getNormal () -> get1Vector (pair .first));
-	
-			getNormal () -> assignVectors (vectors);
-		}
 	}
 
 	std::vector <Vector3d> points;

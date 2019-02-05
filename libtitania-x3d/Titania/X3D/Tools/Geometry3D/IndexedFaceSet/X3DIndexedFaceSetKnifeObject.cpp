@@ -620,6 +620,10 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	undoSetNormal        (undoStep);
 	undoSetCoord         (undoStep);
 
+	addColorIndex ();
+	addTexCoordIndex ();
+	addNormalIndex ();
+
 	auto selection = X3DIndexedFaceSetCutObject::cut (cutFace, cutEdge, startPoints, endPoints);
 
 	startPoints .clear ();

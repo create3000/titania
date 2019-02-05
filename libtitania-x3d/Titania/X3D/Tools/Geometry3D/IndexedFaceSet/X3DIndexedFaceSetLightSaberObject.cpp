@@ -161,6 +161,10 @@ X3DIndexedFaceSetLightSaberObject::cut (X3DRenderObject* const renderObject, con
 		undoSetNormal        (undoStep);
 		undoSetCoord         (undoStep);
 
+		addColorIndex ();
+		addTexCoordIndex ();
+		addNormalIndex ();
+
 		auto selection = X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
 	
 		if (selection .empty ())

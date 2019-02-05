@@ -106,9 +106,9 @@ private:
 	void
 	addPoint (const size_t cutFace,
 	          const size_t face,
-	          size_t & numFaces,
 	          const int32_t index,
-	          const Vector3d & point);
+	          const Vector3d & point,
+	          std::map <size_t, size_t> & fillIndices);
 
 	///  @name Fields
 

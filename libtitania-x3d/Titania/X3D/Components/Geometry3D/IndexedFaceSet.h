@@ -196,6 +196,18 @@ public:
 
 	virtual
 	void
+	addColorIndex ();
+	
+	virtual
+	void
+	addTexCoordIndex ();
+	
+	virtual
+	void
+	addNormalIndex ();
+
+	virtual
+	void
 	addFogCoords ();
 
 	virtual
