@@ -136,7 +136,11 @@ public:
 	virtual
 	void
 	assign (const X3DPtr <X3DTextureCoordinateNode> & other) final override;
-	
+
+	virtual
+	void
+	erasePoint (const size_t index) final override;
+
 	virtual
 	void
 	resize (const size_t value) final override;

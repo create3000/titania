@@ -119,7 +119,11 @@ public:
 	virtual
 	void
 	assign (const X3DPtr <X3DTextureCoordinateNode> & other);
-	
+
+	virtual
+	void
+	erasePoint (const size_t index) = 0;
+
 	virtual
 	void
 	resize (const size_t value) = 0;

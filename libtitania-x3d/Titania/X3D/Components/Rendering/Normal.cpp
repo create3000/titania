@@ -105,5 +105,12 @@ Normal::addVector (std::vector <Vector3f> & normals, const size_t index) const
 		normals .emplace_back (0, 0, 0);
 }
 
+void
+Normal::eraseVector (const size_t index)
+{
+	if (index < vector () .size ())
+		vector () .erase (vector () .begin () + index);
+}
+
 } // X3D
 } // titania

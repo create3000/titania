@@ -168,5 +168,12 @@ ColorRGBA::set_color ()
 		addEvent ();
 }
 
+void
+ColorRGBA::eraseColor (const size_t index)
+{
+	if (index < color () .size ())
+		color () .erase (color () .begin () + index);
+}
+
 } // X3D
 } // titania

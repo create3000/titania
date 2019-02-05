@@ -99,6 +99,10 @@ public:
 
 	void
 	assign (const X3DPtr <X3DColorNode> & other);
+
+	virtual
+	void
+	eraseColor (const size_t index) = 0;
 	
 	virtual
 	void

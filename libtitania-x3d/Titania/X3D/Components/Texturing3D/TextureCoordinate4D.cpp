@@ -121,6 +121,13 @@ TextureCoordinate4D::getTexCoord (std::vector <Vector4f> & texCoords) const
 }
 
 void
+TextureCoordinate4D::erasePoint (const size_t index)
+{
+	if (index < point () .size ())
+		point () .erase (point () .begin () + index);
+}
+
+void
 TextureCoordinate4D::enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);

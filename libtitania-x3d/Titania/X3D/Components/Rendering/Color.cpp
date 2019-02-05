@@ -131,5 +131,12 @@ Color::getHSVA (std::vector <Vector4f> & colors) const
 	}
 }
 
+void
+Color::eraseColor (const size_t index)
+{
+	if (index < color () .size ())
+		color () .erase (color () .begin () + index);
+}
+
 } // X3D
 } // titania

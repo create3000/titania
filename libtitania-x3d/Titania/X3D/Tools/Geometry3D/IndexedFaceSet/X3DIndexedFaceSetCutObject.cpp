@@ -144,75 +144,110 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 		}
 		case 2:
 		{
-			const auto  point1  = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .index0));
-			const auto  point2  = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .index1));
+			const auto  index1  = coordIndex () .get1Value (startEdge .index0);
+			const auto  index2  = coordIndex () .get1Value (startEdge .index1);
+			const auto  point1  = getCoord () -> get1Point (index1);
+			const auto  point2  = getCoord () -> get1Point (index2);
 			const auto  segment = LineSegment3d (point1, point2);
 			const float t       = abs (cutEdge .first - point1) / abs (point2 - point1);
 
 			if (not segment .is_between (cutEdge .first))
 				return selection;
 
-			if (colorIndex () .size () and getColor ())
+			startPoint = getCoord () -> getSize ();
+
+			if (getFogCoord () and getFogCoord () -> getSize ())
+			{
+				const auto depth1 = getFogCoord () -> get1Depth (index1);
+				const auto depth2 = getFogCoord () -> get1Depth (index2);
+
+				getFogCoord () -> set1Depth (startPoint, lerp (depth1, depth2, t));
+			}
+
+			if (getColor () and getColor () -> getSize ())
 			{
 			   if (colorPerVertex ())
 			   {
-					const auto colorIndex0 = getVertexColorIndex (startEdge .index0);
-					const auto colorIndex1 = getVertexColorIndex (startEdge .index1);
-
-					if (colorIndex0 == colorIndex1)
+					if (colorIndex () .empty ())
 					{
-						startColor = colorIndex0;
+						const auto color0 = getColor () -> get1Color (index1);
+						const auto color1 = getColor () -> get1Color (index2);
+		
+						getColor () -> set1Color (startPoint, lerp (color0, color1, t)); // Interpolation in RGB space
 					}
 					else
 					{
-						const auto color0 = getColor () -> get1Color (colorIndex0);
-						const auto color1 = getColor () -> get1Color (colorIndex1);
+						const auto colorIndex0 = getVertexColorIndex (startEdge .index0);
+						const auto colorIndex1 = getVertexColorIndex (startEdge .index1);
 	
-						startColor = getColor () -> getSize ();
-						getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
+						if (colorIndex0 == colorIndex1)
+						{
+							startColor = colorIndex0;
+						}
+						else
+						{
+							const auto color0 = getColor () -> get1Color (colorIndex0);
+							const auto color1 = getColor () -> get1Color (colorIndex1);
+		
+							startColor = getColor () -> getSize ();
+
+							getColor () -> set1Color (startColor, lerp (color0, color1, t)); // Interpolation in RGB space
+						}
 					}
 				}
 			}
 
-			if (texCoordIndex () .size () and getTexCoord ())
+			if (getTexCoord () and getTexCoord () -> getSize ())
 			{
-				const auto texCoord0 = getTexCoord () -> get1Point (getVertexTexCoordIndex (startEdge .index0));
-				const auto texCoord1 = getTexCoord () -> get1Point (getVertexTexCoordIndex (startEdge .index1));
+				if (texCoordIndex () .empty ())
+				{
+					const auto texCoord0 = getTexCoord () -> get1Point (index1);
+					const auto texCoord1 = getTexCoord () -> get1Point (index2);
+	
+					getTexCoord () -> set1Point (startPoint, lerp (texCoord0, texCoord1, t));
+				}
+				else
+				{
+					const auto texCoord0 = getTexCoord () -> get1Point (getVertexTexCoordIndex (startEdge .index0));
+					const auto texCoord1 = getTexCoord () -> get1Point (getVertexTexCoordIndex (startEdge .index1));
+	
+					startTexCoord = getTexCoord () -> getSize ();
 
-				startTexCoord = getTexCoord () -> getSize ();
-				getTexCoord () -> set1Point (startTexCoord, lerp (texCoord0, texCoord1, t));
+					getTexCoord () -> set1Point (startTexCoord, lerp (texCoord0, texCoord1, t));
+				}
 			}
 
-			if (normalIndex () .size () and getNormal ())
+			if (getNormal () and getNormal () -> getSize ())
 			{
 			   if (normalPerVertex ())
 			   {
-					const auto normalIndex0 = getVertexNormalIndex (startEdge .index0);
-					const auto normalIndex1 = getVertexNormalIndex (startEdge .index1);
-
-					if (normalIndex0 == normalIndex1)
+					if (normalIndex () .empty ())
 					{
-						startNormal = normalIndex0;
+						const auto normalIndex0 = getNormal () -> get1Vector (index1);
+						const auto normalIndex1 = getNormal () -> get1Vector (index2);
+		
+						getNormal () -> set1Vector (startPoint, lerp (normalIndex0, normalIndex1, t));
 					}
 					else
 					{
-						const auto normal0 = getNormal () -> get1Vector (normalIndex0);
-						const auto normal1 = getNormal () -> get1Vector (normalIndex1);
+						const auto normalIndex0 = getVertexNormalIndex (startEdge .index0);
+						const auto normalIndex1 = getVertexNormalIndex (startEdge .index1);
 	
-						startNormal = getNormal () -> getSize ();
-						getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
+						if (normalIndex0 == normalIndex1)
+						{
+							startNormal = normalIndex0;
+						}
+						else
+						{
+							const auto normal0 = getNormal () -> get1Vector (normalIndex0);
+							const auto normal1 = getNormal () -> get1Vector (normalIndex1);
+		
+							startNormal = getNormal () -> getSize ();
+
+							getNormal () -> set1Vector (startNormal, lerp (normal0, normal1, t));
+						}
 					}
 				}
-			}
-			
-			startPoint = getCoord () -> getSize ();
-
-			if (getFogCoord ())
-			{
-				const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index0));
-				const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index1));
-
-				getFogCoord () -> set1Depth (startPoint, lerp (depth1, depth2, t));
 			}
 
 			getCoord () -> set1Point (startPoint, cutEdge .first);
@@ -237,77 +272,112 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 		}
 		case 2:
 		{
-			const auto  point1  = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .index0));
-			const auto  point2  = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .index1));
+			const auto  index1  = coordIndex () .get1Value (endEdge .index0);
+			const auto  index2  = coordIndex () .get1Value (endEdge .index1);
+			const auto  point1  = getCoord () -> get1Point (index1);
+			const auto  point2  = getCoord () -> get1Point (index2);
 			const auto  segment = LineSegment3d (point1, point2);
 			const float t       = abs (cutEdge .second - point1) / abs (point2 - point1);
 
 			if (not segment .is_between (cutEdge .second))
 				return selection;
 
-			if (colorIndex () .size () and getColor ())
-			{
-			   if (colorPerVertex ())
-			   {
-					const auto colorIndex0 = getVertexColorIndex (endEdge .index0);
-					const auto colorIndex1 = getVertexColorIndex (endEdge .index1);
-
-					if (colorIndex0 == colorIndex1)
-					{
-						endColor = colorIndex0;
-					}
-					else
-					{
-						const auto color0 = getColor () -> get1Color (colorIndex0);
-						const auto color1 = getColor () -> get1Color (colorIndex1);
-	
-						endColor = getColor () -> getSize ();
-						getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
-					}
-				}
-			}
-			
-			if (texCoordIndex () .size () and getTexCoord ())
-			{
-				const auto texCoord0 = getTexCoord () -> get1Point (getVertexTexCoordIndex (endEdge .index0));
-				const auto texCoord1 = getTexCoord () -> get1Point (getVertexTexCoordIndex (endEdge .index1));
-
-				endTexCoord = getTexCoord () -> getSize ();
-				getTexCoord () -> set1Point (endTexCoord, lerp (texCoord0, texCoord1, t));
-			}
-
-			if (normalIndex () .size () and getNormal ())
-			{
-			   if (normalPerVertex ())
-			   {
-					const auto normalIndex0 = getVertexNormalIndex (endEdge .index0);
-					const auto normalIndex1 = getVertexNormalIndex (endEdge .index1);
-
-					if (normalIndex0 == normalIndex1)
-					{
-						endNormal = normalIndex0;
-					}
-					else
-					{
-						const auto normal0 = getNormal () -> get1Vector (normalIndex0);
-						const auto normal1 = getNormal () -> get1Vector (normalIndex1);
-	
-						endNormal = getNormal () -> getSize ();
-						getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
-					}
-				}
-			}
-			
 			endPoint = getCoord () -> getSize ();
 
-			if (getFogCoord ())
+			if (getFogCoord () and getFogCoord () -> getSize ())
 			{
-				const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index0));
-				const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index1));
+				const auto depth1 = getFogCoord () -> get1Depth (index1);
+				const auto depth2 = getFogCoord () -> get1Depth (index2);
 
 				getFogCoord () -> set1Depth (endPoint, lerp (depth1, depth2, t));
 			}
 
+			if (getColor () and getColor () -> getSize ())
+			{
+				if (colorPerVertex ())
+				{
+					if (colorIndex () .empty ())
+					{
+						const auto color1 = getColor () -> get1Color (index1);
+						const auto color2 = getColor () -> get1Color (index2);
+		
+						getColor () -> set1Color (endPoint, lerp (color1, color2, t));
+					}
+					else
+					{
+						const auto colorIndex0 = getVertexColorIndex (endEdge .index0);
+						const auto colorIndex1 = getVertexColorIndex (endEdge .index1);
+	
+						if (colorIndex0 == colorIndex1)
+						{
+							endColor = colorIndex0;
+						}
+						else
+						{
+							const auto color0 = getColor () -> get1Color (colorIndex0);
+							const auto color1 = getColor () -> get1Color (colorIndex1);
+		
+							endColor = getColor () -> getSize ();
+
+							getColor () -> set1Color (endColor, lerp (color0, color1, t)); // Interpolation in RGB space
+						}
+					}
+				}
+			}
+	
+			if (getTexCoord () and getTexCoord () -> getSize ())
+			{
+				if (texCoordIndex () .empty ())
+				{
+					const auto texCoord0 = getTexCoord () -> get1Point (index1);
+					const auto texCoord1 = getTexCoord () -> get1Point (index2);
+	
+					getTexCoord () -> set1Point (endPoint, lerp (texCoord0, texCoord1, t));
+				}
+				else
+				{
+					const auto texCoord0 = getTexCoord () -> get1Point (getVertexTexCoordIndex (endEdge .index0));
+					const auto texCoord1 = getTexCoord () -> get1Point (getVertexTexCoordIndex (endEdge .index1));
+	
+					endTexCoord = getTexCoord () -> getSize ();
+
+					getTexCoord () -> set1Point (endTexCoord, lerp (texCoord0, texCoord1, t));
+				}
+			}
+
+			if (getNormal () and getNormal () -> getSize ())
+			{
+			   if (normalPerVertex ())
+			   {
+					if (normalIndex () .empty ())
+					{
+						const auto normal0 = getNormal () -> get1Vector (index1);
+						const auto normal1 = getNormal () -> get1Vector (index2);
+	
+						getNormal () -> set1Vector (endPoint, lerp (normal0, normal1, t));
+					}
+					else
+					{
+						const auto normalIndex0 = getVertexNormalIndex (endEdge .index0);
+						const auto normalIndex1 = getVertexNormalIndex (endEdge .index1);
+	
+						if (normalIndex0 == normalIndex1)
+						{
+							endNormal = normalIndex0;
+						}
+						else
+						{
+							const auto normal0 = getNormal () -> get1Vector (normalIndex0);
+							const auto normal1 = getNormal () -> get1Vector (normalIndex1);
+		
+							endNormal = getNormal () -> getSize ();
+
+							getNormal () -> set1Vector (endNormal, lerp (normal0, normal1, t));
+						}
+					}
+				}
+			}
+	
 			getCoord () -> set1Point (endPoint, cutEdge .second);
 
 			endVertex1     = endEdge .index0;
@@ -337,15 +407,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	if (startPoints .size () == 2)
 	{
 		if (colorIndex () .size () and getColor ())
+		{
 			if (colorPerVertex ())
 				colorFace1 .emplace_back (startColor);
+		}
 
 		if (texCoordIndex () .size () and getTexCoord ())
 			texFace1 .emplace_back (startTexCoord);
 
 		if (normalIndex () .size () and getNormal ())
+		{
 			if (normalPerVertex ())
 				normalFace1 .emplace_back (startNormal);
+		}
 
 		face1 .emplace_back (startPoint);
 	}
@@ -353,15 +427,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	if (endPoints .size () == 2)
 	{
 		if (colorIndex () .size () and getColor ())
+		{
 			if (colorPerVertex ())
 				colorFace2 .emplace_back (endColor);
+		}
 
 		if (texCoordIndex () .size () and getTexCoord ())
 			texFace2 .emplace_back (endTexCoord);
 
 		if (normalIndex () .size () and getNormal ())
+		{
 			if (normalPerVertex ())
 				normalFace2 .emplace_back (endNormal);
+		}
 
 		face2 .emplace_back (endPoint);
 	}
@@ -373,15 +451,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 		const auto vertex = vertices [i % vertices .size ()];
 
 		if (colorIndex () .size () and getColor ())
+		{
 			if (colorPerVertex ())
 				colorFace1 .emplace_back (getVertexColorIndex (vertex));
+		}
 
 		if (texCoordIndex () .size () and getTexCoord ())
 			texFace1 .emplace_back (getVertexTexCoordIndex (vertex));
 
 		if (normalIndex () .size () and getNormal ())
+		{
 			if (normalPerVertex ())
 				normalFace1 .emplace_back (getVertexNormalIndex (vertex));
+		}
 
 		face1 .emplace_back (coordIndex () .get1Value (vertex));
 	}
@@ -391,15 +473,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 		const auto vertex = vertices [i % vertices .size ()];
 
 		if (colorIndex () .size () and getColor ())
+		{
 			if (colorPerVertex ())
 				colorFace2 .emplace_back (getVertexColorIndex (vertex));
+		}
 
 		if (texCoordIndex () .size () and getTexCoord ())
 			texFace2 .emplace_back (getVertexTexCoordIndex (vertex));
 
 		if (normalIndex () .size () and getNormal ())
+		{
 			if (normalPerVertex ())
 				normalFace2 .emplace_back (getVertexNormalIndex (vertex));
+		}
 
 		face2 .emplace_back (coordIndex () .get1Value (vertex));
 	}
@@ -409,15 +495,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	if (endPoints .size () == 2)
 	{
 		if (colorIndex () .size () and getColor ())
+		{
 			if (colorPerVertex ())
 				colorFace1 .emplace_back (endColor);
+		}
 
 		if (texCoordIndex () .size () and getTexCoord ())
 			texFace1 .emplace_back (endTexCoord);
 
 		if (normalIndex () .size () and getNormal ())
+		{
 			if (normalPerVertex ())
 				normalFace1 .emplace_back (endNormal);
+		}
 
 		face1 .emplace_back (endPoint);
 	}
@@ -425,15 +515,19 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	if (startPoints .size () == 2)
 	{
 		if (colorIndex () .size () and getColor ())
+		{
 			if (colorPerVertex ())
 				colorFace2 .emplace_back (startColor);
+		}
 
 		if (texCoordIndex () .size () and getTexCoord ())
 			texFace2 .emplace_back (startTexCoord);
 
 		if (normalIndex () .size () and getNormal ())
+		{
 			if (normalPerVertex ())
 				normalFace2 .emplace_back (startNormal);
+		}
 
 		face2 .emplace_back (startPoint);
 	}
@@ -758,8 +852,10 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 			}
 			case 2:
 			{
-				const auto  point1  = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .index0));
-				const auto  point2  = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .index1));
+				const auto  index1  = coordIndex () .get1Value (startEdge .index0);
+				const auto  index2  = coordIndex () .get1Value (startEdge .index1);
+				const auto  point1  = getCoord () -> get1Point (index1);
+				const auto  point2  = getCoord () -> get1Point (index2);
 				const auto  segment = LineSegment3d (point1, point2);
 				const float t       = abs (cutEdge [0] - point1) / abs (point2 - point1);
 	
@@ -860,12 +956,42 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				{
 					startPoint = getCoord () -> getSize ();
 
-					if (getFogCoord ())
+					if (getFogCoord () and getFogCoord () -> getSize ())
 					{
-						const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index0));
-						const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (startEdge .index1));
+						const auto depth1 = getFogCoord () -> get1Depth (index1);
+						const auto depth2 = getFogCoord () -> get1Depth (index2);
 					
 						getFogCoord () -> set1Depth (startPoint, lerp (depth1, depth2, t));
+					}
+
+					if (colorIndex () .empty () and getColor () and getColor () -> getSize ())
+					{
+					   if (colorPerVertex ())
+					   {
+							const auto color1 = getColor () -> get1Color (index1);
+							const auto color2 = getColor () -> get1Color (index2);
+						
+							getColor () -> set1Color (startPoint, lerp (color1, color2, t));
+						}
+					}
+
+					if (texCoordIndex () .empty () and getTexCoord () and getTexCoord () -> getSize ())
+					{
+						const auto point1 = getTexCoord () -> get1Point (index1);
+						const auto point2 = getTexCoord () -> get1Point (index2);
+						
+						getTexCoord () -> set1Point (startPoint, lerp (point1, point2, t));
+					}
+
+					if (normalIndex () .empty () and getNormal () and getNormal () -> getSize ())
+					{
+					   if (normalPerVertex ())
+					   {
+							const auto vector1 = getNormal () -> get1Vector (index1);
+							const auto vector2 = getNormal () -> get1Vector (index2);
+						
+							getNormal () -> set1Vector (startPoint, lerp (vector1, vector2, t));
+						}
 					}
 
 					getCoord () -> set1Point (startPoint, cutEdge [0]);
@@ -896,8 +1022,10 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 			}
 			case 2:
 			{
-				const auto  point1  = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .index0));
-				const auto  point2  = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .index1));
+				const auto  index1  = coordIndex () .get1Value (endEdge .index0);
+				const auto  index2  = coordIndex () .get1Value (endEdge .index1);
+				const auto  point1  = getCoord () -> get1Point (index1);
+				const auto  point2  = getCoord () -> get1Point (index2);
 				const auto  segment = LineSegment3d (point1, point2);
 				const float t       = abs (cutEdge [1] - point1) / abs (point2 - point1);
 	
@@ -998,12 +1126,42 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 				{
 					endPoint = getCoord () -> getSize ();
 
-					if (getFogCoord ())
+					if (getFogCoord () and getFogCoord () -> getSize ())
 					{
-						const auto depth1 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index0));
-						const auto depth2 = getFogCoord () -> get1Depth (coordIndex () .get1Value (endEdge .index1));
+						const auto depth1 = getFogCoord () -> get1Depth (index1);
+						const auto depth2 = getFogCoord () -> get1Depth (index2);
 
 						getFogCoord () -> set1Depth (endPoint, lerp (depth1, depth2, t));
+					}
+
+					if (colorIndex () .empty () and getColor () and getColor () -> getSize ())
+					{
+					   if (colorPerVertex ())
+					   {
+							const auto color1 = getColor () -> get1Color (index1);
+							const auto color2 = getColor () -> get1Color (index2);
+						
+							getColor () -> set1Color (endPoint, lerp (color1, color2, t));
+						}
+					}
+
+					if (texCoordIndex () .empty () and getTexCoord () and getTexCoord () -> getSize ())
+					{
+						const auto point1 = getTexCoord () -> get1Point (index1);
+						const auto point2 = getTexCoord () -> get1Point (index2);
+						
+						getTexCoord () -> set1Point (endPoint, lerp (point1, point2, t));
+					}
+
+					if (normalIndex () .empty () and getNormal () and getNormal () -> getSize ())
+					{
+					   if (normalPerVertex ())
+					   {
+							const auto vector1 = getNormal () -> get1Vector (index1);
+							const auto vector2 = getNormal () -> get1Vector (index2);
+						
+							getNormal () -> set1Vector (endPoint, lerp (vector1, vector2, t));
+						}
 					}
 
 					getCoord () -> set1Point (endPoint, cutEdge [1]);

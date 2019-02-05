@@ -135,7 +135,11 @@ public:
 	{ return point () .size (); }
 
 	///  @name Operations
-	
+
+	virtual
+	void
+	erasePoint (const size_t index) final override;
+
 	virtual
 	void
 	resize (const size_t value) final override

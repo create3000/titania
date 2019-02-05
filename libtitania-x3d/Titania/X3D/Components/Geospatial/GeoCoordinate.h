@@ -128,10 +128,6 @@ public:
 	addVertex (std::vector <Vector3d> & vertices, const size_t index) const final override;
 
 	virtual
-	void
-	erasePoint (const size_t index) final override;
-
-	virtual
 	bool
 	isEmpty () const final override
 	{ return point () .empty (); }
@@ -142,7 +138,11 @@ public:
 	{ return point () .size (); }
 
 	///  @name Operations
-	
+
+	virtual
+	void
+	erasePoint (const size_t index) final override;
+
 	virtual
 	void
 	resize (const size_t value) final override

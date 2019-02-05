@@ -166,6 +166,13 @@ MultiTextureCoordinate::assign (const X3DPtr <X3DTextureCoordinateNode> & other)
 }
 
 void
+MultiTextureCoordinate::erasePoint (const size_t index)
+{
+	for (const auto & texCoordNode : texCoords)
+		texCoordNode -> erasePoint (index);
+}
+
+void
 MultiTextureCoordinate::resize (const size_t value)
 {
 	for (const auto & texCoordNode : texCoords)

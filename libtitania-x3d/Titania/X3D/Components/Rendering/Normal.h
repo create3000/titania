@@ -119,6 +119,10 @@ public:
 	{ return vector () .size (); }
 
 	///  @name Operations
+
+	virtual
+	void
+	eraseVector (const size_t index) final override;
 	
 	virtual
 	void

@@ -133,7 +133,11 @@ public:
 	{ return color () .size (); }
 
 	///  @name Operations
-	
+
+	virtual
+	void
+	eraseColor (const size_t index) final override;
+
 	virtual
 	void
 	resize (const size_t value) final override

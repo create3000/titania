@@ -87,6 +87,10 @@ public:
 
 	void
 	assign (const X3DPtr <X3DNormalNode> & other);
+
+	virtual
+	void
+	eraseVector (const size_t index) = 0;
 	
 	virtual
 	void

@@ -102,10 +102,6 @@ public:
 	addVertex (std::vector <Vector3d> & vertices, const size_t index) const = 0;
 
 	virtual
-	void
-	erasePoint (const size_t index) = 0;
-
-	virtual
 	bool
 	isEmpty () const = 0;
 
@@ -117,6 +113,10 @@ public:
 
 	void
 	assign (const X3DPtr <X3DCoordinateNode> & other);
+
+	virtual
+	void
+	erasePoint (const size_t index) = 0;
 	
 	virtual
 	void
