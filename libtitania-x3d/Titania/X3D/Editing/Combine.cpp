@@ -365,6 +365,24 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 {
 	std::vector <int32_t> points;
 
+	// Switch to color/normal per vertex.
+
+	targetGeometry -> addColorIndex ();
+	targetGeometry -> addTexCoordIndex ();
+	targetGeometry -> addNormalIndex ();
+
+	if (not targetGeometry -> colorPerVertex ())
+	{
+		targetGeometry -> colorIndex ()     = targetGeometry -> getColorIndex (true);
+		targetGeometry -> colorPerVertex () = true;
+	}
+
+	if (not targetGeometry -> normalPerVertex ())
+	{
+		targetGeometry -> normalIndex ()     = targetGeometry -> getNormalIndex (true);
+		targetGeometry -> normalPerVertex () = true;
+	}
+
 	// Add colors, texCoords and normals if needed.
 
 	bool addFogCoord  = targetGeometry -> getFogCoord ();
