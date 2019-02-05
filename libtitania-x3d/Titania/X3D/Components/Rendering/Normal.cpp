@@ -106,6 +106,12 @@ Normal::addVector (std::vector <Vector3f> & normals, const size_t index) const
 }
 
 void
+Normal::assignVectors (const std::vector <Vector3f> & vectors)
+{
+	vector () .assign (vectors .begin (), vectors .end ());
+}
+
+void
 Normal::eraseVector (const size_t index)
 {
 	if (index < vector () .size ())

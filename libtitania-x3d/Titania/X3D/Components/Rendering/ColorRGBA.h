@@ -142,6 +142,10 @@ public:
 
 	virtual
 	void
+	assignColors (const std::vector <Color4f> & colors) final override;
+
+	virtual
+	void
 	eraseColor (const size_t index) final override;
 
 	virtual

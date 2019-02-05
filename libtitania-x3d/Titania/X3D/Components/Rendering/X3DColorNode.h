@@ -102,6 +102,10 @@ public:
 
 	virtual
 	void
+	assignColors (const std::vector <Color4f> & colors) = 0;
+
+	virtual
+	void
 	eraseColor (const size_t index) = 0;
 	
 	virtual

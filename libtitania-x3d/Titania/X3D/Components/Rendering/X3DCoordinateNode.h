@@ -116,6 +116,10 @@ public:
 
 	virtual
 	void
+	assignPoints (const std::vector <Vector3d> points) = 0;
+
+	virtual
+	void
 	erasePoint (const size_t index) = 0;
 	
 	virtual

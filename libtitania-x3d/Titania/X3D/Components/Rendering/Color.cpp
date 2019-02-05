@@ -132,6 +132,15 @@ Color::getHSVA (std::vector <Vector4f> & colors) const
 }
 
 void
+Color::assignColors (const std::vector <Color4f> & colors)
+{
+	color () .clear ();
+
+	for (const auto & c : colors)
+		color () .emplace_back (c .r (), c .g (), c .b ());
+}
+
+void
 Color::eraseColor (const size_t index)
 {
 	if (index < color () .size ())

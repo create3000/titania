@@ -122,6 +122,10 @@ public:
 
 	virtual
 	void
+	assignVectors (const std::vector <Vector3f> & vectors) final override;
+
+	virtual
+	void
 	eraseVector (const size_t index) final override;
 	
 	virtual

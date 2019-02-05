@@ -154,6 +154,12 @@ Coordinate::addVertex (std::vector <Vector3d> & vertices, const size_t index) co
 }
 
 void
+Coordinate::assignPoints (const std::vector <Vector3d> points)
+{
+	point () .assign (points .begin (), points .end ());
+}
+
+void
 Coordinate::erasePoint (const size_t index)
 {
 	point () .erase (point () .begin () + index);

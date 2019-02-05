@@ -141,6 +141,10 @@ public:
 
 	virtual
 	void
+	assignPoints (const std::vector <Vector3d> points) final override;
+
+	virtual
+	void
 	erasePoint (const size_t index) final override;
 
 	virtual

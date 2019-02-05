@@ -188,6 +188,15 @@ GeoCoordinate::addVertex (std::vector <Vector3d> & vertices, const size_t index)
 }
 
 void
+GeoCoordinate::assignPoints (const std::vector <Vector3d> points)
+{
+	point () .clear ();
+
+	for (const auto & p : points)
+		point () .emplace_back (getGeoCoord (p));
+}
+
+void
 GeoCoordinate::erasePoint (const size_t index)
 {
 	point () .erase (point () .begin () + index);

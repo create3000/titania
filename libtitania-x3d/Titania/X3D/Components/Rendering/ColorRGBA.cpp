@@ -169,6 +169,12 @@ ColorRGBA::set_color ()
 }
 
 void
+ColorRGBA::assignColors (const std::vector <Color4f> & colors)
+{
+	color () .assign (colors .begin (), colors .end ());
+}
+
+void
 ColorRGBA::eraseColor (const size_t index)
 {
 	if (index < color () .size ())

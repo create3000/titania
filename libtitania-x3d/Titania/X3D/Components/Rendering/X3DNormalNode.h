@@ -90,6 +90,10 @@ public:
 
 	virtual
 	void
+	assignVectors (const std::vector <Vector3f> & vectors) = 0;
+
+	virtual
+	void
 	eraseVector (const size_t index) = 0;
 	
 	virtual

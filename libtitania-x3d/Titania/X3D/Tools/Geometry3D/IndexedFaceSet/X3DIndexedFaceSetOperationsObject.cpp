@@ -529,10 +529,11 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
 	undoSetFogCoord      (undoStep);
-	undoSetColor         (undoStep);
-	undoSetTexCoord      (undoStep);
-	undoSetNormal        (undoStep);
 	undoSetCoord         (undoStep);
+
+	if (colorIndex ()    .empty ()) undoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) undoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) undoSetNormal   (undoStep);
 
 	std::vector <int32_t> points;
 
@@ -545,12 +546,13 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 
 	const auto selection = splitPoints (points);
 
-	redoSetCoord         (undoStep);
-	redoSetNormal        (undoStep);
-	redoSetTexCoord      (undoStep);
-	redoSetColor         (undoStep);
-	redoSetFogCoord      (undoStep);
-	redoSetCoordIndex    (undoStep);
+	if (colorIndex ()    .empty ()) redoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) redoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) redoSetNormal   (undoStep);
+
+	redoSetCoord      (undoStep);
+	redoSetFogCoord   (undoStep);
+	redoSetCoordIndex (undoStep);
 
 	redoRestoreSelectedPoints (selection, undoStep);
 	replaceSelectedPoints () .assign (selection .cbegin (), selection .cend ());
@@ -601,10 +603,11 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	undoSetCoordIndex (undoStep);
 	undoSetFogCoord   (undoStep);
-	undoSetColor      (undoStep);
-	undoSetTexCoord   (undoStep);
-	undoSetNormal     (undoStep);
 	undoSetCoord      (undoStep);
+
+	if (colorIndex ()    .empty ()) undoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) undoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) undoSetNormal   (undoStep);
 
 	std::vector <std::pair <size_t, size_t>> edges;
 
@@ -626,10 +629,11 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	const auto selection = extrudeSelectedEdges (edges, true, { }, false);
 
+	if (colorIndex ()    .empty ()) redoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) redoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) redoSetNormal   (undoStep);
+
 	redoSetCoord      (undoStep);
-	redoSetNormal     (undoStep);
-	redoSetTexCoord   (undoStep);
-	redoSetColor      (undoStep);
 	redoSetFogCoord   (undoStep);
 	redoSetCoordIndex (undoStep);
 
@@ -659,10 +663,11 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	undoSetCoordIndex (undoStep);
 	undoSetFogCoord   (undoStep);
-	undoSetColor      (undoStep);
-	undoSetTexCoord   (undoStep);
-	undoSetNormal     (undoStep);
 	undoSetCoord      (undoStep);
+
+	if (colorIndex ()    .empty ()) undoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) undoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) undoSetNormal   (undoStep);
 
 	bool flatFaces = false;
 
@@ -714,10 +719,11 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	rewriteArray (rebuildCoord (), selection);
 
+	if (colorIndex ()    .empty ()) redoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) redoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) redoSetNormal   (undoStep);
+
 	redoSetCoord      (undoStep);
-	redoSetNormal     (undoStep);
-	redoSetTexCoord   (undoStep);
-	redoSetColor      (undoStep);
 	redoSetFogCoord   (undoStep);
 	redoSetCoordIndex (undoStep);
 
@@ -742,10 +748,11 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
 	undoSetFogCoord      (undoStep);
-	undoSetColor         (undoStep);
-	undoSetTexCoord      (undoStep);
-	undoSetNormal        (undoStep);
 	undoSetCoord         (undoStep);
+
+	if (colorIndex ()    .empty ()) undoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) undoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) undoSetNormal   (undoStep);
 
 	std::vector <size_t> vertices;
 
@@ -766,10 +773,11 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 
 	rewriteArray (rebuildCoord (), selection);
 
+	if (colorIndex ()    .empty ()) redoSetColor    (undoStep);
+	if (texCoordIndex () .empty ()) redoSetTexCoord (undoStep);
+	if (normalIndex ()   .empty ()) redoSetNormal   (undoStep);
+
 	redoSetCoord      (undoStep);
-	redoSetNormal     (undoStep);
-	redoSetTexCoord   (undoStep);
-	redoSetColor      (undoStep);
 	redoSetFogCoord   (undoStep);
 	redoSetCoordIndex (undoStep);
 

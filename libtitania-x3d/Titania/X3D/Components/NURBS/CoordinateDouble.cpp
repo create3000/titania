@@ -152,6 +152,12 @@ CoordinateDouble::addVertex (std::vector <Vector3d> & vertices, const size_t ind
 }
 
 void
+CoordinateDouble::assignPoints (const std::vector <Vector3d> points)
+{
+	point () .assign (points .begin (), points .end ());
+}
+
+void
 CoordinateDouble::erasePoint (const size_t index)
 {
 	point () .erase (point () .begin () + index);
