@@ -127,6 +127,11 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	undoSetCoord         (undoStep);
 
 	set_copyGeometry ();
+
+	addColorIndex ();
+	addTexCoordIndex ();
+	addNormalIndex ();
+
 	deleteFaces (getSelectedFaces ());
 
 	// Remove degenerated edges and faces.
