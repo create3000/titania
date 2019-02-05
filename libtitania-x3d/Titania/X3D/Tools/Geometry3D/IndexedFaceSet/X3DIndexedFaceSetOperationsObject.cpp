@@ -126,10 +126,6 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	undoSetNormal        (undoStep);
 	undoSetCoord         (undoStep);
 
-	addColorIndex ();
-	addTexCoordIndex ();
-	addNormalIndex ();
-
 	set_copyGeometry ();
 	deleteFaces (getSelectedFaces ());
 
@@ -161,6 +157,10 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 {
 	const auto modelMatrix = X3DEditor::getModelMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
 	const auto geometry    = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
+
+	addColorIndex ();
+	addTexCoordIndex ();
+	addNormalIndex ();
 
 	geometry -> solid ()           = solid ();
 	geometry -> ccw ()             = determinant (modelMatrix) >= 0 ? ccw () : not ccw ();
@@ -225,8 +225,6 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 			{
 				if (colorPerVertex ())
 					colorArray .emplace (getVertexColorIndex (vertex), colorArray .size ());
-				else
-					colorArray .emplace (getFaceColorIndex (faceNumber), colorArray .size ());
 			}
 
 			if (texCoord)
@@ -236,11 +234,21 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 			{
 				if (normalPerVertex ())
 					normalArray .emplace (getVertexNormalIndex (vertex), normalArray .size ());
-				else
-					normalArray .emplace (getFaceNormalIndex (faceNumber), normalArray .size ());
 			}
 
 			coordArray .emplace (coordIndex () .get1Value (vertex), coordArray .size ());
+		}
+
+		if (color)
+		{
+			if (not colorPerVertex ())
+				colorArray .emplace (getFaceColorIndex (faceNumber), colorArray .size ());
+		}
+
+		if (normal)
+		{
+			if (not normalPerVertex ())
+				normalArray .emplace (getFaceNormalIndex (faceNumber), normalArray .size ());
 		}
 	}
 
@@ -303,8 +311,9 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 		if (color)
 		{
 			if (colorPerVertex ())
+			{
 			   geometry -> colorIndex () .emplace_back (-1);
-
+			}
 			else
 			{
 				try
@@ -324,8 +333,9 @@ X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 		if (normal)
 		{
 			if (normalPerVertex ())
+			{
 			   geometry -> normalIndex () .emplace_back (-1);
-
+			}
 			else
 			{
 				try
