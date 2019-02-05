@@ -328,24 +328,28 @@ Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & geometryNode : geometryNodes)
 	{
-		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex    ()), geometryNode -> colorIndex    ());
-		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex ()), geometryNode -> texCoordIndex ());
-		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode -> normalIndex   ());
-		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> color         ()), geometryNode -> color         ());
-		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord      ()), geometryNode -> texCoord      ());
-		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal        ()), geometryNode -> normal        ());
+		undoStep -> addUndoFunction (&SFBool::setValue,  std::ref (geometryNode -> colorPerVertex  ()), geometryNode -> colorPerVertex ());
+		undoStep -> addUndoFunction (&SFBool::setValue,  std::ref (geometryNode -> normalPerVertex ()), geometryNode -> normalPerVertex ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex      ()), geometryNode -> colorIndex    ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex   ()), geometryNode -> texCoordIndex ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex     ()), geometryNode -> normalIndex   ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> color           ()), geometryNode -> color         ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord        ()), geometryNode -> texCoord      ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal          ()), geometryNode -> normal        ());
 	}
 
 	combine (executionContext, geometryNodes, targetGeometry, targetCoord, targetMatrix);
 
 	for (const auto & geometryNode : geometryNodes)
 	{
-		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex    ()), geometryNode-> colorIndex    ());
-		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex ()), geometryNode-> texCoordIndex ());
-		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode-> normalIndex   ());
-		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> color         ()), geometryNode-> color         ());
-		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord      ()), geometryNode-> texCoord      ());
-		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal        ()), geometryNode-> normal        ());
+		undoStep -> addRedoFunction (&SFBool::setValue,  std::ref (geometryNode -> colorPerVertex  ()), geometryNode -> colorPerVertex ());
+		undoStep -> addRedoFunction (&SFBool::setValue,  std::ref (geometryNode -> normalPerVertex ()), geometryNode -> normalPerVertex ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex      ()), geometryNode -> colorIndex    ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex   ()), geometryNode -> texCoordIndex ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex     ()), geometryNode -> normalIndex   ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> color           ()), geometryNode -> color         ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord        ()), geometryNode -> texCoord      ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal          ()), geometryNode -> normal        ());
 	}
 
 	// Replace node
