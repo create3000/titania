@@ -328,8 +328,6 @@ Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & geometryNode : geometryNodes)
 	{
-		undoStep -> addUndoFunction (&SFBool::setValue,  std::ref (geometryNode -> colorPerVertex  ()), geometryNode -> colorPerVertex ());
-		undoStep -> addUndoFunction (&SFBool::setValue,  std::ref (geometryNode -> normalPerVertex ()), geometryNode -> normalPerVertex ());
 		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex      ()), geometryNode -> colorIndex    ());
 		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex   ()), geometryNode -> texCoordIndex ());
 		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex     ()), geometryNode -> normalIndex   ());
@@ -342,8 +340,6 @@ Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & geometryNode : geometryNodes)
 	{
-		undoStep -> addRedoFunction (&SFBool::setValue,  std::ref (geometryNode -> colorPerVertex  ()), geometryNode -> colorPerVertex ());
-		undoStep -> addRedoFunction (&SFBool::setValue,  std::ref (geometryNode -> normalPerVertex ()), geometryNode -> normalPerVertex ());
 		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex      ()), geometryNode -> colorIndex    ());
 		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex   ()), geometryNode -> texCoordIndex ());
 		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex     ()), geometryNode -> normalIndex   ());
