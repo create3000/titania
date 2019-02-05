@@ -1302,7 +1302,7 @@ IndexedFaceSet::mergePoints (const double distance)
 
 	// Rewrite coord point.
 
-	if (getFogCoord ())
+	if (getFogCoord () and getFogCoord () -> getSize ())
 	{
 		std::vector <float> depths (map .size ());
 
