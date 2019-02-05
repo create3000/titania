@@ -503,6 +503,9 @@ IndexedFaceSet::isPerVertex (const MFInt32 & indices) const
 void
 IndexedFaceSet::addColorIndex ()
 {
+	if (not getColor ())
+		return;
+
 	if (colorIndex () .size ())
 		return;
 
@@ -525,12 +528,18 @@ IndexedFaceSet::addColorIndex ()
 void
 IndexedFaceSet::addTexCoordIndex ()
 {
+	if (not getTexCoord ())
+		return;
+
 	texCoordIndex () = coordIndex ();
 }
 
 void
 IndexedFaceSet::addNormalIndex ()
 {
+	if (not getNormal ())
+		return;
+
 	if (normalIndex () .size ())
 		return;
 
