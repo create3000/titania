@@ -811,23 +811,20 @@ IndexedFaceSet::rebuildIndices ()
 {
 	std::vector <size_t> indices;
 	std::vector <size_t> faceNumbers;
-	std::vector <size_t> realFaceNumbers;
 
-	size_t faceIndex      = 0;
-	size_t faceNumber     = 0;
-	size_t realFaceNumber = 0;
-	size_t count          = 0;
+	size_t faceIndex  = 0;
+	size_t faceNumber = 0;
+	size_t count      = 0;
 
 	for (const int32_t index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
 		{
-			rebuildIndices (faceIndex, faceNumber, realFaceNumber, count, indices, faceNumbers, realFaceNumbers);
+			rebuildIndices (faceIndex, faceNumber, count, indices, faceNumbers);
 
-			faceIndex      += count + 1;
-			faceNumber     += 1;
-			realFaceNumber += index == -1;
-			count           = 0;
+			faceIndex  += count + 1;
+			faceNumber += index == -1;
+			count       = 0;
 			continue;
 		}
 
@@ -903,7 +900,7 @@ IndexedFaceSet::rebuildIndices ()
 		{
 			std::vector <Color4f> colors;
 
-			for (const auto & faceNumber : realFaceNumbers)
+			for (const auto & faceNumber : faceNumbers)
 			{
 				colors .emplace_back (getColor () -> get1Color (faceNumber));
 			}
@@ -918,7 +915,7 @@ IndexedFaceSet::rebuildIndices ()
 		{
 			std::vector <Vector3f> vectors;
 
-			for (const auto & faceNumber : realFaceNumbers)
+			for (const auto & faceNumber : faceNumbers)
 			{
 				vectors .emplace_back (getNormal () -> get1Vector (faceNumber));
 			}
@@ -931,11 +928,9 @@ IndexedFaceSet::rebuildIndices ()
 void
 IndexedFaceSet::rebuildIndices (const size_t faceIndex,
                                 const size_t faceNumber,
-                                const size_t realFaceNumber,
                                 const size_t count,
                                 std::vector <size_t> & indices,
-                                std::vector <size_t> & faceNumbers,
-                                std::vector <size_t> & realFaceNumbers)
+                                std::vector <size_t> & faceNumbers)
 {
 	const auto size = indices .size ();
 
@@ -956,7 +951,6 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	{
 		indices .emplace_back (faceIndex + count);
 		faceNumbers .emplace_back (faceNumber);
-		realFaceNumbers .emplace_back (realFaceNumber);
 	}
 }
 
