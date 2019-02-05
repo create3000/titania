@@ -301,9 +301,11 @@ private:
 	void
 	rebuildIndices (const size_t faceIndex,
 	                const size_t faceNumber,
+	                const size_t realFaceNumber,
 	                const size_t count,
 	                std::vector <size_t> & indices,
-	                std::vector <size_t> & faceNumbers);
+	                std::vector <size_t> & faceNumbers,
+	                std::vector <size_t> & realFaceNumbers);
 
 	void
 	rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoord, const std::map <int32_t, int32_t> & map);

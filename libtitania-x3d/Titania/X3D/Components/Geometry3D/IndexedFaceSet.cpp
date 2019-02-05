@@ -811,20 +811,23 @@ IndexedFaceSet::rebuildIndices ()
 {
 	std::vector <size_t> indices;
 	std::vector <size_t> faceNumbers;
+	std::vector <size_t> realFaceNumbers;
 
-	size_t faceIndex  = 0;
-	size_t faceNumber = 0;
-	size_t count      = 0;
+	size_t faceIndex      = 0;
+	size_t faceNumber     = 0;
+	size_t realFaceNumber = 0;
+	size_t count          = 0;
 
 	for (const int32_t index : basic::make_const_range (coordIndex ()))
 	{
 		if (index < 0)
 		{
-			rebuildIndices (faceIndex, faceNumber, count, indices, faceNumbers);
+			rebuildIndices (faceIndex, faceNumber, realFaceNumber, count, indices, faceNumbers, realFaceNumbers);
 
-			faceIndex  += count + 1;
-			faceNumber += 1;
-			count       = 0;
+			faceIndex      += count + 1;
+			faceNumber     += 1;
+			realFaceNumber += index == -1;
+			count           = 0;
 			continue;
 		}
 
@@ -893,14 +896,46 @@ IndexedFaceSet::rebuildIndices ()
 	texCoordIndex () = texCoord;
 	normalIndex ()   = normal;
 	coordIndex ()    = coord;
+
+	if (getColor () and getColor () -> getSize ())
+	{
+		if (not colorPerVertex () and colorIndex () .empty ())
+		{
+			std::vector <Color4f> colors;
+
+			for (const auto & faceNumber : realFaceNumbers)
+			{
+				colors .emplace_back (getColor () -> get1Color (faceNumber));
+			}
+
+			getColor () -> assignColors (colors);
+		}
+	}
+
+	if (getNormal () and getNormal () -> getSize ())
+	{
+		if (not normalPerVertex () and normalIndex () .empty ())
+		{
+			std::vector <Vector3f> vectors;
+
+			for (const auto & faceNumber : realFaceNumbers)
+			{
+				vectors .emplace_back (getNormal () -> get1Vector (faceNumber));
+			}
+
+			getNormal () -> assignVectors (vectors);
+		}
+	}
 }
 
 void
 IndexedFaceSet::rebuildIndices (const size_t faceIndex,
                                 const size_t faceNumber,
+                                const size_t realFaceNumber,
                                 const size_t count,
                                 std::vector <size_t> & indices,
-                                std::vector <size_t> & faceNumbers)
+                                std::vector <size_t> & faceNumbers,
+                                std::vector <size_t> & realFaceNumbers)
 {
 	const auto size = indices .size ();
 
@@ -921,6 +956,7 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	{
 		indices .emplace_back (faceIndex + count);
 		faceNumbers .emplace_back (faceNumber);
+		realFaceNumbers .emplace_back (realFaceNumber);
 	}
 }
 
@@ -933,6 +969,9 @@ IndexedFaceSet::rebuildColor ()
 	const X3DPtr <X3DColorNode> colorNode (color ());
 
 	if (not colorNode)
+	   return map;
+
+	if (not colorPerVertex () and colorIndex () .empty ())
 	   return map;
 
 	// Build indices map
@@ -962,38 +1001,12 @@ IndexedFaceSet::rebuildColor ()
 
 	// Rebuild node
 	   
-	switch (colorNode -> getType () .back ())
-	{
-		case X3DConstants::Color:
-		{
-			const X3DPtr <Color> node (colorNode);
+	std::vector <Color4f> colors;
 
-			std::vector <Color3f> colors;
+	for (const auto & pair : map)
+	   colors .emplace_back (colorNode -> get1Color (pair .first));
 
-			for (const auto & pair : map)
-			{
-				const auto c = node -> get1Color (pair .first);
-				colors .emplace_back (c .r (), c .g (), c .b ());
-			}
-
-			node -> color () .assign (colors .cbegin (), colors .cend ());
-			break;
-		}
-		case X3DConstants::ColorRGBA:
-		{
-			const X3DPtr <ColorRGBA> node (colorNode);
-
-			std::vector <Color4f> colors;
-
-			for (const auto & pair : map)
-			   colors .emplace_back (node -> get1Color (pair .first));
-
-			node -> color () .assign (colors .cbegin (), colors .cend ());
-			break;
-		}
-		default:
-		   break;
-	}
+	colorNode -> assignColors (colors);
 
 	return map;
 }
@@ -1120,6 +1133,9 @@ IndexedFaceSet::rebuildNormal ()
 	if (not normalNode)
 	   return map;
 
+	if (not normalPerVertex () and normalIndex () .empty ())
+	   return map;
+
 	// Build indices map
 
 	for (const auto & index : basic::make_const_range (normalIndex () .empty () ? coordIndex () : normalIndex ()))
@@ -1147,23 +1163,12 @@ IndexedFaceSet::rebuildNormal ()
 
 	// Rebuild node
 	   
-	switch (normalNode -> getType () .back ())
-	{
-		case X3DConstants::Normal:
-		{
-			const X3DPtr <Normal> node (normalNode);
+	std::vector <Vector3f> normals;
 
-			std::vector <Vector3f> normals;
+	for (const auto & pair : map)
+	   normals .emplace_back (normalNode -> get1Vector (pair .first));
 
-			for (const auto & pair : map)
-			   normals .emplace_back (node -> get1Vector (pair .first));
-
-			node -> vector () .assign (normals .cbegin (), normals .cend ());
-			break;
-		}
-		default:
-		   break;
-	}
+	normalNode -> assignVectors (normals);
 
 	return map;
 }
@@ -1206,57 +1211,48 @@ IndexedFaceSet::rebuildCoord ()
 
 	// Rebuild node
 
-	if (getFogCoord ())
+	if (getFogCoord () and getFogCoord () -> getSize ())
 	{
 		std::vector <float> depths;
 
 		for (const auto & pair : map)
 		   depths .emplace_back (getFogCoord () -> get1Depth (pair .first));
 
-		getFogCoord () -> depth () .assign (depths .cbegin (), depths .cend ());
+		getFogCoord () -> assignDepths (depths);
 	}
 
-	switch (coordNode -> getType () .back ())
+	if (getColor () and getColor () -> getSize ())
 	{
-		case X3DConstants::Coordinate:
+		if (colorPerVertex () and colorIndex () .empty ())
 		{
-			const X3DPtr <Coordinate> coordinate (coordNode);
-
-			std::vector <Vector3f> points;
-
+			std::vector <Color4f> colors;
+	
 			for (const auto & pair : map)
-			   points .emplace_back (coordinate -> get1Point (pair .first));
-
-			coordinate -> point () .assign (points .cbegin (), points .cend ());
-			break;
+			   colors .emplace_back (getColor () -> get1Color (pair .first));
+	
+			getColor () -> assignColors (colors);
 		}
-		case X3DConstants::CoordinateDouble:
-		{
-			const X3DPtr <CoordinateDouble> coordinate (coordNode);
-
-			std::vector <Vector3d> points;
-
-			for (const auto & pair : map)
-			   points .emplace_back (coordinate -> get1Point (pair .first));
-
-			coordinate -> point () .assign (points .cbegin (), points .cend ());
-			break;
-		}
-		case X3DConstants::GeoCoordinate:
-		{
-			const X3DPtr <GeoCoordinate> coordinate (coordNode);
-
-			std::vector <Vector3d> points;
-
-			for (const auto & pair : map)
-			   points .emplace_back (coordinate -> get1Point (pair .first));
-
-			coordinate -> point () .assign (points .cbegin (), points .cend ());
-			break;
-		}
-		default:
-		   break;
 	}
+
+	if (getNormal () and getNormal () -> getSize ())
+	{
+		if (normalPerVertex () and normalIndex () .empty ())
+		{
+			std::vector <Vector3f> vectors;
+	
+			for (const auto & pair : map)
+			   vectors .emplace_back (getNormal () -> get1Vector (pair .first));
+	
+			getNormal () -> assignVectors (vectors);
+		}
+	}
+
+	std::vector <Vector3d> points;
+
+	for (const auto & pair : map)
+	   points .emplace_back (coordNode -> get1Point (pair .first));
+
+	coordNode -> assignPoints (points);
 
 	return map;
 }

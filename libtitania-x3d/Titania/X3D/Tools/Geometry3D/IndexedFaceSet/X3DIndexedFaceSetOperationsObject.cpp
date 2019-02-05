@@ -915,9 +915,9 @@ X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & se
 	std::vector <int32_t> points;
 
 	const auto fogCoord  = getFogCoord () and getFogCoord () -> getSize ();
-	const auto colors    = getColor ()    and getColor ()    -> getSize () and colorIndex ()    .empty ();
+	const auto colors    = getColor ()    and getColor ()    -> getSize () and colorIndex ()    .empty () and colorPerVertex ();
 	const auto texCoords = getTexCoord () and getTexCoord () -> getSize () and texCoordIndex () .empty ();
-	const auto normals   = getNormal ()   and getNormal ()   -> getSize () and normalIndex ()   .empty ();
+	const auto normals   = getNormal ()   and getNormal ()   -> getSize () and normalIndex ()   .empty () and normalPerVertex ();
 
 	for (const auto & index : selectedPoints)
 	{
