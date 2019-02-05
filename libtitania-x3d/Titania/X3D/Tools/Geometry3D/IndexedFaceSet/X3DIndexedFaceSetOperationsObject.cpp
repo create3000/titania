@@ -407,6 +407,9 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		auto       geometries   = X3DEditor::getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
 		const auto targetMatrix = inverse (X3DEditor::getModelMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
 
+		undoStep -> addUndoFunction (&SFBool::setValue, std::ref (colorPerVertex ()),  colorPerVertex ());
+		undoStep -> addUndoFunction (&SFBool::setValue, std::ref (normalPerVertex ()), normalPerVertex ());
+
 		undoRestoreSelection (undoStep);
 		undoSetColorIndex    (undoStep);
 		undoSetTexCoordIndex (undoStep);
@@ -433,6 +436,9 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 		redoSetNormalIndex   (undoStep);
 		redoSetTexCoordIndex (undoStep);
 		redoSetColorIndex    (undoStep);
+
+		undoStep -> addRedoFunction (&SFBool::setValue, std::ref (colorPerVertex ()),  colorPerVertex ());
+		undoStep -> addRedoFunction (&SFBool::setValue, std::ref (normalPerVertex ()), normalPerVertex ());
 
 		redoRestoreSelectedFaces (selection, undoStep);
 		replaceSelectedFaces () .assign (selection .cbegin (), selection .cend ());
