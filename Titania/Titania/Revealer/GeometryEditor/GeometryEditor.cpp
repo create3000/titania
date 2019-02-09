@@ -202,6 +202,8 @@ GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 	browser = value;
 
 	browser -> getViewer () .addInterest (&GeometryEditor::set_viewer, this);
+
+	set_viewer ();
 }
 
 void
@@ -377,9 +379,6 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 void
 GeometryEditor::set_viewer ()
 {
-	if (not getBrowserWindow () -> getSelection () -> getEnabled ())
-		return;
-
 	switch (getCurrentBrowser () -> getCurrentViewer ())
 	{
 		case X3D::X3DConstants::RectangleSelection:
@@ -865,7 +864,7 @@ GeometryEditor::on_edit_toggled ()
 			getBrowserWindow () -> getHandButton () .set_active (true);
 	
 		// Restore viewer.
-	
+
 		getCurrentBrowser () -> setViewerType (privateViewer);
 	}
 }
