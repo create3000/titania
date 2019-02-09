@@ -115,15 +115,21 @@ public:
 
 	///  @name Outputs
 
-	virtual
 	SFBool &
 	initialized ()
 	{ return initializedOutput; }
 
-	virtual
 	const SFBool &
 	initialized () const
 	{ return initializedOutput; }
+
+	SFBool &
+	shutdowned ()
+	{ return shutdownOutput; }
+
+	const SFBool &
+	shutdowned () const
+	{ return shutdownOutput; }
 
 	const Output &
 	prepareEvents () const
@@ -263,12 +269,12 @@ protected:
 	bool
 	on_render () override;
 
-
 private:
 
 	///  @name Members
 
 	SFBool initializedOutput;
+	SFBool shutdownOutput;
 	Output pickedOutput;
 	Output prepareEventsOutput;
 	Output timeEventsOutput;

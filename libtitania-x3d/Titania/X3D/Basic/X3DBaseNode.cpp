@@ -130,7 +130,7 @@ namespace X3D {
  *      executionContext -> realize ();
  */
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
-	     X3DParentObject (browser),
+	      X3DEventObject (browser),
 	    executionContext (executionContext), // must be atomic
 	          nameOutput (),
 	                type ({ X3DConstants::X3DBaseNode }),
@@ -156,7 +156,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 void
 X3DBaseNode::setup ()
 {
-	X3DParentObject::setup ();
+	X3DEventObject::setup ();
 
 	executionContext -> addParent (this);
 
@@ -413,7 +413,7 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 void
 X3DBaseNode::setName (const std::string & value)
 {
-	X3DParentObject::setName (value);
+	X3DEventObject::setName (value);
 
 	nameOutput = SFTime::now ();
 }
@@ -434,23 +434,26 @@ X3DBaseNode::getCurrentTime () const
 void
 X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 {
-	if (value not_eq executionContext)
+	if (isInitialized ())
 	{
-		if (isInitialized ())
+		if (value not_eq executionContext)
 		{
 			value -> addParent (this);
 			executionContext -> removeParent (this);
+
+			executionContext = value;
 		}
 
-		executionContext = value;
-	}
-
-	// Replace browser as last step!
-
-	setBrowser (executionContext -> getBrowser ());
-
-	if (isInitialized ())
+		// Replace browser as last step!
+	
+		setBrowser (executionContext -> getBrowser ());
 		getBrowser () -> addEvent ();
+	}
+	else
+	{
+		executionContext = value;
+		setBrowser (executionContext -> getBrowser ());
+	}
 }
 
 /***
@@ -629,7 +632,7 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 		else
 		{
 			//  If field is a pre defined field, we defer dispose.
-			X3DParentObject::disposed () .addInterest (&X3DFieldDefinition::removeParent, field -> second, this);
+			X3DEventObject::disposed () .addInterest (&X3DFieldDefinition::removeParent, field -> second, this);
 		}
 	
 		if (not privateState)
@@ -2344,7 +2347,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 void
 X3DBaseNode::dispose ()
 {
-	X3DParentObject::dispose ();
+	X3DEventObject::dispose ();
 
 	for (const auto & [name, field] : fields)
 	{

@@ -179,9 +179,6 @@ private:
 	set_initialized ();
 	
 	void
-	set_shutdown ();
-	
-	void
 	set_sceneGraph ();
 
 	///  @name Operations
@@ -203,6 +200,12 @@ private:
 
 	Hierarchies
 	findNode (const SFNode & parent, const SFNode & node) const;
+	
+	///  @name Destruction
+
+	virtual
+	void
+	shutdown () final override;
 
 	///  @name Static members
 

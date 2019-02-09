@@ -100,7 +100,7 @@ const std::map <std::string, int32_t> ExternalToolsEditor::applicabilityTypes = 
 };
 
 ExternalToolsEditor::ExternalToolsEditor (X3DBrowserWindow* const browserWindow) :
-	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	               X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DExternalToolsEditorInterface (get_ui ("Editors/ExternalToolsEditor.glade")),
 	         X3DExternalToolsEditor (),
 	                           keys (),

@@ -122,7 +122,7 @@ template <class Type, class ToggleButtonType>
 X3DFieldToggleButton <Type, ToggleButtonType>::X3DFieldToggleButton (X3DBaseInterface* const editor,
                                                    ToggleButtonType & toggleButton,
                                                    const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	     toggleButton (toggleButton),
 	            nodes (),

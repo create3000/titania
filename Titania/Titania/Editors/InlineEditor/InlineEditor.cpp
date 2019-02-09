@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	        X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DInlineEditorInterface (get_ui ("Editors/InlineEditor.glade")),
 	                nodeName (this, getNameEntry (), getRenameButton ()),
 	                    load (this, getLoadCheckButton (),  "load"),

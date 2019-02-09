@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 FogCoordinateEditor::FogCoordinateEditor (X3DBrowserWindow* const browserWindow) :
-	               X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	               X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFogCoordinateEditorInterface (get_ui ("Revealer/FogCoordinateEditor.glade")),
 	            indexedFaceSetNodes (),
 	               fogCoordUndoStep (),

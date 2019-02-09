@@ -58,7 +58,7 @@ MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
                                             const std::string & name,
                                             const size_t index,
                                             const std::string & defaultValue) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	     comboBoxText (comboBoxText),
 	            nodes (),

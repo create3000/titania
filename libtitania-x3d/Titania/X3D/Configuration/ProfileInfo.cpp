@@ -64,7 +64,8 @@ ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, c
 	   providerUrl ("http://titania.create3000.de"),
 	    components (new ComponentInfoArray (componentList))
 {
-	components .addParent (this);
+	addChildObjects (components);
+	setup ();
 }
 
 ProfileInfo*
@@ -109,8 +110,6 @@ ProfileInfo::toJSONStream (std::ostream & ostream) const
 void
 ProfileInfo::dispose ()
 {
-	components .dispose ();
-
 	X3DChildObject::dispose ();
 }
 

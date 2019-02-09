@@ -60,7 +60,7 @@ BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
                                 Gtk::Box & box,
                                 const std::string & positionName,
                                 const std::string & colorName) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	  X3DGradientTool (editor, description, box, positionName, colorName)
 {
 	setup ();

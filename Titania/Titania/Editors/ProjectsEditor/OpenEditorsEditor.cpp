@@ -70,7 +70,7 @@ struct OpenEditorsEditor::Columns
 };
 
 OpenEditorsEditor::OpenEditorsEditor (X3DBrowserWindow* const browserWindow, ProjectsEditor* const projectsEditor) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	             X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DOpenEditorsEditorInterface (get_ui ("Editors/OpenEditorsEditor.glade")),
 	               projectsEditor (projectsEditor)
 {

@@ -303,7 +303,7 @@ X3DBrowserNotebook::getPage (const basic::uri & URL) const
 void
 X3DBrowserNotebook::setPage (const NotebookPagePtr & value)
 {
-	browser -> shutdown ()    .removeInterest (&X3DBrowserNotebook::set_shutdown,         this);
+	browser -> shutdowned ()  .removeInterest (&X3DBrowserNotebook::shutdown,             this);
 	browser -> initialized () .removeInterest (&X3DBrowserNotebook::set_executionContext, this);
 	browser -> getUrlError () .removeInterest (&X3DBrowserNotebook::set_urlError,         this);
 
@@ -318,7 +318,7 @@ X3DBrowserNotebook::setPage (const NotebookPagePtr & value)
 	
 	page -> updateTitle ();
 
-	browser -> shutdown ()    .addInterest (&X3DBrowserNotebook::set_shutdown,         this);
+	browser -> shutdowned ()  .addInterest (&X3DBrowserNotebook::shutdown,             this);
 	browser -> initialized () .addInterest (&X3DBrowserNotebook::set_executionContext, this);
 	browser -> getUrlError () .addInterest (&X3DBrowserNotebook::set_urlError,         this);
 
@@ -550,7 +550,6 @@ X3DBrowserNotebook::close (const NotebookPagePtr page)
 
 	// Remove page.
 
-	page -> shutdown ();
 	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
 
 	if (pages .empty ())
@@ -588,8 +587,6 @@ X3DBrowserNotebook::quit ()
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL .escape ());
-
-		page -> shutdown ();
 	}
 
 	auto currentPage = getBrowserNotebook () .get_current_page ();

@@ -68,13 +68,24 @@ class X3DChildObject :
 {
 public:
 
+	///  @name Contruction
+
+	///  Initializes this object.
+	virtual
+	void
+	setup ();
+
 	///  @name Reference handling
 
 	///  Returns the number of strong references of this object.  Weak references are not counted.
-	virtual
 	size_t
 	getReferenceCount () const
-	{ return parents .size (); }
+	{ return referenceCount; }
+
+	///  Returns number of weak references of this object.
+	size_t
+	getWeakReferenceCount () const
+	{ return getParents () .size () - getReferenceCount (); }
 
 	///  Add a parent to this object.
 	virtual
@@ -95,6 +106,16 @@ public:
 	const ChildObjectSet &
 	getParents () const
 	{ return parents; }
+
+	///  Add a weak parent to this object.
+	virtual
+	void
+	addWeakParent (X3DChildObject* const parent);
+
+	///  Remove a weak parent from this object.
+	virtual
+	void
+	removeWeakParent (X3DChildObject* const parent);
 
 	///  @name Clone handling
 
@@ -178,35 +199,43 @@ protected:
 	///  Constructs new X3DChildObject.
 	X3DChildObject ();
 
+	///  @name Children handling
+
+	///  Add this node as parent to all @a children.  See addChild.
+	template <class ... Args>
+	void
+	addChildObjects (Args & ... children)
+	{ (addChildObject (children), ...); }
+
+	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
+	virtual
+	void
+	addChildObject (X3DChildObject & child);
+
+	///  Remove this node as parent from all @a children.  See removeChild.
+	template <class ... Args>
+	void
+	removeChildObjects (Args & ... children)
+	{ (removeChildObject (children), ...); }
+
+	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
+	virtual
+	void
+	removeChildObject (X3DChildObject & child);
+
 	///  @name Reference handling
 
-	///  Add a weak parent to this object.
-	virtual
-	void
-	addWeakParent (X3DChildObject* const parent);
-
-	///  Remove a weak parent from this object.
-	virtual
-	void
-	removeWeakParent (X3DChildObject* const parent);
-
 	///  Handler that is called when the reference count should be incremented.
-	virtual
 	void
-	addReferenceCount ()
-	{ }
+	addReferenceCount ();
 
 	///  Handler that is called when the reference count should be decremented.
-	virtual
 	void
-	removeReferenceCount ()
-	{ }
+	removeReferenceCount ();
 
 	///  Handler that is called when the reference count should be set to 0.
-	virtual
 	void
-	clearReferenceCount ()
-	{ }
+	clearReferenceCount ();
 
 	///  @name Event handling
 
@@ -223,10 +252,9 @@ protected:
 
 	///  @name Destruction
 
-	///  Handler that is called when the shutdown service should be processed.
 	virtual
 	void
-	processShutdown ()
+	shutdown ()
 	{ }
 
 	///  Returns true if this object has root objects and collects in @a seen all objects seen.
@@ -245,8 +273,11 @@ private:
 
 	///  @name Members
 
-	ChildObjectSet  parents;
-	X3DChildObject* bestParent;
+	ChildObjectSet  parents;     // All parents
+	X3DChildObject* bestParent;  // Best parent to find root
+	ChildObjectSet  children;    // Internal used fields
+	size_t          referenceCount;
+	bool            inShutdown;
 	bool            tainted;
 
 };

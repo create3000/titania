@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 DefaultPhysicsModelEditor::DefaultPhysicsModelEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                    X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	 X3DDefaultPhysicsModelEditorInterface (get_ui ("Editors/DefaultPhysicsModelEditor.glade")),
 	X3DParticlePhysicsModelNodeInterface ()
 {

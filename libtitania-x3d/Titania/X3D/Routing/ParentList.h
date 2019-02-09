@@ -58,15 +58,14 @@
 namespace titania {
 namespace X3D {
 
-class X3DParentObject;
+class X3DEventObject;
 
-using ParentList = std::list <X3DParentObject*>;
+using ParentList = std::list <X3DEventObject*>;
 
 struct ParentId
 {
-	time_type time;
+	time_type            time;
 	ParentList::iterator iter;
-
 };
 
 } // X3D

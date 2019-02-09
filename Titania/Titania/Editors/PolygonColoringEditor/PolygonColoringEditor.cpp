@@ -73,7 +73,7 @@ namespace titania {
 namespace puck {
 
 PolygonColoringEditor::PolygonColoringEditor (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DPolygonColoringEditorInterface (get_ui ("Editors/PolygonColoringEditor.glade")),
 	                          preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/PolygonColoringEditorPreview.x3dv") })),
 	                      colorButton (this,

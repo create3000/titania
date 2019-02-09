@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 WindPhysicsModelEditor::WindPhysicsModelEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                    X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	  X3DWindPhysicsModelEditorInterface (get_ui ("Editors/WindPhysicsModelEditor.glade")),
 	X3DParticlePhysicsModelNodeInterface (),
 	                             enabled (this, getEnabledCheckButton (), "enabled"),

@@ -66,7 +66,7 @@ MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
                                       Gtk::Widget & ellipsoidBox,
                                       Gtk::Widget & gdBox,
                                       Gtk::Widget & utmBox) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	 coordinateSystem (coordinateSystem),
 	        ellipsoid (ellipsoid),

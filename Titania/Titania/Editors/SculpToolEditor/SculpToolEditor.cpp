@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
-	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	              X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	   X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade")),
 	       X3DSculpToolBrushEditor (),
 	X3DSculpToolBrushPaletteEditor (),

@@ -56,7 +56,7 @@ namespace puck {
 SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
                               Gtk::Entry & entry,
                               const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	            entry (entry),
 	            nodes (),

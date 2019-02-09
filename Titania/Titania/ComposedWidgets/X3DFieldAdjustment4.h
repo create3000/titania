@@ -197,7 +197,7 @@ X3DFieldAdjustment4 <Type>::X3DFieldAdjustment4 (X3DBaseInterface* const editor,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment4,
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
 	           widget (widget),

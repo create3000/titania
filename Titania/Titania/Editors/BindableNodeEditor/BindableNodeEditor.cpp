@@ -62,7 +62,7 @@ namespace titania {
 namespace puck {
 
 BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                    X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade")),
 	X3DNotebook <X3DBindableNodeEditorInterface> ()
 {

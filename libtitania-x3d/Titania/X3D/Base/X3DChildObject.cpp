@@ -36,8 +36,44 @@ X3DChildObject::X3DChildObject () :
 	X3DGarbageCollector (),
 	            parents (),
 	         bestParent (nullptr),
-	            tainted (false)
+	           children (),
+	     referenceCount (0),
+	         inShutdown (false),
+	            tainted (true)
 { }
+
+void
+X3DChildObject::setup ()
+{
+	for (const auto & child : children)
+		child -> setTainted (false);
+
+	setTainted (false);
+}
+
+/***
+ *  Adds this object as parent of @a child. After setup @a child is eventable.
+ */
+void
+X3DChildObject::addChildObject (X3DChildObject & child)
+{
+	child .setTainted (true);
+	child .addParent (this);
+
+	children .emplace (&child);
+}
+
+/***
+ *  This object will now not be longer a parent of @a child. If the reference count of @a child goes
+ *  to zero @a child will be disposed and garbage collected.
+ */
+void
+X3DChildObject::removeChildObject (X3DChildObject & child)
+{
+	children .erase (&child);
+
+	child .removeParent (this);
+}
 
 // Event handling
 
@@ -60,6 +96,9 @@ X3DChildObject::addEventObject (X3DChildObject* const, const EventPtr & event)
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
+	if (inShutdown)
+		return;
+
 	// Determine the best parent for the shortest way to a rooted object.
 
 	if ((not bestParent)
@@ -77,6 +116,9 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 void
 X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObject* const parentToAdd)
 {
+	if (inShutdown)
+		return;
+
 	// Determine the best guess for the shortest way to a rooted object.
 
 	if ((not bestParent)
@@ -110,6 +152,9 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 void
 X3DChildObject::removeParent (X3DChildObject* const parent)
 {
+	if (inShutdown)
+		return;
+
 	if (parents .erase (parent))
 	{
 		if (bestParent == parent)
@@ -122,7 +167,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			clearReferenceCount ();
 			parents .clear ();
 
-			processShutdown ();
+			shutdown ();
 			dispose ();
 
 			addDisposedObject (this);
@@ -143,7 +188,7 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		}
 
 		for (const auto & child : circle)
-			child -> processShutdown ();
+			child -> shutdown ();
 
 		for (const auto & child : circle)
 			child -> dispose ();
@@ -155,6 +200,9 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 void
 X3DChildObject::addWeakParent (X3DChildObject* const parent)
 {
+	if (inShutdown)
+		return;
+
 	// addWeakParent and removeWeakParent ensure that weak pointers can be found during traversal, for instance this is important
 	// for X3DBaseNode::replace.
 
@@ -166,10 +214,32 @@ X3DChildObject::addWeakParent (X3DChildObject* const parent)
 void
 X3DChildObject::removeWeakParent (X3DChildObject* const parent)
 {
+	if (inShutdown)
+		return;
+
 	if (bestParent == parent)
 		bestParent = nullptr;
 
 	parents .erase (parent);
+}
+
+void
+X3DChildObject::addReferenceCount ()
+{
+	++ referenceCount;
+}
+
+void
+X3DChildObject::removeReferenceCount ()
+{
+	-- referenceCount;
+}
+
+void
+X3DChildObject::clearReferenceCount ()
+{
+	referenceCount = 0;
+	inShutdown     = true;
 }
 
 /***
@@ -218,6 +288,11 @@ void
 X3DChildObject::dispose ()
 {
 	parents .clear ();
+
+	for (const auto & child : children)
+		child -> dispose ();
+
+	children .clear ();
 
 	X3DObject::dispose ();
 }

@@ -52,7 +52,7 @@
 #define __TITANIA_BASE_X3DBASE_INTERFACE_H__
 
 #include <Titania/X3D.h>
-#include <Titania/X3D/Base/X3DParentObject.h>
+#include <Titania/X3D/Base/X3DEventObject.h>
 #include <Titania/X3D/Editing/Undo/UndoStep.h>
 
 #include <Titania/X3D/Components/Core/WorldInfo.h>
@@ -68,7 +68,7 @@ class X3DBrowserWindow;
 
 class X3DBaseInterface :
 	virtual public sigc::trackable,
-	public X3D::X3DParentObject
+	public X3D::X3DEventObject
 {
 public:
 
@@ -253,11 +253,6 @@ protected:
 
 
 private:
-
-	/// @name Event handlers
-	 
-	void
-	set_browser (const X3D::BrowserPtr &);
 
 	/// @name Members
 

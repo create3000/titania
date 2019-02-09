@@ -59,7 +59,7 @@ EulerAdjustment::EulerAdjustment (X3DBaseInterface* const editor,
                                             const Glib::RefPtr <Gtk::Adjustment> & adjustmentZ,
                                             Gtk::Widget & widget,
                                             const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustmentX, adjustmentY, adjustmentZ }),
 	           widget (widget),

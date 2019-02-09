@@ -73,7 +73,7 @@ namespace puck {
 using namespace std::placeholders;
 
 MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	 importFunctions1 ({ std::pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
 	                     std::pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)) }),
 	 importFunctions2 ({ std::pair ("Background",     std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),

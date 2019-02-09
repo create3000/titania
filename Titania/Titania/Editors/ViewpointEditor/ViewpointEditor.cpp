@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
-	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	           X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DViewpointEditorInterface (get_ui ("Editors/ViewpointEditor.glade")),
 	         X3DViewpointEditor (),
 	    X3DOrthoViewpointEditor (),

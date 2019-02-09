@@ -78,7 +78,7 @@ static constexpr size_t FONT_ICON_HEIGHT = 96;
 static constexpr size_t FONT_ICON_WIDTH  = FONT_ICON_HEIGHT * 9;
 
 OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext, OutlineEditor* const outlineEditor) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	        X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	      X3DOutlineTreeView (executionContext),
 	         X3DEditorObject (),

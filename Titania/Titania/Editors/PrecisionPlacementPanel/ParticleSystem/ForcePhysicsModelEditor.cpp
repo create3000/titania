@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 ForcePhysicsModelEditor::ForcePhysicsModelEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                    X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	 X3DForcePhysicsModelEditorInterface (get_ui ("Editors/ForcePhysicsModelEditor.glade")),
 	X3DParticlePhysicsModelNodeInterface (),
 	                             enabled (this, getEnabledCheckButton (), "enabled"),

@@ -56,7 +56,7 @@ namespace puck {
 NormalTool::NormalTool (X3DBaseInterface* const editor,
                         Gtk::Box & box,
                         const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
 	          browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/NormalTool.x3dv") })),

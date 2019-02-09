@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 FogEditor::FogEditor (X3DBrowserWindow* const browserWindow) :
-	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	     X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFogEditorInterface (get_ui ("Editors/FogEditor.glade")),
 	              fogList (new FogList (browserWindow)),
 	             nodeName (this, getNameEntry (), getRenameButton ()),

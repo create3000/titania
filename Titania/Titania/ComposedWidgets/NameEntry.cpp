@@ -59,7 +59,7 @@ namespace puck {
 NameEntry::NameEntry (X3DBaseInterface* const editor,
                       Gtk::Entry & entry,
                       Gtk::Button & button) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	            entry (entry),
 	           button (button),

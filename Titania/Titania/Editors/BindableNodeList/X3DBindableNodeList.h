@@ -208,7 +208,7 @@ const int32_t X3DBindableNodeList <Type>::Weight::BOLD = 700;
 
 template <class Type>
 X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browserWindow) :
-	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	            X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DBindableNodeListInterface (get_ui ("Editors/BindableNodeList.glade")),
 	                     browser (getCurrentBrowser ()),
 	                 activeLayer (),

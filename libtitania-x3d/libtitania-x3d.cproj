@@ -576,8 +576,6 @@
     <None Include="Titania\X3D\Prototype\ExternProtoDeclaration.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.h" />
     <None Include="share\titania\tools\library\BooleanSwitch.x3dv" />
-    <None Include="Titania\X3D\Base\X3DReferenceObject.h" />
-    <None Include="Titania\X3D\Base\X3DParentObject.h" />
     <None Include="Titania\X3D\Routing\ChildrenList.h" />
     <None Include="Titania\X3D\Routing\ParentList.h" />
     <None Include="share\titania\tools\LightTool.x3dv" />
@@ -990,6 +988,7 @@
     <None Include="Titania\X3D\Tools\H-Anim\HAnimHumanoidTool.h" />
     <None Include="Titania\X3D\Tools\H-Anim\HAnimJointTool.h" />
     <None Include="Titania\X3D\Tools\H-Anim\HAnimSiteTool.h" />
+    <None Include="Titania\X3D\Base\X3DEventObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1375,8 +1374,6 @@
     <Compile Include="Titania\X3D\Prototype\ProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDevice.cpp" />
-    <Compile Include="Titania\X3D\Base\X3DReferenceObject.cpp" />
-    <Compile Include="Titania\X3D\Base\X3DParentObject.cpp" />
     <Compile Include="Titania\X3D\Execution\BindableNodeList.cpp" />
     <Compile Include="Titania\X3D\Rendering\FrameBuffer.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\GridTool.cpp" />
@@ -1673,6 +1670,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DBrowser.cpp" />
     <Compile Include="Titania\X3D\Browser\NURBS\NURBS.cpp" />
+    <Compile Include="Titania\X3D\Base\X3DEventObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -335,11 +335,6 @@ public:
 
 	virtual
 	const Output &
-	shutdown () const final override
-	{ return node -> shutdown (); }
-
-	virtual
-	const Output &
 	disposed () const final override
 	{ return node -> disposed (); }
 

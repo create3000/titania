@@ -115,8 +115,7 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{ }
+	dispose () override;
 
 	virtual
 	~X3DPointingDeviceSensorContext () override;
@@ -245,9 +244,6 @@ private:
 
 	void
 	set_cursor ();
-
-	void
-	set_shutdown ();
 
 	///  @name Operations
 

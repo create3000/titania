@@ -73,7 +73,7 @@ static constexpr size_t  PREVIEW_QUALITY = 90;
 static const std::string PREVIEW_TYPE    = "JPG";
 
 RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	          config (new Configuration ("RecentView"))
 {
 	// Don't use browserWindow here.

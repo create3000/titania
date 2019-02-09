@@ -61,9 +61,7 @@ X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),
 	            data ()
 {
-	// DEBUG rooted objects
-	//__LOG__ << (X3DChildObject*) this << std::endl;
-	//backtrace_fn (6);	           
+	X3DChildObject::setup ();
 }
 
 void

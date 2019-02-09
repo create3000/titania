@@ -91,7 +91,7 @@ constexpr X3D::Vector2d
 infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float>::infinity ());
 
 TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindow) :
-	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DTextureMappingEditorInterface (get_ui ("Editors/TextureMappingEditor.glade")),
 	                            left (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorLeftPreview.x3dv") })),
 	                           right (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorRightPreview.x3dv") })),

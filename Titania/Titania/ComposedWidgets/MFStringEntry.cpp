@@ -57,7 +57,7 @@ MFStringEntry::MFStringEntry (X3DBaseInterface* const editor,
                               Gtk::Box & box,
                               Gtk::Button & addButton,
                               const std::string & name) :
-	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DMFStringEntry (editor, box, addButton, name)
 {
 	setup ();

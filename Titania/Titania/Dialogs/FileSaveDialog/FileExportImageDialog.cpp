@@ -79,7 +79,7 @@ const std::set <std::string> FileExportImageDialog::knownFileTypes = {
 };
 
 FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWindow) :
-	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	     X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DBaseFileSaveDialog ()
 {
 	setName ("FileExportImageDialog");

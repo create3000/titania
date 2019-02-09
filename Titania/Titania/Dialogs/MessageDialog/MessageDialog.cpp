@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 MessageDialog::MessageDialog (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DMessageDialogInterface (get_ui ("Dialogs/MessageDialog.glade"))
 {
 	setup ();

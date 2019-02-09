@@ -76,7 +76,7 @@ static constexpr double SNAP_DISTANCE    = GRID_SIZE;
 static constexpr auto   SNAP_OFFSET      = X3D::Vector2d (7, 0);
 
 RouteGraphPage::RouteGraphPage (X3DBrowserWindow* const browserWindow, RouteGraph* const routeGraph, const std::string & pageName) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	          X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DRouteGraphPageInterface (get_ui ("Widgets/RouteGraphPage.glade")),
 	         X3DRouteGraphPage (),
 	                routeGraph (routeGraph),

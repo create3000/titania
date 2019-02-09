@@ -63,33 +63,27 @@
 namespace titania {
 namespace puck {
 
+///  Dummy constructor, which should never be called.
+X3DBaseInterface::X3DBaseInterface () :
+	X3DBaseInterface (nullptr, nullptr)
+{ }
+
 ///  Constructor.
 X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::Browser* const browser) :
-	     sigc::trackable (),
-	X3D::X3DParentObject (browser),
-	            typeName (),
-	       browserWindow (browserWindow)
+	    sigc::trackable (),
+	X3D::X3DEventObject (browser),
+	           typeName (),
+	      browserWindow (browserWindow)
 {
+	// Should never happen.
 	assert (browserWindow);
 }
 
-///  Dummy constructor.
-X3DBaseInterface::X3DBaseInterface () :
-	     sigc::trackable (),
-	X3D::X3DParentObject (nullptr),
-	            typeName (),
-	       browserWindow (nullptr)
-{
-	assert (false);
-}
-
-///  Setups this object.
+///  Setup this object.
 void
 X3DBaseInterface::setup ()
 {
-	X3D::X3DParentObject::setup ();
-
-	browserWindow -> getCurrentBrowser () .addInterest (&X3DBaseInterface::set_browser, this);
+	X3D::X3DEventObject::setup ();
 }
 
 ///  Return the master browser.
@@ -384,20 +378,13 @@ X3DBaseInterface::getContextFromPath (X3D::X3DExecutionContext* executionContext
 	return X3D::X3DExecutionContextPtr (executionContext);
 }
 
-///  Sets the current browser to the underlying X3DParentObject.
-void
-X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
-{
-	setBrowser (value);
-}
-
 ///  Disposed this on_show_all_objects_activated.
 void
 X3DBaseInterface::dispose ()
 {
 	notify_callbacks ();
 
-	X3D::X3DParentObject::dispose ();
+	X3D::X3DEventObject::dispose ();
 }
 
 /// Destructor

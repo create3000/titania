@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	         X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	  X3DLightEditorInterface (get_ui ("Editors/LightEditor.glade")),
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),

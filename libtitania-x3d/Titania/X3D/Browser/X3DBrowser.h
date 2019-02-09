@@ -285,6 +285,8 @@ private:
 	void
 	set_scene (const X3DScenePtr &);
 
+	///  @name 
+
 	///  @name Static members
 
 	static const std::string version;

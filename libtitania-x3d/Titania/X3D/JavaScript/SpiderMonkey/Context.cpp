@@ -526,8 +526,6 @@ Context::initialize ()
 
 		if (not getFunction ("shutdown", shutdownFunction .get ()))
 			shutdownFunction .reset ();
-
-		shutdown () .addInterest (&Context::set_shutdown, this);
 	}
 
 	JS_MaybeGC (cx);
@@ -638,7 +636,7 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 }
 
 void
-Context::set_shutdown ()
+Context::shutdown ()
 {
 	const JSAutoRequest ar (cx);
 	const JSAutoCompartment ac (cx, *global);
@@ -646,6 +644,8 @@ Context::set_shutdown ()
 
 	if (shutdownFunction)
 		call (*shutdownFunction);
+
+	X3D::X3DJavaScriptContext::shutdown ();
 }
 
 void

@@ -63,7 +63,7 @@ namespace titania {
 namespace puck {
 
 BackgroundImageEditor::BackgroundImageEditor (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DBackgroundImageEditorInterface (get_ui ("Editors/BackgroundImageEditor.glade")),
 	                             page (),
 	                         changing (false)

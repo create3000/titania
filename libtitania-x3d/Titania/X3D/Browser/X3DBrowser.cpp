@@ -351,7 +351,7 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 
 			//getClock () -> advance ();
 
-			shutdown () .processInterests ();
+			shutdowned () .processInterests ();
 
 			// Cancel replaceWorld if another replaceWorld was called in shutdown.
 

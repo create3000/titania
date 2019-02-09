@@ -69,7 +69,7 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
                                 Gtk::Box & box,
                                 Gtk::Label & formatLabel,
                                 Gtk::Label & loadStateLabel) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
 	      formatLabel (formatLabel),

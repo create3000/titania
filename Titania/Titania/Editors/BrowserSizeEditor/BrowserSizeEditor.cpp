@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 BrowserSizeEditor::BrowserSizeEditor (X3DBrowserWindow* const browserWindow) :
-	             X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	             X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DBrowserSizeEditorInterface (get_ui ("Editors/BrowserSizeEditor.glade")),
 	                     changing (false)
 {

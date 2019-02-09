@@ -88,6 +88,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                X3DTimeContext (),
 	                X3DToolContext (),
 	             initializedOutput (),
+	                shutdownOutput (),
 	           prepareEventsOutput (),
 	              timeEventsOutput (),
 	            sensorEventsOutput (),
@@ -110,7 +111,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 
 	addType (X3DConstants::X3DBrowserContext);
 
-	addChildObjects (initialized (),
+	addChildObjects (initializedOutput,
 	                 sharedContext,
 	                 dependentContext,
 	                 world,
@@ -444,7 +445,10 @@ X3DBrowserContext::on_render ()
 void
 X3DBrowserContext::dispose ()
 {
+	shutdownOutput .processInterests ();
+
 	initializedOutput   .dispose ();
+	shutdownOutput      .dispose ();
 	prepareEventsOutput .dispose ();
 	timeEventsOutput    .dispose ();
 	sensorEventsOutput  .dispose ();

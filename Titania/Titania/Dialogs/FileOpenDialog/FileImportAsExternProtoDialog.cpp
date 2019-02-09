@@ -70,7 +70,7 @@ static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed 
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
 
 FileImportAsExternProtoDialog::FileImportAsExternProtoDialog (X3DBrowserWindow* const browserWindow) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFileOpenDialog ()
 {
 	setName ("FileImportAsExternProtoDialog");

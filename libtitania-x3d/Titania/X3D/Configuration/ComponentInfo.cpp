@@ -63,7 +63,9 @@ ComponentInfo::ComponentInfo (const std::string & title, const std::string & nam
 	          name (name),
 	         level (level),
 	   providerUrl ("http://titania.create3000.de")
-{ }
+{
+	setup ();
+}
 
 void
 ComponentInfo::fromStream (std::istream & istream)

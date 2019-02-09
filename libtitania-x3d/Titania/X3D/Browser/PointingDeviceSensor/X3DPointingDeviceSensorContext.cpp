@@ -102,7 +102,6 @@ void
 X3DPointingDeviceSensorContext::initialize ()
 {
 	getBrowser () -> signal_map () .connect (sigc::mem_fun (this, &X3DPointingDeviceSensorContext::on_map));
-	getBrowser () -> shutdown () .addInterest (&X3DPointingDeviceSensorContext::set_shutdown, this);
 
 	getCursor ()        .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
 	getPrivateCursor () .addInterest (&X3DPointingDeviceSensorContext::set_cursor, this);
@@ -145,14 +144,6 @@ X3DPointingDeviceSensorContext::set_cursor ()
 
 		getBrowser () -> get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	}
-}
-
-void
-X3DPointingDeviceSensorContext::set_shutdown ()
-{
-	hits          .clear ();
-	overSensors   .clear ();
-	activeSensors .clear ();
 }
 
 bool
@@ -366,6 +357,15 @@ X3DPointingDeviceSensorContext::touch (const double x, const double y)
 	std::stable_sort (hits .begin (), hits .end (), HitComp { });
 
 	enabledSensors = { PointingDeviceSensorContainerSet () };
+}
+
+void
+X3DPointingDeviceSensorContext::dispose ()
+{
+	hits           .clear ();
+	enabledSensors .clear ();
+	overSensors    .clear ();
+	activeSensors  .clear ();
 }
 
 X3DPointingDeviceSensorContext::~X3DPointingDeviceSensorContext ()

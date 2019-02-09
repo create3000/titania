@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 FilesEditor::FilesEditor (X3DBrowserWindow* const browserWindow) :
-	                     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                     X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	              X3DFilesEditorInterface (get_ui ("Editors/FilesEditor.glade")),
 	X3DNotebook <X3DFilesEditorInterface> ()
 {

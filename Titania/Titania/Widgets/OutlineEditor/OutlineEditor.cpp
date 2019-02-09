@@ -76,7 +76,7 @@ namespace titania {
 namespace puck {
 
 OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	         X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("Widgets/OutlineEditor.glade")),
 	                 treeView (new OutlineTreeViewEditor (browserWindow, getCurrentContext (), this)),
 	               sceneGroup (),

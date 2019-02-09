@@ -97,7 +97,7 @@ Router::getTaintedChildren ()
 }
 
 ParentId
-Router::addTaintedParent (X3DParentObject* const parent)
+Router::addTaintedParent (X3DEventObject* const parent)
 {
 	parents .emplace_back (parent);
 

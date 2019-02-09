@@ -205,8 +205,9 @@ private:
 	void
 	eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue);
 
+	virtual
 	void
-	set_shutdown ();
+	shutdown () final override;
 
 	void
 	collectGarbage ();

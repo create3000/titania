@@ -131,7 +131,6 @@ IndexedLineSet::initialize ()
 	color ()    .addInterest (&IndexedLineSet::set_color,    this);
 	coord ()    .addInterest (&IndexedLineSet::set_coord,    this);
 	options ()  .addInterest (&IndexedLineSet::set_options,  this);
-	shutdown () .addInterest (&IndexedLineSet::set_shutdown, this);
 
 	set_attrib ();
 	set_fogCoord ();
@@ -411,10 +410,12 @@ IndexedLineSet::toPrimitive () const
 }
 
 void
-IndexedLineSet::set_shutdown ()
+IndexedLineSet::shutdown ()
 {
 	if (optionsNode)
 		optionsNode -> removeNode (this);
+
+	X3DLineGeometryNode::shutdown ();
 }
 
 IndexedLineSet::~IndexedLineSet ()

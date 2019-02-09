@@ -119,7 +119,7 @@ MFStringFamilyWidget::MFStringFamilyWidget (X3DUserInterface* const userInterfac
                                             const Glib::RefPtr <Gtk::TreeViewColumn> & fontChooserColumn,
                                             const Glib::RefPtr <Gtk::TreeViewColumn> & fileChooserColumn,
                                             const std::string & name) :
-	   X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getCurrentBrowser ()),
+	   X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getMasterBrowser ()),
 	  X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, "SERIF"),
 	      userInterface (userInterface),
 	  fontChooserColumn (fontChooserColumn),

@@ -63,7 +63,7 @@ namespace puck {
 using math::pi;
 
 GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
-	                     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                     X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.glade")),
 	                       X3DArc2DEditor (),
 	                  X3DArcClose2DEditor (),

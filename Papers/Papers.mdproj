@@ -199,7 +199,6 @@
     <None Include="OBJ.spec" />
     <None Include="Wavefront.txt" />
     <None Include="Separating Axis Theorem for Oriented Bounding Boxes.pdf" />
-    <None Include="JavaScript\V8.h" />
     <None Include="Papers.mdproj" />
     <None Include="Papers.pidb" />
     <None Include="An Exact Algorithm for Finding Minimum Oriented Bounding Boxes, Jukka Jylänki, 2015.html" />
@@ -261,7 +260,6 @@
     <Folder Include="natsort-0.1.0\" />
     <Folder Include="fluid\" />
     <Folder Include="GPU Gems 2 Chapter 46 - GPU Sort\" />
-    <Folder Include="JavaScript\" />
     <Folder Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\" />
     <Folder Include="javascript - Split one quadratic bezier curve into two - Stack Overflow_files\" />
   </ItemGroup>
@@ -277,7 +275,6 @@
     <Compile Include="xxx\Box3.cpp" />
     <Compile Include="xxx\PointingDevice.cpp" />
     <Compile Include="xxx\TextEditor.cpp" />
-    <Compile Include="JavaScript\V8.cpp" />
     <Compile Include="xxx\BrowserCellRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>

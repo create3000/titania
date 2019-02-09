@@ -60,7 +60,7 @@ MFStringURLEntry::MFStringURLEntry (X3DBaseInterface* const editor,
                                     Gtk::Button & addButton,
                                     Gtk::Button & reloadButton,
                                     const std::string & name) :
-	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DMFStringEntry (editor, box, addButton, name),
 	    reloadButton (reloadButton),
 	  fileOpenDialog ()

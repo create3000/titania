@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow, const X3D::BrowserPtr & browser_) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	      X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	       X3DEditorObject (),
 	               browser (browser_),
 	            viewerNode (),

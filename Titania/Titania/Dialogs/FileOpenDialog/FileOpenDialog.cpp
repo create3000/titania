@@ -76,7 +76,7 @@ static constexpr auto PDF_FILE_FILTER              = "Portable Document Format (
 static constexpr auto SVG_FILE_FILTER              = "SVG File (*.svg, *.svgz)";
 
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFileOpenDialog ()
 {
 	setName ("FileOpenDialog");

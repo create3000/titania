@@ -78,7 +78,7 @@ public:
 	isValid (const ChildId & childId) const;
 
 	ParentId
-	addTaintedParent (X3DParentObject* const parent);
+	addTaintedParent (X3DEventObject* const parent);
 
 	void
 	removeTaintedParent (const ParentId & parentId);

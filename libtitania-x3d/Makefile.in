@@ -138,12 +138,11 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Base/International.lo Titania/X3D/Base/Output.lo \
 	Titania/X3D/Base/X3DChildObject.lo \
+	Titania/X3D/Base/X3DEventObject.lo \
 	Titania/X3D/Base/X3DGarbargeCollector.lo \
 	Titania/X3D/Base/X3DInput.lo Titania/X3D/Base/X3DObject.lo \
-	Titania/X3D/Base/X3DOutput.lo \
-	Titania/X3D/Base/X3DParentObject.lo \
-	Titania/X3D/Base/X3DReferenceObject.lo \
-	Titania/X3D/Basic/FieldSet.lo Titania/X3D/Basic/X3DBaseNode.lo \
+	Titania/X3D/Base/X3DOutput.lo Titania/X3D/Basic/FieldSet.lo \
+	Titania/X3D/Basic/X3DBaseNode.lo \
 	Titania/X3D/Basic/X3DFieldDefinition.lo \
 	Titania/X3D/Bits/Error.lo Titania/X3D/Bits/Traverse.lo \
 	Titania/X3D/Browser/Browser.lo Titania/X3D/Browser/Console.lo \
@@ -823,12 +822,11 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Base/$(DEPDIR)/International.Plo \
 	Titania/X3D/Base/$(DEPDIR)/Output.Plo \
 	Titania/X3D/Base/$(DEPDIR)/X3DChildObject.Plo \
+	Titania/X3D/Base/$(DEPDIR)/X3DEventObject.Plo \
 	Titania/X3D/Base/$(DEPDIR)/X3DGarbargeCollector.Plo \
 	Titania/X3D/Base/$(DEPDIR)/X3DInput.Plo \
 	Titania/X3D/Base/$(DEPDIR)/X3DObject.Plo \
 	Titania/X3D/Base/$(DEPDIR)/X3DOutput.Plo \
-	Titania/X3D/Base/$(DEPDIR)/X3DParentObject.Plo \
-	Titania/X3D/Base/$(DEPDIR)/X3DReferenceObject.Plo \
 	Titania/X3D/Basic/$(DEPDIR)/FieldSet.Plo \
 	Titania/X3D/Basic/$(DEPDIR)/X3DBaseNode.Plo \
 	Titania/X3D/Basic/$(DEPDIR)/X3DFieldDefinition.Plo \
@@ -1743,12 +1741,11 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Base/International.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
+	Titania/X3D/Base/X3DEventObject.cpp \
 	Titania/X3D/Base/X3DGarbargeCollector.cpp \
 	Titania/X3D/Base/X3DInput.cpp \
 	Titania/X3D/Base/X3DObject.cpp \
 	Titania/X3D/Base/X3DOutput.cpp \
-	Titania/X3D/Base/X3DParentObject.cpp \
-	Titania/X3D/Base/X3DReferenceObject.cpp \
 	Titania/X3D/Basic/FieldSet.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
@@ -2525,6 +2522,8 @@ Titania/X3D/Base/Output.lo: Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Base/X3DChildObject.lo: Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Base/X3DEventObject.lo: Titania/X3D/Base/$(am__dirstamp) \
+	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Base/X3DGarbargeCollector.lo:  \
 	Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
@@ -2533,11 +2532,6 @@ Titania/X3D/Base/X3DInput.lo: Titania/X3D/Base/$(am__dirstamp) \
 Titania/X3D/Base/X3DObject.lo: Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Base/X3DOutput.lo: Titania/X3D/Base/$(am__dirstamp) \
-	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Base/X3DParentObject.lo: Titania/X3D/Base/$(am__dirstamp) \
-	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Base/X3DReferenceObject.lo:  \
-	Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Basic/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Basic
@@ -5427,12 +5421,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/International.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/Output.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DChildObject.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DEventObject.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DGarbargeCollector.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DInput.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DObject.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DOutput.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DParentObject.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DReferenceObject.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/FieldSet.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/X3DBaseNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/X3DFieldDefinition.Plo@am__quote@ # am--include-marker
@@ -6639,12 +6632,11 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Base/$(DEPDIR)/International.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/Output.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DChildObject.Plo
+	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DEventObject.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DGarbargeCollector.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DInput.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DObject.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DOutput.Plo
-	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DParentObject.Plo
-	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DReferenceObject.Plo
 	-rm -f Titania/X3D/Basic/$(DEPDIR)/FieldSet.Plo
 	-rm -f Titania/X3D/Basic/$(DEPDIR)/X3DBaseNode.Plo
 	-rm -f Titania/X3D/Basic/$(DEPDIR)/X3DFieldDefinition.Plo
@@ -7366,12 +7358,11 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Base/$(DEPDIR)/International.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/Output.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DChildObject.Plo
+	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DEventObject.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DGarbargeCollector.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DInput.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DObject.Plo
 	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DOutput.Plo
-	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DParentObject.Plo
-	-rm -f Titania/X3D/Base/$(DEPDIR)/X3DReferenceObject.Plo
 	-rm -f Titania/X3D/Basic/$(DEPDIR)/FieldSet.Plo
 	-rm -f Titania/X3D/Basic/$(DEPDIR)/X3DBaseNode.Plo
 	-rm -f Titania/X3D/Basic/$(DEPDIR)/X3DFieldDefinition.Plo

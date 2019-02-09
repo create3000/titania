@@ -56,7 +56,7 @@ namespace puck {
 RangeTool::RangeTool (X3DBaseInterface* const editor,
                       const std::string & description,
                       Gtk::Box & box) :
-	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	 X3DGradientTool (editor, description, box, "range", "color"),
 	         auxNode (),
 	  positionFactor (1)

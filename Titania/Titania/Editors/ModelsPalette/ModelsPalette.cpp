@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 ModelsPalette::ModelsPalette (X3DBrowserWindow* const browserWindow) :
-	                            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                            X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	                   X3DModelsPaletteInterface (get_ui ("Editors/ModelsPalette.glade")),
 	X3DPaletteEditor <X3DModelsPaletteInterface> ("Models")
 {

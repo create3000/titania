@@ -77,7 +77,7 @@ namespace titania {
 namespace puck {
 
 BrowserPanel::BrowserPanel (X3DBrowserWindow* const browserWindow, NotebookPage* const page, const size_t id) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	        X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DBrowserPanelInterface (get_ui ("Panels/BrowserPanel.glade"), page, PanelType::BROWSER_PANEL, id),
 	         X3DBrowserPanel (),
 	  X3DBrowserPanelMenuBar ()

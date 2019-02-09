@@ -65,7 +65,7 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
                                       Gtk::Button & removeColorButton,
                                       Gtk::ScrolledWindow & colorsScrolledWindow,
                                       const std::string & name) :
-	    X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	    X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	   X3DComposedWidget (editor),
           index_changed (),
 	         colorButton (colorButton),

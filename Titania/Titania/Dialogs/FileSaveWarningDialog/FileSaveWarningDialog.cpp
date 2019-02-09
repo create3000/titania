@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.glade"))
 {
 	setTitleBar (getWindow (), getHeaderBar ());

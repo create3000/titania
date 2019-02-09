@@ -74,7 +74,7 @@ struct NodeIndex::Search
 };
 
 NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
-	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	     X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DNodeIndexInterface (get_ui ("Editors/NodeIndex.glade")),
 	     executionContext (getMasterBrowser () -> getExecutionContext ()),
 	            protoNode (),

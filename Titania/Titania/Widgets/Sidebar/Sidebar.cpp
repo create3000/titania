@@ -64,7 +64,7 @@ namespace titania {
 namespace puck {
 
 Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	              X3DSidebarInterface (get_ui ("Widgets/Sidebar.glade")),
 	X3DNotebook <X3DSidebarInterface> ()
 {

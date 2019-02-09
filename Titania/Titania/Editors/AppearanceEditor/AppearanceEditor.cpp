@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
-	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	            X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.glade")),
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),

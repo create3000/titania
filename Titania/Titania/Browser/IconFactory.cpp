@@ -72,7 +72,7 @@ namespace titania {
 namespace puck {
 
 IconFactory::IconFactory (X3DBrowserWindow* const browserWindow) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	      iconFactory (Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (browserWindow -> getBuilder () -> get_object ("IconFactory"))),
 	  materialPreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" })),
 	   texturePreview (X3D::createBrowser (browserWindow -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") })),

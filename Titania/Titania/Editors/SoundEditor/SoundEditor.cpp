@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 SoundEditor::SoundEditor (X3DBrowserWindow* const browserWindow) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	        X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	 X3DSoundEditorInterface (get_ui ("Editors/SoundEditor.glade")),
 	X3DSoundSourceNodeEditor (),
 	                nodeName (this, getSoundNameEntry (), getSoundRenameButton ()),

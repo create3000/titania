@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_X3DPARENT_OBJECT_H__
-#define __TITANIA_X3D_BASE_X3DPARENT_OBJECT_H__
+#ifndef __TITANIA_X3D_BASE_X3DEVENT_OBJECT_H__
+#define __TITANIA_X3D_BASE_X3DEVENT_OBJECT_H__
 
-#include "../Base/X3DReferenceObject.h"
+#include "../Base/X3DChildObject.h"
 #include "../Routing/ChildrenList.h"
 #include "../Routing/ParentList.h"
 
@@ -65,20 +65,20 @@ class X3DBrowser;
 /**
  *  Class to represents an object that handles the events of its children.
  */
-class X3DParentObject :
-	public X3DReferenceObject
+class X3DEventObject :
+	public X3DChildObject
 {
 public:
 
-	using X3DReferenceObject::addInterest;
-	using X3DReferenceObject::removeInterest;
+	using X3DChildObject::addInterest;
+	using X3DChildObject::removeInterest;
 
 	///  @name Construction
 
 	///  Initializes this object.
 	virtual
 	void
-	setup ();
+	setup () override;
 
 	///  Returns whether this node is initialized.
 	bool
@@ -110,13 +110,13 @@ public:
 	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
 	///  of the function effectivly calls addEvent on @a requester.
 	void
-	addInterest (X3DParentObject* const requester) const
-	{ addInterest ((void (X3DParentObject::*)()) &X3DParentObject::addEvent, requester); }
+	addInterest (X3DEventObject* const requester) const
+	{ addInterest ((void (X3DEventObject::*)()) &X3DEventObject::addEvent, requester); }
 
 	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	void
-	removeInterest (X3DParentObject* const requester) const
-	{ removeInterest ((void (X3DParentObject::*)()) &X3DParentObject::addEvent, requester); }
+	removeInterest (X3DEventObject* const requester) const
+	{ removeInterest ((void (X3DEventObject::*)()) &X3DEventObject::addEvent, requester); }
 
 	///  @name Destruction
 
@@ -127,43 +127,19 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~X3DParentObject () override;
+	~X3DEventObject () override;
 
 
 protected:
 
 	///  @name Construction
 
-	///  Constructs new X3DParentObject.
-	X3DParentObject (X3DBrowser* const browser);
+	///  Constructs new X3DEventObject.
+	X3DEventObject (X3DBrowser* const browser);
 
 	///  Set the browser this node belongs to.
 	void
 	setBrowser (X3DBrowser* const browser);
-
-	///  @name Children handling
-
-	///  Add this node as parent to all @a children.  See addChild.
-	template <class ... Args>
-	void
-	addChildObjects (Args & ... children)
-	{ (addChildObject (children), ...); }
-
-	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
-	virtual
-	void
-	addChildObject (X3DChildObject & child);
-
-	///  Remove this node as parent from all @a children.  See removeChild.
-	template <class ... Args>
-	void
-	removeChildObjects (Args & ... children)
-	{ (removeChildObject (children), ...); }
-
-	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
-	virtual
-	void
-	removeChildObject (X3DChildObject & child);
 
 	///  @name Event handling
 
@@ -201,7 +177,6 @@ private:
 
 	X3DBrowser*           browser;               // This objects Browser
 	bool                  extendedEventHandling; // Handle initializeOnlys like inputOutput
-	ChildObjectSet        children;              // Internal used fields
 	ParentId              parentId;              // This object within Router
 	std::vector <ChildId> events;                // Children within Router
 	bool                  initialized;

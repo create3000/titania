@@ -67,7 +67,7 @@ namespace titania {
 namespace puck {
 
 ProjectEditor::ProjectEditor (X3DBrowserWindow* const browserWindow, const basic::uri & folder) :
-	                          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                          X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	                 X3DProjectEditorInterface (get_ui ("Editors/ProjectEditor.glade")),
 	X3DFileBrowser <X3DProjectEditorInterface> (),
 	                                    folder (folder),

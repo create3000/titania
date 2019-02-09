@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 OpenFolderDialog::OpenFolderDialog (X3DBrowserWindow* const browserWindow) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFileOpenDialog ()
 {
 	setName ("OpenFolderDialog");

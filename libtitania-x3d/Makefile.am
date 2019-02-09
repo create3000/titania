@@ -9,12 +9,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Base/International.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
+	Titania/X3D/Base/X3DEventObject.cpp \
 	Titania/X3D/Base/X3DGarbargeCollector.cpp \
 	Titania/X3D/Base/X3DInput.cpp \
 	Titania/X3D/Base/X3DObject.cpp \
 	Titania/X3D/Base/X3DOutput.cpp \
-	Titania/X3D/Base/X3DParentObject.cpp \
-	Titania/X3D/Base/X3DReferenceObject.cpp \
 	Titania/X3D/Basic/FieldSet.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \

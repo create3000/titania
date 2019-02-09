@@ -67,7 +67,7 @@ namespace puck {
 using math::pi;
 
 AngleGridTool::AngleGridTool (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	     X3DGridTool (),
 	            tool ()
 {

@@ -185,7 +185,7 @@ public:
 
 			for (auto & node : difference)
 			{
-				node -> shutdown () .removeInterest (&X3DBindableNodeList::erase, this);
+				node -> disposed () .removeInterest (&X3DBindableNodeList::erase, this);
 
 				if (node -> isBound ())
 					node -> set_bind () = false;
@@ -200,7 +200,7 @@ public:
 			// Connect to shutdown.
 
 			for (auto & node : list)
-				node -> shutdown () .addInterest (&X3DBindableNodeList::erase, this, node);
+				node -> disposed () .addInterest (&X3DBindableNodeList::erase, this, node);
 
 			addEvent ();
 		}

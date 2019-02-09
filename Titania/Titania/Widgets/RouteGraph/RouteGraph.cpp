@@ -63,7 +63,7 @@ namespace titania {
 namespace puck {
 
 RouteGraph::RouteGraph (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	       X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DRouteGraphInterface (get_ui ("Widgets/RouteGraph.glade")),
 	         X3DRouteGraph (),
 	                 pages (),

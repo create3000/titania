@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DParentObject.h"
+#include "X3DEventObject.h"
 
 #include "../Browser/X3DBrowser.h"
 #include "../Routing/Router.h"
@@ -62,11 +62,10 @@ namespace X3D {
 
 // XXX: Rename this class to EventObject!
 
-X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
-	   X3DReferenceObject (),
+X3DEventObject::X3DEventObject (X3DBrowser* const browser) :
+	       X3DChildObject (),
 	              browser (browser), // must be atomic
 	extendedEventHandling (true),
-	             children (),
 	             parentId ({ 0 }),
 	               events (),
 	          initialized (false)
@@ -80,21 +79,18 @@ X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
  *  Initializes this object: after setup all fields can process events.
  */
 void
-X3DParentObject::setup ()
+X3DEventObject::setup ()
 {
+	X3DChildObject::setup ();
+
 	browser -> addParent (this);
-
-	for (const auto & child : children)
-		child -> setTainted (false);
-
-	setTainted (false);
 
 	initialized = true;
 }
 
 ///  Set the browser this node belongs to.
 void
-X3DParentObject::setBrowser (X3DBrowser* const value)
+X3DEventObject::setBrowser (X3DBrowser* const value)
 {
 	if (value == browser)
 		return;
@@ -139,34 +135,10 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 }
 
 /***
- *  Adds this object as parent of @a child. After setup @a child is eventable.
- */
-void
-X3DParentObject::addChildObject (X3DChildObject & child)
-{
-	child .setTainted (true);
-	child .addParent (this);
-
-	children .emplace (&child);
-}
-
-/***
- *  This object will now not be longer a parent of @a child. If the reference count of @a child goes
- *  to zero @a child will be disposed and garbage collected.
- */
-void
-X3DParentObject::removeChildObject (X3DChildObject & child)
-{
-	children .erase (&child);
-
-	child .removeParent (this);
-}
-
-/***
  *  Adds @a object to the router event queue.
  */
 void
-X3DParentObject::addEventObject (X3DChildObject* const object)
+X3DEventObject::addEventObject (X3DChildObject* const object)
 {
 	object -> isSet (true);
 
@@ -182,7 +154,7 @@ X3DParentObject::addEventObject (X3DChildObject* const object)
  *  Adds @a object to the router event queue.
  */
 void
-X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & event)
+X3DEventObject::addEventObject (X3DChildObject* const object, const EventPtr & event)
 {
 //try
 //{
@@ -218,7 +190,7 @@ X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & 
  *  Marks this node as changed. Call this function if you want to inform the requesters of this object about a change.
  */
 void
-X3DParentObject::addEvent ()
+X3DEventObject::addEvent ()
 {
 	if (not getTainted ())
 	{
@@ -236,7 +208,7 @@ X3DParentObject::addEvent ()
  *  Requester of this object are now informed about a change of this object.
  */
 void
-X3DParentObject::eventsProcessed ()
+X3DEventObject::eventsProcessed ()
 {
 	events .clear ();
 	parentId .time = 0;
@@ -252,7 +224,7 @@ X3DParentObject::eventsProcessed ()
  *  Removes all outstanding events from the event queue of the router.
  */
 void
-X3DParentObject::removeEvents ()
+X3DEventObject::removeEvents ()
 {
 	for (const auto & event : events)
 		browser -> getRouter () -> removeTaintedChild (event);
@@ -270,16 +242,11 @@ X3DParentObject::removeEvents ()
  *  Disposes this object.  Note: it is normaly not needed to call this function.
  */
 void
-X3DParentObject::dispose ()
+X3DEventObject::dispose ()
 {
 try
 {
-	X3DReferenceObject::dispose ();
-
-	for (const auto & child : children)
-		child -> dispose ();
-
-	children .clear ();
+	X3DChildObject::dispose ();
 
 	if (isInitialized ())
 	{
@@ -297,7 +264,7 @@ catch (const std::exception & error)
 /***
  *  Destructs this object.
  */
-X3DParentObject::~X3DParentObject ()
+X3DEventObject::~X3DEventObject ()
 { }
 
 } // X3D

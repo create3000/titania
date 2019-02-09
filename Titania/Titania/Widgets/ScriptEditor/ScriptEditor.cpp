@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	          X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	           X3DScriptEditor (),
 	       X3DScriptNodeEditor (),
 	           X3DShaderEditor (),

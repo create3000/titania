@@ -60,7 +60,7 @@ namespace titania {
 namespace puck {
 
 NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	        X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DNotebookPageInterface (get_ui ("Editors/NotebookPage.glade")),
 	         X3DNotebookPage (startUrl),
 	                   boxes ({ &getBox1 (), &getBox2 (), &getBox3 (), &getBox4 () }),

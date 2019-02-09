@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	      X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DTextEditorInterface (get_ui ("Editors/TextEditor.glade")),
 	X3DFontStyleNodeEditor (),
 	                string (this, getTextStringTextView (), "string"),

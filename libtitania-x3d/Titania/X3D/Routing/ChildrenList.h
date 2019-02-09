@@ -63,9 +63,8 @@ using ChildrenList = std::list <std::pair <X3DChildObject*, EventPtr>>;
 
 struct ChildId
 {
-	time_type time;
+	time_type              time;
 	ChildrenList::iterator iter;
-
 };
 
 } // X3D

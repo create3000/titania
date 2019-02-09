@@ -56,7 +56,7 @@ namespace puck {
 MFStringTextView::MFStringTextView (X3DBaseInterface* const editor,
                                     Gtk::TextView & textView,
                                     const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	         textView (textView),
 	            nodes (),

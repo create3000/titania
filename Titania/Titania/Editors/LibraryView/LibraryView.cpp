@@ -65,7 +65,7 @@ struct LibraryView::Columns
 };
 
 LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
-	                        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                        X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	                 X3DLibraryViewInterface (get_ui ("Editors/LibraryView.glade")),
 	X3DFileBrowser <X3DLibraryViewInterface> ()
 {

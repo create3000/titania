@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 FileOpenFontDialog::FileOpenFontDialog (X3DBrowserWindow* const browserWindow) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFileOpenDialog ()
 {
 	setName ("FileOpenFontDialog");

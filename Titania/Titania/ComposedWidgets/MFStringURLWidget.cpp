@@ -63,7 +63,7 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
                                       Gtk::Button & reloadButton,
                                       const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
                                       const std::string & name) :
-	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getCurrentBrowser ()),
+	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getMasterBrowser ()),
 	X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, ""),
 	    userInterface (userInterface),
 	     reloadButton (reloadButton),

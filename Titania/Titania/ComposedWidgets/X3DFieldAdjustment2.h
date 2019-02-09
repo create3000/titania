@@ -193,7 +193,7 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (X3DBaseInterface* const editor,
                                                  const Glib::RefPtr <Gtk::Adjustment> & adjustment2,
                                                  Gtk::Widget & widget,
                                                  const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustment1, adjustment2 }),
 	           widget (widget),

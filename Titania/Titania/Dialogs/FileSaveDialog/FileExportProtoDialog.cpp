@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 FileExportProtoDialog::FileExportProtoDialog (X3DBrowserWindow* const browserWindow) :
-	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	 X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DFileSaveDialog ()
 {
 	setName ("FileExportProtoDialog");

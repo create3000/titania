@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	          X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DGeometryEditorInterface (get_ui ("Revealer/GeometryEditor.glade")),
 	             normalEnabled (this, getNormalEnabledButton (), "load"),
 	                   browser (getCurrentBrowser ()),

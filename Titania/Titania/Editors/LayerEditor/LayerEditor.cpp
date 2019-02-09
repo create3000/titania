@@ -83,7 +83,7 @@ struct LayerEditor::Weight
 };
 
 LayerEditor::LayerEditor (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	       X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DLayerEditorInterface (get_ui ("Editors/LayerEditor.glade")),
 	                  world (),
 	               layerSet (),

@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DBASE_NODE_H__
 
 #include "../Base/Output.h"
-#include "../Base/X3DParentObject.h"
+#include "../Base/X3DEventObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
 #include "../Basic/NodeTypeSet.h"
@@ -76,12 +76,12 @@ using Component = std::pair <std::string, size_t>;
  *  Class to represent an object that is the base for all nodes.
  */
 class X3DBaseNode :
-	public X3DParentObject
+	public X3DEventObject
 {
 public:
 
-	using X3DParentObject::addInterest;
-	using X3DParentObject::removeInterest;
+	using X3DEventObject::addInterest;
+	using X3DEventObject::removeInterest;
 
 	///  @name Construction
 

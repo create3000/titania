@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindow) :
-	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.glade")),
 	              navigationInfoList (new NavigationInfoList (browserWindow)),
 	                        nodeName (this, getNameEntry (), getRenameButton ()),

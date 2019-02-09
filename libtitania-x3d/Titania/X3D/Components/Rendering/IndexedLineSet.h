@@ -268,8 +268,9 @@ private:
 	void
 	build () final override;
 
+	virtual
 	void
-	set_shutdown ();
+	shutdown () override;
 
 	///  @name Static members
 

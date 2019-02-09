@@ -103,7 +103,6 @@ Selection::initialize ()
 	X3DBaseNode::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&Selection::set_initialized, this);
-	getBrowser () -> shutdown ()    .addInterest (&Selection::set_shutdown,    this);
 
 	set_initialized ();
 }
@@ -115,12 +114,6 @@ Selection::set_initialized ()
 		getBrowser () -> getExecutionContext () -> sceneGraph_changed () .addInterest (&Selection::set_sceneGraph, this);
 
 	//clearNodes ();
-}
-
-void
-Selection::set_shutdown ()
-{
-	getBrowser () -> getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
 }
 
 void
@@ -703,6 +696,14 @@ Selection::findNode (const SFNode & parent, const SFNode & node) const
 		          TRAVERSE_ROOT_NODES |
 		          TRAVERSE_INLINE_NODES |
 		          TRAVERSE_TOOL_OBJECTS);
+}
+
+void
+Selection::shutdown ()
+{
+	getBrowser () -> getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
+
+	X3DBaseNode::shutdown ();
 }
 
 } // X3D

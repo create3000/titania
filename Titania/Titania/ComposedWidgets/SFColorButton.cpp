@@ -62,7 +62,7 @@ SFColorButton::SFColorButton (X3DBaseInterface* const editor,
                               const Glib::RefPtr <Gtk::Adjustment> & valueAdjustment,
                               Gtk::Widget & widget,
                               const std::string & name) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getMasterBrowser ()),
 	X3DComposedWidget (editor),
 	      colorButton (colorButton),
 	  valueAdjustment (valueAdjustment),
