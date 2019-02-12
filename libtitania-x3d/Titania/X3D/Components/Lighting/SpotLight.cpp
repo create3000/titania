@@ -222,7 +222,6 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		const auto   farValue            = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
 		const auto   viewport            = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
 		const auto   projectionMatrix    = camera <double>::perspective (getCutOffAngle () * 2, 0.125, farValue, viewport [2], viewport [3]);
-		const auto   invGroupMatrix      = inverse (groupNode -> getMatrix ());
 
 		if (farValue < 0)
 			return false;
@@ -236,9 +235,12 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
 		renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 		renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-		renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
 
-		renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
+		renderObject -> render (TraverseType::DEPTH, [&groupNode]
+		(const TraverseType type, X3DRenderObject* const renderObject)
+		{
+			groupNode -> X3DGroupingNode::traverse (type, renderObject);
+		});
 
 		renderObject -> getModelViewMatrix          () .pop ();
 		renderObject -> getProjectionMatrix         () .pop ();
@@ -267,10 +269,13 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 			renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
 			renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
 			renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-			renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
-	
-			renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
-	
+
+			renderObject -> render (TraverseType::DEPTH, [groupNode]
+			(const TraverseType type, X3DRenderObject* const renderObject)
+			{
+				groupNode -> X3DGroupingNode::traverse (type, renderObject);
+			});
+
 			renderObject -> getModelViewMatrix          () .pop ();
 			renderObject -> getProjectionMatrix         () .pop ();
 			renderObject -> getViewVolumes              () .pop_back ();

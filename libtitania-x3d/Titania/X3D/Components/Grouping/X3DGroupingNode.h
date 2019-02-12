@@ -106,11 +106,6 @@ public:
 	Box3d
 	getBBox () const override;
 
-	virtual
-	const Matrix4d &
-	getMatrix () const
-	{ return matrix; }
-
 	///  @name Operations
 
 	virtual
@@ -202,10 +197,6 @@ private:
 
 	void
 	clear ();
-
-	// Static members
-
-	static const Matrix4d matrix;
 
 	///  @name Fields
 

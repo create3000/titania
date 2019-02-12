@@ -106,11 +106,6 @@ public:
 	Box3d
 	getBBox () const override;
 
-	virtual
-	const Matrix4d &
-	getMatrix () const override
-	{ return X3DTransformMatrix3DObject::getMatrix (); }
-
 	///  @name Operations
 
 	virtual

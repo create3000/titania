@@ -51,6 +51,7 @@
 #include "X3DActiveLayerTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Layout/LayoutGroup.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 
 namespace titania {
@@ -103,7 +104,7 @@ Matrix4d
 X3DActiveLayerTool::getPickingMatrix () const
 {
 	if (activeLayerNode)
-		return activeLayerNode -> getFriends () -> getMatrix () * activeLayerNode -> getViewpoint () -> getInverseCameraSpaceMatrix ();
+		return getModelMatrix () * activeLayerNode -> getViewpoint () -> getInverseCameraSpaceMatrix ();
 
 	return Matrix4d ();
 }
@@ -111,8 +112,10 @@ X3DActiveLayerTool::getPickingMatrix () const
 Matrix4d
 X3DActiveLayerTool::getModelMatrix () const
 {
-	if (activeLayerNode)
-		return activeLayerNode -> getFriends () -> getMatrix ();
+	LayoutGroup* const layoutGroupNode = dynamic_cast <LayoutGroup*> (activeLayerNode -> getFriends () .getValue ());
+
+	if (layoutGroupNode)
+		return layoutGroupNode -> getMatrix ();
 
 	return Matrix4d ();
 }

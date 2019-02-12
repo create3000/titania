@@ -95,14 +95,14 @@ LayoutLayer::initialize ()
 {
 	X3DLayerNode::initialize ();
 
-	LayoutGroup* const group   = dynamic_cast <LayoutGroup*> (getGroup ()   .getValue ());
-	LayoutGroup* const friends = dynamic_cast <LayoutGroup*> (getFriends () .getValue ());
+	LayoutGroup* const groupNode   = dynamic_cast <LayoutGroup*> (getGroup ()   .getValue ());
+	LayoutGroup* const friendsNode = dynamic_cast <LayoutGroup*> (getFriends () .getValue ());
 
-	layout () .addInterest (group   -> layout ());
-	layout () .addInterest (friends -> layout ());
+	layout () .addInterest (groupNode   -> layout ());
+	layout () .addInterest (friendsNode -> layout ());
 
-	group   -> layout () = layout ();
-	friends -> layout () = layout ();
+	groupNode   -> layout () = layout ();
+	friendsNode -> layout () = layout ();
 }
 
 void

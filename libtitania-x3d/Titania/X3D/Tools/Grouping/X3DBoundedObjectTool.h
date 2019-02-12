@@ -154,10 +154,10 @@ private:
 
 	///  @name Members
 
-	LineType  linetype;
-	bool      displayCenter;
-	Color3f   color;
-	Matrix4d  matrix;
+	LineType linetype;
+	bool     displayCenter;
+	Color3f  color;
+	Matrix4d matrix;
 
 };
 

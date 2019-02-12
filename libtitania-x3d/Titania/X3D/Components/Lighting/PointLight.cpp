@@ -219,9 +219,8 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 		invLightSpaceMatrix .inverse ();
 
 		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();                            
-		const auto   groupNode           = lightContainer -> getGroup ();                                     // Group to be shadowed.
+		const auto   groupNode           = lightContainer -> getGroup (); // Group to be shadowed.
 		const auto   shadowMapSize       = getShadowMapSize ();
-		const auto   invGroupMatrix      = inverse (groupNode -> getMatrix ());
 
 		// Render to frame buffer.
 
@@ -244,9 +243,12 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 			renderObject -> getModelViewMatrix  () .push (orientationMatrices [i]);
 			renderObject -> getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-			renderObject -> getModelViewMatrix  () .mult_left (invGroupMatrix);
-			
-			renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1, _2));
+
+			renderObject -> render (TraverseType::DEPTH, [groupNode]
+			(const TraverseType type, X3DRenderObject* const renderObject)
+			{
+				groupNode -> X3DGroupingNode::traverse (type, renderObject);
+			});
 
 			renderObject -> getModelViewMatrix          () .pop ();
 			renderObject -> getProjectionMatrix         () .pop ();

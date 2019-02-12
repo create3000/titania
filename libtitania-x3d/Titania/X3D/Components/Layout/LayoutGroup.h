@@ -120,11 +120,6 @@ public:
 	getBBox () const override;
 
 	virtual
-	const Matrix4d &
-	getMatrix () const override
-	{ return X3DTransformMatrix3DObject::getMatrix (); }
-
-	virtual
 	Box3d
 	getRectangleBBox () const;
 
