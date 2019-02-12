@@ -12,7 +12,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Sat, 02 Feb 2019 18:55:40 GMT"
+META "modified" "Tue, 12 Feb 2019 15:25:09 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -114,41 +114,432 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF XYZ Shape {
-              appearance DEF _1 Appearance {
-                shaders DEF _2 ToolShader { }
-              }
-              geometry IndexedLineSet {
-                colorPerVertex FALSE
-                coordIndex [
-                  0,
-                  1,
-                  -1,
-                  2,
-                  3,
-                  -1,
-                  4,
-                  5,
-                  -1
-                ]
-                color Color {
-                  color [
-                    1 0 0,
-                    0 1 0,
-                    0 0 1
-                  ]
+            value DEF ScaleScript Script {
+              inputOnly      SFBool     set_active
+              inputOnly      SFVec3f    set_xScale
+              inputOnly      SFVec3f    set_yScale
+              inputOnly      SFVec3f    set_zScale
+              inputOnly      SFVec3f    set_xScaleBack
+              inputOnly      SFVec3f    set_yScaleBack
+              inputOnly      SFVec3f    set_zScaleBack
+              inputOnly      SFVec3f    set_scale1
+              inputOnly      SFVec3f    set_scale2
+              inputOnly      SFVec3f    set_scale3
+              inputOnly      SFVec3f    set_scale4
+              inputOnly      SFVec3f    set_scale5
+              inputOnly      SFVec3f    set_scale6
+              inputOnly      SFVec3f    set_scale7
+              inputOnly      SFVec3f    set_scale8
+              inputOnly      SFVec3f    set_linetype
+              inputOutput    SFBool     keepCenter FALSE
+              inputOutput    SFBool     scaleFromEdge TRUE
+              inputOutput    SFBool     scaleFromCenter TRUE
+              inputOutput    MFString   connectedAxes [ ]
+              inputOutput    SFBool     controlKey FALSE
+              inputOutput    SFBool     altKey FALSE
+              inputOutput    SFVec3f    bboxSize 0 0 0
+              inputOutput    SFVec3f    bboxCenter 0 0 0
+              inputOutput    SFNode     transform NULL
+              outputOnly     SFInt32    activeTool_changed
+              initializeOnly SFVec3f    translation 0 0 0
+              initializeOnly SFVec3f    scaleFactor 0 0 0
+              initializeOnly SFVec3f    center 0 0 0
+              initializeOnly SFVec3f    distanceFromCenter 0 0 0
+              initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+              initializeOnly SFBool     active FALSE
+              initializeOnly SFInt32    events 0
+              # Sensors below are not used anymore
+              initializeOnly MFNode     sensors [
+                DEF XScaleSensor PlaneSensor {
+                  enabled FALSE
+                  description "x-Axis"
+                  autoOffset FALSE
+                  maxPosition -1 0
                 }
-                coord DEF Axes Coordinate {
-                  point [
-                    -0.5 0 0,
-                    0.5 0 0,
-                    0 0.5 0,
-                    0 -0.5 0,
-                    0 0 -0.5,
-                    0 0 0.5
-                  ]
+                DEF YScaleSensor PlaneSensor {
+                  enabled FALSE
+                  description "y-Axis"
+                  autoOffset FALSE
+                  maxPosition 0 -1
                 }
+                DEF ZScaleSensor PlaneSensor {
+                  enabled FALSE
+                  description "z-Axis"
+                  axisRotation 0 -1 0 90.0002104591497
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF XScaleBackSensor PlaneSensor {
+                  enabled FALSE
+                  description "x-Axis"
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF YScaleBackSensor PlaneSensor {
+                  enabled FALSE
+                  description "y-Axis"
+                  autoOffset FALSE
+                  maxPosition 0 -1
+                }
+                DEF ZScaleBackSensor PlaneSensor {
+                  enabled FALSE
+                  description "z-Axis"
+                  axisRotation 0 -1 0 90.0002104591497
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor1 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor2 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor3 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor4 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor5 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor6 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor7 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+                DEF ScaleSensor8 PlaneSensor {
+                  axisRotation 0 0 1 180
+                  autoOffset FALSE
+                  maxPosition -1 0
+                }
+              ]
+              # Sensors above are not used anymore
+              initializeOnly SFNode     lineProperties DEF LineProperties LineProperties {
+                linewidthScaleFactor 1
               }
+              initializeOnly SFNode     self USE ScaleScript
+
+              url "ecmascript:
+
+function set_transform ()
+{
+	Browser .addRoute (transform, 'scale', self, 'set_linetype');
+
+	set_linetype (transform .scale);
+}
+
+function set_linetype (scale)
+{
+	var matrix = new SFMatrix4f ();
+	matrix .setTransform (transform .translation,
+	                      transform .rotation,
+	                      transform .scale,
+	                      transform .scaleOrientation,
+	                      transform .center);
+
+	var x = new SFVec3f (matrix [0], matrix [1], matrix [2]);
+	var y = new SFVec3f (matrix [4], matrix [5], matrix [6]);
+	var z = new SFVec3f (matrix [8], matrix [9], matrix [10]);
+
+	if (x .cross (y) .dot (z) >= 0)
+		lineProperties .linetype = 1; // SOLID
+	else
+		lineProperties .linetype = 2;
+}
+
+function set_scaleFromCenter ()
+{
+   var fun = [
+      set_xScale,
+		set_yScale,
+		set_zScale,
+		set_xScaleBack,
+		set_yScaleBack,
+		set_zScaleBack,
+		set_scale1,
+		set_scale2,
+		set_scale3,
+		set_scale4,
+		set_scale5,
+		set_scale6,
+		set_scale7,
+		set_scale8,
+   ];
+
+	for (var i in sensors)
+	{
+		if (sensors [i] .isActive)
+		{
+			fun [i] (sensors [i] .translation_changed);
+		}
+	}
+}
+
+function set_active (value)
+{
+	active = value;
+
+	if (active)
+	{
+		for (var i = 0; i < 14; ++ i)
+		{
+			if (sensors [i] .isActive)
+			{
+				activeTool_changed = 3 + parseInt (i);
+			}
+		}
+
+		translation = transform .translation;
+		scaleFactor = transform .scale;
+		center      = transform .center;
+
+		matrix .setTransform (transform .translation,
+		                      transform .rotation,
+		                      transform .scale,
+		                      transform .scaleOrientation,
+		                      transform .center);
+
+		distanceFromCenter = bboxCenter .subtract (transform .center);
+	}
+	else
+		activeTool_changed = 0;
+}
+
+// isActive
+
+function set_xScale (value)
+{
+	if (bboxSize .x)
+		set_axisScale (\"x\", value, 1);
+}
+
+function set_yScale (value)
+{
+	if (bboxSize .y)
+		set_axisScale (\"y\", value, 1);
+}
+
+function set_zScale (value)
+{
+	if (bboxSize .z)
+		set_axisScale (\"z\", value, 1);
+}
+
+function set_xScaleBack (value)
+{		       
+	if (bboxSize .x)
+		set_axisScale (\"x\", value, -1);
+}
+
+function set_yScaleBack (value)
+{
+	if (bboxSize .y)
+		set_axisScale (\"y\", value, -1);
+}
+
+function set_zScaleBack (value)
+{
+	if (bboxSize .z)
+		set_axisScale (\"z\", value, -1);
+}
+
+function set_axisScale (axis, value, sgn)
+{
+	value = value [axis];
+
+	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
+	{
+		var
+			vector = new SFVec3f (1, 1, 1),
+			offset = new SFVec3f ();
+	
+		vector [axis] = 1 + sgn * value / bboxSize [axis];
+		offset [axis] = -sgn * bboxSize [axis] / 2;
+
+		connect (axis, vector, offset);
+
+		scale (vector, offset);
+	}
+	else if (scaleFromCenter)
+	{
+		var
+			vector = new SFVec3f (1, 1, 1),
+			offset = new SFVec3f ();
+	
+		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
+
+		connect (axis, vector, offset);
+
+		scale (vector, offset);
+	}
+}
+
+function connect (axis, vector, offset)
+{
+	for (var i = 0, length = connectedAxes .length; i < length; ++ i)
+	{
+		var
+			lhs = connectedAxes [i] [0] .toLowerCase (),
+			rhs = connectedAxes [i] [1] .toLowerCase ();
+	
+		if (rhs == axis)
+		{
+			vector [lhs] = vector [rhs];
+			offset [lhs] = offset [rhs];
+		}
+	}
+}
+
+function set_scale1 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, -1, -1));
+}
+
+function set_scale2 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, -1, -1));
+}
+
+function set_scale3 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, 1, -1));
+}
+
+function set_scale4 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, 1, -1));
+}
+
+function set_scale5 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, -1, 1));
+}
+
+function set_scale6 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, -1, 1));
+}
+
+function set_scale7 (value)
+{
+	set_scale (value,
+	           sgn (-value .x),
+	           new SFVec3f (1, 1, 1));
+}
+
+function set_scale8 (value)
+{
+	set_scale (value,
+	           sgn (value .x),
+	           new SFVec3f (-1, 1, 1));
+}
+
+function set_scale (value, sgn, centerOffset)
+{
+	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
+	{
+		centerOffset = centerOffset .multVec (bboxSize .divide (2));
+
+		var s = 1 + sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (s, s, s), centerOffset);
+	}
+	else if (scaleFromCenter)
+	{
+		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (s, s, s), new SFVec3f ());
+	}
+}
+
+function scale (value, centerOffset)
+{
+	if (events)
+	{
+		// Prevent accidentially move.
+		-- events;
+		return;
+	}
+
+	var scale = new SFMatrix4f ();
+	scale .setTransform (new SFVec3f (), new SFRotation (), value);
+
+	var scaledMatrix = matrix .multLeft (scale);
+	var t            = new SFVec3f ();
+	var r            = new SFRotation ();
+	var s            = new SFVec3f ();
+	var so           = new SFRotation ();
+
+	scaledMatrix .getTransform (t, r, s, so, center);
+
+	if (s .x && s .y && s .z)
+	{
+		transform .translation      = t;
+		transform .rotation         = r;
+		transform .scale            = s;
+		transform .scaleOrientation = so;
+
+		if (keepCenter)
+			translateKeepCenter (scaledMatrix, distanceFromCenter .add (centerOffset));
+		else
+			translate (scaledMatrix, distanceFromCenter .add (centerOffset));
+	}
+}
+
+function translate (scaledMatrix, distanceFromCenter)
+{
+	var centerOffset = scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter));
+
+	transform .translation = translation .subtract (centerOffset);
+}
+
+function translateKeepCenter (scaledMatrix, distanceFromCenter)
+{
+	try
+	{
+		var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
+	
+		transform .translation = translation .subtract (centerOffset);
+		transform .center      = center .add (centerOffset);
+	}
+	catch (error)
+	{ }
+}
+
+function sgn (value)
+{
+	return value < 0 ? -1 : value > 0 ? 1 : 0;
+}
+"
+              directOutput TRUE
             }
           }
           DEF selectGeometry MetadataBoolean {
@@ -186,15 +577,50 @@ Collision {
       children DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
-        children DEF _3 Transform {
+        children DEF _1 Transform {
           children [
             DEF ToolModeSwitch Switch {
               whichChoice 0
               children [
-                USE XYZ
+                DEF XYZ Shape {
+                  appearance DEF _2 Appearance {
+                    shaders DEF _3 ToolShader { }
+                  }
+                  geometry IndexedLineSet {
+                    colorPerVertex FALSE
+                    coordIndex [
+                      0,
+                      1,
+                      -1,
+                      2,
+                      3,
+                      -1,
+                      4,
+                      5,
+                      -1
+                    ]
+                    color Color {
+                      color [
+                        1 0 0,
+                        0 1 0,
+                        0 0 1
+                      ]
+                    }
+                    coord DEF Axes Coordinate {
+                      point [
+                        -0.5 0 0,
+                        0.5 0 0,
+                        0 0.5 0,
+                        0 -0.5 0,
+                        0 0 -0.5,
+                        0 0 0.5
+                      ]
+                    }
+                  }
+                }
                 ScreenGroup {
                   children DEF XYZ_4 Shape {
-                    appearance USE _1
+                    appearance USE _2
                     geometry IndexedLineSet {
                       colorPerVertex FALSE
                       coordIndex [
@@ -232,13 +658,11 @@ Collision {
             }
             DEF BoundingBox Shape {
               appearance Appearance {
-                lineProperties DEF LineProperties LineProperties {
-                  linewidthScaleFactor 1
-                }
+                lineProperties USE LineProperties
                 material DEF _6 Material {
                   emissiveColor 0.35 1 0.7
                 }
-                shaders USE _2
+                shaders USE _3
               }
               geometry IndexedLineSet {
                 coordIndex [
@@ -300,7 +724,7 @@ Collision {
                               material Material {
                                 transparency 1
                               }
-                              shaders USE _2
+                              shaders USE _3
                             }
                             geometry Rectangle2D {
                               size 1 1
@@ -409,7 +833,7 @@ Collision {
                                               diffuseColor 1 0 0
                                               shininess 0
                                             }
-                                            shaders USE _2
+                                            shaders USE _3
                                           }
                                           geometry DEF Arrow Cone {
                                             height 21
@@ -463,12 +887,7 @@ Collision {
                                 autoOffset FALSE
                                 maxPosition -1 0
                               }
-                              DEF XScaleSensor PlaneSensor {
-                                enabled FALSE
-                                description "x-Axis"
-                                autoOffset FALSE
-                                maxPosition -1 0
-                              }
+                              USE XScaleSensor
                             ]
                           }
                           DEF Back_21 Group {
@@ -518,12 +937,7 @@ Collision {
                               }
                               USE ModeTouch
                               USE XTranslationSensor
-                              DEF XScaleBackSensor PlaneSensor {
-                                enabled FALSE
-                                description "x-Axis"
-                                autoOffset FALSE
-                                maxPosition -1 0
-                              }
+                              USE XScaleBackSensor
                             ]
                           }
                         ]
@@ -547,7 +961,7 @@ Collision {
                                               diffuseColor 0 1 0
                                               shininess 0
                                             }
-                                            shaders USE _2
+                                            shaders USE _3
                                           }
                                           geometry USE Arrow
                                         }
@@ -587,12 +1001,7 @@ Collision {
                                 autoOffset FALSE
                                 maxPosition 0 -1
                               }
-                              DEF YScaleSensor PlaneSensor {
-                                enabled FALSE
-                                description "y-Axis"
-                                autoOffset FALSE
-                                maxPosition 0 -1
-                              }
+                              USE YScaleSensor
                             ]
                           }
                           DEF Back_39 Group {
@@ -634,12 +1043,7 @@ Collision {
                               }
                               USE ModeTouch
                               USE YTranslationSensor
-                              DEF YScaleBackSensor PlaneSensor {
-                                enabled FALSE
-                                description "y-Axis"
-                                autoOffset FALSE
-                                maxPosition 0 -1
-                              }
+                              USE YScaleBackSensor
                             ]
                           }
                         ]
@@ -664,7 +1068,7 @@ Collision {
                                               diffuseColor 0 0 1
                                               shininess 0
                                             }
-                                            shaders USE _2
+                                            shaders USE _3
                                           }
                                           geometry USE Arrow
                                         }
@@ -706,13 +1110,7 @@ Collision {
                                 autoOffset FALSE
                                 maxPosition -1 0
                               }
-                              DEF ZScaleSensor PlaneSensor {
-                                enabled FALSE
-                                description "z-Axis"
-                                axisRotation 0 -1 0 90.0002104591497
-                                autoOffset FALSE
-                                maxPosition -1 0
-                              }
+                              USE ZScaleSensor
                             ]
                           }
                           DEF Back_55 Group {
@@ -756,13 +1154,7 @@ Collision {
                               }
                               USE ModeTouch
                               USE ZTranslationSensor
-                              DEF ZScaleBackSensor PlaneSensor {
-                                enabled FALSE
-                                description "z-Axis"
-                                axisRotation 0 -1 0 90.0002104591497
-                                autoOffset FALSE
-                                maxPosition -1 0
-                              }
+                              USE ZScaleBackSensor
                             ]
                           }
                         ]
@@ -1003,11 +1395,7 @@ Collision {
                             children [
                               DEF ScaleHandle1 Transform {
                                 children [
-                                  DEF ScaleSensor1 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor1
                                   DEF ScaleHandle ScreenGroup {
                                     children Transform {
                                       children Shape {
@@ -1017,7 +1405,7 @@ Collision {
                                             diffuseColor 1 1 1
                                             shininess 0
                                           }
-                                          shaders USE _2
+                                          shaders USE _3
                                         }
                                         geometry USE Box
                                       }
@@ -1027,71 +1415,43 @@ Collision {
                               }
                               DEF ScaleHandle2 Transform {
                                 children [
-                                  DEF ScaleSensor2 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor2
                                   USE ScaleHandle
                                 ]
                               }
                               DEF ScaleHandle3 Transform {
                                 children [
-                                  DEF ScaleSensor3 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor3
                                   USE ScaleHandle
                                 ]
                               }
                               DEF ScaleHandle4 Transform {
                                 children [
-                                  DEF ScaleSensor4 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor4
                                   USE ScaleHandle
                                 ]
                               }
                               DEF ScaleHandle5 Transform {
                                 children [
-                                  DEF ScaleSensor5 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor5
                                   USE ScaleHandle
                                 ]
                               }
                               DEF ScaleHandle6 Transform {
                                 children [
-                                  DEF ScaleSensor6 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor6
                                   USE ScaleHandle
                                 ]
                               }
                               DEF ScaleHandle7 Transform {
                                 children [
-                                  DEF ScaleSensor7 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor7
                                   USE ScaleHandle
                                 ]
                               }
                               DEF ScaleHandle8 Transform {
                                 children [
-                                  DEF ScaleSensor8 PlaneSensor {
-                                    axisRotation 0 0 1 180
-                                    autoOffset FALSE
-                                    maxPosition -1 0
-                                  }
+                                  USE ScaleSensor8
                                   USE ScaleHandle
                                 ]
                               }
@@ -1127,7 +1487,7 @@ Collision {
                                 diffuseColor 1 1 0
                                 shininess 0
                               }
-                              shaders USE _2
+                              shaders USE _3
                             }
                             geometry DEF _102 Sphere {
                               radius 5
@@ -1172,7 +1532,7 @@ Collision {
                                     material Material {
                                       emissiveColor 1 0 0
                                     }
-                                    shaders USE _2
+                                    shaders USE _3
                                   }
                                   geometry DEF Circle Circle2D { }
                                 }
@@ -1184,7 +1544,7 @@ Collision {
                                         emissiveColor 1 0 0
                                         transparency 1
                                       }
-                                      shaders USE _2
+                                      shaders USE _3
                                     }
                                     geometry DEF Disk Disk2D { }
                                   }
@@ -1208,7 +1568,7 @@ Collision {
                                     material Material {
                                       emissiveColor 0 1 0
                                     }
-                                    shaders USE _2
+                                    shaders USE _3
                                   }
                                   geometry USE Circle
                                 }
@@ -1220,7 +1580,7 @@ Collision {
                                         emissiveColor 0 1 0
                                         transparency 1
                                       }
-                                      shaders USE _2
+                                      shaders USE _3
                                     }
                                     geometry USE Disk
                                   }
@@ -1244,7 +1604,7 @@ Collision {
                                     material Material {
                                       emissiveColor 0 0 1
                                     }
-                                    shaders USE _2
+                                    shaders USE _3
                                   }
                                   geometry USE Circle
                                 }
@@ -1256,7 +1616,7 @@ Collision {
                                         emissiveColor 0 0 1
                                         transparency 1
                                       }
-                                      shaders USE _2
+                                      shaders USE _3
                                     }
                                     geometry USE Disk
                                   }
@@ -1284,7 +1644,7 @@ Collision {
                     material DEF Yellow Material {
                       emissiveColor 1 1 0
                     }
-                    shaders USE _2
+                    shaders USE _3
                   }
                   geometry DEF CenterIndexedLineSet IndexedLineSet {
                     coordIndex [
@@ -1309,7 +1669,7 @@ Collision {
                 material Material {
                   emissiveColor 0 1 1
                 }
-                shaders USE _2
+                shaders USE _3
               }
               geometry PointSet {
                 coord Coordinate {
@@ -1974,367 +2334,7 @@ function eventsProcessed ()
   directOutput TRUE
 }
 
-DEF ScaleScript Script {
-  inputOnly      SFBool     set_active
-  inputOnly      SFVec3f    set_xScale
-  inputOnly      SFVec3f    set_yScale
-  inputOnly      SFVec3f    set_zScale
-  inputOnly      SFVec3f    set_xScaleBack
-  inputOnly      SFVec3f    set_yScaleBack
-  inputOnly      SFVec3f    set_zScaleBack
-  inputOnly      SFVec3f    set_scale1
-  inputOnly      SFVec3f    set_scale2
-  inputOnly      SFVec3f    set_scale3
-  inputOnly      SFVec3f    set_scale4
-  inputOnly      SFVec3f    set_scale5
-  inputOnly      SFVec3f    set_scale6
-  inputOnly      SFVec3f    set_scale7
-  inputOnly      SFVec3f    set_scale8
-  inputOnly      SFVec3f    set_linetype
-  inputOutput    SFBool     keepCenter FALSE
-  inputOutput    SFBool     scaleFromEdge TRUE
-  inputOutput    SFBool     scaleFromCenter TRUE
-  inputOutput    MFString   connectedAxes [ ]
-  inputOutput    SFBool     controlKey FALSE
-  inputOutput    SFBool     altKey FALSE
-  inputOutput    SFVec3f    bboxSize 0 0 0
-  inputOutput    SFVec3f    bboxCenter 0 0 0
-  inputOutput    SFNode     transform NULL
-  outputOnly     SFInt32    activeTool_changed
-  initializeOnly SFVec3f    translation 0 0 0
-  initializeOnly SFVec3f    scaleFactor 0 0 0
-  initializeOnly SFVec3f    center 0 0 0
-  initializeOnly SFVec3f    distanceFromCenter 0 0 0
-  initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-  initializeOnly SFBool     active FALSE
-  initializeOnly SFInt32    events 0
-  # Sensors below are not used anymore
-  initializeOnly MFNode     sensors [
-    USE XScaleSensor
-    USE YScaleSensor
-    USE ZScaleSensor
-    USE XScaleBackSensor
-    USE YScaleBackSensor
-    USE ZScaleBackSensor
-    USE ScaleSensor1
-    USE ScaleSensor2
-    USE ScaleSensor3
-    USE ScaleSensor4
-    USE ScaleSensor5
-    USE ScaleSensor6
-    USE ScaleSensor7
-    USE ScaleSensor8
-  ]
-  # Sensors above are not used anymore
-  initializeOnly SFNode     lineProperties USE LineProperties
-  initializeOnly SFNode     self USE ScaleScript
-
-  url "ecmascript:
-
-function set_transform ()
-{
-	Browser .addRoute (transform, 'scale', self, 'set_linetype');
-
-	set_linetype (transform .scale);
-}
-
-function set_linetype (scale)
-{
-	var matrix = new SFMatrix4f ();
-	matrix .setTransform (transform .translation,
-	                      transform .rotation,
-	                      transform .scale,
-	                      transform .scaleOrientation,
-	                      transform .center);
-
-	var x = new SFVec3f (matrix [0], matrix [1], matrix [2]);
-	var y = new SFVec3f (matrix [4], matrix [5], matrix [6]);
-	var z = new SFVec3f (matrix [8], matrix [9], matrix [10]);
-
-	if (x .cross (y) .dot (z) >= 0)
-		lineProperties .linetype = 1; // SOLID
-	else
-		lineProperties .linetype = 2;
-}
-
-function set_scaleFromCenter ()
-{
-   var fun = [
-      set_xScale,
-		set_yScale,
-		set_zScale,
-		set_xScaleBack,
-		set_yScaleBack,
-		set_zScaleBack,
-		set_scale1,
-		set_scale2,
-		set_scale3,
-		set_scale4,
-		set_scale5,
-		set_scale6,
-		set_scale7,
-		set_scale8,
-   ];
-
-	for (var i in sensors)
-	{
-		if (sensors [i] .isActive)
-		{
-			fun [i] (sensors [i] .translation_changed);
-		}
-	}
-}
-
-function set_active (value)
-{
-	active = value;
-
-	if (active)
-	{
-		for (var i in sensors)
-		{
-			if (sensors [i] .isActive)
-			{
-				activeTool_changed = 3 + parseInt (i);
-			}
-		}
-
-		translation = transform .translation;
-		scaleFactor = transform .scale;
-		center      = transform .center;
-
-		matrix .setTransform (transform .translation,
-		                      transform .rotation,
-		                      transform .scale,
-		                      transform .scaleOrientation,
-		                      transform .center);
-
-		distanceFromCenter = bboxCenter .subtract (transform .center);
-	}
-	else
-		activeTool_changed = 0;
-}
-
-// isActive
-
-function set_xScale (value)
-{
-	if (bboxSize .x)
-		set_axisScale (\"x\", value, 1);
-}
-
-function set_yScale (value)
-{
-	if (bboxSize .y)
-		set_axisScale (\"y\", value, 1);
-}
-
-function set_zScale (value)
-{
-	if (bboxSize .z)
-		set_axisScale (\"z\", value, 1);
-}
-
-function set_xScaleBack (value)
-{		       
-	if (bboxSize .x)
-		set_axisScale (\"x\", value, -1);
-}
-
-function set_yScaleBack (value)
-{
-	if (bboxSize .y)
-		set_axisScale (\"y\", value, -1);
-}
-
-function set_zScaleBack (value)
-{
-	if (bboxSize .z)
-		set_axisScale (\"z\", value, -1);
-}
-
-function set_axisScale (axis, value, sgn)
-{
-	value = value [axis];
-
-	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
-	{
-		var
-			vector = new SFVec3f (1, 1, 1),
-			offset = new SFVec3f ();
-	
-		vector [axis] = 1 + sgn * value / bboxSize [axis];
-		offset [axis] = -sgn * bboxSize [axis] / 2;
-
-		connect (axis, vector, offset);
-
-		scale (vector, offset);
-	}
-	else if (scaleFromCenter)
-	{
-		var
-			vector = new SFVec3f (1, 1, 1),
-			offset = new SFVec3f ();
-	
-		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
-
-		connect (axis, vector, offset);
-
-		scale (vector, offset);
-	}
-}
-
-function connect (axis, vector, offset)
-{
-	for (var i = 0, length = connectedAxes .length; i < length; ++ i)
-	{
-		var
-			lhs = connectedAxes [i] [0] .toLowerCase (),
-			rhs = connectedAxes [i] [1] .toLowerCase ();
-	
-		if (rhs == axis)
-		{
-			vector [lhs] = vector [rhs];
-			offset [lhs] = offset [rhs];
-		}
-	}
-}
-
-function set_scale1 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, -1, -1));
-}
-
-function set_scale2 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, -1, -1));
-}
-
-function set_scale3 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, 1, -1));
-}
-
-function set_scale4 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, 1, -1));
-}
-
-function set_scale5 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, -1, 1));
-}
-
-function set_scale6 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, -1, 1));
-}
-
-function set_scale7 (value)
-{
-	set_scale (value,
-	           sgn (-value .x),
-	           new SFVec3f (1, 1, 1));
-}
-
-function set_scale8 (value)
-{
-	set_scale (value,
-	           sgn (value .x),
-	           new SFVec3f (-1, 1, 1));
-}
-
-function set_scale (value, sgn, centerOffset)
-{
-	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
-	{
-		centerOffset = centerOffset .multVec (bboxSize .divide (2));
-
-		var s = 1 + sgn * value .length () / bboxSize .length ();
-
-		scale (new SFVec3f (s, s, s), centerOffset);
-	}
-	else if (scaleFromCenter)
-	{
-		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
-
-		scale (new SFVec3f (s, s, s), new SFVec3f ());
-	}
-}
-
-function scale (value, centerOffset)
-{
-	if (events)
-	{
-		// Prevent accidentially move.
-		-- events;
-		return;
-	}
-
-	var scale = new SFMatrix4f ();
-	scale .setTransform (new SFVec3f (), new SFRotation (), value);
-
-	var scaledMatrix = matrix .multLeft (scale);
-	var t            = new SFVec3f ();
-	var r            = new SFRotation ();
-	var s            = new SFVec3f ();
-	var so           = new SFRotation ();
-
-	scaledMatrix .getTransform (t, r, s, so, center);
-
-	if (s .x && s .y && s .z)
-	{
-		transform .translation      = t;
-		transform .rotation         = r;
-		transform .scale            = s;
-		transform .scaleOrientation = so;
-
-		if (keepCenter)
-			translateKeepCenter (scaledMatrix, distanceFromCenter .add (centerOffset));
-		else
-			translate (scaledMatrix, distanceFromCenter .add (centerOffset));
-	}
-}
-
-function translate (scaledMatrix, distanceFromCenter)
-{
-	var centerOffset = scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter));
-
-	transform .translation = translation .subtract (centerOffset);
-}
-
-function translateKeepCenter (scaledMatrix, distanceFromCenter)
-{
-	try
-	{
-		var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
-	
-		transform .translation = translation .subtract (centerOffset);
-		transform .center      = center .add (centerOffset);
-	}
-	catch (error)
-	{ }
-}
-
-function sgn (value)
-{
-	return value < 0 ? -1 : value > 0 ? 1 : 0;
-}
-"
-  directOutput TRUE
-}
+USE ScaleScript
 
 DEF Tool Script {
   inputOutput MFString   tools [
@@ -2510,7 +2510,7 @@ ROUTE YSwitch_73.whichChoice_changed TO _78.set_whichChoice
 ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _95.set_depthOffset
 ROUTE BBoxScript.handlesDepthOffset_changed TO _10.set_depthOffset
 ROUTE BBoxScript.scaleToolWhichChoice_changed TO ScaleHandlesSwitch.set_whichChoice
-ROUTE Tool.bboxCenter_changed TO _3.set_translation
+ROUTE Tool.bboxCenter_changed TO _1.set_translation
 ROUTE FrontSensor.isActive TO Tool.set_isActive
 ROUTE RightSensor.isActive TO Tool.set_isActive
 ROUTE BackSensor.isActive TO Tool.set_isActive
