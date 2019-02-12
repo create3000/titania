@@ -78,6 +78,8 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "coordIndex",    coordIndex ());
 	addField (inputOutput, "weight",        weight ());
 	addField (inputOutput, "displacements", displacements ());
+
+	displacements () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

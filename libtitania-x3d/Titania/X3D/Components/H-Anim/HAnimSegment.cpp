@@ -89,6 +89,8 @@ HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
+
+	mass () .setUnit (UnitCategory::MASS);
 }
 
 X3DBaseNode*

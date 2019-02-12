@@ -135,6 +135,11 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	                 skinCoordNode,
 	                 restNormalNode,
 	                 restCoordNode);
+
+	translation () .setUnit (UnitCategory::LENGTH);
+	center ()      .setUnit (UnitCategory::LENGTH);
+	bboxSize ()    .setUnit (UnitCategory::LENGTH);
+	bboxCenter ()  .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*
