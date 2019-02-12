@@ -12,7 +12,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 12 Feb 2019 15:25:09 GMT"
+META "modified" "Tue, 12 Feb 2019 15:27:21 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -282,7 +282,7 @@ function set_scaleFromCenter ()
 		set_scale8,
    ];
 
-	for (var i in sensors)
+	for (var i = 0, length = sensors .length; i < length; ++ i)
 	{
 		if (sensors [i] .isActive)
 		{
