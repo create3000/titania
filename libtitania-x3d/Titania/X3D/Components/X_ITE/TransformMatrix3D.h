@@ -51,13 +51,15 @@
 #ifndef __TITANIA_X3D_COMPONENTS_X_ITE_TRANSFORM_MATRIX3D_H__
 #define __TITANIA_X3D_COMPONENTS_X_ITE_TRANSFORM_MATRIX3D_H__
 
-#include "../Grouping/X3DTransformMatrix3DNode.h"
+#include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class TransformMatrix3D :
-	virtual public X3DTransformMatrix3DNode
+	virtual public X3DGroupingNode,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -101,12 +103,31 @@ public:
 	///  @name Member access
 
 	virtual
+	Box3d
+	getBBox () const override;
+
+	virtual
 	void
 	setMatrix (const Matrix4d & value) override;
 
 	virtual
 	Matrix4d
 	getCurrentMatrix () const;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~TransformMatrix3D () override;
 
 
 protected:

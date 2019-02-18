@@ -51,6 +51,7 @@
 #include "GeoTransform.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -68,10 +69,11 @@ GeoTransform::Fields::Fields () :
 { }
 
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformMatrix3DNode (),
-	     X3DGeospatialObject (),
-	                  fields ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DGroupingNode (),
+	       X3DGeospatialObject (),
+	X3DTransformMatrix3DObject (),
+	                    fields ()
 {
 	addType (X3DConstants::GeoTransform);
 
@@ -104,12 +106,19 @@ GeoTransform::create (X3DExecutionContext* const executionContext) const
 void
 GeoTransform::initialize ()
 {
-	X3DTransformMatrix3DNode::initialize ();
+	X3DGroupingNode::initialize ();
 	X3DGeospatialObject::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
 
 	addInterest (&GeoTransform::eventsProcessed, this);
 
 	eventsProcessed ();
+}
+
+Box3d
+GeoTransform::getBBox () const
+{
+	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
 void
@@ -139,11 +148,26 @@ GeoTransform::eventsProcessed ()
 }
 
 void
+GeoTransform::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+	X3DGroupingNode::traverse (type, renderObject);
+
+	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
 GeoTransform::dispose ()
 {
+	X3DTransformMatrix3DObject::dispose ();
 	X3DGeospatialObject::dispose ();
-	X3DTransformMatrix3DNode::dispose ();
+	X3DGroupingNode::dispose ();
 }
+
+GeoTransform::~GeoTransform ()
+{ }
 
 } // X3D
 } // titania

@@ -198,7 +198,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Grouping/Transform.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
-	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix3DObject.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformNode.cpp \
 	Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp \

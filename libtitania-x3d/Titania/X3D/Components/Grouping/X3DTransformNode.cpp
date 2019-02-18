@@ -51,9 +51,9 @@
 #include "X3DTransformNode.h"
 
 #include "../../Execution/X3DScene.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include <Titania/Math/Utility/almost_equal.h>
-#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace X3D {
@@ -67,8 +67,9 @@ X3DTransformNode::Fields::Fields () :
 { }
 
 X3DTransformNode::X3DTransformNode () :
-	X3DTransformMatrix3DNode (),
-	                  fields ()
+	           X3DGroupingNode (),
+	X3DTransformMatrix3DObject (),
+	                    fields ()
 {
 	addType (X3DConstants::X3DTransformNode);
 
@@ -79,11 +80,18 @@ X3DTransformNode::X3DTransformNode () :
 void
 X3DTransformNode::initialize ()
 {
-	X3DTransformMatrix3DNode::initialize ();
+	X3DGroupingNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ()	;
 
 	addInterest (&X3DTransformNode::eventsProcessed, this);
 
 	eventsProcessed ();
+}
+
+Box3d
+X3DTransformNode::getBBox () const
+{
+	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
 void
@@ -93,11 +101,11 @@ X3DTransformNode::eventsProcessed ()
 	          scale () .getY () == 0 or
 	          scale () .getZ () == 0);
 
-	X3DTransformMatrix3DNode::setMatrix (translation ()      .getValue (),
-	                                     rotation ()         .getValue (),
-	                                     scale ()            .getValue (),
-	                                     scaleOrientation () .getValue (),
-	                                     center ()           .getValue ());
+	X3DTransformMatrix3DObject::setMatrix (translation ()      .getValue (),
+	                                       rotation ()         .getValue (),
+	                                       scale ()            .getValue (),
+	                                       scaleOrientation () .getValue (),
+	                                       center ()           .getValue ());
 }
 
 Matrix4d
@@ -176,7 +184,7 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3d &
 
 	addEvent ();
 
-	X3DTransformMatrix3DNode::setMatrix (matrix);
+	X3DTransformMatrix3DObject::setMatrix (matrix);
 }
 
 void
@@ -195,6 +203,27 @@ X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
 		// Catch matrix inverse.
 	}
 }
+
+void
+X3DTransformNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+	X3DGroupingNode::traverse (type, renderObject);
+
+	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
+X3DTransformNode::dispose ()
+{
+	X3DTransformMatrix3DObject::dispose ();
+	X3DGroupingNode::dispose ();
+}
+
+X3DTransformNode::~X3DTransformNode ()
+{ }
 
 } // X3D
 } // titania

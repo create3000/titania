@@ -471,8 +471,6 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	JS_PSGS ("X3DTextureTransformNode",            X3DTextureTransformNode,            nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTimeDependentNode",               X3DTimeDependentNode,               nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTouchSensorNode",                 X3DTouchSensorNode,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("X3DTransformMatrix3DNode",           X3DTransformMatrix3DNode,           nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-	JS_PSGS ("X3DTransformMatrix3DObject",         X3DTransformMatrix3DObject,         nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTransformNode",                   X3DTransformNode,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTriggerNode",                     X3DTriggerNode,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DUrlObject",                       X3DUrlObject,                       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -3413,14 +3411,6 @@ X3DConstants::X3DTouchSensorNode (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
 	args .rval () .setNumber (uint32_t (X3D::X3DConstants::X3DTouchSensorNode));
-	return true;
-}
-
-bool
-X3DConstants::X3DTransformMatrix3DNode (JSContext* cx, unsigned argc, JS::Value* vp)
-{
-	const auto args = JS::CallArgsFromVp (argc, vp);
-	args .rval () .setNumber (uint32_t (X3D::X3DConstants::X3DTransformMatrix3DNode));
 	return true;
 }
 

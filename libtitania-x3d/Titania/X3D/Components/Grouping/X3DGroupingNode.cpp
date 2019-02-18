@@ -120,6 +120,9 @@ X3DGroupingNode::initialize ()
 Box3d
 X3DGroupingNode::getBBox () const
 {
+	if (isHidden ())
+		return Box3d ();
+
 	if (bboxSize () == Vector3f (-1, -1, -1))
 		return X3DBoundedObject::getBBox (children ());
 

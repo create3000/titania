@@ -476,7 +476,6 @@ private:
 	static bool X3DTextureTransformNode            (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTimeDependentNode               (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTouchSensorNode                 (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool X3DTransformMatrix3DNode           (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTransformMatrix3DObject         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTransformNode                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTriggerNode                     (JSContext* cx, unsigned argc, JS::Value* vp);

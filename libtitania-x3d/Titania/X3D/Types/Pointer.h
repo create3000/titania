@@ -341,7 +341,6 @@ class X3DTextureNode;
 class X3DTextureTransformNode;
 class X3DTimeDependentNode;
 class X3DTouchSensorNode;
-class X3DTransformMatrix3DNode;
 class X3DTransformNode;
 class X3DTriggerNode;
 class X3DUrlObject;

@@ -52,14 +52,16 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
 
 #include "../Geospatial/X3DGeospatialObject.h"
-#include "../Grouping/X3DTransformMatrix3DNode.h"
+#include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoTransform :
-	virtual public X3DTransformMatrix3DNode,
-	virtual public X3DGeospatialObject
+	virtual public X3DGroupingNode,
+	virtual public X3DGeospatialObject,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -140,11 +142,26 @@ public:
 	geoCenter () const
 	{ return *fields .geoCenter; }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const override;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () override;
+
+	virtual
+	~GeoTransform () override;
 
 
 protected:

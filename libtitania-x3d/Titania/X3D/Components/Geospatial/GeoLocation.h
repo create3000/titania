@@ -52,14 +52,16 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_LOCATION_H__
 
 #include "../Geospatial/X3DGeospatialObject.h"
-#include "../Grouping/X3DTransformMatrix3DNode.h"
+#include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoLocation :
-	virtual public X3DTransformMatrix3DNode,
-	virtual public X3DGeospatialObject
+	virtual public X3DGroupingNode,
+	virtual public X3DGeospatialObject,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -100,11 +102,26 @@ public:
 	geoCoords () const
 	{ return *fields .geoCoords; }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const override;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
 	///  @name Destruction
 
 	virtual
 	void
 	dispose () override;
+
+	virtual
+	~GeoLocation () override;
 
 
 protected:

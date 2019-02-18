@@ -91,14 +91,15 @@ X3DTransformNodeTool::Fields::Fields () :
 { }
 
 X3DTransformNodeTool::X3DTransformNodeTool () :
-	            X3DTransformNode (),
-	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
-	           handlesTouchGroup (),
-	              availableTools (),
-	                 modelMatrix (),
-	                 groupMatrix (),
-	                  undoMatrix (),
-	                    changing (false)
+	              X3DTransformNode (),
+	           X3DGroupingNodeTool (ToolColors::GREEN),
+	X3DTransformMatrix3DObjectTool (),
+	             handlesTouchGroup (),
+	                availableTools (),
+	                   modelMatrix (),
+	                   groupMatrix (),
+	                    undoMatrix (),
+	                      changing (false)
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
@@ -132,7 +133,7 @@ X3DTransformNodeTool::setExecutionContext (X3DExecutionContext* const executionC
 {
 	getBrowser () -> removeTransformTool (this);
 
-	X3DTransformMatrix3DNodeTool::setExecutionContext (executionContext);
+	X3DGroupingNodeTool::setExecutionContext (executionContext);
 
 	getBrowser () -> addTransformTool (this);
 }
@@ -142,13 +143,15 @@ X3DTransformNodeTool::initialize ()
 {
 	if (getExecutionContext () -> isType ({ X3DConstants::X3DPrototypeInstance }))
 	{
-		X3DTransformMatrix3DNodeTool::initialize ();
+		X3DGroupingNodeTool::initialize ();
+		X3DTransformMatrix3DObjectTool::initialize ();
 
 		setLinetype (LineType::SOLID);
 	}
 	else
 	{
 		X3DChildNodeTool::initialize ();
+		X3DTransformMatrix3DObjectTool::initialize ();
 
 		grouped ()  .addInterest (&X3DTransformNodeTool::set_grouped, this);
 		tools ()    .addInterest (&X3DTransformNodeTool::set_tools,   this);
@@ -545,7 +548,7 @@ X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 {
 	if (getExecutionContext () -> isType ({ X3DConstants::X3DPrototypeInstance }))
 	{
-		X3DTransformMatrix3DNodeTool::traverse (type, renderObject);
+		X3DGroupingNodeTool::traverse (type, renderObject);
 	}
 	else
 	{
@@ -588,8 +591,12 @@ X3DTransformNodeTool::dispose ()
 
 	getBrowser () -> removeTransformTool (this);
 
-	X3DTransformMatrix3DNodeTool::dispose ();
+	X3DTransformMatrix3DObjectTool::dispose ();
+	X3DGroupingNodeTool::dispose ();
 }
+
+X3DTransformNodeTool::~X3DTransformNodeTool ()
+{ }
 
 } // X3D
 } // titania

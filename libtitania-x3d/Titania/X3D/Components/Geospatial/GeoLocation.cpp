@@ -51,6 +51,7 @@
 #include "GeoLocation.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -58,15 +59,17 @@ namespace X3D {
 const Component   GeoLocation::component      = Component ("Geospatial", 1);
 const std::string GeoLocation::typeName       = "GeoLocation";
 const std::string GeoLocation::containerField = "children";
+
 GeoLocation::Fields::Fields () :
 	geoCoords (new SFVec3d ())
 { }
 
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformMatrix3DNode (),
-	     X3DGeospatialObject (),
-	                  fields ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DGroupingNode (),
+	       X3DGeospatialObject (),
+	X3DTransformMatrix3DObject (),
+	                    fields ()
 {
 	addType (X3DConstants::GeoLocation);
 
@@ -93,12 +96,19 @@ GeoLocation::create (X3DExecutionContext* const executionContext) const
 void
 GeoLocation::initialize ()
 {
-	X3DTransformMatrix3DNode::initialize ();
+	X3DGroupingNode::initialize ();
 	X3DGeospatialObject::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
 
 	addInterest (&GeoLocation::eventsProcessed, this);
 
 	eventsProcessed ();
+}
+
+Box3d
+GeoLocation::getBBox () const
+{
+	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
 void
@@ -108,11 +118,26 @@ GeoLocation::eventsProcessed ()
 }
 
 void
+GeoLocation::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+	X3DGroupingNode::traverse (type, renderObject);
+
+	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
 GeoLocation::dispose ()
 {
+	X3DTransformMatrix3DObject::dispose ();
 	X3DGeospatialObject::dispose ();
-	X3DTransformMatrix3DNode::dispose ();
+	X3DGroupingNode::dispose ();
 }
+
+GeoLocation::~GeoLocation ()
+{ }
 
 } // X3D
 } // titania

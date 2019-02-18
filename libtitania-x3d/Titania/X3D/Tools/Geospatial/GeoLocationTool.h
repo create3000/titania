@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_LOCATION_TOOL_H__
 
 #include "../Geospatial/X3DGeospatialObjectTool.h"
-#include "../Grouping/X3DTransformMatrix3DNodeTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
 #include "../ToolColors.h"
 
 #include "../../Components/Geospatial/GeoLocation.h"
@@ -62,19 +63,21 @@ namespace X3D {
 
 class GeoLocationTool :
 	virtual public GeoLocation,
-	public X3DTransformMatrix3DNodeTool,
-	public X3DGeospatialObjectTool
+	public X3DGroupingNodeTool,
+	public X3DGeospatialObjectTool,
+	public X3DTransformMatrix3DObjectTool
 {
 public:
 
 	///  @name Construction
 
 	GeoLocationTool (X3DBaseNode* const node) :
-		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                 GeoLocation (node -> getExecutionContext ()),
-		                 X3DBaseTool (node),
-		X3DTransformMatrix3DNodeTool (ToolColors::DARK_GREEN),
-		     X3DGeospatialObjectTool ()
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                   GeoLocation (node -> getExecutionContext ()),
+		                   X3DBaseTool (node),
+		           X3DGroupingNodeTool (ToolColors::DARK_GREEN),
+		       X3DGeospatialObjectTool (),
+		X3DTransformMatrix3DObjectTool ()
 	{
 		addType (X3DConstants::GeoLocationTool);
 	}
@@ -91,14 +94,25 @@ public:
 	geoCoords () const final override
 	{ return getNode <GeoLocation> () -> geoCoords (); }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	virtual
+	const Matrix4d &
+	getMatrix () const final override
+	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
+
 	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{
-		X3DTransformMatrix3DNodeTool::traverse (type, renderObject);
-		X3DGeospatialObjectTool::traverse (type, renderObject);
+		X3DGroupingNodeTool::traverse (type, renderObject);
 	}
 
 	///  @name Destruction
@@ -107,9 +121,15 @@ public:
 	void
 	dispose () final override
 	{
+		X3DTransformMatrix3DObjectTool::dispose ();
 		X3DGeospatialObjectTool::dispose ();
-		X3DTransformMatrix3DNodeTool::dispose ();
+		X3DGroupingNodeTool::dispose ();
 	}
+
+	virtual
+	~GeoLocationTool () final override
+	{ }
+
 
 private:
 
@@ -119,8 +139,9 @@ private:
 	void
 	initialize () final override
 	{
-		X3DTransformMatrix3DNodeTool::initialize ();
+		X3DGroupingNodeTool::initialize ();
 		X3DGeospatialObjectTool::initialize ();
+		X3DTransformMatrix3DObjectTool::initialize ();
 	}
 
 };

@@ -50,7 +50,8 @@
 
 #include "TransformMatrix3D.h"
 
-#include "../../Execution/X3DScene.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include <Titania/Math/Utility/almost_equal.h>
 #include <Titania/String/sprintf.h>
@@ -67,9 +68,10 @@ TransformMatrix3D::Fields::Fields () :
 { }
 
 TransformMatrix3D::TransformMatrix3D (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformMatrix3DNode (),
-	                  fields ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DGroupingNode (),
+	X3DTransformMatrix3DObject (),
+	                    fields ()
 {
 	addType (X3DConstants::TransformMatrix3D);
 
@@ -91,11 +93,18 @@ TransformMatrix3D::create (X3DExecutionContext* const executionContext) const
 void
 TransformMatrix3D::initialize ()
 {
-	X3DTransformMatrix3DNode::initialize ();
+	X3DGroupingNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
 
 	addInterest (&TransformMatrix3D::eventsProcessed, this);
 
 	eventsProcessed ();
+}
+
+Box3d
+TransformMatrix3D::getBBox () const
+{
+	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
 void
@@ -103,13 +112,7 @@ TransformMatrix3D::setMatrix (const Matrix4d & value)
 {
 	matrix () .setValue (value);
 
-	X3DTransformMatrix3DNode::setMatrix (value);
-}
-
-void
-TransformMatrix3D::eventsProcessed ()
-{
-	X3DTransformMatrix3DNode::setMatrix (matrix ());
+	X3DTransformMatrix3DObject::setMatrix (value);
 }
 
 Matrix4d
@@ -117,6 +120,33 @@ TransformMatrix3D::getCurrentMatrix () const
 {
 	return matrix ();
 }
+
+void
+TransformMatrix3D::eventsProcessed ()
+{
+	X3DTransformMatrix3DObject::setMatrix (matrix ());
+}
+
+void
+TransformMatrix3D::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+	X3DGroupingNode::traverse (type, renderObject);
+
+	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
+TransformMatrix3D::dispose ()
+{
+	X3DTransformMatrix3DObject::dispose ();
+	X3DGroupingNode::dispose ();
+}
+
+TransformMatrix3D::~TransformMatrix3D ()
+{ }
 
 } // X3D
 } // titania

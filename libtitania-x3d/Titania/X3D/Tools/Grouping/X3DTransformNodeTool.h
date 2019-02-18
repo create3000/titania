@@ -51,7 +51,8 @@
 #ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 
-#include "../Grouping/X3DTransformMatrix3DNodeTool.h"
+#include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
 
 #include "../../Browser/Tools/ToolType.h"
 #include "../../Components/Grouping/X3DTransformNode.h"
@@ -61,7 +62,8 @@ namespace X3D {
 
 class X3DTransformNodeTool :
 	virtual public X3DTransformNode,
-	public X3DTransformMatrix3DNodeTool
+	public X3DGroupingNodeTool,
+	public X3DTransformMatrix3DObjectTool
 {
 public:
 
@@ -291,17 +293,27 @@ public:
 	{ return X3DChildNode::isCameraObject (); }
 
 	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	virtual
 	bool
 	getKeepCenter () const final override;
+
+	virtual
+	void
+	setMatrix (const Matrix4d & matrix) final override;
+
+	virtual
+	const Matrix4d &
+	getMatrix () const final override
+	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
 
 	virtual
 	Matrix4d
 	getCurrentMatrix () const final override
 	{ return getNode <X3DTransformNode> () -> getCurrentMatrix (); }
-
-	virtual
-	void
-	setMatrix (const Matrix4d & matrix) final override;
 
 	virtual
 	void
@@ -349,6 +361,9 @@ public:
 	virtual
 	void
 	dispose () override;
+
+	virtual
+	~X3DTransformNodeTool () override;
 
 
 protected:

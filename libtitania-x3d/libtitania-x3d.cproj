@@ -599,7 +599,6 @@
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformNodeTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\X3DGeospatialObjectTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoViewpointTool.h" />
-    <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DNodeTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoLocationTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoTransformTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoLODTool.h" />
@@ -671,7 +670,6 @@
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
-    <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\IndexedFaceSetTool.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetKnifeObject.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetOperationsObject.h" />
@@ -1420,7 +1418,6 @@
     <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonOffsetContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
-    <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\IndexedFaceSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetKnifeObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetOperationsObject.cpp" />

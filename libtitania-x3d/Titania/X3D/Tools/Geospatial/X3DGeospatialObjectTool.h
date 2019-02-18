@@ -108,9 +108,7 @@ protected:
 	virtual
 	void
 	initialize () override
-	{
-		X3DGeospatialObject::initialize ();
-	}
+	{ X3DGeospatialObject::initialize (); }
 
 };
 
