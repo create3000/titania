@@ -323,7 +323,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Grouping/Transform.lo \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.lo \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.lo \
-	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.lo \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix3DObject.lo \
 	Titania/X3D/Components/Grouping/X3DTransformNode.lo \
 	Titania/X3D/Components/H-Anim/HAnimDisplacer.lo \
@@ -1011,7 +1010,6 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/Transform.Plo \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/X3DBoundedObject.Plo \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/X3DGroupingNode.Plo \
-	Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DNode.Plo \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DObject.Plo \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformNode.Plo \
 	Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo \
@@ -1930,7 +1928,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Grouping/Transform.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
-	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix3DObject.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformNode.cpp \
 	Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp \
@@ -3304,9 +3301,6 @@ Titania/X3D/Components/Grouping/X3DBoundedObject.lo:  \
 	Titania/X3D/Components/Grouping/$(am__dirstamp) \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Grouping/X3DGroupingNode.lo:  \
-	Titania/X3D/Components/Grouping/$(am__dirstamp) \
-	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.lo:  \
 	Titania/X3D/Components/Grouping/$(am__dirstamp) \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Grouping/X3DTransformMatrix3DObject.lo:  \
@@ -5610,7 +5604,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/Transform.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DBoundedObject.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DGroupingNode.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DObject.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo@am__quote@ # am--include-marker
@@ -6821,7 +6814,6 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/Transform.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DBoundedObject.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DGroupingNode.Plo
-	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DNode.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DObject.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformNode.Plo
 	-rm -f Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo
@@ -7547,7 +7539,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/Transform.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DBoundedObject.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DGroupingNode.Plo
-	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DNode.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DObject.Plo
 	-rm -f Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformNode.Plo
 	-rm -f Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo

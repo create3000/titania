@@ -93,7 +93,7 @@ MFStringURLWidget::on_add_clicked ()
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 
-		append (URL .str ());
+		append (URL .escape () .str ());
 		reloadButton .set_sensitive (true);
 	}
 
