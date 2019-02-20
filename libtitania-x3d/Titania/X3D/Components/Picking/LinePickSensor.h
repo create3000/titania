@@ -87,6 +87,14 @@ public:
 	///  @name Fields
 
 	MFVec3f &
+	pickedTextureCoordinate ()
+	{ return *fields .pickedTextureCoordinate; }
+
+	const MFVec3f &
+	pickedTextureCoordinate () const
+	{ return *fields .pickedTextureCoordinate; }
+
+	MFVec3f &
 	pickedNormal ()
 	{ return *fields .pickedNormal; }
 
@@ -102,17 +110,8 @@ public:
 	pickedPoint () const
 	{ return *fields .pickedPoint; }
 
-	MFVec3f &
-	pickedTextureCoordinate ()
-	{ return *fields .pickedTextureCoordinate; }
-
-	const MFVec3f &
-	pickedTextureCoordinate () const
-	{ return *fields .pickedTextureCoordinate; }
-
 
 private:
-
 
 	///  @name Static members
 
@@ -120,15 +119,15 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
+		MFVec3f* const pickedTextureCoordinate;
 		MFVec3f* const pickedNormal;
 		MFVec3f* const pickedPoint;
-		MFVec3f* const pickedTextureCoordinate;
 	};
 
 	Fields fields;

@@ -60,9 +60,9 @@ const std::string LinePickSensor::typeName       = "LinePickSensor";
 const std::string LinePickSensor::containerField = "children";
 
 LinePickSensor::Fields::Fields () :
-	pickedNormal (new MFVec3f ()),
-	pickedPoint (new MFVec3f ()),
-	pickedTextureCoordinate (new MFVec3f ())
+	pickedTextureCoordinate (new MFVec3f ()),
+	           pickedNormal (new MFVec3f ()),
+	            pickedPoint (new MFVec3f ())
 { }
 
 LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
@@ -74,16 +74,16 @@ LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",                metadata ());
 	addField (inputOutput,    "enabled",                 enabled ());
-	addField (outputOnly,     "isActive",                isActive ());
 	addField (inputOutput,    "objectType",              objectType ());
-	addField (inputOutput,    "pickingGeometry",         pickingGeometry ());
-	addField (inputOutput,    "pickTarget",              pickTarget ());
-	addField (outputOnly,     "pickedGeometry",          pickedGeometry ());
 	addField (initializeOnly, "intersectionType",        intersectionType ());
 	addField (initializeOnly, "sortOrder",               sortOrder ());
+	addField (outputOnly,     "isActive",                isActive ());
+	addField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate ());
 	addField (outputOnly,     "pickedNormal",            pickedNormal ());
 	addField (outputOnly,     "pickedPoint",             pickedPoint ());
-	addField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate ());
+	addField (outputOnly,     "pickedGeometry",          pickedGeometry ());
+	addField (inputOutput,    "pickingGeometry",         pickingGeometry ());
+	addField (inputOutput,    "pickTarget",              pickTarget ());
 }
 
 X3DBaseNode*

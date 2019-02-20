@@ -54,12 +54,12 @@ namespace titania {
 namespace X3D {
 
 X3DPickSensorNode::Fields::Fields () :
-	objectType (new MFString ({ "ALL" })),
-	pickingGeometry (new SFNode ()),
-	pickTarget (new MFNode ()),
-	pickedGeometry (new MFNode ()),
+	      objectType (new MFString ({ "ALL" })),
 	intersectionType (new SFString ("BOUNDS")),
-	sortOrder (new SFString ("CLOSEST"))
+	       sortOrder (new SFString ("CLOSEST")),
+	  pickedGeometry (new MFNode ()),
+	 pickingGeometry (new SFNode ()),
+	      pickTarget (new MFNode ())
 { }
 
 X3DPickSensorNode::X3DPickSensorNode () :

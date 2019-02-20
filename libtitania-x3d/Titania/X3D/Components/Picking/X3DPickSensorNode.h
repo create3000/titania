@@ -69,30 +69,6 @@ public:
 	objectType () const
 	{ return *fields .objectType; }
 
-	SFNode &
-	pickingGeometry ()
-	{ return *fields .pickingGeometry; }
-
-	const SFNode &
-	pickingGeometry () const
-	{ return *fields .pickingGeometry; }
-
-	MFNode &
-	pickTarget ()
-	{ return *fields .pickTarget; }
-
-	const MFNode &
-	pickTarget () const
-	{ return *fields .pickTarget; }
-
-	MFNode &
-	pickedGeometry ()
-	{ return *fields .pickedGeometry; }
-
-	const MFNode &
-	pickedGeometry () const
-	{ return *fields .pickedGeometry; }
-
 	SFString &
 	intersectionType ()
 	{ return *fields .intersectionType; }
@@ -109,6 +85,30 @@ public:
 	sortOrder () const
 	{ return *fields .sortOrder; }
 
+	MFNode &
+	pickedGeometry ()
+	{ return *fields .pickedGeometry; }
+
+	const MFNode &
+	pickedGeometry () const
+	{ return *fields .pickedGeometry; }
+
+	SFNode &
+	pickingGeometry ()
+	{ return *fields .pickingGeometry; }
+
+	const SFNode &
+	pickingGeometry () const
+	{ return *fields .pickingGeometry; }
+
+	MFNode &
+	pickTarget ()
+	{ return *fields .pickTarget; }
+
+	const MFNode &
+	pickTarget () const
+	{ return *fields .pickTarget; }
+
 
 protected:
 
@@ -122,11 +122,11 @@ private:
 		Fields ();
 
 		MFString* const objectType;
-		SFNode* const pickingGeometry;
-		MFNode* const pickTarget;
-		MFNode* const pickedGeometry;
 		SFString* const intersectionType;
 		SFString* const sortOrder;
+		MFNode* const pickedGeometry;
+		SFNode* const pickingGeometry;
+		MFNode* const pickTarget;
 	};
 
 	Fields fields;
