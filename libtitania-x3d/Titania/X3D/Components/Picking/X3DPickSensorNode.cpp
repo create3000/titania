@@ -50,6 +50,8 @@
 
 #include "X3DPickSensorNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -68,6 +70,47 @@ X3DPickSensorNode::X3DPickSensorNode () :
 {
 	addType (X3DConstants::X3DPickSensorNode);
 }
+
+void
+X3DPickSensorNode::initialize ()
+{
+	X3DSensorNode::initialize ();
+
+	enabled () .addInterest (&X3DPickSensorNode::set_enabled, this);
+
+	set_enabled ();
+}
+
+void
+X3DPickSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> removePickSensor (this);
+
+	X3DSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_enabled ();
+}
+
+void
+X3DPickSensorNode::set_enabled ()
+{
+	if (enabled ())
+		getBrowser () -> addPickSensor (this);
+	else
+		getBrowser () -> removePickSensor (this);
+}
+
+void
+X3DPickSensorNode::dispose ()
+{
+	getBrowser () -> removePickSensor (this);
+
+	X3DSensorNode::dispose ();
+}
+
+X3DPickSensorNode::~X3DPickSensorNode ()
+{ }
 
 } // X3D
 } // titania

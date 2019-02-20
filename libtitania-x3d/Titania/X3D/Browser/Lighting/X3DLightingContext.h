@@ -82,6 +82,9 @@ public:
 	dispose () override
 	{ }
 
+	virtual
+	~X3DLightingContext () override;
+
 
 protected:
 

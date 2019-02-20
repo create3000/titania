@@ -71,6 +71,7 @@ public:
 
 	///  @name Common members
 
+	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 

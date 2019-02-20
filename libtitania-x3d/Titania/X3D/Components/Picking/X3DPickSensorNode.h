@@ -61,6 +61,14 @@ class X3DPickSensorNode :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
+
+	///  @name Fields
+
 	MFString &
 	objectType ()
 	{ return *fields .objectType; }
@@ -109,13 +117,35 @@ public:
 	pickTarget () const
 	{ return *fields .pickTarget; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~X3DPickSensorNode () override;
+
 
 protected:
 
+	///  @name Construction
+
 	X3DPickSensorNode ();
+
+	virtual
+	void
+	initialize () final override;
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_enabled ();
+
+	///  @name Fields
 
 	struct Fields
 	{

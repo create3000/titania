@@ -67,6 +67,7 @@
 #include "../Browser/Navigation/X3DNavigationContext.h"
 #include "../Browser/Networking/X3DNetworkingContext.h"
 #include "../Browser/ParticleSystems/X3DParticleSystemsContext.h"
+#include "../Browser/Picking/X3DPickingContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
@@ -99,6 +100,7 @@ class X3DBrowserContext :
 	public X3DNavigationContext,
 	public X3DNetworkingContext,
 	public X3DParticleSystemsContext,
+	public X3DPickingContext,
 	public X3DPointingDeviceSensorContext,
 	public X3DRenderingContext,
 	public X3DScriptingContext,

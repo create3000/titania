@@ -48,56 +48,63 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_TOOL_H__
-#define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_TOOL_H__
+#ifndef __TITANIA_X3D_BROWSER_LIGHTING_X3DPICKING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_LIGHTING_X3DPICKING_CONTEXT_H__
 
-#include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
-
-#include "../../Components/EnvironmentalSensor/VisibilitySensor.h"
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-class VisibilitySensorTool :
-	virtual public VisibilitySensor,
-	public X3DEnvironmentalSensorNodeTool
+class X3DPickingContext :
+	virtual public X3DBaseNode
 {
 public:
-
-	///  @name Construction
-
-	VisibilitySensorTool (X3DBaseNode* const node);
-
-	///  @name Common members
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext) final override;
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
-	
+	dispose () override
+	{ }
+
 	virtual
-	~VisibilitySensorTool () final override;
+	~X3DPickingContext () override;
 
 
 protected:
 
+	///  @name Friends
+
+	friend class X3DPickSensorNode;
+
 	///  @name Construction
+
+	X3DPickingContext ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+	///  @name Member access
+
+	void
+	addPickSensor (X3DPickSensorNode* const pickSensor);
+
+	void
+	removePickSensor (X3DPickSensorNode* const pickSensor);
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	picking ();
+
+	///  @name Members
+
+	X3DWeakPtrArray <X3DPickSensorNode> pickSensors;
 
 };
 

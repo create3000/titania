@@ -48,60 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_TOOL_H__
-#define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_TOOL_H__
+#include "X3DPickingContext.h"
 
-#include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
-
-#include "../../Components/EnvironmentalSensor/VisibilitySensor.h"
+#include "../../Components/Picking/X3DPickSensorNode.h"
+#include "../X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class VisibilitySensorTool :
-	virtual public VisibilitySensor,
-	public X3DEnvironmentalSensorNodeTool
+X3DPickingContext::X3DPickingContext () :
+	X3DBaseNode ()
+{ }
+
+void
+X3DPickingContext::initialize ()
+{ }
+
+void
+X3DPickingContext::addPickSensor (X3DPickSensorNode* const pickSensor)
 {
-public:
+	pickSensors .emplace_back (pickSensor);
 
-	///  @name Construction
+	if (pickSensors .size () == 1)
+		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
+}
 
-	VisibilitySensorTool (X3DBaseNode* const node);
+void
+X3DPickingContext::removePickSensor (X3DPickSensorNode* const pickSensor)
+{
+	pickSensors .remove (X3DWeakPtr <X3DPickSensorNode> (pickSensor));
 
-	///  @name Common members
+	if (pickSensors .empty ())
+		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
+}
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext) final override;
+void
+X3DPickingContext::picking ()
+{
+	__LOG__ << std::endl;
+}
 
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-	
-	virtual
-	~VisibilitySensorTool () final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-};
+X3DPickingContext::~X3DPickingContext ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

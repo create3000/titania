@@ -987,6 +987,7 @@
     <None Include="Titania\X3D\Tools\H-Anim\HAnimJointTool.h" />
     <None Include="Titania\X3D\Tools\H-Anim\HAnimSiteTool.h" />
     <None Include="Titania\X3D\Base\X3DEventObject.h" />
+    <None Include="Titania\X3D\Browser\Picking\X3DPickingContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1668,6 +1669,7 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DBrowser.cpp" />
     <Compile Include="Titania\X3D\Browser\NURBS\NURBS.cpp" />
     <Compile Include="Titania\X3D\Base\X3DEventObject.cpp" />
+    <Compile Include="Titania\X3D\Browser\Picking\X3DPickingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1776,6 +1778,7 @@
     <Folder Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\" />
     <Folder Include="Titania\X3D\Browser\NURBS\" />
     <Folder Include="Titania\X3D\Tools\H-Anim\" />
+    <Folder Include="Titania\X3D\Browser\Picking\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
