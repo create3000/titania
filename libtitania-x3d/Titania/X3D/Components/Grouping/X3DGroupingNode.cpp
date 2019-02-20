@@ -419,13 +419,13 @@ X3DGroupingNode::clear ()
 {
 	for (const auto & childNode : childNodes)
 		childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
-	
+
 	pointingDeviceSensors .clear ();
-	cameraObjects .clear ();
-	clipPlanes    .clear ();
-	localFogs     .clear ();
-	lights        .clear ();
-	childNodes    .clear ();
+	cameraObjects         .clear ();
+	clipPlanes            .clear ();
+	localFogs             .clear ();
+	lights                .clear ();
+	childNodes            .clear ();
 }
 
 void
