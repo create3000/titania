@@ -117,7 +117,7 @@ SFNode::create (JSContext* const cx, const X3D::SFNode & field)
 		const auto script           = getContext (cx) -> getScriptNode ();
 		const auto [value, created] = X3DField::create <SFNode> (cx, const_cast <X3D::SFNode*> (&field));
 
-		if (created and script -> directOutput ())
+		if (created and (script -> directOutput () or true))
 		{
 			const auto node   = field .getValue ();
 			const auto object = JS::RootedObject (cx, value .toObjectOrNull ());
