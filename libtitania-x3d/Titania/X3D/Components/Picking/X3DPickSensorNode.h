@@ -93,14 +93,6 @@ public:
 	sortOrder () const
 	{ return *fields .sortOrder; }
 
-	MFNode &
-	pickedGeometry ()
-	{ return *fields .pickedGeometry; }
-
-	const MFNode &
-	pickedGeometry () const
-	{ return *fields .pickedGeometry; }
-
 	SFNode &
 	pickingGeometry ()
 	{ return *fields .pickingGeometry; }
@@ -117,11 +109,25 @@ public:
 	pickTarget () const
 	{ return *fields .pickTarget; }
 
+	MFNode &
+	pickedGeometry ()
+	{ return *fields .pickedGeometry; }
+
+	const MFNode &
+	pickedGeometry () const
+	{ return *fields .pickedGeometry; }
+
 	///  @name Member access
 
 	const std::set <std::string> &
 	getObjectType () const
 	{ return objectTypeIndex; }
+
+	///  @name Operations
+
+	virtual
+	void
+	pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode) = 0;
 
 	///  @name Destruction
 
@@ -163,9 +169,9 @@ private:
 		MFString* const objectType;
 		SFString* const intersectionType;
 		SFString* const sortOrder;
-		MFNode* const pickedGeometry;
 		SFNode* const pickingGeometry;
 		MFNode* const pickTarget;
+		MFNode* const pickedGeometry;
 	};
 
 	Fields fields;

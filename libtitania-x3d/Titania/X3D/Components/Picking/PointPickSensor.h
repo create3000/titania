@@ -94,6 +94,12 @@ public:
 	pickedPoint () const
 	{ return *fields .pickedPoint; }
 
+	///  @name Operations
+
+	virtual
+	void
+	pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode) final override;
+
 
 private:
 
@@ -104,7 +110,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{

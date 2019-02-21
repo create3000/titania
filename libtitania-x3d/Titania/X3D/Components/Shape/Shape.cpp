@@ -59,6 +59,7 @@
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Types/Geometry.h"
 #include "../Navigation/NavigationInfo.h"
+#include "../Picking/X3DPickSensorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shape/Appearance.h"
 
@@ -282,7 +283,10 @@ Shape::cut (X3DRenderObject* const renderObject)
 void
 Shape::picking (X3DRenderObject* const renderObject)
 {
-	__LOG__ << this << " : " << getBrowser () -> getPickSensors () .back () .size () << std::endl;
+	for (const auto pickSensor : getBrowser () -> getPickSensors () .back ())
+	{
+		pickSensor -> pick (renderObject -> getModelViewMatrix () .get (), getGeometry ());
+	}
 }
 
 void

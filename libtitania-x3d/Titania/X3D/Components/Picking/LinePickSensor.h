@@ -110,6 +110,12 @@ public:
 	pickedPoint () const
 	{ return *fields .pickedPoint; }
 
+	///  @name Operations
+
+	virtual
+	void
+	pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode) final override;
+
 
 private:
 

@@ -84,6 +84,13 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Operations
+
+	virtual
+	void
+	pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode) final override;
+
+
 private:
 
 	///  @name Static members
@@ -91,7 +98,6 @@ private:
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
-
 
 };
 

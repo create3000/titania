@@ -70,16 +70,23 @@ PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "objectType",       objectType ());
 	addField (initializeOnly, "intersectionType", intersectionType ());
 	addField (initializeOnly, "sortOrder",        sortOrder ());
-	addField (outputOnly,     "isActive",         isActive ());
-	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
 	addField (inputOutput,    "pickingGeometry",  pickingGeometry ());
 	addField (inputOutput,    "pickTarget",       pickTarget ());
+	addField (outputOnly,     "isActive",         isActive ());
+	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
 }
 
 X3DBaseNode*
 PrimitivePickSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new PrimitivePickSensor (executionContext);
+}
+
+void
+PrimitivePickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+{
+	__LOG__ << this << std::endl;
+
 }
 
 } // X3D

@@ -59,9 +59,9 @@ X3DPickSensorNode::Fields::Fields () :
 	      objectType (new MFString ({ "ALL" })),
 	intersectionType (new SFString ("BOUNDS")),
 	       sortOrder (new SFString ("CLOSEST")),
-	  pickedGeometry (new MFNode ()),
 	 pickingGeometry (new SFNode ()),
-	      pickTarget (new MFNode ())
+	      pickTarget (new MFNode ()),
+	  pickedGeometry (new MFNode ())
 { }
 
 X3DPickSensorNode::X3DPickSensorNode () :

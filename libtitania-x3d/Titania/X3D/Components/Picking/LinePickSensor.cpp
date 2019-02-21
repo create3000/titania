@@ -77,19 +77,25 @@ LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "objectType",              objectType ());
 	addField (initializeOnly, "intersectionType",        intersectionType ());
 	addField (initializeOnly, "sortOrder",               sortOrder ());
+	addField (inputOutput,    "pickingGeometry",         pickingGeometry ());
+	addField (inputOutput,    "pickTarget",              pickTarget ());
 	addField (outputOnly,     "isActive",                isActive ());
 	addField (outputOnly,     "pickedTextureCoordinate", pickedTextureCoordinate ());
 	addField (outputOnly,     "pickedNormal",            pickedNormal ());
 	addField (outputOnly,     "pickedPoint",             pickedPoint ());
 	addField (outputOnly,     "pickedGeometry",          pickedGeometry ());
-	addField (inputOutput,    "pickingGeometry",         pickingGeometry ());
-	addField (inputOutput,    "pickTarget",              pickTarget ());
 }
 
 X3DBaseNode*
 LinePickSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new LinePickSensor (executionContext);
+}
+
+void
+LinePickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+{
+
 }
 
 } // X3D

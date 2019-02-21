@@ -75,17 +75,23 @@ PointPickSensor::PointPickSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "objectType",       objectType ());
 	addField (initializeOnly, "intersectionType", intersectionType ());
 	addField (initializeOnly, "sortOrder",        sortOrder ());
+	addField (inputOutput,    "pickingGeometry",  pickingGeometry ());
+	addField (inputOutput,    "pickTarget",       pickTarget ());
 	addField (outputOnly,     "isActive",         isActive ());
 	addField (outputOnly,     "pickedPoint",      pickedPoint ());
 	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
-	addField (inputOutput,    "pickingGeometry",  pickingGeometry ());
-	addField (inputOutput,    "pickTarget",       pickTarget ());
 }
 
 X3DBaseNode*
 PointPickSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new PointPickSensor (executionContext);
+}
+
+void
+PointPickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+{
+
 }
 
 } // X3D

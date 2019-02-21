@@ -70,16 +70,22 @@ VolumePickSensor::VolumePickSensor (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "objectType",       objectType ());
 	addField (initializeOnly, "intersectionType", intersectionType ());
 	addField (initializeOnly, "sortOrder",        sortOrder ());
-	addField (outputOnly,     "isActive",         isActive ());
-	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
 	addField (inputOutput,    "pickingGeometry",  pickingGeometry ());
 	addField (inputOutput,    "pickTarget",       pickTarget ());
+	addField (outputOnly,     "isActive",         isActive ());
+	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
 }
 
 X3DBaseNode*
 VolumePickSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new VolumePickSensor (executionContext);
+}
+
+void
+VolumePickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+{
+
 }
 
 } // X3D
