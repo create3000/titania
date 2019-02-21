@@ -71,7 +71,6 @@ static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELE
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       X3DBaseNode (),
 	   pointingDevice  (new PointingDevice (getBrowser ())),
-	          pickable (true),
 	        selectable (false),
 	            cursor ("ARROW"),
 	     privateCursor ("DEFAULT"),
@@ -91,7 +90,6 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	       depthBuffer ()
 {
 	addChildObjects (pointingDevice,
-	                 pickable,
 	                 selectable,
 	                 cursor,
 	                 privateCursor,

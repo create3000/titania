@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "../Browser.h"
-
 #include "PointingDevice.h"
+
+#include "../X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
@@ -62,14 +62,17 @@ const std::string PointingDevice::containerField = "pointingDevice";
 PointingDevice::PointingDevice (X3DExecutionContext* const executionContext) :
 		            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	           sigc::trackable (),
+	                   enabled (true),
+                       cursor ("ARROW"),
+	                    button (0),
+	                    isOver (false),
 	  button_press_conncection (),
 	button_release_conncection (),
 	 motion_notify_conncection (),
-	  leave_notify_conncection (),
-                       cursor ("ARROW"),
-	                    button (0),
-	                    isOver (false)
-{ }
+	  leave_notify_conncection ()
+{
+	addChildObjects (enabled);
+}
 
 X3DBaseNode*
 PointingDevice::create (X3DExecutionContext* const executionContext) const
@@ -83,9 +86,9 @@ PointingDevice::initialize ()
 	X3DBaseNode::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&PointingDevice::set_initialized, this);
-	getBrowser () -> getPickable () .addInterest (&PointingDevice::set_pickable, this);
+	enabled .addInterest (&PointingDevice::set_enabled, this);
 
-	set_pickable ();
+	set_enabled ();
 }
 
 void
@@ -96,7 +99,7 @@ PointingDevice::set_initialized ()
 }
 
 void
-PointingDevice::set_pickable ()
+PointingDevice::set_enabled ()
 {
 	// Always disconnect.
 
@@ -115,7 +118,7 @@ PointingDevice::set_pickable ()
 
 	// Connect.
 
-	if (getBrowser () -> getPickable ())
+	if (enabled)
 	{
 		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (this, &PointingDevice::on_button_press_event), false);
 		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &PointingDevice::on_button_release_event));

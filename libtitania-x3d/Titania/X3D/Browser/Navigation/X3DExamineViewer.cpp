@@ -51,10 +51,9 @@
 #include "X3DExamineViewer.h"
 
 #include "../../Components/Navigation/NavigationInfo.h"
-#include "../Browser.h"
+#include "../../Browser/X3DBrowser.h"
 
 #include <cmath>
-#include <glibmm/main.h>
 
 namespace titania {
 namespace X3D {

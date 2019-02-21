@@ -50,7 +50,9 @@
 
 #include "PickableGroup.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Picking/X3DPickSensorNode.h"
 
 namespace titania {
 namespace X3D {
@@ -87,6 +89,16 @@ PickableGroup::initialize ()
 {
 	X3DGroupingNode::initialize ();
 	X3DPickableObject::initialize ();
+
+	pickable () .addInterest (&PickableGroup::set_pickable, this);
+
+	set_pickable ();
+}
+
+void
+PickableGroup::set_pickable ()
+{
+	setPickableObject (pickable ());
 }
 
 void
@@ -99,9 +111,52 @@ PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderO
 
 		if (getObjectType () .count ("NONE"))
 			return;
-	}
 
-	X3DGroupingNode::traverse (type, renderObject);
+		if (getObjectType () .count ("ALL"))
+		{
+			X3DGroupingNode::traverse (type, renderObject);
+		}
+		else
+		{
+			// Filter pick sensors.
+
+			std::set <X3DPickSensorNode*> pickSensors;
+
+			for (const auto pickSensor : getBrowser () -> getPickSensors () .back ())
+			{
+				if (not pickSensor -> getObjectType () .count ("ALL"))
+				{
+					std::vector <std::string> intersection;
+	
+					std::set_intersection (getObjectType () .begin (), getObjectType () .end (),
+				                          pickSensor -> getObjectType () .begin (), pickSensor -> getObjectType () .end (),
+				                          std::back_inserter (intersection));
+	
+					if (intersection .empty ())
+						continue;
+				}
+
+				pickSensors .emplace (pickSensor);
+			}
+
+			if (pickSensors .empty ())
+				return;
+
+			// Traverse.
+
+			getBrowser () -> getPickable () .push (true);
+			getBrowser () -> getPickSensors () .emplace_back (std::move (pickSensors));
+
+			X3DGroupingNode::traverse (type, renderObject);
+
+			getBrowser () -> getPickSensors () .pop_back ();
+			getBrowser () -> getPickable () .pop ();
+		}
+	}
+	else
+	{
+		X3DGroupingNode::traverse (type, renderObject);
+	}
 }
 
 void

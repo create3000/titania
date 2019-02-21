@@ -53,6 +53,8 @@
 
 #include "../Navigation/X3DViewer.h"
 
+#include <gdk/gdk.h>
+
 namespace titania {
 namespace X3D {
 
@@ -128,7 +130,7 @@ private:
 
 	///  @name Members
 
-	bool       pickable;
+	bool       touchable;
 	bool       isOver;
 	Rotation4d orientation;
 	Rotation4d rotation;

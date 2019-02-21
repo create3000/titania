@@ -48,10 +48,9 @@
  *
  ******************************************************************************/
 
-#include "../Browser.h"
-
 #include "X3DViewer.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"

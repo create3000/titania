@@ -48,10 +48,9 @@
  *
  ******************************************************************************/
 
-#include "../Browser.h"
-
 #include "PlaneViewer.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Geospatial/GeoViewpoint.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Navigation/Viewpoint.h"

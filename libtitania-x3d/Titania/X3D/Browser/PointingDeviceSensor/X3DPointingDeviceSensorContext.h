@@ -71,13 +71,9 @@ public:
 
 	///  @name Member access
 
-	void
-	setPickable (const bool value)
-	{ pickable = value; }
-
-	const SFBool &
-	getPickable () const
-	{ return pickable; }
+	const X3DPtr <PointingDevice> &
+	getPointingDevice () const
+	{ return pointingDevice; }
 
 	void
 	setSelectable (const bool value)
@@ -253,7 +249,6 @@ private:
 	//  @name Members
 
 	X3DPtr <PointingDevice>                        pointingDevice;
-	SFBool                                         pickable;
 	SFBool                                         selectable;
 	SFString                                       cursor;
 	SFString                                       privateCursor;

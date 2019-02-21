@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Layering/X3DViewportNode.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
@@ -1118,7 +1119,7 @@ TextureMappingEditor::on_split_point ()
 void
 TextureMappingEditor::on_left_hand_toggled ()
 {
-	left -> setPickable (false);
+	left -> getPointingDevice () -> setEnabled (false);
 	left -> grab_focus ();
 }
 
@@ -1126,7 +1127,7 @@ void
 TextureMappingEditor::on_left_arrow_toggled ()
 {
 	tool = ToolType::MOVE;
-	left -> setPickable (true);
+	left -> getPointingDevice () -> setEnabled (true);
 	left -> grab_focus ();
 }
 
@@ -1134,7 +1135,7 @@ void
 TextureMappingEditor::on_left_rotate_toggled ()
 {
 	tool = ToolType::ROTATE;
-	left -> setPickable (true);
+	left -> getPointingDevice () -> setEnabled (true);
 	left -> grab_focus ();
 }
 
@@ -1142,7 +1143,7 @@ void
 TextureMappingEditor::on_left_scale_toggled ()
 {
 	tool = ToolType::SCALE;
-	left -> setPickable (true);
+	left -> getPointingDevice () -> setEnabled (true);
 	left -> grab_focus ();
 }
 
@@ -1164,14 +1165,14 @@ TextureMappingEditor::on_left_look_at_all_clicked ()
 void
 TextureMappingEditor::on_right_hand_toggled ()
 {
-	right -> setPickable (false);
+	right -> getPointingDevice () -> setEnabled (false);
 	right -> grab_focus ();
 }
 
 void
 TextureMappingEditor::on_right_arrow_toggled ()
 {
-	right -> setPickable (true);
+	right -> getPointingDevice () -> setEnabled (true);
 	right -> grab_focus ();
 }
 

@@ -55,6 +55,7 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Browser/Core/BrowserOptions.h>
+#include <Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/LayerSet.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
@@ -387,13 +388,13 @@ PolygonColoringEditor::on_remove_dublicate_colors_activate ()
 void
 PolygonColoringEditor::on_hand_toggled ()
 {
-	preview -> setPickable (false);
+	preview -> getPointingDevice () -> setEnabled (false);
 }
 
 void
 PolygonColoringEditor::on_arrow_toggled ()
 {
-	preview -> setPickable (true);
+	preview -> getPointingDevice () -> setEnabled (true);
 }
 
 void

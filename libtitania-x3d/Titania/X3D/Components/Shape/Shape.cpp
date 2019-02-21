@@ -282,7 +282,7 @@ Shape::cut (X3DRenderObject* const renderObject)
 void
 Shape::picking (X3DRenderObject* const renderObject)
 {
-
+	__LOG__ << this << " : " << getBrowser () -> getPickSensors () .back () .size () << std::endl;
 }
 
 void

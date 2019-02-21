@@ -53,6 +53,8 @@
 
 #include "../Navigation/X3DViewer.h"
 
+#include <gdk/gdk.h>
+
 namespace titania {
 namespace X3D {
 

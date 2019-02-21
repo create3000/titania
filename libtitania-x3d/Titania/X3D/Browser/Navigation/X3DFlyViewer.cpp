@@ -50,18 +50,15 @@
 
 #include "X3DFlyViewer.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Rendering/ViewVolume.h"
-#include "../Browser.h"
 #include "../Core/BrowserOptions.h"
 
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/Math/Geometry/Camera.h>
-
-#include <cmath>
-#include <glibmm/main.h>
 
 namespace titania {
 namespace X3D {

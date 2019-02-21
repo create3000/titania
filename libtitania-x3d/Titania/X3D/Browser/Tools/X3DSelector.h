@@ -121,7 +121,7 @@ private:
 
 	///  @name Members
 
-	bool                   pickable;
+	bool                   touchable;
 	std::vector <Vector3d> points;
 
 };

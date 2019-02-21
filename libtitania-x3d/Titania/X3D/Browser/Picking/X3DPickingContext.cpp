@@ -51,6 +51,7 @@
 #include "X3DPickingContext.h"
 
 #include "../../Components/Picking/X3DPickSensorNode.h"
+#include "../../Execution/World.h"
 #include "../X3DBrowser.h"
 
 namespace titania {
@@ -58,10 +59,10 @@ namespace X3D {
 
 X3DPickingContext::X3DPickingContext () :
 	X3DBaseNode (),
-	pickSensors (),
-	pickingFlag ()
+	   pickable ({ false }),
+	pickSensors ()
 {
-	addChildObjects (pickSensors);
+	pickSensors .emplace_back ();
 }
 
 void
@@ -71,18 +72,18 @@ X3DPickingContext::initialize ()
 void
 X3DPickingContext::addPickSensor (X3DPickSensorNode* const pickSensor)
 {
-	pickSensors .emplace_back (pickSensor);
+	pickSensors .front () .emplace (pickSensor);
 
-	if (pickSensors .size () == 1)
+	if (pickSensors .front () .size () == 1)
 		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
 }
 
 void
 X3DPickingContext::removePickSensor (X3DPickSensorNode* const pickSensor)
 {
-	pickSensors .remove (X3DWeakPtr <X3DPickSensorNode> (pickSensor));
+	pickSensors .front () .erase (pickSensor);
 
-	if (pickSensors .empty ())
+	if (pickSensors .front () .empty ())
 		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
 }
 
@@ -90,6 +91,8 @@ void
 X3DPickingContext::picking ()
 {
 	__LOG__ << std::endl;
+
+	getBrowser () -> getWorld () -> traverse (TraverseType::PICKING, nullptr);
 }
 
 X3DPickingContext::~X3DPickingContext ()

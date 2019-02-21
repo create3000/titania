@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#include "../Browser.h"
-
 #include "X3DSelector.h"
 
+#include "../../Browser/PointingDeviceSensor/PointingDevice.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/OpenGL.h"
@@ -64,7 +64,7 @@ namespace X3D {
 
 X3DSelector::X3DSelector () :
 	X3DExamineViewer (),
-	        pickable (false),
+	       touchable (false),
 	          points ()
 {
 	addType (X3DConstants::X3DSelector);
@@ -75,9 +75,9 @@ X3DSelector::initialize ()
 {
 	X3DExamineViewer::initialize ();
 
-	pickable = getExecutionContext () -> getBrowser () -> getPickable ();
+	touchable = getExecutionContext () -> getBrowser () -> getPointingDevice () -> getEnabled ();
 
-	//getBrowser () -> setPickable (false);
+	//getBrowser () -> etPointingDevice () -> setEnabled (false);
 }
 
 bool
@@ -283,7 +283,7 @@ X3DSelector::polygon ()
 void
 X3DSelector::dispose ()
 {
-	//getBrowser () -> setPickable (pickable);
+	//getBrowser () -> etPointingDevice () -> setEnabled (touchable);
 
 	X3DExamineViewer::dispose ();
 }

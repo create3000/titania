@@ -294,6 +294,7 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 						case X3DConstants::X3DInfoNode:
 						case X3DConstants::X3DInterpolatorNode:
 						case X3DConstants::X3DLayoutNode:
+						case X3DConstants::X3DPickSensorNode:
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
 						case X3DConstants::X3DTriggerNode:
@@ -401,6 +402,7 @@ X3DGroupingNode::remove (const MFNode & children)
 						case X3DConstants::X3DInfoNode:
 						case X3DConstants::X3DInterpolatorNode:
 						case X3DConstants::X3DLayoutNode:
+						case X3DConstants::X3DPickSensorNode:
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
 						case X3DConstants::X3DTriggerNode:
@@ -506,7 +508,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		}
 		case TraverseType::PICKING:
 		{
-			if (getBrowser () -> getPickable ())
+			if (getBrowser () -> getPickable () .top ())
 			{
 				for (const auto & childNode : childNodes)
 					childNode -> traverse (type, renderObject);

@@ -112,6 +112,11 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_pickable ();
+
 	///  @name Static members
 
 	static const Component   component;

@@ -92,6 +92,16 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Member access
+
+	SFBool &
+	getEnabled ()
+	{ return enabled; }
+
+	void
+	setEnabled (const bool value)
+	{ enabled = value; }
+
 	///  @name Destruction
 
 	virtual
@@ -116,7 +126,7 @@ private:
 	set_initialized ();
 
 	void
-	set_pickable ();
+	set_enabled ();
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);
@@ -144,14 +154,15 @@ private:
 
 	///  @name Members
 
+	SFBool      enabled;
+	std::string cursor;
+	size_t      button;
+	bool        isOver;
+
 	sigc::connection button_press_conncection;
 	sigc::connection button_release_conncection;
 	sigc::connection motion_notify_conncection;
 	sigc::connection leave_notify_conncection;
-
-	std::string cursor;
-	size_t      button;
-	bool        isOver;
 
 };
 

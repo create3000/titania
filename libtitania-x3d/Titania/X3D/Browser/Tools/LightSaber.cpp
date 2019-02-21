@@ -48,10 +48,9 @@
  *
  ******************************************************************************/
 
-#include "../Browser.h"
-
 #include "LightSaber.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/OpenGL.h"
 

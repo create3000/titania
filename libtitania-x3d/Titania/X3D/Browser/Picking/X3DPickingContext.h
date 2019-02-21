@@ -78,6 +78,9 @@ protected:
 
 	///  @name Friends
 
+	friend class PickableGroup;
+	friend class Shape;
+	friend class X3DGroupingNode;
 	friend class X3DPickSensorNode;
 
 	///  @name Construction
@@ -97,12 +100,20 @@ protected:
 	removePickSensor (X3DPickSensorNode* const pickSensor);
 
 	std::stack <bool> &
-	getPicking ()
-	{ return pickingFlag; }
+	getPickable ()
+	{ return pickable; }
 
 	const std::stack <bool> &
-	getPicking () const
-	{ return pickingFlag; }
+	getPickable () const
+	{ return pickable; }
+
+	std::vector <std::set <X3DPickSensorNode*>> &
+	getPickSensors ()
+	{ return pickSensors; }
+
+	const std::vector <std::set <X3DPickSensorNode*>> &
+	getPickSensors () const
+	{ return pickSensors; }
 
 
 private:
@@ -114,8 +125,8 @@ private:
 
 	///  @name Members
 
-	X3DWeakPtrArray <X3DPickSensorNode> pickSensors;
-	std::stack <bool>                   pickingFlag;
+	std::stack <bool>                           pickable;
+	std::vector <std::set <X3DPickSensorNode*>> pickSensors;
 
 };
 

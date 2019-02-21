@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
-#include "../Browser.h"
-
 #include "LookAtViewer.h"
 
+#include "../../Browser/PointingDeviceSensor/PointingDevice.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 
 namespace titania {
@@ -64,7 +64,7 @@ const std::string LookAtViewer::containerField = "viewer";
 LookAtViewer::LookAtViewer (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DViewer (),
-	   pickable (executionContext -> getBrowser () -> getPickable ()),
+	  touchable (executionContext -> getBrowser () -> getPointingDevice () -> getEnabled ()),
 	     isOver (false),
 	orientation (),
 	   rotation (),
@@ -93,7 +93,7 @@ LookAtViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (this, &LookAtViewer::on_motion_notify_event),  false);
 
-	getBrowser () -> setPickable (false);
+	getBrowser () -> getPointingDevice () -> setEnabled (false);
 }
 
 bool
@@ -208,7 +208,7 @@ LookAtViewer::getOrientationOffset ()
 void
 LookAtViewer::dispose ()
 {
-	getBrowser () -> setPickable (pickable);
+	getBrowser () -> getPointingDevice () -> setEnabled (touchable);
 
 	X3DViewer::dispose ();
 }

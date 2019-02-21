@@ -50,7 +50,7 @@
 
 #include "KeyDevice.h"
 
-#include "../Browser.h"
+#include "../X3DBrowser.h"
 #include "../Selection.h"
 
 #include "../../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
