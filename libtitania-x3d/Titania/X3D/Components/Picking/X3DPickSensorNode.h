@@ -117,6 +117,12 @@ public:
 	pickTarget () const
 	{ return *fields .pickTarget; }
 
+	///  @name Member access
+
+	const std::set <std::string> &
+	getObjectType () const
+	{ return objectTypeIndex; }
+
 	///  @name Destruction
 
 	virtual
@@ -145,6 +151,9 @@ private:
 	void
 	set_enabled ();
 
+	void
+	set_objectType ();
+
 	///  @name Fields
 
 	struct Fields
@@ -160,6 +169,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::set <std::string> objectTypeIndex;
 
 };
 

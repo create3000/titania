@@ -59,18 +59,35 @@ X3DPickableObject::Fields::Fields () :
 { }
 
 X3DPickableObject::X3DPickableObject () :
-	X3DBaseNode (),
-	     fields ()
+	    X3DBaseNode (),
+	         fields (),
+	objectTypeIndex ()
 {
 	addType (X3DConstants::X3DPickableObject);
 }
 
 void
 X3DPickableObject::initialize ()
-{ }
+{
+	objectType  () .addInterest (&X3DPickableObject::set_objectType, this);
+
+	set_objectType ();
+}
+
+void
+X3DPickableObject::set_objectType ()
+{
+	objectTypeIndex .clear ();
+
+	for (const auto & value : basic::make_const_range (objectType ()))
+		objectTypeIndex .emplace (value);
+}
 
 void
 X3DPickableObject::dispose ()
+{ }
+
+X3DPickableObject::~X3DPickableObject ()
 { }
 
 } // X3D

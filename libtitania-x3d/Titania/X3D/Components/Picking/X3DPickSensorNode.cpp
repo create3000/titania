@@ -65,8 +65,9 @@ X3DPickSensorNode::Fields::Fields () :
 { }
 
 X3DPickSensorNode::X3DPickSensorNode () :
-	X3DSensorNode (),
-	       fields ()
+	  X3DSensorNode (),
+	         fields (),
+	objectTypeIndex ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
 }
@@ -76,9 +77,10 @@ X3DPickSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled () .addInterest (&X3DPickSensorNode::set_enabled, this);
+	enabled ()     .addInterest (&X3DPickSensorNode::set_enabled, this);
+	objectType  () .addInterest (&X3DPickSensorNode::set_objectType, this);
 
-	set_enabled ();
+	set_objectType ();
 }
 
 void
@@ -95,10 +97,21 @@ X3DPickSensorNode::setExecutionContext (X3DExecutionContext* const executionCont
 void
 X3DPickSensorNode::set_enabled ()
 {
-	if (enabled ())
+	if (enabled () and not objectTypeIndex .count ("NONE"))
 		getBrowser () -> addPickSensor (this);
 	else
 		getBrowser () -> removePickSensor (this);
+}
+
+void
+X3DPickSensorNode::set_objectType ()
+{
+	objectTypeIndex .clear ();
+
+	for (const auto & value : basic::make_const_range (objectType ()))
+		objectTypeIndex .emplace (value);
+
+	set_enabled ();
 }
 
 void

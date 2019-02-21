@@ -63,6 +63,8 @@ class X3DPickableObject :
 {
 public:
 
+	///  @name Fields
+
 	virtual
 	SFBool &
 	pickable ()
@@ -83,9 +85,20 @@ public:
 	objectType () const
 	{ return *fields .objectType; }
 
+	///  @name Member access
+
+	const std::set <std::string> &
+	getObjectType () const
+	{ return objectTypeIndex; }
+
+	///  @name Destruction
+	
 	virtual
 	void
 	dispose () override;
+
+	virtual
+	~X3DPickableObject () override;
 
 
 protected:
@@ -99,6 +112,13 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_objectType ();
+
+	///  @name Fields
+
 	struct Fields
 	{
 		Fields ();
@@ -108,6 +128,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::set <std::string> objectTypeIndex;
 
 };
 

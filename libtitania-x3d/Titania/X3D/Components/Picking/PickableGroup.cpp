@@ -96,6 +96,9 @@ PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderO
 	{
 		if (not pickable ())
 			return;
+
+		if (getObjectType () .count ("NONE"))
+			return;
 	}
 
 	X3DGroupingNode::traverse (type, renderObject);
