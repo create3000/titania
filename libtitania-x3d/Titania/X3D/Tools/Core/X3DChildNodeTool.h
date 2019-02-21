@@ -71,6 +71,11 @@ public:
 	isCameraObject () const override
 	{ return getNode <X3DChildNode> () -> isCameraObject (); }
 
+	virtual
+	const SFBool &
+	isPickableObject () const override
+	{ return getNode <X3DChildNode> () -> isPickableObject (); }
+
 
 protected:
 

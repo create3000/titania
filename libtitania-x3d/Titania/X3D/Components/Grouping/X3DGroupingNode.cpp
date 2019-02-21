@@ -80,6 +80,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	         allowedTypes (),
 	pointingDeviceSensors (),
 	        cameraObjects (),
+	      pickableObjects (),
 	           clipPlanes (),
 	            localFogs (),
 	               lights (),
@@ -90,6 +91,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	addChildObjects (visible,
 	                 pointingDeviceSensors,
 	                 cameraObjects,
+	                 pickableObjects,
 	                 clipPlanes,
 	                 localFogs,
 	                 lights,
@@ -258,7 +260,8 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							childNode -> isCameraObject () .addInterest (&X3DGroupingNode::set_cameraObjects, this);
+							childNode -> isCameraObject ()   .addInterest (&X3DGroupingNode::set_cameraObjects,   this);
+							childNode -> isPickableObject () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 							childNodes .emplace_back (childNode);
 
@@ -273,7 +276,8 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							childNode -> isCameraObject () .addInterest (&X3DGroupingNode::set_cameraObjects, this);
+							childNode -> isCameraObject ()   .addInterest (&X3DGroupingNode::set_cameraObjects, this);
+							childNode -> isPickableObject () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 							childNodes .emplace_back (childNode);
 							break;
@@ -354,7 +358,8 @@ X3DGroupingNode::remove (const MFNode & children)
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
+							childNode -> isCameraObject ()   .removeInterest (&X3DGroupingNode::set_cameraObjects,   this);
+							childNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 							childNodes .erase (std::remove (childNodes .begin (),
 							                                childNodes .end (),
@@ -375,7 +380,8 @@ X3DGroupingNode::remove (const MFNode & children)
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
+							childNode -> isCameraObject ()   .removeInterest (&X3DGroupingNode::set_cameraObjects,   this);
+							childNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 							childNodes .erase (std::remove (childNodes .begin (),
 							                                childNodes .end (),
@@ -412,13 +418,17 @@ X3DGroupingNode::remove (const MFNode & children)
 	}
 
 	set_cameraObjects ();
+	set_pickableObjects ();
 }
 
 void
 X3DGroupingNode::clear ()
 {
 	for (const auto & childNode : childNodes)
-		childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
+	{
+		childNode -> isCameraObject ()   .removeInterest (&X3DGroupingNode::set_cameraObjects,   this);
+		childNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
+	}
 
 	pointingDeviceSensors .clear ();
 	cameraObjects         .clear ();
@@ -440,6 +450,20 @@ X3DGroupingNode::set_cameraObjects ()
 	}
 
 	setCameraObject (not cameraObjects .empty ());
+}
+
+void
+X3DGroupingNode::set_pickableObjects ()
+{
+	pickableObjects .clear ();
+
+	for (const auto & childNode : childNodes)
+	{
+		if (childNode -> isPickableObject ())
+			pickableObjects .emplace_back (childNode);
+	}
+
+	setPickableObject (not pickableObjects .empty ());
 }
 
 void
@@ -477,6 +501,21 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		{
 			for (const auto & childNode : cameraObjects)
 				childNode -> traverse (type, renderObject);
+
+			return;
+		}
+		case TraverseType::PICKING:
+		{
+			if (getBrowser () -> getPickable ())
+			{
+				for (const auto & childNode : childNodes)
+					childNode -> traverse (type, renderObject);
+			}
+			else
+			{
+				for (const auto & childNode : pickableObjects)
+					childNode -> traverse (type, renderObject);
+			}
 
 			return;
 		}

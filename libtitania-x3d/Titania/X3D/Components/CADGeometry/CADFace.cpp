@@ -105,7 +105,10 @@ CADFace::set_shape ()
 	try
 	{
 		if (shapeNode)
-			shapeNode -> isCameraObject () .removeInterest (&CADFace::setCameraObject, static_cast <X3DChildNode*> (this));
+		{
+			shapeNode -> isCameraObject ()   .removeInterest (&CADFace::setCameraObject,  static_cast <X3DChildNode*> (this));
+			shapeNode -> isPickableObject () .removeInterest (&CADFace::isPickableObject, static_cast <X3DChildNode*> (this));
+		}
 
 		shapeNode = nullptr;
 
@@ -121,7 +124,11 @@ CADFace::set_shape ()
 				{
 					shapeNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-					shapeNode -> isCameraObject () .addInterest (&CADFace::setCameraObject, static_cast <X3DChildNode*> (this));
+					shapeNode -> isCameraObject ()   .addInterest (&CADFace::setCameraObject,  static_cast <X3DChildNode*> (this));
+					shapeNode -> isPickableObject () .addInterest (&CADFace::isPickableObject, static_cast <X3DChildNode*> (this));
+
+					setCameraObject   (shapeNode -> isCameraObject ());
+					setPickableObject (shapeNode -> isPickableObject ());
 					break;
 				}
 				default:

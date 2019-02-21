@@ -92,6 +92,12 @@ PickableGroup::initialize ()
 void
 PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
+	if (type == TraverseType::PICKING)
+	{
+		if (not pickable ())
+			return;
+	}
+
 	X3DGroupingNode::traverse (type, renderObject);
 }
 

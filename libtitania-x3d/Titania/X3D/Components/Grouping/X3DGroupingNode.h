@@ -173,6 +173,10 @@ protected:
 	void
 	set_cameraObjects ();
 
+	virtual
+	void
+	set_pickableObjects ();
+
 
 private:
 
@@ -218,6 +222,7 @@ private:
 	NodeTypeSet                               allowedTypes;
 	X3DPtrArray <X3DPointingDeviceSensorNode> pointingDeviceSensors;
 	X3DPtrArray <X3DChildNode>                cameraObjects;
+	X3DPtrArray <X3DChildNode>                pickableObjects;
 	X3DPtrArray <ClipPlane>                   clipPlanes;
 	X3DPtrArray <LocalFog>                    localFogs;
 	X3DPtrArray <X3DLightNode>                lights;

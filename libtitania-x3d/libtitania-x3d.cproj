@@ -635,7 +635,6 @@
     <None Include="Titania\X3D\Browser\Shape\Linetypes.h" />
     <None Include="Titania\X3D\Browser\Shape\HatchStyles.xcf" />
     <None Include="Titania\X3D\Browser\Shape\HatchStyles.h" />
-    <None Include="Titania\X3D\Basic\TraverseType.h" />
     <None Include="Titania\X3D\Browser\Networking\config.h" />
     <None Include="Titania\X3D\Editing\Undo\UndoGroup.h" />
     <None Include="Titania\X3D\Editing\Undo\UndoHistory.h" />
@@ -988,6 +987,7 @@
     <None Include="Titania\X3D\Tools\H-Anim\HAnimSiteTool.h" />
     <None Include="Titania\X3D\Base\X3DEventObject.h" />
     <None Include="Titania\X3D\Browser\Picking\X3DPickingContext.h" />
+    <None Include="Titania\X3D\Basic\TraverseType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

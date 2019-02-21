@@ -433,12 +433,10 @@ ScreenText::traverse (const TraverseType type, X3DRenderObject* const renderObje
 	switch (type)
 	{
 		case TraverseType::CAMERA:
+		{
 			break;
-
-		case TraverseType::POINTER:
-		case TraverseType::COLLISION:
-		case TraverseType::DEPTH:
-		case TraverseType::DISPLAY:
+		}
+		default:
 		{
 			transform (renderObject);
 			break;

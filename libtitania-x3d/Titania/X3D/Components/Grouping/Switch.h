@@ -141,6 +141,10 @@ private:
 	void
 	set_cameraObjects () final override;
 
+	virtual
+	void
+	set_pickableObjects () final override;
+
 	///  @name Static members
 
 	static const Component   component;

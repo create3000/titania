@@ -288,11 +288,6 @@ public:
 	///  @name Member access
 
 	virtual
-	const SFBool &
-	isCameraObject () const override
-	{ return X3DChildNode::isCameraObject (); }
-
-	virtual
 	Box3d
 	getBBox () const final override
 	{ return X3DGroupingNodeTool::getBBox (); }

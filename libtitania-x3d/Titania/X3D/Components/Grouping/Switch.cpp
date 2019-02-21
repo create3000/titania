@@ -101,6 +101,8 @@ Switch::initialize ()
 	X3DGroupingNode::initialize ();
 
 	whichChoice () .addInterest (&Switch::setPrivateChoice, this, -1);
+
+	set_whichChoice ();
 }
 
 Box3d
@@ -139,14 +141,6 @@ Switch::getWhichChoice () const
 void
 Switch::set_whichChoice ()
 {
-	set_cameraObjects ();
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
-}
-
-void
-Switch::set_cameraObjects ()
-{
 	const auto currentChoice = getWhichChoice ();
 
 	if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
@@ -155,7 +149,22 @@ Switch::set_cameraObjects ()
 	else
 		childNode .set (nullptr);
 
+	set_cameraObjects ();
+	set_pickableObjects ();
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+}
+
+void
+Switch::set_cameraObjects ()
+{
 	setCameraObject (childNode and childNode -> isCameraObject ());
+}
+
+void
+Switch::set_pickableObjects ()
+{
+	setPickableObject (childNode and childNode -> isPickableObject ());
 }
 
 void

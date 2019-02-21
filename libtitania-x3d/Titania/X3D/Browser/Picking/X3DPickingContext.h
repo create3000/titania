@@ -53,6 +53,8 @@
 
 #include "../../Basic/X3DBaseNode.h"
 
+#include <stack>
+
 namespace titania {
 namespace X3D {
 
@@ -94,6 +96,14 @@ protected:
 	void
 	removePickSensor (X3DPickSensorNode* const pickSensor);
 
+	std::stack <bool> &
+	getPicking ()
+	{ return pickingFlag; }
+
+	const std::stack <bool> &
+	getPicking () const
+	{ return pickingFlag; }
+
 
 private:
 
@@ -105,6 +115,7 @@ private:
 	///  @name Members
 
 	X3DWeakPtrArray <X3DPickSensorNode> pickSensors;
+	std::stack <bool>                   pickingFlag;
 
 };
 

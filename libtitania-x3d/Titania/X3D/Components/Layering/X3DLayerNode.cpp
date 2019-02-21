@@ -311,6 +311,11 @@ X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const p_render
 			camera (type, renderObject);
 			break;
 		}
+		case TraverseType::PICKING:
+		{
+			picking (type, renderObject);
+			break;
+		}
 		case TraverseType::COLLISION:
 		{
 			collision (type, renderObject);
@@ -379,6 +384,16 @@ X3DLayerNode::camera (const TraverseType type, X3DRenderObject* const renderObje
 	viewpoints      -> update ();
 	backgrounds     -> update ();
 	fogs            -> update ();
+
+	getModelViewMatrix () .pop ();
+}
+
+void
+X3DLayerNode::picking (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	getModelViewMatrix () .push (Matrix4d ());
+
+	collect (type, renderObject);
 
 	getModelViewMatrix () .pop ();
 }

@@ -260,6 +260,9 @@ private:
 	camera (const TraverseType type, X3DRenderObject* const renderObject);
 
 	void
+	picking (const TraverseType type, X3DRenderObject* const renderObject);
+
+	void
 	collision (const TraverseType type, X3DRenderObject* const renderObject);
 
 	void

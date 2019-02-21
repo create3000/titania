@@ -54,12 +54,14 @@ namespace titania {
 namespace X3D {
 
 X3DChildNode::X3DChildNode () :
-	     X3DNode (),
-	cameraObject ()
+	       X3DNode (),
+	  cameraObject (),
+	pickableObject ()
 {
 	addType (X3DConstants::X3DChildNode);
 
-	addChildObjects (cameraObject);
+	addChildObjects (cameraObject,
+	                 pickableObject);
 }
 
 void
@@ -67,6 +69,13 @@ X3DChildNode::setCameraObject (const bool value)
 {
 	if (value not_eq cameraObject)
 	   cameraObject = value;
+}
+
+void
+X3DChildNode::setPickableObject (const bool value)
+{
+	if (value not_eq pickableObject)
+	   pickableObject = value;
 }
 
 } // X3D

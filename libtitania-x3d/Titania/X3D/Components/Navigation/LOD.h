@@ -166,6 +166,10 @@ private:
 	void
 	set_cameraObjects () final override;
 
+	virtual
+	void
+	set_pickableObjects () final override;
+
 	void
 	set_child (const int32_t);
 

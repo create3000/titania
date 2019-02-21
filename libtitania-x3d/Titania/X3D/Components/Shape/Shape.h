@@ -133,6 +133,9 @@ private:
 	void
 	cut (X3DRenderObject* const renderObject);
 
+	void
+	picking (X3DRenderObject* const renderObject);
+
 	virtual
 	void
 	draw (ShapeContainer* const) final override;

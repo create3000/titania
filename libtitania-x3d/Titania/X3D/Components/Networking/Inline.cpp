@@ -113,7 +113,8 @@ Inline::initialize ()
 
 	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 
-	group -> isCameraObject () .addInterest (&Inline::setCameraObject, static_cast <X3DChildNode*> (this));
+	group -> isCameraObject ()   .addInterest (&Inline::setCameraObject,   static_cast <X3DChildNode*> (this));
+	group -> isPickableObject () .addInterest (&Inline::setPickableObject, static_cast <X3DChildNode*> (this));
 	group -> setPrivate (true);
 	group -> setup ();
 

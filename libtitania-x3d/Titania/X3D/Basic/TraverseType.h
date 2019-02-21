@@ -63,6 +63,7 @@ enum class TraverseType :
 {
 	POINTER,
 	CAMERA,
+	PICKING,
 	COLLISION,
 	DEPTH,
 	DISPLAY,

@@ -175,6 +175,12 @@ LOD::set_cameraObjects ()
 }
 
 void
+LOD::set_pickableObjects ()
+{
+	setPickableObject (childNode and childNode -> isPickableObject ());
+}
+
+void
 LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (not keepCurrentLevel)
@@ -234,6 +240,7 @@ LOD::set_child (const int32_t level)
 		childNode .set (nullptr);
 			
 	set_cameraObjects ();
+	set_pickableObjects ();
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }

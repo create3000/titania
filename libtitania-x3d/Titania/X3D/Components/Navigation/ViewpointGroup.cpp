@@ -142,12 +142,14 @@ ViewpointGroup::set_displayed ()
 
 	if (proximitySensor -> enabled ())
 	{
-		proximitySensor -> isCameraObject () .addInterest (&ViewpointGroup::setCameraObject, static_cast <X3DChildNode*> (this));
+		proximitySensor -> isCameraObject ()   .addInterest (&ViewpointGroup::setCameraObject,   static_cast <X3DChildNode*> (this));
+		proximitySensor -> isPickableObject () .addInterest (&ViewpointGroup::setPickableObject, static_cast <X3DChildNode*> (this));
 		setCameraObject (proximitySensor -> isCameraObject ());
 	}
 	else
 	{
-		proximitySensor -> isCameraObject () .removeInterest (&ViewpointGroup::setCameraObject, static_cast <X3DChildNode*> (this));
+		proximitySensor -> isCameraObject ()   .removeInterest (&ViewpointGroup::setCameraObject,   static_cast <X3DChildNode*> (this));
+		proximitySensor -> isPickableObject () .removeInterest (&ViewpointGroup::setPickableObject, static_cast <X3DChildNode*> (this));
 		setCameraObject (true);
 	}
 }

@@ -134,12 +134,12 @@ void
 X3DShapeNode::set_geometry ()
 {
 	if (geometryNode)
-	   geometryNode -> isCameraObject () .removeInterest (&X3DShapeNode::setCameraObject, static_cast <X3DChildNode*> (this));
+		geometryNode -> isCameraObject ().removeInterest (&X3DShapeNode::setCameraObject,   static_cast <X3DChildNode*> (this));
 
 	geometryNode .set (hidden ? nullptr : x3d_cast <X3DGeometryNode*> (geometry ()));
 
 	if (geometryNode)
-	   geometryNode -> isCameraObject () .addInterest (&X3DShapeNode::setCameraObject, static_cast <X3DChildNode*> (this));
+		geometryNode -> isCameraObject ().addInterest (&X3DShapeNode::setCameraObject,   static_cast <X3DChildNode*> (this));
 
 	setCameraObject (geometryNode and geometryNode -> isCameraObject ());
 }

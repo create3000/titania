@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class MetadataFloat :
-	virtual public X3DNode, public X3DMetadataObject
+	virtual public X3DNode,
+	public X3DMetadataObject
 {
 public:
 

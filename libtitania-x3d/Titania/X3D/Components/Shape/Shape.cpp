@@ -145,6 +145,11 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			{
 				break;
 			}
+			case TraverseType::PICKING:
+			{
+				picking (renderObject);
+				break;
+			}
 			case TraverseType::COLLISION:
 			{
 				renderObject -> addCollisionShape (this);
@@ -272,6 +277,12 @@ Shape::cut (X3DRenderObject* const renderObject)
 	const auto browser = renderObject -> getBrowser ();
 
 	getGeometry () -> cut (renderObject, browser -> getCutLine ());
+}
+
+void
+Shape::picking (X3DRenderObject* const renderObject)
+{
+
 }
 
 void

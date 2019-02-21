@@ -68,6 +68,11 @@ public:
 	isCameraObject () const
 	{ return cameraObject; }
 
+	virtual
+	const SFBool &
+	isPickableObject () const
+	{ return pickableObject; }
+
 
 protected:
 
@@ -80,12 +85,16 @@ protected:
 	void
 	setCameraObject (const bool value);
 
+	void
+	setPickableObject (const bool value);
+
 
 private:
 
 	///  @name Members
 
 	SFBool cameraObject;
+	SFBool pickableObject;
 
 };
 

@@ -125,7 +125,8 @@ CollidableOffset::set_collidable ()
 	if (collidableNode)
 	{
 		collidableNode -> removeInterest (&CollidableOffset::addEvent, this);
-		collidableNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+		collidableNode -> isCameraObject ()   .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+		collidableNode -> isPickableObject () .removeInterest (const_cast <SFBool &> (isPickableObject ()));
 	}
 
 	collidableNode .set (x3d_cast <X3DNBodyCollidableNode*> (collidable ()));
@@ -133,9 +134,11 @@ CollidableOffset::set_collidable ()
 	if (collidableNode)
 	{
 		collidableNode -> addInterest (&CollidableOffset::addEvent, this);
-		collidableNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+		collidableNode -> isCameraObject ()   .addInterest (const_cast <SFBool &> (isCameraObject ()));
+		collidableNode -> isPickableObject () .addInterest (const_cast <SFBool &> (isPickableObject ()));
 
-		setCameraObject (collidableNode -> isCameraObject ());
+		setCameraObject   (collidableNode -> isCameraObject ());
+		setPickableObject (collidableNode -> isPickableObject ());
 	}
 	else
 	{

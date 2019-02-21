@@ -61,11 +61,10 @@ namespace X3D {
 class X3DProtoDeclarationNode;
 
 class X3DPrototypeInstance :
-	public X3DNode, public X3DExecutionContext
+	public X3DNode,
+	public X3DExecutionContext
 {
 public:
-
-	using X3DNode::getField;
 
 	///  @name Construction
 
