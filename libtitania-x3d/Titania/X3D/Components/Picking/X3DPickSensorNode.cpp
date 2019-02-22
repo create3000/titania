@@ -69,10 +69,13 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	  X3DSensorNode (),
 	         fields (),
 	objectTypeIndex (),
+	pickTargetNodes (),
 	    modelMatrix (),
 	  geometryNodes ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
+
+	addChildObjects (pickTargetNodes);
 }
 
 void
@@ -80,10 +83,12 @@ X3DPickSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled ()     .addInterest (&X3DPickSensorNode::set_enabled, this);
+	enabled ()     .addInterest (&X3DPickSensorNode::set_enabled,    this);
 	objectType  () .addInterest (&X3DPickSensorNode::set_objectType, this);
+	pickTarget  () .addInterest (&X3DPickSensorNode::set_pickTarget, this);
 
 	set_objectType ();
+	set_pickTarget ();
 }
 
 void
@@ -121,6 +126,43 @@ X3DPickSensorNode::set_objectType ()
 		objectTypeIndex .emplace (value);
 
 	set_enabled ();
+}
+
+void
+X3DPickSensorNode::set_pickTarget ()
+{
+	pickTargetNodes .clear ();
+
+	for (const auto & node : pickTarget ())
+	{
+		try
+		{
+			if (not node)
+				continue;
+
+			const auto innerNode = node -> getInnerNode ();
+	
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3DConstants::Inline:
+					case X3DConstants::Shape:
+					case X3DConstants::X3DGroupingNode:
+					{
+						pickTargetNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
+						break;
+					}
+					default:
+						continue;
+				}
+	
+				break;
+			}
+		}
+		catch (const X3DError &)
+		{ }
+	}
 }
 
 void

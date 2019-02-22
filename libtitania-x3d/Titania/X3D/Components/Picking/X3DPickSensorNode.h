@@ -200,6 +200,9 @@ private:
 	void
 	set_objectType ();
 
+	void
+	set_pickTarget ();
+
 	///  @name Fields
 
 	struct Fields
@@ -218,9 +221,10 @@ private:
 
 	///  @name Members
 
-	std::set <std::string> objectTypeIndex;
-	Matrix4d               modelMatrix;
-	GeometryNodes          geometryNodes;
+	std::set <std::string>     objectTypeIndex;
+	X3DPtrArray <X3DChildNode> pickTargetNodes;
+	Matrix4d                   modelMatrix;
+	GeometryNodes              geometryNodes;
 
 };
 

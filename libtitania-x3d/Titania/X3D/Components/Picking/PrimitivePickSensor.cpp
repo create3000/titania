@@ -103,6 +103,9 @@ PrimitivePickSensor::set_pickingGeometry ()
 	{
 		pickingGeometryNode = nullptr;
 
+		if (not pickingGeometry ())
+			return;
+
 		const auto innerNode = pickingGeometry () -> getInnerNode ();
 
 		for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))

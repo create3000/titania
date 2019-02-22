@@ -112,6 +112,9 @@ CADFace::set_shape ()
 
 		shapeNode = nullptr;
 
+		if (not shape ())
+			return;
+
 		const auto innerNode = shape () -> getInnerNode ();
 
 		for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
