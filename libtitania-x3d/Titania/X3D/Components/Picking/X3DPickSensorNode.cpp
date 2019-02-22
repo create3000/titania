@@ -73,8 +73,6 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	  geometryNodes ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
-
-	setPickableObject (true);
 }
 
 void
@@ -103,9 +101,15 @@ void
 X3DPickSensorNode::set_enabled ()
 {
 	if (enabled () and not objectTypeIndex .count ("NONE"))
+	{
 		getBrowser () -> addPickSensor (this);
+		setPickableObject (true);
+	}
 	else
+	{
 		getBrowser () -> removePickSensor (this);
+		setPickableObject (false);
+	}
 }
 
 void
