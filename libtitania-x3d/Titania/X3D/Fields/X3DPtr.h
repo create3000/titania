@@ -614,11 +614,63 @@ operator == (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 }
 
 ///  Compares two X3DPtr.
+///  Returns true if @a lhs is equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator == (LHS* const lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a == b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs is equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator == (const X3DPtr <LHS> & lhs, RHS* const rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a == b;
+}
+
+///  Compares two X3DPtr.
 ///  Returns true if @a lhs is not equal to @a rhs.
 template <class LHS, class RHS>
 inline
 bool
 operator not_eq (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a not_eq b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs is not equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator not_eq (LHS* const lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a not_eq b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs is not equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator not_eq (const X3DPtr <LHS> & lhs, RHS* const rhs)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -640,11 +692,63 @@ operator < (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 }
 
 ///  Compares two X3DPtr.
+///  Returns true if @a lhs less than @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator < (LHS* const lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a < b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs less than @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator < (const X3DPtr <LHS> & lhs, RHS* const rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a < b;
+}
+
+///  Compares two X3DPtr.
 ///  Returns true if @a lhs less than equal to @a rhs.
 template <class LHS, class RHS>
 inline
 bool
 operator <= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a <= b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator <= (LHS* const lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a <= b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator <= (const X3DPtr <LHS> & lhs, RHS* const rhs)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;
@@ -666,11 +770,63 @@ operator > (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 }
 
 ///  Compares two X3DPtr.
+///  Returns true if @a lhs greater than @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator > (LHS* const lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a > b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs greater than @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator > (const X3DPtr <LHS> & lhs, RHS* const rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a > b;
+}
+
+///  Compares two X3DPtr.
 ///  Returns true if @a lhs greater than equal to @a rhs.
 template <class LHS, class RHS>
 inline
 bool
 operator >= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a >= b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator >= (LHS* const lhs, const X3DPtr <RHS> & rhs)
+{
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a >= b;
+}
+
+///  Compares two X3DPtr.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class LHS, class RHS>
+inline
+bool
+operator >= (const X3DPtr <LHS> & lhs, RHS* const rhs)
 {
 	const size_t a = lhs ? lhs -> getId () : 0;
 	const size_t b = rhs ? rhs -> getId () : 0;

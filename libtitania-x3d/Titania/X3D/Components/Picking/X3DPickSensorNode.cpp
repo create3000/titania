@@ -210,11 +210,7 @@ X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
 	const auto haveTarget = std::any_of (pickingHierarchy .begin (), pickingHierarchy .end (),
 	[&] (X3DChildNode* const node)
 	{
-		return std::count_if (pickTargetNodes .begin (), pickTargetNodes .end (),
-		[node] (const X3DPtr <X3DChildNode> & pickTargetNode)
-		{
-			return node -> getId () == pickTargetNode -> getId ();
-		});
+		return std::count (pickTargetNodes .begin (), pickTargetNodes .end (), node);
 	});
 
 	if (not haveTarget)
