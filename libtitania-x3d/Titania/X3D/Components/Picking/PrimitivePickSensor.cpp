@@ -147,28 +147,31 @@ PrimitivePickSensor::process ()
 			const auto pickingBBox   = pickingGeometryNode -> getBBox () * getModelMatrix ();
 			const auto pickingCenter = pickingBBox .center ();
 
-			__LOG__ << this << " : " << getTargets () .size () << std::endl;
-
 			for (const auto & target : getTargets ())
 			{
 				const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
 
-				target -> distance   = distance (pickingCenter, targetBBox .center ());
-				target -> intersects = pickingBBox .intersects (targetBBox);
+				if (not pickingBBox .intersects (targetBBox))
+					continue;
 
-				__LOG__ << target -> intersects << std::endl;
+				target -> intersected = true;
+				target -> distance    = distance (pickingCenter, targetBBox .center ());
 			}
-
-			const auto intersects = std::any_of (getTargets () .begin (), getTargets () .end (),
-			[ ] (const TargetPtr & target)
-			{
-				return target -> intersects;
-			});
 
 			// Send events.
 
-			if (intersects not_eq isActive ())
-				isActive () = intersects;
+			const auto pickedGeometries = getPickedGeometries ();
+			const auto active           = not pickedGeometries .empty ();
+
+			if (active not_eq isActive ())
+				isActive () = active;
+
+			if (not (pickedGeometry () .size () == pickedGeometries .size () &&
+			         std::equal (pickedGeometry () .cbegin (), pickedGeometry () .cend (),
+			                     pickedGeometries .cbegin ())))
+			{
+				pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+			}
 
 			break;
 		}

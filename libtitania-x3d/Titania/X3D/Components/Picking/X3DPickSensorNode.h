@@ -154,6 +154,14 @@ protected:
 		GEOMETRY
 	};
 
+	enum class SortOrderType
+	{
+		ANY,
+		CLOSEST,
+		ALL,
+		ALL_SORTED
+	};
+
 	struct Target
 	{
 		Target (X3DGeometryNode* geometryNode,
@@ -163,8 +171,8 @@ protected:
 		X3DGeometryNode*            geometryNode;
 		Matrix4d                    modelMatrix;
 		std::vector <X3DChildNode*> pickingHierarchy;
+		bool                        intersected;
 		double                      distance;
-		bool                        intersects;
 	};
 
 	using TargetPtr = std::shared_ptr <Target>;
@@ -184,6 +192,10 @@ protected:
 	getIntersectionType () const
 	{ return intersectionTypeValue; }
 
+	SortOrderType
+	getSortOrder () const
+	{ return sortOrderType; }
+
 	const Matrix4d &
 	getModelMatrix () const
 	{ return modelMatrix; }
@@ -193,6 +205,9 @@ protected:
 	{ return targets; }
 
 	///  @name Operations
+
+	std::vector <X3DNode*>
+	getPickedGeometries () const;
 
 	void
 	collect (const X3DPtr <X3DGeometryNode> & geometryNode,
@@ -218,7 +233,13 @@ private:
 	set_intersectionType ();
 
 	void
+	set_sortOrder ();
+
+	void
 	set_pickTarget ();
+
+	X3DNode*
+	getPickedGeometry (const TargetPtr & target) const;
 
 	///  @name Fields
 
@@ -240,9 +261,10 @@ private:
 
 	std::set <std::string>     objectTypeIndex;
 	IntersectionType           intersectionTypeValue;
+	SortOrderType              sortOrderType;
 	X3DPtrArray <X3DChildNode> pickTargetNodes;
 	Matrix4d                   modelMatrix;
-	Targets                    targets;
+	mutable Targets            targets;
 
 };
 

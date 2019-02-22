@@ -50,6 +50,7 @@
 
 #include "X3DPickSensorNode.h"
 
+#include "../Rendering/X3DGeometryNode.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/X3DRenderObject.h"
 
@@ -62,8 +63,8 @@ X3DPickSensorNode::Target::Target (X3DGeometryNode* geometryNode,
 	    geometryNode (geometryNode),
 	     modelMatrix (modelMatrix),
 	pickingHierarchy (pickingHierarchy),
-	        distance (0),
-	      intersects (false)
+	     intersected (false),
+	        distance (0)
 { }
 
 X3DPickSensorNode::Fields::Fields () :
@@ -80,6 +81,7 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	               fields (),
 	      objectTypeIndex (),
 	intersectionTypeValue (IntersectionType::BOUNDS),
+	        sortOrderType (SortOrderType::CLOSEST),
 	      pickTargetNodes (),
 	          modelMatrix (),
 	              targets ()
@@ -94,13 +96,15 @@ X3DPickSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled ()           .addInterest (&X3DPickSensorNode::set_enabled,          this);
-	objectType  ()       .addInterest (&X3DPickSensorNode::set_objectType,       this);
-	intersectionType  () .addInterest (&X3DPickSensorNode::set_intersectionType, this);
-	pickTarget  ()       .addInterest (&X3DPickSensorNode::set_pickTarget,       this);
+	enabled ()          .addInterest (&X3DPickSensorNode::set_enabled,          this);
+	objectType  ()      .addInterest (&X3DPickSensorNode::set_objectType,       this);
+	intersectionType () .addInterest (&X3DPickSensorNode::set_intersectionType, this);
+	sortOrder ()        .addInterest (&X3DPickSensorNode::set_sortOrder,        this);
+	pickTarget  ()      .addInterest (&X3DPickSensorNode::set_pickTarget,       this);
 
 	set_objectType ();
 	set_intersectionType ();
+	set_sortOrder ();
 	set_pickTarget ();
 }
 
@@ -160,6 +164,26 @@ X3DPickSensorNode::set_intersectionType ()
 }
 
 void
+X3DPickSensorNode::set_sortOrder ()
+{
+	static const std::map <std::string, SortOrderType> sortOrderTypes = {
+		std::pair ("ANY",        SortOrderType::ANY),
+		std::pair ("CLOSEST",    SortOrderType::CLOSEST),
+		std::pair ("ALL",        SortOrderType::ALL),
+		std::pair ("ALL_SORTED", SortOrderType::ALL_SORTED),
+	};
+
+	try
+	{
+		sortOrderType = sortOrderTypes .at (sortOrder ());
+	}
+	catch (const std::out_of_range & error)
+	{
+		sortOrderType = SortOrderType::CLOSEST;
+	}
+}
+
+void
 X3DPickSensorNode::set_pickTarget ()
 {
 	pickTargetNodes .clear ();
@@ -194,6 +218,79 @@ X3DPickSensorNode::set_pickTarget ()
 		catch (const X3DError &)
 		{ }
 	}
+}
+
+std::vector <X3DNode*>
+X3DPickSensorNode::getPickedGeometries () const
+{
+	targets .erase (std::remove_if (targets .begin (), targets .end (),
+	[] (const TargetPtr & target)
+	{
+		return not target -> intersected;
+	}),
+	targets .end ());
+
+	std::vector <X3DNode*> pickedGeometries;
+
+	if (targets .empty ())
+		return pickedGeometries;
+
+	switch (getSortOrder ())
+	{
+		case SortOrderType::ANY:
+		{
+			pickedGeometries .emplace_back (getPickedGeometry (targets .front ()));
+			break;
+		}
+		case SortOrderType::CLOSEST:
+		{
+			std::sort (targets .begin (), targets .end (),
+			[ ] (const TargetPtr & lhs, const TargetPtr & rhs)
+			{
+				return lhs -> distance < rhs -> distance;
+			});
+
+			pickedGeometries .emplace_back (getPickedGeometry (targets .front ()));
+			break;
+		}
+		case SortOrderType::ALL:
+		{
+			for (const auto & target : targets)
+				pickedGeometries .emplace_back (getPickedGeometry (target));
+
+			break;
+		}
+		case SortOrderType::ALL_SORTED:
+		{
+			std::sort (targets .begin (), targets .end (),
+			[ ] (const TargetPtr & lhs, const TargetPtr & rhs)
+			{
+				return lhs -> distance < rhs -> distance;
+			});
+
+			for (const auto & target : targets)
+				pickedGeometries .emplace_back (getPickedGeometry (target));
+
+			break;
+		}
+	}
+
+	return pickedGeometries;
+}
+
+X3DNode*
+X3DPickSensorNode::getPickedGeometry (const TargetPtr & target) const
+{
+	if (target -> geometryNode -> getExecutionContext () == getExecutionContext ())
+		return target -> geometryNode;
+
+	for (const auto node : target -> pickingHierarchy)
+	{
+		if (node -> getExecutionContext () == getExecutionContext ())
+			return node;
+	}
+
+	return nullptr;
 }
 
 void
