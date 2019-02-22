@@ -96,6 +96,10 @@ PickableGroup::initialize ()
 }
 
 void
+PickableGroup::set_pickableObjects ()
+{ }
+
+void
 PickableGroup::set_pickable ()
 {
 	setPickableObject (pickable ());

@@ -1151,6 +1151,22 @@ BrowserWindow::on_create_parent_viewport_activated ()
 	on_create_parent ("Viewport");
 }
 
+void
+BrowserWindow::on_create_parent_pickable_group_activated ()
+{
+	on_create_parent ("PickableGroup");
+}
+
+void
+BrowserWindow::on_create_parent_collidable_shape_activated ()
+{
+}
+
+void
+BrowserWindow::on_create_parent_collidable_offset_activated ()
+{
+}
+
 X3D::SFNode
 BrowserWindow::on_create_parent (const std::string & typeName, const std::string & fieldName)
 {

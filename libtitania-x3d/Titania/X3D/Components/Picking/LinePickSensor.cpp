@@ -93,9 +93,9 @@ LinePickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-LinePickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+LinePickSensor::process ()
 {
-
+	X3DPickSensorNode::process ();
 }
 
 } // X3D

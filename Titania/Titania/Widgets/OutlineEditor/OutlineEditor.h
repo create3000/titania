@@ -289,6 +289,10 @@ private:
 
 	virtual
 	void
+	on_create_parent_pickable_group_activate () final override;
+
+	virtual
+	void
 	on_create_parent_collidable_shape_activate () final override;
 
 	virtual

@@ -968,6 +968,42 @@
                         <signal name="activate" handler="on_create_parent_viewport_activated" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem38">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="BrowserCreateParentPickableGroupMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/PickableGroup</property>
+                        <property name="label" translatable="yes">PickableGroup</property>
+                        <signal name="activate" handler="on_create_parent_pickable_group_activated" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="BrowserCreateParentCollidableShapeMenuItem">
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CollidableShape</property>
+                        <property name="label" translatable="yes">CollidableShape</property>
+                        <signal name="activate" handler="on_create_parent_collidable_shape_activated" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="BrowserCreateParentCollidableOffsetMenuItem">
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CollidableOffset</property>
+                        <property name="label" translatable="yes">CollidableOffset</property>
+                        <signal name="activate" handler="on_create_parent_collidable_offset_activated" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -2440,6 +2476,42 @@
                                         <property name="label" translatable="yes">Viewport</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_viewport_activated" swapped="no"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorMenuItem" id="separatormenuitem47">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkMenuItem" id="CreateParentPickableGroupMenuItem">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/PickableGroup</property>
+                                        <property name="label" translatable="yes">PickableGroup</property>
+                                        <signal name="activate" handler="on_create_parent_pickable_group_activated" swapped="no"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparatorMenuItem">
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkMenuItem" id="CreateParentCollidableShapeMenuItem">
+                                        <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CollidableShape</property>
+                                        <property name="label" translatable="yes">CollidableShape</property>
+                                        <signal name="activate" handler="on_create_parent_collidable_shape_activated" swapped="no"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkMenuItem" id="CreateParentCollidableOffsetMenuItem">
+                                        <property name="can_focus">False</property>
+                                        <property name="accel_path">&lt;Titania&gt;/Edit/Create Parent Group/CollidableOffset</property>
+                                        <property name="label" translatable="yes">CollidableOffset</property>
+                                        <signal name="activate" handler="on_create_parent_collidable_offset_activated" swapped="no"/>
                                       </object>
                                     </child>
                                   </object>

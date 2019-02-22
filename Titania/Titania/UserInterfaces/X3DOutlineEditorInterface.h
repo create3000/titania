@@ -338,6 +338,10 @@ public:
 	{ return *m_CreateParentViewportMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentPickableGroupMenuItem () const
+	{ return *m_CreateParentPickableGroupMenuItem; }
+
+	Gtk::MenuItem &
 	getCreateParentCollidableShapeMenuItem () const
 	{ return *m_CreateParentCollidableShapeMenuItem; }
 
@@ -545,6 +549,10 @@ public:
 
 	virtual
 	void
+	on_create_parent_pickable_group_activate () = 0;
+
+	virtual
+	void
 	on_create_parent_collidable_shape_activate () = 0;
 
 	virtual
@@ -677,6 +685,7 @@ private:
 	Gtk::MenuItem* m_CreateParentLayerSetMenuItem;
 	Gtk::MenuItem* m_CreateParentLayerMenuItem;
 	Gtk::MenuItem* m_CreateParentViewportMenuItem;
+	Gtk::MenuItem* m_CreateParentPickableGroupMenuItem;
 	Gtk::MenuItem* m_CreateParentCollidableShapeMenuItem;
 	Gtk::MenuItem* m_CreateParentCollidableOffsetMenuItem;
 	Gtk::MenuItem* m_RemoveParentMenuItem;

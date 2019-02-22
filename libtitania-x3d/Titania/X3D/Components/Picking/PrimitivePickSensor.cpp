@@ -50,6 +50,7 @@
 
 #include "PrimitivePickSensor.h"
 
+#include "../../Components/Rendering/X3DGeometryNode.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,8 +61,9 @@ const std::string PrimitivePickSensor::typeName       = "PrimitivePickSensor";
 const std::string PrimitivePickSensor::containerField = "children";
 
 PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPickSensorNode ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DPickSensorNode (),
+	pickingGeometryNode ()
 {
 	addType (X3DConstants::PrimitivePickSensor);
 
@@ -74,6 +76,8 @@ PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "pickTarget",       pickTarget ());
 	addField (outputOnly,     "isActive",         isActive ());
 	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
+
+	addChildObjects (pickingGeometryNode);
 }
 
 X3DBaseNode*
@@ -83,10 +87,54 @@ PrimitivePickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-PrimitivePickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+PrimitivePickSensor::initialize ()
 {
-	__LOG__ << this << std::endl;
+	X3DPickSensorNode::initialize ();
 
+	pickingGeometry () .addInterest (&PrimitivePickSensor::set_pickingGeometry, this);
+
+	set_pickingGeometry ();
+}
+
+void
+PrimitivePickSensor::set_pickingGeometry ()
+{
+	try
+	{
+		pickingGeometryNode = nullptr;
+
+		const auto innerNode = pickingGeometry () -> getInnerNode ();
+
+		for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		{
+			switch (type)
+			{
+				case X3DConstants::Box:
+				case X3DConstants::Cone:
+				case X3DConstants::Cylinder:
+				case X3DConstants::Sphere:
+				{
+					pickingGeometryNode = dynamic_cast <X3DGeometryNode*> (innerNode);
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+PrimitivePickSensor::process ()
+{
+	__LOG__ << this << " : " << getGeometryNodes () .size () << std::endl;
+	__LOG__ << this << " : " << getModelMatrix () << std::endl;
+
+	X3DPickSensorNode::process ();
 }
 
 } // X3D

@@ -127,7 +127,7 @@ public:
 
 	virtual
 	void
-	pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode) = 0;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	///  @name Destruction
 
@@ -141,13 +141,53 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class Shape;
+	friend class X3DPickingContext;
+
+	///  @name Me.ber types.
+
+	struct GeometryNode
+	{
+		GeometryNode (X3DGeometryNode* geometryNode, const Matrix4d & modelMatrix) :
+			geometryNode (geometryNode),
+			 modelMatrix (modelMatrix)
+		{ }
+
+		X3DGeometryNode* geometryNode;
+		Matrix4d         modelMatrix;
+	};
+
+	using GeometryNodes = std::vector <std::shared_ptr <GeometryNode>>;
+	
+
 	///  @name Construction
 
 	X3DPickSensorNode ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+	///  @name Member access
+
+	const Matrix4d &
+	getModelMatrix () const
+	{ return modelMatrix; }
+
+	const GeometryNodes &
+	getGeometryNodes () const
+	{ return geometryNodes; }
+
+	///  @name Operations
+
+	void
+	collect (const X3DPtr <X3DGeometryNode> & geometryNode, const Matrix4d & modelMatrix);
+
+	virtual
+	void
+	process ();
 
 
 private:
@@ -179,6 +219,8 @@ private:
 	///  @name Members
 
 	std::set <std::string> objectTypeIndex;
+	Matrix4d               modelMatrix;
+	GeometryNodes          geometryNodes;
 
 };
 

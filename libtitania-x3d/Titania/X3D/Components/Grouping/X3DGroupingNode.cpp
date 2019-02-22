@@ -57,6 +57,7 @@
 
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Lighting/X3DLightNode.h"
+#include "../Picking/X3DPickSensorNode.h"
 #include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
 #include "../Rendering/ClipPlane.h"
 
@@ -84,6 +85,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	           clipPlanes (),
 	            localFogs (),
 	               lights (),
+	          pickSensors (),
 	           childNodes ()
 {
 	addType (X3DConstants::X3DGroupingNode);
@@ -95,6 +97,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	                 clipPlanes,
 	                 localFogs,
 	                 lights,
+	                 pickSensors,
 	                 childNodes);
 }
 
@@ -107,9 +110,11 @@ X3DGroupingNode::initialize ()
 	visible               .setTainted (true);
 	pointingDeviceSensors .setTainted (true);
 	cameraObjects         .setTainted (true);
+	pickableObjects       .setTainted (true);
 	clipPlanes            .setTainted (true);
 	localFogs             .setTainted (true);
 	lights                .setTainted (true);
+	pickSensors           .setTainted (true);
 	childNodes            .setTainted (true);
 
 	addChildren ()    .addInterest (&X3DGroupingNode::set_addChildren, this);
@@ -272,6 +277,11 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 							lights .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
 							break;
 						}
+						case X3DConstants::X3DPickSensorNode:
+						{
+							pickSensors .emplace_back (dynamic_cast <X3DPickSensorNode*> (innerNode));
+							break;
+						}
 						case X3DConstants::X3DChildNode:
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
@@ -294,7 +304,6 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 						case X3DConstants::X3DInfoNode:
 						case X3DConstants::X3DInterpolatorNode:
 						case X3DConstants::X3DLayoutNode:
-						case X3DConstants::X3DPickSensorNode:
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
 						case X3DConstants::X3DTriggerNode:
@@ -314,6 +323,7 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 	}
 
 	set_cameraObjects ();
+	set_pickableObjects ();
 }
 
 void
@@ -377,6 +387,14 @@ X3DGroupingNode::remove (const MFNode & children)
 							               lights .end ());
 							break;
 						}
+						case X3DConstants::X3DPickSensorNode:
+						{
+							pickSensors .erase (std::remove (pickSensors .begin (),
+							                                 pickSensors .end (),
+							                                 dynamic_cast <X3DPickSensorNode*> (innerNode)),
+							                    pickSensors .end ());
+							break;
+						}
 						case X3DConstants::X3DChildNode:
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
@@ -402,7 +420,6 @@ X3DGroupingNode::remove (const MFNode & children)
 						case X3DConstants::X3DInfoNode:
 						case X3DConstants::X3DInterpolatorNode:
 						case X3DConstants::X3DLayoutNode:
-						case X3DConstants::X3DPickSensorNode:
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
 						case X3DConstants::X3DTriggerNode:
@@ -434,9 +451,11 @@ X3DGroupingNode::clear ()
 
 	pointingDeviceSensors .clear ();
 	cameraObjects         .clear ();
+	pickableObjects       .clear ();
 	clipPlanes            .clear ();
 	localFogs             .clear ();
 	lights                .clear ();
+	pickSensors           .clear ();
 	childNodes            .clear ();
 }
 
@@ -465,7 +484,7 @@ X3DGroupingNode::set_pickableObjects ()
 			pickableObjects .emplace_back (childNode);
 	}
 
-	setPickableObject (not pickableObjects .empty ());
+	setPickableObject (not (pickSensors .empty () and pickableObjects .empty ()));
 }
 
 void
@@ -508,6 +527,9 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		}
 		case TraverseType::PICKING:
 		{
+			for (const auto & childNode : pickSensors)
+				childNode -> traverse (type, renderObject);
+
 			if (getBrowser () -> getPickable () .top ())
 			{
 				for (const auto & childNode : childNodes)

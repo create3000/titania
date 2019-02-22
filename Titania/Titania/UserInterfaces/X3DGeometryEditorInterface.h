@@ -117,10 +117,6 @@ public:
 	getGeometryEditorBox () const
 	{ return *m_GeometryEditorBox; }
 
-	Gtk::Button &
-	getTitleButton () const
-	{ return *m_TitleButton; }
-
 	Gtk::ToggleButton &
 	getEditToggleButton () const
 	{ return *m_EditToggleButton; }
@@ -128,6 +124,10 @@ public:
 	Gtk::Button &
 	getHammerButton () const
 	{ return *m_HammerButton; }
+
+	Gtk::Button &
+	getTitleButton () const
+	{ return *m_TitleButton; }
 
 	Gtk::Grid &
 	getGeometryToolsBox () const
@@ -358,9 +358,9 @@ private:
 	Gtk::Window* m_Window;
 	Gtk::Revealer* m_Widget;
 	Gtk::Box* m_GeometryEditorBox;
-	Gtk::Button* m_TitleButton;
 	Gtk::ToggleButton* m_EditToggleButton;
 	Gtk::Button* m_HammerButton;
+	Gtk::Button* m_TitleButton;
 	Gtk::Grid* m_GeometryToolsBox;
 	Gtk::ToggleButton* m_NormalEnabledButton;
 	Gtk::Button* m_FormNewFaceButton;

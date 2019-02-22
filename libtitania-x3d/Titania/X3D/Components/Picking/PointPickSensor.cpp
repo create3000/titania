@@ -89,9 +89,9 @@ PointPickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-PointPickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+PointPickSensor::process ()
 {
-
+	X3DPickSensorNode::process ();
 }
 
 } // X3D

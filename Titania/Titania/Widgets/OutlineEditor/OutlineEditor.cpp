@@ -1112,6 +1112,12 @@ OutlineEditor::on_create_parent_viewport_activate ()
 }
 
 void
+OutlineEditor::on_create_parent_pickable_group_activate ()
+{
+	on_create_parent ("PickableGroup");
+}
+
+void
 OutlineEditor::on_create_parent_collidable_shape_activate ()
 {
 	on_create_parent ("CollidableShape", "shape", X3D::X3DConstants::SFNode);

@@ -226,6 +226,7 @@ private:
 	X3DPtrArray <ClipPlane>                   clipPlanes;
 	X3DPtrArray <LocalFog>                    localFogs;
 	X3DPtrArray <X3DLightNode>                lights;
+	X3DPtrArray <X3DPickSensorNode>           pickSensors;
 	X3DPtrArray <X3DChildNode>                childNodes;
 
 };

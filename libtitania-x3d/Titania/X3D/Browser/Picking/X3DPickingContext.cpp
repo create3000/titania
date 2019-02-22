@@ -93,6 +93,9 @@ X3DPickingContext::picking ()
 	__LOG__ << std::endl;
 
 	getBrowser () -> getWorld () -> traverse (TraverseType::PICKING, nullptr);
+
+	for (const auto pickSensor : pickSensors .front ())
+		pickSensor -> process ();
 }
 
 X3DPickingContext::~X3DPickingContext ()

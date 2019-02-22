@@ -83,9 +83,9 @@ VolumePickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-VolumePickSensor::pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode)
+VolumePickSensor::process ()
 {
-
+	X3DPickSensorNode::process ();
 }
 
 } // X3D

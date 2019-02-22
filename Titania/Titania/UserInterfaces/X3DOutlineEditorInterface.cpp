@@ -142,6 +142,7 @@ X3DOutlineEditorInterface::create ()
 	m_builder -> get_widget ("CreateParentLayerSetMenuItem", m_CreateParentLayerSetMenuItem);
 	m_builder -> get_widget ("CreateParentLayerMenuItem", m_CreateParentLayerMenuItem);
 	m_builder -> get_widget ("CreateParentViewportMenuItem", m_CreateParentViewportMenuItem);
+	m_builder -> get_widget ("CreateParentPickableGroupMenuItem", m_CreateParentPickableGroupMenuItem);
 	m_builder -> get_widget ("CreateParentCollidableShapeMenuItem", m_CreateParentCollidableShapeMenuItem);
 	m_builder -> get_widget ("CreateParentCollidableOffsetMenuItem", m_CreateParentCollidableOffsetMenuItem);
 	m_builder -> get_widget ("RemoveParentMenuItem", m_RemoveParentMenuItem);
@@ -207,6 +208,7 @@ X3DOutlineEditorInterface::create ()
 	m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_create_parent_layer_set_activate));
 	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_create_parent_layer_activate));
 	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_create_parent_viewport_activate));
+	m_CreateParentPickableGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_create_parent_pickable_group_activate));
 	m_CreateParentCollidableShapeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_create_parent_collidable_shape_activate));
 	m_CreateParentCollidableOffsetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_create_parent_collidable_offset_activate));
 	m_RemoveParentMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_remove_parent_activate));

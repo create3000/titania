@@ -51,6 +51,7 @@
 #include "X3DPickSensorNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -67,9 +68,13 @@ X3DPickSensorNode::Fields::Fields () :
 X3DPickSensorNode::X3DPickSensorNode () :
 	  X3DSensorNode (),
 	         fields (),
-	objectTypeIndex ()
+	objectTypeIndex (),
+	    modelMatrix (),
+	  geometryNodes ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
+
+	setPickableObject (true);
 }
 
 void
@@ -112,6 +117,24 @@ X3DPickSensorNode::set_objectType ()
 		objectTypeIndex .emplace (value);
 
 	set_enabled ();
+}
+
+void
+X3DPickSensorNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	modelMatrix = renderObject -> getModelViewMatrix () .get ();
+}
+
+void
+X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode, const Matrix4d & modelMatrix)
+{
+	geometryNodes .emplace_back (std::make_shared <GeometryNode> (geometryNode, modelMatrix));
+}
+
+void
+X3DPickSensorNode::process ()
+{
+	geometryNodes .clear ();
 }
 
 void

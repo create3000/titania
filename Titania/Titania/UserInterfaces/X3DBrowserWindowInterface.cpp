@@ -159,6 +159,9 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserCreateParentLayerSetMenuItem", m_BrowserCreateParentLayerSetMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentLayerMenuItem", m_BrowserCreateParentLayerMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentViewportMenuItem", m_BrowserCreateParentViewportMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentPickableGroupMenuItem", m_BrowserCreateParentPickableGroupMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentCollidableShapeMenuItem", m_BrowserCreateParentCollidableShapeMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentCollidableOffsetMenuItem", m_BrowserCreateParentCollidableOffsetMenuItem);
 	m_builder -> get_widget ("BrowserViewMenuItem", m_BrowserViewMenuItem);
 	m_builder -> get_widget ("BrowserMenubarMenuItem", m_BrowserMenubarMenuItem);
 	m_builder -> get_widget ("BrowserToolbarMenuItem", m_BrowserToolbarMenuItem);
@@ -274,6 +277,9 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("CreateParentLayerSetMenuItem", m_CreateParentLayerSetMenuItem);
 	m_builder -> get_widget ("CreateParentLayerMenuItem", m_CreateParentLayerMenuItem);
 	m_builder -> get_widget ("CreateParentViewportMenuItem", m_CreateParentViewportMenuItem);
+	m_builder -> get_widget ("CreateParentPickableGroupMenuItem", m_CreateParentPickableGroupMenuItem);
+	m_builder -> get_widget ("CreateParentCollidableShapeMenuItem", m_CreateParentCollidableShapeMenuItem);
+	m_builder -> get_widget ("CreateParentCollidableOffsetMenuItem", m_CreateParentCollidableOffsetMenuItem);
 	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
 	m_builder -> get_widget ("MenubarMenuItem", m_MenubarMenuItem);
 	m_builder -> get_widget ("ToolbarMenuItem", m_ToolbarMenuItem);
@@ -474,6 +480,9 @@ X3DBrowserWindowInterface::create ()
 	m_BrowserCreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_layer_set_activated));
 	m_BrowserCreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_layer_activated));
 	m_BrowserCreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_viewport_activated));
+	m_BrowserCreateParentPickableGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_pickable_group_activated));
+	m_BrowserCreateParentCollidableShapeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_collidable_shape_activated));
+	m_BrowserCreateParentCollidableOffsetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_collidable_offset_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserMotionBlurMenuItem'.
 	m_BrowserMotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_motion_blur_activated));
@@ -589,6 +598,9 @@ X3DBrowserWindowInterface::create ()
 	m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_layer_set_activated));
 	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_layer_activated));
 	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_viewport_activated));
+	m_CreateParentPickableGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_pickable_group_activated));
+	m_CreateParentCollidableShapeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_collidable_shape_activated));
+	m_CreateParentCollidableOffsetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_create_parent_collidable_offset_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'MotionBlurMenuItem'.
 	m_MotionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_motion_blur_activated));

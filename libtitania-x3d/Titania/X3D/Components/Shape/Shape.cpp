@@ -285,7 +285,7 @@ Shape::picking (X3DRenderObject* const renderObject)
 {
 	for (const auto pickSensor : getBrowser () -> getPickSensors () .back ())
 	{
-		pickSensor -> pick (renderObject -> getModelViewMatrix () .get (), getGeometry ());
+		pickSensor -> collect (getGeometry (), renderObject -> getModelViewMatrix () .get ());
 	}
 }
 

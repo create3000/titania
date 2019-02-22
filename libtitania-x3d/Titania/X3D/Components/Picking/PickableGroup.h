@@ -109,6 +109,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Event handlers
+
+	virtual
+	void
+	set_pickableObjects () final override;
+
 
 private:
 

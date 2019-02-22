@@ -94,11 +94,14 @@ public:
 	pickedPoint () const
 	{ return *fields .pickedPoint; }
 
+
+protected:
+
 	///  @name Operations
 
 	virtual
 	void
-	pick (const Matrix4d & modelMatrix, const X3DPtr <X3DGeometryNode> & geometryNode) final override;
+	process () final override;
 
 
 private:

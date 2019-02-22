@@ -406,6 +406,18 @@ public:
 	{ return *m_BrowserCreateParentViewportMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserCreateParentPickableGroupMenuItem () const
+	{ return *m_BrowserCreateParentPickableGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentCollidableShapeMenuItem () const
+	{ return *m_BrowserCreateParentCollidableShapeMenuItem; }
+
+	Gtk::MenuItem &
+	getBrowserCreateParentCollidableOffsetMenuItem () const
+	{ return *m_BrowserCreateParentCollidableOffsetMenuItem; }
+
+	Gtk::MenuItem &
 	getBrowserViewMenuItem () const
 	{ return *m_BrowserViewMenuItem; }
 
@@ -864,6 +876,18 @@ public:
 	Gtk::MenuItem &
 	getCreateParentViewportMenuItem () const
 	{ return *m_CreateParentViewportMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentPickableGroupMenuItem () const
+	{ return *m_CreateParentPickableGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCollidableShapeMenuItem () const
+	{ return *m_CreateParentCollidableShapeMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentCollidableOffsetMenuItem () const
+	{ return *m_CreateParentCollidableOffsetMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
@@ -1613,6 +1637,18 @@ public:
 
 	virtual
 	void
+	on_create_parent_pickable_group_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_collidable_shape_activated () = 0;
+
+	virtual
+	void
+	on_create_parent_collidable_offset_activated () = 0;
+
+	virtual
+	void
 	on_motion_blur_activated () = 0;
 
 	virtual
@@ -1998,6 +2034,9 @@ private:
 	Gtk::MenuItem* m_BrowserCreateParentLayerSetMenuItem;
 	Gtk::MenuItem* m_BrowserCreateParentLayerMenuItem;
 	Gtk::MenuItem* m_BrowserCreateParentViewportMenuItem;
+	Gtk::MenuItem* m_BrowserCreateParentPickableGroupMenuItem;
+	Gtk::MenuItem* m_BrowserCreateParentCollidableShapeMenuItem;
+	Gtk::MenuItem* m_BrowserCreateParentCollidableOffsetMenuItem;
 	Gtk::MenuItem* m_BrowserViewMenuItem;
 	Gtk::CheckMenuItem* m_BrowserMenubarMenuItem;
 	Gtk::CheckMenuItem* m_BrowserToolbarMenuItem;
@@ -2113,6 +2152,9 @@ private:
 	Gtk::MenuItem* m_CreateParentLayerSetMenuItem;
 	Gtk::MenuItem* m_CreateParentLayerMenuItem;
 	Gtk::MenuItem* m_CreateParentViewportMenuItem;
+	Gtk::MenuItem* m_CreateParentPickableGroupMenuItem;
+	Gtk::MenuItem* m_CreateParentCollidableShapeMenuItem;
+	Gtk::MenuItem* m_CreateParentCollidableOffsetMenuItem;
 	Gtk::MenuItem* m_ViewMenuItem;
 	Gtk::CheckMenuItem* m_MenubarMenuItem;
 	Gtk::CheckMenuItem* m_ToolbarMenuItem;
