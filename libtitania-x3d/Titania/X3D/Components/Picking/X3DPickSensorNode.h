@@ -154,11 +154,11 @@ protected:
 		GEOMETRY
 	};
 
-	struct TargetNode
+	struct Target
 	{
-		TargetNode (X3DGeometryNode* geometryNode,
-		            const Matrix4d & modelMatrix,
-		            const std::vector <X3DChildNode*> & pickingHierarchy);
+		Target (X3DGeometryNode* geometryNode,
+		        const Matrix4d & modelMatrix,
+		        const std::vector <X3DChildNode*> & pickingHierarchy);
 
 		X3DGeometryNode*            geometryNode;
 		Matrix4d                    modelMatrix;
@@ -167,8 +167,8 @@ protected:
 		bool                        intersects;
 	};
 
-	using TargetNodePtr = std::shared_ptr <TargetNode>;
-	using TargetNodes   = std::vector <TargetNodePtr>;
+	using TargetPtr = std::shared_ptr <Target>;
+	using Targets   = std::vector <TargetPtr>;
 
 	///  @name Construction
 
@@ -188,9 +188,9 @@ protected:
 	getModelMatrix () const
 	{ return modelMatrix; }
 
-	const TargetNodes &
-	getTargetNodes () const
-	{ return targetNodes; }
+	const Targets &
+	getTargets () const
+	{ return targets; }
 
 	///  @name Operations
 
@@ -242,7 +242,7 @@ private:
 	IntersectionType           intersectionTypeValue;
 	X3DPtrArray <X3DChildNode> pickTargetNodes;
 	Matrix4d                   modelMatrix;
-	TargetNodes                targetNodes;
+	Targets                    targets;
 
 };
 

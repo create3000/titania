@@ -134,7 +134,7 @@ PrimitivePickSensor::set_pickingGeometry ()
 void
 PrimitivePickSensor::process ()
 {
-	__LOG__ << this << " : " << getTargetNodes () .size () << std::endl;
+	__LOG__ << this << " : " << getTargets () .size () << std::endl;
 	__LOG__ << this << " : " << getModelMatrix () << std::endl;
 
 	switch (getIntersectionType ())
@@ -147,9 +147,9 @@ PrimitivePickSensor::process ()
 			const auto pickingBBox   = pickingGeometryNode -> getBBox () * getModelMatrix ();
 			const auto pickingCenter = pickingBBox .center ();
 
-			__LOG__ << this << " : " << getTargetNodes () .size () << std::endl;
+			__LOG__ << this << " : " << getTargets () .size () << std::endl;
 
-			for (const auto & target : getTargetNodes ())
+			for (const auto & target : getTargets ())
 			{
 				const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
 
@@ -159,8 +159,8 @@ PrimitivePickSensor::process ()
 				__LOG__ << target -> intersects << std::endl;
 			}
 
-			const auto intersects = std::any_of (getTargetNodes () .begin (), getTargetNodes () .end (),
-			[ ] (const TargetNodePtr & target)
+			const auto intersects = std::any_of (getTargets () .begin (), getTargets () .end (),
+			[ ] (const TargetPtr & target)
 			{
 				return target -> intersects;
 			});

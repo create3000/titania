@@ -56,9 +56,9 @@
 namespace titania {
 namespace X3D {
 
-X3DPickSensorNode::TargetNode::TargetNode (X3DGeometryNode* geometryNode,
-                                           const Matrix4d & modelMatrix,
-                                           const std::vector <X3DChildNode*> & pickingHierarchy) :
+X3DPickSensorNode::Target::Target (X3DGeometryNode* geometryNode,
+                                   const Matrix4d & modelMatrix,
+                                   const std::vector <X3DChildNode*> & pickingHierarchy) :
 	    geometryNode (geometryNode),
 	     modelMatrix (modelMatrix),
 	pickingHierarchy (pickingHierarchy),
@@ -82,7 +82,7 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	intersectionTypeValue (IntersectionType::BOUNDS),
 	      pickTargetNodes (),
 	          modelMatrix (),
-	          targetNodes ()
+	              targets ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
 
@@ -216,13 +216,13 @@ X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
 	if (not haveTarget)
 		return;
 
-	targetNodes .emplace_back (std::make_shared <TargetNode> (geometryNode, modelMatrix, pickingHierarchy));
+	targets .emplace_back (std::make_shared <Target> (geometryNode, modelMatrix, pickingHierarchy));
 }
 
 void
 X3DPickSensorNode::process ()
 {
-	targetNodes .clear ();
+	targets .clear ();
 }
 
 void
