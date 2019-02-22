@@ -50,6 +50,7 @@
 
 #include "Inline.h"
 
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/FileLoader.h"
@@ -351,6 +352,14 @@ Inline::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 		case TraverseType::POINTER:
 		{
 			HierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			group -> traverse (type, renderObject);
+
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
 
 			group -> traverse (type, renderObject);
 

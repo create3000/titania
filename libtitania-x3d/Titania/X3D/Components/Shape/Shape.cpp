@@ -51,6 +51,7 @@
 #include "Shape.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/Hit.h"
 #include "../../Browser/Core/RenderingProperties.h"
@@ -283,9 +284,11 @@ Shape::cut (X3DRenderObject* const renderObject)
 void
 Shape::picking (X3DRenderObject* const renderObject)
 {
+	PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+
 	for (const auto pickSensor : getBrowser () -> getPickSensors () .back ())
 	{
-		pickSensor -> collect (getGeometry (), renderObject -> getModelViewMatrix () .get ());
+		pickSensor -> collect (getGeometry (), renderObject -> getModelViewMatrix () .get (), renderObject -> getBrowser () -> getPickingHierarchy ());
 	}
 }
 

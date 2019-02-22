@@ -51,6 +51,7 @@
 #include "X3DGroupingNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/X3DRenderObject.h"
@@ -527,6 +528,8 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		}
 		case TraverseType::PICKING:
 		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+
 			for (const auto & childNode : pickSensors)
 				childNode -> traverse (type, renderObject);
 

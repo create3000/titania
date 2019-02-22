@@ -150,13 +150,13 @@ protected:
 
 	struct GeometryNode
 	{
-		GeometryNode (X3DGeometryNode* geometryNode, const Matrix4d & modelMatrix) :
-			geometryNode (geometryNode),
-			 modelMatrix (modelMatrix)
-		{ }
+		GeometryNode (X3DGeometryNode* geometryNode,
+		              const Matrix4d & modelMatrix,
+		              const std::vector <X3DChildNode*> & pickingHierarchy);
 
-		X3DGeometryNode* geometryNode;
-		Matrix4d         modelMatrix;
+		X3DGeometryNode*            geometryNode;
+		Matrix4d                    modelMatrix;
+		std::vector <X3DChildNode*> pickingHierarchy;
 	};
 
 	using GeometryNodes = std::vector <std::shared_ptr <GeometryNode>>;
@@ -183,7 +183,9 @@ protected:
 	///  @name Operations
 
 	void
-	collect (const X3DPtr <X3DGeometryNode> & geometryNode, const Matrix4d & modelMatrix);
+	collect (const X3DPtr <X3DGeometryNode> & geometryNode,
+	         const Matrix4d & modelMatrix,
+	         const std::vector <X3DChildNode*> & pickingHierarchy);
 
 	virtual
 	void

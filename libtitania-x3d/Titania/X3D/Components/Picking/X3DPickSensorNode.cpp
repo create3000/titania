@@ -56,6 +56,14 @@
 namespace titania {
 namespace X3D {
 
+X3DPickSensorNode::GeometryNode::GeometryNode (X3DGeometryNode* geometryNode,
+                                               const Matrix4d & modelMatrix,
+                                               const std::vector <X3DChildNode*> & pickingHierarchy) :
+	    geometryNode (geometryNode),
+	     modelMatrix (modelMatrix),
+	pickingHierarchy (pickingHierarchy)
+{ }
+
 X3DPickSensorNode::Fields::Fields () :
 	      objectType (new MFString ({ "ALL" })),
 	intersectionType (new SFString ("BOUNDS")),
@@ -172,9 +180,20 @@ X3DPickSensorNode::traverse (const TraverseType type, X3DRenderObject* const ren
 }
 
 void
-X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode, const Matrix4d & modelMatrix)
+X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
+                            const Matrix4d & modelMatrix,
+                            const std::vector <X3DChildNode*> & pickingHierarchy)
 {
-	geometryNodes .emplace_back (std::make_shared <GeometryNode> (geometryNode, modelMatrix));
+	const auto haveTarget = std::any_of (pickingHierarchy .begin (), pickingHierarchy .end (),
+	[&] (X3DChildNode* const node)
+	{
+		return std::count (pickTargetNodes .begin (), pickTargetNodes .end (), node);
+	});
+
+	if (not haveTarget)
+		return;
+
+	geometryNodes .emplace_back (std::make_shared <GeometryNode> (geometryNode, modelMatrix, pickingHierarchy));
 }
 
 void

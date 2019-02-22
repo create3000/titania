@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,96 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_LIGHTING_X3DPICKING_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_LIGHTING_X3DPICKING_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_PICKING_PICKING_HIERARCHY_GUARD_H__
+#define __TITANIA_X3D_BROWSER_PICKING_PICKING_HIERARCHY_GUARD_H__
 
-#include "../../Basic/X3DBaseNode.h"
-
-#include <stack>
+#include "X3DPickingContext.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DPickingContext :
-	virtual public X3DBaseNode
+class X3DChildNode;
+
+struct PickingHierarchyGuard
 {
-public:
+	PickingHierarchyGuard (X3DPickingContext* const context, X3DChildNode* const node) :
+		context (context)
+	{
+		context -> getPickingHierarchy () .emplace_back (node);
+	}
 
-	///  @name Destruction
+	~PickingHierarchyGuard ()
+	{
+		context -> getPickingHierarchy () .pop_back ();
+	}
 
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DPickingContext () override;
-
-
-protected:
-
-	///  @name Friends
-
-	friend class PickableGroup;
-	friend class PickingHierarchyGuard;
-	friend class Shape;
-	friend class X3DGroupingNode;
-	friend class X3DPickSensorNode;
-
-	///  @name Construction
-
-	X3DPickingContext ();
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Member access
-
-	void
-	addPickSensor (X3DPickSensorNode* const pickSensor);
-
-	void
-	removePickSensor (X3DPickSensorNode* const pickSensor);
-
-	std::stack <bool> &
-	getPickable ()
-	{ return pickable; }
-
-	const std::stack <bool> &
-	getPickable () const
-	{ return pickable; }
-
-	std::vector <std::set <X3DPickSensorNode*>> &
-	getPickSensors ()
-	{ return pickSensors; }
-
-	const std::vector <std::set <X3DPickSensorNode*>> &
-	getPickSensors () const
-	{ return pickSensors; }
-
-	std::vector <X3DChildNode*> &
-	getPickingHierarchy ()
-	{ return pickingHierarchy; }
-
-	const std::vector <X3DChildNode*> &
-	getPickingHierarchy () const
-	{ return pickingHierarchy; }
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	picking ();
-
-	///  @name Members
-
-	std::stack <bool>                           pickable;
-	std::vector <std::set <X3DPickSensorNode*>> pickSensors;
-	std::vector <X3DChildNode*>                 pickingHierarchy;
-
+	X3DPickingContext* const context;
 };
 
 } // X3D

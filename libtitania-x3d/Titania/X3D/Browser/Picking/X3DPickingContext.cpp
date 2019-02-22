@@ -58,9 +58,10 @@ namespace titania {
 namespace X3D {
 
 X3DPickingContext::X3DPickingContext () :
-	X3DBaseNode (),
-	   pickable ({ false }),
-	pickSensors ()
+	     X3DBaseNode (),
+	        pickable ({ false }),
+	     pickSensors (),
+	pickingHierarchy ()
 {
 	pickSensors .emplace_back ();
 }
