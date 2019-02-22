@@ -146,21 +146,29 @@ protected:
 	friend class Shape;
 	friend class X3DPickingContext;
 
-	///  @name Me.ber types.
+	///  @name Member types.
 
-	struct GeometryNode
+	enum class IntersectionType
 	{
-		GeometryNode (X3DGeometryNode* geometryNode,
-		              const Matrix4d & modelMatrix,
-		              const std::vector <X3DChildNode*> & pickingHierarchy);
+		BOUNDS,
+		GEOMETRY
+	};
+
+	struct TargetNode
+	{
+		TargetNode (X3DGeometryNode* geometryNode,
+		            const Matrix4d & modelMatrix,
+		            const std::vector <X3DChildNode*> & pickingHierarchy);
 
 		X3DGeometryNode*            geometryNode;
 		Matrix4d                    modelMatrix;
 		std::vector <X3DChildNode*> pickingHierarchy;
+		double                      distance;
+		bool                        intersects;
 	};
 
-	using GeometryNodes = std::vector <std::shared_ptr <GeometryNode>>;
-	
+	using TargetNodePtr = std::shared_ptr <TargetNode>;
+	using TargetNodes   = std::vector <TargetNodePtr>;
 
 	///  @name Construction
 
@@ -172,13 +180,17 @@ protected:
 
 	///  @name Member access
 
+	IntersectionType
+	getIntersectionType () const
+	{ return intersectionTypeValue; }
+
 	const Matrix4d &
 	getModelMatrix () const
 	{ return modelMatrix; }
 
-	const GeometryNodes &
-	getGeometryNodes () const
-	{ return geometryNodes; }
+	const TargetNodes &
+	getTargetNodes () const
+	{ return targetNodes; }
 
 	///  @name Operations
 
@@ -203,6 +215,9 @@ private:
 	set_objectType ();
 
 	void
+	set_intersectionType ();
+
+	void
 	set_pickTarget ();
 
 	///  @name Fields
@@ -224,9 +239,10 @@ private:
 	///  @name Members
 
 	std::set <std::string>     objectTypeIndex;
+	IntersectionType           intersectionTypeValue;
 	X3DPtrArray <X3DChildNode> pickTargetNodes;
 	Matrix4d                   modelMatrix;
-	GeometryNodes              geometryNodes;
+	TargetNodes                targetNodes;
 
 };
 

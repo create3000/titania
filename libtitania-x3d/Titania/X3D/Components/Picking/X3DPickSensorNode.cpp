@@ -56,12 +56,14 @@
 namespace titania {
 namespace X3D {
 
-X3DPickSensorNode::GeometryNode::GeometryNode (X3DGeometryNode* geometryNode,
-                                               const Matrix4d & modelMatrix,
-                                               const std::vector <X3DChildNode*> & pickingHierarchy) :
+X3DPickSensorNode::TargetNode::TargetNode (X3DGeometryNode* geometryNode,
+                                           const Matrix4d & modelMatrix,
+                                           const std::vector <X3DChildNode*> & pickingHierarchy) :
 	    geometryNode (geometryNode),
 	     modelMatrix (modelMatrix),
-	pickingHierarchy (pickingHierarchy)
+	pickingHierarchy (pickingHierarchy),
+	        distance (0),
+	      intersects (false)
 { }
 
 X3DPickSensorNode::Fields::Fields () :
@@ -74,12 +76,13 @@ X3DPickSensorNode::Fields::Fields () :
 { }
 
 X3DPickSensorNode::X3DPickSensorNode () :
-	  X3DSensorNode (),
-	         fields (),
-	objectTypeIndex (),
-	pickTargetNodes (),
-	    modelMatrix (),
-	  geometryNodes ()
+	        X3DSensorNode (),
+	               fields (),
+	      objectTypeIndex (),
+	intersectionTypeValue (IntersectionType::BOUNDS),
+	      pickTargetNodes (),
+	          modelMatrix (),
+	          targetNodes ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
 
@@ -91,11 +94,13 @@ X3DPickSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled ()     .addInterest (&X3DPickSensorNode::set_enabled,    this);
-	objectType  () .addInterest (&X3DPickSensorNode::set_objectType, this);
-	pickTarget  () .addInterest (&X3DPickSensorNode::set_pickTarget, this);
+	enabled ()           .addInterest (&X3DPickSensorNode::set_enabled,          this);
+	objectType  ()       .addInterest (&X3DPickSensorNode::set_objectType,       this);
+	intersectionType  () .addInterest (&X3DPickSensorNode::set_intersectionType, this);
+	pickTarget  ()       .addInterest (&X3DPickSensorNode::set_pickTarget,       this);
 
 	set_objectType ();
+	set_intersectionType ();
 	set_pickTarget ();
 }
 
@@ -134,6 +139,24 @@ X3DPickSensorNode::set_objectType ()
 		objectTypeIndex .emplace (value);
 
 	set_enabled ();
+}
+
+void
+X3DPickSensorNode::set_intersectionType ()
+{
+	static const std::map <std::string, IntersectionType> intersectionTypes = {
+		std::pair ("BOUNDS",   IntersectionType::BOUNDS),
+		std::pair ("GEOMETRY", IntersectionType::GEOMETRY),
+	};
+
+	try
+	{
+		intersectionTypeValue = intersectionTypes .at (intersectionType ());
+	}
+	catch (const std::out_of_range & error)
+	{
+		intersectionTypeValue = IntersectionType::BOUNDS;
+	}
 }
 
 void
@@ -187,19 +210,23 @@ X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
 	const auto haveTarget = std::any_of (pickingHierarchy .begin (), pickingHierarchy .end (),
 	[&] (X3DChildNode* const node)
 	{
-		return std::count (pickTargetNodes .begin (), pickTargetNodes .end (), node);
+		return std::count_if (pickTargetNodes .begin (), pickTargetNodes .end (),
+		[node] (const X3DPtr <X3DChildNode> & pickTargetNode)
+		{
+			return node -> getId () == pickTargetNode -> getId ();
+		});
 	});
 
 	if (not haveTarget)
 		return;
 
-	geometryNodes .emplace_back (std::make_shared <GeometryNode> (geometryNode, modelMatrix, pickingHierarchy));
+	targetNodes .emplace_back (std::make_shared <TargetNode> (geometryNode, modelMatrix, pickingHierarchy));
 }
 
 void
 X3DPickSensorNode::process ()
 {
-	geometryNodes .clear ();
+	targetNodes .clear ();
 }
 
 void

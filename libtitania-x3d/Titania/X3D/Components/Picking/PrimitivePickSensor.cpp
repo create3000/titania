@@ -134,8 +134,49 @@ PrimitivePickSensor::set_pickingGeometry ()
 void
 PrimitivePickSensor::process ()
 {
-	__LOG__ << this << " : " << getGeometryNodes () .size () << std::endl;
+	__LOG__ << this << " : " << getTargetNodes () .size () << std::endl;
 	__LOG__ << this << " : " << getModelMatrix () << std::endl;
+
+	switch (getIntersectionType ())
+	{
+		case IntersectionType::BOUNDS:
+		{
+
+			// Intersect bboxes.
+
+			const auto pickingBBox   = pickingGeometryNode -> getBBox () * getModelMatrix ();
+			const auto pickingCenter = pickingBBox .center ();
+
+			__LOG__ << this << " : " << getTargetNodes () .size () << std::endl;
+
+			for (const auto & target : getTargetNodes ())
+			{
+				const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+
+				target -> distance   = distance (pickingCenter, targetBBox .center ());
+				target -> intersects = pickingBBox .intersects (targetBBox);
+
+				__LOG__ << target -> intersects << std::endl;
+			}
+
+			const auto intersects = std::any_of (getTargetNodes () .begin (), getTargetNodes () .end (),
+			[ ] (const TargetNodePtr & target)
+			{
+				return target -> intersects;
+			});
+
+			// Send events.
+
+			if (intersects not_eq isActive ())
+				isActive () = intersects;
+
+			break;
+		}
+		case IntersectionType::GEOMETRY:
+		{
+			break;
+		}
+	}
 
 	X3DPickSensorNode::process ();
 }
