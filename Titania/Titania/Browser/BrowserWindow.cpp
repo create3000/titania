@@ -1184,7 +1184,6 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 
 	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
-
 	expandNodes ({ group });
 
 	return group;

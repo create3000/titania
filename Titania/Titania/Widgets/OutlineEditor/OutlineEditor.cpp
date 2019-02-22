@@ -1159,8 +1159,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 			X3D::X3DEditor::pushBackIntoArray (group, group -> getField <X3D::MFNode> (fieldName), child, undoStep);
 
 		X3D::X3DEditor::replaceNode (executionContext, executionContext, rootNodes, index, group, undoStep);
-		//getBrowserWindow () -> getSelection () -> setNodes ({ group });
-		getBrowserWindow () -> expandNodes ({ group });
 	}
 	else
 	{
@@ -1202,8 +1200,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 					X3D::X3DEditor::pushBackIntoArray (group, group -> getField <X3D::MFNode> (fieldName), child, undoStep);
 
 				X3D::X3DEditor::replaceNode (executionContext, parent, child, group, undoStep);
-				//getBrowserWindow () -> getSelection () -> setNodes ({ group });
-				getBrowserWindow () -> expandNodes ({ group });
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
@@ -1218,8 +1214,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 					X3D::X3DEditor::pushBackIntoArray (group, group -> getField <X3D::MFNode> (fieldName), child, undoStep);
 
 				X3D::X3DEditor::replaceNode (executionContext, parent, mfnode, index, group, undoStep);
-				//getBrowserWindow () -> getSelection () -> setNodes ({ group });
-				getBrowserWindow () -> expandNodes ({ group });
 				break;
 			}
 			default:
@@ -1227,7 +1221,9 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		}
 	}
 
+	getBrowserWindow () -> getSelection () -> setNodes ({ group });
 	getBrowserWindow () -> addUndoStep (undoStep);
+	getBrowserWindow () -> expandNodes ({ group });
 
 	return group;
 }
