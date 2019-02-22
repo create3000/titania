@@ -281,13 +281,25 @@ X3DPickSensorNode::getPickedGeometries () const
 X3DNode*
 X3DPickSensorNode::getPickedGeometry (const TargetPtr & target) const
 {
-	if (target -> geometryNode -> getExecutionContext () == getExecutionContext ())
-		return target -> geometryNode;
+	const auto geometryNode = target -> geometryNode;
+
+	if (geometryNode -> getExecutionContext () == getExecutionContext ())
+		return geometryNode;
+
+	const auto instance = geometryNode  -> getExecutionContext ();
+
+	if (instance -> isType ({ X3DConstants::X3DPrototypeInstance }) and instance -> getExecutionContext () == getExecutionContext ())
+		return dynamic_cast <X3DNode*> (instance);
 
 	for (const auto node : target -> pickingHierarchy)
 	{
 		if (node -> getExecutionContext () == getExecutionContext ())
 			return node;
+
+		const auto instance = node  -> getExecutionContext ();
+
+		if (instance -> isType ({ X3DConstants::X3DPrototypeInstance }) and instance -> getExecutionContext () == getExecutionContext ())
+			return dynamic_cast <X3DNode*> (instance);
 	}
 
 	return nullptr;
