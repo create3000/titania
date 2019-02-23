@@ -105,14 +105,6 @@ void
 ProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
-
-	enabled () .addInterest (&ProximitySensor::set_enabled_, this);
-}
-
-void
-ProximitySensor::set_enabled_ ()
-{
-	setCameraObject (enabled ());
 }
 
 void

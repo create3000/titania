@@ -145,9 +145,6 @@ private:
 
 	///  @name Event handlers
 
-	void
-	set_enabled_ ();
-
 	virtual
 	void
 	update () final override;

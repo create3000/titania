@@ -104,8 +104,8 @@ TransformSensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	enabled ()      .addInterest (&TransformSensor::set_enabled, this);
-	size ()         .addInterest (&TransformSensor::set_enabled, this);
+	enabled ()      .addInterest (&TransformSensor::set_enabled,      this);
+	size ()         .addInterest (&TransformSensor::set_enabled,      this);
 	targetObject () .addInterest (&TransformSensor::set_targetObject, this);
 
 	set_targetObject ();
