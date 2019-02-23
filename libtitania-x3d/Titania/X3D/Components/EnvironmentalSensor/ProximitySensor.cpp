@@ -254,8 +254,9 @@ ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const rende
 					return;
 
 				if (size () == Vector3f (-1, -1, -1))
+				{
 					inside = true;
-
+				}
 				else
 				{
 					const auto bbox = Box3d (size () .getValue (), center () .getValue ());
