@@ -75,31 +75,33 @@ X3DGroupingNode::Fields::Fields () :
 { }
 
 X3DGroupingNode::X3DGroupingNode () :
-	         X3DChildNode (),
-	     X3DBoundedObject (),
-	               fields (),
-	               hidden (false),
-	              visible (),
-	         allowedTypes (),
-	pointingDeviceSensors (),
-	        cameraObjects (),
-	      pickableObjects (),
-	           clipPlanes (),
-	            localFogs (),
-	               lights (),
-	          pickSensors (),
-	           childNodes ()
+	             X3DChildNode (),
+	         X3DBoundedObject (),
+	                   fields (),
+	                   hidden (false),
+	                  visible (),
+	             allowedTypes (),
+	pointingDeviceSensorNodes (),
+	            cameraObjects (),
+	          pickableObjects (),
+	           clipPlaneNodes (),
+	            localFogNodes (),
+	               lightNodes (),
+	     transformSensorNodes (),
+	          pickSensorNodes (),
+	               childNodes ()
 {
 	addType (X3DConstants::X3DGroupingNode);
 
 	addChildObjects (visible,
-	                 pointingDeviceSensors,
+	                 pointingDeviceSensorNodes,
 	                 cameraObjects,
 	                 pickableObjects,
-	                 clipPlanes,
-	                 localFogs,
-	                 lights,
-	                 pickSensors,
+	                 clipPlaneNodes,
+	                 localFogNodes,
+	                 lightNodes,
+	                 transformSensorNodes,
+	                 pickSensorNodes,
 	                 childNodes);
 }
 
@@ -109,17 +111,18 @@ X3DGroupingNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	visible               .setTainted (true);
-	pointingDeviceSensors .setTainted (true);
-	cameraObjects         .setTainted (true);
-	pickableObjects       .setTainted (true);
-	clipPlanes            .setTainted (true);
-	localFogs             .setTainted (true);
-	lights                .setTainted (true);
-	pickSensors           .setTainted (true);
-	childNodes            .setTainted (true);
+	visible                   .setTainted (true);
+	pointingDeviceSensorNodes .setTainted (true);
+	cameraObjects             .setTainted (true);
+	pickableObjects           .setTainted (true);
+	clipPlaneNodes            .setTainted (true);
+	localFogNodes             .setTainted (true);
+	lightNodes                .setTainted (true);
+	transformSensorNodes      .setTainted (true);
+	pickSensorNodes           .setTainted (true);
+	childNodes                .setTainted (true);
 
-	getTransformSensors () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
+	transformSensors_changed () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 	addChildren ()    .addInterest (&X3DGroupingNode::set_addChildren,    this);
 	removeChildren () .addInterest (&X3DGroupingNode::set_removeChildren, this);
@@ -252,17 +255,17 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 					{
 						case X3DConstants::X3DPointingDeviceSensorNode:
 						{
-							pointingDeviceSensors .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));
+							pointingDeviceSensorNodes .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));
 							break;
 						}
 						case X3DConstants::ClipPlane:
 						{
-							clipPlanes .emplace_back (dynamic_cast <ClipPlane*> (innerNode));
+							clipPlaneNodes .emplace_back (dynamic_cast <ClipPlane*> (innerNode));
 							break;
 						}
 						case X3DConstants::LocalFog :
 						{
-							localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
+							localFogNodes .emplace_back (dynamic_cast <LocalFog*> (innerNode));
 							break;
 						}
 						case X3DConstants::X3DLightNodeTool:
@@ -278,14 +281,20 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 						}
 						case X3DConstants::X3DLightNode:
 						{
-							lights .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
+							lightNodes .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
+							break;
+						}
+						case X3DConstants::TransformSensor:
+						{
+							transformSensorNodes .emplace_back (dynamic_cast <TransformSensor*> (innerNode));
 							break;
 						}
 						case X3DConstants::X3DPickSensorNode:
 						{
-							pickSensors .emplace_back (dynamic_cast <X3DPickSensorNode*> (innerNode));
+							pickSensorNodes .emplace_back (dynamic_cast <X3DPickSensorNode*> (innerNode));
 							break;
 						}
+						case X3DConstants::TransformSensorTool:
 						case X3DConstants::X3DChildNode:
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
@@ -347,26 +356,26 @@ X3DGroupingNode::remove (const MFNode & children)
 					{
 						case X3DConstants::X3DPointingDeviceSensorNode:
 						{
-							pointingDeviceSensors .erase (std::remove (pointingDeviceSensors .begin (),
-							                                           pointingDeviceSensors .end (),
-							                                           dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode)),
-							                              pointingDeviceSensors .end ());
+							pointingDeviceSensorNodes .erase (std::remove (pointingDeviceSensorNodes .begin (),
+							                                               pointingDeviceSensorNodes .end (),
+							                                               dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode)),
+							                                  pointingDeviceSensorNodes .end ());
 							break;
 						}
 						case X3DConstants::ClipPlane:
 						{
-							clipPlanes .erase (std::remove (clipPlanes .begin (),
-							                                clipPlanes .end (),
-							                                dynamic_cast <ClipPlane*> (innerNode)),
-							                   clipPlanes .end ());
+							clipPlaneNodes .erase (std::remove (clipPlaneNodes .begin (),
+							                                    clipPlaneNodes .end (),
+							                                    dynamic_cast <ClipPlane*> (innerNode)),
+							                       clipPlaneNodes .end ());
 							break;
 						}
 						case X3DConstants::LocalFog :
 						{
-							localFogs .erase (std::remove (localFogs .begin (),
-							                               localFogs .end (),
-							                               dynamic_cast <LocalFog*> (innerNode)),
-							                  localFogs .end ());
+							localFogNodes .erase (std::remove (localFogNodes .begin (),
+							                                   localFogNodes .end (),
+							                                   dynamic_cast <LocalFog*> (innerNode)),
+							                      localFogNodes .end ());
 							break;
 						}
 						case X3DConstants::X3DLightNodeTool:
@@ -385,20 +394,29 @@ X3DGroupingNode::remove (const MFNode & children)
 						}
 						case X3DConstants::X3DLightNode:
 						{
-							lights .erase (std::remove (lights .begin (),
-							                            lights .end (),
-							                            dynamic_cast <X3DLightNode*> (innerNode)),
-							               lights .end ());
+							lightNodes .erase (std::remove (lightNodes .begin (),
+							                                lightNodes .end (),
+							                                dynamic_cast <X3DLightNode*> (innerNode)),
+							                   lightNodes .end ());
+							break;
+						}
+						case X3DConstants::TransformSensor:
+						{
+							transformSensorNodes .erase (std::remove (transformSensorNodes .begin (),
+							                                          transformSensorNodes .end (),
+							                                          dynamic_cast <TransformSensor*> (innerNode)),
+							                             transformSensorNodes .end ());
 							break;
 						}
 						case X3DConstants::X3DPickSensorNode:
 						{
-							pickSensors .erase (std::remove (pickSensors .begin (),
-							                                 pickSensors .end (),
-							                                 dynamic_cast <X3DPickSensorNode*> (innerNode)),
-							                    pickSensors .end ());
+							pickSensorNodes .erase (std::remove (pickSensorNodes .begin (),
+							                                     pickSensorNodes .end (),
+							                                     dynamic_cast <X3DPickSensorNode*> (innerNode)),
+							                        pickSensorNodes .end ());
 							break;
 						}
+						case X3DConstants::TransformSensorTool:
 						case X3DConstants::X3DChildNode:
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
@@ -453,14 +471,15 @@ X3DGroupingNode::clear ()
 		childNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
 	}
 
-	pointingDeviceSensors .clear ();
-	cameraObjects         .clear ();
-	pickableObjects       .clear ();
-	clipPlanes            .clear ();
-	localFogs             .clear ();
-	lights                .clear ();
-	pickSensors           .clear ();
-	childNodes            .clear ();
+	pointingDeviceSensorNodes .clear ();
+	cameraObjects             .clear ();
+	pickableObjects           .clear ();
+	clipPlaneNodes            .clear ();
+	localFogNodes             .clear ();
+	lightNodes                .clear ();
+	transformSensorNodes      .clear ();
+	pickSensorNodes           .clear ();
+	childNodes                .clear ();
 }
 
 void
@@ -488,7 +507,7 @@ X3DGroupingNode::set_pickableObjects ()
 			pickableObjects .emplace_back (childNode);
 	}
 
-	setPickableObject (not (pickSensors .empty () and pickableObjects .empty () and getTransformSensors () .empty ()));
+	setPickableObject (not (pickSensorNodes .empty () and pickableObjects .empty () and transformSensorNodes .empty () and getTransformSensors () .empty ()));
 }
 
 void
@@ -500,24 +519,24 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		{
 			HierarchyGuard guard (renderObject -> getBrowser (), this);
 
-			if (not pointingDeviceSensors .empty ())
+			if (not pointingDeviceSensorNodes .empty ())
 			{
 				renderObject -> getBrowser () -> getSensors () .emplace_back ();
 
-				for (const auto & pointingDeviceSensor : pointingDeviceSensors)
-					pointingDeviceSensor -> push (renderObject);
+				for (const auto & pointingDeviceSensorNode : pointingDeviceSensorNodes)
+					pointingDeviceSensorNode -> push (renderObject);
 			}
 
-			for (const auto & clipPlane : clipPlanes)
-				clipPlane -> push (renderObject);
+			for (const auto & clipPlaneNode : clipPlaneNodes)
+				clipPlaneNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
-			for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
-				clipPlane -> pop (renderObject);
+			for (const auto & clipPlaneNode : basic::make_reverse_range (clipPlaneNodes))
+				clipPlaneNode -> pop (renderObject);
 
-			if (not pointingDeviceSensors .empty ())
+			if (not pointingDeviceSensorNodes .empty ())
 				renderObject -> getBrowser () -> getSensors () .pop_back ();
 
 			return;
@@ -536,8 +555,11 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			for (const auto & transformSensorNode : getTransformSensors ())
 				transformSensorNode -> collect (this, renderObject -> getModelViewMatrix () .get ());
 
-			for (const auto & pickSensor : pickSensors)
-				pickSensor -> traverse (type, renderObject);
+			for (const auto & transformSensorNode : transformSensorNodes)
+				transformSensorNode -> traverse (type, renderObject);
+
+			for (const auto & pickSensorNode : pickSensorNodes)
+				pickSensorNode -> traverse (type, renderObject);
 
 			if (renderObject -> getBrowser () -> getPickable () .top ())
 			{
@@ -555,39 +577,39 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		case TraverseType::COLLISION:
 		case TraverseType::DEPTH:
 		{
-			for (const auto & clipPlane : clipPlanes)
-				clipPlane -> push (renderObject);
+			for (const auto & clipPlaneNode : clipPlaneNodes)
+				clipPlaneNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
-			for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
-				clipPlane -> pop (renderObject);
+			for (const auto & clipPlaneNode : basic::make_reverse_range (clipPlaneNodes))
+				clipPlaneNode -> pop (renderObject);
 
 			return;
 		}
 		case TraverseType::DISPLAY:
 		{
-			for (const auto & clipPlane : clipPlanes)
-				clipPlane -> push (renderObject);
+			for (const auto & clipPlaneNode : clipPlaneNodes)
+				clipPlaneNode -> push (renderObject);
 
-			for (const auto & localFog : localFogs)
-				localFog -> push (renderObject);
+			for (const auto & localFogNode : localFogNodes)
+				localFogNode -> push (renderObject);
 
-			for (const auto & light : lights)
-				light -> push (renderObject, this);
+			for (const auto & lightNode : lightNodes)
+				lightNode -> push (renderObject, this);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
-			for (const auto & light : basic::make_reverse_range (lights))
-				light -> pop (renderObject);
+			for (const auto & lightNode : basic::make_reverse_range (lightNodes))
+				lightNode -> pop (renderObject);
 
-			for (const auto & localFog : basic::make_reverse_range (localFogs))
-				localFog -> pop (renderObject);
+			for (const auto & localFogNode : basic::make_reverse_range (localFogNodes))
+				localFogNode -> pop (renderObject);
 
-			for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
-				clipPlane -> pop (renderObject);
+			for (const auto & clipPlaneNode : basic::make_reverse_range (clipPlaneNodes))
+				clipPlaneNode -> pop (renderObject);
 
 			return;
 		}

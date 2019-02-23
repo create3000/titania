@@ -100,16 +100,21 @@ public:
 
 	virtual
 	void
-	addTransformSensor (TransformSensor* const transformSensor);
+	addTransformSensor (TransformSensor* const transformSensorNode);
 
 	virtual
 	void
-	removeTransformSensor (TransformSensor* const transformSensor);
+	removeTransformSensor (TransformSensor* const transformSensorNode);
 
 	virtual
-	const X3DPtrArray <TransformSensor> &
+	const std::set <TransformSensor*> &
 	getTransformSensors () const
-	{ return transformSensors; }
+	{ return transformSensorNodes; }
+
+	virtual
+	const SFTime &
+	transformSensors_changed ()
+	{ return transformSensorOutput; }
 
 	///  @name Destruction
 
@@ -150,7 +155,8 @@ private:
 
 	///  @name Members
 
-	X3DPtrArray <TransformSensor> transformSensors;
+	std::set <TransformSensor*> transformSensorNodes;
+	SFTime                      transformSensorOutput;
 
 };
 

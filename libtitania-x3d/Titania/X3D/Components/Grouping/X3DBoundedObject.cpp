@@ -61,28 +61,33 @@ X3DBoundedObject::Fields::Fields () :
 { }
 
 X3DBoundedObject::X3DBoundedObject () :
-	     X3DBaseNode (),
-	          fields (),
-	transformSensors ()
+	          X3DBaseNode (),
+	               fields (),
+	 transformSensorNodes (),
+	transformSensorOutput ()
 {
 	addType (X3DConstants::X3DBoundedObject);
 
 	bboxSize ()   .setUnit (UnitCategory::LENGTH);
 	bboxCenter () .setUnit (UnitCategory::LENGTH);
 
-	addChildObjects (transformSensors);
+	addChildObjects (transformSensorOutput);
 }
 
 void
-X3DBoundedObject::addTransformSensor (TransformSensor* const transformSensor)
+X3DBoundedObject::addTransformSensor (TransformSensor* const transformSensorNode)
 {
-	transformSensors .emplace_back (transformSensor);
+	transformSensorNodes .emplace (transformSensorNode);
+
+	transformSensorOutput = getCurrentTime ();
 }
 
 void
-X3DBoundedObject::removeTransformSensor (TransformSensor* const transformSensor)
+X3DBoundedObject::removeTransformSensor (TransformSensor* const transformSensorNode)
 {
-	transformSensors .erase (std::remove (transformSensors .begin (), transformSensors .end (), transformSensor), transformSensors .end ());
+	transformSensorNodes .erase (transformSensorNode);
+
+	transformSensorOutput = getCurrentTime ();
 }
 
 X3DBoundedObject::~X3DBoundedObject ()

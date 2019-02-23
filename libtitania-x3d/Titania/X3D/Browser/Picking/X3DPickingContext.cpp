@@ -59,13 +59,13 @@ namespace titania {
 namespace X3D {
 
 X3DPickingContext::X3DPickingContext () :
-	     X3DBaseNode (),
-	transformSensors (),
-	        pickable ({ false }),
-	     pickSensors (),
-	pickingHierarchy ()
+	         X3DBaseNode (),
+	transformSensorNodes (),
+	            pickable ({ false }),
+	     pickSensorNodes (),
+	    pickingHierarchy ()
 {
-	pickSensors .emplace_back ();
+	pickSensorNodes .emplace_back ();
 }
 
 void
@@ -75,40 +75,40 @@ X3DPickingContext::initialize ()
 void
 X3DPickingContext::enable ()
 {
-	if (transformSensors .empty () and pickSensors .front () .empty ())
+	if (transformSensorNodes .empty () and pickSensorNodes .front () .empty ())
 		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
 	else
 		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
 }
 
 void
-X3DPickingContext::addTransformSensor (TransformSensor* const transformSensor)
+X3DPickingContext::addTransformSensor (TransformSensor* const transformSensorNode)
 {
-	transformSensors .emplace (transformSensor);
+	transformSensorNodes .emplace (transformSensorNode);
 
 	enable ();
 }
 
 void
-X3DPickingContext::removeTransformSensor (TransformSensor* const transformSensor)
+X3DPickingContext::removeTransformSensor (TransformSensor* const transformSensorNode)
 {
-	transformSensors .erase (transformSensor);
+	transformSensorNodes .erase (transformSensorNode);
 
 	enable ();
 }
 
 void
-X3DPickingContext::addPickSensor (X3DPickSensorNode* const pickSensor)
+X3DPickingContext::addPickSensor (X3DPickSensorNode* const pickSensorNode)
 {
-	pickSensors .front () .emplace (pickSensor);
+	pickSensorNodes .front () .emplace (pickSensorNode);
 
 	enable ();
 }
 
 void
-X3DPickingContext::removePickSensor (X3DPickSensorNode* const pickSensor)
+X3DPickingContext::removePickSensor (X3DPickSensorNode* const pickSensorNode)
 {
-	pickSensors .front () .erase (pickSensor);
+	pickSensorNodes .front () .erase (pickSensorNode);
 
 	enable ();
 }
@@ -120,10 +120,10 @@ X3DPickingContext::picking ()
 
 	getBrowser () -> getWorld () -> traverse (TraverseType::PICKING, nullptr);
 
-	for (const auto tranformSensor : transformSensors)
+	for (const auto tranformSensor : transformSensorNodes)
 		tranformSensor -> process ();
 
-	for (const auto pickSensor : pickSensors .front ())
+	for (const auto pickSensor : pickSensorNodes .front ())
 		pickSensor -> process ();
 }
 

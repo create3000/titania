@@ -96,16 +96,16 @@ protected:
 	///  @name Member access
 
 	void
-	addTransformSensor (TransformSensor* const transformSensor);
+	addTransformSensor (TransformSensor* const transformSensorNode);
 
 	void
-	removeTransformSensor (TransformSensor* const transformSensor);
+	removeTransformSensor (TransformSensor* const transformSensorNode);
 
 	void
-	addPickSensor (X3DPickSensorNode* const pickSensor);
+	addPickSensor (X3DPickSensorNode* const pickSensorNode);
 
 	void
-	removePickSensor (X3DPickSensorNode* const pickSensor);
+	removePickSensor (X3DPickSensorNode* const pickSensorNode);
 
 	std::stack <bool> &
 	getPickable ()
@@ -117,11 +117,11 @@ protected:
 
 	std::vector <std::set <X3DPickSensorNode*>> &
 	getPickSensors ()
-	{ return pickSensors; }
+	{ return pickSensorNodes; }
 
 	const std::vector <std::set <X3DPickSensorNode*>> &
 	getPickSensors () const
-	{ return pickSensors; }
+	{ return pickSensorNodes; }
 
 	std::vector <X3DChildNode*> &
 	getPickingHierarchy ()
@@ -144,9 +144,9 @@ private:
 
 	///  @name Members
 
-	std::set <TransformSensor*>                 transformSensors;
+	std::set <TransformSensor*>                 transformSensorNodes;
 	std::stack <bool>                           pickable;
-	std::vector <std::set <X3DPickSensorNode*>> pickSensors;
+	std::vector <std::set <X3DPickSensorNode*>> pickSensorNodes;
 	std::vector <X3DChildNode*>                 pickingHierarchy;
 
 };

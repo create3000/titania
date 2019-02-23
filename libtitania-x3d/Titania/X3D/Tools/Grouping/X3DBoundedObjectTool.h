@@ -95,18 +95,23 @@ public:
 
 	virtual
 	void
-	addTransformSensor (TransformSensor* const transformSensor) final override
-	{ return getNode <X3DBoundedObject> () -> addTransformSensor (transformSensor); }
+	addTransformSensor (TransformSensor* const transformSensorNode) final override
+	{ return getNode <X3DBoundedObject> () -> addTransformSensor (transformSensorNode); }
 
 	virtual
 	void
-	removeTransformSensor (TransformSensor* const transformSensor) final override
-	{ return getNode <X3DBoundedObject> () -> removeTransformSensor (transformSensor); }
+	removeTransformSensor (TransformSensor* const transformSensorNode) final override
+	{ return getNode <X3DBoundedObject> () -> removeTransformSensor (transformSensorNode); }
 
 	virtual
-	const X3DPtrArray <TransformSensor> &
+	const std::set <TransformSensor*> &
 	getTransformSensors () const final override
 	{ return getNode <X3DBoundedObject> () -> getTransformSensors (); }
+
+	virtual
+	const SFTime &
+	transformSensors_changed () final override
+	{ return getNode <X3DBoundedObject> () -> transformSensors_changed (); }
 
 	///  @name Operatations
 

@@ -220,13 +220,14 @@ private:
 	bool                                      hidden;
 	MFBool                                    visible;
 	NodeTypeSet                               allowedTypes;
-	X3DPtrArray <X3DPointingDeviceSensorNode> pointingDeviceSensors;
+	X3DPtrArray <X3DPointingDeviceSensorNode> pointingDeviceSensorNodes;
 	X3DPtrArray <X3DChildNode>                cameraObjects;
 	X3DPtrArray <X3DChildNode>                pickableObjects;
-	X3DPtrArray <ClipPlane>                   clipPlanes;
-	X3DPtrArray <LocalFog>                    localFogs;
-	X3DPtrArray <X3DLightNode>                lights;
-	X3DPtrArray <X3DPickSensorNode>           pickSensors;
+	X3DPtrArray <ClipPlane>                   clipPlaneNodes;
+	X3DPtrArray <LocalFog>                    localFogNodes;
+	X3DPtrArray <X3DLightNode>                lightNodes;
+	X3DPtrArray <TransformSensor>             transformSensorNodes;
+	X3DPtrArray <X3DPickSensorNode>           pickSensorNodes;
 	X3DPtrArray <X3DChildNode>                childNodes;
 
 };

@@ -96,7 +96,7 @@ Shape::initialize ()
 {
 	X3DShapeNode::initialize ();
 
-	getTransformSensors () .addInterest (&Shape::set_transformSensors, this);
+	transformSensors_changed () .addInterest (&Shape::set_transformSensors, this);
 
 	set_transformSensors ();
 }
