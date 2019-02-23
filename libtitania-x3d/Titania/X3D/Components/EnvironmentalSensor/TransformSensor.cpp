@@ -178,5 +178,11 @@ TransformSensor::update ()
 	}
 }
 
+void
+TransformSensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+
+}
+
 } // X3D
 } // titania

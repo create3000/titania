@@ -50,6 +50,7 @@
 
 #include "ProximitySensor.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Types/Geometry.h"
@@ -72,9 +73,10 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	X3DEnvironmentalSensorNode (),
 	                    fields (),
 	             viewpointNode (),
-	           modelViewMatrix (),
+	               modelMatrix (),
 	                  position (),
-	                    inside (false)
+	                    inside (false),
+	                 traversed (true)
 {
 	addType (X3DConstants::ProximitySensor);
 
@@ -105,6 +107,64 @@ void
 ProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (&ProximitySensor::set_enabled, this);
+	isLive () .addInterest (&ProximitySensor::set_enabled, this);
+
+	enabled ()        .addInterest (&ProximitySensor::set_enabled, this);
+	size ()           .addInterest (&ProximitySensor::set_enabled, this);
+	isCameraObject () .addInterest (&ProximitySensor::set_enabled, this);
+
+	set_enabled ();
+}
+
+void
+ProximitySensor::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	if (isInitialized ())
+	{
+		getBrowser () -> sensorEvents ()    .removeInterest (&ProximitySensor::update,      this);
+		getExecutionContext () -> isLive () .removeInterest (&ProximitySensor::set_enabled, this);
+	}
+
+	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (&ProximitySensor::set_enabled, this);
+
+		set_enabled ();
+	}
+}
+
+void
+ProximitySensor::setTraversed (const bool value)
+{
+   if (value)
+		setCameraObject (true);
+	else
+		setCameraObject (traversed);
+
+   traversed = value;
+}
+
+void
+ProximitySensor::set_enabled ()
+{
+	if (isCameraObject () and enabled () and size () not_eq Vector3f () and isLive () and getExecutionContext () -> isLive ())
+	{
+		getBrowser () -> sensorEvents () .addInterest (&ProximitySensor::update, this);
+	}
+	else
+	{
+		getBrowser () -> sensorEvents () .removeInterest (&ProximitySensor::update, this);
+
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
 }
 
 void
@@ -116,15 +176,15 @@ ProximitySensor::update ()
 		{
 			Matrix4d centerOfRotationMatrix = viewpointNode -> getModelMatrix ();
 			centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
-			centerOfRotationMatrix *= inverse (modelViewMatrix);
+			centerOfRotationMatrix *= inverse (modelMatrix);
 
-			modelViewMatrix *= viewpointNode -> getInverseCameraSpaceMatrix ();
+			modelMatrix *= viewpointNode -> getInverseCameraSpaceMatrix ();
 
 			Vector3d   translation, scale;
 			Rotation4d rotation;
-			modelViewMatrix .get (translation, rotation, scale);
+			modelMatrix .get (translation, rotation, scale);
 
-			position = inverse (modelViewMatrix) .origin ();
+			position = inverse (modelMatrix) .origin ();
 
 			const Rotation4d orientation      = ~rotation;
 			const Vector3d   centerOfRotation = centerOfRotationMatrix .origin ();
@@ -170,47 +230,43 @@ ProximitySensor::update ()
 void
 ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	try
+	if (renderObject -> getBrowser () not_eq getBrowser ())
+		return;
+
+	if (not enabled ())
+		return;
+
+	switch (type)
 	{
-		if (renderObject -> getBrowser () not_eq getBrowser ())
-			return;
-
-		if (not enabled ())
-			return;
-
-		switch (type)
+		case TraverseType::CAMERA:
 		{
-			case TraverseType::CAMERA:
-			{
-				viewpointNode   = renderObject -> getViewpoint ();
-				modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
-				return;
-			}
-			case TraverseType::DISPLAY:
-			{
-				setTraversed (true);
-
-				if (inside)
-					return;
-
-				if (size () == Vector3f (-1, -1, -1))
-					inside = true;
-
-				else
-				{
-					const auto bbox = Box3d (size () .getValue (), center () .getValue ());
-
-					inside = bbox .intersects (inverse (renderObject -> getModelViewMatrix () .get ()) .origin ());
-				}
-
-				return;
-			}
-			default:
-				return;
+			viewpointNode = renderObject -> getViewpoint ();
+			modelMatrix   = renderObject -> getModelViewMatrix () .get ();
+			return;
 		}
+		case TraverseType::DISPLAY:
+		{
+			setTraversed (true);
+
+			if (inside)
+				return;
+
+			if (size () == Vector3f (-1, -1, -1))
+			{
+				inside = true;
+			}
+			else
+			{
+				const auto bbox = Box3d (size () .getValue (), center () .getValue ()) * renderObject -> getModelViewMatrix () .get ();
+
+				inside = bbox .intersects (Vector3f ());
+			}
+
+			return;
+		}
+		default:
+			return;
 	}
-	catch (const std::domain_error &)
-	{ }
 }
 
 } // X3D

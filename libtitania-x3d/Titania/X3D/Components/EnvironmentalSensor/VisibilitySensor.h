@@ -86,6 +86,10 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
+
 	///  @name Operations
 
 	virtual
@@ -106,9 +110,11 @@ private:
 
 	///  @name Event handlers
 
-	virtual
 	void
-	update () final override;
+	set_enabled ();
+
+	void
+	update ();
 
 	///  @name Static members
 
@@ -119,6 +125,7 @@ private:
 	///  @name Members
 
 	bool visible;
+	bool traversed;
 
 };
 

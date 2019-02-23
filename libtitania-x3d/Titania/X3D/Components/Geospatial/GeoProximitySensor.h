@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class GeoProximitySensor :
-	public X3DEnvironmentalSensorNode, public X3DGeospatialObject
+	public X3DEnvironmentalSensorNode,
+	public X3DGeospatialObject
 {
 public:
 
@@ -159,11 +160,6 @@ private:
 
 	void
 	set_position (const Vector3f &);
-
-	virtual
-	void
-	update () final override
-	{ }
 
 	///  @name Static members
 

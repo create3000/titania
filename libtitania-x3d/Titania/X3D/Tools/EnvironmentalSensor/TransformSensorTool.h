@@ -75,6 +75,13 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
+
 	///  @name Destruction
 
 	virtual

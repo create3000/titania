@@ -50,6 +50,7 @@
 
 #include "VisibilitySensor.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Types/Geometry.h"
@@ -64,7 +65,8 @@ const std::string VisibilitySensor::containerField = "children";
 VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
-	                   visible (false)
+	                   visible (false),
+	                 traversed (true)
 {
 	addType (X3DConstants::VisibilitySensor);
 
@@ -75,8 +77,6 @@ VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext)
 	addField (outputOnly,  "enterTime", enterTime ());
 	addField (outputOnly,  "exitTime",  exitTime ());
 	addField (outputOnly,  "isActive",  isActive ());
-
-	setCameraObject (true);
 }
 
 X3DBaseNode*
@@ -89,12 +89,58 @@ void
 VisibilitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (&VisibilitySensor::set_enabled, this);
+	isLive () .addInterest (&VisibilitySensor::set_enabled, this);
+
+	enabled () .addInterest (&VisibilitySensor::set_enabled, this);
+	size ()    .addInterest (&VisibilitySensor::set_enabled, this);
+
+	set_enabled ();
+}
+
+void
+VisibilitySensor::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	if (isInitialized ())
+	{
+		getBrowser () -> sensorEvents ()    .removeInterest (&VisibilitySensor::update,      this);
+		getExecutionContext () -> isLive () .removeInterest (&VisibilitySensor::set_enabled, this);
+	}
+
+	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (&VisibilitySensor::set_enabled, this);
+
+		set_enabled ();
+	}
+}
+
+void
+VisibilitySensor::set_enabled ()
+{
+	if (enabled () and size () not_eq Vector3f () and isLive () and getExecutionContext () -> isLive ())
+	{
+		getBrowser () -> sensorEvents () .addInterest (&VisibilitySensor::update, this);
+	}
+	else
+	{
+		getBrowser () -> sensorEvents () .removeInterest (&VisibilitySensor::update, this);
+
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
 }
 
 void
 VisibilitySensor::update ()
 {
-	if (visible and getTraversed ())
+	if (visible and traversed)
 	{
 		if (not isActive ())
 		{
@@ -111,9 +157,8 @@ VisibilitySensor::update ()
 		}
 	}
 
-	visible = false;
-
-	setTraversed (false);
+	visible   = false;
+	traversed = false;
 }
 
 void
@@ -128,7 +173,7 @@ VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const rend
 	if (type not_eq TraverseType::DISPLAY)
 		return;
 
-	setTraversed (true);
+	traversed = true;
 
 	if (visible)
 		return;

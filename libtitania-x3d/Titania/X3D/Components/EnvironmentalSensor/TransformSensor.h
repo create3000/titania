@@ -114,6 +114,12 @@ public:
 	targetObject () const
 	{ return *fields .targetObject; }
 
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
 
 protected:
 
@@ -134,9 +140,8 @@ private:
 	void
 	set_targetObject ();
 
-	virtual
 	void
-	update () final override;
+	update ();
 
 	///  @name Static members
 
@@ -144,7 +149,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -157,6 +162,8 @@ private:
 
 	Fields fields;
 	
+	///  @name Members
+
 	X3DPtr <X3DBoundedObject> targetObjectNode;
 
 };

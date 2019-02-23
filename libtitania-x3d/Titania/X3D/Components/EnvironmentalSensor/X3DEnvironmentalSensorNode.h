@@ -61,12 +61,6 @@ class X3DEnvironmentalSensorNode :
 {
 public:
 
-	///  @name Common members
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext) override;
-
 	///  @name Fields
 
 	virtual
@@ -116,34 +110,10 @@ protected:
 
 	X3DEnvironmentalSensorNode ();
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Member access
-	
-	void
-	setTraversed (const bool);
-
-	bool
-	getTraversed () const
-	{ return traversed; }
-
-	///  @name Event handler
-
-	void
-	set_enabled ();
-
-	virtual
-	void
-	update () = 0;
-
 
 private:
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -156,8 +126,6 @@ private:
 	};
 
 	Fields fields;
-
-	bool traversed;
 
 };
 

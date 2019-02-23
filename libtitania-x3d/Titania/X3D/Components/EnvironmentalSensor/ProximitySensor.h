@@ -87,6 +87,10 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
+
 	///  @name Fields
 
 	virtual
@@ -143,11 +147,22 @@ protected:
 
 private:
 
+	///  @name Member access
+	
+	void
+	setTraversed (const bool value);
+
+	bool
+	getTraversed () const
+	{ return traversed; }
+
 	///  @name Event handlers
 
-	virtual
 	void
-	update () final override;
+	set_enabled ();
+
+	void
+	update ();
 
 	///  @name Static members
 
@@ -155,7 +170,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -168,10 +183,13 @@ private:
 
 	Fields fields;
 
+	///  @name Members
+
 	X3DViewpointNode* viewpointNode;
-	Matrix4d          modelViewMatrix;
+	Matrix4d          modelMatrix;
 	Vector3d          position;
 	bool              inside;
+	bool              traversed;
 
 };
 
