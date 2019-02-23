@@ -96,7 +96,10 @@ X3DPickSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled ()          .addInterest (&X3DPickSensorNode::set_enabled,          this);
+	getExecutionContext () -> isLive () .addInterest (&X3DPickSensorNode::set_live, this);
+	isLive () .addInterest (&X3DPickSensorNode::set_live, this);
+
+	enabled ()          .addInterest (&X3DPickSensorNode::set_live,             this);
 	objectType  ()      .addInterest (&X3DPickSensorNode::set_objectType,       this);
 	intersectionType () .addInterest (&X3DPickSensorNode::set_intersectionType, this);
 	sortOrder ()        .addInterest (&X3DPickSensorNode::set_sortOrder,        this);
@@ -116,13 +119,13 @@ X3DPickSensorNode::setExecutionContext (X3DExecutionContext* const executionCont
 	X3DSensorNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		set_enabled ();
+		set_live ();
 }
 
 void
-X3DPickSensorNode::set_enabled ()
+X3DPickSensorNode::set_live ()
 {
-	if (enabled () and not objectTypeIndex .count ("NONE"))
+	if (getExecutionContext () -> isLive () and isLive () and enabled () and not objectTypeIndex .count ("NONE"))
 	{
 		getBrowser () -> addPickSensor (this);
 		setPickableObject (true);
@@ -142,7 +145,7 @@ X3DPickSensorNode::set_objectType ()
 	for (const auto & value : basic::make_const_range (objectType ()))
 		objectTypeIndex .emplace (value);
 
-	set_enabled ();
+	set_live ();
 }
 
 void

@@ -533,7 +533,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			for (const auto & childNode : pickSensors)
 				childNode -> traverse (type, renderObject);
 
-			if (getBrowser () -> getPickable () .top ())
+			if (renderObject -> getBrowser () -> getPickable () .top ())
 			{
 				for (const auto & childNode : childNodes)
 					childNode -> traverse (type, renderObject);

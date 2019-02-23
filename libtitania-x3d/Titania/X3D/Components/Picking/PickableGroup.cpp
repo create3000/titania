@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Picking/X3DPickSensorNode.h"
 
 namespace titania {
@@ -124,9 +125,11 @@ PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderO
 		{
 			// Filter pick sensors.
 
+			const auto browser = renderObject -> getBrowser ();
+
 			std::set <X3DPickSensorNode*> pickSensors;
 
-			for (const auto pickSensor : getBrowser () -> getPickSensors () .back ())
+			for (const auto pickSensor : browser -> getPickSensors () .back ())
 			{
 				if (not pickSensor -> getObjectType () .count ("ALL"))
 				{
@@ -148,13 +151,13 @@ PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderO
 
 			// Traverse.
 
-			getBrowser () -> getPickable () .push (true);
-			getBrowser () -> getPickSensors () .emplace_back (std::move (pickSensors));
+			browser -> getPickable () .push (true);
+			browser -> getPickSensors () .emplace_back (std::move (pickSensors));
 
 			X3DGroupingNode::traverse (type, renderObject);
 
-			getBrowser () -> getPickSensors () .pop_back ();
-			getBrowser () -> getPickable () .pop ();
+			browser -> getPickSensors () .pop_back ();
+			browser -> getPickable () .pop ();
 		}
 	}
 	else

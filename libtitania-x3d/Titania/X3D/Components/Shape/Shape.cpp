@@ -284,11 +284,13 @@ Shape::cut (X3DRenderObject* const renderObject)
 void
 Shape::picking (X3DRenderObject* const renderObject)
 {
-	PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+	const auto browser = renderObject -> getBrowser ();
 
-	for (const auto pickSensor : getBrowser () -> getPickSensors () .back ())
+	PickingHierarchyGuard guard (browser, this);
+
+	for (const auto pickSensor : browser -> getPickSensors () .back ())
 	{
-		pickSensor -> collect (getGeometry (), renderObject -> getModelViewMatrix () .get (), renderObject -> getBrowser () -> getPickingHierarchy ());
+		pickSensor -> collect (getGeometry (), renderObject -> getModelViewMatrix () .get (), browser -> getPickingHierarchy ());
 	}
 }
 

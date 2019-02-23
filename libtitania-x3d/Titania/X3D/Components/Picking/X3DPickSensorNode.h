@@ -224,7 +224,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_enabled ();
+	set_live ();
 
 	void
 	set_objectType ();
