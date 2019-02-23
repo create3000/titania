@@ -553,7 +553,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
 
 			for (const auto & transformSensorNode : getTransformSensors ())
-				transformSensorNode -> collect (this, renderObject -> getModelViewMatrix () .get ());
+				transformSensorNode -> collect (this, X3DGroupingNode::getBBox () * renderObject -> getModelViewMatrix () .get ());
 
 			for (const auto & transformSensorNode : transformSensorNodes)
 				transformSensorNode -> traverse (type, renderObject);

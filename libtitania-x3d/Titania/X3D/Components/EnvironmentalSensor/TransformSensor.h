@@ -52,11 +52,10 @@
 #define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_TRANSFORM_SENSOR_H__
 
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
-
-class X3DBoundedObject;
 
 class TransformSensor :
 	virtual public X3DEnvironmentalSensorNode
@@ -126,7 +125,7 @@ public:
 
 	virtual
 	void
-	collect (X3DBoundedObject* const boundedObject, const Matrix4d & modelMatrix);
+	collect (X3DBoundedObject* const boundedObject, const Box3d & bbox);
 
 	virtual
 	void
@@ -185,9 +184,9 @@ private:
 	
 	///  @name Members
 
-	X3DPtr <X3DBoundedObject>                             targetObjectNode;
-	std::vector <Matrix4d>                                modelMatrices;
-	std::vector <std::pair <X3DBoundedObject*, Matrix4d>> targets;
+	X3DPtr <X3DBoundedObject>                          targetObjectNode;
+	std::vector <Matrix4d>                             modelMatrices;
+	std::vector <std::pair <X3DBoundedObject*, Box3d>> targets;
 
 };
 

@@ -200,9 +200,9 @@ TransformSensor::traverse (const TraverseType type, X3DRenderObject* const rende
 }
 
 void
-TransformSensor::collect (X3DBoundedObject* const boundedObject, const Matrix4d & modelMatrix)
+TransformSensor::collect (X3DBoundedObject* const boundedObject, const Box3d & bbox)
 {
-	targets .emplace_back (boundedObject, modelMatrix);
+	targets .emplace_back (boundedObject, bbox);
 }
 
 void
@@ -218,10 +218,8 @@ TransformSensor::process ()
 	{
 		const auto sourceBox = Box3d (size () .getValue (), center () .getValue ()) * modelMatrix;
 
-		for (const auto & [targetObjectNode, targetModelMatrix] : targets)
+		for (auto & [targetObjectNode, targetBox] : targets)
 		{
-			const auto targetBox = targetObjectNode -> getBBox () * targetModelMatrix;
-
 			if (sourceBox .intersects (targetBox))
 			{
 				try
