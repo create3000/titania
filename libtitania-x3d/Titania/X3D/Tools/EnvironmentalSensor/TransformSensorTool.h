@@ -82,6 +82,16 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
 
+	virtual
+	void
+	collect (X3DBoundedObject* const boundedObject, const Matrix4d & modelMatrix) final override
+	{ getNode <TransformSensor> () -> collect (boundedObject, modelMatrix); }
+
+	virtual
+	void
+	process () final override
+	{ getNode <TransformSensor> () -> process (); }
+
 	///  @name Destruction
 
 	virtual

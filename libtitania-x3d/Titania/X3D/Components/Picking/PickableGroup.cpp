@@ -98,12 +98,14 @@ PickableGroup::initialize ()
 
 void
 PickableGroup::set_pickableObjects ()
-{ }
+{
+	set_pickable ();
+}
 
 void
 PickableGroup::set_pickable ()
 {
-	setPickableObject (pickable ());
+	setPickableObject (pickable () or not getTransformSensors () .empty ());
 }
 
 void

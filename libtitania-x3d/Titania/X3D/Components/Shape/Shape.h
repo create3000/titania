@@ -117,7 +117,19 @@ public:
 	depth (const X3DShapeContainer* const context) override;
 
 
+protected:
+
+	virtual
+	void
+	initialize () override;
+
+
 private:
+
+	///  @name Event handlers
+
+	void
+	set_transformSensors ();
 
 	///  @name Operations
 

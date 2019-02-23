@@ -50,6 +50,7 @@
 
 #include "X3DPickingContext.h"
 
+#include "../../Components/EnvironmentalSensor/TransformSensor.h"
 #include "../../Components/Picking/X3DPickSensorNode.h"
 #include "../../Execution/World.h"
 #include "../X3DBrowser.h"
@@ -59,6 +60,7 @@ namespace X3D {
 
 X3DPickingContext::X3DPickingContext () :
 	     X3DBaseNode (),
+	transformSensors (),
 	        pickable ({ false }),
 	     pickSensors (),
 	pickingHierarchy ()
@@ -71,12 +73,36 @@ X3DPickingContext::initialize ()
 { }
 
 void
+X3DPickingContext::enable ()
+{
+	if (transformSensors .empty () and pickSensors .front () .empty ())
+		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
+	else
+		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
+}
+
+void
+X3DPickingContext::addTransformSensor (TransformSensor* const transformSensor)
+{
+	transformSensors .emplace (transformSensor);
+
+	enable ();
+}
+
+void
+X3DPickingContext::removeTransformSensor (TransformSensor* const transformSensor)
+{
+	transformSensors .erase (transformSensor);
+
+	enable ();
+}
+
+void
 X3DPickingContext::addPickSensor (X3DPickSensorNode* const pickSensor)
 {
 	pickSensors .front () .emplace (pickSensor);
 
-	if (pickSensors .front () .size () == 1)
-		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
+	enable ();
 }
 
 void
@@ -84,8 +110,7 @@ X3DPickingContext::removePickSensor (X3DPickSensorNode* const pickSensor)
 {
 	pickSensors .front () .erase (pickSensor);
 
-	if (pickSensors .front () .empty ())
-		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
+	enable ();
 }
 
 void
@@ -94,6 +119,9 @@ X3DPickingContext::picking ()
 	__LOG__ << std::endl;
 
 	getBrowser () -> getWorld () -> traverse (TraverseType::PICKING, nullptr);
+
+	for (const auto tranformSensor : transformSensors)
+		tranformSensor -> process ();
 
 	for (const auto pickSensor : pickSensors .front ())
 		pickSensor -> process ();

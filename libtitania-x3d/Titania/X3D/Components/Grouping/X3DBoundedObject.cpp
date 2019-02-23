@@ -50,6 +50,8 @@
 
 #include "X3DBoundedObject.h"
 
+#include "../EnvironmentalSensor/TransformSensor.h"
+
 namespace titania {
 namespace X3D {
 
@@ -59,14 +61,32 @@ X3DBoundedObject::Fields::Fields () :
 { }
 
 X3DBoundedObject::X3DBoundedObject () :
-	X3DBaseNode (),
-	     fields ()
+	     X3DBaseNode (),
+	          fields (),
+	transformSensors ()
 {
 	addType (X3DConstants::X3DBoundedObject);
 
 	bboxSize ()   .setUnit (UnitCategory::LENGTH);
 	bboxCenter () .setUnit (UnitCategory::LENGTH);
+
+	addChildObjects (transformSensors);
 }
+
+void
+X3DBoundedObject::addTransformSensor (TransformSensor* const transformSensor)
+{
+	transformSensors .emplace_back (transformSensor);
+}
+
+void
+X3DBoundedObject::removeTransformSensor (TransformSensor* const transformSensor)
+{
+	transformSensors .erase (std::remove (transformSensors .begin (), transformSensors .end (), transformSensor), transformSensors .end ());
+}
+
+X3DBoundedObject::~X3DBoundedObject ()
+{ }
 
 } // X3D
 } // titania

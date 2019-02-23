@@ -96,7 +96,20 @@ public:
 	template <class Type>
 	static
 	Box3d
-	getBBox (const X3DPtrArray <Type> &);
+	getBBox (const X3DPtrArray <Type> & nodes);
+
+	virtual
+	void
+	addTransformSensor (TransformSensor* const transformSensor);
+
+	virtual
+	void
+	removeTransformSensor (TransformSensor* const transformSensor);
+
+	virtual
+	const X3DPtrArray <TransformSensor> &
+	getTransformSensors () const
+	{ return transformSensors; }
 
 	///  @name Destruction
 
@@ -104,6 +117,9 @@ public:
 	void
 	dispose () override
 	{ }
+
+	virtual
+	~X3DBoundedObject () override;
 
 
 protected:
@@ -120,7 +136,7 @@ protected:
 
 private:
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -131,6 +147,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtrArray <TransformSensor> transformSensors;
 
 };
 

@@ -88,6 +88,10 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
+
 	///  @name Fields
 
 	SFVec3f &
@@ -119,6 +123,23 @@ public:
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+	virtual
+	void
+	collect (X3DBoundedObject* const boundedObject, const Matrix4d & modelMatrix);
+
+	virtual
+	void
+	process ();
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~TransformSensor () override;
 
 
 protected:
@@ -164,7 +185,9 @@ private:
 	
 	///  @name Members
 
-	X3DPtr <X3DBoundedObject> targetObjectNode;
+	X3DPtr <X3DBoundedObject>                             targetObjectNode;
+	std::vector <Matrix4d>                                modelMatrices;
+	std::vector <std::pair <X3DBoundedObject*, Matrix4d>> targets;
 
 };
 

@@ -230,43 +230,47 @@ ProximitySensor::update ()
 void
 ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (renderObject -> getBrowser () not_eq getBrowser ())
-		return;
-
-	if (not enabled ())
-		return;
-
-	switch (type)
+	try
 	{
-		case TraverseType::CAMERA:
-		{
-			viewpointNode = renderObject -> getViewpoint ();
-			modelMatrix   = renderObject -> getModelViewMatrix () .get ();
+		if (renderObject -> getBrowser () not_eq getBrowser ())
 			return;
-		}
-		case TraverseType::DISPLAY:
-		{
-			setTraversed (true);
 
-			if (inside)
+		if (not enabled ())
+			return;
+
+		switch (type)
+		{
+			case TraverseType::CAMERA:
+			{
+				viewpointNode   = renderObject -> getViewpoint ();
+				modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 				return;
-
-			if (size () == Vector3f (-1, -1, -1))
-			{
-				inside = true;
 			}
-			else
+			case TraverseType::DISPLAY:
 			{
-				const auto bbox = Box3d (size () .getValue (), center () .getValue ()) * renderObject -> getModelViewMatrix () .get ();
+				setTraversed (true);
 
-				inside = bbox .intersects (Vector3f ());
+				if (inside)
+					return;
+
+				if (size () == Vector3f (-1, -1, -1))
+					inside = true;
+
+				else
+				{
+					const auto bbox = Box3d (size () .getValue (), center () .getValue ());
+
+					inside = bbox .intersects (inverse (renderObject -> getModelViewMatrix () .get ()) .origin ());
+				}
+
+				return;
 			}
-
-			return;
+			default:
+				return;
 		}
-		default:
-			return;
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 } // X3D

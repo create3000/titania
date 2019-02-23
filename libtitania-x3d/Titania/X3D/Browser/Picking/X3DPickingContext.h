@@ -78,6 +78,7 @@ protected:
 
 	///  @name Friends
 
+	friend class TransformSensor;
 	friend class PickableGroup;
 	friend class PickingHierarchyGuard;
 	friend class Shape;
@@ -93,6 +94,12 @@ protected:
 	initialize () override;
 
 	///  @name Member access
+
+	void
+	addTransformSensor (TransformSensor* const transformSensor);
+
+	void
+	removeTransformSensor (TransformSensor* const transformSensor);
 
 	void
 	addPickSensor (X3DPickSensorNode* const pickSensor);
@@ -130,10 +137,14 @@ private:
 	///  @name Event handlers
 
 	void
+	enable ();
+
+	void
 	picking ();
 
 	///  @name Members
 
+	std::set <TransformSensor*>                 transformSensors;
 	std::stack <bool>                           pickable;
 	std::vector <std::set <X3DPickSensorNode*>> pickSensors;
 	std::vector <X3DChildNode*>                 pickingHierarchy;

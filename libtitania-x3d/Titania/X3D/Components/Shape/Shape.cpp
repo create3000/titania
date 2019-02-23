@@ -59,6 +59,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Types/Geometry.h"
+#include "../EnvironmentalSensor/TransformSensor.h"
 #include "../Navigation/NavigationInfo.h"
 #include "../Picking/X3DPickSensorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -88,6 +89,22 @@ X3DBaseNode*
 Shape::create (X3DExecutionContext* const executionContext) const
 {
 	return new Shape (executionContext);
+}
+
+void
+Shape::initialize ()
+{
+	X3DShapeNode::initialize ();
+
+	getTransformSensors () .addInterest (&Shape::set_transformSensors, this);
+
+	set_transformSensors ();
+}
+
+void
+Shape::set_transformSensors ()
+{
+	setPickableObject (not getTransformSensors () .empty ());
 }
 
 bool
@@ -284,6 +301,9 @@ Shape::cut (X3DRenderObject* const renderObject)
 void
 Shape::picking (X3DRenderObject* const renderObject)
 {
+	for (const auto & transformSensorNode : getTransformSensors ())
+		transformSensorNode -> collect (this, renderObject -> getModelViewMatrix () .get ());
+
 	const auto browser = renderObject -> getBrowser ();
 
 	PickingHierarchyGuard guard (browser, this);

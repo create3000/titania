@@ -110,6 +110,14 @@ public:
 	depth (const X3DShapeContainer* const context) final override
 	{ return X3DShapeNodeTool::depth (context); }
 
+
+protected:
+
+	virtual
+	void
+	initialize () final override
+	{ X3DShapeNodeTool::initialize (); }
+
 };
 
 } // X3D

@@ -73,7 +73,9 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
 	                    fields (),
-	          targetObjectNode ()
+	          targetObjectNode (),
+	             modelMatrices (),
+	                   targets ()
 {
 	addType (X3DConstants::TransformSensor);
 
@@ -91,6 +93,8 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	addChildObjects (targetObjectNode);
 
 	position_changed () .setUnit (UnitCategory::LENGTH);
+
+	setPickableObject (true);
 }
 
 X3DBaseNode*
@@ -104,6 +108,9 @@ TransformSensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (&TransformSensor::set_enabled, this);
+	isLive () .addInterest (&TransformSensor::set_enabled, this);
+
 	enabled ()      .addInterest (&TransformSensor::set_enabled,      this);
 	size ()         .addInterest (&TransformSensor::set_enabled,      this);
 	targetObject () .addInterest (&TransformSensor::set_targetObject, this);
@@ -112,16 +119,31 @@ TransformSensor::initialize ()
 }
 
 void
+TransformSensor::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> removeTransformSensor (this);
+
+	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_enabled ();
+}
+
+void
 TransformSensor::set_enabled ()
 {
 	if (enabled () and size () not_eq Vector3f () and targetObjectNode and isLive () and getExecutionContext () -> isLive ())
 	{
-		getBrowser () -> sensorEvents () .addInterest (&TransformSensor::update, this);
+		getBrowser () -> addTransformSensor (this);
+		targetObjectNode -> addTransformSensor (this);
 	}
 	else
 	{
-		getBrowser () -> sensorEvents () .removeInterest (&TransformSensor::update, this);
-			
+		getBrowser () -> removeTransformSensor (this);
+
+		if (targetObjectNode)
+			targetObjectNode -> removeTransformSensor (this);
+
 		if (isActive ())
 		{
 			isActive () = false;
@@ -133,24 +155,89 @@ TransformSensor::set_enabled ()
 void
 TransformSensor::set_targetObject ()
 {
-	targetObjectNode .set (x3d_cast <X3DBoundedObject*> (targetObject ()));
+	if (targetObjectNode)
+		targetObjectNode -> removeTransformSensor (this);
+
+	targetObjectNode .set (nullptr);
+
+	try
+	{
+		if (targetObject ())
+		{
+			const auto innerNode = targetObject () -> getInnerNode ();
+	
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3DConstants::Shape:
+					case X3DConstants::X3DGroupingNode:
+					{
+						targetObjectNode = dynamic_cast <X3DBoundedObject*> (innerNode);
+						break;
+					}
+					default:
+						continue;
+				}
+	
+				break;
+			}
+		}
+	}
+	catch (const X3DError &)
+	{ }
 
 	set_enabled ();
 }
 
 void
-TransformSensor::update ()
+TransformSensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	const auto sourceBox = Box3d (size () .getValue (), center () .getValue ());
-	const auto targetBox = targetObjectNode -> getBBox ();
+	if (type not_eq TraverseType::PICKING)
+		return;
 
-	if (size () == Vector3f (-1, -1, -1) or sourceBox .intersects (targetBox))
+	modelMatrices .emplace_back (renderObject -> getModelViewMatrix () .get ());
+}
+
+void
+TransformSensor::collect (X3DBoundedObject* const boundedObject, const Matrix4d & modelMatrix)
+{
+	targets .emplace_back (boundedObject, modelMatrix);
+}
+
+void
+TransformSensor::process ()
+{
+	bool active      = false;
+	auto translation = Vector3d ();
+	auto rotation    = Rotation4d ();
+
+	__LOG__ << modelMatrices .size () << " : " << targets .size () << std::endl;
+
+	for (const auto & modelMatrix : modelMatrices)
 	{
-		Vector3d   translation;
-		Rotation4d rotation;
+		const auto sourceBox = Box3d (size () .getValue (), center () .getValue ()) * modelMatrix;
 
-		targetBox .matrix () .get (translation, rotation);
+		for (const auto & [targetObjectNode, targetModelMatrix] : targets)
+		{
+			const auto targetBox = targetObjectNode -> getBBox () * targetModelMatrix;
 
+			if (sourceBox .intersects (targetBox))
+			{
+				try
+				{
+					active = true;
+	
+					(targetBox * inverse (modelMatrix)) .matrix () .get (translation, rotation);
+				}
+				catch (const std::domain_error & error)
+				{ }
+			}
+		}
+	}
+
+	if (active)
+	{
 		if (isActive ())
 		{
 			if (translation not_eq position_changed ())
@@ -176,13 +263,24 @@ TransformSensor::update ()
 			exitTime () = getCurrentTime ();
 		}
 	}
+
+	modelMatrices .clear ();
+	targets       .clear ();
 }
 
 void
-TransformSensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+TransformSensor::dispose ()
 {
+	getBrowser () -> removeTransformSensor (this);
 
+	if (targetObjectNode)
+		targetObjectNode -> removeTransformSensor (this);
+
+	X3DEnvironmentalSensorNode::dispose ();
 }
+
+TransformSensor::~TransformSensor ()
+{ }
 
 } // X3D
 } // titania

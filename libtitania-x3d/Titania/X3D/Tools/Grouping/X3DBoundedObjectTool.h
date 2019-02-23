@@ -86,12 +86,29 @@ public:
 	bboxSize () const final override
 	{ return getNode <X3DBoundedObject> () -> bboxSize (); }
 
-	///  @name Operatations
+	///  @name Member access
 
 	virtual
 	Box3d
 	getBBox () const override
 	{ return getNode <X3DBoundedObject> () -> getBBox (); }
+
+	virtual
+	void
+	addTransformSensor (TransformSensor* const transformSensor) final override
+	{ return getNode <X3DBoundedObject> () -> addTransformSensor (transformSensor); }
+
+	virtual
+	void
+	removeTransformSensor (TransformSensor* const transformSensor) final override
+	{ return getNode <X3DBoundedObject> () -> removeTransformSensor (transformSensor); }
+
+	virtual
+	const X3DPtrArray <TransformSensor> &
+	getTransformSensors () const final override
+	{ return getNode <X3DBoundedObject> () -> getTransformSensors (); }
+
+	///  @name Operatations
 
 	virtual
 	void
