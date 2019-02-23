@@ -94,6 +94,14 @@ public:
 
 	///  @name Fields
 
+	SFNode &
+	targetObject ()
+	{ return *fields .targetObject; }
+
+	const SFNode &
+	targetObject () const
+	{ return *fields .targetObject; }
+
 	SFVec3f &
 	position_changed ()
 	{ return *fields .position_changed; }
@@ -109,14 +117,6 @@ public:
 	const SFRotation &
 	orientation_changed () const
 	{ return *fields .orientation_changed; }
-
-	SFNode &
-	targetObject ()
-	{ return *fields .targetObject; }
-
-	const SFNode &
-	targetObject () const
-	{ return *fields .targetObject; }
 
 	///  @name Operations
 
@@ -176,9 +176,9 @@ private:
 	{
 		Fields ();
 
+		SFNode* const targetObject;
 		SFVec3f* const position_changed;
 		SFRotation* const orientation_changed;
-		SFNode* const targetObject;
 	};
 
 	Fields fields;
