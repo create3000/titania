@@ -196,9 +196,9 @@ protected:
 	getSortOrder () const
 	{ return sortOrderType; }
 
-	const Matrix4d &
-	getModelMatrix () const
-	{ return modelMatrix; }
+	const std::vector <Matrix4d> &
+	getModelMatrices () const
+	{ return modelMatrices; }
 
 	const Targets &
 	getTargets () const
@@ -263,7 +263,7 @@ private:
 	IntersectionType           intersectionTypeValue;
 	SortOrderType              sortOrderType;
 	X3DPtrArray <X3DChildNode> pickTargetNodes;
-	Matrix4d                   modelMatrix;
+	std::vector <Matrix4d>     modelMatrices;
 	mutable Targets            targets;
 
 };

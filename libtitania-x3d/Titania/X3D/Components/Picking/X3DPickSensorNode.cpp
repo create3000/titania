@@ -64,7 +64,7 @@ X3DPickSensorNode::Target::Target (X3DGeometryNode* geometryNode,
 	     modelMatrix (modelMatrix),
 	pickingHierarchy (pickingHierarchy),
 	     intersected (false),
-	        distance (0)
+	        distance (std::numeric_limits <double>::infinity ())
 { }
 
 X3DPickSensorNode::Fields::Fields () :
@@ -83,7 +83,7 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	intersectionTypeValue (IntersectionType::BOUNDS),
 	        sortOrderType (SortOrderType::CLOSEST),
 	      pickTargetNodes (),
-	          modelMatrix (),
+	        modelMatrices (),
 	              targets ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
@@ -311,7 +311,7 @@ X3DPickSensorNode::getPickedGeometry (const TargetPtr & target) const
 void
 X3DPickSensorNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	modelMatrix = renderObject -> getModelViewMatrix () .get ();
+	modelMatrices .emplace_back (renderObject -> getModelViewMatrix () .get ());
 }
 
 void
@@ -334,7 +334,8 @@ X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
 void
 X3DPickSensorNode::process ()
 {
-	targets .clear ();
+	modelMatrices .clear ();
+	targets       .clear ();
 }
 
 void

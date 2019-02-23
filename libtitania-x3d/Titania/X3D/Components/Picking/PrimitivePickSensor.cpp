@@ -135,7 +135,6 @@ void
 PrimitivePickSensor::process ()
 {
 	__LOG__ << this << " : " << getTargets () .size () << std::endl;
-	__LOG__ << this << " : " << getModelMatrix () << std::endl;
 
 	switch (getIntersectionType ())
 	{
@@ -144,18 +143,21 @@ PrimitivePickSensor::process ()
 
 			// Intersect bboxes.
 
-			const auto pickingBBox   = pickingGeometryNode -> getBBox () * getModelMatrix ();
-			const auto pickingCenter = pickingBBox .center ();
-
-			for (const auto & target : getTargets ())
+			for (const auto modelMatrix : getModelMatrices ())
 			{
-				const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+				const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
+				const auto pickingCenter = pickingBBox .center ();
 
-				if (not pickingBBox .intersects (targetBBox))
-					continue;
+				for (const auto & target : getTargets ())
+				{
+					const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+	
+					if (not pickingBBox .intersects (targetBBox))
+						continue;
 
-				target -> intersected = true;
-				target -> distance    = distance (pickingCenter, targetBBox .center ());
+					target -> intersected = true;
+					target -> distance    = std::min (target -> distance, distance (pickingCenter, targetBBox .center ()));
+				}
 			}
 
 			// Send events.
