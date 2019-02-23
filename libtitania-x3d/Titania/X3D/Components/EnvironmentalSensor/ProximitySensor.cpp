@@ -242,8 +242,8 @@ ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const rende
 		{
 			case TraverseType::CAMERA:
 			{
-				viewpointNode   = renderObject -> getViewpoint ();
-				modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+				viewpointNode = renderObject -> getViewpoint ();
+				modelMatrix   = renderObject -> getModelViewMatrix () .get ();
 				return;
 			}
 			case TraverseType::DISPLAY:
