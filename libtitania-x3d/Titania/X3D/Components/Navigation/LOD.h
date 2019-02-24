@@ -133,7 +133,12 @@ public:
 	virtual
 	Box3d
 	getBBox () const override;
-	
+
+	virtual
+	Box3d
+	getSubBBox () const override
+	{ return getBBox (); }
+
 	virtual
 	void
 	setKeepCurrentLevel (const bool);

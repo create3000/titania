@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_LAYER_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_LAYER_H__
 
-#include "../Grouping/X3DBoundedObject.h"
 #include "../Layering/X3DLayerNode.h"
 
 namespace titania {
@@ -84,6 +83,7 @@ public:
 	const std::string &
 	getContainerField () const final override
 	{ return containerField; }
+
 
 private:
 

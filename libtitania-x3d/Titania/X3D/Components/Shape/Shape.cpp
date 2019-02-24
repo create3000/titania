@@ -302,7 +302,7 @@ void
 Shape::picking (X3DRenderObject* const renderObject)
 {
 	for (const auto & transformSensorNode : getTransformSensors ())
-		transformSensorNode -> collect (this, getBBox () * renderObject -> getModelViewMatrix () .get ());
+		transformSensorNode -> collect (getBBox () * renderObject -> getModelViewMatrix () .get ());
 
 	const auto browser = renderObject -> getBrowser ();
 

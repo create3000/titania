@@ -75,7 +75,7 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	                    fields (),
 	          targetObjectNode (),
 	             modelMatrices (),
-	                   targets ()
+	              targetBBoxes ()
 {
 	addType (X3DConstants::TransformSensor);
 
@@ -200,9 +200,9 @@ TransformSensor::traverse (const TraverseType type, X3DRenderObject* const rende
 }
 
 void
-TransformSensor::collect (X3DBoundedObject* const boundedObject, const Box3d & bbox)
+TransformSensor::collect (const Box3d & bbox)
 {
-	targets .emplace_back (boundedObject, bbox);
+	targetBBoxes .emplace_back (bbox);
 }
 
 void
@@ -212,13 +212,13 @@ TransformSensor::process ()
 	auto translation = Vector3d ();
 	auto rotation    = Rotation4d ();
 
-	__LOG__ << modelMatrices .size () << " : " << targets .size () << std::endl;
+	__LOG__ << modelMatrices .size () << " : " << targetBBoxes .size () << std::endl;
 
 	for (const auto & modelMatrix : modelMatrices)
 	{
 		const auto sourceBox = Box3d (size () .getValue (), center () .getValue ()) * modelMatrix;
 
-		for (auto & [targetObjectNode, targetBox] : targets)
+		for (auto & targetBox : targetBBoxes)
 		{
 			if (sourceBox .intersects (targetBox))
 			{
@@ -263,7 +263,7 @@ TransformSensor::process ()
 	}
 
 	modelMatrices .clear ();
-	targets       .clear ();
+	targetBBoxes  .clear ();
 }
 
 void

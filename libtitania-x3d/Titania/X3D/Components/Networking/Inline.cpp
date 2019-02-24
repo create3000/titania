@@ -50,9 +50,11 @@
 
 #include "Inline.h"
 
+#include "../Grouping/Group.h"
 #include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DScene.h"
 #include "../../InputOutput/FileLoader.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../../Thread/SceneFuture.h"
@@ -175,6 +177,18 @@ Inline::getExportedNodes () const
 		return scene -> getExportedNodes ();
 
 	throw Error <DISPOSED> ("Inline::getExportedNodes: scene is disposed.");
+}
+
+MFNode &
+Inline::getRootNodes ()
+{
+	return scene -> getRootNodes ();
+}
+
+const MFNode &
+Inline::getRootNodes () const
+{
+	return scene -> getRootNodes ();
 }
 
 void

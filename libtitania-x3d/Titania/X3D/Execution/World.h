@@ -51,14 +51,10 @@
 #ifndef __TITANIA_X3D_EXECUTION_WORLD_H__
 #define __TITANIA_X3D_EXECUTION_WORLD_H__
 
-#include "../Components/Layering/LayerSet.h"
-#include "../Execution/X3DScene.h"
+#include "../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
-
-class LayerSet;
-class X3DLayerNode;
 
 class World :
 	public X3DBaseNode
@@ -111,8 +107,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ layerSet -> traverse (type, renderObject); }
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	///  @name Detruction
 

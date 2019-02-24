@@ -82,6 +82,19 @@ public:
 		addType (X3DConstants::InlineTool);
 	}
 
+	///  Copies this node and sets the execution context to @a executionContext.
+	virtual
+	X3DUrlObject*
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const final override
+	{ return getNode <Inline> () -> copy (executionContext, type); }
+
+	///  @name Common Members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) final override
+	{ X3DChildNodeTool::setExecutionContext (executionContext); }
+
 	///  @name Fields
 
 	virtual
@@ -96,30 +109,24 @@ public:
 
 	///  @name Member access
 
-	///  Copies this node and sets the execution context to @a executionContext.
-	virtual
-	X3DUrlObject*
-	copy (X3DExecutionContext* const executionContext, const CopyType type) const final override
-	{ return getNode <Inline> () -> copy (executionContext, type); }
-
-	///  @name Member access
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext) final override
-	{ X3DChildNodeTool::setExecutionContext (executionContext); }
-
 	virtual
 	Box3d
 	getBBox () const final override
 	{ return X3DBoundedObjectTool::getBBox (); }
 
-	///  @name Operations
+	///  @name Exported node handling
 
+	///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	virtual
-	void
-	requestImmediateLoad () final override
-	{ return X3DUrlObjectTool::requestImmediateLoad (); }
+	SFNode
+	getExportedNode (const std::string & exportedName) const final override
+	{ return getNode <Inline> () -> getExportedNode (exportedName); }
+
+	///  throws Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	virtual
+	const ExportedNodeIndex &
+	getExportedNodes () const final override
+	{ return getNode <Inline> () -> getExportedNodes (); }
 
 	///  @name Root node handling
 
@@ -141,21 +148,12 @@ public:
 	getInternalScene () const final override
 	{ return getNode <Inline> () -> getInternalScene (); }
 
-	///  @name Exported node handling
-
-	///  throws Error <INVALID_NAME>, Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
-	SFNode
-	getExportedNode (const std::string & exportedName) const final override
-	{ return getNode <Inline> () -> getExportedNode (exportedName); }
-
-	///  throws Error <NODE_NOT_AVAILABLE>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
-	const ExportedNodeIndex &
-	getExportedNodes () const final override
-	{ return getNode <Inline> () -> getExportedNodes (); }
-
 	///  @name Operations
+
+	virtual
+	void
+	requestImmediateLoad () final override
+	{ return X3DUrlObjectTool::requestImmediateLoad (); }
 
 	virtual
 	void

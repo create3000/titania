@@ -50,6 +50,7 @@
 
 #include "StaticGroup.h"
 
+#include "../Grouping/Group.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {

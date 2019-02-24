@@ -56,6 +56,7 @@
 #include "../ToolColors.h"
 
 #include "../../Components/CADGeometry/CADAssembly.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {

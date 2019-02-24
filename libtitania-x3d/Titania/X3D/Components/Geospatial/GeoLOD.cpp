@@ -50,6 +50,8 @@
 
 #include "GeoLOD.h"
 
+#include "../Networking/Inline.h"
+#include "../Grouping/Group.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"

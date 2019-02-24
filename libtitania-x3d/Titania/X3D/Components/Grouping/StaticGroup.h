@@ -52,9 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_STATIC_GROUP_H__
 
 #include "../Core/X3DChildNode.h"
-#include "../Grouping/Group.h"
 #include "../Grouping/X3DBoundedObject.h"
-#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {

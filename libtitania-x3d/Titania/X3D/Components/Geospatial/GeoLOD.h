@@ -53,9 +53,7 @@
 
 #include "../Core/X3DChildNode.h"
 #include "../Geospatial/X3DGeospatialObject.h"
-#include "../Grouping/Group.h"
 #include "../Grouping/X3DBoundedObject.h"
-#include "../Networking/Inline.h"
 
 namespace titania {
 namespace X3D {

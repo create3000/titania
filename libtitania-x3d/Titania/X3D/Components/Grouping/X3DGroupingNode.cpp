@@ -138,7 +138,7 @@ X3DGroupingNode::getBBox () const
 		return Box3d ();
 
 	if (bboxSize () == Vector3f (-1, -1, -1))
-		return X3DBoundedObject::getBBox (children ());
+		return X3DBoundedObject::getBBox (childNodes);
 
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
@@ -554,10 +554,10 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 
 			if (not getTransformSensors () .empty ())
 			{
-				const auto bbox = X3DGroupingNode::getBBox () * renderObject -> getModelViewMatrix () .get ();
+				const auto bbox = getSubBBox () * renderObject -> getModelViewMatrix () .get ();
 
 				for (const auto & transformSensorNode : getTransformSensors ())
-					transformSensorNode -> collect (this, bbox);
+					transformSensorNode -> collect (bbox);
 			}
 
 			for (const auto & transformSensorNode : transformSensorNodes)

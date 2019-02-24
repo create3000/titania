@@ -51,6 +51,7 @@
 #include "Notification.h"
 
 #include "../Browser/Networking/config.h"
+#include "../Components/Layering/LayerSet.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/FileLoader.h"

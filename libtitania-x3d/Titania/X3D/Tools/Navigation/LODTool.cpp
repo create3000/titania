@@ -51,6 +51,7 @@
 #include "LODTool.h"
 
 #include "../ToolColors.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {

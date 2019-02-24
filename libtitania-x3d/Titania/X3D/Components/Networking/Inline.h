@@ -51,11 +51,9 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
 
-#include "../../Execution/X3DScene.h"
-#include "../Grouping/Group.h"
+#include "../Core/X3DChildNode.h"
+#include "../Grouping/X3DBoundedObject.h"
 #include "../Networking/X3DUrlObject.h"
-
-#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -108,35 +106,11 @@ public:
 	load () const
 	{ return *fields .load; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	Box3d
 	getBBox () const override;
-
-	virtual
-	void
-	requestImmediateLoad () override;
-
-	///  @name Root node handling
-
-	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
-	MFNode &
-	getRootNodes ()
-	{ return scene -> getRootNodes (); }
-
-	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
-	const MFNode &
-	getRootNodes () const
-	{ return scene -> getRootNodes (); }
-
-	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	virtual
-	const X3DScenePtr &
-	getInternalScene () const
-	{ return scene; }
 
 	///  @name Exported node handling
 
@@ -155,7 +129,29 @@ public:
 	const ExportedNodeIndex &
 	getExportedNodes () const;
 
+	///  @name Root node handling
+
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	virtual
+	MFNode &
+	getRootNodes ();
+
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	virtual
+	const MFNode &
+	getRootNodes () const;
+
+	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
+	virtual
+	const X3DScenePtr &
+	getInternalScene () const
+	{ return scene; }
+
 	///  @name Operations
+
+	virtual
+	void
+	requestImmediateLoad () override;
 
 	virtual
 	void

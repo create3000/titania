@@ -52,17 +52,16 @@
 
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Layering/LayerSet.h"
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/FileLoader.h"
-
-#include "../../Components/Layering/X3DLayerNode.h"
 
 #include <Titania/String.h>
 
 #include <iomanip>
 #include <iostream>
-#include <malloc.h>
 
 namespace titania {
 namespace X3D {

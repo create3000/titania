@@ -52,9 +52,9 @@
 
 #include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
-
 #include "../Components/Layering/Layer.h"
 #include "../Components/Layering/LayerSet.h"
+#include "../Execution/X3DExecutionContext.h"
 #include "../Routing/Router.h"
 
 namespace titania {
@@ -143,6 +143,12 @@ World::bind ()
 	// Bind first X3DBindableNodes found in each layer.
 
 	layerSet -> bind (getExecutionContext () -> getWorldURL () .fragment ());
+}
+
+void
+World::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	layerSet -> traverse (type, renderObject);
 }
 
 World::~World ()

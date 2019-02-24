@@ -54,6 +54,7 @@
 
 #include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Geometry2D/Arc2D.h"
+#include "../../../Components/Grouping/Group.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Grouping/Switch.h"
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"

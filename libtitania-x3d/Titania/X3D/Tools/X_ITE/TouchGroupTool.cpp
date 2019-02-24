@@ -52,6 +52,7 @@
 
 #include "../ToolColors.h"
 #include "../../Browser/Shape/Linetypes.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {

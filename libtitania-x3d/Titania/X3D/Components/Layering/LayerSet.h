@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class X3DLayerNode;
-
 class LayerSet :
 	virtual public X3DNode
 {

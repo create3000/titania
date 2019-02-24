@@ -135,6 +135,7 @@ public:
 	}
 
 	///  Constructs a box from @a matrix.
+	explicit
 	constexpr
 	box2 (const matrix3 <Type> & matrix) :
 		m_matrix (matrix)

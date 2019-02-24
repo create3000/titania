@@ -125,7 +125,7 @@ public:
 
 	virtual
 	void
-	collect (X3DBoundedObject* const boundedObject, const Box3d & bbox);
+	collect (const Box3d & bbox);
 
 	virtual
 	void
@@ -184,9 +184,9 @@ private:
 	
 	///  @name Members
 
-	X3DPtr <X3DBoundedObject>                          targetObjectNode;
-	std::vector <Matrix4d>                             modelMatrices;
-	std::vector <std::pair <X3DBoundedObject*, Box3d>> targets;
+	X3DPtr <X3DBoundedObject> targetObjectNode;
+	std::vector <Matrix4d>    modelMatrices;
+	std::vector <Box3d>       targetBBoxes;
 
 };
 

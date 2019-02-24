@@ -527,7 +527,7 @@ X3DTransformNodeTool::reshape (X3DRenderObject* const renderObject)
 	{
 		getBrowser () -> endUpdateForFrame ();
 
-		const auto bbox = getNode <X3DTransformNode> () -> X3DGroupingNode::getBBox ();
+		const auto bbox = getNode <X3DTransformNode> () -> getSubBBox ();
 
 		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", renderObject -> getCameraSpaceMatrix () .get (), true);
 		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   renderObject -> getModelViewMatrix   () .get (), true);

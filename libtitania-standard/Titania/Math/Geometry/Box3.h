@@ -135,6 +135,7 @@ public:
 	}
 
 	///  Constructs a box from @a matrix.
+	explicit
 	constexpr
 	box3 (const matrix4 <Type> & matrix) :
 		m_matrix (matrix)
@@ -456,6 +457,7 @@ box3 <Type>::intersects (const vector3 <Type> & point) const
 	       min .z () <= point .z () and
 	       max .z () >= point .z ();
 }
+
 template <class Type>
 bool
 box3 <Type>::intersects (const line3 <Type> & line) const

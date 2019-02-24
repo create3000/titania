@@ -116,7 +116,12 @@ public:
 	Box3d
 	getBBox () const final override
 	{ return X3DGroupingNodeTool::getBBox (); }
-	
+
+	virtual
+	Box3d
+	getSubBBox () const final override
+	{ return X3DGroupingNodeTool::getSubBBox (); }
+
 	virtual
 	void
 	setKeepCurrentLevel (const bool value) final override

@@ -53,11 +53,9 @@
 #include "../Browser/Console.h"
 #include "../Browser/Notification.h"
 #include "../Browser/Selection.h"
+#include "../Components/Layering/LayerSet.h"
 #include "../Rendering/FrameBuffer.h"
-
 #include "../Routing/Router.h"
-
-#include <thread>
 
 namespace titania {
 namespace X3D {

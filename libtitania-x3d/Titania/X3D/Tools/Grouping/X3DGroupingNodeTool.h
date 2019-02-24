@@ -105,6 +105,11 @@ public:
 	getBBox () const override
 	{ return X3DBoundedObjectTool::getBBox (); }
 
+	virtual
+	Box3d
+	getSubBBox () const override
+	{ return getNode <X3DGroupingNode> () -> getSubBBox (); }
+
 	/// @name Operations
 
 	virtual

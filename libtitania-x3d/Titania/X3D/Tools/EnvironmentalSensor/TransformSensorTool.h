@@ -84,8 +84,8 @@ public:
 
 	virtual
 	void
-	collect (X3DBoundedObject* const boundedObject, const Box3d & bbox) final override
-	{ getNode <TransformSensor> () -> collect (boundedObject, bbox); }
+	collect (const Box3d & bbox) final override
+	{ getNode <TransformSensor> () -> collect (bbox); }
 
 	virtual
 	void

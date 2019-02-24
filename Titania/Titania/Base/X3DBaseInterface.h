@@ -56,6 +56,7 @@
 #include <Titania/X3D/Editing/Undo/UndoStep.h>
 
 #include <Titania/X3D/Components/Core/WorldInfo.h>
+#include <Titania/X3D/Components/Layering/LayerSet.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Execution/World.h>
 

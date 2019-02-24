@@ -51,6 +51,7 @@
 #include "OrthoViewpointTool.h"
 
 #include "../Grouping/X3DTransformNodeTool.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {

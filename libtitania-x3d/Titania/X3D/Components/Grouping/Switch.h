@@ -105,6 +105,11 @@ public:
 	getBBox () const override;
 
 	virtual
+	Box3d
+	getSubBBox () const override
+	{ return getBBox (); }
+
+	virtual
 	void
 	setPrivateChoice (const int32_t value);
 
