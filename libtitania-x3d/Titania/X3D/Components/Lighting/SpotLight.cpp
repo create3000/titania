@@ -216,7 +216,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 
 		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();
 		const auto   groupNode           = lightContainer -> getGroup ();                                          // Group to be shadowd
-		const auto   groupBBox           = groupNode -> X3DGroupingNode::getBBox ();                               // Group bbox.
+		const auto   groupBBox           = groupNode -> getSubBBox ();                                             // Group bbox.
 		const auto   lightBBox           = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
 		const auto   lightBBoxExtents    = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
 		const auto   farValue            = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());

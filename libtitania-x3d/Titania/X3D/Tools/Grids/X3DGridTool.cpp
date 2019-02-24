@@ -326,7 +326,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		else
 		{
 			// snapping to bbox center.
-			const auto bbox = master -> X3DGroupingNode::getBBox () * absoluteMatrix;
+			const auto bbox = master -> getSubBBox () * absoluteMatrix;
 			position = bbox .center ();
 		}
 	
@@ -487,7 +487,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getModelMatrix ();
-	const auto geometry       = master -> X3DGroupingNode::getBBox (); // BBox of the geometry.
+	const auto geometry       = master -> getSubBBox (); // BBox of the geometry.
 	const auto shape          = geometry .aabb ();                     // AABB BBox
 	const auto bbox           = shape * absoluteMatrix;                // Absolute OBB of AABB
 	const auto position       = bbox .center ();                       // Absolute position
@@ -545,7 +545,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getModelMatrix ();
-	const auto bbox           = master -> X3DGroupingNode::getBBox () .aabb () * absoluteMatrix; // Absolute BBox
+	const auto bbox           = master -> getSubBBox () .aabb () * absoluteMatrix; // Absolute BBox
 	const auto position       = bbox .center (); // Absolute position
 
 	// Calculate snapping scale and apply absolute relative translation.

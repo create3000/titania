@@ -230,7 +230,7 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 		const auto dynamicSnapDistance = getDynamicSnapDistance ();
 		const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
 		const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
-		const auto bbox                = master -> X3DGroupingNode::getBBox () * absoluteMatrix;
+		const auto bbox                = master -> getSubBBox () * absoluteMatrix;
 		const auto center              = (snapToCenter () and not master -> getKeepCenter ()) ? Vector3d (master -> center () .getValue ()) * absoluteMatrix : bbox .center ();
 		const auto axes                = bbox .axes ();
 		const auto normals             = bbox .normals ();
@@ -300,7 +300,7 @@ SnapTargetTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto matrixBefore     = Matrix4d (master -> getMatrix ()) * master -> getModelMatrix (); // Matrix before transformation
 		const auto matrixAfter      = master -> getCurrentMatrix () * master -> getModelMatrix ();     // Matrix after transformation
 		const auto absoluteMatrix   = matrixAfter;
-		const auto bbox             = master -> X3DGroupingNode::getBBox () * absoluteMatrix;
+		const auto bbox             = master -> getSubBBox () * absoluteMatrix;
 
 		// Determine rotation axis and the tho snap axes.
 
@@ -498,7 +498,7 @@ SnapTargetTool::getSnapTranslation (const Vector3d & position,
 		const auto & axis                        = axes [i];
 		const auto & normal                      = normals [i];
 		const auto   positionPlane               = Plane3d (position, normal);
-		const auto   axisLine                    = Line3d (center, abs (axis) == 0 ? normal : normalize (axis));
+		const auto   axisLine                    = Line3d (center, abs (axis) ? normalize (axis) : normal);
 		const auto & [intersection, intersected] = positionPlane .intersects (axisLine);
 
 		if (not intersected)
@@ -525,7 +525,7 @@ SnapTargetTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master
 	const auto dynamicSnapDistance = getDynamicSnapDistance ();
 	const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
 	const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
-	const auto bbox                = master -> X3DGroupingNode::getBBox () .aabb () * absoluteMatrix; // Absolute BBox.
+	const auto bbox                = master -> getSubBBox () .aabb () * absoluteMatrix; // Absolute BBox.
 	const auto axes                = bbox .axes ();
 	const auto normals             = bbox .normals ();
 
@@ -615,7 +615,7 @@ SnapTargetTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> &
 	const auto dynamicSnapDistance = getDynamicSnapDistance ();
 	const auto absolutePosition    = Vector3d (position () .getValue ()) * getModelMatrix ();
 	const auto absoluteMatrix      = master -> getCurrentMatrix () * master -> getModelMatrix ();
-	const auto bbox                = master -> X3DGroupingNode::getBBox () .aabb () * absoluteMatrix; // Absolute BBox.
+	const auto bbox                = master -> getSubBBox () .aabb () * absoluteMatrix; // Absolute BBox.
 	const auto center              = bbox .center ();
 	const auto points              = bbox .points ();
 	const auto normals             = std::vector <Vector3d> ({ Vector3d (1, 0, 0), Vector3d (0, 1, 0), Vector3d (0, 0, 1) });
