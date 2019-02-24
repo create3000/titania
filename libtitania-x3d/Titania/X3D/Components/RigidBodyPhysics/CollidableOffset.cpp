@@ -142,7 +142,8 @@ CollidableOffset::set_collidable ()
 	}
 	else
 	{
-		setCameraObject (false);
+		setCameraObject   (false);
+		setPickableObject (false);
 	}
 
 	set_collidableGeometry ();

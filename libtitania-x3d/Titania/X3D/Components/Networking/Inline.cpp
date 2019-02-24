@@ -118,6 +118,7 @@ Inline::initialize ()
 
 	group -> isCameraObject ()   .addInterest (&Inline::setCameraObject,   static_cast <X3DChildNode*> (this));
 	group -> isPickableObject () .addInterest (&Inline::setPickableObject, static_cast <X3DChildNode*> (this));
+
 	group -> setPrivate (true);
 	group -> setup ();
 

@@ -160,6 +160,15 @@ Collision::set_cameraObjects ()
 }
 
 void
+Collision::set_pickableObjects ()
+{
+	if (showProxy)
+		setPickableObject (proxyNode and proxyNode -> isPickableObject ());
+	else
+		X3DGroupingNode::set_pickableObjects ();
+}
+
+void
 Collision::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)

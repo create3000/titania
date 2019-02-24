@@ -97,7 +97,8 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 
 	geoCoord_changed () .isGeospatial (true);
 
-	setCameraObject (proximitySensor -> isCameraObject ());
+	setCameraObject   (proximitySensor -> isCameraObject ());
+	setPickableObject (proximitySensor -> isPickableObject ());
 }
 
 X3DBaseNode*
@@ -116,7 +117,8 @@ GeoProximitySensor::initialize ()
 	size ()    .addInterest (proximitySensor -> size ());
 	center ()  .addInterest (proximitySensor -> center ());
 
-	proximitySensor -> isCameraObject () .addInterest (&GeoProximitySensor::setCameraObject, static_cast <X3DChildNode*> (this));
+	proximitySensor -> isCameraObject ()   .addInterest (&GeoProximitySensor::setCameraObject,   static_cast <X3DChildNode*> (this));
+	proximitySensor -> isPickableObject () .addInterest (&GeoProximitySensor::setPickableObject, static_cast <X3DChildNode*> (this));
 
 	proximitySensor -> isActive ()                 .addInterest (isActive ());
 	proximitySensor -> enterTime ()                .addInterest (enterTime ());

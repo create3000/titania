@@ -173,21 +173,27 @@ CollidableShape::set_shape ()
 {
 	if (shapeNode)
 	{
-		shapeNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
-		shapeNode -> geometry () .removeInterest (&CollidableShape::set_geometry, this);
+		shapeNode -> isCameraObject ()   .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+		shapeNode -> isPickableObject () .removeInterest (const_cast <SFBool &> (isPickableObject ()));
+		shapeNode -> geometry ()         .removeInterest (&CollidableShape::set_geometry, this);
 	}
 
 	shapeNode .set (x3d_cast <Shape*> (shape ()));
 
 	if (shapeNode)
 	{
-		shapeNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
-		shapeNode -> geometry () .addInterest (&CollidableShape::set_geometry, this);
+		shapeNode -> isCameraObject ()   .addInterest (const_cast <SFBool &> (isCameraObject ()));
+		shapeNode -> isPickableObject () .addInterest (const_cast <SFBool &> (isPickableObject ()));
+		shapeNode -> geometry ()         .addInterest (&CollidableShape::set_geometry, this);
 
-		setCameraObject (shapeNode -> isCameraObject ());
+		setCameraObject   (shapeNode -> isCameraObject ());
+		setPickableObject (shapeNode -> isPickableObject ());
 	}
 	else
-		setCameraObject (false);
+	{
+		setCameraObject   (false);
+		setPickableObject (false);
+	}
 
 	set_geometry ();
 }

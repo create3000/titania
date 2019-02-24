@@ -140,9 +140,6 @@ public:
 	isCameraObject () const
 	{ return cameraObject; }
 
-	void
-	setCameraObject (const bool);
-
 	virtual
 	const Box3d &
 	getBBox () const
@@ -263,6 +260,9 @@ protected:
 	X3DGeometryNode ();
 
 	///  @name Member access
+
+	void
+	setCameraObject (const bool value);
 
 	void
 	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>> &);

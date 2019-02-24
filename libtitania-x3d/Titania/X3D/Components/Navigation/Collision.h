@@ -147,6 +147,16 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Event handlers
+
+	virtual
+	void
+	set_cameraObjects () final override;
+
+	virtual
+	void
+	set_pickableObjects () final override;
+
 
 protected:
 
@@ -157,10 +167,6 @@ protected:
 
 	void
 	set_proxy ();
-
-	virtual
-	void
-	set_cameraObjects () final override;
 
 	///  @name Static members
 
