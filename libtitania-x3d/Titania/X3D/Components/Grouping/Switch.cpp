@@ -166,7 +166,7 @@ Switch::set_cameraObjects ()
 void
 Switch::set_pickableObjects ()
 {
-	setPickableObject (childNode and childNode -> isPickableObject () and not getTransformSensors () .empty ());
+	setPickableObject ((childNode and childNode -> isPickableObject ()) or getTransformSensors () .size ());
 }
 
 void

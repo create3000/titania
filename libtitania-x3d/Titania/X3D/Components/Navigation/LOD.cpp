@@ -179,38 +179,12 @@ LOD::set_cameraObjects ()
 void
 LOD::set_pickableObjects ()
 {
-	setPickableObject (childNode and childNode -> isPickableObject () and not getTransformSensors () .empty ());
+	setPickableObject ((childNode and childNode -> isPickableObject ()) or getTransformSensors () .size ());
 }
 
 void
 LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (not keepCurrentLevel)
-	{
-		if (type == TraverseType::DISPLAY)
-		{
-			int32_t level = getLevel (renderObject -> getBrowser (), renderObject -> getModelViewMatrix () .get ());
-	
-			if (forceTransitions ())
-			{
-				if (level > level_changed ())
-					level = level_changed () + 1;
-				
-				else if (level < level_changed ())
-					level = level_changed () - 1;
-			}
-	
-			if (level not_eq level_changed ())
-			{
-				level_changed () = level;
-
-				set_child (level);
-			}
-			else if (keepCurrentLevel)
-				set_child (level);
-		}
-	}
-
 	switch (type)
 	{
 		case TraverseType::POINTER:
@@ -238,6 +212,33 @@ LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 				childNode -> traverse (type, renderObject);
 		
 			break;
+		}
+		case TraverseType::DISPLAY:
+		{
+			if (not keepCurrentLevel)
+			{
+				int32_t level = getLevel (renderObject -> getBrowser (), renderObject -> getModelViewMatrix () .get ());
+		
+				if (forceTransitions ())
+				{
+					if (level > level_changed ())
+						level = level_changed () + 1;
+					
+					else if (level < level_changed ())
+						level = level_changed () - 1;
+				}
+		
+				if (level not_eq level_changed ())
+				{
+					level_changed () = level;
+	
+					set_child (level);
+				}
+				else if (keepCurrentLevel)
+					set_child (level);
+			}
+
+			[[fallthrough]];
 		}
 		default:
 		{
