@@ -51,10 +51,12 @@
 #include "Switch.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../EnvironmentalSensor/TransformSensor.h"
 
 namespace titania {
 namespace X3D {
@@ -164,7 +166,7 @@ Switch::set_cameraObjects ()
 void
 Switch::set_pickableObjects ()
 {
-	setPickableObject (childNode and childNode -> isPickableObject ());
+	setPickableObject (childNode and childNode -> isPickableObject () and not getTransformSensors () .empty ());
 }
 
 void
@@ -179,6 +181,23 @@ Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			if (childNode)
 				childNode -> traverse (type, renderObject);
 
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			if (not getTransformSensors () .empty ())
+			{
+				const auto bbox = getSubBBox () * renderObject -> getModelViewMatrix () .get ();
+
+				for (const auto & transformSensorNode : getTransformSensors ())
+					transformSensorNode -> collect (bbox);
+			}
+
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+		
 			break;
 		}
 		default:

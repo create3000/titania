@@ -301,8 +301,13 @@ Shape::cut (X3DRenderObject* const renderObject)
 void
 Shape::picking (X3DRenderObject* const renderObject)
 {
-	for (const auto & transformSensorNode : getTransformSensors ())
-		transformSensorNode -> collect (getBBox () * renderObject -> getModelViewMatrix () .get ());
+	if (not getTransformSensors () .empty ())
+	{
+		const auto bbox = getBBox () * renderObject -> getModelViewMatrix () .get ();
+
+		for (const auto & transformSensorNode : getTransformSensors ())
+			transformSensorNode -> collect (bbox);
+	}
 
 	const auto browser = renderObject -> getBrowser ();
 

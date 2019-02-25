@@ -170,8 +170,8 @@ TransformSensor::set_targetObject ()
 			{
 				switch (type)
 				{
-					case X3DConstants::Shape:
 					case X3DConstants::X3DGroupingNode:
+					case X3DConstants::X3DShapeNode:
 					{
 						targetObjectNode = dynamic_cast <X3DBoundedObject*> (innerNode);
 						break;
@@ -220,7 +220,7 @@ TransformSensor::process ()
 
 		for (auto & targetBox : targetBBoxes)
 		{
-			if (sourceBox .intersects (targetBox))
+			if (size () == Vector3f (-1, -1, -1) or sourceBox .intersects (targetBox))
 			{
 				try
 				{
