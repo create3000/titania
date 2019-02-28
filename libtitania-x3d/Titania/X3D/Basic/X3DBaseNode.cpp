@@ -156,6 +156,9 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 void
 X3DBaseNode::setup ()
 {
+	if (isInitialized ())
+		return;
+
 	X3DEventObject::setup ();
 
 	executionContext -> addParent (this);
