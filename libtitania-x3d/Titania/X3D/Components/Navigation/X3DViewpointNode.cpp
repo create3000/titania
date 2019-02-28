@@ -583,9 +583,9 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 				fieldOfViewScale () = fromViewpoint -> fieldOfViewScale ();
 		}
 	}
-	catch (const std::domain_error &)
+	catch (const std::exception & error)
 	{
-		// Catch error from differenceMatrix .inverse ()
+		// __LOG__ << error .what () << std::endl;
 	}
 }
 

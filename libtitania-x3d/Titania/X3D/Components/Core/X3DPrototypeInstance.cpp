@@ -100,24 +100,6 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		fieldMappings .emplace (protoField, field);
 	}
 
-	if (protoNode -> isExternproto ())
-	{
-		if (protoNode -> checkLoadState () == COMPLETE_STATE)
-			construct ();
-		else
-			protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
-	}
-	else
-	{
-		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
-
-		metadata () = proto -> metadata ();
-
-		importExternProtos (proto, COPY_OR_CLONE);
-		importProtos       (proto, COPY_OR_CLONE);
-		copyRootNodes      (proto, COPY_OR_CLONE);
-	}
-
 	getRootNodes () .setAccessType (initializeOnly);
 
 	setExtendedEventHandling (false);
@@ -424,6 +406,24 @@ X3DPrototypeInstance::initialize ()
 {
 	try
 	{
+		if (protoNode -> isExternproto ())
+		{
+			if (protoNode -> checkLoadState () == COMPLETE_STATE)
+				construct ();
+			else
+				protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
+		}
+		else
+		{
+			ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
+		
+			metadata () = proto -> metadata ();
+		
+			importExternProtos (proto, COPY_OR_CLONE);
+			importProtos       (proto, COPY_OR_CLONE);
+			copyRootNodes      (proto, COPY_OR_CLONE);
+		}
+
 		switch (protoNode -> checkLoadState ())
 		{
 			case NOT_STARTED_STATE:
