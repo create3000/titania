@@ -258,6 +258,9 @@ private:
 	double
 	getDistance (Matrix4d modelViewMatrix) const;
 
+	void
+	traverseChildren (const TraverseType type, X3DRenderObject* const renderObject);
+
 	///  @name Static members
 
 	static const Component   component;

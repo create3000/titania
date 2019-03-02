@@ -50,11 +50,13 @@
 
 #include "GeoLOD.h"
 
-#include "../Networking/Inline.h"
-#include "../Grouping/Group.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../Networking/Inline.h"
+#include "../Grouping/Group.h"
 
 namespace titania {
 namespace X3D {
@@ -328,94 +330,123 @@ GeoLOD::getDistance (Matrix4d modelViewMatrix) const
 void
 GeoLOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type == TraverseType::DISPLAY)
+	switch (type)
 	{
-		const int32_t level = getLevel (renderObject -> getModelViewMatrix () .get ());
-	
-		if (level not_eq level_changed ())
+		case TraverseType::POINTER:
 		{
-			level_changed () = level;
-	
-			switch (level)
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
+		
+			traverseChildren (type, renderObject);
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			traverseChildren (type, renderObject);
+			break;
+		}
+		case TraverseType::DISPLAY:
+		{
+			const int32_t level = getLevel (renderObject -> getModelViewMatrix () .get ());
+		
+			if (level not_eq level_changed ())
 			{
-				case 0:
+				level_changed () = level;
+		
+				switch (level)
 				{
-					child1Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
-					child2Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
-					child3Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
-					child4Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
-					child1Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
-					child2Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
-					child3Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
-					child4Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
-
-					if (rootNode () .empty ())
+					case 0:
 					{
-						if (rootInline -> checkLoadState () == COMPLETE_STATE)
+						child1Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
+						child2Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
+						child3Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
+						child4Inline -> isCameraObject ()   .removeInterest (&GeoLOD::set_childCameraObject,   this);
+						child1Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
+						child2Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
+						child3Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
+						child4Inline -> isPickableObject () .removeInterest (&GeoLOD::set_childPickableObject, this);
+	
+						if (rootNode () .empty ())
 						{
-							rootInline -> isCameraObject ()   .addInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
-							rootInline -> isPickableObject () .addInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
-
-							setCameraObject   (rootInline -> isCameraObject ());
-							setPickableObject (rootInline -> isPickableObject ());
-
-							children ()    = rootInline -> getRootNodes ();
+							if (rootInline -> checkLoadState () == COMPLETE_STATE)
+							{
+								rootInline -> isCameraObject ()   .addInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
+								rootInline -> isPickableObject () .addInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
+	
+								setCameraObject   (rootInline -> isCameraObject ());
+								setPickableObject (rootInline -> isPickableObject ());
+	
+								children ()    = rootInline -> getRootNodes ();
+								childrenLoaded = false;
+							}
+						}
+						else
+						{
+							rootGroup -> isCameraObject ()   .addInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
+							rootGroup -> isPickableObject () .addInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
+	
+							setCameraObject   (rootGroup -> isCameraObject ());
+							setPickableObject (rootGroup -> isPickableObject ());
+	
+							children ()    = rootNode ();
 							childrenLoaded = false;
 						}
+		
+						child1Inline -> load () = false;
+						child2Inline -> load () = false;
+						child3Inline -> load () = false;
+						child4Inline -> load () = false;
+						break;
 					}
-					else
+					case 1:
 					{
-						rootGroup -> isCameraObject ()   .addInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
-						rootGroup -> isPickableObject () .addInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
-
-						setCameraObject   (rootGroup -> isCameraObject ());
-						setPickableObject (rootGroup -> isPickableObject ());
-
-						children ()    = rootNode ();
-						childrenLoaded = false;
-					}
+						if (rootNode () .empty ())
+						{
+							rootInline -> isCameraObject ()   .removeInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
+							rootInline -> isPickableObject () .removeInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
+						}
+						else
+						{
+							rootGroup -> isCameraObject ()   .removeInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
+							rootGroup -> isPickableObject () .removeInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
+						}
 	
-					child1Inline -> load () = false;
-					child2Inline -> load () = false;
-					child3Inline -> load () = false;
-					child4Inline -> load () = false;
-					break;
-				}
-				case 1:
-				{
-					if (rootNode () .empty ())
-					{
-						rootInline -> isCameraObject ()   .removeInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
-						rootInline -> isPickableObject () .removeInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
+						child1Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
+						child2Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
+						child3Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
+						child4Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
+						child1Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
+						child2Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
+						child3Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
+						child4Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
+	
+						set_childCameraObject ();
+						set_childPickableObject ();
+	
+						child1Inline -> load () = true;
+						child2Inline -> load () = true;
+						child3Inline -> load () = true;
+						child4Inline -> load () = true;
+						break;
 					}
-					else
-					{
-						rootGroup -> isCameraObject ()   .removeInterest (&GeoLOD::setCameraObject,   static_cast <X3DChildNode*> (this));
-						rootGroup -> isPickableObject () .removeInterest (&GeoLOD::setPickableObject, static_cast <X3DChildNode*> (this));
-					}
-
-					child1Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
-					child2Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
-					child3Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
-					child4Inline -> isCameraObject ()   .addInterest (&GeoLOD::set_childCameraObject,   this);
-					child1Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
-					child2Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
-					child3Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
-					child4Inline -> isPickableObject () .addInterest (&GeoLOD::set_childPickableObject, this);
-
-					set_childCameraObject ();
-					set_childPickableObject ();
-
-					child1Inline -> load () = true;
-					child2Inline -> load () = true;
-					child3Inline -> load () = true;
-					child4Inline -> load () = true;
-					break;
 				}
 			}
+
+			traverseChildren (type, renderObject);
+			break;
+		}
+		default:
+		{
+			traverseChildren (type, renderObject);
+			break;
 		}
 	}
+}
 
+void
+GeoLOD::traverseChildren (const TraverseType type, X3DRenderObject* const renderObject)
+{
 	switch (childrenLoaded ? level_changed () .getValue () : 0)
 	{
 		case 0:
