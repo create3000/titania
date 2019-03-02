@@ -244,6 +244,12 @@ private:
 	void
 	set_childLoadState ();
 
+	void
+	set_childCameraObject ();
+	
+	void
+	set_childPickableObject ();
+
 	///  @name Operations
 
 	size_t

@@ -1,6 +1,6 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.cpp" Line="1" Column="1" />
@@ -8,9 +8,7 @@
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/X3DPickingContext.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/X3DPickingContext.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/LOD.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="419" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
