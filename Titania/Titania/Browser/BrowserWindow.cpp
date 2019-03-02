@@ -654,7 +654,9 @@ BrowserWindow::on_import_activated ()
 	const auto dialog = addDialog <FileOpenDialog> ("FileOpenDialog", false);
 
 	dialog -> getWindow () .set_title (_ ("Import File ..."));
-	dialog -> run ();
+
+	if (not dialog -> run ())
+		return;
 
 	import ({ dialog -> getUrl () }, undoStep);
 

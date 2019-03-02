@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.h" Line="260" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="52" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Switch.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="435" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/Switch.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
