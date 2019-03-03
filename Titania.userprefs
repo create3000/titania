@@ -1,11 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DHeightMapEditor.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="624" Column="22" />
       <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DHeightMapEditor.h" Line="312" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="659" Column="10" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.cpp" Line="558" Column="53" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="254" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -771,10 +771,10 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 
 		// Add a normal index for each point.
 		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
-			normalIndex [coordIndex () [vertices [i]]] .emplace_back (normals .size () + i);
+			normalIndex [coordIndex () [vertices [i]]] .emplace_back (vertices [i]);
 
 		// Add this normal for each vertex
-		normals .resize (normals .size () + vertices .size () + 1, normal);
+		normals .resize (vertices .back () + 1, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
