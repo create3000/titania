@@ -239,54 +239,45 @@ GeoLOD::set_childLoadState ()
 	if (level_changed () not_eq 1)
 		return;
 
-	MFNode nodes;
-
 	int32_t loaded = 0;
 
-	if (child1Inline -> checkLoadState () == COMPLETE_STATE)
-	{
-		nodes .insert (nodes .end (),
-		               child1Inline -> getRootNodes () .cbegin (),
-		               child1Inline -> getRootNodes () .cend ());
-		++ loaded;
-	}
-	else if (child1Inline -> checkLoadState () == FAILED_STATE)
+	if (child1Inline -> checkLoadState () == COMPLETE_STATE or
+	    child1Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
-	if (child2Inline -> checkLoadState () == COMPLETE_STATE)
-	{
-		nodes .insert (nodes .end (),
-		               child2Inline -> getRootNodes () .cbegin (),
-		               child2Inline -> getRootNodes () .cend ());
-		++ loaded;
-	}
-	else if (child2Inline -> checkLoadState () == FAILED_STATE)
+	if (child2Inline -> checkLoadState () == COMPLETE_STATE or
+	    child2Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
-	if (child3Inline -> checkLoadState () == COMPLETE_STATE)
-	{
-		nodes .insert (nodes .end (),
-		               child3Inline -> getRootNodes () .cbegin (),
-		               child3Inline -> getRootNodes () .cend ());
-		++ loaded;
-	}
-	else if (child2Inline -> checkLoadState () == FAILED_STATE)
+	if (child3Inline -> checkLoadState () == COMPLETE_STATE or
+	    child3Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
-	if (child4Inline -> checkLoadState () == COMPLETE_STATE)
-	{
-		nodes .insert (nodes .end (),
-		               child4Inline -> getRootNodes () .cbegin (),
-		               child4Inline -> getRootNodes () .cend ());
-		++ loaded;
-	}
-	else if (child4Inline -> checkLoadState () == FAILED_STATE)
+	if (child4Inline -> checkLoadState () == COMPLETE_STATE or
+	    child4Inline -> checkLoadState () == FAILED_STATE)
 		++ loaded;
 
 	if (loaded == 4)
 	{
 		childrenLoaded = true;
-		children () = std::move (nodes);
+
+		children () .clear ();
+
+		children () .insert (children () .end (),
+		                     child1Inline -> getRootNodes () .cbegin (),
+		                     child1Inline -> getRootNodes () .cend ());
+
+		children () .insert (children () .end (),
+		                     child2Inline -> getRootNodes () .cbegin (),
+		                     child2Inline -> getRootNodes () .cend ());
+
+		children () .insert (children () .end (),
+		                     child3Inline -> getRootNodes () .cbegin (),
+		                     child3Inline -> getRootNodes () .cend ());
+
+		children () .insert (children () .end (),
+		                     child4Inline -> getRootNodes () .cbegin (),
+		                     child4Inline -> getRootNodes () .cend ());
 	}
 }
 
