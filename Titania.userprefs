@@ -1,13 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp">
     <Files>
-      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="617" Column="43" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DHeightMapEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.cpp" Line="558" Column="53" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="775" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.h" Line="894" Column="36" />
+      <File FileName="Titania/Titania/Widgets/AnimationEditor/AnimationEditor.cpp" Line="2453" Column="124" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
