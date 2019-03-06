@@ -687,26 +687,16 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 	{
 		std::vector <basic::uri> uris;
 
-		if (selection_data .get_data_type () == "text/uri-list")
+		if (selection_data .get_data_type () == "STRING")
+		{
+			basic::split (std::back_inserter (uris), basic::trim (selection_data .get_data_as_string ()), "\r\n");
+		}
+		else if (selection_data .get_data_type () == "text/uri-list")
 		{
 			const auto strings = selection_data .get_uris ();
 
 			for (const auto & string : strings)
-				uris .emplace_back (Glib::uri_unescape_string (string));
-		}
-
-		if (selection_data .get_data_type () == "STRING")
-		{
-			auto strings = std::vector <std::string> ();
-
-			basic::split (std::back_inserter (strings), basic::trim (selection_data .get_data_as_string ()), "\r\n");
-
-			for (const auto & string : strings)
-			{
-				const auto file = Gio::File::create_for_uri (Glib::uri_unescape_string (string));
-
-				uris .emplace_back ("file://" + file -> get_path ());
-			}
+				uris .emplace_back (string);
 		}
 
 		if (not uris .empty ())
