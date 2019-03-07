@@ -162,7 +162,13 @@ X3DTexture2DNode::clearTexture ()
 }
 
 void
-X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const size_t comp, const GLint width, const GLint height, const GLenum format, const void* const data)
+X3DTexture2DNode::setImage (const GLenum internalFormat,
+                            const bool t,
+                            const size_t comp,
+                            const GLint width,
+                            const GLint height,
+                            const GLenum format,
+                            const void* const data)
 {
 	// transfer image
 

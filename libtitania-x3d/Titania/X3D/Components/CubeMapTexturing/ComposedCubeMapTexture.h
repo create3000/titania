@@ -187,25 +187,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_texture_0 (const SFNode &);
+	set_texture (const SFNode & node, const size_t index);
 
 	void
-	set_texture_1 (const SFNode &);
-
-	void
-	set_texture_2 (const SFNode &);
-
-	void
-	set_texture_3 (const SFNode &);
-
-	void
-	set_texture_4 (const SFNode &);
-
-	void
-	set_texture_5 (const SFNode &);
-
-	void
-	setTexture (const GLenum, const SFNode &);
+	setTexture (const GLenum target, const SFNode & node);
 
 	///  @name Static members
 

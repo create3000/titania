@@ -108,7 +108,7 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const final override;
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t index) const final override;
 
 
 protected:
@@ -129,7 +129,7 @@ protected:
 	{ return targets; }
 
 	void
-	setImage (const GLenum, const GLenum, const GLenum, const void* const);
+	setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data, const bool event);
 	
 
 private:

@@ -97,7 +97,7 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const = 0;
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t index) const = 0;
 
 	///  @name Destruction
 
@@ -119,10 +119,18 @@ protected:
 	///  @name Operations
 
 	void
-	updateTextureProperties (const GLenum, const bool, const X3DPtr <TextureProperties> &, const size_t, const size_t, const bool, const bool, const bool);
+	updateTextureProperties (const GLenum target,
+	                         const bool haveTextureProperties,
+	                         const X3DPtr <TextureProperties> & textureProperties,
+	                         const size_t width, 
+	                         const size_t height, 
+	                         const bool repeatS, 
+	                         const bool repeatT, 
+	                         const bool repeatR,
+	                         const bool event = true);
 
 	void
-	draw (X3DRenderObject* const renderObject, const GLenum, const size_t);
+	draw (X3DRenderObject* const renderObject, const GLenum target, const size_t components);
 
 
 private:

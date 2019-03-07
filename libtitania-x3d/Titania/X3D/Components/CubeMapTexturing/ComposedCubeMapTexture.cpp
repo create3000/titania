@@ -75,7 +75,7 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	                   fields (),
-	                    nodes (),
+	                    nodes (6),
 	              transparent (false),
 	                    width (0),
                       height (0),
@@ -108,118 +108,34 @@ ComposedCubeMapTexture::initialize ()
 
 	if (getBrowser () -> getLoadUrlObjects ())
 	{
-		front ()  .addInterest (&ComposedCubeMapTexture::set_texture_0, this, std::cref (front ()));
-		back ()   .addInterest (&ComposedCubeMapTexture::set_texture_1, this, std::cref (back ()));
-		left ()   .addInterest (&ComposedCubeMapTexture::set_texture_2, this, std::cref (left ()));
-		right ()  .addInterest (&ComposedCubeMapTexture::set_texture_3, this, std::cref (right ()));
-		top ()    .addInterest (&ComposedCubeMapTexture::set_texture_4, this, std::cref (top ()));
-		bottom () .addInterest (&ComposedCubeMapTexture::set_texture_5, this, std::cref (bottom ()));
-		
-		nodes .resize (6);
+		front ()  .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (front ()),  0);
+		back ()   .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (back ()),   1);
+		left ()   .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (left ()),   2);
+		right ()  .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (right ()),  3);
+		top ()    .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (top ()),    4);
+		bottom () .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (bottom ()), 5);
 
-		set_texture_0 (front ());
-		set_texture_1 (back ());
-		set_texture_2 (left ());
-		set_texture_3 (right ());
-		set_texture_4 (top ());
-		set_texture_5 (bottom ());
+		set_texture (front (),  0);
+		set_texture (back (),   1);
+		set_texture (left (),   2);
+		set_texture (right (),  3);
+		set_texture (top (),    4);
+		set_texture (bottom (), 5);
 	}
 }
 
 void
-ComposedCubeMapTexture::set_texture_0 (const SFNode & node)
+ComposedCubeMapTexture::set_texture (const SFNode & node, const size_t index)
 {
-	constexpr size_t i = 0;
+	if (nodes [index])
+		nodes [index] -> removeInterest (&ComposedCubeMapTexture::set_texture, this);
 
-	if (nodes [i])
-		nodes [i] -> removeInterest (&ComposedCubeMapTexture::set_texture_0, this);
+	nodes [index] = node;
 
-	nodes [i] = node;
+	if (nodes [index])
+		nodes [index] -> addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (node), index);
 
-	if (nodes [i])
-		nodes [i] -> addInterest (&ComposedCubeMapTexture::set_texture_0, this, std::cref (node));
-
-	setTexture (getTargets () [i], node);
-}
-
-void
-ComposedCubeMapTexture::set_texture_1 (const SFNode & node)
-{
-	constexpr size_t i = 1;
-
-	if (nodes [i])
-		nodes [i] -> removeInterest (&ComposedCubeMapTexture::set_texture_1, this);
-
-	nodes [i] = node;
-
-	if (nodes [i])
-		nodes [i] -> addInterest (&ComposedCubeMapTexture::set_texture_1, this, std::cref (node));
-
-	setTexture (getTargets () [i], node);
-}
-
-void
-ComposedCubeMapTexture::set_texture_2 (const SFNode & node)
-{
-	constexpr size_t i = 2;
-
-	if (nodes [i])
-		nodes [i] -> removeInterest (&ComposedCubeMapTexture::set_texture_2, this);
-
-	nodes [i] = node;
-
-	if (nodes [i])
-		nodes [i] -> addInterest (&ComposedCubeMapTexture::set_texture_2, this, std::cref (node));
-
-	setTexture (getTargets () [i], node);
-}
-
-void
-ComposedCubeMapTexture::set_texture_3 (const SFNode & node)
-{
-	constexpr size_t i = 3;
-
-	if (nodes [i])
-		nodes [i] -> removeInterest (&ComposedCubeMapTexture::set_texture_3, this);
-
-	nodes [i] = node;
-
-	if (nodes [i])
-		nodes [i] -> addInterest (&ComposedCubeMapTexture::set_texture_3, this, std::cref (node));
-
-	setTexture (getTargets () [i], node);
-}
-
-void
-ComposedCubeMapTexture::set_texture_4 (const SFNode & node)
-{
-	constexpr size_t i = 4;
-
-	if (nodes [i])
-		nodes [i] -> removeInterest (&ComposedCubeMapTexture::set_texture_4, this);
-
-	nodes [i] = node;
-
-	if (nodes [i])
-		nodes [i] -> addInterest (&ComposedCubeMapTexture::set_texture_4, this, std::cref (node));
-
-	setTexture (getTargets () [i], node);
-}
-
-void
-ComposedCubeMapTexture::set_texture_5 (const SFNode & node)
-{
-	constexpr size_t i = 5;
-
-	if (nodes [i])
-		nodes [i] -> removeInterest (&ComposedCubeMapTexture::set_texture_5, this);
-
-	nodes [i] = node;
-
-	if (nodes [i])
-		nodes [i] -> addInterest (&ComposedCubeMapTexture::set_texture_5, this, std::cref (node));
-
-	setTexture (getTargets () [i], node);
+	setTexture (getTargets () [index], node);
 }
 
 void
@@ -273,7 +189,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		if (width == height)
 		{
-			setImage (target, GL_RGBA, GL_RGBA, image .data ());
+			setImage (target, GL_RGBA, GL_RGBA, image .data (), true);
 			setLoadState (COMPLETE_STATE);
 			return;
 		}
@@ -285,7 +201,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 	height     = 0;
 	components = 0;
 
-	setImage (target, GL_RGBA, GL_RGBA, nullptr);
+	setImage (target, GL_RGBA, GL_RGBA, nullptr, true);
 	setLoadState (FAILED_STATE);
 }
 

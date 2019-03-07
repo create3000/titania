@@ -87,7 +87,8 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
                                          const size_t height, 
                                          const bool repeatS, 
                                          const bool repeatT, 
-                                         const bool repeatR)
+                                         const bool repeatR,
+                                         const bool event)
 {
 	glBindTexture (target, getTextureId ());
 
@@ -123,7 +124,8 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 
 	glBindTexture (target, 0);
 
-	addEvent ();
+	if (event)
+		addEvent ();
 }
 
 void

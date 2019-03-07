@@ -171,16 +171,22 @@ protected:
 
 	virtual
 	void
-	setTexture (const TexturePtr &);
+	setTexture (const TexturePtr & texture);
 
 	void
 	clearTexture ();
 
 	void
-	setImage (const GLenum, const bool, size_t, const GLint, const GLint, const GLenum, const void* const);
+	setImage (const GLenum internalFormat,
+	          const bool transparent,
+	          const size_t comp,
+	          const GLint width,
+	          const GLint height,
+	          const GLenum format,
+	          const void* const data);
 
 	void
-	updateImage (const GLenum, const void* const);
+	updateImage (const GLenum format, const void* const data);
 
 	///  @name Operations
 
@@ -211,7 +217,7 @@ private:
 	std::vector <uint8_t>
 	getImageData () const;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -226,6 +232,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	bool                       transparent;
 	size_t                     textureWidth;

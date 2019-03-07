@@ -291,7 +291,7 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 		// Transfer image.
 
-		setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> readPixels () .data ());
+		setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> readPixels () .data (), false);
 	}
 
 	renderer -> getProjectionMatrix () .pop ();
