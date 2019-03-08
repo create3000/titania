@@ -126,8 +126,7 @@ protected:
 	                         const size_t height, 
 	                         const bool repeatS, 
 	                         const bool repeatT, 
-	                         const bool repeatR,
-	                         const bool event = true);
+	                         const bool repeatR);
 
 	void
 	draw (X3DRenderObject* const renderObject, const GLenum target, const size_t components);

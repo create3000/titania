@@ -189,7 +189,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		if (width == height)
 		{
-			setImage (target, GL_RGBA, GL_RGBA, image .data (), true);
+			setImage (target, GL_RGBA, GL_RGBA, image .data ());
 			setLoadState (COMPLETE_STATE);
 			return;
 		}
@@ -201,7 +201,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 	height     = 0;
 	components = 0;
 
-	setImage (target, GL_RGBA, GL_RGBA, nullptr, true);
+	setImage (target, GL_RGBA, GL_RGBA, nullptr);
 	setLoadState (FAILED_STATE);
 }
 

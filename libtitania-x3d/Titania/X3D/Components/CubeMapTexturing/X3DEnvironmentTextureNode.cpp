@@ -116,7 +116,7 @@ X3DEnvironmentTextureNode::set_textureProperties ()
 }
 
 void
-X3DEnvironmentTextureNode::setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data, const bool event)
+X3DEnvironmentTextureNode::setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data)
 {
 	updateTextureProperties ();
 
@@ -131,15 +131,12 @@ X3DEnvironmentTextureNode::setImage (const GLenum target, const GLenum internalF
 	              data);
 
 	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
-
-	if (event)
-		addEvent ();
 }
 
 void
 X3DEnvironmentTextureNode::updateTextureProperties ()
 {
-	X3DTextureNode::updateTextureProperties (GL_TEXTURE_CUBE_MAP, true, texturePropertiesNode, getWidth (), getHeight (), true, true, true, false);
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_CUBE_MAP, true, texturePropertiesNode, getWidth (), getHeight (), true, true, true);
 }
 
 void

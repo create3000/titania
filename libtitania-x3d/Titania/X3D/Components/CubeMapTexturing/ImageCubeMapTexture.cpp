@@ -169,7 +169,7 @@ ImageCubeMapTexture::set_loadState ()
 				getBrowser () -> getConsole () -> error ("Error: ImageCubeMapTexture: width and height must be equal, and all images must be of the same size!\n");
 
 				for (size_t i = 0; i < 6; ++ i)
-					setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr, true);
+					setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr);
 
 				setLoadState (FAILED_STATE);
 				return;
@@ -202,7 +202,7 @@ ImageCubeMapTexture::set_loadState ()
 				// Transfer image
 				// Important: width and height must be equal, and all images must be of the same size!!!
 	
-				setImage (getTargets () [i], GL_RGBA, GL_RGBA, image .data (), true);
+				setImage (getTargets () [i], GL_RGBA, GL_RGBA, image .data ());
 			}
 	
 			break;
@@ -210,7 +210,7 @@ ImageCubeMapTexture::set_loadState ()
 		case FAILED_STATE:
 		{
 			for (size_t i = 0; i < 6; ++ i)
-				setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr, true);
+				setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr);
 
 			break;
 		}

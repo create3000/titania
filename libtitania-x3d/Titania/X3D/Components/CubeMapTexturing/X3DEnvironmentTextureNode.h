@@ -129,7 +129,7 @@ protected:
 	{ return targets; }
 
 	void
-	setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data, const bool event);
+	setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data);
 	
 
 private:
