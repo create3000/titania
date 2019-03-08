@@ -1381,10 +1381,10 @@ X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & 
 
 	for (size_t i = 0, size = std::min (MAX_TEX_COORD, buffer .size ()); i < size; ++ i)
 	{
-		glEnableVertexAttribArray (x3d_TexCoord + i);
+		glEnableVertexAttribArray (x3d_TexCoord);
 
 		glBindBuffer (GL_ARRAY_BUFFER, buffer [i]);
-		glVertexAttribPointer (x3d_TexCoord + i, 4, type, false, stride .empty () ? 0 : stride [i], pointer .empty () ? nullptr : pointer [i]);
+		glVertexAttribPointer (x3d_TexCoord, 4, type, false, stride .empty () ? 0 : stride [i], pointer .empty () ? nullptr : pointer [i]);
 
 		break; // TODO: Currently only one tex coord node is supported.
 	}

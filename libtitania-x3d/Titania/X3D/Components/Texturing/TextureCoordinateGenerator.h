@@ -106,7 +106,8 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, const size_t) const final override;
+	init (TexCoordArray &, const size_t) const final override
+	{ }
 
 	virtual
 	void
