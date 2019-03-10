@@ -62,6 +62,9 @@ X3DChildNode::X3DChildNode () :
 
 	addChildObjects (cameraObject,
 	                 pickableObject);
+
+	cameraObject   .setAccessType (outputOnly);
+	pickableObject .setAccessType (outputOnly);
 }
 
 void
