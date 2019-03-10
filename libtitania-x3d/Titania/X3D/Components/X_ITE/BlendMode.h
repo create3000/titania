@@ -239,8 +239,8 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	static const std::map <std::string, GLenum> blendTypes;
-	static const std::map <std::string, GLenum> blendModes;
+	static const std::map <std::string, GLenum> factorTypes;
+	static const std::map <std::string, GLenum> equationTypes;
 
 	///  @name Members
 

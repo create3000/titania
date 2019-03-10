@@ -61,7 +61,7 @@ const Component   BlendMode::component      = Component ("X_ITE", 1);
 const std::string BlendMode::typeName       = "BlendMode";
 const std::string BlendMode::containerField = "blendMode";
 
-const std::map <std::string, GLenum> BlendMode::blendTypes = {
+const std::map <std::string, GLenum> BlendMode::factorTypes = {
 	// WebGL
    std::pair ("ZERO",                     GL_ZERO),
    std::pair ("ONE",                      GL_ONE),
@@ -83,7 +83,7 @@ const std::map <std::string, GLenum> BlendMode::blendTypes = {
    // std::pair ("SRC1_ALPHA",               GL_SRC1_ALPHA),
 };
 
-const std::map <std::string, GLenum> BlendMode::blendModes = {
+const std::map <std::string, GLenum> BlendMode::equationTypes = {
    std::pair ("FUNC_ADD",              GL_FUNC_ADD),
    std::pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT),
    std::pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT),
@@ -155,7 +155,7 @@ BlendMode::set_sourceColorFactor ()
 {
 	try
 	{
-		sourceColorFactorType = blendTypes .at (sourceColorFactor ());
+		sourceColorFactorType = factorTypes .at (sourceColorFactor ());
 	}
 	catch (const X3DError &)
 	{
@@ -168,7 +168,7 @@ BlendMode::set_sourceAlphaFactor ()
 {
 	try
 	{
-		sourceAlphaFactorType = blendTypes .at (sourceAlphaFactor ());
+		sourceAlphaFactorType = factorTypes .at (sourceAlphaFactor ());
 	}
 	catch (const X3DError &)
 	{
@@ -181,7 +181,7 @@ BlendMode::set_destinationColorFactor ()
 {
 	try
 	{
-		destinationColorFactorType = blendTypes .at (destinationColorFactor ());
+		destinationColorFactorType = factorTypes .at (destinationColorFactor ());
 	}
 	catch (const X3DError &)
 	{
@@ -194,7 +194,7 @@ BlendMode::set_destinationAlphaFactor ()
 {
 	try
 	{
-		destinationAlphaFactorType = blendTypes .at (destinationAlphaFactor ());
+		destinationAlphaFactorType = factorTypes .at (destinationAlphaFactor ());
 	}
 	catch (const X3DError &)
 	{
@@ -207,7 +207,7 @@ BlendMode::set_colorEquation ()
 {
 	try
 	{
-		colorEquationType = blendModes .at (colorEquation ());
+		colorEquationType = equationTypes .at (colorEquation ());
 	}
 	catch (const X3DError &)
 	{
@@ -220,7 +220,7 @@ BlendMode::set_alphaEquation ()
 {
 	try
 	{
-		alphaEquationType = blendModes .at (alphaEquation ());
+		alphaEquationType = equationTypes .at (alphaEquation ());
 	}
 	catch (const X3DError &)
 	{
