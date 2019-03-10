@@ -3235,6 +3235,8 @@
     <None Include="share\titania\ui\Revealer\FogCoordinateEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DFogCoordinateEditorInterface.h" />
     <None Include="Titania\Revealer\FogCoordinateEditor\FogCoordinateEditor.h" />
+    <None Include="share\titania\ui\icons\ColorWheel.png" />
+    <None Include="share\titania\ui\icons\Contrast.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

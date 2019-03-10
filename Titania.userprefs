@@ -1,13 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp" Line="304" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="237" Column="125" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DBlendModeEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/X_ITE/BlendMode.cpp" Line="231" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp" Line="87" Column="67" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
