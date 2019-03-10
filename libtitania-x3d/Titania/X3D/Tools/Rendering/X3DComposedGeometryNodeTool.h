@@ -170,11 +170,6 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DGeometryNodeTool::isTransparent (); }
-
-	virtual
 	const X3DPtrArray <X3DVertexAttributeNode> &
 	getAttrib () const final override
 	{ return getNode <X3DComposedGeometryNode> () -> getAttrib (); }

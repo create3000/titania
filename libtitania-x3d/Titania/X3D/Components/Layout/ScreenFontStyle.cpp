@@ -477,7 +477,7 @@ ScreenText::toPrimitive () const
 ScreenText::~ScreenText ()
 { }
 
-const Component   ScreenFontStyle::component      = Component ("Titania", 2);
+const Component   ScreenFontStyle::component      = Component ("Layout", 2);
 const std::string ScreenFontStyle::typeName       = "ScreenFontStyle";
 const std::string ScreenFontStyle::containerField = "fontStyle";
 

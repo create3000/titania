@@ -93,10 +93,6 @@ public:
 	getBBox () const override;
 
 	virtual
-	bool
-	isTransparent () const override;
-
-	virtual
 	GeometryType
 	getGeometryType () const override;
 

@@ -134,11 +134,6 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DLineGeometryNodeTool::isTransparent (); }
-
-	virtual
 	const X3DPtr <X3DCoordinateNode> &
 	getControlPoint () const final override
 	{ return getNode <NurbsCurve> () -> getControlPoint (); }

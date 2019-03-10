@@ -79,13 +79,6 @@ public:
 	point () const final override
 	{ return getNode <Polypoint2D> () -> point (); }
 
-	///  @name Test
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DLineGeometryNodeTool::isTransparent (); }
-
 	///  @name Operations
 
 	virtual

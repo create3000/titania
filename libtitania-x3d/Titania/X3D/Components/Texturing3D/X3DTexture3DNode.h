@@ -140,11 +140,6 @@ public:
 	getTarget () const final override
 	{ return GL_TEXTURE_3D; }
 
-	virtual
-	bool
-	isTransparent () const override
-	{ return transparent; }
-
 	size_t
 	getWidth () const
 	{ return textureWidth; }
@@ -226,7 +221,6 @@ private:
 	size_t                     textureWidth;
 	size_t                     textureHeight;
 	size_t                     textureDepth;
-	bool                       transparent;
 	X3DPtr <TextureProperties> texturePropertiesNode;
 
 };

@@ -243,13 +243,6 @@ public:
 	height () const
 	{ return *fields .height; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const override
-	{ return transparent; }
-
 	///  @name Height map handling
 
 	virtual
@@ -309,7 +302,7 @@ private:
 	set_color ();
 
 	void
-	set_transparency ();
+	set_transparent ();
 
 	void
 	set_texCoord ();
@@ -392,7 +385,6 @@ private:
 	X3DPtr <X3DNormalNode>               normalNode;
 	X3DPtr <TextureFuture>               future;
 	SFEnum <LoadState>                   loadState;
-	bool                                 transparent;
 
 };
 

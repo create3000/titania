@@ -119,11 +119,6 @@ public:
 	{ return loadState; }
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return transparent; }
-
-	virtual
 	size_t
 	getWidth () const final override
 	{ return size (); }
@@ -210,7 +205,6 @@ private:
 	Fields fields;
 
 	SFEnum <LoadState>            loadState;
-	bool                          transparent;
 	UpdateType                    updateType;
 	X3DPtr <DependentRenderer>    renderer;
 	std::unique_ptr <FrameBuffer> frameBuffer;

@@ -374,6 +374,7 @@ ParticleSystem::initialize ()
 		softSystem -> initialize ();
 
 		geometryType () .addInterest (&ParticleSystem::set_geometryType, this);
+		colorRamp ()    .addInterest (&ParticleSystem::set_transparent,  this);
 
 		set_geometryType ();
 		return;
@@ -437,19 +438,19 @@ ParticleSystem::initialize ()
 	getBrowser () -> getDefaultShader ()         .addInterest (&ParticleSystem::set_shader, this);
 	getBrowser () -> getFixedPipelineRequired () .addInterest (&ParticleSystem::set_shader, this);
 
-	enabled ()           .addInterest (&ParticleSystem::set_enabled, this);
-	geometryType ()      .addInterest (&ParticleSystem::set_geometryType, this);
-	createParticles ()   .addInterest (&ParticleSystem::set_createParticles, this);
-	maxParticles ()      .addInterest (&ParticleSystem::set_enabled, this);
+	enabled ()           .addInterest (&ParticleSystem::set_enabled,          this);
+	geometryType ()      .addInterest (&ParticleSystem::set_geometryType,     this);
+	createParticles ()   .addInterest (&ParticleSystem::set_createParticles,  this);
+	maxParticles ()      .addInterest (&ParticleSystem::set_enabled,          this);
 	lifetimeVariation () .addInterest (&ParticleSystem::set_particle_buffers, this);
-	particleSize ()      .addInterest (&ParticleSystem::set_geometryType, this);
-	colorKey ()          .addInterest (&ParticleSystem::set_colorKey, this);
-	texCoordKey ()       .addInterest (&ParticleSystem::set_texCoordKey, this);
-	emitter ()           .addInterest (&ParticleSystem::set_emitter, this);
-	colorRamp ()         .addInterest (&ParticleSystem::set_colorRamp, this);
-	texCoordRamp ()      .addInterest (&ParticleSystem::set_texCoordRamp, this);
-	physics ()           .addInterest (&ParticleSystem::set_physics, this);
-	geometry ()          .addInterest (&ParticleSystem::set_geometry, this);
+	particleSize ()      .addInterest (&ParticleSystem::set_geometryType,     this);
+	colorKey ()          .addInterest (&ParticleSystem::set_colorKey,         this);
+	texCoordKey ()       .addInterest (&ParticleSystem::set_texCoordKey,      this);
+	emitter ()           .addInterest (&ParticleSystem::set_emitter,          this);
+	colorRamp ()         .addInterest (&ParticleSystem::set_colorRamp,        this);
+	texCoordRamp ()      .addInterest (&ParticleSystem::set_texCoordRamp,     this);
+	physics ()           .addInterest (&ParticleSystem::set_physics,          this);
+	geometry ()          .addInterest (&ParticleSystem::set_geometry,         this);
 
 	boundedPhysicsModelNodes .addInterest (&ParticleSystem::set_boundedPhysicsModel, this);
 
@@ -531,25 +532,30 @@ ParticleSystem::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
-bool
-ParticleSystem::isTransparent () const
+void
+ParticleSystem::set_transparent ()
 {
 	if (isSoftSystem ())
-		return softSystem -> isTransparent ();
+	{
+		setTransparent (softSystem -> isTransparent ());
+		return;
+	}
 
-	if (getAppearance () -> isTransparent ())
-		return true;
-
-	if (numColors and colorRampNode -> isTransparent ())
-		return true;
-
-	if (geometryTypeId == GeometryType::POINT)
-		return true;
-
-	if (geometryTypeId == GeometryType::GEOMETRY and getGeometry ())
-		return getGeometry () -> isTransparent ();
-
-	return false;
+	switch (geometryTypeId)
+	{
+		case GeometryType::POINT:
+		{
+			setTransparent (true);
+			break;
+		}
+		default:
+		{
+			setTransparent ((getAppearance () and getAppearance () -> isTransparent ()) or
+			                (colorRampNode and colorRampNode -> isTransparent ()) or
+			                (geometryTypeId == GeometryType::GEOMETRY and getGeometry () and getGeometry () -> isTransparent ()));
+			break;
+		}
+	}
 }
 
 GeometryType
@@ -852,6 +858,7 @@ ParticleSystem::set_colorRamp ()
 	if (colorRampNode)
 		colorRampNode -> addInterest (&ParticleSystem::set_color, this);
 
+	set_transparent ();
 	set_color ();
 }
 

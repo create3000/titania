@@ -73,10 +73,11 @@ X3DShapeNode::X3DShapeNode () :
 	               hidden (false),
 	       appearanceNode (),
 	         geometryNode (),
+	          transparent (false),
 	glBindProgramPipeline ()
 {
 	addType (X3DConstants::X3DShapeNode);
-	
+
 	addChildObjects (appearanceNode,
 	                 geometryNode);
 }
@@ -124,10 +125,17 @@ X3DShapeNode::isHidden (const bool value)
 void
 X3DShapeNode::set_appearance ()
 {
+	if (appearanceNode)
+		appearanceNode -> isTransparent () .removeInterest (&X3DShapeNode::set_transparent, this);
+
 	appearanceNode = x3d_cast <X3DAppearanceNode*> (appearance ());
 
-	if (not appearanceNode)
+	if (appearanceNode)
+		appearanceNode -> isTransparent () .addInterest (&X3DShapeNode::set_transparent, this);
+	else
 		appearanceNode .set (getBrowser () -> getDefaultAppearance ());
+
+	set_transparent ();
 }
 
 void
@@ -135,17 +143,28 @@ X3DShapeNode::set_geometry ()
 {
 	if (geometryNode)
 	{
-		geometryNode -> isCameraObject () .removeInterest (&X3DShapeNode::setCameraObject,   static_cast <X3DChildNode*> (this));
+		geometryNode -> isCameraObject () .removeInterest (&X3DShapeNode::setCameraObject, static_cast <X3DChildNode*> (this));
+		geometryNode -> isTransparent ()  .removeInterest (&X3DShapeNode::set_transparent, this);
 	}
 
 	geometryNode .set (hidden ? nullptr : x3d_cast <X3DGeometryNode*> (geometry ()));
 
 	if (geometryNode)
 	{
-		geometryNode -> isCameraObject () .addInterest (&X3DShapeNode::setCameraObject,   static_cast <X3DChildNode*> (this));
+		geometryNode -> isCameraObject () .addInterest (&X3DShapeNode::setCameraObject, static_cast <X3DChildNode*> (this));
+		geometryNode -> isTransparent ()  .addInterest (&X3DShapeNode::set_transparent, this);
 	}
 
+	set_transparent ();
+
 	setCameraObject (geometryNode and geometryNode -> isCameraObject ());
+}
+
+void
+X3DShapeNode::set_transparent ()
+{
+	transparent = (appearanceNode and appearanceNode -> isTransparent ()) or
+		           (geometryNode and geometryNode -> isTransparent ());
 }
 
 void

@@ -221,13 +221,6 @@ public:
 	height () const final override
 	{ return getNode <GeoElevationGrid> () -> height (); }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return getNode <GeoElevationGrid> () -> isTransparent (); }
-
 	///  @name Height map handling
 
 	virtual

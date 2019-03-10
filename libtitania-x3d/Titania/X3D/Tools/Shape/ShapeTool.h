@@ -84,11 +84,6 @@ public:
 	{ return X3DShapeNodeTool::getBBox (); }
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return getNode <Shape> () -> isTransparent (); }
-
-	virtual
 	GeometryType
 	getGeometryType () const final override
 	{ return getNode <Shape> () -> getGeometryType (); }

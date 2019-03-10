@@ -63,9 +63,9 @@ public:
 
 	///  @name Tests
 
-	virtual
-	bool
-	isTransparent () const = 0;
+	const SFBool &
+	isTransparent () const
+	{ return transparent; }
 
 	virtual
 	void
@@ -77,6 +77,18 @@ protected:
 	///  @name Construction
 
 	X3DMaterialNode ();
+
+	///  @name Member access
+
+	void
+	setTransparent (const bool value);
+
+
+private:
+
+	///  @name Members
+
+	SFBool transparent;
 
 };
 

@@ -98,12 +98,6 @@ public:
 	point () const
 	{ return *fields .point; }
 
-	///  @name Test
-
-	virtual
-	bool
-	isTransparent () const override;
-
 	///  @name Operations
 
 	virtual

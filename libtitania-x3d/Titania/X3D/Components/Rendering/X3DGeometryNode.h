@@ -124,9 +124,9 @@ public:
 	///  @name Tests
 
 	virtual
-	bool
+	const SFBool &
 	isTransparent () const
-	{ return false; }
+	{ return transparent; }
 
 	virtual
 	GeometryType
@@ -263,6 +263,9 @@ protected:
 
 	void
 	setCameraObject (const bool value);
+
+	void
+	setTransparent (const bool value);
 
 	void
 	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>> &);
@@ -436,6 +439,7 @@ private:
 	///  @name Members
 
 	SFBool                               cameraObject;
+	SFBool                               transparent;
 	SFTime                               rebuildOutput;
 	Box3d                                bbox;
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;

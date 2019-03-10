@@ -109,8 +109,8 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	isTransparent () const override
+	const SFBool &
+	isTransparent () const final override
 	{ return getNode <X3DGeometryNode> () -> isTransparent (); }
 
 	virtual

@@ -89,8 +89,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	       fogCoordNode (),
 	          colorNode (),
 	          coordNode (),
-	        optionsNode (),
-	        transparent (false)
+	        optionsNode ()
 {
 	addType (X3DConstants::IndexedLineSet);
 
@@ -202,27 +201,25 @@ IndexedLineSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&IndexedLineSet::requestRebuild,   this);
-		colorNode -> removeInterest (&IndexedLineSet::set_transparency, this);
+		colorNode -> removeInterest (&IndexedLineSet::requestRebuild,  this);
+		colorNode -> removeInterest (&IndexedLineSet::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&IndexedLineSet::requestRebuild,   this);
-		colorNode -> addInterest (&IndexedLineSet::set_transparency, this);
-		
-		set_transparency ();
+		colorNode -> addInterest (&IndexedLineSet::requestRebuild,  this);
+		colorNode -> addInterest (&IndexedLineSet::set_transparent, this);
 	}
-	else
-		transparent = false;
+
+	set_transparent ();
 }
 
 void
-IndexedLineSet::set_transparency ()
+IndexedLineSet::set_transparent ()
 {
-	transparent = colorNode -> isTransparent ();
+	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

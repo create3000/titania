@@ -102,10 +102,6 @@ public:
 	{ return X3DUrlObject::checkLoadState (); }
 
 	virtual
-	bool
-	isTransparent () const;
-
-	virtual
 	size_t
 	getWidth () const final override;
 

@@ -83,8 +83,7 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	        attribNodes (),
 	       fogCoordNode (),
 	          colorNode (),
-	          coordNode (),
-	        transparent (false)
+	          coordNode ()
 {
 	addType (X3DConstants::LineSet);
 
@@ -170,27 +169,25 @@ LineSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&LineSet::requestRebuild,   this);
-		colorNode -> removeInterest (&LineSet::set_transparency, this);
+		colorNode -> removeInterest (&LineSet::requestRebuild,  this);
+		colorNode -> removeInterest (&LineSet::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&LineSet::requestRebuild,   this);
-		colorNode -> addInterest (&LineSet::set_transparency, this);
-		
-		set_transparency ();
+		colorNode -> addInterest (&LineSet::requestRebuild,  this);
+		colorNode -> addInterest (&LineSet::set_transparent, this);
 	}
-	else
-		transparent = false;
+
+	set_transparent ();
 }
 
 void
-LineSet::set_transparency ()
+LineSet::set_transparent ()
 {
-	transparent = colorNode -> isTransparent ();
+	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

@@ -80,6 +80,7 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 
 	point () .setUnit (UnitCategory::LENGTH);
 
+	setTransparent (true);
 	setGeometryType (GeometryType::GEOMETRY_POINTS);
 }
 
@@ -99,15 +100,6 @@ const X3DPtr <ComposedShader> &
 Polypoint2D::getShaderNode (X3DBrowser* const browser)
 {
 	return browser -> getPointShader ();
-}
-
-bool
-Polypoint2D::isTransparent () const
-{
-	if (getBrowser () -> getFixedPipelineRequired ())
-		return false;
-
-	return true; // The antialiased border is transparent!
 }
 
 void

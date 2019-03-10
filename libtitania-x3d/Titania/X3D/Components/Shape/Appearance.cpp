@@ -157,21 +157,6 @@ Appearance::setExecutionContext (X3DExecutionContext* const executionContext)
 	}
 }
 
-bool
-Appearance::isTransparent () const
-{
-	if (materialNode and materialNode -> isTransparent ())
-		return true;
-
-	if (textureNode and textureNode -> isTransparent ())
-		return true;
-
-	if (blendModeNode)
-		return true;
-
-	return false;
-}
-
 void
 Appearance::set_fillProperties ()
 {
@@ -197,13 +182,29 @@ Appearance::set_lineProperties ()
 void
 Appearance::set_material ()
 {
+	if (materialNode)
+		materialNode -> isTransparent () .removeInterest (&Appearance::set_transparent, this);
+
 	materialNode .set (x3d_cast <X3DMaterialNode*> (material ()));
+
+	if (materialNode)
+		materialNode -> isTransparent () .addInterest (&Appearance::set_transparent, this);
+
+	set_transparent ();
 }
 
 void
 Appearance::set_texture ()
 {
+	if (textureNode)
+		textureNode -> isTransparent () .removeInterest (&Appearance::set_transparent, this);
+
 	textureNode .set (x3d_cast <X3DTextureNode*> (texture ()));
+
+	if (textureNode)
+		textureNode -> isTransparent () .addInterest (&Appearance::set_transparent, this);
+
+	set_transparent ();
 }
 
 void
@@ -265,6 +266,16 @@ void
 Appearance::set_blendMode ()
 {
 	blendModeNode .set (x3d_cast <BlendMode*> (blendMode ()));
+
+	set_transparent ();
+}
+
+void
+Appearance::set_transparent ()
+{
+	setTransparent ((materialNode and materialNode -> isTransparent ()) or
+	                (textureNode  and textureNode -> isTransparent ()) or
+	                 blendModeNode);
 }
 
 void

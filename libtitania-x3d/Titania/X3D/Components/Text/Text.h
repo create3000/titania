@@ -181,10 +181,6 @@ public:
 	getBBox () const override;
 
 	virtual
-	bool
-	isTransparent () const;
-
-	virtual
 	float
 	getLength (const size_t index);
 

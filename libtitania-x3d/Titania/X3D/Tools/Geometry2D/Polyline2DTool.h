@@ -79,13 +79,6 @@ public:
 	lineSegments () const final override
 	{ return getNode <Polyline2D> () -> lineSegments (); }
 
-	///  @name Test
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DLineGeometryNodeTool::isTransparent (); }
-
 	///  @name Operations
 
 	virtual

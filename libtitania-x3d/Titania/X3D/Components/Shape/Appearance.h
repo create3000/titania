@@ -153,12 +153,6 @@ public:
 	blendMode () const
 	{ return *fields .blendMode; }
 
-	///  @name Operations
-
-	virtual
-	bool
-	isTransparent () const;
-
 	///  @name MemberAccess
 
 	virtual
@@ -243,6 +237,9 @@ private:
 
 	void
 	set_blendMode ();
+
+	void
+	set_transparent ();
 
 	///  @name Static members
 

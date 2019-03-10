@@ -96,11 +96,6 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-	
-	virtual
-	bool
-	isTransparent () const final override
-	{ return false; }
 
 	virtual
 	const SFEnum <LoadState> &

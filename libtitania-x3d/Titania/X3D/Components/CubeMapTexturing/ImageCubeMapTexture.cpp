@@ -108,12 +108,6 @@ ImageCubeMapTexture::setExecutionContext (X3DExecutionContext* const executionCo
 	X3DEnvironmentTextureNode::setExecutionContext (executionContext);
 }
 
-bool
-ImageCubeMapTexture::isTransparent () const
-{
-	return textureNode -> isTransparent ();
-}
-
 size_t
 ImageCubeMapTexture::getWidth () const
 {
@@ -204,7 +198,8 @@ ImageCubeMapTexture::set_loadState ()
 	
 				setImage (getTargets () [i], GL_RGBA, GL_RGBA, image .data ());
 			}
-	
+
+			setTransparent (textureNode -> isTransparent ());
 			break;
 		}
 		case FAILED_STATE:
@@ -212,6 +207,7 @@ ImageCubeMapTexture::set_loadState ()
 			for (size_t i = 0; i < 6; ++ i)
 				setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr);
 
+			setTransparent (false);
 			break;
 		}
 		default:

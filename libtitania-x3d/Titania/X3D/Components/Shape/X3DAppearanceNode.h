@@ -67,9 +67,9 @@ public:
 
 	///  @name Member access
 
-	virtual
-	bool
-	isTransparent () const = 0;
+	const SFBool &
+	isTransparent () const
+	{ return transparent; }
 
 	virtual
 	const X3DPtr <FillProperties> &
@@ -95,6 +95,18 @@ protected:
 	///  @name Construction
 
 	X3DAppearanceNode ();
+
+	///  @name Member access
+
+	void
+	setTransparent (const bool value);
+
+
+protected:
+
+	///  @name Members
+
+	SFBool transparent;
 
 };
 

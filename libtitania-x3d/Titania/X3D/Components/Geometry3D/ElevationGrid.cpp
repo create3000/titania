@@ -99,8 +99,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	   texCoordNode (),
 	     normalNode (),
 	         future (),
-	      loadState (NOT_STARTED_STATE),
-	    transparent (false)
+	      loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::ElevationGrid);
 
@@ -201,27 +200,25 @@ ElevationGrid::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&ElevationGrid::requestRebuild,   this);
-		colorNode -> removeInterest (&ElevationGrid::set_transparency, this);
+		colorNode -> removeInterest (&ElevationGrid::requestRebuild,  this);
+		colorNode -> removeInterest (&ElevationGrid::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&ElevationGrid::requestRebuild,   this);
-		colorNode -> addInterest (&ElevationGrid::set_transparency, this);
-		
-		set_transparency ();
+		colorNode -> addInterest (&ElevationGrid::requestRebuild,  this);
+		colorNode -> addInterest (&ElevationGrid::set_transparent, this);
 	}
-	else
-		transparent = false;
+		
+	set_transparent ();
 }
 
 void
-ElevationGrid::set_transparency ()
+ElevationGrid::set_transparent ()
 {
-	transparent = colorNode -> isTransparent ();
+	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

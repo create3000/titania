@@ -71,6 +71,7 @@ const Matrix4d X3DGeometryNode::matrix;
 X3DGeometryNode::X3DGeometryNode () :
 	          X3DNode (),
 	     cameraObject (),
+	      transparent (),
 	    rebuildOutput (),
 	             bbox (),
 	      attribNodes (),
@@ -100,6 +101,8 @@ X3DGeometryNode::X3DGeometryNode () :
 	                 rebuildOutput,
 	                 texCoordNode);
 
+	cameraObject  .setAccessType (outputOnly);
+	transparent   .setAccessType (outputOnly);
 	rebuildOutput .setAccessType (outputOnly);
 }
 
@@ -149,6 +152,13 @@ X3DGeometryNode::setCameraObject (const bool value)
 {
 	if (value not_eq cameraObject)
 	   cameraObject = value;
+}
+
+void
+X3DGeometryNode::setTransparent (const bool value)
+{
+	if (value not_eq transparent)
+	   transparent = value;
 }
 
 Box3d

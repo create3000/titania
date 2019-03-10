@@ -73,7 +73,6 @@ X3DTexture3DNode::X3DTexture3DNode () :
 	         textureWidth (0),
 	        textureHeight (0),
 	         textureDepth (0),
-	          transparent (false),
 	texturePropertiesNode ()
 {
 	addType (X3DConstants::X3DTexture3DNode);
@@ -167,8 +166,8 @@ X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, cons
 	textureWidth  = width;
 	textureHeight = height;
 	textureDepth  = depth;
-	transparent   = math::is_even (comp);
 
+	setTransparent (math::is_even (comp));
 	updateTextureProperties ();
 
 	glBindTexture (GL_TEXTURE_3D, getTextureId ());

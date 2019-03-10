@@ -243,10 +243,6 @@ public:
 	getBBox () const override;
 
 	virtual
-	bool
-	isTransparent () const override;
-
-	virtual
 	X3D::GeometryType
 	getGeometryType () const override;
 
@@ -283,6 +279,12 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_transparent () final override;
 
 
 private:

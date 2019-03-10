@@ -111,7 +111,8 @@ public:
 
 	virtual
 	bool
-	isTransparent () const = 0;
+	isTransparent () const
+	{ return transparent; }
 
 	virtual
 	const X3DPtr <X3DAppearanceNode> &
@@ -160,6 +161,18 @@ protected:
 	void
 	initialize () override;
 
+	void
+	setTransparent (const bool value)
+	{ transparent = value; }
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_transparent ();
+
+	///  @name Operations
+	
 	virtual
 	void
 	draw (ShapeContainer* const) = 0;
@@ -195,6 +208,7 @@ private:
 	bool                       hidden;
 	X3DPtr <X3DAppearanceNode> appearanceNode;
 	X3DPtr <X3DGeometryNode>   geometryNode;
+	bool                       transparent;
 
 	std::function <void (GLuint)> glBindProgramPipeline;
 

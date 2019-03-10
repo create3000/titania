@@ -139,11 +139,6 @@ public:
 	///  @name Operations
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return transparency (); }
-
-	virtual
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
 

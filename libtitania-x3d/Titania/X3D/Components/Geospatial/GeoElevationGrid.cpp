@@ -92,8 +92,7 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	       texCoordNode (),
 	         normalNode (),
 	             future (),
-	          loadState (NOT_STARTED_STATE),
-	        transparent (false)
+	          loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::GeoElevationGrid);
 
@@ -159,16 +158,26 @@ void
 GeoElevationGrid::set_color ()
 {
 	if (colorNode)
-		colorNode -> removeInterest (&GeoElevationGrid::requestRebuild, this);
+	{
+		colorNode -> removeInterest (&GeoElevationGrid::requestRebuild,  this);
+		colorNode -> removeInterest (&GeoElevationGrid::set_transparent, this);
+	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
-		colorNode -> addInterest (&GeoElevationGrid::requestRebuild, this);
+	{
+		colorNode -> addInterest (&GeoElevationGrid::requestRebuild,  this);
+		colorNode -> addInterest (&GeoElevationGrid::set_transparent, this);
+	}
 
-	// Transparent
+	set_transparent ();
+}
 
-	transparent = colorNode and colorNode -> isTransparent ();
+void
+GeoElevationGrid::set_transparent ()
+{
+	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

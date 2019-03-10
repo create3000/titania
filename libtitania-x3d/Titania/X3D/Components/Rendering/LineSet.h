@@ -138,13 +138,6 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const override
-	{ return transparent; }
-
 	///  @name Operations
 
 	virtual
@@ -189,7 +182,7 @@ private:
 	set_color ();
 
 	void
-	set_transparency ();
+	set_transparent ();
 
 	void
 	set_coord ();
@@ -227,7 +220,6 @@ private:
 	X3DPtr <FogCoordinate>               fogCoordNode;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DCoordinateNode>           coordNode;
-	bool                                 transparent;
 
 };
 

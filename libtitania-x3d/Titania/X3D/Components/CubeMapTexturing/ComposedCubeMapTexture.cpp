@@ -76,7 +76,6 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	X3DEnvironmentTextureNode (),
 	                   fields (),
 	                    nodes (6),
-	              transparent (false),
 	                    width (0),
                       height (0),
 	               components (0),
@@ -147,8 +146,8 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 	{
 		// Get transparent and components
 
-		transparent = false;
-		components  = 0;
+		bool transparent = false;
+		components = 0;
 
 		for (const auto & node : nodes)
 		{
@@ -160,6 +159,8 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 				components  = std::max <int32_t> (components, texture -> components ());
 			}
 		}
+
+		setTransparent (transparent);
 
 		// Get texture 2d data as four component RGBA
 

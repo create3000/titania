@@ -81,7 +81,6 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	X3DEnvironmentTextureNode (),
 	                   fields (),
 	                loadState (NOT_STARTED_STATE),
-	              transparent (false),
 	               updateType (UpdateType::NONE),
 	                 renderer (new DependentRenderer (executionContext)),
 	              frameBuffer (),
@@ -235,7 +234,7 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 	const auto   farValue         = navigationInfo -> getFarValue (viewpoint);
 	const auto   projectionMatrix = camera <double>::perspective (90.0_deg, nearValue, farValue, 1, 1);
 
-	transparent = background -> isTransparent ();
+	setTransparent (background -> isTransparent ());
 
 	browser     -> getDisplayTools () .push (false);
 	frameBuffer -> bind ();

@@ -209,6 +209,8 @@ TwoSidedMaterial::eventsProcessed ()
 
 		glBackShininess = glShininess;
 	}
+
+	setTransparent (transparency () or (separateBackColor () and backTransparency ()));
 }
 
 void

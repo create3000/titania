@@ -97,6 +97,8 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "texture",  texture ());
 
 	addChildObjects (textureNodes);
+
+	setTransparent (true);
 }
 
 X3DBaseNode*
@@ -121,12 +123,6 @@ MultiTexture::initialize ()
 	set_texture ();
 
 	loadState = COMPLETE_STATE;
-}
-
-bool
-MultiTexture::isTransparent () const
-{
-	return true;
 }
 
 MultiTexture::ModeType

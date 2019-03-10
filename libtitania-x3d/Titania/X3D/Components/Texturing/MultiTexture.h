@@ -144,10 +144,6 @@ public:
 	{ return GL_NONE; }
 
 	virtual
-	bool
-	isTransparent () const final override;
-
-	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const final override
 	{ return loadState; }

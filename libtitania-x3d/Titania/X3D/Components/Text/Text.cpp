@@ -146,12 +146,6 @@ Text::getBBox () const
 	return textGeometry -> getBBox ();
 }
 
-bool
-Text::isTransparent () const
-{
-	return textGeometry -> isTransparent ();
-}
-
 float
 Text::getLength (const size_t index)
 {
@@ -189,6 +183,8 @@ Text::build ()
 		// Let the fontStyle build the text geometry.
 
 		textGeometry .set (fontStyleNode -> getTextGeometry (this));
+
+		setTransparent (textGeometry -> isTransparent ());
 	}
 	catch (const std::exception &)
 	{

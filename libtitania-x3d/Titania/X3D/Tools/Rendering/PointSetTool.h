@@ -109,13 +109,6 @@ public:
 	coord () const final override
 	{ return getNode <PointSet> () -> coord (); }
 
-	///  @name Test
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DLineGeometryNodeTool::isTransparent (); }
-
 	///  @name Operations
 
 	virtual

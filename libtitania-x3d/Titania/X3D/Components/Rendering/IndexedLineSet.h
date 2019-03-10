@@ -173,11 +173,6 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	isTransparent () const override
-	{ return transparent; }
-
-	virtual
 	const X3DPtrArray <X3DVertexAttributeNode> &
 	getAttrib () const
 	{ return attribNodes; }
@@ -245,7 +240,7 @@ private:
 	set_color ();
 
 	void
-	set_transparency ();
+	set_transparent ();
 
 	void
 	set_coord ();
@@ -301,7 +296,6 @@ private:
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DCoordinateNode>           coordNode;
 	X3DPtr <LSystem>                     optionsNode;
-	bool                                 transparent;
 
 };
 

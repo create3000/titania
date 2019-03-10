@@ -162,11 +162,6 @@ public:
 	{ return getNode <Text> () -> getBBox (); }
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return getNode <Text> () -> isTransparent (); }
-
-	virtual
 	float
 	getLength (const size_t index) final override
 	{ return getNode <Text> () -> getLength (index); }

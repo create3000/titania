@@ -86,8 +86,7 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	      colorNode (),
 	   texCoordNode (),
 	     normalNode (),
-	      coordNode (),
-	    transparent (false)
+	      coordNode ()
 {
 	addType (X3DConstants::X3DComposedGeometryNode);
 
@@ -158,27 +157,25 @@ X3DComposedGeometryNode::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild,   this);
-		colorNode -> removeInterest (&X3DComposedGeometryNode::set_transparency, this);
+		colorNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild,  this);
+		colorNode -> removeInterest (&X3DComposedGeometryNode::set_transparent, this);
 	}
 
 	colorNode = x3d_cast <X3DColorNode*> (color ());
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&X3DComposedGeometryNode::requestRebuild,   this);
-		colorNode -> addInterest (&X3DComposedGeometryNode::set_transparency, this);
-		
-		set_transparency ();
+		colorNode -> addInterest (&X3DComposedGeometryNode::requestRebuild,  this);
+		colorNode -> addInterest (&X3DComposedGeometryNode::set_transparent, this);
 	}
-	else
-		transparent = false;
+
+	set_transparent ();
 }
 
 void
-X3DComposedGeometryNode::set_transparency ()
+X3DComposedGeometryNode::set_transparent ()
 {
-	transparent = colorNode -> isTransparent ();
+	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

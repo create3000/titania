@@ -113,6 +113,11 @@ public:
 	isHidden () const final override
 	{ return getNode <X3DShapeNode> () -> isHidden (); }
 
+	virtual
+	bool
+	isTransparent () const final override
+	{ return getNode <X3DShapeNode> () -> isTransparent (); }
+
 	const X3DPtr <X3DAppearanceNode> &
 	getAppearance () const  final override
 	{ return getNode <X3DShapeNode> () -> getAppearance (); }

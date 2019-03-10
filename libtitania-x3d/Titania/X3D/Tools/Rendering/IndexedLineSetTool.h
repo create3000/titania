@@ -154,11 +154,6 @@ public:
 	///  @name Test
 
 	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DLineGeometryNodeTool::isTransparent (); }
-
-	virtual
 	const X3DPtrArray <X3DVertexAttributeNode> &
 	getAttrib () const final override
 	{ return getNode <IndexedLineSet> () -> getAttrib (); }

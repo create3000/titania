@@ -54,9 +54,21 @@ namespace titania {
 namespace X3D {
 
 X3DMaterialNode::X3DMaterialNode () :
-	X3DAppearanceChildNode ()
+	X3DAppearanceChildNode (),
+	           transparent (false)
 {
 	addType (X3DConstants::X3DMaterialNode);
+
+	addChildObjects (transparent);
+
+	transparent .setAccessType (outputOnly);
+}
+
+void
+X3DMaterialNode::setTransparent (const bool value)
+{
+	if (value not_eq transparent)
+		transparent = value;
 }
 
 } // X3D

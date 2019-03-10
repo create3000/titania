@@ -81,8 +81,7 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	        attribNodes (),
 	       fogCoordNode (),
 	          colorNode (),
-	          coordNode (),
-	        transparent (false)
+	          coordNode ()
 {
 	addType (X3DConstants::PointSet);
 
@@ -128,15 +127,6 @@ PointSet::getShaderNode (X3DBrowser* const browser)
 	return browser -> getPointShader ();
 }
 
-bool
-PointSet::isTransparent () const
-{
-	if (getBrowser () -> getFixedPipelineRequired ())
-		return transparent;
-
-	return true; // The antialiased border is transparent!
-}
-
 void
 PointSet::set_attrib ()
 {
@@ -176,27 +166,25 @@ PointSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&PointSet::requestRebuild,   this);
-		colorNode -> removeInterest (&PointSet::set_transparency, this);
+		colorNode -> removeInterest (&PointSet::requestRebuild,  this);
+		colorNode -> removeInterest (&PointSet::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&PointSet::requestRebuild,   this);
-		colorNode -> addInterest (&PointSet::set_transparency, this);
-		
-		set_transparency ();
+		colorNode -> addInterest (&PointSet::requestRebuild,  this);
+		colorNode -> addInterest (&PointSet::set_transparent, this);
 	}
-	else
-		transparent = false;
+		
+	set_transparent ();
 }
 
 void
-PointSet::set_transparency ()
+PointSet::set_transparent ()
 {
-	transparent = colorNode -> isTransparent ();
+	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

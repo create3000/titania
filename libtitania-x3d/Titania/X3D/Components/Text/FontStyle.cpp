@@ -243,7 +243,7 @@ PolygonText::toPrimitive () const
 	return SFNode (geometry);
 }
 
-const Component   FontStyle::component      = Component ("Titania", 2);
+const Component   FontStyle::component      = Component ("Text", 1);
 const std::string FontStyle::typeName       = "FontStyle";
 const std::string FontStyle::containerField = "fontStyle";
 

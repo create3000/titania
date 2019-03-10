@@ -219,13 +219,6 @@ public:
 	height () const final override
 	{ return getNode <ElevationGrid> () -> height (); }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return getNode <ElevationGrid> () -> isTransparent (); }
-
 	///  @name Height map handling
 
 	virtual

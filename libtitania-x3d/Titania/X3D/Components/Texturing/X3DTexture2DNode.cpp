@@ -69,7 +69,6 @@ X3DTexture2DNode::Fields::Fields () :
 X3DTexture2DNode::X3DTexture2DNode () :
 	       X3DTextureNode (),
 	               fields (),
-	          transparent (false),
 	         textureWidth (0),
 	        textureHeight (0),
 	texturePropertiesNode ()
@@ -163,7 +162,7 @@ X3DTexture2DNode::clearTexture ()
 
 void
 X3DTexture2DNode::setImage (const GLenum internalFormat,
-                            const bool t,
+                            const bool transparent,
                             const size_t comp,
                             const GLint width,
                             const GLint height,
@@ -174,8 +173,8 @@ X3DTexture2DNode::setImage (const GLenum internalFormat,
 
 	textureWidth  = width;
 	textureHeight = height;
-	transparent   = t;
 
+	setTransparent (transparent);
 	updateTextureProperties ();
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());

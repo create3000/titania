@@ -133,6 +133,8 @@ Material::eventsProcessed ()
 	glEmissiveColor [3] = alpha;
 
 	glShininess = std::clamp <float> (shininess (), 0, 1) * 128;
+
+	setTransparent (transparency ());
 }
 
 void

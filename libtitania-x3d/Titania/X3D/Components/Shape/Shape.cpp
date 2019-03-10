@@ -107,18 +107,6 @@ Shape::set_transformSensors ()
 	setPickableObject (not getTransformSensors () .empty ());
 }
 
-bool
-Shape::isTransparent () const
-{
-	if (getAppearance () and getAppearance () -> isTransparent ())
-		return true;
-
-	if (getGeometry () and getGeometry () -> isTransparent ())
-		return true;
-
-	return false;
-}
-
 GeometryType
 Shape::getGeometryType () const
 {

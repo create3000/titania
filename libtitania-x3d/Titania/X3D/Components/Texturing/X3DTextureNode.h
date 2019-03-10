@@ -72,6 +72,10 @@ public:
 
 	///  @name Member access
 
+	const SFBool &
+	isTransparent () const
+	{ return transparent; }
+
 	virtual
 	GLenum
 	getTarget () const = 0;
@@ -79,10 +83,6 @@ public:
 	GLuint
 	getTextureId () const
 	{ return textureId; }
-
-	virtual
-	bool
-	isTransparent () const = 0;
 
 	virtual
 	const SFEnum <LoadState> &
@@ -116,6 +116,11 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	void
+	setTransparent (const bool value);
+
 	///  @name Operations
 
 	void
@@ -140,6 +145,7 @@ private:
 
 	///  @name Members
 
+	SFBool transparent;
 	GLuint textureId;
 
 };
