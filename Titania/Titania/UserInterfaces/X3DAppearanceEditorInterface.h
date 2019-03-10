@@ -489,30 +489,6 @@ public:
 	getBlendModeBox () const
 	{ return *m_BlendModeBox; }
 
-	Gtk::ComboBoxText &
-	getBlendModeSourceColorFactorButton () const
-	{ return *m_BlendModeSourceColorFactorButton; }
-
-	Gtk::ComboBoxText &
-	getBlendModeSourceAlphaFactorButton () const
-	{ return *m_BlendModeSourceAlphaFactorButton; }
-
-	Gtk::ComboBoxText &
-	getBlendModeDestinationColorFactorButton () const
-	{ return *m_BlendModeDestinationColorFactorButton; }
-
-	Gtk::ComboBoxText &
-	getBlendModeDestinationAlphaFactorButton () const
-	{ return *m_BlendModeDestinationAlphaFactorButton; }
-
-	Gtk::ComboBoxText &
-	getBlendModeColorEquationButton () const
-	{ return *m_BlendModeColorEquationButton; }
-
-	Gtk::ComboBoxText &
-	getBlendModeAlphaEquationButton () const
-	{ return *m_BlendModeAlphaEquationButton; }
-
 	Gtk::Box &
 	getBlendModeBlendColorBox () const
 	{ return *m_BlendModeBlendColorBox; }
@@ -536,6 +512,30 @@ public:
 	Gtk::Button &
 	getBlendModeRenameButton () const
 	{ return *m_BlendModeRenameButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeSourceColorFactorButton () const
+	{ return *m_BlendModeSourceColorFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeSourceAlphaFactorButton () const
+	{ return *m_BlendModeSourceAlphaFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeDestinationColorFactorButton () const
+	{ return *m_BlendModeDestinationColorFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeDestinationAlphaFactorButton () const
+	{ return *m_BlendModeDestinationAlphaFactorButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeColorEquationButton () const
+	{ return *m_BlendModeColorEquationButton; }
+
+	Gtk::ComboBoxText &
+	getBlendModeAlphaEquationButton () const
+	{ return *m_BlendModeAlphaEquationButton; }
 
 	Gtk::Label &
 	getBlendModeRedLabel () const
@@ -883,18 +883,18 @@ private:
 	Gtk::CheckButton* m_BlendModeCheckButton;
 	Gtk::Button* m_BlendModeUnlinkButton;
 	Gtk::Grid* m_BlendModeBox;
-	Gtk::ComboBoxText* m_BlendModeSourceColorFactorButton;
-	Gtk::ComboBoxText* m_BlendModeSourceAlphaFactorButton;
-	Gtk::ComboBoxText* m_BlendModeDestinationColorFactorButton;
-	Gtk::ComboBoxText* m_BlendModeDestinationAlphaFactorButton;
-	Gtk::ComboBoxText* m_BlendModeColorEquationButton;
-	Gtk::ComboBoxText* m_BlendModeAlphaEquationButton;
 	Gtk::Box* m_BlendModeBlendColorBox;
 	Gtk::Button* m_BlendModeBlendColorButton;
 	Gtk::Scale* m_BlendModeBlendColorScale;
 	Gtk::Box* m_BlendModeNameBox;
 	Gtk::Entry* m_BlendModeNameEntry;
 	Gtk::Button* m_BlendModeRenameButton;
+	Gtk::ComboBoxText* m_BlendModeSourceColorFactorButton;
+	Gtk::ComboBoxText* m_BlendModeSourceAlphaFactorButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationColorFactorButton;
+	Gtk::ComboBoxText* m_BlendModeDestinationAlphaFactorButton;
+	Gtk::ComboBoxText* m_BlendModeColorEquationButton;
+	Gtk::ComboBoxText* m_BlendModeAlphaEquationButton;
 	Gtk::Label* m_BlendModeRedLabel;
 	Gtk::Label* m_BlendModeGreenLabel;
 	Gtk::Label* m_BlendModeBlueLabel;
