@@ -169,15 +169,19 @@ GeoElevationGrid::set_color ()
 	{
 		colorNode -> addInterest (&GeoElevationGrid::requestRebuild,  this);
 		colorNode -> addInterest (&GeoElevationGrid::set_transparent, this);
-	}
 
-	set_transparent ();
+		set_transparent ();
+	}
+	else
+	{
+		setTransparent (false);
+	}
 }
 
 void
 GeoElevationGrid::set_transparent ()
 {
-	setTransparent (colorNode and colorNode -> isTransparent ());
+	setTransparent (colorNode -> isTransparent ());
 }
 
 void

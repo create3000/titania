@@ -173,9 +173,6 @@ private:
 	set_color ();
 
 	void
-	set_transparent ();
-
-	void
 	set_coord ();
 
 	///  @name Operations

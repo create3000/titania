@@ -179,15 +179,19 @@ LineSet::set_color ()
 	{
 		colorNode -> addInterest (&LineSet::requestRebuild,  this);
 		colorNode -> addInterest (&LineSet::set_transparent, this);
+	
+		set_transparent ();
 	}
-
-	set_transparent ();
+	else
+	{
+		setTransparent (false);
+	}
 }
 
 void
 LineSet::set_transparent ()
 {
-	setTransparent (colorNode and colorNode -> isTransparent ());
+	setTransparent (colorNode -> isTransparent ());
 }
 
 void

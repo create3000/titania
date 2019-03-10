@@ -211,15 +211,19 @@ IndexedLineSet::set_color ()
 	{
 		colorNode -> addInterest (&IndexedLineSet::requestRebuild,  this);
 		colorNode -> addInterest (&IndexedLineSet::set_transparent, this);
+	
+		set_transparent ();
 	}
-
-	set_transparent ();
+	else
+	{
+		setTransparent (false);
+	}
 }
 
 void
 IndexedLineSet::set_transparent ()
 {
-	setTransparent (colorNode and colorNode -> isTransparent ());
+	setTransparent (colorNode -> isTransparent ());
 }
 
 void

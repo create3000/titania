@@ -97,6 +97,7 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	                 coordNode);
 
 	setGeometryType (GeometryType::GEOMETRY_POINTS);
+	setTransparent (true);
 }
 
 X3DBaseNode*
@@ -165,26 +166,12 @@ void
 PointSet::set_color ()
 {
 	if (colorNode)
-	{
 		colorNode -> removeInterest (&PointSet::requestRebuild,  this);
-		colorNode -> removeInterest (&PointSet::set_transparent, this);
-	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
-	{
 		colorNode -> addInterest (&PointSet::requestRebuild,  this);
-		colorNode -> addInterest (&PointSet::set_transparent, this);
-	}
-		
-	set_transparent ();
-}
-
-void
-PointSet::set_transparent ()
-{
-	setTransparent (colorNode and colorNode -> isTransparent ());
 }
 
 void

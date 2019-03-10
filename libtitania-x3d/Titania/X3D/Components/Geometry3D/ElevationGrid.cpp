@@ -210,15 +210,19 @@ ElevationGrid::set_color ()
 	{
 		colorNode -> addInterest (&ElevationGrid::requestRebuild,  this);
 		colorNode -> addInterest (&ElevationGrid::set_transparent, this);
+
+		set_transparent ();
 	}
-		
-	set_transparent ();
+	else
+	{
+		setTransparent (false);
+	}
 }
 
 void
 ElevationGrid::set_transparent ()
 {
-	setTransparent (colorNode and colorNode -> isTransparent ());
+	setTransparent (colorNode -> isTransparent ());
 }
 
 void
