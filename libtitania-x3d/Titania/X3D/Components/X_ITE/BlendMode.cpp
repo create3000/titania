@@ -63,39 +63,39 @@ const std::string BlendMode::containerField = "blendMode";
 
 const std::map <std::string, GLenum> BlendMode::blendTypes = {
 	// WebGL
-   std::pair ("ZERO",                     GL_ZERO ),
-   std::pair ("ONE",                      GL_ONE ),
-   std::pair ("SRC_COLOR",                GL_SRC_COLOR ),
-   std::pair ("ONE_MINUS_SRC_COLOR",      GL_ONE_MINUS_SRC_COLOR ),
-   std::pair ("DST_COLOR",                GL_DST_COLOR ),
-   std::pair ("ONE_MINUS_DST_COLOR",      GL_ONE_MINUS_DST_COLOR ),
-   std::pair ("SRC_ALPHA",                GL_SRC_ALPHA ),
-   std::pair ("ONE_MINUS_SRC_ALPHA",      GL_ONE_MINUS_SRC_ALPHA ),
-   std::pair ("DST_ALPHA",                GL_DST_ALPHA ),
-   std::pair ("ONE_MINUS_DST_ALPHA",      GL_ONE_MINUS_DST_ALPHA ),
-   std::pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE ),
-   std::pair ("CONSTANT_COLOR",           GL_CONSTANT_COLOR  ),
-   std::pair ("ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR ),
-   std::pair ("CONSTANT_ALPHA",           GL_CONSTANT_ALPHA ),
-   std::pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA ),
+   std::pair ("ZERO",                     GL_ZERO),
+   std::pair ("ONE",                      GL_ONE),
+   std::pair ("SRC_COLOR",                GL_SRC_COLOR),
+   std::pair ("ONE_MINUS_SRC_COLOR",      GL_ONE_MINUS_SRC_COLOR),
+   std::pair ("DST_COLOR",                GL_DST_COLOR),
+   std::pair ("ONE_MINUS_DST_COLOR",      GL_ONE_MINUS_DST_COLOR),
+   std::pair ("SRC_ALPHA",                GL_SRC_ALPHA),
+   std::pair ("ONE_MINUS_SRC_ALPHA",      GL_ONE_MINUS_SRC_ALPHA),
+   std::pair ("DST_ALPHA",                GL_DST_ALPHA),
+   std::pair ("ONE_MINUS_DST_ALPHA",      GL_ONE_MINUS_DST_ALPHA),
+   std::pair ("SRC_ALPHA_SATURATE",       GL_SRC_ALPHA_SATURATE),
+   std::pair ("CONSTANT_COLOR",           GL_CONSTANT_COLOR),
+   std::pair ("ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR),
+   std::pair ("CONSTANT_ALPHA",           GL_CONSTANT_ALPHA),
+   std::pair ("ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA),
 	// OpenGL
-   // std::pair ("SRC1_COLOR",               GL_SRC1_COLOR ),
-   // std::pair ("SRC1_ALPHA",               GL_SRC1_ALPHA ),
+   // std::pair ("SRC1_COLOR",               GL_SRC1_COLOR),
+   // std::pair ("SRC1_ALPHA",               GL_SRC1_ALPHA),
 };
 
 const std::map <std::string, GLenum> BlendMode::blendModes = {
-   std::pair ("FUNC_ADD",              GL_FUNC_ADD ),
-   std::pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT ),
-   std::pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT ),
-   std::pair ("MIN",                   GL_MIN ),
-   std::pair ("MAX",                   GL_MAX ),
+   std::pair ("FUNC_ADD",              GL_FUNC_ADD),
+   std::pair ("FUNC_SUBTRACT",         GL_FUNC_SUBTRACT),
+   std::pair ("FUNC_REVERSE_SUBTRACT", GL_FUNC_REVERSE_SUBTRACT),
+   std::pair ("MIN",                   GL_MIN),
+   std::pair ("MAX",                   GL_MAX),
 };
 
 BlendMode::Fields::Fields () :
 	            blendColor (new SFColorRGBA ()),
 	     sourceColorFactor (new SFString ("SRC_ALPHA")),
-	     sourceAlphaFactor (new SFString ("ONE_MINUS_SRC_ALPHA")),
-	destinationColorFactor (new SFString ("ONE")),
+	     sourceAlphaFactor (new SFString ("ONE")),
+	destinationColorFactor (new SFString ("ONE_MINUS_SRC_ALPHA")),
 	destinationAlphaFactor (new SFString ("ONE_MINUS_SRC_ALPHA")),
 	         colorEquation (new SFString ("FUNC_ADD")),
 	         alphaEquation (new SFString ("FUNC_ADD"))
@@ -105,8 +105,8 @@ BlendMode::BlendMode (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DAppearanceChildNode (),
 	     sourceColorFactorType (GL_SRC_ALPHA),
-	     sourceAlphaFactorType (GL_ONE_MINUS_SRC_ALPHA),
-	destinationColorFactorType (GL_ONE),
+	     sourceAlphaFactorType (GL_ONE),
+	destinationColorFactorType (GL_ONE_MINUS_SRC_ALPHA),
 	destinationAlphaFactorType (GL_ONE_MINUS_SRC_ALPHA),
 	         colorEquationType (GL_FUNC_ADD),
 	         alphaEquationType (GL_FUNC_ADD)
@@ -139,8 +139,8 @@ BlendMode::initialize ()
 	sourceAlphaFactor ()      .addInterest (&BlendMode::set_sourceAlphaFactor,      this);
 	destinationColorFactor () .addInterest (&BlendMode::set_destinationColorFactor, this);
 	destinationAlphaFactor () .addInterest (&BlendMode::set_destinationAlphaFactor, this);
-	colorEquation ()          .addInterest (&BlendMode::set_colorEquation,        this);
-	alphaEquation ()          .addInterest (&BlendMode::set_alphaEquation,        this);
+	colorEquation ()          .addInterest (&BlendMode::set_colorEquation,          this);
+	alphaEquation ()          .addInterest (&BlendMode::set_alphaEquation,          this);
 
 	set_sourceColorFactor ();
 	set_sourceAlphaFactor ();
@@ -172,7 +172,7 @@ BlendMode::set_sourceAlphaFactor ()
 	}
 	catch (const X3DError &)
 	{
-		sourceAlphaFactorType = GL_ONE_MINUS_SRC_ALPHA;
+		sourceAlphaFactorType = GL_ONE;
 	}
 }
 
@@ -185,7 +185,7 @@ BlendMode::set_destinationColorFactor ()
 	}
 	catch (const X3DError &)
 	{
-		destinationColorFactorType = GL_ONE;
+		destinationColorFactorType = GL_ONE_MINUS_SRC_ALPHA;
 	}
 }
 
@@ -234,7 +234,7 @@ BlendMode::enable ()
 	const auto & c = blendColor () .getValue ();
 
 	glBlendColor (c .r (), c .g (), c .b (), c .a ());
-	glBlendFuncSeparate (sourceColorFactorType, sourceAlphaFactorType, destinationColorFactorType, destinationAlphaFactorType);
+	glBlendFuncSeparate (sourceColorFactorType, destinationColorFactorType, sourceAlphaFactorType, destinationAlphaFactorType);
 	glBlendEquationSeparate (colorEquationType, alphaEquationType);
 }
 
@@ -244,7 +244,6 @@ BlendMode::disable ()
 	glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
 }
-
 
 } // X3D
 } // titania

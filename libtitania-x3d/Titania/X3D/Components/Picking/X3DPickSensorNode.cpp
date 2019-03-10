@@ -278,6 +278,8 @@ X3DPickSensorNode::getPickedGeometries () const
 		}
 	}
 
+	pickedGeometries .erase (std::remove (pickedGeometries .begin (), pickedGeometries .end (), nullptr),	pickedGeometries .end ());
+
 	return pickedGeometries;
 }
 
