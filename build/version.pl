@@ -45,18 +45,23 @@ sub rsync
 {
 	my $release = shift;
 	my $local   = "/home/holger/Projekte/Titania/libtitania-x3d/share/titania";
-	my $ftp     = "/run/user/1000/gvfs/ftp:host=create3000.de/html/create3000.de/code/htdocs/titania/$release/";
+	my $ftp     = "/html/create3000.de/code/htdocs/titania/$release/";
+	my $HOST    = "alfa3008.alfahosting-server.de";
+	my $USER    = "web839";
 
 	my @folders = (
-		"/shaders/glTF/",
+		"/shaders/glTF",
 	);
 
 	say "Uploading $release";
 
 	foreach (@folders)
 	{
-		system "mkdir", "-p", "$ftp/$_";
-		system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "$local/$_", "$ftp/$_";
+		#system "mkdir", "-p", "$ftp/$_";
+		#system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "$local/$_", "$ftp/$_";
+
+		system "lftp", "-e", "mkdir -p $ftp/$_; bye", "ftp://$USER\@$HOST";
+		system "lftp", "-e", "mirror --reverse --delete --use-cache --verbose $local/$_ $ftp/$_; bye", "ftp://$USER\@$HOST";
 	}
 }
 

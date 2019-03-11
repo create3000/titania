@@ -1,6 +1,6 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="1" Column="1" />
