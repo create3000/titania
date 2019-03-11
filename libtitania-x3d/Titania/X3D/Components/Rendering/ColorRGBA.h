@@ -97,22 +97,6 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	getTransparent () const final override;
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return transparent; }
-
-	void
-	setDynamicTransparency (const bool value);
-
-	bool
-	getDynamicTransparency () const
-	{ return dynamicTransparency; }
-
-	virtual
 	void
 	set1Color (const size_t, const Color4f &) final override;
 

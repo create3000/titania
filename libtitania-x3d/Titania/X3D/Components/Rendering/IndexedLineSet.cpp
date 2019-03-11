@@ -201,8 +201,8 @@ IndexedLineSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&IndexedLineSet::requestRebuild,  this);
-		colorNode -> removeInterest (&IndexedLineSet::set_transparent, this);
+		colorNode -> removeInterest (&IndexedLineSet::requestRebuild, this);
+		colorNode -> isTransparent () .removeInterest (&IndexedLineSet::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
@@ -210,7 +210,7 @@ IndexedLineSet::set_color ()
 	if (colorNode)
 	{
 		colorNode -> addInterest (&IndexedLineSet::requestRebuild,  this);
-		colorNode -> addInterest (&IndexedLineSet::set_transparent, this);
+		colorNode -> isTransparent () .addInterest (&IndexedLineSet::set_transparent, this);
 	
 		set_transparent ();
 	}

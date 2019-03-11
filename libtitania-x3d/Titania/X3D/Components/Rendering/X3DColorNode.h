@@ -63,13 +63,9 @@ public:
 
 	/// @name Member access
 
-	virtual
-	bool
-	getTransparent () const = 0;
-
-	virtual
-	bool
-	isTransparent () const = 0;
+	const SFBool &
+	isTransparent () const
+	{ return transparent; }
 
 	virtual
 	void
@@ -116,6 +112,18 @@ public:
 protected:
 
 	X3DColorNode ();
+
+	///  @name Member access
+
+	void
+	setTransparent (const bool value);
+
+
+private:
+
+	///  @name Members
+
+	SFBool transparent;
 
 };
 

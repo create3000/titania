@@ -64,11 +64,9 @@ ColorRGBA::Fields::Fields () :
 { }
 
 ColorRGBA::ColorRGBA (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       X3DColorNode (),
-	             fields (),
-	        transparent (true),
-	dynamicTransparency (false)
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DColorNode (),
+	      fields ()
 {
 	addType (X3DConstants::ColorRGBA);
 
@@ -86,36 +84,18 @@ void
 ColorRGBA::initialize ()
 {
 	X3DColorNode::initialize ();
-	
-	if (dynamicTransparency)
-		set_color ();
-}
 
-bool
-ColorRGBA::getTransparent () const
-{
-	return std::any_of (color () .cbegin (),
-	                    color () .cend (),
-	                    [ ] (const Color4f & value) { return value .a () < 1; });	                  
+	color () .addInterest (&ColorRGBA::set_color, this);
+
+	set_color ();
 }
 
 void
-ColorRGBA::setDynamicTransparency (const bool value)
+ColorRGBA::set_color ()
 {
-	dynamicTransparency = value;
-	
-	if (dynamicTransparency)
-	{
-		color () .addInterest (&ColorRGBA::set_color, this);
-
-		set_color ();
-	}
-	else
-	{
-		color () .removeInterest (&ColorRGBA::set_color, this);
-
-		transparent = true;
-	}
+	setTransparent (std::any_of (color () .cbegin (),
+	                             color () .cend (),
+	                             [ ] (const Color4f & value) { return value .a () < 1; }));	                  
 }
 
 void
@@ -157,15 +137,6 @@ ColorRGBA::getHSVA (std::vector <Vector4f> & colors) const
 	{
 		colors .emplace_back (color4 .hsva ());
 	}
-}
-
-void
-ColorRGBA::set_color ()
-{
-	transparent = getTransparent ();
-
-	if (isInitialized ())
-		addEvent ();
 }
 
 void

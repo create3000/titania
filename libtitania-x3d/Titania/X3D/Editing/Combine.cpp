@@ -751,7 +751,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 	if (targetColor)
 	{
-		if (not targetColor -> getTransparent ())
+		if (not targetColor -> isTransparent ())
 		{
 			const auto colorNode = executionContext -> createNode <Color> ();
 

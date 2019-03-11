@@ -54,9 +54,21 @@ namespace titania {
 namespace X3D {
 
 X3DColorNode::X3DColorNode () :
-	X3DGeometricPropertyNode ()
+	X3DGeometricPropertyNode (),
+	             transparent (false)
 {
 	addType (X3DConstants::X3DColorNode);
+
+	addChildObjects (transparent);
+
+	transparent .setAccessType (outputOnly);
+}
+
+void
+X3DColorNode::setTransparent (const bool value)
+{
+	if (value not_eq transparent)
+		transparent = value;
 }
 
 void

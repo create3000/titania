@@ -166,12 +166,12 @@ void
 PointSet::set_color ()
 {
 	if (colorNode)
-		colorNode -> removeInterest (&PointSet::requestRebuild,  this);
+		colorNode -> removeInterest (&PointSet::requestRebuild, this);
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
-		colorNode -> addInterest (&PointSet::requestRebuild,  this);
+		colorNode -> addInterest (&PointSet::requestRebuild, this);
 }
 
 void

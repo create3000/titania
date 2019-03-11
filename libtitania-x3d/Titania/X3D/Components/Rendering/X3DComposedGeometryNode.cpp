@@ -157,16 +157,16 @@ X3DComposedGeometryNode::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild,  this);
-		colorNode -> removeInterest (&X3DComposedGeometryNode::set_transparent, this);
+		colorNode -> removeInterest (&X3DComposedGeometryNode::requestRebuild, this);
+		colorNode -> isTransparent () .removeInterest (&X3DComposedGeometryNode::set_transparent, this);
 	}
 
 	colorNode = x3d_cast <X3DColorNode*> (color ());
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&X3DComposedGeometryNode::requestRebuild,  this);
-		colorNode -> addInterest (&X3DComposedGeometryNode::set_transparent, this);
+		colorNode -> addInterest (&X3DComposedGeometryNode::requestRebuild, this);
+		colorNode -> isTransparent () .addInterest (&X3DComposedGeometryNode::set_transparent, this);
 	
 		set_transparent ();
 	}

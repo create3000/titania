@@ -941,7 +941,6 @@ PolygonColoringEditor::set_colorIndex ()
 	const X3D::X3DPtr <X3D::X3DColorNode> colorNode (geometry -> color ());
 
 	previewColor = preview -> getExecutionContext () -> createNode <X3D::ColorRGBA> ();
-	previewColor -> setDynamicTransparency (true);
 
 	previewGeometry -> colorPerVertex () = true;
 	previewGeometry -> color ()          = previewColor;

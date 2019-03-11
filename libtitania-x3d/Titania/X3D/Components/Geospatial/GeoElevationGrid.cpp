@@ -159,16 +159,16 @@ GeoElevationGrid::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&GeoElevationGrid::requestRebuild,  this);
-		colorNode -> removeInterest (&GeoElevationGrid::set_transparent, this);
+		colorNode -> removeInterest (&GeoElevationGrid::requestRebuild, this);
+		colorNode -> isTransparent () .removeInterest (&GeoElevationGrid::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&GeoElevationGrid::requestRebuild,  this);
-		colorNode -> addInterest (&GeoElevationGrid::set_transparent, this);
+		colorNode -> addInterest (&GeoElevationGrid::requestRebuild, this);
+		colorNode -> isTransparent () .addInterest (&GeoElevationGrid::set_transparent, this);
 
 		set_transparent ();
 	}

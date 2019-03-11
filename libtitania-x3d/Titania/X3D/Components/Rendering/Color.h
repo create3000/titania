@@ -97,16 +97,6 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	getTransparent () const final override
-	{ return false; }
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return false; }
-
-	virtual
 	void
 	set1Color (const size_t, const Color4f &) final override;
 

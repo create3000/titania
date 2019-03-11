@@ -169,16 +169,16 @@ LineSet::set_color ()
 {
 	if (colorNode)
 	{
-		colorNode -> removeInterest (&LineSet::requestRebuild,  this);
-		colorNode -> removeInterest (&LineSet::set_transparent, this);
+		colorNode -> removeInterest (&LineSet::requestRebuild, this);
+		colorNode -> isTransparent () .removeInterest (&LineSet::set_transparent, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
-		colorNode -> addInterest (&LineSet::requestRebuild,  this);
-		colorNode -> addInterest (&LineSet::set_transparent, this);
+		colorNode -> addInterest (&LineSet::requestRebuild, this);
+		colorNode -> isTransparent () .addInterest (&LineSet::set_transparent, this);
 	
 		set_transparent ();
 	}

@@ -61,11 +61,13 @@ class X3DMaterialNode :
 {
 public:
 
-	///  @name Tests
+	///  @name Member access
 
 	const SFBool &
 	isTransparent () const
 	{ return transparent; }
+
+	///  @name Operations
 
 	virtual
 	void
