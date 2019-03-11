@@ -61,7 +61,7 @@ sub rsync
 		#system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "$local/$_", "$ftp/$_";
 
 		system "lftp", "-e", "mkdir -p $ftp/$_; bye", "ftp://$USER\@$HOST";
-		system "lftp", "-e", "mirror --reverse --delete --use-cache --verbose $local/$_ $ftp/$_; bye", "ftp://$HOST";
+		system "lftp", "-e", "mirror --reverse --delete --use-cache --verbose $local/$_ $ftp/$_; bye", "ftp://$USER\@$HOST";
 	}
 }
 
