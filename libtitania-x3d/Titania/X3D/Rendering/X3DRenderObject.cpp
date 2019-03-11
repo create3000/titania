@@ -359,10 +359,9 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 bool
 X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 {
-	const auto bbox   = shapeNode -> getBBox () * getModelViewMatrix () .get ();
-	const auto depth  = bbox .size   () .z () / 2;
-	const auto min    = bbox .center () .z () - depth;
-	const auto center = bbox .center () .z () + getDepthOffset () .top ();
+	const auto bbox  = shapeNode -> getBBox () * getModelViewMatrix () .get ();
+	const auto depth = bbox .size   () .z () / 2;
+	const auto min   = bbox .center () .z () - depth;
 
 	if (min > 0)
 	   return false;
@@ -392,6 +391,8 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 
 		++ numOpaqueShapes;
 	}
+
+	const auto center = bbox .center () .z () + getDepthOffset () .top ();
 
 	context -> setScissor (viewVolume .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
