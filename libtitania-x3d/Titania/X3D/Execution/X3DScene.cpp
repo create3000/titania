@@ -763,7 +763,7 @@ X3DScene::toStream (std::ostream & ostream) const
 			ostream << Generator::TidyBreak;
 		}
 
-		// Unit
+		// Units
 		{
 			bool empty = true;
 

@@ -80,6 +80,18 @@ public:
 	getType () const final override
 	{ return type; }
 
+	///  Construct new MFTime.
+	virtual
+	X3DNativeArrayField*
+	create () const final override
+	{ return new MFTime (); }
+
+	///  Construct new MFTime.
+	virtual
+	X3DNativeArrayField*
+	copy (const CopyType) const final override
+	{ return new MFTime (*this); }
+
 
 private:
 

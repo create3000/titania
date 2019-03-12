@@ -57,7 +57,7 @@ namespace X3D {
 ////template class X3DNativeArrayField <time_type>; // double
 
 const std::string MFTime::typeName = "MFTime";
-const FieldType MFTime::type       = X3DConstants::MFTime;
+const FieldType   MFTime::type     = X3DConstants::MFTime;
 
 } // X3D
 } // titania

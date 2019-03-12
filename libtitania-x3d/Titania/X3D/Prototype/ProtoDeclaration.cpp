@@ -288,11 +288,11 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 			<< Generator::Indent;
 	}
 
-	ostream << ']';
-
 	Generator::LeaveScope (ostream);
 
-	ostream << Generator::TidyBreak;
+	ostream
+		<< ']'
+		<< Generator::TidyBreak;
 
 	ostream
 		<< Generator::Indent
