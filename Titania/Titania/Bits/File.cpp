@@ -62,7 +62,12 @@ File::getUri (const Glib::RefPtr <Gio::File> & file)
 	if (file -> get_path () .empty ())
 		return file -> get_uri ();
 
-	return "file://" + file -> get_path ();
+	basic::uri url = basic::path (file -> get_path ()) .escape ();
+
+	if (not url .is_directory () and Glib::file_test (url, Glib::FILE_TEST_IS_DIR))
+		url = url + "/";
+
+	return url .add_file_scheme ();
 }
 
 std::pair <std::string, bool>
