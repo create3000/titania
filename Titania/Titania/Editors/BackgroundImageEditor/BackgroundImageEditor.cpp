@@ -52,6 +52,7 @@
 
 #include "BackgroundImage.h"
 
+#include "../../Bits/File.h"
 #include "../../Bits/String.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
@@ -167,12 +168,11 @@ BackgroundImageEditor::on_image_set ()
 	if (changing)
 		return;
 
-	const basic::uri path        = basic::path (getImageChooserButton () .get_file () -> get_path ()) .escape ();
-	const basic::uri URL         = path .add_file_scheme ();
+	const basic::uri URL         = File::getUrl (getImageChooserButton () .get_file ());
 	const basic::uri relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 	const auto       url         = X3D::MFString ({ relativeURL .str (), URL .str () });
 
-	if (path .empty ())
+	if (URL .path () .empty ())
 		return;
 
 	page -> getBackgroundImage () -> setUrl (url);

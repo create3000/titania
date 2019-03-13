@@ -101,7 +101,7 @@ void
 BrowserApplication::on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint)
 {
 	for (const auto & file : files)
-		getBrowserWindow () -> open (File::getUri (file));
+		getBrowserWindow () -> open (File::getUrl (file));
 
 	getBrowserWindow () -> present ();
 

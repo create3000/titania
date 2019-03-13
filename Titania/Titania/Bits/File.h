@@ -66,7 +66,7 @@ public:
 
 	static
 	basic::uri
-	getUri (const Glib::RefPtr <Gio::File> & file);
+	getUrl (const Glib::RefPtr <Gio::File> & file);
 
 	static
 	std::pair <std::string, bool>

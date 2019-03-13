@@ -77,12 +77,7 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 basic::uri
 X3DFileOpenDialog::getUrl () const
 {
-	basic::uri url = basic::path (getWindow () .get_file () -> get_path ()) .escape ();
-
-	if (not url .is_directory () and Glib::file_test (url, Glib::FILE_TEST_IS_DIR))
-		url = url + "/";
-
-	return url .add_file_scheme ();
+	return File::getUrl (getWindow () .get_file ());
 }
 
 basic::uri
@@ -93,9 +88,7 @@ X3DFileOpenDialog::getPreviewUrl () const
 	if (not file)
 		throw std::runtime_error ("X3DFileOpenDialog::getPreviewUrl");
 
-	const basic::uri url = basic::path (file -> get_path ()) .escape ();
-
-	return url .add_file_scheme ();
+	return File::getUrl (file);
 }
 
 bool
