@@ -1283,19 +1283,24 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 			// Units
 
+			std::vector <Unit> units;
+
 			for (const auto & unit : getUnits ())
 			{
 				if (unit .getConversionFactor () not_eq 1)
-				{
-					ostream << Generator::Indent;
+					units .emplace_back (unit);
+			}
 
-					unit .toJSONStream (ostream);
+			for (const auto & unit : units)
+			{
+				ostream << Generator::Indent;
 
-					if (&unit not_eq &getUnits () .back ())
-						ostream << ',';
-			
-					ostream << Generator::TidyBreak;
-				}
+				unit .toJSONStream (ostream);
+
+				if (&unit not_eq &units .back ())
+					ostream << ',';
+		
+				ostream << Generator::TidyBreak;
 			}
 
 
