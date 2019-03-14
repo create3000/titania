@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+class FogContainer;
+class LightContainer;
 class ShapeContainer;
 class SoftParticle;
 
@@ -307,6 +309,12 @@ public:
 	setTextureBuffer (const std::string & name, const GLenum textureTarget, const GLuint textureId);
 
 	///  @name Pipeline
+
+	bool
+	hasFog (FogContainer* const fogContainer);
+
+	bool
+	hasLight (const size_t index, LightContainer* const lightContainer);
 
 	virtual
 	void
@@ -555,6 +563,9 @@ private:
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
 	size_t                    numGlobalLights;
+
+	FogContainer*                 fogContainer;
+	std::vector <LightContainer*> lightContainers;
 
 	std::map <GLint, std::shared_ptr <TextureValue>> textures;
 

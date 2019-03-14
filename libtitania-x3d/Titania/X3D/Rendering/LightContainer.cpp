@@ -157,6 +157,9 @@ LightContainer::disable ()
 void
 LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
+	if (shaderObject -> hasLight (i, this))
+		return;
+
 	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .get (), lightMatrix);
 
 	if (textureUnit)
@@ -176,7 +179,9 @@ LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgr
 		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
 	}
 	else
+	{
 		glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], 0);
+	}
 }
 
 LightContainer::~LightContainer ()

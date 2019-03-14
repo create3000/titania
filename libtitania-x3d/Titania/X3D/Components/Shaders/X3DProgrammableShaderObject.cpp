@@ -141,6 +141,8 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	     extensionGPUShaderFP64 (false),
 	  transformFeedbackVaryings (),
 	            numGlobalLights (0),
+	               fogContainer (nullptr),
+	            lightContainers (getBrowser () -> getMaxLights ()),
 	                   textures ()
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
@@ -1015,6 +1017,35 @@ X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
 //	}
 }
 
+bool
+X3DProgrammableShaderObject::hasFog (FogContainer* const fogContainer)
+{
+	if (this -> fogContainer == fogContainer)
+		return true;
+
+	this -> fogContainer = fogContainer;
+
+	return false;
+}
+
+bool
+X3DProgrammableShaderObject::hasLight (const size_t index, LightContainer* const lightContainer)
+{
+	if (index < lightContainers .size ())
+	{
+		if (lightContainers [index] == lightContainer)
+			return true;
+	
+		lightContainers [index] = lightContainer;
+	
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 void
 X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
@@ -1040,12 +1071,18 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 		glUniformMatrix4fv (x3d_CameraSpaceMatrix, 1, false, Matrix4f (cameraSpaceMatrix) .front () .data ());
 	}
 
+	// Fog
+
+	fogContainer = nullptr;
+
 	// Set global lights.
 
 	numGlobalLights = std::min (browser -> getMaxLights (), globalLights .size ());
 
 	for (size_t i = 0; i < numGlobalLights; ++ i)
 		globalLights [i] -> setShaderUniforms (renderObject, this, i);
+
+	std::fill (lightContainers .begin (), lightContainers .end (), nullptr);
 
 	// Logarithmic depth buffer support.
 

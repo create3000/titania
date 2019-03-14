@@ -125,6 +125,9 @@ FogContainer::enable ()
 void
 FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
 {
+	if (shaderObject -> hasFog (this))
+		return;
+
 	const auto visibilityRange = node -> getVisibilityRange ();
 
 	if (node -> isHidden () or visibilityRange == 0)
