@@ -266,6 +266,7 @@ private:
 	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 	using NodeIdSet             = std::set <size_t>;
 	using NameIndex             = std::map <std::string, const X3DBaseNode*>;
+	using NamesIndex            = std::map <X3DExecutionContext*, NameIndex>;
 	using NameIndexByNode       = std::map <size_t, std::string>;
 	using LocalNodeSet          = std::vector <NodeIdSet>;
 	using ImportedNamesIndex    = std::map <size_t, std::string>;
@@ -285,7 +286,7 @@ private:
 	LocalNodeSet               importedNodesIndex;
 	NodeIdSet                  nodes;
 	size_t                     newName;
-	NameIndex                  names;
+	NamesIndex                 namesIndex;
 	NameIndexByNode            namesByNode;
 	ImportedNamesIndex         importedNames;
 	NodeIdSet                  routeNodes;

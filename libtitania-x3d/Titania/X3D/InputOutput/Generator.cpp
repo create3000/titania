@@ -74,7 +74,7 @@ Generator::Generator (std::ostream & ostream) :
 	   importedNodesIndex (1),
 	                nodes (),
 	              newName (0),
-	                names (),
+	           namesIndex (),
 	          namesByNode (),
 	        importedNames (),
 	           routeNodes (),
@@ -113,55 +113,67 @@ Generator::get (std::ostream & ostream)
 void
 Generator::PushScene (std::ostream & ostream, const X3DScene* const scene)
 {
-	get (ostream) -> executionContextStack .emplace_back (const_cast <X3DScene*> (scene));
-	get (ostream) -> exportedNodesIndex    .emplace_back ();
+	const auto generator = get (ostream);
+
+	generator -> executionContextStack .emplace_back (const_cast <X3DScene*> (scene));
+	generator -> exportedNodesIndex    .emplace_back ();
 }
 
 void
 Generator::PopScene (std::ostream & ostream)
 {
-	get (ostream) -> executionContextStack .pop_back ();
-	get (ostream) -> exportedNodesIndex    .pop_back ();
+	const auto generator = get (ostream);
+
+	generator -> executionContextStack .pop_back ();
+	generator -> exportedNodesIndex    .pop_back ();
 }
 
 void
 Generator::PushExecutionContext (std::ostream & ostream, const X3DExecutionContext* const executionContext)
 {
-	get (ostream) -> executionContextStack .emplace_back (const_cast <X3DExecutionContext*> (executionContext));
-	get (ostream) -> importedNodesIndex    .emplace_back ();
+	const auto generator = get (ostream);
+
+	generator -> executionContextStack .emplace_back (const_cast <X3DExecutionContext*> (executionContext));
+	generator -> importedNodesIndex    .emplace_back ();
 }
 
 void
 Generator::PopExecutionContext (std::ostream & ostream)
 {
-	get (ostream) -> executionContextStack .pop_back ();
-	get (ostream) -> importedNodesIndex    .pop_back ();
+	const auto generator = get (ostream);
+
+	generator -> executionContextStack .pop_back ();
+	generator -> importedNodesIndex    .pop_back ();
 }
 
 void
 Generator::EnterScope (std::ostream & ostream)
 {
-	++ get (ostream) -> level;
+	const auto generator = get (ostream);
+
+	++ generator -> level;
 }
 
 void
 Generator::LeaveScope (std::ostream & ostream)
 {
-	-- get (ostream) -> level;
+	const auto generator = get (ostream);
 
-	if (get (ostream) -> level == 0)
+	-- generator -> level;
+
+	if (generator -> level == 0)
 	{
-		get (ostream) -> nodes         .clear ();
-		get (ostream) -> names         .clear ();
-		get (ostream) -> namesByNode   .clear ();
-		get (ostream) -> importedNames .clear ();
+		generator -> nodes         .clear ();
+		generator -> namesByNode   .clear ();
+		generator -> importedNames .clear ();
 	}
 }
 
 void
 Generator::ExportedNodes (std::ostream & ostream, const ExportedNodeIndex & exportedNodes)
 {
-	auto & index = get (ostream) -> exportedNodesIndex .back ();
+	const auto generator = get (ostream);
+	auto &     index     = generator -> exportedNodesIndex .back ();
 
 	for (const auto & exportedNode : exportedNodes)
 	{
@@ -177,7 +189,8 @@ Generator::ExportedNodes (std::ostream & ostream, const ExportedNodeIndex & expo
 void
 Generator::ImportedNodes (std::ostream & ostream, const ImportedNodeIndex & importedNodes)
 {
-	auto & index = get (ostream) -> importedNodesIndex .back ();
+	const auto generator = get (ostream);
+	auto &     index     = generator -> importedNodesIndex .back ();
 
 	for (const auto & importedNode : importedNodes)
 	{
@@ -193,8 +206,11 @@ Generator::ImportedNodes (std::ostream & ostream, const ImportedNodeIndex & impo
 bool
 Generator::IsSharedNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	if (get (ostream) -> executionContextStack .back ())
-		return get (ostream) -> executionContextStack .back () not_eq baseNode -> getExecutionContext ();
+	const auto generator        = get (ostream);
+	const auto executionContext = generator -> executionContextStack .back ();
+
+	if (executionContext)
+		return executionContext not_eq baseNode -> getExecutionContext ();
 
 	return false;
 }
@@ -202,21 +218,27 @@ Generator::IsSharedNode (std::ostream & ostream, const X3DBaseNode* const baseNo
 bool
 Generator::ExistsNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	return get (ostream) -> nodes .count (baseNode -> getId ());
+	const auto generator = get (ostream);
+
+	return generator -> nodes .count (baseNode -> getId ());
 }
 
 void
 Generator::AddNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	get (ostream) -> nodes .emplace (baseNode -> getId ());
+	const auto generator = get (ostream);
 
-	get (ostream) -> AddRouteNode (ostream, baseNode);
+	generator -> nodes .emplace (baseNode -> getId ());
+
+	generator -> AddRouteNode (ostream, baseNode);
 }
 
 const std::string &
 Generator::Name (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	return get (ostream) -> Name (baseNode);
+	const auto generator = get (ostream);
+
+	return generator -> Name (baseNode);
 }
 
 const std::string &
@@ -228,6 +250,8 @@ Generator::Name (const X3DBaseNode* const baseNode)
 
 	if (iter not_eq namesByNode .end ())
 		return iter -> second;
+
+	auto & names = namesIndex [executionContextStack .back ()];
 
 	// The node has no name
 
@@ -297,6 +321,8 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 std::string
 Generator::getUniqueName (const std::string & name)
 {
+	auto & names = namesIndex [executionContextStack .back ()];
+
 	std::string uniqueName;
 
 	do
@@ -311,19 +337,25 @@ Generator::getUniqueName (const std::string & name)
 void
 Generator::AddImportedNode (std::ostream & ostream, const X3DBaseNode* const exportedNode, const std::string & importedName)
 {
-	get (ostream) -> importedNames [exportedNode -> getId ()] = importedName;
+	const auto generator = get (ostream);
+
+	generator -> importedNames [exportedNode -> getId ()] = importedName;
 }
 
 void
 Generator::AddRouteNode (std::ostream & ostream, const X3DBaseNode* const routeNode)
 {
-	get (ostream) -> routeNodes .emplace (routeNode -> getId ());
+	const auto generator = get (ostream);
+
+	generator -> routeNodes .emplace (routeNode -> getId ());
 }
 
 bool
 Generator::ExistsRouteNode (std::ostream & ostream, const X3DBaseNode* const routeNode)
 {
-	return get (ostream) -> routeNodes .count (routeNode -> getId ());
+	const auto generator = get (ostream);
+
+	return generator -> routeNodes .count (routeNode -> getId ());
 }
 
 const std::string &
@@ -331,7 +363,9 @@ Generator::LocalName (std::ostream & ostream, const X3DBaseNode* baseNode)
 {
 	try
 	{
-		return get (ostream) -> importedNames .at (baseNode -> getId ());
+		const auto generator = get (ostream);
+
+		return generator -> importedNames .at (baseNode -> getId ());
 	}
 	catch (...)
 	{
@@ -345,16 +379,20 @@ Generator::LocalName (std::ostream & ostream, const X3DBaseNode* baseNode)
 UnitCategory
 Generator::Unit (std::ostream & ostream, const UnitCategory category)
 {
-	if (get (ostream) -> unitCategories .empty ())
+	const auto generator = get (ostream);
+
+	if (generator -> unitCategories .empty ())
 		return category;
 
-	return get (ostream) -> unitCategories .back ();
+	return generator -> unitCategories .back ();
 }
 
 long double
 Generator::ToUnit (std::ostream & ostream, const UnitCategory unit, const long double value)
 {
-	if (get (ostream) -> units)
+	const auto generator = get (ostream);
+
+	if (generator -> units)
 	{
 		const auto executionContext = ExecutionContext (ostream);
 	
