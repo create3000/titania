@@ -4594,7 +4594,7 @@
                                                           <object class="GtkEntry" id="IndexedLineSetLSystemConstantsEntry">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="tooltip_text" translatable="yes">Constants are symbols wich will be replaced but not be drawn.</property>
+                                                            <property name="tooltip_text" translatable="yes">Constants are symbols which will be replaced but not be drawn.</property>
                                                           </object>
                                                           <packing>
                                                             <property name="left_attach">1</property>
