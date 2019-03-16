@@ -4684,7 +4684,7 @@
 + counterclockwise rotation about local z-axis
 - clockwise rotation about local z-axis
 | turn around 180°
-#0-9 color index</property>
+C0-9 color index</property>
                                                             <property name="orientation">vertical</property>
                                                             <property name="spacing">2</property>
                                                             <child>
