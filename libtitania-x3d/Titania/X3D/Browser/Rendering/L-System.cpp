@@ -98,7 +98,7 @@ LSystem::Fields::Fields () :
 	           size (new SFVec3d (2, 2, 2)),
 	      constants (new SFString ()),
 	          axiom (new SFString ("B")),
-	           rule (new MFString ({ "A=C0AA", "B=C1A[+B]-B" }))
+	           rule (new MFString ({ "A=#0AA", "B=#1A[+B]-B" }))
 { }
 
 LSystem::LSystem (X3DExecutionContext* const executionContext) :
