@@ -1,11 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Algorithms/TurtleRenderer.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="15" Column="15" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoLOD.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="77" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/L-System.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="302" Column="28" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/TurtleRenderer.h" Line="283" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
