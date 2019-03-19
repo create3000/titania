@@ -172,15 +172,16 @@ Switch::set_pickableObjects ()
 void
 Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
+	if (not childNode)
+		return;
+
 	switch (type)
 	{
 		case TraverseType::POINTER:
 		{
 			HierarchyGuard guard (renderObject -> getBrowser (), this);
 		
-			if (childNode)
-				childNode -> traverse (type, renderObject);
-
+			childNode -> traverse (type, renderObject);
 			break;
 		}
 		case TraverseType::PICKING:
@@ -195,16 +196,12 @@ Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 					transformSensorNode -> collect (bbox);
 			}
 
-			if (childNode)
-				childNode -> traverse (type, renderObject);
-		
+			childNode -> traverse (type, renderObject);
 			break;
 		}
 		default:
 		{
-			if (childNode)
-				childNode -> traverse (type, renderObject);
-
+			childNode -> traverse (type, renderObject);
 			break;
 		}
 	}

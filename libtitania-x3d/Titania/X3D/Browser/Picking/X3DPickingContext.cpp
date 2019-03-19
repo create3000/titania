@@ -73,15 +73,6 @@ X3DPickingContext::initialize ()
 { }
 
 void
-X3DPickingContext::enable ()
-{
-	if (transformSensorNodes .empty () and pickSensorNodes .front () .empty ())
-		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
-	else
-		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
-}
-
-void
 X3DPickingContext::addTransformSensor (TransformSensor* const transformSensorNode)
 {
 	transformSensorNodes .emplace (transformSensorNode);
@@ -111,6 +102,15 @@ X3DPickingContext::removePickSensor (X3DPickSensorNode* const pickSensorNode)
 	pickSensorNodes .front () .erase (pickSensorNode);
 
 	enable ();
+}
+
+void
+X3DPickingContext::enable ()
+{
+	if (transformSensorNodes .empty () and pickSensorNodes .front () .empty ())
+		getBrowser () -> sensorEvents () .removeInterest (&X3DPickingContext::picking, this);
+	else
+		getBrowser () -> sensorEvents () .addInterest (&X3DPickingContext::picking, this);
 }
 
 void
