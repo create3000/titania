@@ -141,6 +141,7 @@ ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		switch (type)
 		{
 			case TraverseType::CAMERA:
+			case TraverseType::PICKING:
 			case TraverseType::DEPTH:
 				// No clone support for shadow and generated cube map texture
 				renderObject -> getModelViewMatrix () .push ();

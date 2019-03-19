@@ -157,6 +157,7 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 	{
 		case TraverseType::POINTER:
 		case TraverseType::CAMERA:
+		case TraverseType::PICKING:
 		case TraverseType::DEPTH:
 		case TraverseType::DISPLAY:
 		{
