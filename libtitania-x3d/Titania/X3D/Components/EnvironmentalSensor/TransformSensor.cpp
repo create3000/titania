@@ -193,8 +193,7 @@ TransformSensor::set_targetObject ()
 void
 TransformSensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type not_eq TraverseType::PICKING)
-		return;
+	// TransformSensor nodes are sorted out and only traversed during PICKING,
 
 	modelMatrices .emplace_back (renderObject -> getModelViewMatrix () .get ());
 }
