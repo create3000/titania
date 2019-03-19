@@ -51,7 +51,11 @@
 #include "CADFace.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
+#include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -164,8 +168,31 @@ CADFace::getBBox () const
 void
 CADFace::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (shapeNode)
-		shapeNode -> traverse (type, renderObject);
+	if (not shapeNode)
+		return;
+
+	switch (type)
+	{
+		case TraverseType::POINTER:
+		{
+			HierarchyGuard guard (renderObject -> getBrowser (), this);
+		
+			shapeNode -> traverse (type, renderObject);
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			shapeNode -> traverse (type, renderObject);
+			break;
+		}
+		default:
+		{
+			shapeNode -> traverse (type, renderObject);
+			break;
+		}
+	}
 }
 
 void
