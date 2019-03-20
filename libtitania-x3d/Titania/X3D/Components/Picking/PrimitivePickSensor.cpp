@@ -164,8 +164,8 @@ PrimitivePickSensor::process ()
 
 				// Send events.
 
-				const auto pickedGeometries = getPickedGeometries ();
-				const auto active           = not pickedGeometries .empty ();
+				const auto & pickedGeometries = getPickedGeometries ();
+				const auto   active           = not pickedGeometries .empty ();
 
 				if (active not_eq isActive ())
 					isActive () = active;
