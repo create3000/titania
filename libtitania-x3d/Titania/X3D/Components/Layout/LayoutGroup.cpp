@@ -155,11 +155,11 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 {
 	switch (type)
 	{
-		case TraverseType::POINTER:
-		case TraverseType::CAMERA:
-		case TraverseType::PICKING:
-		case TraverseType::DEPTH:
-		case TraverseType::DISPLAY:
+		case TraverseType::COLLISION:
+		{
+			break;
+		}
+		default:
 		{
 			if (viewportNode)
 				viewportNode -> push (renderObject);
@@ -189,8 +189,6 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 
 			break;
 		}
-		default:
-			break;
 	}
 }
 
