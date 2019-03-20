@@ -185,16 +185,15 @@ LOD::set_pickableObjects ()
 void
 LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (not childNode)
-		return;
-
 	switch (type)
 	{
 		case TraverseType::POINTER:
 		{
 			HierarchyGuard guard (renderObject -> getBrowser (), this);
 		
-			childNode -> traverse (type, renderObject);
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+
 			break;
 		}
 		case TraverseType::PICKING:
@@ -209,7 +208,9 @@ LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 					transformSensorNode -> collect (bbox);
 			}
 
-			childNode -> traverse (type, renderObject);
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+
 			break;
 		}
 		case TraverseType::DISPLAY:
@@ -237,11 +238,16 @@ LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 					set_child (level);
 			}
 
-			[[fallthrough]];
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+
+			break;
 		}
 		default:
 		{
-			childNode -> traverse (type, renderObject);
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+
 			break;
 		}
 	}
