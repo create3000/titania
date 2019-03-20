@@ -112,11 +112,9 @@ BoundedPhysicsModel::addGeometry (std::vector <Vector3f> & normals, std::vector 
 {
 	if (enabled () and geometryNode)
 	{
-		std::vector <Color4f>  colors;
 		std::vector <Vector3d> vertices;
-		TexCoordArray          texCoords (geometryNode -> getPolygonTexCoords () .size ());
 
-		geometryNode -> triangulate (colors, texCoords, normals, vertices);
+		geometryNode -> triangulate (nullptr, nullptr, nullptr, nullptr, &vertices);
 
 		for (const auto vertex : vertices)
 			vertices_ .emplace_back (vertex);

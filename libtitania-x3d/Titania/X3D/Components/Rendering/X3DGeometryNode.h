@@ -208,7 +208,11 @@ public:
 
 	virtual
 	void
-	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3d> &) const;
+	triangulate (std::vector <Color4f>* const colors,
+	             TexCoordArray* const texCoords,
+	             std::vector <Vector3f>* const faceNormals,
+	             std::vector <Vector3f>* const normals,
+	             std::vector <Vector3d>* const vertices) const;
 
 	virtual
 	void
@@ -407,7 +411,14 @@ private:
 	isClipped (const Vector3d &, const ClipPlaneContainerArray &) const;
 
 	void
-	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3d>&) const;
+	triangulate (const size_t i1,
+	             const size_t i2,
+	             const size_t i3,
+	             std::vector <Color4f>* const colors,
+	             TexCoordArray* const texCoord,
+	             std::vector <Vector3f>* const faceNormals,
+	             std::vector <Vector3f>* const normals,
+	             std::vector <Vector3d>* const vertices) const;
 
 	///  @name Event handlers
 

@@ -220,14 +220,12 @@ VolumeEmitter::set_geometry ()
 	{
 		// Triangulate
 	
-		std::vector <Color4f>  colors;
-		TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
 		std::vector <Vector3f> normals;
-		std::vector <Vector3d> verticesAux;
+		std::vector <Vector3d> verticesDouble;
 
-		surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
+		surfaceNode -> triangulate (nullptr, nullptr, nullptr, &normals, &verticesDouble);
 	
-		std::vector <Vector3f> vertices (verticesAux .cbegin (), verticesAux .cend ());
+		std::vector <Vector3f> vertices (verticesDouble .cbegin (), verticesDouble .cend ());
 
 		// Calculate area so far
 
@@ -249,15 +247,13 @@ VolumeEmitter::set_geometry ()
 	{
 		// Triangulate
 	
-		std::vector <Color4f>  colors;
-		TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
 		std::vector <Vector3f> normals;
-		std::vector <Vector3d> verticesAux;
+		std::vector <Vector3d> verticesDouble;
 	
-		surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
+		surfaceNode -> triangulate (nullptr, nullptr, nullptr, &normals, &verticesDouble);
 	
-		std::vector <Vector3f> vertices (verticesAux .cbegin (), verticesAux .cend ());
-	
+		std::vector <Vector3f> vertices (verticesDouble .cbegin (), verticesDouble .cend ());
+
 		// Calculate area so far
 
 		float               surfaceArea = 0;

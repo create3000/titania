@@ -116,8 +116,6 @@ X3DPickingContext::enable ()
 void
 X3DPickingContext::picking ()
 {
-	__LOG__ << std::endl;
-
 	getBrowser () -> getWorld () -> traverse (TraverseType::PICKING, nullptr);
 
 	for (const auto tranformSensor : transformSensorNodes)

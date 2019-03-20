@@ -568,12 +568,14 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 }
 
 void
-X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
-	                           TexCoordArray & texCoords_,
-	                           std::vector <Vector3f> & normals_,
-	                           std::vector <Vector3d> & vertices_) const
+X3DGeometryNode::triangulate (std::vector <Color4f>* const colors_,
+	                           TexCoordArray* const texCoords_,
+	                           std::vector <Vector3f>* const faceNormals_,
+	                           std::vector <Vector3f>* const normals_,
+	                           std::vector <Vector3d>* const vertices_) const
 {
-	texCoords_ .resize (texCoords .size ());
+	if (texCoords_)
+		texCoords_ -> resize (texCoords .size ());
 
 	for (const auto & element : elements)
 	{
@@ -583,7 +585,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 				{
-					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
+					triangulate (i, i + 1, i + 2, colors_, texCoords_, faceNormals_, normals_, vertices_);
 				}
 
 				continue;
@@ -592,8 +594,8 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 				{
-					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
-					triangulate (i, i + 2, i + 3, colors_, texCoords_, normals_, vertices_);
+					triangulate (i, i + 1, i + 2, colors_, texCoords_, faceNormals_, normals_, vertices_);
+					triangulate (i, i + 2, i + 3, colors_, texCoords_, faceNormals_, normals_, vertices_);
 				}
 
 				continue;
@@ -604,7 +606,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 
 				for (int32_t i = first + 1, size = element .last () - 1; i < size; ++ i)
 				{
-					triangulate (first, i, i + 1, colors_, texCoords_, normals_, vertices_);
+					triangulate (first, i, i + 1, colors_, texCoords_, faceNormals_, normals_, vertices_);
 				}
 
 				continue;
@@ -619,32 +621,51 @@ void
 X3DGeometryNode::triangulate (const size_t i1,
 	                           const size_t i2,
 	                           const size_t i3,
-	                           std::vector <Color4f> & colors_,
-	                           TexCoordArray & texCoords_,
-	                           std::vector <Vector3f> & normals_,
-	                           std::vector <Vector3d> & vertices_) const
+	                           std::vector <Color4f>* const colors_,
+	                           TexCoordArray* const texCoords_,
+	                           std::vector <Vector3f>* const faceNormals_,
+	                           std::vector <Vector3f>* const normals_,
+	                           std::vector <Vector3d>* const vertices_) const
 {
-	if (not colors .empty ())
+	if (colors_)
 	{
-		colors_ .emplace_back (colors [i1]);
-		colors_ .emplace_back (colors [i2]);
-		colors_ .emplace_back (colors [i3]);
+		if (not colors .empty ())
+		{
+			colors_ -> emplace_back (colors [i1]);
+			colors_ -> emplace_back (colors [i2]);
+			colors_ -> emplace_back (colors [i3]);
+		}
 	}
 
-	for (size_t t = 0, size = texCoords .size (); t < size; ++ t)
+	if (texCoords_)
 	{
-		texCoords_ [t] .emplace_back (texCoords [t] [i1]);
-		texCoords_ [t] .emplace_back (texCoords [t] [i2]);
-		texCoords_ [t] .emplace_back (texCoords [t] [i3]);
+		for (size_t t = 0, size = texCoords .size (); t < size; ++ t)
+		{
+			auto & texCoord_ = (*texCoords_) [t];
+			auto & texCoord  = texCoords [t];
+
+			texCoord_ .emplace_back (texCoord [i1]);
+			texCoord_ .emplace_back (texCoord [i2]);
+			texCoord_ .emplace_back (texCoord [i3]);
+		}
 	}
 
-	normals_ .emplace_back (normals [i1]);
-	normals_ .emplace_back (normals [i2]);
-	normals_ .emplace_back (normals [i3]);
+	if (faceNormals_)
+		faceNormals_ -> emplace_back (Triangle3f (vertices [i1], vertices [i2], vertices [i3]) .normal ());
 
-	vertices_ .emplace_back (vertices [i1]);
-	vertices_ .emplace_back (vertices [i2]);
-	vertices_ .emplace_back (vertices [i3]);
+	if (normals_)
+	{
+		normals_ -> emplace_back (normals [i1]);
+		normals_ -> emplace_back (normals [i2]);
+		normals_ -> emplace_back (normals [i3]);
+	}
+
+	if (vertices_)
+	{
+		vertices_ -> emplace_back (vertices [i1]);
+		vertices_ -> emplace_back (vertices [i2]);
+		vertices_ -> emplace_back (vertices [i3]);
+	}
 }
 
 void

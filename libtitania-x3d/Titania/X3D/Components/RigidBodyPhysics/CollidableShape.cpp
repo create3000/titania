@@ -140,12 +140,9 @@ CollidableShape::createConcaveGeometry ()
 {
 	// Triangulate.
 
-	std::vector <Color4f>  colors;
-	TexCoordArray          texCoords (geometryNode -> getPolygonTexCoords () .size ());
-	std::vector <Vector3f> normals;
 	std::vector <Vector3d> vertices;
 
-	geometryNode -> triangulate (colors, texCoords, normals, vertices);
+	geometryNode -> triangulate (nullptr, nullptr, nullptr, nullptr, &vertices);
 
 	// Create Bullet shape.
 

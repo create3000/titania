@@ -192,11 +192,12 @@ public:
 
 	virtual
 	void
-	triangulate (std::vector <Color4f> & colors,
-	             TexCoordArray & texCoords,
-	             std::vector <Vector3f> & normals,
-	             std::vector <Vector3d> & vertices) const final override
-	{ getNode <X3DGeometryNode> () -> triangulate (colors, texCoords, normals, vertices); }
+	triangulate (std::vector <Color4f>* const colors,
+	             TexCoordArray* const texCoords,
+	             std::vector <Vector3f>* const faceNormals,
+	             std::vector <Vector3f>* const normals,
+	             std::vector <Vector3d>* const vertices) const final override
+	{ getNode <X3DGeometryNode> () -> triangulate (colors, texCoords, faceNormals, normals, vertices); }
 
 	virtual
 	void

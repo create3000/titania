@@ -134,8 +134,6 @@ PrimitivePickSensor::set_pickingGeometry ()
 void
 PrimitivePickSensor::process ()
 {
-	__LOG__ << this << " : " << getTargets () .size () << std::endl;
-
 	if (pickingGeometryNode)
 	{
 		switch (getIntersectionType ())
