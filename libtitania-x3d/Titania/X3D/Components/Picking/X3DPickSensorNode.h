@@ -206,7 +206,7 @@ protected:
 
 	///  @name Operations
 
-	std::vector <X3DNode*>
+	const MFNode &
 	getPickedGeometries () const;
 
 	void
@@ -265,6 +265,7 @@ private:
 	X3DPtrArray <X3DChildNode> pickTargetNodes;
 	std::vector <Matrix4d>     modelMatrices;
 	mutable Targets            targets;
+	mutable MFNode             pickedGeometries;
 
 };
 

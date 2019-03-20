@@ -170,12 +170,8 @@ PrimitivePickSensor::process ()
 				if (active not_eq isActive ())
 					isActive () = active;
 
-				if (not (pickedGeometry () .size () == pickedGeometries .size () &&
-						std::equal (pickedGeometry () .cbegin (), pickedGeometry () .cend (),
-									pickedGeometries .cbegin ())))
-				{
+				if (not (pickedGeometry () .equals (pickedGeometries)))
 					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
-				}
 
 				break;
 			}

@@ -84,11 +84,13 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	        sortOrderType (SortOrderType::CLOSEST),
 	      pickTargetNodes (),
 	        modelMatrices (),
-	              targets ()
+	              targets (),
+	     pickedGeometries ()
 {
 	addType (X3DConstants::X3DPickSensorNode);
 
-	addChildObjects (pickTargetNodes);
+	addChildObjects (pickTargetNodes,
+	                 pickedGeometries);
 }
 
 void
@@ -223,7 +225,7 @@ X3DPickSensorNode::set_pickTarget ()
 	}
 }
 
-std::vector <X3DNode*>
+const MFNode &
 X3DPickSensorNode::getPickedGeometries () const
 {
 	targets .erase (std::remove_if (targets .begin (), targets .end (),
@@ -233,16 +235,19 @@ X3DPickSensorNode::getPickedGeometries () const
 	}),
 	targets .end ());
 
-	std::vector <X3DNode*> pickedGeometries;
-
 	if (targets .empty ())
+	{
+		pickedGeometries .clear ();
+
 		return pickedGeometries;
+	}
 
 	switch (getSortOrder ())
 	{
 		case SortOrderType::ANY:
 		{
-			pickedGeometries .emplace_back (getPickedGeometry (targets .front ()));
+			pickedGeometries .resize (1);
+			pickedGeometries [0] = getPickedGeometry (targets .front ());
 			break;
 		}
 		case SortOrderType::CLOSEST:
@@ -253,13 +258,16 @@ X3DPickSensorNode::getPickedGeometries () const
 				return lhs -> distance < rhs -> distance;
 			});
 
-			pickedGeometries .emplace_back (getPickedGeometry (targets .front ()));
+			pickedGeometries .resize (1);
+			pickedGeometries [0] = getPickedGeometry (targets .front ());
 			break;
 		}
 		case SortOrderType::ALL:
 		{
-			for (const auto & target : targets)
-				pickedGeometries .emplace_back (getPickedGeometry (target));
+			pickedGeometries .resize (targets .size ());
+
+			for (size_t i = 0, size = targets .size (); i < size; ++ i)
+				pickedGeometries [i] = getPickedGeometry (targets [i]);
 
 			break;
 		}
@@ -271,8 +279,10 @@ X3DPickSensorNode::getPickedGeometries () const
 				return lhs -> distance < rhs -> distance;
 			});
 
-			for (const auto & target : targets)
-				pickedGeometries .emplace_back (getPickedGeometry (target));
+			pickedGeometries .resize (targets .size ());
+
+			for (size_t i = 0, size = targets .size (); i < size; ++ i)
+				pickedGeometries [i] = getPickedGeometry (targets [i]);
 
 			break;
 		}
