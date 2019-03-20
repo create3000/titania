@@ -136,50 +136,53 @@ PrimitivePickSensor::process ()
 {
 	__LOG__ << this << " : " << getTargets () .size () << std::endl;
 
-	switch (getIntersectionType ())
+	if (pickingGeometryNode)
 	{
-		case IntersectionType::BOUNDS:
+		switch (getIntersectionType ())
 		{
-
-			// Intersect bboxes.
-
-			for (const auto modelMatrix : getModelMatrices ())
+			case IntersectionType::BOUNDS:
 			{
-				const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
-				const auto pickingCenter = pickingBBox .center ();
 
-				for (const auto & target : getTargets ())
+				// Intersect bboxes.
+
+				for (const auto modelMatrix : getModelMatrices ())
 				{
-					const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
-	
-					if (not pickingBBox .intersects (targetBBox))
-						continue;
+					const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
+					const auto pickingCenter = pickingBBox .center ();
 
-					target -> intersected = true;
-					target -> distance    = std::min (target -> distance, distance (pickingCenter, targetBBox .center ()));
+					for (const auto & target : getTargets ())
+					{
+						const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+		
+						if (not pickingBBox .intersects (targetBBox))
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingCenter, targetBBox .center ());
+					}
 				}
+
+				// Send events.
+
+				const auto pickedGeometries = getPickedGeometries ();
+				const auto active           = not pickedGeometries .empty ();
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .size () == pickedGeometries .size () &&
+						std::equal (pickedGeometry () .cbegin (), pickedGeometry () .cend (),
+									pickedGeometries .cbegin ())))
+				{
+					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+				}
+
+				break;
 			}
-
-			// Send events.
-
-			const auto pickedGeometries = getPickedGeometries ();
-			const auto active           = not pickedGeometries .empty ();
-
-			if (active not_eq isActive ())
-				isActive () = active;
-
-			if (not (pickedGeometry () .size () == pickedGeometries .size () &&
-			         std::equal (pickedGeometry () .cbegin (), pickedGeometry () .cend (),
-			                     pickedGeometries .cbegin ())))
+			case IntersectionType::GEOMETRY:
 			{
-				pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+				break;
 			}
-
-			break;
-		}
-		case IntersectionType::GEOMETRY:
-		{
-			break;
 		}
 	}
 

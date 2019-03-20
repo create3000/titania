@@ -64,7 +64,7 @@ X3DPickSensorNode::Target::Target (X3DGeometryNode* geometryNode,
 	     modelMatrix (modelMatrix),
 	pickingHierarchy (pickingHierarchy),
 	     intersected (false),
-	        distance (std::numeric_limits <double>::infinity ())
+	        distance (0)
 { }
 
 X3DPickSensorNode::Fields::Fields () :
@@ -278,7 +278,7 @@ X3DPickSensorNode::getPickedGeometries () const
 		}
 	}
 
-	pickedGeometries .erase (std::remove (pickedGeometries .begin (), pickedGeometries .end (), nullptr),	pickedGeometries .end ());
+	//pickedGeometries .erase (std::remove (pickedGeometries .begin (), pickedGeometries .end (), nullptr), pickedGeometries .end ());
 
 	return pickedGeometries;
 }
@@ -296,7 +296,7 @@ X3DPickSensorNode::getPickedGeometry (const TargetPtr & target) const
 	if (instance -> isType ({ X3DConstants::X3DPrototypeInstance }) and instance -> getExecutionContext () == getExecutionContext ())
 		return dynamic_cast <X3DNode*> (instance);
 
-	for (const auto node : target -> pickingHierarchy)
+	for (const auto node : basic::make_reverse_range (target -> pickingHierarchy))
 	{
 		if (node -> getExecutionContext () == getExecutionContext ())
 			return node;
