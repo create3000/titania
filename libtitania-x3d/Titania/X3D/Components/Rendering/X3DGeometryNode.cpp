@@ -57,6 +57,7 @@
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../RigidBodyPhysics/CollidableShape.h"
 #include "../Shaders/X3DShaderNode.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
@@ -87,6 +88,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	        frontFace (GL_CCW),
 	      flatShading (false),
 	         elements (),
+	        pickShape (),
 	  attribBufferIds (),
 	 fogDepthBufferId (0),
 	    colorBufferId (0),
@@ -100,7 +102,8 @@ X3DGeometryNode::X3DGeometryNode () :
 	addChildObjects (cameraObject,
 	                 transparent,
 	                 rebuildOutput,
-	                 texCoordNode);
+	                 texCoordNode,
+	                 pickShape);
 
 	cameraObject  .setAccessType (outputOnly);
 	transparent   .setAccessType (outputOnly);

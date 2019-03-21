@@ -206,6 +206,9 @@ protected:
 
 	///  @name Operations
 
+	const X3DPtr <CollidableShape> &
+	getPickShape (X3DGeometryNode* const geometryNode) const;
+
 	const MFNode &
 	getPickedGeometries () const;
 

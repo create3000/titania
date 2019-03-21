@@ -50,8 +50,10 @@
 
 #include "PrimitivePickSensor.h"
 
-#include "../../Components/Rendering/X3DGeometryNode.h"
+#include "../../Browser/Picking/VolumePicker.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/X3DGeometryNode.h"
+#include "../RigidBodyPhysics/CollidableShape.h"
 
 namespace titania {
 namespace X3D {
@@ -63,7 +65,8 @@ const std::string PrimitivePickSensor::containerField = "children";
 PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DPickSensorNode (),
-	pickingGeometryNode ()
+	pickingGeometryNode (),
+	             picker (new VolumePicker ())
 {
 	addType (X3DConstants::PrimitivePickSensor);
 
@@ -174,119 +177,42 @@ PrimitivePickSensor::process ()
 			}
 			case IntersectionType::GEOMETRY:
 			{
-				// Convex hull intersection???
-				// Motzkin double description method???
+				// Intersect bboxes.
 
-//				// Intersect geometry.
-//
-//				for (const auto & modelMatrix : getModelMatrices ())
-//				{
-//					const auto     pickingBBox         = pickingGeometryNode -> getBBox () * modelMatrix;
-//					const auto     pickingCenter       = pickingBBox .center ();
-//					const Matrix4f pickingModelMatrix  = modelMatrix;
-//					const Matrix3f pickingNormalMatrix = inverse (transpose (pickingModelMatrix .submatrix ()));
-//
-//					std::vector <Vector3f> pickingFaceNormals;
-//					std::vector <Vector3d> pickingVerticesDouble;
-//					std::vector <Vector3f> pickingVertices;
-//					std::vector <Vector3f> pickingEdges;
-//
-//					pickingGeometryNode -> triangulate (nullptr, nullptr, &pickingFaceNormals, nullptr, &pickingVerticesDouble);
-//
-//					pickingVertices .assign (pickingVerticesDouble .cbegin (), pickingVerticesDouble .cend ());
-//
-//					for (auto & normal : pickingFaceNormals)
-//						normal = normal * pickingNormalMatrix;
-//
-//					for (auto & vertex : pickingVertices)
-//						vertex = vertex * pickingModelMatrix;
-//
-//					for (size_t i = 0, size = pickingVertices .size (); i < size; i += 3)
-//					{
-//						pickingEdges .emplace_back (pickingVertices [i + 0] - pickingVertices [i + 1]);
-//						pickingEdges .emplace_back (pickingVertices [i + 1] - pickingVertices [i + 2]);
-//						pickingEdges .emplace_back (pickingVertices [i + 2] - pickingVertices [i + 0]);
-//					}
-//
-//					std::sort (pickingVertices .begin (), pickingVertices .end ());
-//					pickingVertices .erase (std::unique (pickingVertices .begin (), pickingVertices .end ()), pickingVertices .end ());
-//
-//					std::sort (pickingEdges .begin (), pickingEdges .end ());
-//					pickingEdges .erase (std::unique (pickingEdges .begin (), pickingEdges .end ()), pickingEdges .end ());
-//
-//					for (const auto & target : getTargets ())
-//					{
-//						const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
-//		
-//						if (not pickingBBox .intersects (targetBBox))
-//							continue;
-//
-//						const Matrix4f targetModelMatrix  = target -> modelMatrix;
-//						const Matrix3f targetNormalMatrix = inverse (transpose (targetModelMatrix .submatrix ()));
-//	
-//						std::vector <Vector3f> targetFaceNormals;
-//						std::vector <Vector3d> targetVerticesDouble;
-//						std::vector <Vector3f> targetVertices;
-//						std::vector <Vector3f> targetEdges;
-//	
-//						target -> geometryNode -> triangulate (nullptr, nullptr, &targetFaceNormals, nullptr, &targetVerticesDouble);
-//	
-//						targetVertices .assign (targetVerticesDouble .cbegin (), targetVerticesDouble .cend ());
-//	
-//						for (auto & normal : targetFaceNormals)
-//							normal = normal * targetNormalMatrix;
-//	
-//						for (auto & vertex : targetVertices)
-//							vertex = vertex * targetModelMatrix;
-//	
-//						for (size_t i = 0, size = targetVertices .size (); i < size; i += 3)
-//						{
-//							targetEdges .emplace_back (targetVertices [i + 0] - targetVertices [i + 1]);
-//							targetEdges .emplace_back (targetVertices [i + 1] - targetVertices [i + 2]);
-//							targetEdges .emplace_back (targetVertices [i + 2] - targetVertices [i + 0]);
-//						}
-//
-//						std::sort (targetVertices .begin (), targetVertices .end ());
-//						targetVertices .erase (std::unique (targetVertices .begin (), targetVertices .end ()), targetVertices .end ());
-//
-//						std::sort (targetEdges .begin (), targetEdges .end ());
-//						targetEdges .erase (std::unique (targetEdges .begin (), targetEdges .end ()), targetEdges .end ());
-//
-//						if (sat::separated (pickingFaceNormals, pickingVertices, targetVertices))
-//							continue;
-//
-//						if (sat::separated (targetFaceNormals, pickingVertices, targetVertices))
-//							continue;
-//
-//						std::vector <Vector3f> axes;
-//					
-//						for (const auto & egde1 : pickingEdges)
-//						{
-//							for (const auto & egde2 : targetEdges)
-//								axes .emplace_back (cross (egde1, egde2));
-//						}
-//
-//						std::sort (axes .begin (), axes .end ());
-//						axes .erase (std::unique (axes .begin (), axes .end ()), axes .end ());
-//
-//						if (sat::separated (axes, pickingVertices, targetVertices))
-//							continue;
-//
-//						target -> intersected = true;
-//						target -> distance    = distance (pickingCenter, targetBBox .center ());
-//					}
-//				}
-//
-//				// Send events.
-//
-//				const auto & pickedGeometries = getPickedGeometries ();
-//				const auto   active           = not pickedGeometries .empty ();
-//
-//				if (active not_eq isActive ())
-//					isActive () = active;
-//
-//				if (not (pickedGeometry () .equals (pickedGeometries)))
-//					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
+					const auto pickingCenter = pickingBBox .center ();
+					const auto pickingShape  = getPickShape (pickingGeometryNode);
+
+					picker -> setChildShape1 (modelMatrix, pickingShape -> getCompoundShape ());
+
+					for (const auto & target : getTargets ())
+					{
+						const auto   targetGeometryNode = target -> geometryNode;
+						const auto   targetBBox         = targetGeometryNode -> getBBox () * target -> modelMatrix;
+						const auto & targetShape        = getPickShape (targetGeometryNode);
+	
+						picker -> setChildShape2 (target -> modelMatrix, targetShape -> getCompoundShape ());
+
+						if (not picker -> contactTest ())
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingCenter, targetBBox .center ());
+					}
+				}
+
+				// Send events.
+
+				const auto & pickedGeometries = getPickedGeometries ();
+				const auto   active           = not pickedGeometries .empty ();
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
 
 				break;
 			}

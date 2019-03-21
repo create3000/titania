@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class VolumePicker;
+
 class PrimitivePickSensor :
 	public X3DPickSensorNode
 {
@@ -115,7 +117,8 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DGeometryNode> pickingGeometryNode;
+	X3DPtr <X3DGeometryNode>       pickingGeometryNode;
+	std::shared_ptr <VolumePicker> picker;
 
 };
 

@@ -989,6 +989,7 @@
     <None Include="Titania\X3D\Browser\Picking\X3DPickingContext.h" />
     <None Include="Titania\X3D\Basic\TraverseType.h" />
     <None Include="Titania\X3D\Browser\Picking\PickingHierarchyGuard.h" />
+    <None Include="Titania\X3D\Browser\Picking\VolumePicker.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

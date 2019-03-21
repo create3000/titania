@@ -180,6 +180,16 @@ public:
 	getElements () const
 	{ return elements; }
 
+	virtual
+	void
+	setPickShape (const X3DPtr <CollidableShape> & value)
+	{ pickShape = value; }
+
+	virtual
+	const X3DPtr <CollidableShape> &
+	getPickShape () const
+	{ return pickShape; }
+
 	///  @name Operations
 
 	virtual
@@ -466,6 +476,7 @@ private:
 	GLenum                               frontFace;
 	bool                                 flatShading;
 	std::vector <Element>                elements;
+	X3DPtr <CollidableShape>             pickShape;
 
 	std::vector <GLuint> attribBufferIds;
 	GLuint               fogDepthBufferId;

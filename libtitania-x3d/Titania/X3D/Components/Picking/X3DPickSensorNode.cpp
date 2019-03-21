@@ -50,9 +50,11 @@
 
 #include "X3DPickSensorNode.h"
 
-#include "../Rendering/X3DGeometryNode.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../Rendering/X3DGeometryNode.h"
+#include "../RigidBodyPhysics/CollidableShape.h"
+#include "../Shape/Shape.h"
 
 namespace titania {
 namespace X3D {
@@ -96,6 +98,8 @@ void
 X3DPickSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
+
+	pickedGeometries .setTainted (true);
 
 	getExecutionContext () -> isLive () .addInterest (&X3DPickSensorNode::set_live, this);
 	isLive () .addInterest (&X3DPickSensorNode::set_live, this);
@@ -222,6 +226,26 @@ X3DPickSensorNode::set_pickTarget ()
 		catch (const X3DError &)
 		{ }
 	}
+}
+
+const X3DPtr <CollidableShape> &
+X3DPickSensorNode::getPickShape (X3DGeometryNode* const geometryNode) const
+{
+	if (not geometryNode -> getPickShape ())
+	{
+		const auto shapeNode           = getExecutionContext () -> createNode <Shape> ();
+		const auto collidableShapeNode = getExecutionContext () -> createNode <CollidableShape> ();
+
+		shapeNode -> geometry ()        = geometryNode;
+		collidableShapeNode -> shape () = shapeNode;
+
+		shapeNode           -> setup ();
+		collidableShapeNode -> setup ();
+
+		geometryNode -> setPickShape (collidableShapeNode);
+	}
+
+	return geometryNode -> getPickShape ();
 }
 
 const MFNode &

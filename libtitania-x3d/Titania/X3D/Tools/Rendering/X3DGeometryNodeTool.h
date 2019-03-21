@@ -160,6 +160,16 @@ public:
 	getElements () const final override
 	{ return getNode <X3DGeometryNode> () -> getElements (); }
 
+	virtual
+	void
+	setPickShape (const X3DPtr <CollidableShape> & value) final override
+	{ getNode <X3DGeometryNode> () -> setPickShape (value); }
+
+	virtual
+	const X3DPtr <CollidableShape> &
+	getPickShape () const final override
+	{ return getNode <X3DGeometryNode> () -> getPickShape (); }
+
 	const X3DPtr <NormalTool> &
 	getNormalTool () const
 	{ return normalToolNode; }
