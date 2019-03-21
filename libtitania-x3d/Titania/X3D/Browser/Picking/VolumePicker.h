@@ -61,15 +61,21 @@ class PickContactSensor :
 {
 public:
 
+	///  @name Construction
+
 	PickContactSensor (btRigidBody* const rigidBody) :
 		btCollisionWorld::ContactResultCallback (),
 		                              rigidBody (rigidBody),
 		                                 active (false)
 	{ }
 
+	///  @name Member access
+
 	bool
 	getActive () const
 	{ return active; }
+
+	///  @name Operations
 
 	virtual
 	bool
@@ -93,6 +99,8 @@ public:
 
 private:
 
+	///  @name Members
+
 	btRigidBody* const rigidBody;
 	bool               active;
 };
@@ -101,6 +109,8 @@ class VolumePicker
 {
 public:
 	
+	///  @name Construction
+
 	VolumePicker () :
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
@@ -140,6 +150,8 @@ public:
 
 		compoundShape2 -> addChildShape (getTransform (matrix), childShape .get ());
 	}
+
+	///  @name Operations
 
 	bool
 	contactTest () const
