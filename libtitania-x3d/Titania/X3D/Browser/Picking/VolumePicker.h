@@ -56,55 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class PickContactSensor :
-	public btCollisionWorld::ContactResultCallback
-{
-public:
-
-	///  @name Construction
-
-	PickContactSensor (btRigidBody* const rigidBody) :
-		btCollisionWorld::ContactResultCallback (),
-		                              rigidBody (rigidBody),
-		                                 active (false)
-	{ }
-
-	///  @name Member access
-
-	bool
-	getActive () const
-	{ return active; }
-
-	///  @name Operations
-
-	virtual
-	bool
-	needsCollision (btBroadphaseProxy* proxy) const
-	{
-		if (not btCollisionWorld::ContactResultCallback::needsCollision (proxy))
-			return false;
-
-		return rigidBody -> checkCollideWithOverride (static_cast <btCollisionObject*> (proxy -> m_clientObject));
-	}
-
-	virtual
-	btScalar
-	addSingleResult (btManifoldPoint & cp,
-	                 const btCollisionObjectWrapper* colObj0, int partId0, int index0,
-	                 const btCollisionObjectWrapper* colObj1, int partId1, int index1)
-	{
-		active = true;
-		return 0;
-	}
-
-private:
-
-	///  @name Members
-
-	btRigidBody* const rigidBody;
-	bool               active;
-};
-
 class VolumePicker
 {
 public:
@@ -115,8 +66,7 @@ public:
 	            broadphase (new btDbvtBroadphase ()),
 	collisionConfiguration (new btDefaultCollisionConfiguration ()),
 	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
-	                solver (new btSequentialImpulseConstraintSolver ()),
-	         dynamicsWorld (new btDiscreteDynamicsWorld (dispatcher .get (), broadphase .get (), solver .get (), collisionConfiguration .get ())),
+	        collisionWorld (new btCollisionWorld (dispatcher .get (), broadphase .get (), collisionConfiguration .get ())),
 	        compoundShape1 (new btCompoundShape ()),
 	          motionState1 (new btDefaultMotionState ()),
 	            rigidBody1 (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState1 .get (), compoundShape1 .get ()))),
@@ -124,11 +74,8 @@ public:
 	          motionState2 (new btDefaultMotionState ()),
 	            rigidBody2 (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState2 .get (), compoundShape2 .get ())))
 	{
-		rigidBody1 -> setFlags (rigidBody1 -> getFlags () & ~BT_DISABLE_WORLD_GRAVITY);
-		rigidBody2 -> setFlags (rigidBody2 -> getFlags () & ~BT_DISABLE_WORLD_GRAVITY);
-
-		dynamicsWorld -> addRigidBody (rigidBody1 .get ());	
-		dynamicsWorld -> addRigidBody (rigidBody2 .get ());	
+		collisionWorld -> addCollisionObject (rigidBody1 .get ());	
+		collisionWorld -> addCollisionObject (rigidBody2 .get ());	
 	}
 
 	///  @name Member access
@@ -156,14 +103,9 @@ public:
 	bool
 	contactTest () const
 	{
-		// Check for collision.
-		
-		PickContactSensor sensor (rigidBody2 .get ());
-		
-		dynamicsWorld -> performDiscreteCollisionDetection ();
-		dynamicsWorld -> contactTest (rigidBody2 .get (), sensor);
+		collisionWorld -> performDiscreteCollisionDetection ();
 
-		return sensor .getActive ();
+		return dispatcher -> getNumManifolds ();
 	}
 
 
@@ -186,8 +128,7 @@ private:
 	std::shared_ptr <btBroadphaseInterface>               broadphase;
 	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
 	std::shared_ptr <btCollisionDispatcher>               dispatcher;
-	std::shared_ptr <btSequentialImpulseConstraintSolver> solver;
-	std::shared_ptr <btDiscreteDynamicsWorld>             dynamicsWorld;
+	std::shared_ptr <btCollisionWorld>                    collisionWorld;
 	std::shared_ptr <btCompoundShape>                     compoundShape1;
 	std::shared_ptr <btDefaultMotionState>                motionState1;
 	std::shared_ptr <btRigidBody>                         rigidBody1;
