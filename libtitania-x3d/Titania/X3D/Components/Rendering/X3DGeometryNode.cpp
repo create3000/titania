@@ -83,7 +83,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	          normals (),
 	      faceNormals (),
 	         vertices (),
-	     geometryType (GeometryType::GEOMETRY_3D),
+	     geometryType (3),
 	            solid (true),
 	        frontFace (GL_CCW),
 	      flatShading (false),
@@ -873,14 +873,14 @@ X3DGeometryNode::set_fixedPipeline ()
 	// If there is a default shader then shader pipeline is enabled and we must rebuild Geometry2D nodes,
 	// to build double face geometry or not.
 
-	if (geometryType == GeometryType::GEOMETRY_2D)
+	if (geometryType == 2)
 		requestRebuild ();
 }
 
 void
 X3DGeometryNode::set_shading (const ShadingType & shading)
 {
-	if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
+	if (geometryType < 2)
 		return;
 			
 	const bool flatShading = shading == ShadingType::FLAT;
@@ -997,7 +997,7 @@ X3DGeometryNode::rebuild ()
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 
-	if (geometryType == GeometryType::GEOMETRY_2D or geometryType == GeometryType::GEOMETRY_3D)
+	if (geometryType > 1)
 	{
 		// Autogenerate texCoords if not specified.
 

@@ -97,7 +97,7 @@ NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "weight",       weight ());
 	addField (inputOutput,    "controlPoint", controlPoint ());
 
-	setGeometryType (GeometryType::GEOMETRY_LINES);
+	setGeometryType (1);
 
 	addChildObjects (controlPointNode);
 }

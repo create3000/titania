@@ -176,7 +176,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 
 	appearanceNode -> enable (context);
 
-	if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
+	if (geometryType < 2)
 	{
 		appearanceNode -> getLineProperties () -> enable (renderObject);
 

@@ -66,7 +66,7 @@ ShapeContainer::ShapeContainer (X3DRenderObject* const renderObject, const bool 
 	              fog (nullptr),
 	      localLights (),
 	           shadow (false),
-	     geometryType (GeometryType::GEOMETRY_3D),
+	     geometryType (3),
 	         fogCoord (false),
 	    colorMaterial (false),
 	         distance (0)

@@ -111,7 +111,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 
 	options () .isHidden (true);
 
-	setGeometryType (GeometryType::GEOMETRY_LINES);
+	setGeometryType (1);
 }
 
 X3DBaseNode*

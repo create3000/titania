@@ -243,7 +243,7 @@ public:
 	getBBox () const override;
 
 	virtual
-	X3D::GeometryType
+	size_t
 	getGeometryType () const override;
 
 	///  @name Operations
@@ -445,7 +445,7 @@ private:
 	Fields fields;
 
 	GeometryType                              geometryTypeId;
-	X3D::GeometryType                         shaderGeometryType;
+	size_t                                    shaderGeometryType;
 	GLenum                                    glGeometryType;
 	size_t                                    numVertices;
 	int32_t                                   numParticles;

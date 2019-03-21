@@ -114,7 +114,7 @@ public:
 	{ return getNode <X3DGeometryNode> () -> isTransparent (); }
 
 	virtual
-	GeometryType
+	size_t
 	getGeometryType () const override
 	{ return getNode <X3DGeometryNode> () -> getGeometryType (); }
 

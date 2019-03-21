@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_SHAPE_X3DSHAPE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_SHAPE_X3DSHAPE_NODE_H__
 
-#include "../../Browser/Rendering/GeometryType.h"
 #include "../../Rendering/ClipPlaneContainer.h"
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
@@ -125,7 +124,7 @@ public:
 	{ return geometryNode; }
 
 	virtual
-	GeometryType
+	size_t
 	getGeometryType () const = 0;
 
 	///  @name Operations

@@ -146,7 +146,7 @@ public:
 	///  @name Member access
 
 	virtual
-	GeometryType
+	size_t
 	getGeometryType () const final override
 	{ return getNode <IndexedFaceSet> () -> getGeometryType (); }
 

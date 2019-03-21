@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
 #define __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
 
-#include "../Browser/Rendering/GeometryType.h"
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/FogContainer.h"
 #include "../Rendering/LightContainer.h"
@@ -117,10 +116,10 @@ public:
 	{ shadow = value; }
 
 	void
-	setGeometryType (const GeometryType value)
+	setGeometryType (const size_t value)
 	{ geometryType = value; }
 
-	GeometryType
+	size_t
 	getGeometryType () const
 	{ return geometryType; }
 
@@ -163,7 +162,7 @@ private:
 	FogContainerPtr         fog;
 	LightContainerArray     localLights;
 	bool                    shadow;
-	GeometryType            geometryType;
+	size_t                  geometryType;
 	bool                    fogCoord;
 	bool                    colorMaterial;
 	double                  distance;

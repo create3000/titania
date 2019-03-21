@@ -96,7 +96,7 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	                 colorNode,
 	                 coordNode);
 
-	setGeometryType (GeometryType::GEOMETRY_POINTS);
+	setGeometryType (0);
 	setTransparent (true);
 }
 

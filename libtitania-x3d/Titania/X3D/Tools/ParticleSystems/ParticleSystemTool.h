@@ -233,7 +233,7 @@ public:
 	{ return X3DShapeNodeTool::getBBox (); }
 
 	virtual
-	X3D::GeometryType
+	size_t
 	getGeometryType () const final override
 	{ return getNode <ParticleSystem> () -> getGeometryType (); }
 

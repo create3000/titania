@@ -93,7 +93,7 @@ public:
 	getBBox () const override;
 
 	virtual
-	GeometryType
+	size_t
 	getGeometryType () const override;
 
 	///  @name Operations

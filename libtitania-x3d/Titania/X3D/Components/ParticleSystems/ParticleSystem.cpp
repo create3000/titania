@@ -281,7 +281,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	            X3DShapeNode (),
 	                  fields (),
 	          geometryTypeId (GeometryType::QUAD),
-	      shaderGeometryType (X3D::GeometryType::GEOMETRY_3D),
+	      shaderGeometryType (3),
 	          glGeometryType (GL_POINTS),
 	             numVertices (0),
 	            numParticles (0),
@@ -558,7 +558,7 @@ ParticleSystem::set_transparent ()
 	}
 }
 
-GeometryType
+size_t
 ParticleSystem::getGeometryType () const
 {
 	if (geometryTypeId == GeometryType::GEOMETRY)
@@ -780,13 +780,13 @@ ParticleSystem::set_shader ()
 	{
 		case GeometryType::POINT:
 		{
-			shaderGeometryType = X3D::GeometryType::GEOMETRY_POINTS;
+			shaderGeometryType = 0;
 			shaderNode         = getBrowser () -> getPointShader ();
 			break;
 		}
 		case GeometryType::LINE:
 		{
-			shaderGeometryType = X3D::GeometryType::GEOMETRY_LINES;
+			shaderGeometryType = 1;
 			shaderNode         = getBrowser () -> getWireframeShader ();
 			break;
 		}
@@ -794,13 +794,13 @@ ParticleSystem::set_shader ()
 		case GeometryType::QUAD:
 		case GeometryType::SPRITE:
 		{
-			shaderGeometryType = X3D::GeometryType::GEOMETRY_3D;
+			shaderGeometryType = 3;
 			shaderNode         = getBrowser () -> getDefaultShader ();
 			break;
 		}
 		case GeometryType::GEOMETRY:
 		{
-			shaderGeometryType = X3D::GeometryType::GEOMETRY_3D;
+			shaderGeometryType = 3;
 			shaderNode         = getBrowser () -> getDefaultShader ();
 			break;
 		}

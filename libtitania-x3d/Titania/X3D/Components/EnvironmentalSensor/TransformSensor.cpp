@@ -214,8 +214,6 @@ TransformSensor::process ()
 	auto translation = Vector3d ();
 	auto rotation    = Rotation4d ();
 
-	__LOG__ << modelMatrices .size () << " : " << targetBBoxes .size () << std::endl;
-
 	for (const auto & modelMatrix : modelMatrices)
 	{
 		const auto sourceBox = Box3d (size () .getValue (), center () .getValue ()) * modelMatrix;

@@ -99,7 +99,7 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	                 colorNode,
 	                 coordNode);
 
-	setGeometryType (GeometryType::GEOMETRY_LINES);
+	setGeometryType (1);
 }
 
 X3DBaseNode*

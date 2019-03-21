@@ -102,7 +102,7 @@ ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 
 	options () .isHidden (true);
 
-	setGeometryType (GeometryType::GEOMETRY_2D);
+	setGeometryType (2);
 }
 
 X3DBaseNode*

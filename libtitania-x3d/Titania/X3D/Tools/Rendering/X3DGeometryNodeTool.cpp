@@ -302,7 +302,7 @@ X3DGeometryNodeTool::set_rebuild ()
 		auto &     edgesVertexCount = edgesLineSet -> vertexCount ();
 		auto &     edgesPoint       = edgesCoord -> point ();
 		auto &     verticesPoint    = verticesCoord -> point ();
-		const bool lineGeometry     = getGeometryType () == GeometryType::GEOMETRY_POINTS or getGeometryType () == GeometryType::GEOMETRY_LINES;
+		const bool lineGeometry     = getGeometryType () < 2;
 
 		edgesSwich -> whichChoice () = lineGeometry;
 

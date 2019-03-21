@@ -84,7 +84,7 @@ Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 
 	lineSegments () .setUnit (UnitCategory::LENGTH);
 
-	setGeometryType (GeometryType::GEOMETRY_LINES);
+	setGeometryType (1);
 }
 
 void

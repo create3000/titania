@@ -91,7 +91,7 @@ SoftSystem::SoftSystem (ParticleSystem* const particleSystem) :
 	             vertexArray (),
 	           texCoordCount (0),
 	             vertexCount (0),
-	      shaderGeometryType (GeometryType::GEOMETRY_POINTS),
+	      shaderGeometryType (0),
 	               particles (),
 	           colorMaterial (false),
 	            texCoordAnim (false),
@@ -435,14 +435,14 @@ SoftSystem::set_shader ()
 		case ParticleSystem::GeometryType::POINT:
 		{
 			primitiveMode      = GL_POINTS;
-			shaderGeometryType = GeometryType::GEOMETRY_POINTS;
+			shaderGeometryType = 0;
 			shaderNode         = particleSystem -> getBrowser () -> getPointShader ();
 			break;
 		}
 		case ParticleSystem::GeometryType::LINE:
 		{
 			primitiveMode      = GL_LINES;
-			shaderGeometryType = GeometryType::GEOMETRY_LINES;
+			shaderGeometryType = 1;
 			shaderNode         = particleSystem -> getBrowser () -> getWireframeShader ();
 			break;
 		}
@@ -451,14 +451,14 @@ SoftSystem::set_shader ()
 		case ParticleSystem::GeometryType::SPRITE:
 		{
 			primitiveMode      = GL_TRIANGLES;
-			shaderGeometryType = GeometryType::GEOMETRY_3D;
+			shaderGeometryType = 3;
 			shaderNode         = particleSystem -> getBrowser () -> getDefaultShader ();
 			break;
 		}
 		case ParticleSystem::GeometryType::GEOMETRY:
 		{
 			primitiveMode      = GL_TRIANGLES; // determine from geometry node.
-			shaderGeometryType = GeometryType::GEOMETRY_3D;  // determine from geometry node.
+			shaderGeometryType = 3;  // determine from geometry node.
 			shaderNode         = particleSystem -> getBrowser () -> getDefaultShader ();
 			break;
 		}

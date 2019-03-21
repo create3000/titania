@@ -53,7 +53,6 @@
 
 #include "../../Browser/ParticleSystems/SoftParticle.h"
 #include "../../Browser/PointingDeviceSensor/Intersection.h"
-#include "../../Browser/Rendering/GeometryType.h"
 #include "../../Browser/Shaders/ShadingType.h"
 #include "../../Rendering/TexCoordArray.h"
 #include "../../Rendering/ClipPlaneContainer.h"
@@ -129,7 +128,7 @@ public:
 	{ return transparent; }
 
 	virtual
-	GeometryType
+	size_t
 	getGeometryType () const
 	{ return geometryType; }
 
@@ -332,7 +331,7 @@ protected:
 	{ return vertices; }
 
 	void
-	setGeometryType (const GeometryType value)
+	setGeometryType (const size_t value)
 	{ geometryType = value; }
 
 	void
@@ -471,7 +470,7 @@ private:
 	std::vector <Vector3f>               normals;
 	std::vector <Vector3f>               faceNormals;
 	std::vector <Vector3d>               vertices;
-	GeometryType                         geometryType;
+	size_t                               geometryType;
 	bool                                 solid;
 	GLenum                               frontFace;
 	bool                                 flatShading;

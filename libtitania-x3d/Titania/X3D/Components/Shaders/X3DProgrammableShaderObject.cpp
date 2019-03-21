@@ -1112,7 +1112,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	// Geometry type
 
-	glUniform1i (x3d_GeometryType, GLint (context -> getGeometryType ()));
+	glUniform1i (x3d_GeometryType, context -> getGeometryType ());
 
 	// Clip planes
 

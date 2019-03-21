@@ -107,7 +107,7 @@ Shape::set_transformSensors ()
 	setPickableObject (not getTransformSensors () .empty ());
 }
 
-GeometryType
+size_t
 Shape::getGeometryType () const
 {
 	return getGeometry () -> getGeometryType ();

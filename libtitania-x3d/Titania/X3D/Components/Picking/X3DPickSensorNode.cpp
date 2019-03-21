@@ -359,6 +359,9 @@ X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
                             const Matrix4d & modelMatrix,
                             const std::vector <X3DChildNode*> & pickingHierarchy)
 {
+	if (geometryNode -> getGeometryType () < 2)
+		return;
+
 	const auto haveTarget = std::any_of (pickingHierarchy .crbegin (), pickingHierarchy .crend (),
 	[&] (X3DChildNode* const node)
 	{

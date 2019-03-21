@@ -84,7 +84,7 @@ public:
 	{ return X3DShapeNodeTool::getBBox (); }
 
 	virtual
-	GeometryType
+	size_t
 	getGeometryType () const final override
 	{ return getNode <Shape> () -> getGeometryType (); }
 

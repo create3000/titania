@@ -81,7 +81,7 @@ Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 
 	size () .setUnit (UnitCategory::LENGTH);
 
-	setGeometryType (GeometryType::GEOMETRY_2D);
+	setGeometryType (2);
 }
 
 X3DBaseNode*

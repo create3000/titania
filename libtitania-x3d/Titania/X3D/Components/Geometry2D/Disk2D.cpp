@@ -188,7 +188,7 @@ Disk2D::build ()
 		{
 			getVertices () .emplace_back (0, 0, 0);
 			addElements (GL_POINTS, getVertices () .size ());
-			setGeometryType (GeometryType::GEOMETRY_POINTS);
+			setGeometryType (0);
 			setSolid (false);
 			return;
 		}
@@ -207,7 +207,7 @@ Disk2D::build ()
 		}
 
 		addElements (GL_LINE_LOOP, getVertices () .size ());
-		setGeometryType (GeometryType::GEOMETRY_LINES);
+		setGeometryType (1);
 		setSolid (false);
 		return;
 	}
@@ -240,7 +240,7 @@ Disk2D::build ()
 		}
 
 		addElements (GL_POLYGON, getVertices () .size ());
-		setGeometryType (GeometryType::GEOMETRY_2D);
+		setGeometryType (2);
 		setSolid (solid ());
 		addMirrorVertices (optionsNode -> getVertexMode (), true);
 		return;
@@ -292,7 +292,7 @@ Disk2D::build ()
 	}
 
 	addElements (GL_QUADS, getVertices () .size ());
-	setGeometryType (GeometryType::GEOMETRY_2D);
+	setGeometryType (2);
 	setSolid (solid ());
 	addMirrorVertices (GL_QUADS, true);
 }

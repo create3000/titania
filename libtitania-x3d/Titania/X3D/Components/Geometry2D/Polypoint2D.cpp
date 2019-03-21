@@ -80,7 +80,7 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 
 	point () .setUnit (UnitCategory::LENGTH);
 
-	setGeometryType (GeometryType::GEOMETRY_POINTS);
+	setGeometryType (0);
 	setTransparent (true);
 }
 

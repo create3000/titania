@@ -193,7 +193,7 @@ private:
 	std::vector <Vector3d>     vertexArray;
 	size_t                     texCoordCount;
 	size_t                     vertexCount;
-	GeometryType               shaderGeometryType;
+	size_t                     shaderGeometryType;
 	std::vector <SoftParticle> particles;
 	bool                       colorMaterial;
 	bool                       texCoordAnim;
