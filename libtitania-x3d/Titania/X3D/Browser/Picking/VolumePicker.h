@@ -105,7 +105,23 @@ public:
 	{
 		collisionWorld -> performDiscreteCollisionDetection ();
 
-		return dispatcher -> getNumManifolds ();
+		bool       contact      = false;
+		const auto numManifolds = dispatcher -> getNumManifolds ();
+
+		for (int32_t i = 0; i < numManifolds; ++ i)
+		{
+			const auto contactManifold = dispatcher -> getManifoldByIndexInternal (i);
+			const auto numContacts     = contactManifold -> getNumContacts ();
+
+			for (int32_t j = 0; j < numContacts; ++ j)
+			{
+				const auto & pt = contactManifold -> getContactPoint (j);
+
+				contact |= pt .getDistance () <= 0;
+			}
+		}
+
+		return contact;
 	}
 
 
@@ -125,16 +141,16 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <btBroadphaseInterface>               broadphase;
-	std::shared_ptr <btDefaultCollisionConfiguration>     collisionConfiguration;
-	std::shared_ptr <btCollisionDispatcher>               dispatcher;
-	std::shared_ptr <btCollisionWorld>                    collisionWorld;
-	std::shared_ptr <btCompoundShape>                     compoundShape1;
-	std::shared_ptr <btDefaultMotionState>                motionState1;
-	std::shared_ptr <btRigidBody>                         rigidBody1;
-	std::shared_ptr <btCompoundShape>                     compoundShape2;
-	std::shared_ptr <btDefaultMotionState>                motionState2;
-	std::shared_ptr <btRigidBody>                         rigidBody2;
+	std::shared_ptr <btBroadphaseInterface>           broadphase;
+	std::shared_ptr <btDefaultCollisionConfiguration> collisionConfiguration;
+	std::shared_ptr <btCollisionDispatcher>           dispatcher;
+	std::shared_ptr <btCollisionWorld>                collisionWorld;
+	std::shared_ptr <btCompoundShape>                 compoundShape1;
+	std::shared_ptr <btDefaultMotionState>            motionState1;
+	std::shared_ptr <btRigidBody>                     rigidBody1;
+	std::shared_ptr <btCompoundShape>                 compoundShape2;
+	std::shared_ptr <btDefaultMotionState>            motionState2;
+	std::shared_ptr <btRigidBody>                     rigidBody2;
 };
 
 } // X3D
