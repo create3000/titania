@@ -56,26 +56,21 @@
 namespace titania {
 namespace X3D {
 
-struct PickContactContext
-{
-	PickContactContext () :
-		active (false)
-	{ }
-
-	bool active;
-};
-
-class PickContactSensorCallback :
+class PickContactSensor :
 	public btCollisionWorld::ContactResultCallback
 {
 public:
 
-	PickContactSensorCallback (btRigidBody* const rigidBody, PickContactContext & context) :
+	PickContactSensor (btRigidBody* const rigidBody) :
 		btCollisionWorld::ContactResultCallback (),
 		                              rigidBody (rigidBody),
-		                                context (context)
+		                                 active (false)
 	{ }
-	
+
+	bool
+	getActive () const
+	{ return active; }
+
 	virtual
 	bool
 	needsCollision (btBroadphaseProxy* proxy) const
@@ -92,15 +87,14 @@ public:
 	                 const btCollisionObjectWrapper* colObj0, int partId0, int index0,
 	                 const btCollisionObjectWrapper* colObj1, int partId1, int index1)
 	{
-		context .active = true;
+		active = true;
 		return 0;
 	}
 
-
 private:
 
-	btRigidBody* const   rigidBody;
-	PickContactContext & context;
+	btRigidBody* const rigidBody;
+	bool               active;
 };
 
 class VolumePicker
@@ -152,13 +146,12 @@ public:
 	{
 		// Check for collision.
 		
-		PickContactContext context;
-		PickContactSensorCallback callback (rigidBody2 .get (), context);
+		PickContactSensor sensor (rigidBody2 .get ());
 		
 		dynamicsWorld -> stepSimulation (0.001, 0);
-		dynamicsWorld -> contactTest (rigidBody2 .get (), callback);
+		dynamicsWorld -> contactTest (rigidBody2 .get (), sensor);
 
-		return context .active;
+		return sensor .getActive ();
 	}
 
 
