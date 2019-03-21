@@ -50,6 +50,7 @@
 
 #include "CollidableOffset.h"
 
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -177,6 +178,19 @@ CollidableOffset::traverse (const TraverseType type, X3DRenderObject* const rend
 			collidableNode -> traverse (type, renderObject);
 		
 			renderObject -> getModelViewMatrix () .pop ();
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	
+			collidableNode -> traverse (type, renderObject);
+		
+			renderObject -> getModelViewMatrix () .pop ();
+			break;
 		}
 		default:
 		{

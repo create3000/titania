@@ -177,7 +177,7 @@ PrimitivePickSensor::process ()
 			}
 			case IntersectionType::GEOMETRY:
 			{
-				// Intersect bboxes.
+				// Intersect geometries.
 
 				for (const auto & modelMatrix : getModelMatrices ())
 				{

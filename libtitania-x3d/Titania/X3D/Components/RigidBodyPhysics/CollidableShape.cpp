@@ -51,6 +51,7 @@
 #include "CollidableShape.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -350,6 +351,18 @@ CollidableShape::traverse (const TraverseType type, X3DRenderObject* const rende
 		case TraverseType::POINTER:
 		{
 			HierarchyGuard guard (renderObject -> getBrowser (), this);
+
+			renderObject -> getModelViewMatrix () .push ();
+			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	
+			shapeNode -> traverse (type, renderObject);
+		
+			renderObject -> getModelViewMatrix () .pop ();
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			PickingHierarchyGuard guard (renderObject -> getBrowser (), this);
 
 			renderObject -> getModelViewMatrix () .push ();
 			renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
