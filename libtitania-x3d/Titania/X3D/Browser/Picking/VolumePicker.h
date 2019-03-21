@@ -160,7 +160,7 @@ public:
 		
 		PickContactSensor sensor (rigidBody2 .get ());
 		
-		dynamicsWorld -> stepSimulation (0.001, 0);
+		dynamicsWorld -> performDiscreteCollisionDetection ();
 		dynamicsWorld -> contactTest (rigidBody2 .get (), sensor);
 
 		return sensor .getActive ();
