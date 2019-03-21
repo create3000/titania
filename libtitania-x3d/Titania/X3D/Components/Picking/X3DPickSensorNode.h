@@ -259,13 +259,13 @@ private:
 
 	///  @name Members
 
-	std::set <std::string>     objectTypeIndex;
-	IntersectionType           intersectionTypeValue;
-	SortOrderType              sortOrderType;
-	X3DPtrArray <X3DChildNode> pickTargetNodes;
-	std::vector <Matrix4d>     modelMatrices;
-	mutable Targets            targets;
-	mutable MFNode             pickedGeometries;
+	std::set <std::string>   objectTypeIndex;
+	IntersectionType         intersectionTypeValue;
+	SortOrderType            sortOrderType;
+	std::set <X3DChildNode*> pickTargetNodes;
+	std::vector <Matrix4d>   modelMatrices;
+	mutable Targets          targets;
+	mutable MFNode           pickedGeometries;
 
 };
 

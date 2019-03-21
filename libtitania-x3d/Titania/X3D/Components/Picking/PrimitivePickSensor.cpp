@@ -189,7 +189,7 @@ PrimitivePickSensor::process ()
 //					std::vector <Vector3f> pickingFaceNormals;
 //					std::vector <Vector3d> pickingVerticesDouble;
 //					std::vector <Vector3f> pickingVertices;
-////					std::vector <Vector3f> pickingEdges;
+//					std::vector <Vector3f> pickingEdges;
 //
 //					pickingGeometryNode -> triangulate (nullptr, nullptr, &pickingFaceNormals, nullptr, &pickingVerticesDouble);
 //
@@ -201,18 +201,18 @@ PrimitivePickSensor::process ()
 //					for (auto & vertex : pickingVertices)
 //						vertex = vertex * pickingModelMatrix;
 //
-////					for (size_t i = 0, size = pickingVertices .size (); i < size; i += 3)
-////					{
-////						pickingEdges .emplace_back (pickingVertices [i + 0] - pickingVertices [i + 1]);
-////						pickingEdges .emplace_back (pickingVertices [i + 1] - pickingVertices [i + 2]);
-////						pickingEdges .emplace_back (pickingVertices [i + 2] - pickingVertices [i + 0]);
-////					}
+//					for (size_t i = 0, size = pickingVertices .size (); i < size; i += 3)
+//					{
+//						pickingEdges .emplace_back (pickingVertices [i + 0] - pickingVertices [i + 1]);
+//						pickingEdges .emplace_back (pickingVertices [i + 1] - pickingVertices [i + 2]);
+//						pickingEdges .emplace_back (pickingVertices [i + 2] - pickingVertices [i + 0]);
+//					}
 //
 //					std::sort (pickingVertices .begin (), pickingVertices .end ());
 //					pickingVertices .erase (std::unique (pickingVertices .begin (), pickingVertices .end ()), pickingVertices .end ());
 //
-////					std::sort (pickingEdges .begin (), pickingEdges .end ());
-////					pickingEdges .erase (std::unique (pickingEdges .begin (), pickingEdges .end ()), pickingEdges .end ());
+//					std::sort (pickingEdges .begin (), pickingEdges .end ());
+//					pickingEdges .erase (std::unique (pickingEdges .begin (), pickingEdges .end ()), pickingEdges .end ());
 //
 //					for (const auto & target : getTargets ())
 //					{
@@ -227,7 +227,7 @@ PrimitivePickSensor::process ()
 //						std::vector <Vector3f> targetFaceNormals;
 //						std::vector <Vector3d> targetVerticesDouble;
 //						std::vector <Vector3f> targetVertices;
-////						std::vector <Vector3f> targetEdges;
+//						std::vector <Vector3f> targetEdges;
 //	
 //						target -> geometryNode -> triangulate (nullptr, nullptr, &targetFaceNormals, nullptr, &targetVerticesDouble);
 //	
@@ -239,18 +239,18 @@ PrimitivePickSensor::process ()
 //						for (auto & vertex : targetVertices)
 //							vertex = vertex * targetModelMatrix;
 //	
-////						for (size_t i = 0, size = targetVertices .size (); i < size; i += 3)
-////						{
-////							targetEdges .emplace_back (targetVertices [i + 0] - targetVertices [i + 1]);
-////							targetEdges .emplace_back (targetVertices [i + 1] - targetVertices [i + 2]);
-////							targetEdges .emplace_back (targetVertices [i + 2] - targetVertices [i + 0]);
-////						}
+//						for (size_t i = 0, size = targetVertices .size (); i < size; i += 3)
+//						{
+//							targetEdges .emplace_back (targetVertices [i + 0] - targetVertices [i + 1]);
+//							targetEdges .emplace_back (targetVertices [i + 1] - targetVertices [i + 2]);
+//							targetEdges .emplace_back (targetVertices [i + 2] - targetVertices [i + 0]);
+//						}
 //
 //						std::sort (targetVertices .begin (), targetVertices .end ());
 //						targetVertices .erase (std::unique (targetVertices .begin (), targetVertices .end ()), targetVertices .end ());
 //
-////						std::sort (targetEdges .begin (), targetEdges .end ());
-////						targetEdges .erase (std::unique (targetEdges .begin (), targetEdges .end ()), targetEdges .end ());
+//						std::sort (targetEdges .begin (), targetEdges .end ());
+//						targetEdges .erase (std::unique (targetEdges .begin (), targetEdges .end ()), targetEdges .end ());
 //
 //						if (sat::separated (pickingFaceNormals, pickingVertices, targetVertices))
 //							continue;
@@ -258,16 +258,19 @@ PrimitivePickSensor::process ()
 //						if (sat::separated (targetFaceNormals, pickingVertices, targetVertices))
 //							continue;
 //
-////						std::vector <Vector3f> axes;
-////					
-////						for (const auto & egde1 : pickingEdges)
-////						{
-////							for (const auto & egde2 : targetEdges)
-////								axes .emplace_back (cross (egde1, egde2));
-////						}
-////
-////						if (sat::separated (axes, pickingVertices, targetVertices))
-////							continue;
+//						std::vector <Vector3f> axes;
+//					
+//						for (const auto & egde1 : pickingEdges)
+//						{
+//							for (const auto & egde2 : targetEdges)
+//								axes .emplace_back (cross (egde1, egde2));
+//						}
+//
+//						std::sort (axes .begin (), axes .end ());
+//						axes .erase (std::unique (axes .begin (), axes .end ()), axes .end ());
+//
+//						if (sat::separated (axes, pickingVertices, targetVertices))
+//							continue;
 //
 //						target -> intersected = true;
 //						target -> distance    = distance (pickingCenter, targetBBox .center ());
@@ -284,7 +287,7 @@ PrimitivePickSensor::process ()
 //
 //				if (not (pickedGeometry () .equals (pickedGeometries)))
 //					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
-//
+
 				break;
 			}
 		}

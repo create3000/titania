@@ -89,8 +89,7 @@ X3DPickSensorNode::X3DPickSensorNode () :
 {
 	addType (X3DConstants::X3DPickSensorNode);
 
-	addChildObjects (pickTargetNodes,
-	                 pickedGeometries);
+	addChildObjects (pickedGeometries);
 }
 
 void
@@ -210,7 +209,7 @@ X3DPickSensorNode::set_pickTarget ()
 					case X3DConstants::Shape:
 					case X3DConstants::X3DGroupingNode:
 					{
-						pickTargetNodes .emplace_back (dynamic_cast <X3DChildNode*> (innerNode));
+						pickTargetNodes .emplace (dynamic_cast <X3DChildNode*> (innerNode));
 						break;
 					}
 					default:
@@ -336,12 +335,10 @@ X3DPickSensorNode::collect (const X3DPtr <X3DGeometryNode> & geometryNode,
                             const Matrix4d & modelMatrix,
                             const std::vector <X3DChildNode*> & pickingHierarchy)
 {
-	const auto haveTarget = std::any_of (pickingHierarchy .begin (), pickingHierarchy .end (),
+	const auto haveTarget = std::any_of (pickingHierarchy .crbegin (), pickingHierarchy .crend (),
 	[&] (X3DChildNode* const node)
 	{
-		const auto iter = std::find (pickTargetNodes .begin (), pickTargetNodes .end (), node);
-
-		return iter not_eq pickTargetNodes .end ();
+		return pickTargetNodes .count (node);
 	});
 
 	if (not haveTarget)
