@@ -225,7 +225,7 @@ CollidableShape::set_collidableGeometry ()
 
 	setOffset (Vector3f ());
 
-	if (geometryNode and enabled ())
+	if (geometryNode and enabled () and geometryNode -> getGeometryType () > 1)
 	{
 		switch (geometryNode -> getType () .back ())
 		{
