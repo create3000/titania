@@ -101,7 +101,7 @@ public:
 	///  @name Operations
 
 	bool
-	contactTest () const
+	contactTest ()
 	{
 		collisionWorld -> performDiscreteCollisionDetection ();
 
@@ -117,7 +117,7 @@ public:
 			{
 				const auto & pt = contactManifold -> getContactPoint (j);
 
-				contact |= pt .getDistance () <= 0;
+				contact |= pt .getDistance () < 0;
 			}
 		}
 
