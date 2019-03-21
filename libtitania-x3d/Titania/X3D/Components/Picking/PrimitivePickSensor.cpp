@@ -181,17 +181,16 @@ PrimitivePickSensor::process ()
 
 				for (const auto & modelMatrix : getModelMatrices ())
 				{
-					const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
-					const auto pickingCenter = pickingBBox .center ();
-					const auto pickingShape  = getPickShape (pickingGeometryNode);
+					const auto   pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
+					const auto   pickingCenter = pickingBBox .center ();
+					const auto & pickingShape  = getPickShape (pickingGeometryNode);
 
 					picker -> setChildShape1 (modelMatrix, pickingShape -> getCompoundShape ());
 
 					for (const auto & target : getTargets ())
 					{
-						const auto   targetGeometryNode = target -> geometryNode;
-						const auto   targetBBox         = targetGeometryNode -> getBBox () * target -> modelMatrix;
-						const auto & targetShape        = getPickShape (targetGeometryNode);
+						const auto   targetBBox  = target -> geometryNode -> getBBox () * target -> modelMatrix;
+						const auto & targetShape = getPickShape (target -> geometryNode);
 	
 						picker -> setChildShape2 (target -> modelMatrix, targetShape -> getCompoundShape ());
 
