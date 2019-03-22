@@ -140,22 +140,12 @@ CollidableShape::getBBox () const
 std::shared_ptr <btCollisionShape>
 CollidableShape::createConvexGeometry ()
 {
-	// Triangulate.
+	const auto convexHull = std::make_shared <btConvexHullShape> ();
 
-	std::vector <Vector3d> vertices;
+	for (auto & vertex : geometryNode -> getPolygonVertices ())
+		convexHull -> addPoint (btVector3 (vertex .x (), vertex .y (), vertex .z ()));
 
-	geometryNode -> triangulate (nullptr, nullptr, nullptr, nullptr, &vertices);
-
-	std::vector <btScalar> points;
-
-	for (const auto & vertex : vertices)
-	{
-		points .emplace_back (vertex .x ());
-		points .emplace_back (vertex .y ());
-		points .emplace_back (vertex .z ());
-	}
-
-	return std::make_shared <btConvexHullShape> (points .data (), vertices .size ());
+	return convexHull;
 }
 
 std::shared_ptr <btCollisionShape>

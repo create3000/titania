@@ -191,6 +191,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/ParticleSystems/Random.lo \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.lo \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.lo \
+	Titania/X3D/Browser/Picking/VolumePicker.lo \
 	Titania/X3D/Browser/Picking/X3DPickingContext.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo \
@@ -882,6 +883,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/Random.Plo \
 	Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/SoftSystem.Plo \
 	Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/X3DParticleSystemsContext.Plo \
+	Titania/X3D/Browser/Picking/$(DEPDIR)/VolumePicker.Plo \
 	Titania/X3D/Browser/Picking/$(DEPDIR)/X3DPickingContext.Plo \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo \
@@ -1798,6 +1800,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/ParticleSystems/Random.cpp \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
+	Titania/X3D/Browser/Picking/VolumePicker.cpp \
 	Titania/X3D/Browser/Picking/X3DPickingContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
@@ -2785,6 +2788,9 @@ Titania/X3D/Browser/Picking/$(am__dirstamp):
 Titania/X3D/Browser/Picking/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Picking/$(DEPDIR)
 	@: > Titania/X3D/Browser/Picking/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Picking/VolumePicker.lo:  \
+	Titania/X3D/Browser/Picking/$(am__dirstamp) \
+	Titania/X3D/Browser/Picking/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Picking/X3DPickingContext.lo:  \
 	Titania/X3D/Browser/Picking/$(am__dirstamp) \
 	Titania/X3D/Browser/Picking/$(DEPDIR)/$(am__dirstamp)
@@ -5489,6 +5495,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/Random.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/SoftSystem.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/X3DParticleSystemsContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Picking/$(DEPDIR)/VolumePicker.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Picking/$(DEPDIR)/X3DPickingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo@am__quote@ # am--include-marker
@@ -6703,6 +6710,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/Random.Plo
 	-rm -f Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/SoftSystem.Plo
 	-rm -f Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/X3DParticleSystemsContext.Plo
+	-rm -f Titania/X3D/Browser/Picking/$(DEPDIR)/VolumePicker.Plo
 	-rm -f Titania/X3D/Browser/Picking/$(DEPDIR)/X3DPickingContext.Plo
 	-rm -f Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo
 	-rm -f Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo
@@ -7429,6 +7437,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/Random.Plo
 	-rm -f Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/SoftSystem.Plo
 	-rm -f Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/X3DParticleSystemsContext.Plo
+	-rm -f Titania/X3D/Browser/Picking/$(DEPDIR)/VolumePicker.Plo
 	-rm -f Titania/X3D/Browser/Picking/$(DEPDIR)/X3DPickingContext.Plo
 	-rm -f Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo
 	-rm -f Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo

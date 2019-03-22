@@ -66,6 +66,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/ParticleSystems/Random.cpp \
 	Titania/X3D/Browser/ParticleSystems/SoftSystem.cpp \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
+	Titania/X3D/Browser/Picking/VolumePicker.cpp \
 	Titania/X3D/Browser/Picking/X3DPickingContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \

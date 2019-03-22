@@ -51,7 +51,10 @@
 #ifndef __TITANIA_X3D_BROWSER_PICKING_VOLUME_PICKER_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_PICKING_VOLUME_PICKER_CONTEXT_H__
 
+#include "../../Types/Numbers.h"
+
 #include <btBulletDynamicsCommon.h>
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -62,61 +65,24 @@ public:
 	
 	///  @name Construction
 
-	VolumePicker () :
-	            broadphase (new btDbvtBroadphase ()),
-	collisionConfiguration (new btDefaultCollisionConfiguration ()),
-	            dispatcher (new btCollisionDispatcher (collisionConfiguration .get ())),
-	        collisionWorld (new btCollisionWorld (dispatcher .get (), broadphase .get (), collisionConfiguration .get ())),
-	        compoundShape1 (new btCompoundShape ()),
-	          motionState1 (new btDefaultMotionState ()),
-	            rigidBody1 (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState1 .get (), compoundShape1 .get ()))),
-	        compoundShape2 (new btCompoundShape ()),
-	          motionState2 (new btDefaultMotionState ()),
-	            rigidBody2 (new btRigidBody (btRigidBody::btRigidBodyConstructionInfo (0, motionState2 .get (), compoundShape2 .get ())))
-	{
-		collisionWorld -> addCollisionObject (rigidBody1 .get ());	
-		collisionWorld -> addCollisionObject (rigidBody2 .get ());	
-	}
+	VolumePicker ();
 
 	///  @name Member access
 
 	void
-	setChildShape1 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
-	{
-		setChildShape (compoundShape1, matrix, childShape);
-	}
+	setChildShape1 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape);
 
 	void
-	setChildShape2 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
-	{
-		setChildShape (compoundShape2, matrix, childShape);
-	}
+	setChildShape2 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape);
 
 	///  @name Operations
 
 	bool
-	contactTest ()
-	{
-		collisionWorld -> performDiscreteCollisionDetection ();
+	contactTest ();
+	
+	///  @name Destruction
 
-		bool       contact      = false;
-		const auto numManifolds = dispatcher -> getNumManifolds ();
-
-		for (int32_t i = 0; i < numManifolds; ++ i)
-		{
-			const auto contactManifold = dispatcher -> getManifoldByIndexInternal (i);
-			const auto numContacts     = contactManifold -> getNumContacts ();
-
-			for (int32_t j = 0; j < numContacts; ++ j)
-			{
-				const auto & pt = contactManifold -> getContactPoint (j);
-
-				contact |= pt .getDistance () < 0;
-			}
-		}
-
-		return contact;
-	}
+	~VolumePicker ();
 
 
 private:
@@ -124,33 +90,10 @@ private:
 	///  @name Operations
 
 	void
-	setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape, const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
-	{
-		auto translation = Vector3f ();
-		auto rotation    = Rotation4f ();
-		auto scale       = Vector3f ();
-
-		matrix .get (translation, rotation, scale);
-
-		if (compoundShape -> getNumChildShapes ())
-			compoundShape -> removeChildShape (compoundShape -> getChildShape (0));
-
-		compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
-		compoundShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ()));
-	}
+	setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape, const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape);
 
 	btTransform
-	getTransform (const Vector3f & translation, const Rotation4f & rotation) const
-	{
-		auto l = btTransform ();
-		auto m = Matrix4f ();
-		
-		m .set (translation, rotation);
-
-		l .setFromOpenGLMatrix (m [0] .data ());
-	
-		return l;
-	}
+	getTransform (const Vector3f & translation, const Rotation4f & rotation) const;
 
 	///  @name Members
 
