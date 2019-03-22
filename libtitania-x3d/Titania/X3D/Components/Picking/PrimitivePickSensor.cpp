@@ -147,18 +147,17 @@ PrimitivePickSensor::process ()
 
 				for (const auto & modelMatrix : getModelMatrices ())
 				{
-					const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
-					const auto pickingCenter = pickingBBox .center ();
+					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
 
 					for (const auto & target : getTargets ())
 					{
 						const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
-		
+
 						if (not pickingBBox .intersects (targetBBox))
 							continue;
 
 						target -> intersected = true;
-						target -> distance    = distance (pickingCenter, targetBBox .center ());
+						target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
 					}
 				}
 
@@ -181,9 +180,8 @@ PrimitivePickSensor::process ()
 
 				for (const auto & modelMatrix : getModelMatrices ())
 				{
-					const auto   pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
-					const auto   pickingCenter = pickingBBox .center ();
-					const auto & pickingShape  = getPickShape (pickingGeometryNode);
+					const auto   pickingBBox  = pickingGeometryNode -> getBBox () * modelMatrix;
+					const auto & pickingShape = getPickShape (pickingGeometryNode);
 
 					picker -> setChildShape1 (modelMatrix, pickingShape -> getCompoundShape ());
 
@@ -198,7 +196,7 @@ PrimitivePickSensor::process ()
 							continue;
 
 						target -> intersected = true;
-						target -> distance    = distance (pickingCenter, targetBBox .center ());
+						target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
 					}
 				}
 

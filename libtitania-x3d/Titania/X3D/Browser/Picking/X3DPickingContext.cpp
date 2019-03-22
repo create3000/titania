@@ -118,8 +118,8 @@ X3DPickingContext::picking ()
 {
 	getBrowser () -> getWorld () -> traverse (TraverseType::PICKING, nullptr);
 
-	for (const auto tranformSensor : transformSensorNodes)
-		tranformSensor -> process ();
+	for (const auto transformSensor : transformSensorNodes)
+		transformSensor -> process ();
 
 	for (const auto pickSensor : pickSensorNodes .front ())
 		pickSensor -> process ();
