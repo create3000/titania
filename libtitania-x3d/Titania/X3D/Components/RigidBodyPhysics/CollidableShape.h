@@ -105,6 +105,16 @@ public:
 	getBBox () const override;
 
 	virtual
+	void
+	setConvex (const bool value)
+	{ convex = value; }
+
+	virtual
+	const SFBool &
+	getConvex () const
+	{ return convex; }
+
+	virtual
 	const X3DPtr <Shape> &
 	getShape () const
 	{ return shapeNode; }
@@ -130,6 +140,9 @@ private:
 	initialize () override;
 
 	///  @name Member access
+
+	std::shared_ptr <btCollisionShape>
+	createConvexGeometry ();
 
 	std::shared_ptr <btCollisionShape>
 	createConcaveGeometry ();
@@ -165,6 +178,7 @@ private:
 
 	///  @name Members
 
+	SFBool                             convex;
 	X3DPtr <Shape>                     shapeNode;
 	X3DPtr <X3DGeometryNode>           geometryNode;
 	std::shared_ptr <btCollisionShape> collisionShape;

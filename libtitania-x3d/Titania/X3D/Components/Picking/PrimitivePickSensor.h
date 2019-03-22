@@ -86,6 +86,11 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Destruction
+
+	virtual
+	~PrimitivePickSensor () final override;
+
 
 protected:
 

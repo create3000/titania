@@ -108,6 +108,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	cameraObject  .setAccessType (outputOnly);
 	transparent   .setAccessType (outputOnly);
 	rebuildOutput .setAccessType (outputOnly);
+	pickShape     .setAccessType (outputOnly);
 }
 
 void

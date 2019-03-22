@@ -221,5 +221,8 @@ PrimitivePickSensor::process ()
 	X3DPickSensorNode::process ();
 }
 
+PrimitivePickSensor::~PrimitivePickSensor ()
+{ }
+
 } // X3D
 } // titania

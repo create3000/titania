@@ -236,6 +236,10 @@ X3DPickSensorNode::getPickShape (X3DGeometryNode* const geometryNode) const
 		const auto shapeNode           = getExecutionContext () -> createNode <Shape> ();
 		const auto collidableShapeNode = getExecutionContext () -> createNode <CollidableShape> ();
 
+		shapeNode -> setPrivate (true);
+		collidableShapeNode -> setPrivate (true);
+		collidableShapeNode -> setConvex (true);
+
 		shapeNode -> geometry ()        = geometryNode;
 		collidableShapeNode -> shape () = shapeNode;
 

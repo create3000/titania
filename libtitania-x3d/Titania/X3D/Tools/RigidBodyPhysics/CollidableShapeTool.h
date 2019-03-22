@@ -97,6 +97,16 @@ public:
 	{ return X3DNBodyCollidableNodeTool::getBBox (); }
 
 	virtual
+	void
+	setConvex (const bool value) final override
+	{ getNode <CollidableShape> () -> setConvex (value); }
+
+	virtual
+	const SFBool &
+	getConvex () const final override
+	{ return getNode <CollidableShape> () -> getConvex (); }
+
+	virtual
 	const X3DPtr <Shape> &
 	getShape () const final override
 	{ return getNode <CollidableShape> () -> getShape (); }

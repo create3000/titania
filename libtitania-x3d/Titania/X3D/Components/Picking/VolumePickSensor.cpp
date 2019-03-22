@@ -50,7 +50,10 @@
 
 #include "VolumePickSensor.h"
 
+#include "../../Browser/Picking/VolumePicker.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/X3DGeometryNode.h"
+#include "../RigidBodyPhysics/CollidableShape.h"
 
 namespace titania {
 namespace X3D {
@@ -60,8 +63,10 @@ const std::string VolumePickSensor::typeName       = "VolumePickSensor";
 const std::string VolumePickSensor::containerField = "children";
 
 VolumePickSensor::VolumePickSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPickSensorNode ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DPickSensorNode (),
+	pickingGeometryNode (),
+	             picker (new VolumePicker ())
 {
 	addType (X3DConstants::VolumePickSensor);
 
@@ -74,6 +79,8 @@ VolumePickSensor::VolumePickSensor (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "pickTarget",       pickTarget ());
 	addField (outputOnly,     "isActive",         isActive ());
 	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
+
+	addChildObjects (pickingGeometryNode);
 }
 
 X3DBaseNode*
@@ -83,10 +90,110 @@ VolumePickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+VolumePickSensor::initialize ()
+{
+	X3DPickSensorNode::initialize ();
+
+	pickingGeometry () .addInterest (&VolumePickSensor::set_pickingGeometry, this);
+
+	set_pickingGeometry ();
+}
+
+void
+VolumePickSensor::set_pickingGeometry ()
+{
+	pickingGeometryNode = x3d_cast <X3DGeometryNode*> (pickingGeometry ());
+}
+
+void
 VolumePickSensor::process ()
 {
+	if (pickingGeometryNode)
+	{
+		switch (getIntersectionType ())
+		{
+			case IntersectionType::BOUNDS:
+			{
+				// Intersect bboxes.
+
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
+					const auto pickingCenter = pickingBBox .center ();
+
+					for (const auto & target : getTargets ())
+					{
+						const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+		
+						if (not pickingBBox .intersects (targetBBox))
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingCenter, targetBBox .center ());
+					}
+				}
+
+				// Send events.
+
+				const auto & pickedGeometries = getPickedGeometries ();
+				const auto   active           = not pickedGeometries .empty ();
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+
+				break;
+			}
+			case IntersectionType::GEOMETRY:
+			{
+				// Intersect geometries.
+
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto   pickingBBox   = pickingGeometryNode -> getBBox () * modelMatrix;
+					const auto   pickingCenter = pickingBBox .center ();
+					const auto & pickingShape  = getPickShape (pickingGeometryNode);
+
+					picker -> setChildShape1 (modelMatrix, pickingShape -> getCompoundShape ());
+
+					for (const auto & target : getTargets ())
+					{
+						const auto   targetBBox  = target -> geometryNode -> getBBox () * target -> modelMatrix;
+						const auto & targetShape = getPickShape (target -> geometryNode);
+	
+						picker -> setChildShape2 (target -> modelMatrix, targetShape -> getCompoundShape ());
+
+						if (not picker -> contactTest ())
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingCenter, targetBBox .center ());
+					}
+				}
+
+				// Send events.
+
+				const auto & pickedGeometries = getPickedGeometries ();
+				const auto   active           = not pickedGeometries .empty ();
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+
+				break;
+			}
+		}
+	}
+
 	X3DPickSensorNode::process ();
 }
+
+VolumePickSensor::~VolumePickSensor ()
+{ }
 
 } // X3D
 } // titania

@@ -83,19 +83,13 @@ public:
 	void
 	setChildShape1 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
 	{
-		if (compoundShape1 -> getNumChildShapes ())
-			compoundShape1 -> removeChildShape (compoundShape1 -> getChildShape (0));
-
-		compoundShape1 -> addChildShape (getTransform (matrix), childShape .get ());
+		setChildShape (compoundShape1, matrix, childShape);
 	}
 
 	void
 	setChildShape2 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
 	{
-		if (compoundShape2 -> getNumChildShapes ())
-			compoundShape2 -> removeChildShape (compoundShape2 -> getChildShape (0));
-
-		compoundShape2 -> addChildShape (getTransform (matrix), childShape .get ());
+		setChildShape (compoundShape2, matrix, childShape);
 	}
 
 	///  @name Operations
@@ -129,11 +123,30 @@ private:
 
 	///  @name Operations
 
+	void
+	setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape, const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
+	{
+		auto translation = Vector3f ();
+		auto rotation    = Rotation4f ();
+		auto scale       = Vector3f ();
+
+		matrix .get (translation, rotation, scale);
+
+		if (compoundShape -> getNumChildShapes ())
+			compoundShape -> removeChildShape (compoundShape -> getChildShape (0));
+
+		compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
+		compoundShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ()));
+	}
+
 	btTransform
-	getTransform (const Matrix4f & m) const
+	getTransform (const Vector3f & translation, const Rotation4f & rotation) const
 	{
 		auto l = btTransform ();
-	
+		auto m = Matrix4f ();
+		
+		m .set (translation, rotation);
+
 		l .setFromOpenGLMatrix (m [0] .data ());
 	
 		return l;

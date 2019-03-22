@@ -84,6 +84,7 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNBodyCollidableNode (),
 	                    fields (),
+	                    convex (false),
 	                 shapeNode (),
 	              geometryNode (),
 	            collisionShape (),
@@ -100,7 +101,7 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 	addField (initializeOnly, "shape",       shape ());
 
-	addChildObjects (shapeNode, geometryNode);
+	addChildObjects (convex, shapeNode, geometryNode);
 }
 
 X3DBaseNode*
@@ -134,6 +135,27 @@ CollidableShape::getBBox () const
 	}
 
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
+}
+
+std::shared_ptr <btCollisionShape>
+CollidableShape::createConvexGeometry ()
+{
+	// Triangulate.
+
+	std::vector <Vector3d> vertices;
+
+	geometryNode -> triangulate (nullptr, nullptr, nullptr, nullptr, &vertices);
+
+	std::vector <btScalar> points;
+
+	for (const auto & vertex : vertices)
+	{
+		points .emplace_back (vertex .x ());
+		points .emplace_back (vertex .y ());
+		points .emplace_back (vertex .z ());
+	}
+
+	return std::make_shared <btConvexHullShape> (points .data (), vertices .size ());
 }
 
 std::shared_ptr <btCollisionShape>
@@ -225,7 +247,7 @@ CollidableShape::set_collidableGeometry ()
 
 	setOffset (Vector3f ());
 
-	if (geometryNode and enabled () and geometryNode -> getGeometryType () > 1)
+	if (enabled () and geometryNode and geometryNode -> getGeometryType () > 1)
 	{
 		switch (geometryNode -> getType () .back ())
 		{
@@ -324,7 +346,11 @@ CollidableShape::set_collidableGeometry ()
 			}
 			default:
 			{
-				collisionShape = createConcaveGeometry ();
+				if (convex)
+					collisionShape = createConvexGeometry ();
+				else
+					collisionShape = createConcaveGeometry ();
+
 				break;
 			}
 		}

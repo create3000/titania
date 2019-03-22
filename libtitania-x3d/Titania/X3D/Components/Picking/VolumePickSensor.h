@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class VolumePicker;
+
 class VolumePickSensor :
 	public X3DPickSensorNode
 {
@@ -84,8 +86,19 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Destruction
+
+	virtual
+	~VolumePickSensor () final override;
+
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Operations
 
@@ -96,11 +109,21 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_pickingGeometry ();
+
 	///  @name Static members
 
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Members
+
+	X3DPtr <X3DGeometryNode>       pickingGeometryNode;
+	std::shared_ptr <VolumePicker> picker;
 
 };
 
