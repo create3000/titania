@@ -230,8 +230,8 @@ CollidableShape::set_geometry ()
 void
 CollidableShape::set_collidableGeometry ()
 {
-	if (collisionShape)
-		getCompoundShape () -> removeChildShape (collisionShape .get ());
+	if (getCompoundShape () -> getNumChildShapes ())
+		getCompoundShape () -> removeChildShapeByIndex (0);
 
 	triangleMesh .reset ();
 	heightField .clear ();

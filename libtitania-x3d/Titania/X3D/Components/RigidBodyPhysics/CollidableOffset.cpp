@@ -154,7 +154,7 @@ void
 CollidableOffset::set_collidableGeometry ()
 {
 	if (getCompoundShape () -> getNumChildShapes ())
-		getCompoundShape () -> removeChildShape (getCompoundShape () -> getChildShape (0));
+		getCompoundShape () -> removeChildShapeByIndex (0);
 
 	if (collidableNode and enabled ())
 		getCompoundShape () -> addChildShape (getLocalTransform (), collidableNode -> getCompoundShape () .get ());

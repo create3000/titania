@@ -421,7 +421,7 @@ void
 RigidBody::set_compoundShape ()
 {
 	for (int32_t i = compoundShape -> getNumChildShapes () - 1; i >= 0; -- i)
-		compoundShape -> removeChildShape (compoundShape -> getChildShape (i));
+		compoundShape -> removeChildShapeByIndex (i);
 
 	for (const auto & geometryNode : geometryNodes)
 		compoundShape -> addChildShape (btTransform (), geometryNode -> getCompoundShape () .get ());
