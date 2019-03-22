@@ -271,9 +271,9 @@ X3DTransformEditor::on_transform_move_center_button ()
 		undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
 		                             transform,
 		                             transform -> getMatrix (),
-		                             transform -> X3D::X3DGroupingNode::getBBox () .center ());
+		                             transform -> getSubBBox () .center ());
 	
-		transform -> setMatrixWithCenter (transform -> getMatrix (), transform -> X3D::X3DGroupingNode::getBBox () .center ());
+		transform -> setMatrixWithCenter (transform -> getMatrix (), transform -> getSubBBox () .center ());
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
