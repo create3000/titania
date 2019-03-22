@@ -230,14 +230,16 @@ CollidableShape::set_geometry ()
 void
 CollidableShape::set_collidableGeometry ()
 {
-	if (getCompoundShape () -> getNumChildShapes ())
-		getCompoundShape () -> removeChildShapeByIndex (0);
+	const auto localScaling = getCompoundShape () -> getLocalScaling ();
 
 	triangleMesh .reset ();
 	heightField .clear ();
-	heightField .shrink_to_fit ();
+
+	if (getCompoundShape () -> getNumChildShapes ())
+		getCompoundShape () -> removeChildShapeByIndex (0);
 
 	setOffset (Vector3f ());
+	getCompoundShape () -> setLocalScaling (btVector3 (1, 1, 1));
 
 	if (enabled () and geometryNode and geometryNode -> getGeometryType () > 1)
 	{
@@ -354,6 +356,8 @@ CollidableShape::set_collidableGeometry ()
 
 	if (collisionShape)
 		getCompoundShape () -> addChildShape (getLocalTransform (), collisionShape .get ());
+
+	getCompoundShape () -> setLocalScaling (localScaling);
 
 	addEvent ();
 }

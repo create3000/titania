@@ -50,6 +50,8 @@
 
 #include "VolumePicker.h"
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
@@ -93,8 +95,11 @@ VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundS
 	if (compoundShape -> getNumChildShapes ())
 		compoundShape -> removeChildShapeByIndex (0);
 
-	compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
-	compoundShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ())); // XXX: does not work.
+	if (childShape -> getNumChildShapes ())
+	{
+		childShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ()));
+		compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
+	}
 }
 
 btTransform

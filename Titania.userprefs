@@ -1,17 +1,17 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollidableShape.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollidableShape.cpp" Line="239" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.h" Line="56" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp" Line="94" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="423" Column="56" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/X3DNBodyCollidableNode.cpp" Line="70" Column="51" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollidableOffset.cpp" Line="156" Column="49" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp" Line="89" Column="33" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/X3DNBodyCollidableNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollidableOffset.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
