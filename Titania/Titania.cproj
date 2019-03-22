@@ -3237,6 +3237,10 @@
     <None Include="Titania\Revealer\FogCoordinateEditor\FogCoordinateEditor.h" />
     <None Include="share\titania\ui\icons\ColorWheel.png" />
     <None Include="share\titania\ui\icons\Contrast.png" />
+    <None Include="share\titania\Library\Components\Picking\.Titania\PrimitivePickSensor" />
+    <None Include="share\titania\Library\Components\Picking\.Titania\VolumePickSensor" />
+    <None Include="share\titania\Library\Components\Picking\.X_ITE\PrimitivePickSensor" />
+    <None Include="share\titania\Library\Components\Picking\.X_ITE\VolumePickSensor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3410,6 +3414,7 @@
     <Folder Include="assets\" />
     <Folder Include="share\titania\Library\Components\H-Anim\.X_ITE\" />
     <Folder Include="Titania\Revealer\FogCoordinateEditor\" />
+    <Folder Include="share\titania\Library\Components\Picking\.X_ITE\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

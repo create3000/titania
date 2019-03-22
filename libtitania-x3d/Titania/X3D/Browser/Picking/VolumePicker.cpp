@@ -94,7 +94,7 @@ VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundS
 		compoundShape -> removeChildShape (compoundShape -> getChildShape (0));
 
 	compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
-	compoundShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ()));
+	compoundShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ())); // XXX: does not work.
 }
 
 btTransform

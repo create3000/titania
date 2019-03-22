@@ -143,7 +143,9 @@ CollidableShape::createConvexGeometry ()
 	const auto convexHull = std::make_shared <btConvexHullShape> ();
 
 	for (auto & vertex : geometryNode -> getPolygonVertices ())
-		convexHull -> addPoint (btVector3 (vertex .x (), vertex .y (), vertex .z ()));
+		convexHull -> addPoint (btVector3 (vertex .x (), vertex .y (), vertex .z ()), false);
+
+	convexHull -> recalcLocalAabb ();
 
 	return convexHull;
 }
