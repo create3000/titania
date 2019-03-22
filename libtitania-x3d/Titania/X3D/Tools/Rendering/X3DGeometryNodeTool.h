@@ -110,6 +110,11 @@ public:
 
 	virtual
 	const SFBool &
+	isCameraObject () const override
+	{ return X3DGeometryNode::isCameraObject (); }
+
+	virtual
+	const SFBool &
 	isTransparent () const final override
 	{ return getNode <X3DGeometryNode> () -> isTransparent (); }
 

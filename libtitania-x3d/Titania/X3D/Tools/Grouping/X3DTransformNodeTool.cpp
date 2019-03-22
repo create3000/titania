@@ -125,7 +125,7 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 
 	addChildObjects (handlesTouchGroup);
 
-	setCameraObject (true); // Needed???
+	setCameraObject (true);
 }
 
 void
