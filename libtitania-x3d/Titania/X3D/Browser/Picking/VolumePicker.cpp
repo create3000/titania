@@ -86,17 +86,17 @@ VolumePicker::setChildShape2 (const Matrix4f & matrix, const std::shared_ptr <bt
 void
 VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape, const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
 {
-	auto translation = Vector3f ();
-	auto rotation    = Rotation4f ();
-	auto scale       = Vector3f ();
-
-	matrix .get (translation, rotation, scale);
-
 	if (compoundShape -> getNumChildShapes ())
 		compoundShape -> removeChildShapeByIndex (0);
 
 	if (childShape -> getNumChildShapes ())
 	{
+		auto translation = Vector3f ();
+		auto rotation    = Rotation4f ();
+		auto scale       = Vector3f ();
+
+		matrix .get (translation, rotation, scale);
+
 		childShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ()));
 		compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
 	}
