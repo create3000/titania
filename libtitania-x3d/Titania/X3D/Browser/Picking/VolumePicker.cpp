@@ -120,7 +120,6 @@ VolumePicker::contactTest ()
 {
 	collisionWorld -> performDiscreteCollisionDetection ();
 
-	bool       contact      = false;
 	const auto numManifolds = dispatcher -> getNumManifolds ();
 
 	for (int32_t i = 0; i < numManifolds; ++ i)
@@ -132,11 +131,12 @@ VolumePicker::contactTest ()
 		{
 			const auto & pt = contactManifold -> getContactPoint (j);
 
-			contact |= pt .getDistance () < 0;
+			if (pt .getDistance () < 0)
+				return true;
 		}
 	}
 
-	return contact;
+	return false;
 }
 
 VolumePicker::~VolumePicker ()
