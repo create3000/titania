@@ -252,8 +252,8 @@ X3DPickSensorNode::getPickShape (X3DGeometryNode* const geometryNode) const
 	return geometryNode -> getPickShape ();
 }
 
-const MFNode &
-X3DPickSensorNode::getPickedGeometries () const
+MFNode &
+X3DPickSensorNode::getPickedGeometries ()
 {
 	targets .erase (std::remove_if (targets .begin (), targets .end (),
 	[] (const TargetPtr & target)

@@ -209,8 +209,8 @@ protected:
 	const X3DPtr <CollidableShape> &
 	getPickShape (X3DGeometryNode* const geometryNode) const;
 
-	const MFNode &
-	getPickedGeometries () const;
+	MFNode &
+	getPickedGeometries ();
 
 	void
 	collect (const X3DPtr <X3DGeometryNode> & geometryNode,
