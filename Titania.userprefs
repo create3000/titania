@@ -3,12 +3,12 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.h" Line="108" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp" Line="97" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.h" Line="127" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.cpp" Line="147" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.h" Line="154" Column="120" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.cpp" Line="235" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.cpp" Line="142" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -119,15 +119,19 @@ PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderO
 		if (getObjectType () .count ("NONE"))
 			return;
 
+		const auto browser = renderObject -> getBrowser ();
+
 		if (getObjectType () .count ("ALL"))
 		{
+			browser -> getPickable () .push (true);
+
 			X3DGroupingNode::traverse (type, renderObject);
+
+			browser -> getPickable () .pop ();
 		}
 		else
 		{
 			// Filter pick sensors.
-
-			const auto browser = renderObject -> getBrowser ();
 
 			std::set <X3DPickSensorNode*> pickSensors;
 
