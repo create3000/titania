@@ -75,6 +75,15 @@ public:
 	void
 	setChildShape2 (const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape);
 
+	void
+	setChildShape1 (const btTransform & transform, const btVector3 & localScaling, const std::shared_ptr <btCompoundShape> & childShape);
+
+	void
+	setChildShape2 (const btTransform & transform, const btVector3 & localScaling, const std::shared_ptr <btCompoundShape> & childShape);
+
+	btTransform
+	getTransform (const Vector3f & translation, const Rotation4f & rotation) const;
+
 	///  @name Operations
 
 	bool
@@ -90,10 +99,15 @@ private:
 	///  @name Operations
 
 	void
-	setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape, const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape);
+	setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape,
+	               const Matrix4f & matrix,
+	               const std::shared_ptr <btCompoundShape> & childShape);
 
-	btTransform
-	getTransform (const Vector3f & translation, const Rotation4f & rotation) const;
+	void
+	setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape,
+	               const btTransform & transform,
+	               const btVector3 & localScaling,
+	               const std::shared_ptr <btCompoundShape> & childShape);
 
 	///  @name Members
 

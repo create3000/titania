@@ -84,7 +84,21 @@ VolumePicker::setChildShape2 (const Matrix4f & matrix, const std::shared_ptr <bt
 }
 
 void
-VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape, const Matrix4f & matrix, const std::shared_ptr <btCompoundShape> & childShape)
+VolumePicker::setChildShape1 (const btTransform & transform, const btVector3 & localScaling, const std::shared_ptr <btCompoundShape> & childShape)
+{
+	setChildShape (compoundShape1, transform, localScaling, childShape);
+}
+
+void
+VolumePicker::setChildShape2 (const btTransform & transform, const btVector3 & localScaling, const std::shared_ptr <btCompoundShape> & childShape)
+{
+	setChildShape (compoundShape2, transform, localScaling, childShape);
+}
+
+void
+VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape,
+                             const Matrix4f & matrix,
+                             const std::shared_ptr <btCompoundShape> & childShape)
 {
 	if (compoundShape -> getNumChildShapes ())
 		compoundShape -> removeChildShapeByIndex (0);
@@ -99,6 +113,22 @@ VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundS
 
 		childShape -> setLocalScaling (btVector3 (scale .x (), scale .y (), scale .z ()));
 		compoundShape -> addChildShape (getTransform (translation, rotation), childShape .get ());
+	}
+}
+
+void
+VolumePicker::setChildShape (const std::shared_ptr <btCompoundShape> & compoundShape,
+                             const btTransform & transform,
+                             const btVector3 & localScaling,
+                             const std::shared_ptr <btCompoundShape> & childShape)
+{
+	if (compoundShape -> getNumChildShapes ())
+		compoundShape -> removeChildShapeByIndex (0);
+
+	if (childShape -> getNumChildShapes ())
+	{
+		childShape -> setLocalScaling (localScaling);
+		compoundShape -> addChildShape (transform, childShape .get ());
 	}
 }
 

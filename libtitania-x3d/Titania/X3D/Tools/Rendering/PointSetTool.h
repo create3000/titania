@@ -109,6 +109,11 @@ public:
 	coord () const final override
 	{ return getNode <PointSet> () -> coord (); }
 
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getCoord () const final override
+	{ return getNode <PointSet> () -> getCoord (); }
+
 	///  @name Operations
 
 	virtual

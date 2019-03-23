@@ -172,7 +172,7 @@ PrimitivePickSensor::process ()
 					isActive () = active;
 
 				if (not (pickedGeometry () .equals (pickedGeometries)))
-					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+					pickedGeometry () = pickedGeometries;
 
 				break;
 			}
@@ -213,7 +213,7 @@ PrimitivePickSensor::process ()
 					isActive () = active;
 
 				if (not (pickedGeometry () .equals (pickedGeometries)))
-					pickedGeometry () .assign (pickedGeometries .cbegin (), pickedGeometries .cend ());
+					pickedGeometry () = pickedGeometries;
 
 				break;
 			}

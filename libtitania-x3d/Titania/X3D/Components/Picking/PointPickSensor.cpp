@@ -50,7 +50,11 @@
 
 #include "PointPickSensor.h"
 
+#include "../../Browser/Picking/VolumePicker.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/PointSet.h"
+#include "../Rendering/X3DCoordinateNode.h"
+#include "../RigidBodyPhysics/CollidableShape.h"
 
 namespace titania {
 namespace X3D {
@@ -64,9 +68,12 @@ PointPickSensor::Fields::Fields () :
 { }
 
 PointPickSensor::PointPickSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPickSensorNode (),
-	           fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DPickSensorNode (),
+	             fields (),
+	pickingGeometryNode (),
+	             picker (new VolumePicker ()),
+	     compoundShapes ()
 {
 	addType (X3DConstants::PointPickSensor);
 
@@ -80,6 +87,8 @@ PointPickSensor::PointPickSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isActive",         isActive ());
 	addField (outputOnly,     "pickedPoint",      pickedPoint ());
 	addField (outputOnly,     "pickedGeometry",   pickedGeometry ());
+
+	addChildObjects (pickingGeometryNode);
 }
 
 X3DBaseNode*
@@ -89,10 +98,167 @@ PointPickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+PointPickSensor::initialize ()
+{
+	X3DPickSensorNode::initialize ();
+
+	pickingGeometry () .addInterest (&PointPickSensor::set_pickingGeometry, this);
+
+	set_pickingGeometry ();
+}
+
+void
+PointPickSensor::set_pickingGeometry ()
+{
+	if (pickingGeometryNode)
+		pickingGeometryNode -> rebuilded () .removeInterest (&PointPickSensor::set_geometry, this);
+
+	pickingGeometryNode = x3d_cast <PointSet*> (pickingGeometry ());
+
+	if (pickingGeometryNode)
+		pickingGeometryNode -> rebuilded () .addInterest (&PointPickSensor::set_geometry, this);
+
+	set_geometry ();
+}
+
+void
+PointPickSensor::set_geometry ()
+{
+	compoundShapes .resize (0);
+
+	if (not pickingGeometryNode)
+		return;
+
+	const auto & coord = pickingGeometryNode -> getCoord ();
+
+	if (not coord)
+		return;
+
+	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
+	{
+		const auto compoundShape = std::make_shared <btCompoundShape> ();
+		const auto sphereShape   = std::make_shared <btSphereShape> (1e-5);
+		const auto point         = coord -> get1Point (i);
+
+		auto t = btTransform ();
+
+		t .setOrigin (btVector3 (point .x (), point .y (), point .z ()));
+
+		compoundShape -> addChildShape (t, sphereShape. get ());
+
+		compoundShapes .emplace_back (compoundShape, sphereShape, point);
+	}
+}
+
+void
 PointPickSensor::process ()
 {
+	if (pickingGeometryNode)
+	{
+		switch (getIntersectionType ())
+		{
+			case IntersectionType::BOUNDS:
+			{
+				// Intersect bboxes.
+
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
+
+					for (const auto & target : getTargets ())
+					{
+						const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+		
+						if (not pickingBBox .intersects (targetBBox))
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
+					}
+				}
+
+				// Send events.
+
+				auto &     pickedGeometries = getPickedGeometries ();
+				const auto active           = not pickedGeometries .empty ();
+
+				pickedGeometries .remove (nullptr);
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () = pickedGeometries;
+
+				break;
+			}
+			case IntersectionType::GEOMETRY:
+			{
+				// Intersect geometries.
+
+				MFVec3f pickedPoints;
+
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
+
+					auto translation = Vector3f ();
+					auto rotation    = Rotation4f ();
+					auto scale       = Vector3f ();
+
+					modelMatrix .get (translation, rotation, scale);
+
+					const auto transform    = picker -> getTransform (translation, rotation);
+					const auto localScaling = btVector3 (scale .x (), scale .y (), scale .z ());
+
+					for (const auto & [compoundShape, sphereShape, point] : compoundShapes)
+					{
+						picker -> setChildShape1 (transform, localScaling, compoundShape);
+
+						for (const auto & target : getTargets ())
+						{
+							const auto   targetBBox  = target -> geometryNode -> getBBox () * target -> modelMatrix;
+							const auto & targetShape = getPickShape (target -> geometryNode);
+		
+							picker -> setChildShape2 (target -> modelMatrix, targetShape -> getCompoundShape ());
+	
+							if (not picker -> contactTest ())
+								continue;
+	
+							target -> intersected = true;
+							target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
+
+							pickedPoints .emplace_back (point);
+						}
+					}
+				}
+
+				// Send events.
+
+				auto &     pickedGeometries = getPickedGeometries ();
+				const auto active           = not pickedGeometries .empty ();
+
+				pickedGeometries .remove (nullptr);
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () = pickedGeometries;
+
+				if (not (pickedPoint () .equals (pickedPoints)))
+					pickedPoint () = pickedPoints;
+
+				break;
+			}
+		}
+	}
+
 	X3DPickSensorNode::process ();
 }
+
+PointPickSensor::~PointPickSensor ()
+{ }
 
 } // X3D
 } // titania

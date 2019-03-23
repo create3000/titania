@@ -53,8 +53,12 @@
 
 #include "../Picking/X3DPickSensorNode.h"
 
+#include <btBulletDynamicsCommon.h>
+
 namespace titania {
 namespace X3D {
+
+class VolumePicker;
 
 class PointPickSensor :
 	public X3DPickSensorNode
@@ -94,8 +98,19 @@ public:
 	pickedPoint () const
 	{ return *fields .pickedPoint; }
 
+	///  @name Destruction
+
+	virtual
+	~PointPickSensor () final override;
+
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Operations
 
@@ -106,6 +121,13 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_pickingGeometry ();
+
+	void
+	set_geometry ();
 
 	///  @name Static members
 
@@ -123,6 +145,13 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <PointSet>              pickingGeometryNode;
+	std::shared_ptr <VolumePicker> picker;
+
+	std::vector <std::tuple <std::shared_ptr <btCompoundShape>, std::shared_ptr <btSphereShape>, Vector3d>> compoundShapes;
 
 };
 

@@ -128,6 +128,13 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getCoord () const
+	{ return coordNode; }
+
 	///  @name Operations
 
 	virtual
