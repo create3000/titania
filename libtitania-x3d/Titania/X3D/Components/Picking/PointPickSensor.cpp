@@ -137,7 +137,7 @@ PointPickSensor::set_geometry ()
 	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
 	{
 		const auto compoundShape = std::make_shared <btCompoundShape> ();
-		const auto sphereShape   = std::make_shared <btSphereShape> (1e-5);
+		const auto sphereShape   = std::make_shared <btSphereShape> (0);
 		const auto point         = coord -> get1Point (i);
 
 		auto t = btTransform ();
