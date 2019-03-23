@@ -3243,6 +3243,8 @@
     <None Include="share\titania\Library\Components\Picking\.X_ITE\VolumePickSensor" />
     <None Include="share\titania\Library\Components\Picking\.Titania\PointPickSensor" />
     <None Include="share\titania\Library\Components\Picking\.X_ITE\PointPickSensor" />
+    <None Include="share\titania\Library\Components\Picking\.X_ITE\PickableGroup" />
+    <None Include="share\titania\Library\Components\Picking\.Titania\PickableGroup" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
