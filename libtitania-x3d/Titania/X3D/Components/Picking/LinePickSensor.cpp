@@ -51,6 +51,8 @@
 #include "LinePickSensor.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/IndexedLineSet.h"
+#include "../Rendering/LineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -66,9 +68,10 @@ LinePickSensor::Fields::Fields () :
 { }
 
 LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPickSensorNode (),
-	           fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DPickSensorNode (),
+	             fields (),
+	pickingGeometryNode ()
 {
 	addType (X3DConstants::LinePickSensor);
 
@@ -84,6 +87,8 @@ LinePickSensor::LinePickSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "pickedNormal",            pickedNormal ());
 	addField (outputOnly,     "pickedPoint",             pickedPoint ());
 	addField (outputOnly,     "pickedGeometry",          pickedGeometry ());
+
+	addChildObjects (pickingGeometryNode);
 }
 
 X3DBaseNode*
@@ -93,10 +98,102 @@ LinePickSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+LinePickSensor::initialize ()
+{
+	X3DPickSensorNode::initialize ();
+
+	pickingGeometry () .addInterest (&LinePickSensor::set_pickingGeometry, this);
+
+	set_pickingGeometry ();
+}
+
+void
+LinePickSensor::set_pickingGeometry ()
+{
+	try
+	{
+		pickingGeometryNode = nullptr;
+
+		if (not pickingGeometry ())
+			return;
+
+		const auto innerNode = pickingGeometry () -> getInnerNode ();
+
+		for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		{
+			switch (type)
+			{
+				case X3DConstants::IndexedLineSet:
+				case X3DConstants::LineSet:
+				{
+					pickingGeometryNode = dynamic_cast <X3DGeometryNode*> (innerNode);
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
 LinePickSensor::process ()
 {
+	if (pickingGeometryNode)
+	{
+		switch (getIntersectionType ())
+		{
+			case IntersectionType::BOUNDS:
+			{
+				// Intersect bboxes.
+
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
+
+					for (const auto & target : getTargets ())
+					{
+						const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+
+						if (not pickingBBox .intersects (targetBBox))
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
+					}
+				}
+
+				// Send events.
+
+				auto &     pickedGeometries = getPickedGeometries ();
+				const auto active           = not pickedGeometries .empty ();
+
+				pickedGeometries .remove (nullptr);
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () = pickedGeometries;
+
+				break;
+			}
+			case IntersectionType::GEOMETRY:
+			{
+				break;
+			}
+		}
+	}
+
 	X3DPickSensorNode::process ();
 }
+
+LinePickSensor::~LinePickSensor ()
+{ }
 
 } // X3D
 } // titania

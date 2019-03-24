@@ -110,8 +110,19 @@ public:
 	pickedPoint () const
 	{ return *fields .pickedPoint; }
 
+	///  @name Destruction
+
+	virtual
+	~LinePickSensor () final override;
+
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Operations
 
@@ -121,6 +132,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_pickingGeometry ();
 
 	///  @name Static members
 
@@ -140,6 +156,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DGeometryNode> pickingGeometryNode;
 
 };
 
