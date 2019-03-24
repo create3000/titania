@@ -85,7 +85,7 @@ TransformSensorTool::initialize ()
 void
 TransformSensorTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type == TraverseType::PICKING)
+	if (type == TraverseType::PICKING and isPickableObject ())
 		getNode <X3DEnvironmentalSensorNode> () -> traverse (type, renderObject);
 
 	// Tool
