@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.h" Line="9" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.h" Line="162" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.cpp" Line="194" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.h" Line="126" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.cpp" Line="225" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

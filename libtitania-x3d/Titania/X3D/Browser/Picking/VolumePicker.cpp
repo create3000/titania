@@ -161,7 +161,7 @@ VolumePicker::contactTest ()
 		{
 			const auto & pt = contactManifold -> getContactPoint (j);
 
-			if (pt .getDistance () < 0)
+			if (pt .getDistance () <= 0)
 				return true;
 		}
 	}
