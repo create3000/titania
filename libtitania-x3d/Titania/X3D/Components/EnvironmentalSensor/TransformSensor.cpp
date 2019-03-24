@@ -193,7 +193,10 @@ TransformSensor::set_targetObject ()
 void
 TransformSensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	// TransformSensor nodes are sorted out and only traversed during PICKING,
+	// TransformSensor nodes are sorted out and only traversed during PICKING, except if it is a child of a LOD or Switch node.
+
+	if (not isPickableObject ())
+		return;
 
 	modelMatrices .emplace_back (renderObject -> getModelViewMatrix () .get ());
 }
