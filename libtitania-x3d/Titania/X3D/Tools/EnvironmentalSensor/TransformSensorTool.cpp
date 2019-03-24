@@ -83,6 +83,17 @@ TransformSensorTool::initialize ()
 }
 
 void
+TransformSensorTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	if (type == TraverseType::PICKING)
+		getNode <X3DEnvironmentalSensorNode> () -> traverse (type, renderObject);
+
+	// Tool
+
+	X3DToolObject::traverse (type, renderObject);
+}
+
+void
 TransformSensorTool::dispose ()
 {
 	getBrowser () -> removeTransformSensorTool (this);

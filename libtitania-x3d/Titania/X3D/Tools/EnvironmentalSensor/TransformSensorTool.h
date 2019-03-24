@@ -79,8 +79,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	virtual
 	void
