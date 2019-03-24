@@ -195,6 +195,9 @@ TransformSensor::traverse (const TraverseType type, X3DRenderObject* const rende
 {
 	// TransformSensor nodes are sorted out and only traversed during PICKING, except if it is a child of a LOD or Switch node.
 
+	if (type not_eq TraverseType::PICKING)
+		return;
+
 	if (not isPickableObject ())
 		return;
 

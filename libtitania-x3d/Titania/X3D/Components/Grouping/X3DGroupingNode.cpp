@@ -59,7 +59,6 @@
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../EnvironmentalSensor/TransformSensor.h"
 #include "../Lighting/X3DLightNode.h"
-#include "../Picking/X3DPickSensorNode.h"
 #include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
 #include "../Rendering/ClipPlane.h"
 
@@ -83,13 +82,12 @@ X3DGroupingNode::X3DGroupingNode () :
 	             allowedTypes (),
 	pointingDeviceSensorNodes (),
 	            cameraObjects (),
+	 maybePickableSensorNodes (),
+	      pickableSensorNodes (),
+	          pickableObjects (),
 	           clipPlaneNodes (),
 	            localFogNodes (),
 	               lightNodes (),
-	     transformSensorNodes (),
-	          pickSensorNodes (),
-	      pickableSensorNodes (),
-	          pickableObjects (),
 	               childNodes ()
 {
 	addType (X3DConstants::X3DGroupingNode);
@@ -97,13 +95,12 @@ X3DGroupingNode::X3DGroupingNode () :
 	addChildObjects (visible,
 	                 pointingDeviceSensorNodes,
 	                 cameraObjects,
+	                 maybePickableSensorNodes,
+	                 pickableSensorNodes,
+	                 pickableObjects,
 	                 clipPlaneNodes,
 	                 localFogNodes,
 	                 lightNodes,
-	                 transformSensorNodes,
-	                 pickSensorNodes,
-	                 pickableSensorNodes,
-	                 pickableObjects,
 	                 childNodes);
 }
 
@@ -116,13 +113,12 @@ X3DGroupingNode::initialize ()
 	visible                   .setTainted (true);
 	pointingDeviceSensorNodes .setTainted (true);
 	cameraObjects             .setTainted (true);
+	maybePickableSensorNodes  .setTainted (true);
+	pickableSensorNodes       .setTainted (true);
+	pickableObjects           .setTainted (true);
 	clipPlaneNodes            .setTainted (true);
 	localFogNodes             .setTainted (true);
 	lightNodes                .setTainted (true);
-	transformSensorNodes      .setTainted (true);
-	pickSensorNodes           .setTainted (true);
-	pickableSensorNodes       .setTainted (true);
-	pickableObjects           .setTainted (true);
 	childNodes                .setTainted (true);
 
 	transformSensors_changed () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
@@ -288,21 +284,13 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 							break;
 						}
 						case X3DConstants::TransformSensor:
-						{
-							const auto transformSensorNode = dynamic_cast <TransformSensor*> (innerNode);
-
-							transformSensorNode -> isPickableObject () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
-
-							transformSensorNodes .emplace_back (transformSensorNode);
-							break;
-						}
 						case X3DConstants::X3DPickSensorNode:
 						{
-							const auto pickSensorNode = dynamic_cast <X3DPickSensorNode*> (innerNode);
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							pickSensorNode -> isPickableObject () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
+							childNode -> isPickableObject () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
 
-							pickSensorNodes .emplace_back (pickSensorNode);
+							maybePickableSensorNodes .emplace_back (childNode);
 							break;
 						}
 						case X3DConstants::TransformSensorTool:
@@ -412,27 +400,16 @@ X3DGroupingNode::remove (const MFNode & children)
 							break;
 						}
 						case X3DConstants::TransformSensor:
-						{
-							const auto transformSensorNode = dynamic_cast <TransformSensor*> (innerNode);
-
-							transformSensorNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
-
-							transformSensorNodes .erase (std::remove (transformSensorNodes .begin (),
-							                                          transformSensorNodes .end (),
-							                                          transformSensorNode),
-							                             transformSensorNodes .end ());
-							break;
-						}
 						case X3DConstants::X3DPickSensorNode:
 						{
-							const auto pickSensorNode = dynamic_cast <X3DPickSensorNode*> (innerNode);
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							pickSensorNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
+							childNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
 
-							pickSensorNodes .erase (std::remove (pickSensorNodes .begin (),
-							                                     pickSensorNodes .end (),
-							                                     pickSensorNode),
-							                        pickSensorNodes .end ());
+							maybePickableSensorNodes .erase (std::remove (maybePickableSensorNodes .begin (),
+							                                              maybePickableSensorNodes .end (),
+							                                              childNode),
+							                                 maybePickableSensorNodes .end ());
 							break;
 						}
 						case X3DConstants::TransformSensorTool:
@@ -484,11 +461,8 @@ X3DGroupingNode::remove (const MFNode & children)
 void
 X3DGroupingNode::clear ()
 {
-	for (const auto & transformSensorNode : transformSensorNodes)
-		transformSensorNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
-
-	for (const auto & pickSensorNode : pickSensorNodes)
-		pickSensorNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
+	for (const auto & sensorNode : maybePickableSensorNodes)
+		sensorNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 	for (const auto & childNode : childNodes)
 	{
@@ -501,8 +475,7 @@ X3DGroupingNode::clear ()
 	clipPlaneNodes            .clear ();
 	localFogNodes             .clear ();
 	lightNodes                .clear ();
-	transformSensorNodes      .clear ();
-	pickSensorNodes           .clear ();
+	maybePickableSensorNodes  .clear ();
 	childNodes                .clear ();
 }
 
@@ -526,16 +499,10 @@ X3DGroupingNode::set_pickableObjects ()
 	pickableSensorNodes .clear ();
 	pickableObjects     .clear ();
 
-	for (const auto & transformSensorNode : transformSensorNodes)
+	for (const auto & sensorNode : maybePickableSensorNodes)
 	{
-		if (transformSensorNode -> isPickableObject ())
-			pickableSensorNodes .emplace_back (transformSensorNode);
-	}
-
-	for (const auto & pickSensorNode : pickSensorNodes)
-	{
-		if (pickSensorNode -> isPickableObject ())
-			pickableSensorNodes .emplace_back (pickSensorNode);
+		if (sensorNode -> isPickableObject ())
+			pickableSensorNodes .emplace_back (sensorNode);
 	}
 
 	for (const auto & childNode : childNodes)
