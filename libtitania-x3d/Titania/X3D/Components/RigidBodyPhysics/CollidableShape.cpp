@@ -243,110 +243,119 @@ CollidableShape::set_collidableGeometry ()
 
 	if (enabled () and geometryNode and geometryNode -> getGeometryType () > 1)
 	{
-		switch (geometryNode -> getType () .back ())
+		for (const auto type : basic::make_reverse_range (geometryNode -> getType ()))
 		{
-			case X3DConstants::Rectangle2D:
+			switch (type)
 			{
-//				const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
-//				const auto half      = rectangle -> size () * 0.5f;
-//
-//				collisionShape .reset (new btBox2dShape (btVector3 (half .x (), half .y (), 0)));
-//				break;
-
-				const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
-				const auto size      = rectangle -> size () .getValue ();
-
-				heightField = { 0, 0, 0, 0 };
-
-				collisionShape .reset (new btHeightfieldTerrainShape (2, 2, heightField .data (), 1, 0, 0, 2, PHY_FLOAT, false));
-
-				collisionShape -> setLocalScaling (btVector3 (size .x (), size .y (), 1));
-				break;
-			}
-			case X3DConstants::Box:
-			{
-				const auto box  = dynamic_cast <Box*> (geometryNode .getValue ());
-				const auto half = box -> size () * 0.5f;
-
-				collisionShape .reset (new btBoxShape (btVector3 (half .x (), half .y (), half .z ())));
-				break;
-			}
-			case X3DConstants::Cone:
-			{
-				const auto cone = dynamic_cast <Cone*> (geometryNode .getValue ());
-
-				if (cone -> side () and cone -> bottom ())
-					collisionShape .reset (new btConeShape (cone -> bottomRadius (), cone -> height ()));
-				else
-					collisionShape = createConcaveGeometry ();
-
-				break;
-			}
-			case X3DConstants::Cylinder:
-			{
-				const auto cylinder  = dynamic_cast <Cylinder*> (geometryNode .getValue ());
-				const auto radius    = cylinder -> radius ();
-				const auto height1_2 = cylinder -> height () * 0.5f;
-
-				if (cylinder -> side () and cylinder -> top () and cylinder -> bottom ())
-					collisionShape .reset (new btCylinderShape (btVector3 (radius, height1_2, radius)));
-				else
-					collisionShape = createConcaveGeometry ();
-
-				break;
-			}
-			case X3DConstants::ElevationGrid:
-			{
-				const auto elevationGrid = dynamic_cast <ElevationGrid*> (geometryNode .getValue ());
-
-				if (elevationGrid -> xDimension () > 1 and elevationGrid -> zDimension () > 1)
+				case X3DConstants::Rectangle2D:
 				{
-					const auto minmax = std::minmax_element (elevationGrid -> height () .begin (), elevationGrid -> height () .end ());
-					const auto min    = minmax .first  not_eq elevationGrid -> height () .end () ? *minmax .first  : 0.0f;
-					const auto max    = minmax .second not_eq elevationGrid -> height () .end () ? *minmax .second : 0.0f;
-
-					heightField .assign (elevationGrid -> height () .begin (), elevationGrid -> height () .end ());
-					heightField .resize (elevationGrid -> xDimension () * elevationGrid -> zDimension ());
-
-					collisionShape .reset (new btHeightfieldTerrainShape (elevationGrid -> xDimension (),
-					                                                      elevationGrid -> zDimension (),
-					                                                      heightField .data (),
-					                                                      1,
-					                                                      min,
-					                                                      max,
-					                                                      1,
-					                                                      PHY_FLOAT,
-					                                                      true));
+	//				const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
+	//				const auto half      = rectangle -> size () * 0.5f;
+	//
+	//				collisionShape .reset (new btBox2dShape (btVector3 (half .x (), half .y (), 0)));
+	//				break;
 	
-					collisionShape -> setLocalScaling (btVector3 (elevationGrid -> xSpacing (), 1, elevationGrid -> zSpacing ()));
-
-					setOffset (Vector3f (elevationGrid -> xSpacing () * (elevationGrid -> xDimension () - 1) * 0.5f,
-					                     (min + max) * 0.5f,
-					                     elevationGrid -> zSpacing () * (elevationGrid -> zDimension () - 1) * 0.5f));
+					const auto rectangle = dynamic_cast <Rectangle2D*> (geometryNode .getValue ());
+					const auto size      = rectangle -> size () .getValue ();
+	
+					heightField = { 0, 0, 0, 0 };
+	
+					collisionShape .reset (new btHeightfieldTerrainShape (2, 2, heightField .data (), 1, 0, 0, 2, PHY_FLOAT, false));
+	
+					collisionShape -> setLocalScaling (btVector3 (size .x (), size .y (), 1));
+					break;
 				}
-				else
+				case X3DConstants::Box:
 				{
-					collisionShape .reset ();	
+					const auto box  = dynamic_cast <Box*> (geometryNode .getValue ());
+					const auto half = box -> size () * 0.5f;
+	
+					collisionShape .reset (new btBoxShape (btVector3 (half .x (), half .y (), half .z ())));
+					break;
 				}
-
-				break;
+				case X3DConstants::Cone:
+				{
+					const auto cone = dynamic_cast <Cone*> (geometryNode .getValue ());
+	
+					if (cone -> side () and cone -> bottom ())
+						collisionShape .reset (new btConeShape (cone -> bottomRadius (), cone -> height ()));
+					else
+						collisionShape = createConcaveGeometry ();
+	
+					break;
+				}
+				case X3DConstants::Cylinder:
+				{
+					const auto cylinder  = dynamic_cast <Cylinder*> (geometryNode .getValue ());
+					const auto radius    = cylinder -> radius ();
+					const auto height1_2 = cylinder -> height () * 0.5f;
+	
+					if (cylinder -> side () and cylinder -> top () and cylinder -> bottom ())
+						collisionShape .reset (new btCylinderShape (btVector3 (radius, height1_2, radius)));
+					else
+						collisionShape = createConcaveGeometry ();
+	
+					break;
+				}
+				case X3DConstants::ElevationGrid:
+				{
+					const auto elevationGrid = dynamic_cast <ElevationGrid*> (geometryNode .getValue ());
+	
+					if (elevationGrid -> xDimension () > 1 and elevationGrid -> zDimension () > 1)
+					{
+						const auto minmax = std::minmax_element (elevationGrid -> height () .begin (), elevationGrid -> height () .end ());
+						const auto min    = minmax .first  not_eq elevationGrid -> height () .end () ? *minmax .first  : 0.0f;
+						const auto max    = minmax .second not_eq elevationGrid -> height () .end () ? *minmax .second : 0.0f;
+	
+						heightField .assign (elevationGrid -> height () .begin (), elevationGrid -> height () .end ());
+						heightField .resize (elevationGrid -> xDimension () * elevationGrid -> zDimension ());
+	
+						collisionShape .reset (new btHeightfieldTerrainShape (elevationGrid -> xDimension (),
+						                                                      elevationGrid -> zDimension (),
+						                                                      heightField .data (),
+						                                                      1,
+						                                                      min,
+						                                                      max,
+						                                                      1,
+						                                                      PHY_FLOAT,
+						                                                      true));
+		
+						collisionShape -> setLocalScaling (btVector3 (elevationGrid -> xSpacing (), 1, elevationGrid -> zSpacing ()));
+	
+						setOffset (Vector3f (elevationGrid -> xSpacing () * (elevationGrid -> xDimension () - 1) * 0.5f,
+						                     (min + max) * 0.5f,
+						                     elevationGrid -> zSpacing () * (elevationGrid -> zDimension () - 1) * 0.5f));
+					}
+					else
+					{
+						collisionShape .reset ();	
+					}
+	
+					break;
+				}
+				case X3DConstants::Sphere:
+				{
+					const auto sphere = dynamic_cast <Sphere*> (geometryNode .getValue ());
+	
+					collisionShape .reset (new btSphereShape (sphere -> radius ()));
+					break;
+				}
+				case X3DConstants::X3DGeometryNode:
+				{
+					if (convex)
+						collisionShape = createConvexGeometry ();
+					else
+						collisionShape = createConcaveGeometry ();
+	
+					break;
+				}
+				default:
+				{
+					continue;
+				}
 			}
-			case X3DConstants::Sphere:
-			{
-				const auto sphere = dynamic_cast <Sphere*> (geometryNode .getValue ());
 
-				collisionShape .reset (new btSphereShape (sphere -> radius ()));
-				break;
-			}
-			default:
-			{
-				if (convex)
-					collisionShape = createConvexGeometry ();
-				else
-					collisionShape = createConcaveGeometry ();
-
-				break;
-			}
+			break;
 		}
 	}
 	else
