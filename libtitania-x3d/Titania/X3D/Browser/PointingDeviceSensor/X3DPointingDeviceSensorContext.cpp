@@ -50,6 +50,7 @@
 
 #include "X3DPointingDeviceSensorContext.h"
 
+#include "../Navigation/X3DViewer.h"
 #include "../PointingDeviceSensor/PointingDevice.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
@@ -331,6 +332,9 @@ X3DPointingDeviceSensorContext::motion ()
 void
 X3DPointingDeviceSensorContext::touch (const double x, const double y)
 {
+	if (getBrowser () -> getViewer () -> isActive ())
+		return;
+
 	pointer = Vector2d (x, y);
 
 	// Clear hits.
