@@ -1672,6 +1672,7 @@
     <Compile Include="Titania\X3D\Base\X3DEventObject.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\X3DPickingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\VolumePicker.cpp" />
+    <Compile Include="Titania\X3D\Tools\Core\X3DChildNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -48,53 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
-
-#include "../Core/X3DNodeTool.h"
-
-#include "../../Components/Core/X3DChildNode.h"
+#include "X3DChildNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DChildNodeTool :
-	virtual public X3DChildNode,
-	virtual public X3DNodeTool
+X3DChildNodeTool::X3DChildNodeTool () :
+	  X3DChildNode (),
+	   X3DNodeTool ()
 {
-public:
+	addType (X3DConstants::X3DChildNodeTool);
+}
 
-	///  @name Member access
+void
+X3DChildNodeTool::initialize ()
+{
+	X3DNodeTool::initialize ();
+}
 
-	virtual
-	const SFBool &
-	isCameraObject () const override
-	{ return getNode <X3DChildNode> () -> isCameraObject (); }
-
-	virtual
-	const SFBool &
-	isPickableObject () const override
-	{ return getNode <X3DChildNode> () -> isPickableObject (); }
-
-	///  @name Destruction
-
-	virtual
-	~X3DChildNodeTool () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DChildNodeTool ();
-
-	virtual
-	void
-	initialize () override;
-
-};
+X3DChildNodeTool::~X3DChildNodeTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

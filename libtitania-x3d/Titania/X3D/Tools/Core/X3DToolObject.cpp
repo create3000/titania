@@ -52,6 +52,7 @@
 
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Picking/PickingHierarchyGuard.h"
 #include "../../Browser/PointingDeviceSensor/HierarchyGuard.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Networking/Inline.h"
@@ -149,6 +150,26 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 					break;
 	
 				HierarchyGuard guard (renderObject -> getBrowser (), this);
+				
+				inlineNode -> traverse (type, renderObject);
+			}
+			catch (const X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+
+			break;
+		}
+		case TraverseType::PICKING:
+		{
+			try
+			{
+				const auto childNode = dynamic_cast <X3DChildNode*> (this);
+
+				if (not childNode)
+					break;
+
+				PickingHierarchyGuard guard (renderObject -> getBrowser (), childNode);
 				
 				inlineNode -> traverse (type, renderObject);
 			}
