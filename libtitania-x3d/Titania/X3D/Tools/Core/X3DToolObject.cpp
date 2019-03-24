@@ -166,12 +166,16 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 			{
 				const auto childNode = dynamic_cast <X3DChildNode*> (this);
 
-				if (not childNode)
-					break;
-
-				PickingHierarchyGuard guard (renderObject -> getBrowser (), childNode);
-				
-				inlineNode -> traverse (type, renderObject);
+				if (childNode)
+				{
+					PickingHierarchyGuard guard (renderObject -> getBrowser (), childNode);
+					
+					inlineNode -> traverse (type, renderObject);
+				}
+				else
+				{
+					inlineNode -> traverse (type, renderObject);
+				}
 			}
 			catch (const X3DError & error)
 			{
