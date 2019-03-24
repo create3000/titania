@@ -184,6 +184,88 @@ LinePickSensor::process ()
 			}
 			case IntersectionType::GEOMETRY:
 			{
+				// Intersect geometry.
+
+				auto pickedIntersections = std::vector <IntersectionPtr> ();
+
+				for (const auto & modelMatrix : getModelMatrices ())
+				{
+					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
+
+					for (const auto & target : getTargets ())
+					{
+						const auto targetBBox       = target -> geometryNode -> getBBox () * target -> modelMatrix;
+						const auto vertices         = pickingGeometryNode -> getPolygonVertices ();
+						const auto matrix           = modelMatrix * inverse (target -> modelMatrix);
+						const auto numIntersections = pickedIntersections .size ();
+
+						for (size_t i = 0, size = vertices .size (); i < size; i += 2)
+						{
+							const auto point1        = vertices [i + 0] * matrix;
+							const auto point2        = vertices [i + 1] * matrix;
+							const auto line          = Line3d (point1, point2, points_type ());
+							auto       intersections = std::vector <IntersectionPtr> ();
+
+							if (target -> geometryNode -> intersects (line, { }, target -> modelMatrix, intersections))
+							{
+								for (const auto & intersection : intersections)
+								{
+									// Test if intersection -> point is between point1 and point2.
+
+									const auto a = intersection -> getPoint () - point1;
+									const auto b = intersection -> getPoint () - point2;
+									const auto c = abs (a + b);
+									const auto s = abs (point1 - point2);
+
+									if (c <= s)
+										pickedIntersections .emplace_back (intersection);
+								}
+							}
+						}
+
+						if (numIntersections == pickedIntersections .size ())
+							continue;
+
+						target -> intersected = true;
+						target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
+					}
+				}
+
+				// Send events.
+
+				auto &     pickedGeometries = getPickedGeometries ();
+				const auto active           = not pickedGeometries .empty ();
+
+				pickedGeometries .remove (nullptr);
+
+				if (active not_eq isActive ())
+					isActive () = active;
+
+				if (not (pickedGeometry () .equals (pickedGeometries)))
+					pickedGeometry () = pickedGeometries;
+
+				MFVec3f pickedTextureCoordinates;
+				MFVec3f pickedNormals;
+				MFVec3f pickedPoints;
+
+				for (const auto & intersection : pickedIntersections)
+				{
+					const auto texCoord = intersection -> getTexCoord ();
+
+					pickedTextureCoordinates .emplace_back (texCoord .x (), texCoord .y (), texCoord .z ());
+					pickedNormals            .emplace_back (intersection -> getNormal ());
+					pickedPoints             .emplace_back (intersection -> getPoint ());
+				}
+
+				if (not (pickedTextureCoordinate () .equals (pickedTextureCoordinates)))
+					pickedTextureCoordinate () = pickedTextureCoordinates;
+
+				if (not (pickedNormal () .equals (pickedNormals)))
+					pickedNormal () = pickedNormals;
+
+				if (not (pickedPoint () .equals (pickedPoints)))
+					pickedPoint () = pickedPoints;
+
 				break;
 			}
 		}

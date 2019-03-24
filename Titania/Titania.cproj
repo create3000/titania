@@ -3245,6 +3245,8 @@
     <None Include="share\titania\Library\Components\Picking\.X_ITE\PointPickSensor" />
     <None Include="share\titania\Library\Components\Picking\.X_ITE\PickableGroup" />
     <None Include="share\titania\Library\Components\Picking\.Titania\PickableGroup" />
+    <None Include="share\titania\Library\Components\Picking\.Titania\LinePickSensor" />
+    <None Include="share\titania\Library\Components\Picking\.X_ITE\LinePickSensor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
