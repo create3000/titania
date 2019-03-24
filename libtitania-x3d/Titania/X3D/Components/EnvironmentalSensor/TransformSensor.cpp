@@ -195,9 +195,6 @@ TransformSensor::traverse (const TraverseType type, X3DRenderObject* const rende
 {
 	// TransformSensor nodes are sorted out and only traversed during PICKING,
 
-	if (not isPickableObject ())
-		return;
-
 	modelMatrices .emplace_back (renderObject -> getModelViewMatrix () .get ());
 }
 

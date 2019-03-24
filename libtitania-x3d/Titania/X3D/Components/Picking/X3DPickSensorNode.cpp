@@ -352,9 +352,6 @@ X3DPickSensorNode::traverse (const TraverseType type, X3DRenderObject* const ren
 {
 	// X3DPickSensorNode nodes are sorted out and only traversed during PICKING,
 
-	if (not isPickableObject ())
-		return;
-
 	modelMatrices .emplace_back (renderObject -> getModelViewMatrix () .get ());
 }
 
