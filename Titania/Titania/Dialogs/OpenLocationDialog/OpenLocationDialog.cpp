@@ -87,7 +87,7 @@ OpenLocationDialog::run ()
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
-		getBrowserWindow () -> open (Glib::uri_unescape_string (getLocationEntry () .get_text ()));
+		getBrowserWindow () -> open (getLocationEntry () .get_text () .raw ());
 
 	quit ();
 }
