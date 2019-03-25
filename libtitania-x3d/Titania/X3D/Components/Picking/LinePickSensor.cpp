@@ -194,40 +194,47 @@ LinePickSensor::process ()
 
 					for (const auto & target : getTargets ())
 					{
-						const auto targetBBox       = target -> geometryNode -> getBBox () * target -> modelMatrix;
-						const auto vertices         = pickingGeometryNode -> getPolygonVertices ();
-						const auto matrix           = modelMatrix * inverse (target -> modelMatrix);
-						const auto numIntersections = pickedIntersections .size ();
-
-						for (size_t i = 0, size = vertices .size (); i < size; i += 2)
+						try
 						{
-							const auto point1        = vertices [i + 0] * matrix;
-							const auto point2        = vertices [i + 1] * matrix;
-							const auto line          = Line3d (point1, point2, points_type ());
-							auto       intersections = std::vector <IntersectionPtr> ();
-
-							if (target -> geometryNode -> intersects (line, { }, target -> modelMatrix, intersections))
+							const auto targetBBox       = target -> geometryNode -> getBBox () * target -> modelMatrix;
+							const auto vertices         = pickingGeometryNode -> getPolygonVertices ();
+							const auto matrix           = modelMatrix * inverse (target -> modelMatrix);
+							const auto numIntersections = pickedIntersections .size ();
+	
+							for (size_t i = 0, size = vertices .size (); i < size; i += 2)
 							{
-								for (const auto & intersection : intersections)
+								const auto point1        = vertices [i + 0] * matrix;
+								const auto point2        = vertices [i + 1] * matrix;
+								const auto line          = Line3d (point1, point2, points_type ());
+								auto       intersections = std::vector <IntersectionPtr> ();
+	
+								if (target -> geometryNode -> intersects (line, { }, target -> modelMatrix, intersections))
 								{
-									// Test if intersection -> point is between point1 and point2.
-
-									const auto a = intersection -> getPoint () - point1;
-									const auto b = intersection -> getPoint () - point2;
-									const auto c = abs (a + b);
-									const auto s = abs (point1 - point2);
-
-									if (c <= s)
-										pickedIntersections .emplace_back (intersection);
+									for (const auto & intersection : intersections)
+									{
+										// Test if intersection -> point is between point1 and point2.
+	
+										const auto a = intersection -> getPoint () - point1;
+										const auto b = intersection -> getPoint () - point2;
+										const auto c = abs (a + b);
+										const auto s = abs (point1 - point2);
+	
+										if (c <= s)
+											pickedIntersections .emplace_back (intersection);
+									}
 								}
 							}
+	
+							if (numIntersections == pickedIntersections .size ())
+								continue;
+	
+							target -> intersected = true;
+							target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
 						}
-
-						if (numIntersections == pickedIntersections .size ())
-							continue;
-
-						target -> intersected = true;
-						target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
+						catch (const std::domain_error & error)
+						{
+							// Catch inverse.
+						}
 					}
 				}
 
