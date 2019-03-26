@@ -186,7 +186,7 @@ LinePickSensor::process ()
 			{
 				// Intersect geometry.
 
-				auto pickedIntersections = std::vector <IntersectionPtr> ();
+				auto pickedIntersections = std::vector <std::pair <double, IntersectionPtr>> ();
 
 				for (const auto & modelMatrix : getModelMatrices ())
 				{
@@ -220,7 +220,7 @@ LinePickSensor::process ()
 										const auto s = abs (point1 - point2);
 	
 										if (c <= s)
-											pickedIntersections .emplace_back (intersection);
+											pickedIntersections .emplace_back (distance (targetBBox .center (), intersection -> getPoint () * modelMatrix), intersection);
 									}
 								}
 							}
@@ -251,11 +251,47 @@ LinePickSensor::process ()
 				if (not (pickedGeometry () .equals (pickedGeometries)))
 					pickedGeometry () = pickedGeometries;
 
+				bool   sorted           = false;
+				size_t numIntersections = pickedIntersections .size ();
+
+				switch (getSortOrder ())
+				{
+					case SortOrderType::ANY:
+					{
+						numIntersections = std::min <size_t> (numIntersections, 1);
+						break;
+					}
+					case SortOrderType::CLOSEST:
+					{
+						sorted           = true;
+						numIntersections = std::min <size_t> (numIntersections, 1);
+						break;
+					}
+					case SortOrderType::ALL:
+					{
+						break;
+					}
+					case SortOrderType::ALL_SORTED:
+					{
+						sorted = true;
+						break;
+					}
+				}
+
+				if (sorted)
+				{
+					std::sort (pickedIntersections .begin (), pickedIntersections .end (),
+					[ ] (const std::pair <double, IntersectionPtr> & lhs, const std::pair <double, IntersectionPtr> & rhs)
+					{
+						return lhs .first < rhs .first;
+					});
+				}
+
 				MFVec3f pickedTextureCoordinates;
 				MFVec3f pickedNormals;
 				MFVec3f pickedPoints;
 
-				for (const auto & intersection : pickedIntersections)
+				for (const auto & [distance, intersection] : basic::make_range (pickedIntersections .begin (), numIntersections))
 				{
 					const auto texCoord = intersection -> getTexCoord ();
 

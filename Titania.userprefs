@@ -1,11 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.cpp" Line="236" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.h" Line="9" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="73" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
