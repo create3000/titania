@@ -252,10 +252,14 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 
 	ContextLock lock (texture2DNode -> getBrowser ());
 
-	const int32_t width      = texture2DNode -> getWidth ();
-	const int32_t height     = texture2DNode -> getHeight ();
+	int32_t       width      = 0;
+	int32_t       height     = 0;
 	const int32_t components = texture2DNode -> components ();
 	X3D::MFInt32  array;
+
+	glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &width);
+	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
 
 	switch (components)
 	{
@@ -268,9 +272,7 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
-			glBindTexture (GL_TEXTURE_2D, 0);
 
 			const uint8_t* first = image .data ();
 
@@ -298,9 +300,7 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
-			glBindTexture (GL_TEXTURE_2D, 0);
 
 			const uint8_t* first = image .data ();
 
@@ -329,9 +329,7 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
-			glBindTexture (GL_TEXTURE_2D, 0);
 
 			const uint8_t* first = image .data ();
 
@@ -361,9 +359,7 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 
 			std::vector <uint8_t> image (width * height * stride);
 
-			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
-			glBindTexture (GL_TEXTURE_2D, 0);
 
 			const uint8_t* first = image .data ();
 
@@ -388,6 +384,8 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 		default:
 			break;
 	}
+
+	glBindTexture (GL_TEXTURE_2D, 0);
 
 	image () = SFImage (width, height, components, std::move (array));
 }
