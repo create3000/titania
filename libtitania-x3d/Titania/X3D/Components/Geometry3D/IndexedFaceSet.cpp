@@ -531,6 +531,9 @@ IndexedFaceSet::addTexCoordIndex ()
 	if (not getTexCoord ())
 		return;
 
+	if (texCoordIndex () .size ())
+		return;
+
 	texCoordIndex () = coordIndex ();
 }
 

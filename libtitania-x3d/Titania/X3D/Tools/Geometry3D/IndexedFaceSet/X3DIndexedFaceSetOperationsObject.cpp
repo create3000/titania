@@ -900,32 +900,39 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 void
 X3DIndexedFaceSetOperationsObject::deleteFaces (const std::set <size_t> & selectedFaces)
 {
-	size_t i = 0;
-
 	for (const auto & faceIndex : basic::make_reverse_range (selectedFaces))
 	{
-		const auto vertices = getFaceSelection () -> getFaceVertices (faceIndex);
-		const auto first    = faceIndex;
-		const auto last     = faceIndex + vertices .size ();
+		const auto faceNumber = getFaceSelection () -> getFaceNumber (faceIndex);
+		const auto vertices   = getFaceSelection () -> getFaceVertices (faceIndex);
+		const auto first      = faceIndex;
+		const auto last       = faceIndex + vertices .size ();
 
 		if (colorPerVertex ())
 		{
-			if (last < colorIndex () .size ())
+			if (first < colorIndex () .size () and last < colorIndex () .size ())
 				colorIndex () .erase (colorIndex () .begin () + first, colorIndex () .begin () + last);
 		}
+		else
+		{
+			if (faceNumber < colorIndex () .size ())
+				colorIndex () .erase (colorIndex () .begin () + faceNumber);
+		}
 
-		if (last < texCoordIndex () .size ())
+		if (first < texCoordIndex () .size () and last < texCoordIndex () .size ())
 			texCoordIndex () .erase (texCoordIndex () .begin () + first, texCoordIndex () .begin () + last);
 
 		if (normalPerVertex ())
 		{
-			if (last < normalIndex () .size ())
+			if (first < normalIndex () .size () and last < normalIndex () .size ())
 				normalIndex () .erase (normalIndex () .begin () + first, normalIndex () .begin () + last);
+		}
+		else
+		{
+			if (faceNumber < normalIndex () .size ())
+				normalIndex () .erase (normalIndex () .begin () + faceNumber);
 		}
 
 		coordIndex () .erase (coordIndex () .begin () + first, coordIndex () .begin () + last);
-
-		++ i;
 	}
 }
 

@@ -329,8 +329,6 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 			const auto bbox = master -> getSubBBox () * absoluteMatrix;
 			position = bbox .center ();
 		}
-
-__LOG__ << master -> getModelMatrix () << std::endl;
 	
 		// Calculate snapping position and apply absolute relative translation.
 	
