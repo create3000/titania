@@ -315,6 +315,7 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 						case X3DConstants::X3DFollowerNode:
 						case X3DConstants::X3DInfoNode:
 						case X3DConstants::X3DInterpolatorNode:
+						case X3DConstants::X3DKeyDeviceSensorNode:
 						case X3DConstants::X3DLayoutNode:
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
@@ -437,6 +438,7 @@ X3DGroupingNode::remove (const MFNode & children)
 						case X3DConstants::X3DFollowerNode:
 						case X3DConstants::X3DInfoNode:
 						case X3DConstants::X3DInterpolatorNode:
+						case X3DConstants::X3DKeyDeviceSensorNode:
 						case X3DConstants::X3DLayoutNode:
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
