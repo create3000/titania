@@ -73,6 +73,7 @@ VolumePickSensor::VolumePickSensor (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "enabled",          enabled ());
 	addField (inputOutput,    "objectType",       objectType ());
+	addField (inputOutput,    "matchCriterion",   matchCriterion ());
 	addField (initializeOnly, "intersectionType", intersectionType ());
 	addField (initializeOnly, "sortOrder",        sortOrder ());
 	addField (inputOutput,    "pickingGeometry",  pickingGeometry ());

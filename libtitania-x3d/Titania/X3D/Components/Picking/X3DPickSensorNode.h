@@ -53,6 +53,7 @@
 
 #include "../Core/X3DSensorNode.h"
 
+#include "../../Browser/Picking/MatchCriterionType.h"
 #include "../../Browser/PointingDeviceSensor/Intersection.h"
 
 namespace titania {
@@ -78,6 +79,14 @@ public:
 	const MFString &
 	objectType () const
 	{ return *fields .objectType; }
+
+	SFString &
+	matchCriterion ()
+	{ return *fields .matchCriterion; }
+
+	const SFString &
+	matchCriterion () const
+	{ return *fields .matchCriterion; }
 
 	SFString &
 	intersectionType ()
@@ -119,12 +128,6 @@ public:
 	pickedGeometry () const
 	{ return *fields .pickedGeometry; }
 
-	///  @name Member access
-
-	const std::set <std::string> &
-	getObjectType () const
-	{ return objectTypeIndex; }
-
 	///  @name Operations
 
 	virtual
@@ -145,6 +148,7 @@ protected:
 
 	///  @name Friends
 
+	friend class PickableGroup;
 	friend class Shape;
 	friend class X3DPickingContext;
 
@@ -192,6 +196,14 @@ protected:
 
 	///  @name Member access
 
+	const std::set <std::string> &
+	getObjectType () const
+	{ return objectTypeIndex; }
+
+	MatchCriterionType
+	getMatchCriterion () const
+	{ return matchCriterionValue; }
+
 	IntersectionType
 	getIntersectionType () const
 	{ return intersectionTypeValue; }
@@ -237,6 +249,9 @@ private:
 	set_objectType ();
 
 	void
+	set_matchCriterion ();
+
+	void
 	set_intersectionType ();
 
 	void
@@ -255,6 +270,7 @@ private:
 		Fields ();
 
 		MFString* const objectType;
+		SFString* const matchCriterion;
 		SFString* const intersectionType;
 		SFString* const sortOrder;
 		SFNode* const pickingGeometry;
@@ -268,6 +284,7 @@ private:
 
 	std::set <std::string>   objectTypeIndex;
 	IntersectionType         intersectionTypeValue;
+	MatchCriterionType       matchCriterionValue;
 	SortOrderType            sortOrderType;
 	std::set <X3DChildNode*> pickTargetNodes;
 	std::vector <Matrix4d>   modelMatrices;

@@ -73,6 +73,7 @@ X3DPickSensorNode::Target::Target (X3DGeometryNode* geometryNode,
 
 X3DPickSensorNode::Fields::Fields () :
 	      objectType (new MFString ({ "ALL" })),
+	  matchCriterion (new SFString ("MATCH_ANY")),
 	intersectionType (new SFString ("BOUNDS")),
 	       sortOrder (new SFString ("CLOSEST")),
 	 pickingGeometry (new SFNode ()),
@@ -85,6 +86,7 @@ X3DPickSensorNode::X3DPickSensorNode () :
 	               fields (),
 	      objectTypeIndex (),
 	intersectionTypeValue (IntersectionType::BOUNDS),
+	  matchCriterionValue (MatchCriterionType::MATCH_ANY),
 	        sortOrderType (SortOrderType::CLOSEST),
 	      pickTargetNodes (),
 	        modelMatrices (),
@@ -108,11 +110,13 @@ X3DPickSensorNode::initialize ()
 
 	enabled ()          .addInterest (&X3DPickSensorNode::set_live,             this);
 	objectType  ()      .addInterest (&X3DPickSensorNode::set_objectType,       this);
+	matchCriterion  ()  .addInterest (&X3DPickSensorNode::set_matchCriterion,   this);
 	intersectionType () .addInterest (&X3DPickSensorNode::set_intersectionType, this);
 	sortOrder ()        .addInterest (&X3DPickSensorNode::set_sortOrder,        this);
 	pickTarget  ()      .addInterest (&X3DPickSensorNode::set_pickTarget,       this);
 
 	set_objectType ();
+	set_matchCriterion ();
 	set_intersectionType ();
 	set_sortOrder ();
 	set_pickTarget ();
@@ -153,6 +157,25 @@ X3DPickSensorNode::set_objectType ()
 		objectTypeIndex .emplace (value);
 
 	set_live ();
+}
+
+void
+X3DPickSensorNode::set_matchCriterion ()
+{
+	static const std::map <std::string, MatchCriterionType> matchCriterions = {
+		std::pair ("MATCH_ANY",      MatchCriterionType::MATCH_ANY),
+		std::pair ("MATCH_EVERY",    MatchCriterionType::MATCH_EVERY),
+		std::pair ("MATCH_ONLY_ONE", MatchCriterionType::MATCH_ONLY_ONE),
+	};
+
+	try
+	{
+		matchCriterionValue = matchCriterions .at (matchCriterion ());
+	}
+	catch (const std::out_of_range & error)
+	{
+		matchCriterionValue = MatchCriterionType::MATCH_ANY;
+	}
 }
 
 void

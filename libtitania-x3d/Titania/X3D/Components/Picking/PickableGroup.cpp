@@ -50,6 +50,7 @@
 
 #include "PickableGroup.h"
 
+#include "../../Browser/Picking/MatchCriterionType.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
@@ -133,32 +134,54 @@ PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderO
 		{
 			// Filter pick sensors.
 
-			std::set <X3DPickSensorNode*> pickSensors;
+			std::set <X3DPickSensorNode*> pickSensorNodes;
 
-			for (const auto pickSensor : browser -> getPickSensors () .back ())
+			for (const auto pickSensorNode : browser -> getPickSensors () .back ())
 			{
-				if (not pickSensor -> getObjectType () .count ("ALL"))
+				if (not pickSensorNode -> getObjectType () .count ("ALL"))
 				{
 					std::vector <std::string> intersection;
 	
 					std::set_intersection (getObjectType () .begin (), getObjectType () .end (),
-				                          pickSensor -> getObjectType () .begin (), pickSensor -> getObjectType () .end (),
+				                          pickSensorNode -> getObjectType () .begin (), pickSensorNode -> getObjectType () .end (),
 				                          std::back_inserter (intersection));
 	
-					if (intersection .empty ())
-						continue;
+					switch (pickSensorNode -> getMatchCriterion ())
+					{
+						case MatchCriterionType::MATCH_ANY:
+						{
+							if (intersection .empty ())
+								continue;
+
+							break;
+						}
+						case MatchCriterionType::MATCH_EVERY:
+						{
+							if (intersection .size () != pickSensorNode -> getObjectType () .size ())
+								continue;
+
+							break;
+						}
+						case MatchCriterionType::MATCH_ONLY_ONE:
+						{
+							if (intersection .size () != 1)
+								continue;
+
+							break;
+						}
+					}
 				}
 
-				pickSensors .emplace (pickSensor);
+				pickSensorNodes .emplace (pickSensorNode);
 			}
 
-			if (pickSensors .empty ())
+			if (pickSensorNodes .empty ())
 				return;
 
 			// Traverse.
 
 			browser -> getPickable () .push (true);
-			browser -> getPickSensors () .emplace_back (std::move (pickSensors));
+			browser -> getPickSensors () .emplace_back (std::move (pickSensorNodes));
 
 			X3DGroupingNode::traverse (type, renderObject);
 
