@@ -489,6 +489,7 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 					const auto & destinationNodeName = importedDestinationNode ? importedDestinationNode -> getImportedName () : Generator::Name (ostream, destinationNode);
 
 					ostream
+						<< ','
 						<< Generator::TidyBreak
 						<< Generator::Indent
 						<< '{'
