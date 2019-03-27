@@ -186,8 +186,6 @@ LinePickSensor::process ()
 			{
 				// Intersect geometry.
 
-				auto pickedIntersections = std::vector <std::pair <double, IntersectionPtr>> ();
-
 				for (const auto & modelMatrix : getModelMatrices ())
 				{
 					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
@@ -196,10 +194,9 @@ LinePickSensor::process ()
 					{
 						try
 						{
-							const auto targetBBox       = target -> geometryNode -> getBBox () * target -> modelMatrix;
-							const auto vertices         = pickingGeometryNode -> getPolygonVertices ();
-							const auto matrix           = modelMatrix * inverse (target -> modelMatrix);
-							const auto numIntersections = pickedIntersections .size ();
+							const auto targetBBox = target -> geometryNode -> getBBox () * target -> modelMatrix;
+							const auto vertices   = pickingGeometryNode -> getPolygonVertices ();
+							const auto matrix     = modelMatrix * inverse (target -> modelMatrix);
 	
 							for (size_t i = 0, size = vertices .size (); i < size; i += 2)
 							{
@@ -220,12 +217,12 @@ LinePickSensor::process ()
 										const auto s = abs (point1 - point2);
 	
 										if (c <= s)
-											pickedIntersections .emplace_back (distance (targetBBox .center (), intersection -> getPoint () * modelMatrix), intersection);
+											target -> intersections .emplace_back (intersection);
 									}
 								}
 							}
 	
-							if (numIntersections == pickedIntersections .size ())
+							if (target -> intersections .empty ())
 								continue;
 	
 							target -> intersected = true;
@@ -251,53 +248,20 @@ LinePickSensor::process ()
 				if (not (pickedGeometry () .equals (pickedGeometries)))
 					pickedGeometry () = pickedGeometries;
 
-				bool   sorted           = false;
-				size_t numIntersections = pickedIntersections .size ();
-
-				switch (getSortOrder ())
-				{
-					case SortOrderType::ANY:
-					{
-						numIntersections = std::min <size_t> (numIntersections, 1);
-						break;
-					}
-					case SortOrderType::CLOSEST:
-					{
-						sorted           = true;
-						numIntersections = std::min <size_t> (numIntersections, 1);
-						break;
-					}
-					case SortOrderType::ALL:
-					{
-						break;
-					}
-					case SortOrderType::ALL_SORTED:
-					{
-						sorted = true;
-						break;
-					}
-				}
-
-				if (sorted)
-				{
-					std::sort (pickedIntersections .begin (), pickedIntersections .end (),
-					[ ] (const std::pair <double, IntersectionPtr> & lhs, const std::pair <double, IntersectionPtr> & rhs)
-					{
-						return lhs .first < rhs .first;
-					});
-				}
-
 				MFVec3f pickedTextureCoordinates;
 				MFVec3f pickedNormals;
 				MFVec3f pickedPoints;
 
-				for (const auto & [distance, intersection] : basic::make_range (pickedIntersections .begin (), numIntersections))
+				for (const auto & target : getTargets ())
 				{
-					const auto texCoord = intersection -> getTexCoord ();
+					for (const auto & intersection : target -> intersections)
+					{
+						const auto texCoord = intersection -> getTexCoord ();
 
-					pickedTextureCoordinates .emplace_back (texCoord .x (), texCoord .y (), texCoord .z ());
-					pickedNormals            .emplace_back (intersection -> getNormal ());
-					pickedPoints             .emplace_back (intersection -> getPoint ());
+						pickedTextureCoordinates .emplace_back (texCoord .x (), texCoord .y (), texCoord .z ());
+						pickedNormals            .emplace_back (intersection -> getNormal ());
+						pickedPoints             .emplace_back (intersection -> getPoint ());
+					}
 				}
 
 				if (not (pickedTextureCoordinate () .equals (pickedTextureCoordinates)))

@@ -66,7 +66,9 @@ X3DPickSensorNode::Target::Target (X3DGeometryNode* geometryNode,
 	     modelMatrix (modelMatrix),
 	pickingHierarchy (pickingHierarchy),
 	     intersected (false),
-	        distance (0)
+	        distance (0),
+	    pickedPoints (),
+	   intersections ()
 { }
 
 X3DPickSensorNode::Fields::Fields () :
@@ -273,6 +275,7 @@ X3DPickSensorNode::getPickedGeometries ()
 	{
 		case SortOrderType::ANY:
 		{
+			targets .resize (1);
 			pickedGeometries .resize (1);
 			pickedGeometries [0] = getPickedGeometry (targets .front ());
 			break;
@@ -285,6 +288,7 @@ X3DPickSensorNode::getPickedGeometries ()
 				return lhs -> distance < rhs -> distance;
 			});
 
+			targets .resize (1);
 			pickedGeometries .resize (1);
 			pickedGeometries [0] = getPickedGeometry (targets .front ());
 			break;

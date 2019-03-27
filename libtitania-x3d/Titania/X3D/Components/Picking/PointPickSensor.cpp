@@ -196,8 +196,6 @@ PointPickSensor::process ()
 			{
 				// Intersect geometries.
 
-				std::vector <std::pair <double, Vector3d>> pickedPoints;
-
 				for (const auto & modelMatrix : getModelMatrices ())
 				{
 					const auto pickingBBox = pickingGeometryNode -> getBBox () * modelMatrix;
@@ -228,7 +226,7 @@ PointPickSensor::process ()
 							target -> intersected = true;
 							target -> distance    = distance (pickingBBox .center (), targetBBox .center ());
 
-							pickedPoints .emplace_back (distance (targetBBox .center (), point * modelMatrix), point);
+							target -> pickedPoints .emplace_back (point);
 						}
 					}
 				}
@@ -246,49 +244,16 @@ PointPickSensor::process ()
 				if (not (pickedGeometry () .equals (pickedGeometries)))
 					pickedGeometry () = pickedGeometries;
 
-				bool   sorted    = false;
-				size_t numPoints = pickedPoints .size ();
+				MFVec3f pickedPoints;
 
-				switch (getSortOrder ())
+				for (const auto & target : getTargets ())
 				{
-					case SortOrderType::ANY:
-					{
-						numPoints = std::min <size_t> (numPoints, 1);
-						break;
-					}
-					case SortOrderType::CLOSEST:
-					{
-						sorted    = true;
-						numPoints = std::min <size_t> (numPoints, 1);
-						break;
-					}
-					case SortOrderType::ALL:
-					{
-						break;
-					}
-					case SortOrderType::ALL_SORTED:
-					{
-						sorted = true;
-						break;
-					}
+					for (const auto & point : target -> pickedPoints)
+						pickedPoints .emplace_back (point);
 				}
 
-				if (sorted)
-				{
-					std::sort (pickedPoints .begin (), pickedPoints .end (),
-					[ ] (const std::pair <double, Vector3d> & lhs, const std::pair <double, Vector3d> & rhs)
-					{
-						return lhs .first < rhs .first;
-					});
-				}
-
-				MFVec3f pickedPoint_;
-
-				for (const auto & [distance, point] : basic::make_range (pickedPoints .begin (), numPoints))
-					pickedPoint_ .emplace_back (point);
-
-				if (not (pickedPoint () .equals (pickedPoint_)))
-					pickedPoint () = pickedPoint_;
+				if (not (pickedPoint () .equals (pickedPoints)))
+					pickedPoint () = pickedPoints;
 
 				break;
 			}

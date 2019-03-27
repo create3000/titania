@@ -53,6 +53,8 @@
 
 #include "../Core/X3DSensorNode.h"
 
+#include "../../Browser/PointingDeviceSensor/Intersection.h"
+
 namespace titania {
 namespace X3D {
 
@@ -168,11 +170,13 @@ protected:
 		        const Matrix4d & modelMatrix,
 		        const std::vector <X3DChildNode*> & pickingHierarchy);
 
-		X3DGeometryNode*            geometryNode;
-		Matrix4d                    modelMatrix;
-		std::vector <X3DChildNode*> pickingHierarchy;
-		bool                        intersected;
-		double                      distance;
+		X3DGeometryNode*              geometryNode;
+		Matrix4d                      modelMatrix;
+		std::vector <X3DChildNode*>   pickingHierarchy;
+		bool                          intersected;
+		double                        distance;
+		std::vector <Vector3d>        pickedPoints;
+		std::vector <IntersectionPtr> intersections;
 	};
 
 	using TargetPtr = std::shared_ptr <Target>;
