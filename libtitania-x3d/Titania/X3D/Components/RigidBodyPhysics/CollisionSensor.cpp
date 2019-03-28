@@ -51,7 +51,6 @@
 #include "CollisionSensor.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/RigidBodyPhysics/ContactContext.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
@@ -114,6 +113,25 @@ CollisionSensor::initialize ()
 	set_collider ();
 }
 
+void
+CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	if (isInitialized ())
+	{
+		getBrowser () -> sensorEvents ()    .removeInterest (&CollisionSensor::update,      this);
+		getExecutionContext () -> isLive () .removeInterest (&CollisionSensor::set_enabled, this);
+	}
+
+	X3DSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (&CollisionSensor::set_enabled, this);
+
+		set_enabled ();
+	}
+}
+
 const X3DPtr <Contact> &
 CollisionSensor::getContact () const
 {
@@ -141,25 +159,6 @@ CollisionSensor::getContact () const
 }
 
 void
-CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContext)
-{
-	if (isInitialized ())
-	{
-		getBrowser () -> sensorEvents ()    .removeInterest (&CollisionSensor::update,      this);
-		getExecutionContext () -> isLive () .removeInterest (&CollisionSensor::set_enabled, this);
-	}
-
-	X3DSensorNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getExecutionContext () -> isLive () .addInterest (&CollisionSensor::set_enabled, this);
-
-		set_enabled ();
-	}
-}
-
-void
 CollisionSensor::set_enabled ()
 {
 	if (colliderNode and enabled () and isLive () and getExecutionContext () -> isLive ())
@@ -179,74 +178,92 @@ CollisionSensor::set_collider ()
 void
 CollisionSensor::update ()
 {
-	const auto & collidableNodes = colliderNode -> getCollidables ();
-	auto         bodyIndex       = std::map <const btRigidBody*, std::pair <RigidBody*, X3DNBodyCollidableNode*>> ();
+	const auto & collidableNodes      = colliderNode -> getCollidables ();
+	auto         collidableNodesIndex = std::map <const btCollisionObject*, X3DNBodyCollidableNode*> ();
+	auto         collisionWorlds      = std::set <std::shared_ptr <btDiscreteDynamicsWorld>> ();
 
 	for (const auto & collidableNode : collidableNodes)
 	{
 		const auto & bodyNode = collidableNode -> getBody ();
 
 		if (bodyNode)
-			bodyIndex .emplace (bodyNode -> getRigidBody () .get (), std::pair (bodyNode, collidableNode));
+		{
+			collidableNodesIndex .emplace (bodyNode -> getRigidBody () .get (), collidableNode);
+
+			const auto collection = bodyNode -> getCollection ();
+
+			if (collection)
+				collisionWorlds .emplace (collection -> getDynamicsWorld ());
+		}
 	}
 
 	// Check collisions and create Contact nodes.
 
-	X3DPtrArray <X3DNBodyCollidableNode> intersectionNodes;
-	X3DPtrArray <Contact>                contactNodes;
+	std::set <X3DNBodyCollidableNode*> intersectionNodes;
+	X3DPtrArray <Contact>              contactNodes;
 
-	for (const auto & pair1 : bodyIndex)
+	for (const auto & collisionWorld : collisionWorlds)
 	{
-		const auto   bodyNode       = pair1 .second .first;
-		const auto   collidableNode = pair1 .second .second;
-		const auto & rigidBody      = bodyNode -> getRigidBody ();
-		const auto & collectionNode = bodyNode -> getCollection ();
+		collisionWorld -> performDiscreteCollisionDetection ();
 
-		if (not collectionNode)
-			continue;
+		const auto dispatcher   = collisionWorld -> getDispatcher ();
+		const auto numManifolds = dispatcher -> getNumManifolds ();
 
-		const auto & dynamicsWorld = collectionNode -> getDynamicsWorld ();
-
-		ContactContext context;
-		ContactSensorCallback callback (rigidBody .get (), context);
-
-		dynamicsWorld -> contactTest (rigidBody .get (), callback);
-
-		if (not context .active)
-			continue;
-
-		const auto & contactNode = getContact ();
-
-		contactNode -> position ()                 = context .position;
-		contactNode -> contactNormal ()            = context .contactNormal;
-		contactNode -> depth ()                    = context .depth;
-		contactNode -> frictionDirection ()        = context .frictionDirection;
-		contactNode -> appliedParameters ()        = colliderNode -> appliedParameters ();
-		contactNode -> bounce ()                   = colliderNode -> bounce ();
-		contactNode -> minBounceSpeed ()           = colliderNode -> minBounceSpeed ();
-		contactNode -> frictionCoefficients ()     = colliderNode -> frictionCoefficients ();
-		contactNode -> surfaceSpeed ()             = colliderNode -> surfaceSpeed ();
-		contactNode -> slipCoefficients ()         = colliderNode -> slipFactors ();
-		contactNode -> softnessConstantForceMix () = colliderNode -> softnessConstantForceMix ();
-		contactNode -> softnessErrorCorrection ()  = colliderNode -> softnessErrorCorrection ();
-		contactNode -> geometry1 ()                = collidableNode;
-		contactNode -> body1 ()                    = bodyNode;
-
-		try
+		for (int32_t i = 0; i < numManifolds; ++ i)
 		{
-			const auto & pair2 = bodyIndex .at (context .rigidBody2);
-	
-			contactNode -> geometry2 () = pair2 .second;
-			contactNode -> body2 ()     = pair2 .first;
-		}
-		catch (const std::out_of_range & error)
-		{
-			contactNode -> geometry2 () = nullptr;
-			contactNode -> body2 ()     = nullptr;
-		}
+			const auto contactManifold = dispatcher -> getManifoldByIndexInternal (i);
+			const auto numContacts     = contactManifold -> getNumContacts ();
 
-		intersectionNodes .emplace_back (collidableNode);
-		contactNodes      .emplace_back (contactNode);
+			for (int32_t j = 0; j < numContacts; ++ j)
+			{
+				const auto & pt = contactManifold -> getContactPoint (j);
+
+				if (pt .getDistance () <= 0)
+				{
+					const auto collidableNode1 = collidableNodesIndex .find (contactManifold -> getBody0 ());
+					const auto collidableNode2 = collidableNodesIndex .find (contactManifold -> getBody1 ());
+
+					if (collidableNode1 == collidableNodesIndex .end () and collidableNode2 == collidableNodesIndex .end ())
+						continue;
+
+					const auto & contactNode     = getContact ();
+
+					const auto btPosition      = pt .getPositionWorldOnA ();
+					const auto btContactNormal = pt .m_normalWorldOnB;
+
+					contactNode -> position ()                 = Vector3f (btPosition .x (), btPosition .y (), btPosition .z ());
+					contactNode -> contactNormal ()            = Vector3f (btContactNormal .x (), btContactNormal .y (), btContactNormal .z ());
+					contactNode -> depth ()                    = -pt .getDistance ();
+					//contactNode -> frictionDirection ()        = context .frictionDirection;
+					contactNode -> appliedParameters ()        = colliderNode -> appliedParameters ();
+					contactNode -> bounce ()                   = colliderNode -> bounce ();
+					contactNode -> minBounceSpeed ()           = colliderNode -> minBounceSpeed ();
+					contactNode -> frictionCoefficients ()     = colliderNode -> frictionCoefficients ();
+					contactNode -> surfaceSpeed ()             = colliderNode -> surfaceSpeed ();
+					contactNode -> slipCoefficients ()         = colliderNode -> slipFactors ();
+					contactNode -> softnessConstantForceMix () = colliderNode -> softnessConstantForceMix ();
+					contactNode -> softnessErrorCorrection ()  = colliderNode -> softnessErrorCorrection ();
+
+					if (collidableNode1 not_eq collidableNodesIndex .end ())
+					{
+						intersectionNodes .emplace (collidableNode1 -> second);
+
+						contactNode -> geometry1 () = collidableNode1 -> second;
+						contactNode -> body1 ()     = collidableNode1 -> second -> getBody ();
+					}
+
+					if (collidableNode2 not_eq collidableNodesIndex .end ())
+					{
+						intersectionNodes .emplace (collidableNode2 -> second);
+
+						contactNode -> geometry2 () = collidableNode2 -> second;
+						contactNode -> body2 ()     = collidableNode2 -> second -> getBody ();
+					}
+
+					contactNodes .emplace_back (contactNode);
+				}
+			}
+		}
 	}
 
 	// Send events
@@ -255,7 +272,7 @@ CollisionSensor::update ()
 		isActive () = contactNodes .size ();
 
 	if (not intersectionNodes .empty ())
-		intersections () = std::move (intersectionNodes);
+		intersections () .assign (intersectionNodes .begin (), intersectionNodes .end ());
 
 	if (not contactNodes .empty ())
 		contacts () = std::move (contactNodes);

@@ -899,7 +899,6 @@
     <None Include="Titania\X3D\InputOutput\JSONGenerator.h" />
     <None Include="Titania\X3D\Fields\MFImage.h" />
     <None Include="Titania\X3D\Parser\MiniParser.h" />
-    <None Include="Titania\X3D\Browser\RigidBodyPhysics\ContactContext.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\X3DNBodyCollidableNodeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableShapeTool.h" />
     <None Include="Titania\X3D\Tools\RigidBodyPhysics\CollidableOffsetTool.h" />
