@@ -133,22 +133,10 @@ CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContex
 }
 
 const X3DPtr <Contact> &
-CollisionSensor::getContact () const
+CollisionSensor::getContact (const size_t index) const
 {
-	if (contactCache .size ())
-	{
-		std::sort (contactCache .begin (), contactCache .end (),
-		[ ] (const X3DPtr <Contact> & lhs, const X3DPtr <Contact> & rhs)
-		{
-			return lhs -> getParents () .size () < rhs -> getParents () .size ();
-		});
-
-		const auto & front = contactCache .front ();
-
-		// If a Contact is only referenced in the cache, parents size is 1.
-		if (front -> getParents () .size () == 1)
-			return front;
-	}
+	if (index < contactCache .size ())
+		return contactCache [index];
 
 	auto contactNode = MakePtr <Contact> (getExecutionContext ());
 
@@ -226,10 +214,9 @@ CollisionSensor::update ()
 					if (collidableNode1 == collidableNodesIndex .end () and collidableNode2 == collidableNodesIndex .end ())
 						continue;
 
-					const auto & contactNode     = getContact ();
-
-					const auto btPosition      = pt .getPositionWorldOnA ();
-					const auto btContactNormal = pt .m_normalWorldOnB;
+					const auto & contactNode     = getContact (contactNodes .size ());
+					const auto   btPosition      = pt .getPositionWorldOnA ();
+					const auto   btContactNormal = pt .m_normalWorldOnB;
 
 					contactNode -> position ()                 = Vector3f (btPosition .x (), btPosition .y (), btPosition .z ());
 					contactNode -> contactNormal ()            = Vector3f (btContactNormal .x (), btContactNormal .y (), btContactNormal .z ());

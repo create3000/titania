@@ -128,7 +128,7 @@ private:
 	///  @name Member access
 
 	const X3DPtr <Contact> &
-	getContact () const;
+	getContact (const size_t index) const;
 
 	///  @name Event handlers
 

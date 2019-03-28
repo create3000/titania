@@ -1,16 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.cpp">
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/LinePickSensor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PointPickSensor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PickableGroup.cpp" Line="148" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/MatchCriterionType.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/PrimitivePickSensor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/VolumePickSensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.h" Line="164" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.cpp" Line="146" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBodyCollection.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/VolumePicker.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
