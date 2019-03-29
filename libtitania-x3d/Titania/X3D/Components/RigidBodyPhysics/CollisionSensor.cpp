@@ -192,7 +192,7 @@ CollisionSensor::update ()
 
 	for (const auto & collisionWorld : collisionWorlds)
 	{
-		collisionWorld -> performDiscreteCollisionDetection ();
+		//collisionWorld -> performDiscreteCollisionDetection ();
 
 		const auto dispatcher   = collisionWorld -> getDispatcher ();
 		const auto numManifolds = dispatcher -> getNumManifolds ();

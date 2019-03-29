@@ -1,9 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Picking/X3DPickSensorNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.cpp" Line="87" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/TransformSensor.cpp" Line="114" Column="74" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
