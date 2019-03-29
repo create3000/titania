@@ -243,7 +243,7 @@ RigidBodyCollection::set_bounce ()
 			{
 				const auto & rigidBody = bodyNode -> getRigidBody ();
 
-				if (rigidBody -> getLinearVelocity () .length () > colliderNode -> minBounceSpeed ())
+				if (rigidBody -> getLinearVelocity () .length () >= colliderNode -> minBounceSpeed ())
 					rigidBody -> setRestitution (colliderNode -> bounce ());
 				else
 					rigidBody -> setRestitution (0);
