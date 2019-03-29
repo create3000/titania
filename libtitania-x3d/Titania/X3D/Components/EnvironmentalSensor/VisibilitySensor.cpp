@@ -94,7 +94,6 @@ VisibilitySensor::initialize ()
 	isLive () .addInterest (&VisibilitySensor::set_enabled, this);
 
 	enabled () .addInterest (&VisibilitySensor::set_enabled, this);
-	size ()    .addInterest (&VisibilitySensor::set_enabled, this);
 
 	set_enabled ();
 }
@@ -121,7 +120,7 @@ VisibilitySensor::setExecutionContext (X3DExecutionContext* const executionConte
 void
 VisibilitySensor::set_enabled ()
 {
-	if (enabled () and size () not_eq Vector3f () and isLive () and getExecutionContext () -> isLive ())
+	if (enabled () and isLive () and getExecutionContext () -> isLive ())
 	{
 		getBrowser () -> sensorEvents () .addInterest (&VisibilitySensor::update, this);
 	}
