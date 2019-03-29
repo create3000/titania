@@ -191,6 +191,11 @@ public:
 	getCollidables () const
 	{ return collidableNodes; }
 
+	///  @name Destruction
+
+	virtual
+	~CollisionCollection () final override;
+
 
 private:
 
@@ -214,7 +219,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -234,8 +239,11 @@ private:
 
 	Fields fields;
 
-	X3DPtrArray <X3DNBodyCollidableNode> collidableNodes;
-	std::set <AppliedParametersType>     appliedParametersTypes;
+	///  @name Members
+
+	std::set <AppliedParametersType>         appliedParametersTypes;
+	X3DPtrArray <X3DNBodyCollidableNode>     collidableNodes;
+	X3DPtrArray <X3DNBodyCollisionSpaceNode> collisionSpaceNodes;
 
 };
 

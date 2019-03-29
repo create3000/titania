@@ -105,12 +105,28 @@ public:
 	///  @name Member access
 
 	virtual
-	std::vector <X3DNBodyCollidableNode*>
-	getCollidables () const final override;
+	const X3DPtrArray <X3DNBodyCollidableNode> &
+	getCollidables () const final override
+	{ return collidableNodes; }
+
+	///  @name Destruction
+
+	virtual
+	~CollisionSpace () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_collidables ();
 
 	///  @name Static members
 
@@ -118,7 +134,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -129,6 +145,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtrArray <X3DNBodyCollidableNode>     collidableNodes;
+	X3DPtrArray <X3DNBodyCollisionSpaceNode> collisionSpaceNodes;
 
 };
 

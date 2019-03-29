@@ -85,5 +85,8 @@ X3DNBodyCollisionSpaceNode::dispose ()
 	X3DNode::dispose ();
 }
 
+X3DNBodyCollisionSpaceNode::~X3DNBodyCollisionSpaceNode ()
+{ }
+
 } // X3D
 } // titania

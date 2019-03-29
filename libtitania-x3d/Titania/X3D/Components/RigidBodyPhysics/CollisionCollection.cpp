@@ -80,16 +80,15 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	          X3DChildNode (),
 	                fields (),
+	appliedParametersTypes (),
 	       collidableNodes (),
-	appliedParametersTypes ()
+	   collisionSpaceNodes ()
 {
 	addType (X3DConstants::CollisionCollection);
 
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "enabled",                  enabled ());
-
 	addField (inputOutput, "appliedParameters",        appliedParameters ());
-
 	addField (inputOutput, "bounce",                   bounce ());
 	addField (inputOutput, "minBounceSpeed",           minBounceSpeed ());
 	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
@@ -97,10 +96,10 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput, "slipFactors",              slipFactors ());
 	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix ());
 	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection ());
-
 	addField (inputOutput, "collidables",              collidables ());
 
-	addChildObjects (collidableNodes);
+	addChildObjects (collidableNodes,
+                    collisionSpaceNodes);
 
 	// Units
 
@@ -121,7 +120,7 @@ CollisionCollection::initialize ()
 	X3DChildNode::initialize ();
 
 	appliedParameters () .addInterest (&CollisionCollection::set_appliedParameters, this);
-	collidables ()       .addInterest (&CollisionCollection::set_collidables, this);
+	collidables ()       .addInterest (&CollisionCollection::set_collidables,       this);
 
 	set_appliedParameters ();
 	set_collidables ();
@@ -158,9 +157,13 @@ CollisionCollection::set_appliedParameters ()
 void
 CollisionCollection::set_collidables ()
 {
+	for (const auto & collisionSpaceNode : collisionSpaceNodes)
+		collisionSpaceNode -> removeInterest (&CollisionCollection::set_collidables, this);
+
 	// Get collidable nodes.
 
-	collidableNodes .clear ();
+	collidableNodes     .clear ();
+	collisionSpaceNodes .clear ();
 
 	for (const auto & node : collidables ())
 	{
@@ -176,11 +179,20 @@ CollisionCollection::set_collidables ()
 
 		if (collisionSpaceNode)
 		{
+			collisionSpaceNode -> addInterest (&CollisionCollection::set_collidables, this);
+
+			collisionSpaceNodes .emplace_back (collisionSpaceNode);
+
 			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
 				collidableNodes .emplace_back (collidableNode);
 		}
 	}
+
+	addEvent ();
 }
+
+CollisionCollection::~CollisionCollection ()
+{ }
 
 } // X3D
 } // titania

@@ -52,6 +52,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
+#include "../RigidBodyPhysics/X3DNBodyCollisionSpaceNode.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +69,9 @@ CollisionSpace::Fields::Fields () :
 CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNBodyCollisionSpaceNode (),
-	                    fields ()
+	                    fields (),
+	           collidableNodes (),
+	       collisionSpaceNodes ()
 {
 	addType (X3DConstants::CollisionSpace);
 
@@ -78,6 +81,9 @@ CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",    bboxSize ());
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 	addField (inputOutput,    "collidables", collidables ());
+
+	addChildObjects (collidableNodes,
+                    collisionSpaceNodes);
 }
 
 X3DBaseNode*
@@ -86,10 +92,26 @@ CollisionSpace::create (X3DExecutionContext* const executionContext) const
 	return new CollisionSpace (executionContext);
 }
 
-std::vector <X3DNBodyCollidableNode*>
-CollisionSpace::getCollidables () const
+void
+CollisionSpace::initialize ()
 {
-	std::vector <X3DNBodyCollidableNode*> collidableNodes;
+	X3DNBodyCollisionSpaceNode::initialize ();
+
+	collidables () .addInterest (&CollisionSpace::set_collidables, this);
+
+	set_collidables ();
+}
+
+void
+CollisionSpace::set_collidables ()
+{
+	for (const auto & collisionSpaceNode : collisionSpaceNodes)
+		collisionSpaceNode -> removeInterest (&CollisionSpace::set_collidables, this);
+
+	// Get collidable nodes.
+
+	collidableNodes     .clear ();
+	collisionSpaceNodes .clear ();
 
 	for (const auto & node : collidables ())
 	{
@@ -105,13 +127,20 @@ CollisionSpace::getCollidables () const
 
 		if (collisionSpaceNode)
 		{
+			collisionSpaceNode -> addInterest (&CollisionSpace::set_collidables, this);
+
+			collisionSpaceNodes .emplace_back (collisionSpaceNode);
+
 			for (const auto & collidableNode : collisionSpaceNode -> getCollidables ())
 				collidableNodes .emplace_back (collidableNode);
 		}
 	}
 
-	return collidableNodes;
+	addEvent ();
 }
+
+CollisionSpace::~CollisionSpace ()
+{ }
 
 } // X3D
 } // titania

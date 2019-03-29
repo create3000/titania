@@ -80,7 +80,7 @@ public:
 	getBBox () const final override;
 
 	virtual
-	std::vector <X3DNBodyCollidableNode*>
+	const X3DPtrArray <X3DNBodyCollidableNode> &
 	getCollidables () const = 0;
 
 	///  @name Destruction
@@ -88,6 +88,9 @@ public:
 	virtual
 	void
 	dispose () final override;
+
+	virtual
+	~X3DNBodyCollisionSpaceNode () override;
 
 
 protected:
@@ -98,7 +101,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:
