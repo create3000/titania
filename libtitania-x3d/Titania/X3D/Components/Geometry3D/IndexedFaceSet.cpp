@@ -506,12 +506,10 @@ IndexedFaceSet::addColorIndex ()
 	if (not getColor ())
 		return;
 
-	if (colorIndex () .size ())
-		return;
-
 	if (colorPerVertex ())
 	{
-		colorIndex () = coordIndex ();
+		for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
+			colorIndex () .set1Value (i, getVertexColorIndex (i));
 	}
 	else
 	{
@@ -520,7 +518,11 @@ IndexedFaceSet::addColorIndex ()
 		for (const auto & index : coordIndex ())
 		{
 			if (index < 0)
-				colorIndex () .emplace_back (face ++);
+			{
+				colorIndex () .set1Value (face, getFaceColorIndex (face));
+
+				++ face;
+			}
 		}
 	}
 }
@@ -531,10 +533,8 @@ IndexedFaceSet::addTexCoordIndex ()
 	if (not getTexCoord ())
 		return;
 
-	if (texCoordIndex () .size ())
-		return;
-
-	texCoordIndex () = coordIndex ();
+	for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
+		texCoordIndex () .set1Value (i, getVertexTexCoordIndex (i));
 }
 
 void
@@ -543,12 +543,10 @@ IndexedFaceSet::addNormalIndex ()
 	if (not getNormal ())
 		return;
 
-	if (normalIndex () .size ())
-		return;
-
 	if (normalPerVertex ())
 	{
-		normalIndex () = coordIndex ();
+		for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
+			normalIndex () .set1Value (i, getVertexNormalIndex (i));
 	}
 	else
 	{
@@ -557,7 +555,11 @@ IndexedFaceSet::addNormalIndex ()
 		for (const auto & index : coordIndex ())
 		{
 			if (index < 0)
-				normalIndex () .emplace_back (face ++);
+			{
+				normalIndex () .set1Value (face, getFaceNormalIndex (face));
+
+				++ face;
+			}
 		}
 	}
 }
