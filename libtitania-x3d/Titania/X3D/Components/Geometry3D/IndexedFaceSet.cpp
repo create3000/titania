@@ -510,6 +510,8 @@ IndexedFaceSet::addColorIndex ()
 	{
 		for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
 			colorIndex () .set1Value (i, getVertexColorIndex (i));
+
+		colorIndex () .resize (coordIndex () .size ());
 	}
 	else
 	{
@@ -524,6 +526,8 @@ IndexedFaceSet::addColorIndex ()
 				++ face;
 			}
 		}
+
+		colorIndex () .resize (face);
 	}
 }
 
@@ -535,6 +539,8 @@ IndexedFaceSet::addTexCoordIndex ()
 
 	for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
 		texCoordIndex () .set1Value (i, getVertexTexCoordIndex (i));
+
+	texCoordIndex () .resize (coordIndex () .size ());
 }
 
 void
@@ -547,6 +553,8 @@ IndexedFaceSet::addNormalIndex ()
 	{
 		for (size_t i = 0, size = coordIndex () .size (); i < size; ++ i)
 			normalIndex () .set1Value (i, getVertexNormalIndex (i));
+
+		normalIndex () .resize (coordIndex () .size ());
 	}
 	else
 	{
@@ -561,6 +569,8 @@ IndexedFaceSet::addNormalIndex ()
 				++ face;
 			}
 		}
+
+		normalIndex () .resize (face);
 	}
 }
 
