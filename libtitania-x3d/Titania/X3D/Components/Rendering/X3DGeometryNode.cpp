@@ -116,6 +116,14 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
+	rebuild ();
+}
+
+void
+X3DGeometryNode::initialize ()
+{
+	X3DNode::initialize ();
+
 	getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
 	isLive () .addInterest (&X3DGeometryNode::set_live, this);
 
@@ -130,7 +138,6 @@ X3DGeometryNode::setup ()
 	glGenBuffers (1, &vertexBufferId);
 
 	set_live ();
-	rebuild ();
 }
 
 void

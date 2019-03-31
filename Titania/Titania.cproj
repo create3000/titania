@@ -3247,6 +3247,10 @@
     <None Include="share\titania\Library\Components\Picking\.Titania\PickableGroup" />
     <None Include="share\titania\Library\Components\Picking\.Titania\LinePickSensor" />
     <None Include="share\titania\Library\Components\Picking\.X_ITE\LinePickSensor" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollisionCollection" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollisionSensor" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollisionSpace" />
+    <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\Contact" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

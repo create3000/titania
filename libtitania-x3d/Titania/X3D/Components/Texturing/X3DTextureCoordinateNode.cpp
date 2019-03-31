@@ -68,8 +68,9 @@ X3DTextureCoordinateNode::enable (ShapeContainer* const context, const std::vect
 	const auto browser = context -> getBrowser ();
 
 	if (browser -> getTextureStages () .empty ())
+	{
 		enable (context, 0, 0, texCoordBufferIds);
-
+	}
 	else
 	{
 		for (const auto & unit : browser -> getTextureStages ())
@@ -86,8 +87,9 @@ X3DTextureCoordinateNode::disable (ShapeContainer* const context) const
 	const auto browser = context -> getBrowser ();
 
 	if (browser -> getTextureStages () .empty ())
+	{
 		disable (context, 0);
-
+	}
 	else
 	{
 		for (const auto & unit : browser -> getTextureStages ())

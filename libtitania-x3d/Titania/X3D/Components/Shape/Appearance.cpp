@@ -299,8 +299,9 @@ Appearance::enable (ShapeContainer* const context)
 		// Material
 
 		if (materialNode)
+		{
 			materialNode -> draw (renderObject);
-	
+		}
 		else
 		{
 			glDisable (GL_LIGHTING);

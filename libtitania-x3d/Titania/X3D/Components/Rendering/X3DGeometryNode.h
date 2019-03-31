@@ -272,6 +272,10 @@ protected:
 
 	X3DGeometryNode ();
 
+	virtual
+	void
+	initialize () override;
+
 	///  @name Member access
 
 	void
