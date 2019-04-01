@@ -237,17 +237,17 @@ SnapTargetTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & maste
 
 		// Determine snap translation.
 
-		const auto xCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .x (), bbox .center () - axes .x () });
-		const auto xAxes    = std::vector <Vector3d> ({ axes .x (), axes .x (), -axes .x () });
-		const auto xNormals = std::vector <Vector3d> ({ normals .x (), normals .x (), -normals .x () });
+		const auto xCenters = std::vector <Vector3d> ({ center, bbox .center () + axes [0], bbox .center () - axes [0] });
+		const auto xAxes    = std::vector <Vector3d> ({ axes [0], axes [0], -axes [0] });
+		const auto xNormals = std::vector <Vector3d> ({ normals [0], normals [0], -normals [0] });
 
-		const auto yCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .y (), bbox .center () - axes .y () });
-		const auto yAxes    = std::vector <Vector3d> ({ axes .y (), axes .y (), -axes .y () });
-		const auto yNormals = std::vector <Vector3d> ({ normals .y (), normals .y (), -normals .y () });
+		const auto yCenters = std::vector <Vector3d> ({ center, bbox .center () + axes [1], bbox .center () - axes [1] });
+		const auto yAxes    = std::vector <Vector3d> ({ axes [1], axes [1], -axes [1] });
+		const auto yNormals = std::vector <Vector3d> ({ normals [1], normals [1], -normals [1] });
 
-		const auto zCenters = std::vector <Vector3d> ({ center, bbox .center () + axes .z (), bbox .center () - axes .z () });
-		const auto zAxes    = std::vector <Vector3d> ({ axes .z (), axes .z (), -axes .z () });
-		const auto zNormals = std::vector <Vector3d> ({ normals .z (), normals .z (), -normals .z () });
+		const auto zCenters = std::vector <Vector3d> ({ center, bbox .center () + axes [2], bbox .center () - axes [2] });
+		const auto zAxes    = std::vector <Vector3d> ({ axes [2], axes [2], -axes [2] });
+		const auto zNormals = std::vector <Vector3d> ({ normals [2], normals [2], -normals [2] });
 
 		const auto snapTranslation = getSnapTranslation (absolutePosition, xCenters, xAxes, xNormals, dynamicSnapDistance) +
 		                             getSnapTranslation (absolutePosition, yCenters, yAxes, yNormals, dynamicSnapDistance) +

@@ -124,12 +124,13 @@ ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & view
 	}
 }
 
+// Return edges for SAT theorem.
 const std::vector <Vector3d> &
 ViewVolume::getEdges () const
 {
 	if (edges .empty ())
 	{
-		edges .reserve (12);
+		edges .reserve (8);
 		edges .emplace_back (points [0] - points [1]);
 		edges .emplace_back (points [1] - points [2]);
 		edges .emplace_back (points [2] - points [3]);
@@ -140,10 +141,11 @@ ViewVolume::getEdges () const
 		edges .emplace_back (points [2] - points [6]);
 		edges .emplace_back (points [3] - points [7]);
 
-		edges .emplace_back (points [4] - points [5]);
-		edges .emplace_back (points [5] - points [6]);
-		edges .emplace_back (points [6] - points [7]);
-		edges .emplace_back (points [7] - points [4]);
+		// Equal to edge 0 - 3
+		//edges .emplace_back (points [4] - points [5]);
+		//edges .emplace_back (points [5] - points [6]);
+		//edges .emplace_back (points [6] - points [7]);
+		//edges .emplace_back (points [7] - points [4]);
 	}
 
 	return edges;
@@ -176,7 +178,7 @@ ViewVolume::intersects (const Box3d & box) const
 
 	const auto normals1 = box .normals ();
 
-	if (sat::separated (std::vector <Vector3d> (normals1 .begin (), normals1 .end ()), points1, points2))
+	if (sat::separated (normals1, points1, points2))
 		return false;
 
 	const auto & normals2 = normals;

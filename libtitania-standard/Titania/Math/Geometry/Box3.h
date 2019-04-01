@@ -194,11 +194,11 @@ public:
 	points () const;
 
 	///  Returns the scaled axes of this box.
-	vector3 <vector3 <Type>> 
+	std::vector <vector3 <Type>> 
 	axes () const;
 
 	///  Returns the three unique normals of this box.
-	vector3 <vector3 <Type>> 
+	std::vector <vector3 <Type>> 
 	normals () const;
 
 	///  @name  Arithmetic operations
@@ -353,30 +353,30 @@ box3 <Type>::points () const
 }
 
 template <class Type>
-vector3 <vector3 <Type>> 
+std::vector <vector3 <Type>> 
 box3 <Type>::axes () const
 {
-	return vector3 <vector3 <Type>> (
+	return std::vector <vector3 <Type>> ({
 		matrix () .x_axis (),
 		matrix () .y_axis (),
 		matrix () .z_axis ()
-	);
+	});
 }
 
 template <class Type>
-vector3 <vector3 <Type>> 
+std::vector <vector3 <Type>> 
 box3 <Type>::normals () const
 {
-	vector3 <vector3 <Type>> normals;
+	std::vector <vector3 <Type>> normals;
 
 	const auto n = normalize (matrix ());
 	const auto x = n .x_axis ();
 	const auto y = n .y_axis ();
 	const auto z = n .z_axis ();
 
-	normals .x (normalize (cross (y, z)));
-	normals .y (normalize (cross (z, x)));
-	normals .z (normalize (cross (x, y)));
+	normals .emplace_back (normalize (cross (y, z)));
+	normals .emplace_back (normalize (cross (z, x)));
+	normals .emplace_back (normalize (cross (x, y)));
 
 	return normals;
 }
@@ -556,14 +556,14 @@ box3 <Type>::intersects (const box3 & other) const
 
 	const auto normals1 = normals ();
 
-	if (sat::separated (std::vector <vector3 <Type>> (normals1 .begin (), normals1 .end ()), points1, points2))
+	if (sat::separated (normals1, points1, points2))
 		return false;
 
 	// Test the three planes spanned by the normal vectors of the faces of the second parallelepiped.
 
 	const auto normals2 = other .normals ();
 
-	if (sat::separated (std::vector <vector3 <Type>> (normals2 .begin (), normals2 .end ()), points1, points2))
+	if (sat::separated (normals2, points1, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of each parallelepiped.
@@ -602,7 +602,7 @@ box3 <Type>::intersects (const vector3 <Type> & a, const vector3 <Type> & b, con
 
 	const auto normals1 = normals ();
 
-	if (sat::separated (std::vector <vector3 <Type>> (normals1 .begin (), normals1 .end ()), points1, points2))
+	if (sat::separated (normals1, points1, points2))
 		return false;
 
 	// Test the normal of the triangle.

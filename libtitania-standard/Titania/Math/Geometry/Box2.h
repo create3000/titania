@@ -194,11 +194,11 @@ public:
 	points () const;
 
 	///  Returns the scaled axes of this box.
-	vector2 <vector2 <Type>> 
+	std::vector <vector2 <Type>> 
 	axes () const;
 
 	///  Returns the two unique normals of this box.
-	vector2 <vector2 <Type>> 
+	std::vector <vector2 <Type>> 
 	normals () const;
 
 	///  @name  Arithmetic operations
@@ -370,27 +370,27 @@ box2 <Type>::points () const
 }
 
 template <class Type>
-vector2 <vector2 <Type>> 
+std::vector <vector2 <Type>> 
 box2 <Type>::axes () const
 {
-	return vector2 <vector2 <Type>> (
+	return std::vector <vector2 <Type>> ({
 		matrix () .x_axis (),
 		matrix () .y_axis ()
-	);
+	});
 }
 
 template <class Type>
-vector2 <vector2 <Type>> 
+std::vector <vector2 <Type>> 
 box2 <Type>::normals () const
 {
-	vector2 <vector2 <Type>> normals;
+	std::vector <vector2 <Type>> normals;
 
 	const auto n = normalize (matrix ());
 	const auto x = n .x_axis ();
 	const auto y = n .y_axis ();
 
-	normals .x (normalize (vector2 <Type> (-x .y (),  x .x ())));
-	normals .y (normalize (vector2 <Type> ( y .y (), -y .x ())));
+	normals .emplace_back (normalize (vector2 <Type> (-x .y (),  x .x ())));
+	normals .emplace_back (normalize (vector2 <Type> ( y .y (), -y .x ())));
 
 	return normals;
 }
@@ -448,12 +448,12 @@ box2 <Type>::intersects (const box2 <Type> & other) const
 	const auto points2  = other .points ();
 	const auto normals1 = normals ();
 
-	if (sat::separated (std::vector <vector2 <Type>> (normals1 .begin (), normals1 .end ()), points1, points2))
+	if (sat::separated (normals1, points1, points2))
 		return false;
 
 	const auto normals2 = other .normals ();
 
-	if (sat::separated (std::vector <vector2 <Type>> (normals2 .begin (), normals2 .end ()), points1, points2))
+	if (sat::separated (normals2, points1, points2))
 		return false;
 
 	// Both boxes intersect.
