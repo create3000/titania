@@ -1135,12 +1135,12 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 				glEnableClientState (GL_COLOR_ARRAY);
 				glColorPointer (4, GL_FLOAT, 0, 0);
 			}
-	
+
 			if (browser -> getTexture () and texCoordBufferIds .size ())
 			{
 				texCoordNode -> enable (context, texCoordBufferIds);
 			}
-	
+
 			if (glIsEnabled (GL_LIGHTING) or shaderNode)
 			{
 				if (not normals .empty ())

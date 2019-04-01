@@ -309,7 +309,7 @@ X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 	const auto   bbox       = shapeNode -> getBBox () * getModelViewMatrix () .get ();
 	const auto & viewVolume = getViewVolumes () .back ();
 
-	if (not viewVolume .intersects (bbox))
+	if (not viewVolume .intersects (math::abs (bbox .size ()) / 2, bbox .center ()))
 		return false;
 
 	if (numCollisionShapes == collisionShapes .size ())
@@ -335,7 +335,7 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 	const auto   bbox       = shapeNode -> getBBox () * getModelViewMatrix () .get ();
 	const auto & viewVolume = getViewVolumes () .back ();
 
-	if (not viewVolume .intersects (bbox))
+	if (not viewVolume .intersects (math::abs (bbox .size ()) / 2, bbox .center ()))
 		return false;
 
 	// It should be possible to sort out shapes that are far away.
@@ -368,7 +368,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 
 	const auto & viewVolume = getViewVolumes () .back ();
 
-	if (not viewVolume .intersects (bbox))
+	if (not viewVolume .intersects (math::abs (bbox .size ()) / 2, bbox .center ()))
 		return false;
 
    ShapeContainer* context = nullptr;

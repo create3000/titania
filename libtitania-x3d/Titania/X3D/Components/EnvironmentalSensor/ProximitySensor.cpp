@@ -232,10 +232,10 @@ ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const rende
 {
 	try
 	{
-		if (renderObject -> getBrowser () not_eq getBrowser ())
+		if (not enabled ())
 			return;
 
-		if (not enabled ())
+		if (renderObject -> getBrowser () not_eq getBrowser ())
 			return;
 
 		switch (type)

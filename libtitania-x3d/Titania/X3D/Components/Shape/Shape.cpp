@@ -192,7 +192,7 @@ Shape::pointer (X3DRenderObject* const renderObject)
 
 	const Box3d bbox = getBBox () * renderObject -> getModelViewMatrix () .get ();
 
-	if (not renderObject -> getViewVolumes () .back () .intersects (bbox))
+	if (not renderObject -> getViewVolumes () .back () .intersects (math::abs (bbox .size ()) / 2, bbox .center ()))
 		return;
 
 	HierarchyGuard guard (renderObject -> getBrowser (), this);

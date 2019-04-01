@@ -82,6 +82,9 @@ public:
 	///  @name Operations
 
 	bool
+	intersects (const double radius, const Vector3d & center) const;
+
+	bool
 	intersects (const Box3d & box) const;
 
 	///  @name Projection operations
@@ -124,12 +127,20 @@ public:
 
 private:
 
+	///  @name Member access
+
+	const std::vector <Vector3d> &
+	getEdges () const;
+
 	///  @name Members
 
-	const Vector4i        viewport;
-	const Vector4i        scissor;
-	std::vector <Plane3d> planes;
-	bool                  valid;
+	const Vector4i                 viewport;
+	const Vector4i                 scissor;
+	std::vector <Vector3d>         points;
+	std::vector <Vector3d>         normals;
+	mutable std::vector <Vector3d> edges;
+	std::vector <Plane3d>          planes;
+	bool                           valid;
 
 };
 

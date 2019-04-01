@@ -163,13 +163,13 @@ VisibilitySensor::update ()
 void
 VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (renderObject -> getBrowser () not_eq getBrowser ())
+	if (type not_eq TraverseType::DISPLAY)
 		return;
 
 	if (not enabled ())
 		return;
 
-	if (type not_eq TraverseType::DISPLAY)
+	if (renderObject -> getBrowser () not_eq getBrowser ())
 		return;
 
 	traversed = true;

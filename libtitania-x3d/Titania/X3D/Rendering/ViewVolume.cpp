@@ -58,15 +58,15 @@ namespace titania {
 namespace X3D {
 
 /*
- * p1 -------- p6
+ * p7 -------- p6
  * | \         | \
- * |   ---------- p5
+ * | p3 --------- p2
  * |  |        |  |
  * |  |        |  |
- * p2 |________|  |
+ * p4 |______ p5  |
  *  \ |         \ |
  *   \|          \|
- *    p3 -------- p4
+ *    p0 -------- p1
  */
 
 ViewVolume::ViewVolume () :
@@ -78,6 +78,9 @@ ViewVolume::ViewVolume () :
 ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & viewport, const Vector4i & scissor) :
 	viewport (viewport),
 	 scissor (scissor),
+	  points (),
+	 normals (),
+	   edges (),
 	  planes (),
 	   valid (true)
 {
@@ -89,20 +92,31 @@ ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & view
 		const double y2     = scissor [1] + scissor [3];
 		const auto   matrix = inverse (projectionMatrix);
 
-		const auto p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
-		const auto p2 = unProjectPoint (x1, y1, 1, matrix, viewport);
-		const auto p3 = unProjectPoint (x1, y1, 0, matrix, viewport);
-		const auto p4 = unProjectPoint (x2, y1, 0, matrix, viewport);
-		const auto p5 = unProjectPoint (x2, y2, 0, matrix, viewport);
-		const auto p6 = unProjectPoint (x2, y2, 1, matrix, viewport);
+		points .reserve (8);
+		points .emplace_back (unProjectPoint (x1, y1, 0, matrix, viewport));
+		points .emplace_back (unProjectPoint (x2, y1, 0, matrix, viewport));
+		points .emplace_back (unProjectPoint (x2, y2, 0, matrix, viewport));
+		points .emplace_back (unProjectPoint (x1, y2, 0, matrix, viewport));
+		points .emplace_back (unProjectPoint (x1, y1, 1, matrix, viewport));
+		points .emplace_back (unProjectPoint (x2, y1, 1, matrix, viewport));
+		points .emplace_back (unProjectPoint (x2, y2, 1, matrix, viewport));
+		points .emplace_back (unProjectPoint (x1, y2, 1, matrix, viewport));
+
+		normals .reserve (6);
+		normals .emplace_back (Triangle3d (points [0], points [1], points [2]) .normal ());  // front
+		normals .emplace_back (Triangle3d (points [7], points [4], points [0]) .normal ());  // left
+		normals .emplace_back (Triangle3d (points [6], points [2], points [1]) .normal ());  // right
+		normals .emplace_back (Triangle3d (points [2], points [6], points [7]) .normal ());  // top
+		normals .emplace_back (Triangle3d (points [1], points [0], points [4]) .normal ());  // bottom
+		normals .emplace_back (Triangle3d (points [4], points [7], points [6]) .normal ());  // back
 
 		planes .reserve (6);
-		planes .emplace_back (p4, Triangle3d (p3, p4, p5) .normal ());  // front
-		planes .emplace_back (p2, Triangle3d (p1, p2, p3) .normal ());  // left
-		planes .emplace_back (p5, Triangle3d (p6, p5, p4) .normal ());  // right
-		planes .emplace_back (p6, Triangle3d (p5, p6, p1) .normal ());  // top
-		planes .emplace_back (p3, Triangle3d (p4, p3, p2) .normal ());  // bottom
-		planes .emplace_back (p1, Triangle3d (p2, p1, p6) .normal ());  // back
+		planes .emplace_back (points [1], normals [0]);  // front
+		planes .emplace_back (points [4], normals [1]);  // left
+		planes .emplace_back (points [2], normals [2]);  // right
+		planes .emplace_back (points [6], normals [3]);  // top
+		planes .emplace_back (points [0], normals [4]);  // bottom
+		planes .emplace_back (points [7], normals [5]);  // back
 	}
 	catch (const std::domain_error & error)
 	{
@@ -110,19 +124,82 @@ ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & view
 	}
 }
 
+const std::vector <Vector3d> &
+ViewVolume::getEdges () const
+{
+	if (edges .empty ())
+	{
+		edges .reserve (12);
+		edges .emplace_back (points [0] - points [1]);
+		edges .emplace_back (points [1] - points [2]);
+		edges .emplace_back (points [2] - points [3]);
+		edges .emplace_back (points [3] - points [0]);
+
+		edges .emplace_back (points [0] - points [4]);
+		edges .emplace_back (points [1] - points [5]);
+		edges .emplace_back (points [2] - points [6]);
+		edges .emplace_back (points [3] - points [7]);
+
+		edges .emplace_back (points [4] - points [5]);
+		edges .emplace_back (points [5] - points [6]);
+		edges .emplace_back (points [6] - points [7]);
+		edges .emplace_back (points [7] - points [4]);
+	}
+
+	return edges;
+}
+
 bool
-ViewVolume::intersects (const Box3d & bbox) const
+ViewVolume::intersects (const double radius, const Vector3d & center) const
 {
 	if (valid)
 	{
-		const double radius = math::abs (bbox .size ()) / 2;
-
 		for (const auto & plane : planes)
 		{
-			if (plane .distance (bbox .center ()) > radius)
+			if (plane .distance (center) > radius)
 				return false;
 		}
 	}
+
+	return true;
+}
+
+bool
+ViewVolume::intersects (const Box3d & box) const
+{
+	// Get points.
+
+	const auto   points1 = box .points ();
+	const auto & points2 = points;
+
+	// Test the three planes spanned by the normal vectors of the faces of the box.
+
+	const auto normals1 = box .normals ();
+
+	if (sat::separated (std::vector <Vector3d> (normals1 .begin (), normals1 .end ()), points1, points2))
+		return false;
+
+	const auto & normals2 = normals;
+
+	// Test the six planes spanned by the normal vectors of the faces of the view volume.
+
+	if (sat::separated (normals2, points1, points2))
+		return false;
+
+	// Test the planes spanned by the edges of each object.
+
+	std::vector <Vector3d> axes;
+
+	for (const auto & axis1 : box .axes ())
+	{
+		for (const auto & axis2 : getEdges ())
+			axes .emplace_back (cross (axis1, axis2));
+	}
+
+	if (sat::separated (axes, points1, points2))
+		return false;
+
+	// Both boxes intersect.
 
 	return true;
 }
