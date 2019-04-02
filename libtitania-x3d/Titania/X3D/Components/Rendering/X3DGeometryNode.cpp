@@ -70,31 +70,31 @@ namespace X3D {
 const Matrix4d X3DGeometryNode::matrix;
 
 X3DGeometryNode::X3DGeometryNode () :
-	          X3DNode (),
-	     cameraObject (),
-	      transparent (),
-	    rebuildOutput (),
-	             bbox (),
-	      attribNodes (),
-	        fogDepths (),
-	           colors (),
-	     texCoordNode (),
-	        texCoords (),
-	          normals (),
-	      faceNormals (),
-	         vertices (),
-	     geometryType (3),
-	            solid (true),
-	        frontFace (GL_CCW),
-	      flatShading (false),
-	         elements (),
-	        pickShape (),
-	  attribBufferIds (),
-	 fogDepthBufferId (0),
-	    colorBufferId (0),
-	texCoordBufferIds (),
-	   normalBufferId (0),
-	   vertexBufferId (0)
+	              X3DNode (),
+	         cameraObject (),
+	          transparent (),
+	        rebuildOutput (),
+	                 bbox (),
+	          attribNodes (),
+	            fogDepths (),
+	               colors (),
+	textureCoordinateNode (),
+	            texCoords (),
+	              normals (),
+	          faceNormals (),
+	             vertices (),
+	         geometryType (3),
+	                solid (true),
+	            frontFace (GL_CCW),
+	          flatShading (false),
+	             elements (),
+	            pickShape (),
+	      attribBufferIds (),
+	     fogDepthBufferId (0),
+	        colorBufferId (0),
+	    texCoordBufferIds (),
+	       normalBufferId (0),
+	       vertexBufferId (0)
 
 {
 	addType (X3DConstants::X3DGeometryNode);
@@ -102,7 +102,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	addChildObjects (cameraObject,
 	                 transparent,
 	                 rebuildOutput,
-	                 texCoordNode,
+	                 textureCoordinateNode,
 	                 pickShape);
 
 	cameraObject  .setAccessType (outputOnly);
@@ -130,7 +130,7 @@ X3DGeometryNode::initialize ()
 	addInterest (&X3DGeometryNode::requestRebuild, this);
 	rebuildOutput .addInterest (&X3DGeometryNode::rebuild, this);
 
-	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
+	textureCoordinateNode .set (getBrowser () -> getDefaultTexCoord ());
 
 	glGenBuffers (1, &fogDepthBufferId);
 	glGenBuffers (1, &colorBufferId);
@@ -147,8 +147,8 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 	{
 		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
 
-		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
-			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
+		if (textureCoordinateNode == getBrowser () -> getDefaultTexCoord ())
+			textureCoordinateNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
 	}
 
 	X3DNode::setExecutionContext (executionContext);
@@ -205,10 +205,10 @@ void
 X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
 	if (value)
-		texCoordNode .set (value);
+		textureCoordinateNode .set (value);
 
 	else
-		texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
+		textureCoordinateNode .set (getBrowser () -> getDefaultTexCoord ());
 }
 
 GLenum
@@ -1121,6 +1121,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		context -> setGeometryType (geometryType);
 		context -> setFogCoord (not fogDepths .empty ());
 		context -> setColorMaterial (not colors .empty ());
+		context -> setTextureCoordinate (textureCoordinateNode);
 
 		if (browser -> getFixedPipelineRequired ())
 		{
@@ -1138,7 +1139,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 			if (browser -> getTexture () and texCoordBufferIds .size ())
 			{
-				texCoordNode -> enable (context, texCoordBufferIds);
+				textureCoordinateNode -> enable (context, texCoordBufferIds);
 			}
 
 			if (glIsEnabled (GL_LIGHTING) or shaderNode)
@@ -1234,7 +1235,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			// Texture
 		
 			if (browser -> getTexture ())
-				texCoordNode -> disable (context);
+				textureCoordinateNode -> disable (context);
 	
 			// Other arrays
 	
@@ -1283,6 +1284,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		context -> setGeometryType (geometryType);
 		context -> setFogCoord (not fogDepths .empty ());
 		context -> setColorMaterial (not colors .empty ());
+		context -> setTextureCoordinate (textureCoordinateNode);
 
 		// Setup shader
 

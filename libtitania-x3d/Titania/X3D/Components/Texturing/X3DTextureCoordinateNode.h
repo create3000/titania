@@ -128,6 +128,16 @@ public:
 	void
 	resize (const size_t value) = 0;
 
+	///  @name Shader
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const;
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const;
+
 
 protected:
 

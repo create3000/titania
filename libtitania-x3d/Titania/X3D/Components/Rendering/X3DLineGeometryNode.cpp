@@ -122,7 +122,8 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		context -> setGeometryType (getGeometryType ());
 		context -> setFogCoord (not getFogDepths () .empty ());
 		context -> setColorMaterial (not getColors () .empty ());
-	
+		context -> setTextureCoordinate (browser -> getDefaultTexCoord ());
+
 		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 
@@ -185,7 +186,8 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		context -> setGeometryType  (getGeometryType ());
 		context -> setFogCoord (not getFogDepths () .empty ());
 		context -> setColorMaterial (not getColors () .empty ());
-	
+		context -> setTextureCoordinate (browser -> getDefaultTexCoord ());
+
 		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 

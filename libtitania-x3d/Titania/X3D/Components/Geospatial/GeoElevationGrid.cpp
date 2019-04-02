@@ -57,7 +57,6 @@
 #include "../../Components/Rendering/Normal.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
-
 namespace titania {
 namespace X3D {
 

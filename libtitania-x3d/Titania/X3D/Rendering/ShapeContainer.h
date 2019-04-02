@@ -59,6 +59,7 @@
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
+#include "../Types/Pointer.h"
 
 #include <memory>
 
@@ -140,6 +141,14 @@ public:
 	{ return colorMaterial; }
 
 	void
+	setTextureCoordinate (X3DTextureCoordinateNode* const value)
+	{ textureCoordinate = value; }
+
+	X3DTextureCoordinateNode*
+	getTextureCoordinate () const
+	{ return textureCoordinate; }
+
+	void
 	setDistance (double value)
 	{ distance = value; }
 
@@ -157,15 +166,16 @@ private:
 
 	///  @name Members
 
-	X3DRenderObject* const  renderObject;
-	bool                    transparent;
-	FogContainerPtr         fog;
-	LightContainerArray     localLights;
-	bool                    shadow;
-	size_t                  geometryType;
-	bool                    fogCoord;
-	bool                    colorMaterial;
-	double                  distance;
+	X3DRenderObject* const    renderObject;
+	bool                      transparent;
+	FogContainerPtr           fog;
+	LightContainerArray       localLights;
+	bool                      shadow;
+	size_t                    geometryType;
+	bool                      fogCoord;
+	bool                      colorMaterial;
+	X3DTextureCoordinateNode* textureCoordinate;
+	double                    distance;
 
 };
 

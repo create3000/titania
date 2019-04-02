@@ -2186,7 +2186,6 @@
     <None Include="share\titania\Library\Components\Texturing\.Titania\MultiTextureTransform" />
     <None Include="share\titania\Library\Components\Texturing\.Titania\PixelTexture" />
     <None Include="share\titania\Library\Components\Texturing\.Titania\TextureCoordinate" />
-    <None Include="share\titania\Library\Components\Texturing\.Titania\TextureCoordinateGenerator" />
     <None Include="share\titania\Library\Components\Texturing\.Titania\TextureProperties" />
     <None Include="share\titania\Library\Components\Texturing\.Titania\TextureTransform" />
     <None Include="share\titania\Library\Components\Texturing3D\ComposedTexture3D.x3dv" />
@@ -3251,6 +3250,8 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollisionSensor" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\CollisionSpace" />
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\Contact" />
+    <None Include="share\titania\Library\Components\Texturing\.X_ITE\TextureCoordinateGenerator" />
+    <None Include="share\titania\Library\Components\Texturing\.Titania\TextureCoordinateGenerator" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

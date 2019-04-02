@@ -61,6 +61,26 @@ class TextureCoordinateGenerator :
 {
 public:
 
+	///  @name Member types
+
+	enum class ModeType 
+	{
+		NONE,
+		SPHERE,
+		CAMERASPACENORMAL,
+		CAMERASPACEPOSITION,
+		CAMERASPACEREFLECTIONVECTOR,
+		SPHERE_LOCAL,
+		COORD,
+		COORD_EYE,
+		NOISE,
+		NOISE_EYE,
+		SPHERE_REFLECT,
+		SPHERE_REFLECT_LOCAL
+	};
+
+	///  @name Construction
+
 	TextureCoordinateGenerator (X3DExecutionContext* const executionContext);
 
 	virtual
@@ -159,23 +179,14 @@ public:
 	resize (const size_t value) final override
 	{ }
 
+	///  @name Shader
+	
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const final override;
+
 
 private:
-
-	enum ModeType 
-	{
-		SPHERE,
-		SPHERE_LOCAL,
-		SPHERE_REFLECT,
-		SPHERE_REFLECT_LOCAL,
-		CAMERASPACENORMAL,
-		CAMERASPACEPOSITION,
-		CAMERASPACEREFLECTIONVECTOR,
-		COORD_EYE,
-		COORD,
-		NOISE_EYE,
-		NOISE
-	};
 
 	///  @name Construction
 
@@ -194,7 +205,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -205,6 +216,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	ModeType modeType;
 

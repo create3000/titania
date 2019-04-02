@@ -60,9 +60,6 @@
 #include "../Rendering/X3DColorNode.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Texturing/TextureCoordinate.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
-
 
 namespace titania {
 namespace X3D {

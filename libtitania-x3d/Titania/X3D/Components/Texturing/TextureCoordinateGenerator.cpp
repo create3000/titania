@@ -51,6 +51,7 @@
 #include "TextureCoordinateGenerator.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +69,7 @@ TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* con
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureCoordinateNode (),
 	                  fields (),
-	                modeType (SPHERE)
+	                modeType (ModeType::SPHERE)
 {
 	addType (X3DConstants::TextureCoordinateGenerator);
 
@@ -110,17 +111,17 @@ void
 TextureCoordinateGenerator::set_mode ()
 {
 	static const std::map <std::string, ModeType> modes = {
-		std::pair ("SPHERE",                      SPHERE),
-		std::pair ("SPHERE-LOCAL",                SPHERE_LOCAL),
-		std::pair ("SPHERE-REFLECT",              SPHERE_REFLECT),
-		std::pair ("SPHERE-REFLECT-LOCAL",        SPHERE_REFLECT_LOCAL),
-		std::pair ("CAMERASPACENORMAL",           CAMERASPACENORMAL),
-		std::pair ("CAMERASPACEPOSITION",         CAMERASPACEPOSITION),
-		std::pair ("CAMERASPACEREFLECTIONVECTOR", CAMERASPACEREFLECTIONVECTOR),
-		std::pair ("COORD-EYE",                   COORD_EYE),
-		std::pair ("COORD",                       COORD),
-		std::pair ("NOISE-EYE",                   NOISE_EYE),
-		std::pair ("NOISE",                       NOISE)
+		std::pair ("SPHERE",                      ModeType::SPHERE),
+		std::pair ("SPHERE-LOCAL",                ModeType::SPHERE_LOCAL),
+		std::pair ("SPHERE-REFLECT",              ModeType::SPHERE_REFLECT),
+		std::pair ("SPHERE-REFLECT-LOCAL",        ModeType::SPHERE_REFLECT_LOCAL),
+		std::pair ("CAMERASPACENORMAL",           ModeType::CAMERASPACENORMAL),
+		std::pair ("CAMERASPACEPOSITION",         ModeType::CAMERASPACEPOSITION),
+		std::pair ("CAMERASPACEREFLECTIONVECTOR", ModeType::CAMERASPACEREFLECTIONVECTOR),
+		std::pair ("COORD-EYE",                   ModeType::COORD_EYE),
+		std::pair ("COORD",                       ModeType::COORD),
+		std::pair ("NOISE-EYE",                   ModeType::NOISE_EYE),
+		std::pair ("NOISE",                       ModeType::NOISE)
 	};
 
 	try
@@ -129,7 +130,7 @@ TextureCoordinateGenerator::set_mode ()
 	}
 	catch (const std::out_of_range &)
 	{
-		modeType = SPHERE;
+		modeType = ModeType::SPHERE;
 	}
 }
 
@@ -145,7 +146,11 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 
 	switch (modeType)
 	{
-		case SPHERE:
+		case ModeType::NONE:
+		{
+			break;
+		}
+		case ModeType::SPHERE:
 		{
 			// Ok
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
@@ -154,7 +159,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_T);
 			break;
 		}
-		case SPHERE_LOCAL:
+		case ModeType::SPHERE_LOCAL:
 		{
 			// Not supported
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
@@ -163,7 +168,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_T);
 			break;
 		}
-		case SPHERE_REFLECT:
+		case ModeType::SPHERE_REFLECT:
 		{
 			// Not supported
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
@@ -172,7 +177,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_T);
 			break;
 		}
-		case SPHERE_REFLECT_LOCAL:
+		case ModeType::SPHERE_REFLECT_LOCAL:
 		{
 			// Not supported
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
@@ -181,7 +186,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_T);
 			break;
 		}
-		case CAMERASPACENORMAL:
+		case ModeType::CAMERASPACENORMAL:
 		{
 			// Ok
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_NORMAL_MAP);
@@ -192,7 +197,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_R);
 			break;
 		}
-		case CAMERASPACEPOSITION:
+		case ModeType::CAMERASPACEPOSITION:
 		{
 			// Not supported
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -205,7 +210,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			//glEnable (GL_TEXTURE_GEN_Q);
 			break;
 		}
-		case CAMERASPACEREFLECTIONVECTOR:
+		case ModeType::CAMERASPACEREFLECTIONVECTOR:
 		{
 			// Ok
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
@@ -216,7 +221,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_R);
 			break;
 		}
-		case COORD_EYE:
+		case ModeType::COORD_EYE:
 		{
 			// Ok
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -229,7 +234,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			//glEnable (GL_TEXTURE_GEN_Q);
 			break;
 		}
-		case COORD:
+		case ModeType::COORD:
 		{
 			// Ok
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
@@ -242,7 +247,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			//glEnable (GL_TEXTURE_GEN_Q);
 			break;
 		}
-		case NOISE_EYE:
+		case ModeType::NOISE_EYE:
 		{
 			// Not supported
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
@@ -251,7 +256,7 @@ TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t
 			glEnable (GL_TEXTURE_GEN_T);
 			break;
 		}
-		case NOISE:
+		case ModeType::NOISE:
 		{
 			// Not supported
 			glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
@@ -282,6 +287,13 @@ TextureCoordinateGenerator::disable (ShapeContainer* const context, const int32_
 	glDisable (GL_TEXTURE_GEN_T);
 	glDisable (GL_TEXTURE_GEN_R);
 	glDisable (GL_TEXTURE_GEN_Q);
+}
+
+void
+TextureCoordinateGenerator::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
+{
+	glUniform1i (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], int (modeType));
+	glUniform1fv (shaderObject -> getTextureCoordinateGeneratorParameterUniformLocation () [i], parameter () .size (), parameter () .getValue () .data ());
 }
 
 } // X3D

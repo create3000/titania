@@ -134,8 +134,10 @@ protected:
 	friend class ParticleSystem;
 	friend class RenderingProperties;
 	friend class TextureProperties;
+	friend class SoftSystem;
 	friend class ScreenText;
 	friend class X3DGeometryNode;
+	friend class X3DLineGeometryNode;
 	friend class X3DTexture2DNode;
 	friend class X3DTexture3DNode;
 	friend class X3DTextureCoordinateNode;

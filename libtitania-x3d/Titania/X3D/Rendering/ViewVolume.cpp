@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 /*
- * p7 -------- p6
+ * p7 -------- p6  far plane
  * | \         | \
  * | p3 --------- p2
  * |  |        |  |
@@ -66,7 +66,7 @@ namespace X3D {
  * p4 |______ p5  |
  *  \ |         \ |
  *   \|          \|
- *    p0 -------- p1
+ *    p0 -------- p1  near plane
  */
 
 ViewVolume::ViewVolume () :

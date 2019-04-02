@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/Networking/config.h"
+#include "../../Components/Texturing/TextureCoordinateGenerator.h"
 #include "../../InputOutput/FileLoader.h"
 
 #include <Titania/String/to_string.h>
@@ -262,6 +263,18 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	definitions << "#define x3d_TextureType2D              2\n";
 	definitions << "#define x3d_TextureType3D              3\n";
 	definitions << "#define x3d_TextureTypeCubeMapTexture  4\n";
+
+	definitions << "#define X3D_SPHERE                      " << int (TextureCoordinateGenerator::ModeType::SPHERE) << "\n";
+	definitions << "#define X3D_CAMERASPACENORMAL           " << int (TextureCoordinateGenerator::ModeType::CAMERASPACENORMAL) << "\n";
+	definitions << "#define X3D_CAMERASPACEPOSITION         " << int (TextureCoordinateGenerator::ModeType::CAMERASPACEPOSITION) << "\n";
+	definitions << "#define X3D_CAMERASPACEREFLECTIONVECTOR " << int (TextureCoordinateGenerator::ModeType::CAMERASPACEREFLECTIONVECTOR) << "\n";
+	definitions << "#define X3D_SPHERE_LOCAL                " << int (TextureCoordinateGenerator::ModeType::SPHERE_LOCAL) << "\n";
+	definitions << "#define X3D_COORD                       " << int (TextureCoordinateGenerator::ModeType::COORD) << "\n";
+	definitions << "#define X3D_COORD_EYE                   " << int (TextureCoordinateGenerator::ModeType::COORD_EYE) << "\n";
+	definitions << "#define X3D_NOISE                       " << int (TextureCoordinateGenerator::ModeType::NOISE) << "\n";
+	definitions << "#define X3D_NOISE_EYE                   " << int (TextureCoordinateGenerator::ModeType::NOISE_EYE) << "\n";
+	definitions << "#define X3D_SPHERE_REFLECT              " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT) << "\n";
+	definitions << "#define X3D_SPHERE_REFLECT_LOCAL        " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT_LOCAL) << "\n";
 
 	if (shadow)
 		definitions << "#define X3D_SHADOWS\n";

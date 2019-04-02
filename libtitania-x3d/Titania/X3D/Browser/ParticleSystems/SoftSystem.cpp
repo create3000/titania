@@ -1130,6 +1130,7 @@ SoftSystem::draw (ShapeContainer* const context)
 
 			context -> setGeometryType  (shaderGeometryType);
 			context -> setColorMaterial (colorMaterial);
+			context -> setTextureCoordinate (browser -> getDefaultTexCoord ());
 
 			shaderNode -> enable ();
 			shaderNode -> setLocalUniforms (context);

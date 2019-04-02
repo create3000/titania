@@ -1684,6 +1684,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 		context -> setGeometryType  (getGeometryType ());
 		context -> setColorMaterial (numColors);
+		context -> setTextureCoordinate (browser -> getDefaultTexCoord ());
 
 		glEnable (GL_CULL_FACE);
 		glFrontFace (context -> getModelViewMatrix () .submatrix () .determinant () > 0 ? GL_CCW : GL_CW);

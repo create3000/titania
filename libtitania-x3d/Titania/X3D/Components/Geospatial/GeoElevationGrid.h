@@ -55,7 +55,6 @@
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
 #include "../../Thread/TextureFuture.h"
 

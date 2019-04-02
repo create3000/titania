@@ -66,6 +66,7 @@
 #include "../Shape/X3DMaterialNode.h"
 #include "../Shape/X3DShapeNode.h"
 #include "../Texturing/MultiTexture.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 #include "../Texturing/X3DTextureTransformNode.h"
 
 #include <Titania/String/to_string.h>
@@ -76,74 +77,76 @@ namespace X3D {
 static constexpr size_t MAX_TEX_COORD = 4;
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
-	                X3DBaseNode (),
-	x3d_LogarithmicFarFactor1_2 (-1),
-	           x3d_GeometryType (-1),
-	          x3d_NumClipPlanes (-1),
-	              x3d_ClipPlane (getBrowser () -> getMaxClipPlanes (), -1),
-	                x3d_FogType (-1),
-	               x3d_FogColor (-1),
-	     x3d_FogVisibilityRange (-1),
-	              x3d_FogMatrix (-1),
-	               x3d_FogCoord (-1),
-	   x3d_LinewidthScaleFactor (-1),
-	               x3d_Lighting (-1),
-	          x3d_ColorMaterial (-1),
-	              x3d_NumLights (-1),
-	              x3d_LightType (getBrowser () -> getMaxLights (), -1),
-	             x3d_LightColor (getBrowser () -> getMaxLights (), -1),
-	  x3d_LightAmbientIntensity (getBrowser () -> getMaxLights (), -1),
-	         x3d_LightIntensity (getBrowser () -> getMaxLights (), -1),
-	       x3d_LightAttenuation (getBrowser () -> getMaxLights (), -1),
-	          x3d_LightLocation (getBrowser () -> getMaxLights (), -1),
-	         x3d_LightDirection (getBrowser () -> getMaxLights (), -1),
-	         x3d_LightBeamWidth (getBrowser () -> getMaxLights (), -1),
-	       x3d_LightCutOffAngle (getBrowser () -> getMaxLights (), -1),
-	            x3d_LightRadius (getBrowser () -> getMaxLights (), -1),
-	            x3d_LightMatrix (getBrowser () -> getMaxLights (), -1),
-	            x3d_ShadowColor (getBrowser () -> getMaxLights (), -1),
-	        x3d_ShadowIntensity (getBrowser () -> getMaxLights (), -1),
-	             x3d_ShadowBias (getBrowser () -> getMaxLights (), -1),
-	           x3d_ShadowMatrix (getBrowser () -> getMaxLights (), -1),
-	          x3d_ShadowMapSize (getBrowser () -> getMaxLights (), -1),
-	              x3d_ShadowMap (getBrowser () -> getMaxLights (), -1),
-	      x3d_SeparateBackColor (-1),
-	       x3d_AmbientIntensity (-1),
-	           x3d_DiffuseColor (-1),
-	          x3d_SpecularColor (-1),
-	          x3d_EmissiveColor (-1),
-	              x3d_Shininess (-1),
-	           x3d_Transparency (-1),
-	   x3d_BackAmbientIntensity (-1),
-	       x3d_BackDiffuseColor (-1),
-	      x3d_BackSpecularColor (-1),
-	      x3d_BackEmissiveColor (-1),
-	          x3d_BackShininess (-1),
-	       x3d_BackTransparency (-1),
-	            x3d_NumTextures (-1),
-	            x3d_TextureType (-1),
-	              x3d_Texture2D (-1),
-	         x3d_CubeMapTexture (-1),
-	               x3d_Viewport (-1),
-	       x3d_ProjectionMatrix (-1),
-	        x3d_ModelViewMatrix (-1),
-	           x3d_NormalMatrix (-1),
-	          x3d_TextureMatrix (-1),
-	      x3d_CameraSpaceMatrix (-1),
-	               x3d_FogDepth (-1),
-	                  x3d_Color (-1),
-	               x3d_TexCoord (-1),
-	                 x3d_Normal (-1),
-	                 x3d_Vertex (-1),
-	             x3d_ParticleId (-1),
-	           x3d_ParticleLife (-1),
-	    x3d_ParticleElapsedTime (-1),
-	     extensionGPUShaderFP64 (false),
-	  transformFeedbackVaryings (),
-	            numGlobalLights (0),
-	               fogContainer (nullptr),
-	            lightContainers (getBrowser () -> getMaxLights ()),
-	                   textures ()
+	                            X3DBaseNode (),
+	            x3d_LogarithmicFarFactor1_2 (-1),
+	                       x3d_GeometryType (-1),
+	                      x3d_NumClipPlanes (-1),
+	                          x3d_ClipPlane (getBrowser () -> getMaxClipPlanes (), -1),
+	                            x3d_FogType (-1),
+	                           x3d_FogColor (-1),
+	                 x3d_FogVisibilityRange (-1),
+	                          x3d_FogMatrix (-1),
+	                           x3d_FogCoord (-1),
+	               x3d_LinewidthScaleFactor (-1),
+	                           x3d_Lighting (-1),
+	                      x3d_ColorMaterial (-1),
+	                          x3d_NumLights (-1),
+	                          x3d_LightType (getBrowser () -> getMaxLights (), -1),
+	                         x3d_LightColor (getBrowser () -> getMaxLights (), -1),
+	              x3d_LightAmbientIntensity (getBrowser () -> getMaxLights (), -1),
+	                     x3d_LightIntensity (getBrowser () -> getMaxLights (), -1),
+	                   x3d_LightAttenuation (getBrowser () -> getMaxLights (), -1),
+	                      x3d_LightLocation (getBrowser () -> getMaxLights (), -1),
+	                     x3d_LightDirection (getBrowser () -> getMaxLights (), -1),
+	                     x3d_LightBeamWidth (getBrowser () -> getMaxLights (), -1),
+	                   x3d_LightCutOffAngle (getBrowser () -> getMaxLights (), -1),
+	                        x3d_LightRadius (getBrowser () -> getMaxLights (), -1),
+	                        x3d_LightMatrix (getBrowser () -> getMaxLights (), -1),
+	                        x3d_ShadowColor (getBrowser () -> getMaxLights (), -1),
+	                    x3d_ShadowIntensity (getBrowser () -> getMaxLights (), -1),
+	                         x3d_ShadowBias (getBrowser () -> getMaxLights (), -1),
+	                       x3d_ShadowMatrix (getBrowser () -> getMaxLights (), -1),
+	                      x3d_ShadowMapSize (getBrowser () -> getMaxLights (), -1),
+	                          x3d_ShadowMap (getBrowser () -> getMaxLights (), -1),
+	                  x3d_SeparateBackColor (-1),
+	                   x3d_AmbientIntensity (-1),
+	                       x3d_DiffuseColor (-1),
+	                      x3d_SpecularColor (-1),
+	                      x3d_EmissiveColor (-1),
+	                          x3d_Shininess (-1),
+	                       x3d_Transparency (-1),
+	               x3d_BackAmbientIntensity (-1),
+	                   x3d_BackDiffuseColor (-1),
+	                  x3d_BackSpecularColor (-1),
+	                  x3d_BackEmissiveColor (-1),
+	                      x3d_BackShininess (-1),
+	                   x3d_BackTransparency (-1),
+	                        x3d_NumTextures (-1),
+	                        x3d_TextureType (-1),
+	                          x3d_Texture2D (-1),
+	                     x3d_CubeMapTexture (-1),
+	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
+	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
+	                           x3d_Viewport (-1),
+	                   x3d_ProjectionMatrix (-1),
+	                    x3d_ModelViewMatrix (-1),
+	                       x3d_NormalMatrix (-1),
+	                      x3d_TextureMatrix (-1),
+	                  x3d_CameraSpaceMatrix (-1),
+	                           x3d_FogDepth (-1),
+	                              x3d_Color (-1),
+	                           x3d_TexCoord (-1),
+	                             x3d_Normal (-1),
+	                             x3d_Vertex (-1),
+	                         x3d_ParticleId (-1),
+	                       x3d_ParticleLife (-1),
+	                x3d_ParticleElapsedTime (-1),
+	                 extensionGPUShaderFP64 (false),
+	              transformFeedbackVaryings (),
+	                        numGlobalLights (0),
+	                           fogContainer (nullptr),
+	                        lightContainers (getBrowser () -> getMaxLights ()),
+	                               textures ()
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
 }
@@ -184,24 +187,26 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 {
 	const auto program = getProgramId ();
 
-	x3d_ClipPlane             .clear ();
-	x3d_LightType             .clear ();
-	x3d_LightColor            .clear ();
-	x3d_LightAmbientIntensity .clear ();
-	x3d_LightIntensity        .clear ();
-	x3d_LightAttenuation      .clear ();
-	x3d_LightLocation         .clear ();
-	x3d_LightDirection        .clear ();
-	x3d_LightBeamWidth        .clear ();
-	x3d_LightCutOffAngle      .clear ();
-	x3d_LightRadius           .clear ();
-	x3d_LightMatrix           .clear ();
-	x3d_ShadowColor           .clear ();
-	x3d_ShadowIntensity       .clear ();
-	x3d_ShadowBias            .clear ();
-	x3d_ShadowMatrix          .clear ();
-	x3d_ShadowMapSize         .clear ();
-	x3d_ShadowMap             .clear ();
+	x3d_ClipPlane                           .clear ();
+	x3d_LightType                           .clear ();
+	x3d_LightColor                          .clear ();
+	x3d_LightAmbientIntensity               .clear ();
+	x3d_LightIntensity                      .clear ();
+	x3d_LightAttenuation                    .clear ();
+	x3d_LightLocation                       .clear ();
+	x3d_LightDirection                      .clear ();
+	x3d_LightBeamWidth                      .clear ();
+	x3d_LightCutOffAngle                    .clear ();
+	x3d_LightRadius                         .clear ();
+	x3d_LightMatrix                         .clear ();
+	x3d_ShadowColor                         .clear ();
+	x3d_ShadowIntensity                     .clear ();
+	x3d_ShadowBias                          .clear ();
+	x3d_ShadowMatrix                        .clear ();
+	x3d_ShadowMapSize                       .clear ();
+	x3d_ShadowMap                           .clear ();
+	x3d_TextureCoordinateGeneratorMode      .clear ();
+	x3d_TextureCoordinateGeneratorParameter .clear ();
 
 	// Get default uniforms.
 
@@ -269,6 +274,14 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
 	x3d_Texture2D      = getUniformLocation (program, "x3d_Texture2D", "x3d_Texture");
 	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
+
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+	{
+		const auto is = basic::to_string (i, std::locale::classic ());
+
+		x3d_TextureCoordinateGeneratorMode      .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ()));
+		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
+	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
 	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
@@ -1100,15 +1113,16 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
 	static const auto textureType = std::vector <int32_t> ({ 0 });
 
-	const auto & browser              = context -> getBrowser ();
-	const auto & renderObject         = context -> getRenderer ();
-	const auto & clipPlanes           = context -> getClipPlanes ();
-	const auto & linePropertiesNode   = browser -> getLineProperties ();
-	const auto & materialNode         = browser -> getMaterial ();
-	const auto & textureNode          = browser -> getTexture ();
-	const auto & textureTransformNode = browser -> getTextureTransform ();
-	const auto & modelViewMatrix      = context -> getModelViewMatrix ();
-	const auto   normalMatrix         = getNormalMatrix (modelViewMatrix); // Transposed when uniform is set.
+	const auto & browser               = context -> getBrowser ();
+	const auto & renderObject          = context -> getRenderer ();
+	const auto & clipPlanes            = context -> getClipPlanes ();
+	const auto & linePropertiesNode    = browser -> getLineProperties ();
+	const auto & materialNode          = browser -> getMaterial ();
+	const auto & textureNode           = browser -> getTexture ();
+	const auto & textureTransformNode  = browser -> getTextureTransform ();
+	const auto   textureCoordinateNode = context -> getTextureCoordinate ();
+	const auto & modelViewMatrix       = context -> getModelViewMatrix ();
+	const auto   normalMatrix          = getNormalMatrix (modelViewMatrix); // Transposed when uniform is set.
 
 	// Geometry type
 
@@ -1163,6 +1177,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	// Matrices
 
 	textureTransformNode -> setShaderUniforms (this);
+	textureCoordinateNode -> setShaderUniforms (this);
 
 	if (extensionGPUShaderFP64)
 	{

@@ -5594,16 +5594,16 @@
                                         <property name="hexpand">True</property>
                                         <items>
                                           <item>SPHERE</item>
-                                          <item>SPHERE-LOCAL</item>
-                                          <item>SPHERE-REFLECT</item>
-                                          <item>SPHERE-REFLECT-LOCAL</item>
                                           <item>CAMERASPACENORMAL</item>
                                           <item>CAMERASPACEPOSITION</item>
                                           <item>CAMERASPACEREFLECTIONVECTOR</item>
-                                          <item>COORD-EYE</item>
+                                          <item>SPHERE-LOCAL</item>
                                           <item>COORD</item>
-                                          <item>NOISE-EYE</item>
+                                          <item>COORD-EYE</item>
                                           <item>NOISE</item>
+                                          <item>NOISE-EYE</item>
+                                          <item>SPHERE-REFLECT</item>
+                                          <item>SPHERE-REFLECT-LOCAL</item>
                                         </items>
                                       </object>
                                       <packing>

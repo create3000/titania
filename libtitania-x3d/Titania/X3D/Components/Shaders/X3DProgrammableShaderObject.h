@@ -273,6 +273,14 @@ public:
 	getTexture2DUniformLocation () const
 	{ return x3d_Texture2D; }
 
+	const std::vector <GLint> &
+	getTextureCoordinateGeneratorModeUniformLocation () const
+	{ return x3d_TextureCoordinateGeneratorMode; }
+
+	const std::vector <GLint> &
+	getTextureCoordinateGeneratorParameterUniformLocation () const
+	{ return x3d_TextureCoordinateGeneratorParameter; }
+
 	///  @name Matrices
 
 	GLint
@@ -542,6 +550,9 @@ private:
 	GLint x3d_TextureType;
 	GLint x3d_Texture2D;
 	GLint x3d_CubeMapTexture;
+
+	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
+	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
 
 	GLint x3d_Viewport;
 	GLint x3d_ProjectionMatrix;

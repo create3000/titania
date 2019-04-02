@@ -469,7 +469,7 @@ private:
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
 	std::vector <float>                  fogDepths;
 	std::vector <Color4f>                colors;
-	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
+	X3DPtr <X3DTextureCoordinateNode>    textureCoordinateNode;
 	TexCoordArray                        texCoords;
 	std::vector <Vector3f>               normals;
 	std::vector <Vector3f>               faceNormals;
