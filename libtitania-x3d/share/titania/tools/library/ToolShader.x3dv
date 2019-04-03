@@ -76,7 +76,7 @@ main ()
 
 	if (x3d_Lighting)
 	{
-		if (x3d_GeometryType != x3d_Points && x3d_GeometryType != x3d_Lines)
+		if (x3d_GeometryType > 1)
 		{
 			vec3 N = normalize (gl_FrontFacing ? vN : -vN);
 			vec3 V = normalize (-v); // normalized vector from point on geometry to viewer's position

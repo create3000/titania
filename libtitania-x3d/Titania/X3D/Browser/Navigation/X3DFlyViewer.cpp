@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Components/Shaders/ComposedShader.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../Core/BrowserOptions.h"
 
@@ -476,31 +477,47 @@ X3DFlyViewer::display (const MoveType type)
 	glBindBuffer (GL_ARRAY_BUFFER, lineBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * points .size (), points .data (), GL_STATIC_COPY);
 
+	// Display Rubberband.
+
+	const auto & shaderNode = getBrowser () -> getWireframeShader ();
+
+	shaderNode -> enable ();
+	shaderNode -> setClipPlanes (getBrowser (), { });
+	shaderNode -> enableVertexAttrib (lineBufferId, GL_DOUBLE, 0, nullptr);
+
+	glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
+	glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
+	glUniform1i (shaderNode -> getLightingUniformLocation (),      true);
+
 	// Projection
 
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projection .front () .data ());
-	glMatrixMode (GL_MODELVIEW);
+	if (shaderNode -> isExtensionGPUShaderFP64Available ())
+	{
+		glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, projection .front () .data ());
+		glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4d () .front () .data ());
+	}
+	else
+	{
+		glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (projection) .front () .data ());
+		glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f () .front () .data ());
+	}
 
 	// Draw a black and a white line.
 
 	glDisable (GL_DEPTH_TEST);
-	glLoadIdentity ();
-
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_DOUBLE, 0, 0);
 
 	glLineWidth (2);
-	glColor3f (0, 0, 0);
+	glUniform3f (shaderNode -> getEmissiveColorUniformLocation (), 0, 0, 0);
+	glUniform1f (shaderNode -> getTransparencyUniformLocation (),  0);
 	glDrawArrays (GL_LINES, 0, points .size ());
 
 	glLineWidth (1);
-	glColor3f (1, 1, 1);
+	glUniform3f (shaderNode -> getEmissiveColorUniformLocation (), 1, 1, 1);
 	glDrawArrays (GL_LINES, 0, points .size ());
 
-	glDisableClientState (GL_VERTEX_ARRAY);
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
 	glEnable (GL_DEPTH_TEST);
+	shaderNode -> disableVertexAttrib ();
+	shaderNode -> disable ();
 }
 
 void

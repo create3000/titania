@@ -262,9 +262,6 @@ Collision {
                   linetype 3
                   linewidthScaleFactor 1
                 }
-                material DEF Yellow Material {
-                  diffuseColor 1 1 0
-                }
                 shaders USE _1
               }
               geometry DEF CenterIndexedLineSet IndexedLineSet {
