@@ -150,14 +150,6 @@ public:
 	{ }
 
 	virtual
-	void
-	enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const final override;
-
-	virtual
-	void
-	disable (ShapeContainer* const context, const int32_t unit) const final override;
-
-	virtual
 	bool
 	isEmpty () const final override
 	{ return true; }
@@ -166,6 +158,16 @@ public:
 	size_t
 	getSize () const final override
 	{ return 0; }
+
+	///  @name Rendering
+	
+	virtual
+	void
+	enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const final override;
+
+	virtual
+	void
+	disable (ShapeContainer* const context, const int32_t unit) const final override;
 
 	///  @name Operations
 	

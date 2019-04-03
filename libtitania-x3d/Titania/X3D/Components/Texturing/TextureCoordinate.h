@@ -117,14 +117,6 @@ public:
 	getTexCoord (std::vector <Vector4f> &) const final override;
 
 	virtual
-	void
-	enable (ShapeContainer* const context, const int32_t, const size_t, const std::vector <GLuint> & texCoordBufferIds) const final override;
-
-	virtual
-	void
-	disable (ShapeContainer* const context, const int32_t) const final override;
-
-	virtual
 	bool
 	isEmpty () const final override
 	{ return point () .empty (); }
@@ -144,6 +136,16 @@ public:
 	void
 	resize (const size_t value) final override
 	{ point () .resize (value); }
+
+	///  @name Rendering
+
+	virtual
+	void
+	enable (ShapeContainer* const context, const int32_t, const size_t, const std::vector <GLuint> & texCoordBufferIds) const final override;
+
+	virtual
+	void
+	disable (ShapeContainer* const context, const int32_t) const final override;
 
 
 private:

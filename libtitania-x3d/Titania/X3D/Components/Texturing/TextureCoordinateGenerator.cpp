@@ -93,19 +93,6 @@ TextureCoordinateGenerator::initialize ()
 
 	set_mode ();
 }
-//	static const std::map <std::string, GLenum> modes = {
-//		std::pair ("SPHERE",                      GL_SPHERE_MAP),     // Ok
-//		std::pair ("SPHERE-LOCAL",                GL_SPHERE_MAP),     // Not supported
-//		std::pair ("SPHERE-REFLECT",              GL_REFLECTION_MAP), // Not supported
-//		std::pair ("SPHERE-REFLECT-LOCAL",        GL_REFLECTION_MAP), // Not supported
-//		std::pair ("CAMERASPACENORMAL",           GL_NORMAL_MAP),     // Ok
-//		std::pair ("CAMERASPACEPOSITION",         GL_EYE_LINEAR),     // Like COORD-EYE ???
-//		std::pair ("CAMERASPACEREFLECTIONVECTOR", GL_REFLECTION_MAP), // Ok
-//		std::pair ("COORD-EYE",                   GL_EYE_LINEAR),     // Ok
-//		std::pair ("COORD",                       GL_OBJECT_LINEAR),  // Ok
-//		std::pair ("NOISE-EYE",                   GL_SPHERE_MAP),     // Not supported
-//		std::pair ("NOISE",                       GL_SPHERE_MAP)      // Not supported
-//	};
 
 void
 TextureCoordinateGenerator::set_mode ()

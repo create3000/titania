@@ -91,6 +91,16 @@ public:
 	getTexCoord (std::vector <Vector4f> &) const = 0;
 
 	virtual
+	bool
+	isEmpty () const = 0;
+
+	virtual
+	size_t
+	getSize () const = 0;
+
+	///  @name Rendering
+
+	virtual
 	void
 	enable (ShapeContainer* const context, const std::vector <GLuint> &) const;
 
@@ -105,14 +115,6 @@ public:
 	virtual
 	void
 	disable (ShapeContainer* const context, const int32_t) const = 0;
-
-	virtual
-	bool
-	isEmpty () const = 0;
-
-	virtual
-	size_t
-	getSize () const = 0;
 
 	///  @name Operations
 

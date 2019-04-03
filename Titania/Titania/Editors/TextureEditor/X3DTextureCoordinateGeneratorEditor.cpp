@@ -137,9 +137,20 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 			field .addInterest (&X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator, this);
 
 			if (getTextureCoordinateGeneratorCheckButton () .get_active ())
+			{
+				try
+				{
+					X3D::X3DEditor::setValue (geometry, geometry -> getField <X3D::MFInt32> ("texCoordIndex"), X3D::MFInt32 (), undoStep);
+				}
+				catch (const X3D::X3DError & error)
+				{ }
+
 				X3D::X3DEditor::replaceNode (executionContext, geometry, field, textureCoordinateGenerator, undoStep);
+			}
 			else
+			{
 				X3D::X3DEditor::replaceNode (executionContext, geometry, field, nullptr, undoStep);
+			}
 		}
 		catch (const X3D::X3DError &)
 		{ }

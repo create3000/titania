@@ -64,6 +64,17 @@ X3DTextureCoordinateNode::X3DTextureCoordinateNode () :
 }
 
 void
+X3DTextureCoordinateNode::assign (const X3DPtr <X3DTextureCoordinateNode> & other)
+{
+	const auto size = other -> getSize ();
+
+	for (size_t i = 0; i < size; ++ i)
+		set1Point (i, other -> get1Point(i));
+
+	resize (size);
+}
+
+void
 X3DTextureCoordinateNode::enable (ShapeContainer* const context, const std::vector <GLuint> & texCoordBufferIds) const
 {
 	const auto browser = context -> getBrowser ();
@@ -99,17 +110,6 @@ X3DTextureCoordinateNode::disable (ShapeContainer* const context) const
 				disable (context, unit);
 		}
 	}
-}
-
-void
-X3DTextureCoordinateNode::assign (const X3DPtr <X3DTextureCoordinateNode> & other)
-{
-	const auto size = other -> getSize ();
-
-	for (size_t i = 0; i < size; ++ i)
-		set1Point (i, other -> get1Point(i));
-
-	resize (size);
 }
 
 void
