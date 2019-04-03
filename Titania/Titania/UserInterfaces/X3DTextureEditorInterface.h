@@ -118,6 +118,30 @@ public:
 	{ return m_MultiTextureSourceListStore; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureCoordinateGeneratorParameter0Adjustment () const
+	{ return m_TextureCoordinateGeneratorParameter0Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureCoordinateGeneratorParameter1Adjustment () const
+	{ return m_TextureCoordinateGeneratorParameter1Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureCoordinateGeneratorParameter2Adjustment () const
+	{ return m_TextureCoordinateGeneratorParameter2Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureCoordinateGeneratorParameter3Adjustment () const
+	{ return m_TextureCoordinateGeneratorParameter3Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureCoordinateGeneratorParameter4Adjustment () const
+	{ return m_TextureCoordinateGeneratorParameter4Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureCoordinateGeneratorParameter5Adjustment () const
+	{ return m_TextureCoordinateGeneratorParameter5Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTexturePropertiesAnisotropicDegreeAdjustment () const
 	{ return m_TexturePropertiesAnisotropicDegreeAdjustment; }
 
@@ -1069,6 +1093,30 @@ public:
 	getTextureCoordinateGeneratorRenameButton () const
 	{ return *m_TextureCoordinateGeneratorRenameButton; }
 
+	Gtk::SpinButton &
+	getTextureCoordinateGeneratorParameter0SpinButton () const
+	{ return *m_TextureCoordinateGeneratorParameter0SpinButton; }
+
+	Gtk::SpinButton &
+	getTextureCoordinateGeneratorParameter1SpinButton () const
+	{ return *m_TextureCoordinateGeneratorParameter1SpinButton; }
+
+	Gtk::SpinButton &
+	getTextureCoordinateGeneratorParameter2SpinButton () const
+	{ return *m_TextureCoordinateGeneratorParameter2SpinButton; }
+
+	Gtk::SpinButton &
+	getTextureCoordinateGeneratorParameter3SpinButton () const
+	{ return *m_TextureCoordinateGeneratorParameter3SpinButton; }
+
+	Gtk::SpinButton &
+	getTextureCoordinateGeneratorParameter4SpinButton () const
+	{ return *m_TextureCoordinateGeneratorParameter4SpinButton; }
+
+	Gtk::SpinButton &
+	getTextureCoordinateGeneratorParameter5SpinButton () const
+	{ return *m_TextureCoordinateGeneratorParameter5SpinButton; }
+
 	Gtk::Box &
 	getUsedTexturesBox () const
 	{ return *m_UsedTexturesBox; }
@@ -1326,6 +1374,12 @@ private:
 	Glib::RefPtr <Gtk::ListStore> m_MultiTextureFunctionListStore;
 	Glib::RefPtr <Gtk::ListStore> m_MultiTextureModeListStore;
 	Glib::RefPtr <Gtk::ListStore> m_MultiTextureSourceListStore;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureCoordinateGeneratorParameter0Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureCoordinateGeneratorParameter1Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureCoordinateGeneratorParameter2Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureCoordinateGeneratorParameter3Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureCoordinateGeneratorParameter4Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureCoordinateGeneratorParameter5Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesAnisotropicDegreeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TexturePropertiesBorderWidthAdjustment;
@@ -1564,6 +1618,12 @@ private:
 	Gtk::Box* m_TextureCoordinateGeneratorNameBox;
 	Gtk::Entry* m_TextureCoordinateGeneratorNameEntry;
 	Gtk::Button* m_TextureCoordinateGeneratorRenameButton;
+	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter0SpinButton;
+	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter1SpinButton;
+	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter2SpinButton;
+	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter3SpinButton;
+	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter4SpinButton;
+	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter5SpinButton;
 	Gtk::Box* m_UsedTexturesBox;
 	Gtk::Box* m_PaletteBox;
 	Gtk::Box* m_PalettePreviewBox;

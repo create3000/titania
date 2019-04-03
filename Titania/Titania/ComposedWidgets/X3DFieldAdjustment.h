@@ -149,6 +149,11 @@ private:
 	
 	template <class ValueType>
 	int32_t
+	get_index (const X3D::SFMatrix3 <ValueType> & field) const
+	{ return index; }
+	
+	template <class ValueType>
+	int32_t
 	get_index (const X3D::SFMatrix4 <ValueType> & field) const
 	{ return index; }
 	
@@ -337,10 +342,10 @@ X3DFieldAdjustment <Type>::set_buffer ()
 	{
 		try
 		{
-		   auto & field = node -> getField <Type> (name);
+		   auto &     field = node -> getField <Type> (name);
+			const auto index = get_index (field);
 
-			unit  = field .getUnit ();
-			index = get_index (field);
+			unit = field .getUnit ();
 
 			if (index >= 0)
 			{
@@ -378,10 +383,10 @@ template <class ValueType>
 int32_t
 X3DFieldAdjustment <Type>::get_index (X3D::X3DNativeArrayField <ValueType> & field) const
 {
-	if (field .empty ())
-		return -1;
+	if (index < (int32_t) field .size ())
+		return index;
 
-	return std::min <int32_t> (index, field .size () - 1);
+	return -1;
 }
 
 template <class Type>
@@ -389,10 +394,10 @@ template <class ValueType>
 int32_t
 X3DFieldAdjustment <Type>::get_index (X3D::X3DArrayField <ValueType> & field) const
 {
-	if (field .empty ())
-		return -1;
+	if (index < (int32_t) field .size ())
+		return index;
 
-	return std::min <int32_t> (index, field .size () - 1);
+	return -1;
 }
 
 template <class Type>

@@ -114,7 +114,13 @@ private:
 
 	NameEntry nodeName;
 
-	SFStringComboBoxText mode;
+	SFStringComboBoxText              mode;
+	X3DFieldAdjustment <X3D::MFFloat> parameter0;
+	X3DFieldAdjustment <X3D::MFFloat> parameter1;
+	X3DFieldAdjustment <X3D::MFFloat> parameter2;
+	X3DFieldAdjustment <X3D::MFFloat> parameter3;
+	X3DFieldAdjustment <X3D::MFFloat> parameter4;
+	X3DFieldAdjustment <X3D::MFFloat> parameter5;
 
 };
 

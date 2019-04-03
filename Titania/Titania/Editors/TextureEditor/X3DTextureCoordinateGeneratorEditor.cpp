@@ -63,11 +63,24 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	                        undoStep (),
 	                        changing (false),
 	                        nodeName (this, getTextureCoordinateGeneratorNameEntry (), getTextureCoordinateGeneratorRenameButton ()),
-	                            mode (this, getTextureCoordinateGeneratorModeComboBoxText (), "mode")
+	                            mode (this, getTextureCoordinateGeneratorModeComboBoxText (), "mode"),
+	                      parameter0 (this, getTextureCoordinateGeneratorParameter0Adjustment (), getTextureCoordinateGeneratorParameter0SpinButton (), "parameter"),
+	                      parameter1 (this, getTextureCoordinateGeneratorParameter1Adjustment (), getTextureCoordinateGeneratorParameter1SpinButton (), "parameter"),
+	                      parameter2 (this, getTextureCoordinateGeneratorParameter2Adjustment (), getTextureCoordinateGeneratorParameter2SpinButton (), "parameter"),
+	                      parameter3 (this, getTextureCoordinateGeneratorParameter3Adjustment (), getTextureCoordinateGeneratorParameter3SpinButton (), "parameter"),
+	                      parameter4 (this, getTextureCoordinateGeneratorParameter4Adjustment (), getTextureCoordinateGeneratorParameter4SpinButton (), "parameter"),
+	                      parameter5 (this, getTextureCoordinateGeneratorParameter5Adjustment (), getTextureCoordinateGeneratorParameter5SpinButton (), "parameter")
 {
 	addChildObjects (geometryNodes, textureCoordinateGeneratorBuffer, textureCoordinateGenerator);
 
 	textureCoordinateGeneratorBuffer .addInterest (&X3DTextureCoordinateGeneratorEditor::set_node, this);
+
+	parameter0 .setIndex (0);
+	parameter1 .setIndex (1);
+	parameter2 .setIndex (2);
+	parameter3 .setIndex (3);
+	parameter4 .setIndex (4);
+	parameter5 .setIndex (5);
 }
 
 void
@@ -199,7 +212,13 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 
 	nodeName .setNode (nodes .back ());
 
-	mode .setNodes (nodes);
+	mode       .setNodes (nodes);
+	parameter0 .setNodes (nodes);
+	parameter1 .setNodes (nodes);
+	parameter2 .setNodes (nodes);
+	parameter3 .setNodes (nodes);
+	parameter4 .setNodes (nodes);
+	parameter5 .setNodes (nodes);
 }
 
 void

@@ -384,14 +384,15 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 		try
 		{
 			auto &     field = node -> getField <Type> (name);
-			const auto geo   = field .isGeospatial ();
-			const auto value = get_value (field);
+			const auto index = get_index (field);
 
-			unit  = field .getUnit ();
-			index = get_index (field);
+			unit = field .getUnit ();
 
 			if (index >= 0)
 			{
+				const auto geo   = field .isGeospatial ();
+				const auto value = get_value (field);
+
 				set_bounds ();
 
 				adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> toUnit (unit, value [0]));
@@ -427,10 +428,10 @@ template <class ValueType>
 int32_t
 X3DFieldAdjustment3 <Type>::get_index (X3D::X3DArrayField <ValueType> & field) const
 {
-	if (field .empty ())
-		return -1;
+	if (index < (int32_t) field .size ())
+		return index;
 
-	return std::min <int32_t> (index, field .size () - 1);
+	return -1;
 }
 
 template <class Type>
@@ -446,10 +447,10 @@ template <class ValueType>
 X3D::Vector3d
 X3DFieldAdjustment3 <Type>::get_value (X3D::X3DArrayField <ValueType> & field)
 {
-	if (index >= (int32_t) field .size ())
-		index = field .size () - 1;
+	if (index >= 0 and index < field .size ())
+		return X3D::Vector3d (field .get1Value (index));
 
-	return X3D::Vector3d (field .get1Value (index));
+	return X3D::Vector3d ();
 }
 
 template <class Type>
