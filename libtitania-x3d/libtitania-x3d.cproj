@@ -877,8 +877,6 @@
     <None Include="Titania\X3D\Components\X_ITE\TransformMatrix3D.h" />
     <None Include="Titania\X3D\Tools\X_ITE\TouchGroupTool.h" />
     <None Include="share\titania\shaders\Shaders\Types.h" />
-    <None Include="share\titania\shaders\Shaders\Inlcude\Shadow.h" />
-    <None Include="share\titania\shaders\Shaders\Inlcude\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Background.fs" />
     <None Include="share\titania\shaders\Shaders\Background.vs" />
     <None Include="Titania\X3D\Parser\glTF\Parser.h" />
@@ -989,6 +987,8 @@
     <None Include="Titania\X3D\Browser\Picking\PickingHierarchyGuard.h" />
     <None Include="Titania\X3D\Browser\Picking\VolumePicker.h" />
     <None Include="Titania\X3D\Browser\Picking\MatchCriterionType.h" />
+    <None Include="share\titania\shaders\Shaders\Include\Shadow.h" />
+    <None Include="share\titania\shaders\Shaders\Include\Pack.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1769,7 +1769,6 @@
     <Folder Include="Titania\X3D\Browser\EnvironmentalEffects\" />
     <Folder Include="Titania\X3D\Components\X_ITE\" />
     <Folder Include="Titania\X3D\Tools\X_ITE\" />
-    <Folder Include="share\titania\shaders\Shaders\Inlcude\" />
     <Folder Include="share\titania\shaders\glTF\" />
     <Folder Include="Titania\X3D\Parser\glTF\" />
     <Folder Include="share\titania\shaders\glTF\Prototypes\" />
@@ -1782,6 +1781,7 @@
     <Folder Include="Titania\X3D\Browser\NURBS\" />
     <Folder Include="Titania\X3D\Tools\H-Anim\" />
     <Folder Include="Titania\X3D\Browser\Picking\" />
+    <Folder Include="share\titania\shaders\Shaders\Include\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
