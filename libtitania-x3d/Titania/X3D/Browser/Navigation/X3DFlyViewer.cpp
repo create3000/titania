@@ -86,7 +86,8 @@ X3DFlyViewer::X3DFlyViewer () :
 	             button (0),
 	             fly_id (),
 	             pan_id (),
-	            roll_id ()
+	            roll_id (),
+	       lineBufferId ()
 { }
 
 void
@@ -102,6 +103,8 @@ X3DFlyViewer::initialize ()
 	getBrowser () -> getControlKey () .addInterest (&X3DFlyViewer::disconnect, this);
 
 	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn ¨¹berhaupt.
+
+	glGenBuffers (1, &lineBufferId);
 }
 
 bool
@@ -450,24 +453,31 @@ X3DFlyViewer::display (const MoveType type)
 
 	const auto projection = camera <double>::ortho (0, width, 0, height, -1, 1);
 
-	std::vector <Vector2d> points;
+	std::vector <Vector3d> points;
 
 	switch (type)
 	{
 		case MoveType::MOVE:
 		{
-			points .emplace_back (fromVector .x (), height - fromVector .z ());
-			points .emplace_back (toVector   .x (), height - toVector   .z ());
+			points .emplace_back (fromVector .x (), height - fromVector .z (), 0);
+			points .emplace_back (toVector   .x (), height - toVector   .z (), 0);
 			break;
 		}
 		case MoveType::PAN:
 		{
-			points .emplace_back (fromVector .x (), height + fromVector .y ());
-			points .emplace_back (toVector   .x (), height + toVector   .y ());
+			points .emplace_back (fromVector .x (), height + fromVector .y (), 0);
+			points .emplace_back (toVector   .x (), height + toVector   .y (), 0);
 			break;
 		}
 	}
-	
+
+	// Transfer
+
+	glBindBuffer (GL_ARRAY_BUFFER, lineBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * points .size (), points .data (), GL_STATIC_COPY);
+
+	// Projection
+
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (projection .front () .data ());
 	glMatrixMode (GL_MODELVIEW);
@@ -478,7 +488,7 @@ X3DFlyViewer::display (const MoveType type)
 	glLoadIdentity ();
 
 	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (2, GL_DOUBLE, 0, points .data ());
+	glVertexPointer (3, GL_DOUBLE, 0, 0);
 
 	glLineWidth (2);
 	glColor3f (0, 0, 0);
@@ -489,6 +499,7 @@ X3DFlyViewer::display (const MoveType type)
 	glDrawArrays (GL_LINES, 0, points .size ());
 
 	glDisableClientState (GL_VERTEX_ARRAY);
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
 	glEnable (GL_DEPTH_TEST);
 }
 

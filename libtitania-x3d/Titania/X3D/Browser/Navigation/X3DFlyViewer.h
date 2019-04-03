@@ -172,6 +172,7 @@ private:
 	sigc::connection fly_id;
 	sigc::connection pan_id;
 	sigc::connection roll_id;
+	GLuint           lineBufferId;
 
 };
 
