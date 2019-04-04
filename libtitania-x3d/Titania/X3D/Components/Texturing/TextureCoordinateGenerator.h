@@ -201,11 +201,16 @@ private:
 	void
 	set_mode ();
 
+	void
+	set_parameter ();
+
 	///  @name Static members
 
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	static const  size_t MAX_PARAMETER;
 
 	///  @name Fields
 
@@ -221,7 +226,8 @@ private:
 
 	///  @name Members
 
-	ModeType modeType;
+	ModeType            modeType;
+	std::vector <float> parameterArray;
 
 };
 

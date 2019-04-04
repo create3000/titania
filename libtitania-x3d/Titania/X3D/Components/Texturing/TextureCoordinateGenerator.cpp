@@ -60,6 +60,8 @@ const Component   TextureCoordinateGenerator::component      = Component ("Textu
 const std::string TextureCoordinateGenerator::typeName       = "TextureCoordinateGenerator";
 const std::string TextureCoordinateGenerator::containerField = "texCoord";
 
+const size_t TextureCoordinateGenerator::MAX_PARAMETER = 6;
+
 TextureCoordinateGenerator::Fields::Fields () :
 	     mode (new SFString ("SPHERE")),
 	parameter (new MFFloat ())
@@ -69,7 +71,8 @@ TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* con
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureCoordinateNode (),
 	                  fields (),
-	                modeType (ModeType::SPHERE)
+	                modeType (ModeType::SPHERE),
+	          parameterArray ()
 {
 	addType (X3DConstants::TextureCoordinateGenerator);
 
@@ -89,9 +92,11 @@ TextureCoordinateGenerator::initialize ()
 {
 	X3DTextureCoordinateNode::initialize ();
 
-	mode () .addInterest (&TextureCoordinateGenerator::set_mode, this);
+	mode ()      .addInterest (&TextureCoordinateGenerator::set_mode,      this);
+	parameter () .addInterest (&TextureCoordinateGenerator::set_parameter, this);
 
 	set_mode ();
+	set_parameter ();
 }
 
 void
@@ -119,6 +124,13 @@ TextureCoordinateGenerator::set_mode ()
 	{
 		modeType = ModeType::SPHERE;
 	}
+}
+
+void
+TextureCoordinateGenerator::set_parameter ()
+{
+	parameterArray .assign (parameter () .begin (), parameter () .end ());
+	parameterArray .resize (MAX_PARAMETER);
 }
 
 void
@@ -280,7 +292,7 @@ void
 TextureCoordinateGenerator::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
 {
 	glUniform1i (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], int (modeType));
-	glUniform1fv (shaderObject -> getTextureCoordinateGeneratorParameterUniformLocation () [i], parameter () .size (), parameter () .getValue () .data ());
+	glUniform1fv (shaderObject -> getTextureCoordinateGeneratorParameterUniformLocation () [i], parameterArray .size (), parameterArray .data ());
 }
 
 } // X3D

@@ -113,7 +113,7 @@ private:
 	on_texture_coordinate_generator_remove_parameter_clicked () final override;
 
 	void
-	on_parameter_clicked ();
+	on_parameter_button_clicked ();
 
 	///  @name Members
 

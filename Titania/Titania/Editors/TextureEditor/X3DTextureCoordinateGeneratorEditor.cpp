@@ -222,7 +222,7 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 	parameter4 .setNodes (nodes);
 	parameter5 .setNodes (nodes);
 
-	on_parameter_clicked ();
+	on_parameter_button_clicked ();
 }
 
 void
@@ -242,7 +242,7 @@ X3DTextureCoordinateGeneratorEditor::on_texture_coordinate_generator_add_paramet
 
 	parameter .resize (parameter .size () + 1);
 
-	on_parameter_clicked ();
+	on_parameter_button_clicked ();
 }
 
 void
@@ -255,11 +255,11 @@ X3DTextureCoordinateGeneratorEditor::on_texture_coordinate_generator_remove_para
 
 	parameter .resize (std::min (MAX_PARAMETER - 1, parameter .size () - 1));
 
-	on_parameter_clicked ();
+	on_parameter_button_clicked ();
 }
 
 void
-X3DTextureCoordinateGeneratorEditor::on_parameter_clicked ()
+X3DTextureCoordinateGeneratorEditor::on_parameter_button_clicked ()
 {
 	auto & parameter = textureCoordinateGenerator -> parameter ();
 
