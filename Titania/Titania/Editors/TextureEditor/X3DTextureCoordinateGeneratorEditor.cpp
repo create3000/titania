@@ -187,6 +187,9 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 {
 	undoStep .reset ();
 
+	if (textureCoordinateGenerator)
+		textureCoordinateGenerator -> parameter () .removeInterest (&X3DTextureCoordinateGeneratorEditor::set_parameter, this);
+
 	const auto executionContext = getSelectionContext (geometryNodes, true);
 	auto       tuple            = getSelection <X3D::TextureCoordinateGenerator> (geometryNodes, "texCoord");
 	const int  active           = std::get <1> (tuple);
@@ -197,6 +200,8 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 
 	if (not textureCoordinateGenerator)
 		textureCoordinateGenerator = executionContext -> createNode <X3D::TextureCoordinateGenerator> ();
+
+	textureCoordinateGenerator -> parameter () .addInterest (&X3DTextureCoordinateGeneratorEditor::set_parameter, this);
 
 	changing = true;
 
@@ -222,7 +227,7 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 	parameter4 .setNodes (nodes);
 	parameter5 .setNodes (nodes);
 
-	on_parameter_button_clicked ();
+	set_parameter ();
 }
 
 void
@@ -240,9 +245,16 @@ X3DTextureCoordinateGeneratorEditor::on_texture_coordinate_generator_add_paramet
 	if (parameter .size () >= MAX_PARAMETER)
 		return;
 
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("Add TextureCoordinateGenerator »parameter«");
+
+	undoStep -> addObjects (textureCoordinateGenerator);
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (parameter), parameter);
+
 	parameter .resize (parameter .size () + 1);
 
-	on_parameter_button_clicked ();
+	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (parameter), parameter);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
@@ -253,15 +265,22 @@ X3DTextureCoordinateGeneratorEditor::on_texture_coordinate_generator_remove_para
 	if (parameter .empty ())
 		return;
 
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("Remove TextureCoordinateGenerator »parameter«");
+
+	undoStep -> addObjects (textureCoordinateGenerator);
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (parameter), parameter);
+
 	parameter .resize (std::min (MAX_PARAMETER - 1, parameter .size () - 1));
 
-	on_parameter_button_clicked ();
+	undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (parameter), parameter);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
-X3DTextureCoordinateGeneratorEditor::on_parameter_button_clicked ()
+X3DTextureCoordinateGeneratorEditor::set_parameter ()
 {
-	auto & parameter = textureCoordinateGenerator -> parameter ();
+	const auto & parameter = textureCoordinateGenerator -> parameter ();
 
 	getTextureCoordinateGeneratorAddParameterButton ()    .set_sensitive (parameter .size () < MAX_PARAMETER);
 	getTextureCoordinateGeneratorRemoveParameterButton () .set_sensitive (parameter .size ());
