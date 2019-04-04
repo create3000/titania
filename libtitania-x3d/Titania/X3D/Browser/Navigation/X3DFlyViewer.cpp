@@ -88,7 +88,7 @@ X3DFlyViewer::X3DFlyViewer () :
 	             fly_id (),
 	             pan_id (),
 	            roll_id (),
-	       lineBufferId ()
+	       lineBufferId (0)
 { }
 
 void
@@ -523,6 +523,9 @@ X3DFlyViewer::display (const MoveType type)
 void
 X3DFlyViewer::dispose ()
 {
+	if (lineBufferId)
+		glDeleteBuffers (1, &lineBufferId);
+
 	X3DViewer::dispose ();
 }
 
