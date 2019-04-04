@@ -115,6 +115,10 @@ private:
 	void
 	on_parameter_button_clicked ();
 
+	///  @name Static members
+
+	static const size_t X3DTextureCoordinateGeneratorEditor::MAX_PARAMETER;
+
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;

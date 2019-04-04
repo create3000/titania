@@ -55,7 +55,7 @@
 namespace titania {
 namespace puck {
 
-static constexpr size_t MAX_PARAMETER = 6;
+const size_t X3DTextureCoordinateGeneratorEditor::MAX_PARAMETER = 6;
 
 X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	       X3DTextureEditorInterface (),
