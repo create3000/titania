@@ -117,7 +117,7 @@ private:
 
 	///  @name Static members
 
-	static const size_t X3DTextureCoordinateGeneratorEditor::MAX_PARAMETER;
+	static const size_t MAX_PARAMETER;
 
 	///  @name Members
 
