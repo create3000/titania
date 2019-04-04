@@ -2,9 +2,12 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/shaders/Shaders/Include/Perlin.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Include/Perlin.h" Line="23" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.h" Line="213" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.cpp" Line="290" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.h" Line="121" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp" Line="58" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.cpp" Line="589" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Include/Perlin.h" Line="4" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
