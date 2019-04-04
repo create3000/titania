@@ -55,6 +55,8 @@
 namespace titania {
 namespace puck {
 
+static constexpr size_t MAX_PARAMETER = 6;
+
 X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	       X3DTextureEditorInterface (),
 	                   geometryNodes (),
@@ -219,6 +221,8 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 	parameter3 .setNodes (nodes);
 	parameter4 .setNodes (nodes);
 	parameter5 .setNodes (nodes);
+
+	on_parameter_clicked ();
 }
 
 void
@@ -226,6 +230,41 @@ X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator (const X3
 {
 	field .removeInterest (&X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator, this);
 	field .addInterest (&X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator, this);
+}
+
+void
+X3DTextureCoordinateGeneratorEditor::on_texture_coordinate_generator_add_parameter_clicked ()
+{
+	auto & parameter = textureCoordinateGenerator -> parameter ();
+
+	if (parameter .size () >= MAX_PARAMETER)
+		return;
+
+	parameter .resize (parameter .size () + 1);
+
+	on_parameter_clicked ();
+}
+
+void
+X3DTextureCoordinateGeneratorEditor::on_texture_coordinate_generator_remove_parameter_clicked ()
+{
+	auto & parameter = textureCoordinateGenerator -> parameter ();
+
+	if (parameter .empty ())
+		return;
+
+	parameter .resize (std::min (MAX_PARAMETER - 1, parameter .size () - 1));
+
+	on_parameter_clicked ();
+}
+
+void
+X3DTextureCoordinateGeneratorEditor::on_parameter_clicked ()
+{
+	auto & parameter = textureCoordinateGenerator -> parameter ();
+
+	getTextureCoordinateGeneratorAddParameterButton ()    .set_sensitive (parameter .size () < MAX_PARAMETER);
+	getTextureCoordinateGeneratorRemoveParameterButton () .set_sensitive (parameter .size ());
 }
 
 X3DTextureCoordinateGeneratorEditor::~X3DTextureCoordinateGeneratorEditor ()

@@ -337,6 +337,8 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("TextureCoordinateGeneratorParameter3SpinButton", m_TextureCoordinateGeneratorParameter3SpinButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorParameter4SpinButton", m_TextureCoordinateGeneratorParameter4SpinButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorParameter5SpinButton", m_TextureCoordinateGeneratorParameter5SpinButton);
+	m_builder -> get_widget ("TextureCoordinateGeneratorAddParameterButton", m_TextureCoordinateGeneratorAddParameterButton);
+	m_builder -> get_widget ("TextureCoordinateGeneratorRemoveParameterButton", m_TextureCoordinateGeneratorRemoveParameterButton);
 	m_builder -> get_widget ("UsedTexturesBox", m_UsedTexturesBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
@@ -397,6 +399,8 @@ X3DTextureEditorInterface::create ()
 
 	// Connect object Gtk::Button with id 'TextureCoordinateGeneratorUnlinkButton'.
 	m_TextureCoordinateGeneratorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_unlink_clicked));
+	m_TextureCoordinateGeneratorAddParameterButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_coordinate_generator_add_parameter_clicked));
+	m_TextureCoordinateGeneratorRemoveParameterButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_texture_coordinate_generator_remove_parameter_clicked));
 
 	// Connect object Gtk::Box with id 'PalettePreviewBox'.
 	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextureEditorInterface::on_palette_button_press_event));

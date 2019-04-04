@@ -1117,6 +1117,14 @@ public:
 	getTextureCoordinateGeneratorParameter5SpinButton () const
 	{ return *m_TextureCoordinateGeneratorParameter5SpinButton; }
 
+	Gtk::Button &
+	getTextureCoordinateGeneratorAddParameterButton () const
+	{ return *m_TextureCoordinateGeneratorAddParameterButton; }
+
+	Gtk::Button &
+	getTextureCoordinateGeneratorRemoveParameterButton () const
+	{ return *m_TextureCoordinateGeneratorRemoveParameterButton; }
+
 	Gtk::Box &
 	getUsedTexturesBox () const
 	{ return *m_UsedTexturesBox; }
@@ -1270,6 +1278,14 @@ public:
 	virtual
 	void
 	on_textureCoordinateGenerator_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_texture_coordinate_generator_add_parameter_clicked () = 0;
+
+	virtual
+	void
+	on_texture_coordinate_generator_remove_parameter_clicked () = 0;
 
 	virtual
 	bool
@@ -1624,6 +1640,8 @@ private:
 	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter3SpinButton;
 	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter4SpinButton;
 	Gtk::SpinButton* m_TextureCoordinateGeneratorParameter5SpinButton;
+	Gtk::Button* m_TextureCoordinateGeneratorAddParameterButton;
+	Gtk::Button* m_TextureCoordinateGeneratorRemoveParameterButton;
 	Gtk::Box* m_UsedTexturesBox;
 	Gtk::Box* m_PaletteBox;
 	Gtk::Box* m_PalettePreviewBox;

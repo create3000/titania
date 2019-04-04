@@ -104,6 +104,17 @@ private:
 	void
 	connectTextureCoordinateGenerator (const X3D::SFNode &);
 
+	virtual
+	void
+	on_texture_coordinate_generator_add_parameter_clicked () final override;
+
+	virtual
+	void
+	on_texture_coordinate_generator_remove_parameter_clicked () final override;
+
+	void
+	on_parameter_clicked ();
+
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DGeometryNode>       geometryNodes;
