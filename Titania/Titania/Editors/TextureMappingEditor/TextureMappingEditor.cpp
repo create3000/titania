@@ -1523,9 +1523,9 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 		if (geometry)
 		{
 			geometry -> texCoordIndex () .removeInterest (&TextureMappingEditor::set_texCoordIndex, this);
-			geometry -> coordIndex ()    .removeInterest (&TextureMappingEditor::set_coordIndex, this);
-			geometry -> texCoord ()      .removeInterest (&TextureMappingEditor::set_texCoord, this);
-			geometry -> coord ()         .removeInterest (&TextureMappingEditor::set_coord, this);
+			geometry -> coordIndex ()    .removeInterest (&TextureMappingEditor::set_coordIndex,    this);
+			geometry -> texCoord ()      .removeInterest (&TextureMappingEditor::set_texCoord,      this);
+			geometry -> coord ()         .removeInterest (&TextureMappingEditor::set_coord,         this);
 		}
 
 		geometry = value;
@@ -1551,9 +1551,9 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 			geometry -> coord ()           .addInterest (previewGeometry -> coord ());
 
 			geometry -> texCoordIndex () .addInterest (&TextureMappingEditor::set_texCoordIndex, this);
-			geometry -> coordIndex ()    .addInterest (&TextureMappingEditor::set_coordIndex, this);
-			geometry -> texCoord ()      .addInterest (&TextureMappingEditor::set_texCoord, this);
-			geometry -> coord ()         .addInterest (&TextureMappingEditor::set_coord, this);
+			geometry -> coordIndex ()    .addInterest (&TextureMappingEditor::set_coordIndex,    this);
+			geometry -> texCoord ()      .addInterest (&TextureMappingEditor::set_texCoord,      this);
+			geometry -> coord ()         .addInterest (&TextureMappingEditor::set_coord,         this);
 
 			rightShape -> geometry () = previewGeometry;
 			rightShape -> getExecutionContext () -> realize ();
@@ -2101,8 +2101,9 @@ TextureMappingEditor::set_left_point (const X3D::Vector3d & hitPoint)
 		activePoint = getNearestPoint (hitPoint);
 
 		if (activePoint < 0)
+		{
 			activePointSet -> getField <X3D::MFInt32> ("set_coordIndex") .clear ();
-
+		}
 		else
 		{
 			const auto point    = selectedCoord -> get1Point (activePoint);
@@ -2111,7 +2112,9 @@ TextureMappingEditor::set_left_point (const X3D::Vector3d & hitPoint)
 			const auto distance = math::abs (h - p);
 
 			if (distance < POINT_SIZE)
+			{
 				activePointSet -> getField <X3D::MFInt32> ("set_coordIndex") = { activePoint };
+			}
 			else
 			{
 				activePoint = -1;
@@ -2119,8 +2122,10 @@ TextureMappingEditor::set_left_point (const X3D::Vector3d & hitPoint)
 			}
 		}
 	}
-	catch (const std::exception &)
-	{ }
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 int32_t
@@ -2176,8 +2181,10 @@ TextureMappingEditor::set_selectedPoints ()
 		getMergePointsButton () .set_sensitive (selectedPoints .size () > 1);
 		getSplitPointButton ()  .set_sensitive (not selectedPoints .empty ());
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

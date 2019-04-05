@@ -1,13 +1,19 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.5
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT EnvironmentalEffects : 3
+COMPONENT Grouping : 3
+COMPONENT Layering : 1
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.5, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TextureMappingEditorLeftPreview.x3dv"
-META "modified" "Mon, 07 Jan 2019 02:07:54 GMT"
+META "modified" "Fri, 05 Apr 2019 10:29:26 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -68,11 +74,11 @@ function eventsProcessed ()
 	{
 		points .point .length = coordIndex .length;
 
-		for (var i in coordIndex)
+		for (var i = 0, length = coordIndex .length; i < length; ++ i)
 		{
 			var index = coordIndex [i];
 
-			if (index < 0 || index >= currentCoord .point .legth)
+			if (index < 0 || index >= currentCoord .point .length)
 				continue;
 
 			points .point [i] = currentCoord .point [index];
@@ -160,7 +166,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value NULL
           }
         ]
       }

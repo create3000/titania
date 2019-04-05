@@ -1,13 +1,19 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.4.5
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT EnvironmentalEffects : 3
+COMPONENT Grouping : 3
+COMPONENT Layering : 1
+COMPONENT Layout : 1
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Fri, 07 Nov 2014 09:33:25 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.4.5, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/PolygonColoringEditorPreview.x3dv"
-META "modified" "Mon, 07 Jan 2019 02:05:47 GMT"
+META "modified" "Fri, 05 Apr 2019 10:40:37 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -42,22 +48,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF SwitchScript Script {
-              inputOnly  SFBool  set_active
-              outputOnly SFInt32 whichChoice_changed
-
-              url "ecmascript:
-
-function initialize ()
-{
-	whichChoice_changed = false;
-}
-
-function set_active (value)
-{
-	whichChoice_changed = value;
-}"
-            }
           }
         ]
       }
@@ -149,7 +139,22 @@ DEF LayerSet LayerSet {
             whichChoice 0
             children [
               Group {
-                children USE SwitchScript
+                children DEF SwitchScript Script {
+                  inputOnly  SFBool  set_active
+                  outputOnly SFInt32 whichChoice_changed
+
+                  url "ecmascript:
+
+function initialize ()
+{
+	whichChoice_changed = false;
+}
+
+function set_active (value)
+{
+	whichChoice_changed = value;
+}"
+                }
               }
               Group {
                 children [
@@ -163,7 +168,7 @@ DEF LayerSet LayerSet {
 
 function initialize ()
 {
-	whichChoice_changed = Browser .getRenderingProperty ('Antialiased');
+	whichChoice_changed = 0 && Browser .getRenderingProperty ('Antialiased');
 }
 "
                       }
