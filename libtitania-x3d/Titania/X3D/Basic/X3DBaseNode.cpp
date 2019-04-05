@@ -584,6 +584,7 @@ void
 X3DBaseNode::set_sceneGraph ()
 {
 	const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
+	const_cast <SFTime &> (executionContext -> bbox_changed ())       = getCurrentTime ();
 }
 
 /***
