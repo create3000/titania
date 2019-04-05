@@ -18,6 +18,25 @@ EXTERNPROTO Red [
   "file:///usr/share/titania/pages/about/library/Colors.x3dv#Red"
 ]
 
+EXTERNPROTO SculpToolBrush [
+  inputOutput SFBool   normalize
+  inputOutput SFString type
+  inputOutput SFDouble radius
+  inputOutput SFDouble height
+  inputOutput SFDouble warp
+  inputOutput SFDouble sharpness
+  inputOutput SFDouble hardness
+  inputOutput SFDouble pressure
+  inputOutput SFDouble scale
+  inputOutput SFDouble spacing
+]
+[
+  "../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
+  "../tools/SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///app/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
+]
+
 PROTO EnterWorld [
   outputOnly SFBool isActive
   outputOnly SFTime enterTime

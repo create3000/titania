@@ -52,6 +52,8 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 
 namespace titania {
@@ -95,29 +97,42 @@ X3DSculpToolBrushEditor::set_initalized ()
 	{
 		// Create or get brush
 
-		brush = preview -> getExecutionContext () -> getScene () -> getExportedNode ("SculpToolBrush");
-
-		brush -> getField <X3D::SFDouble> ("radius") .setUnit (X3D::UnitCategory::LENGTH);
-		brush -> getField <X3D::SFDouble> ("height") .setUnit (X3D::UnitCategory::LENGTH);
-
-		if (getConfig () -> hasItem ("brushType"))
+		try
 		{
-			brush -> setField <X3D::SFString> ("type",      getConfig () -> getItem <X3D::SFString> ("brushType"));
-			brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> getItem <X3D::SFDouble> ("brushRadius"));
-			brush -> setField <X3D::SFDouble> ("height",    getConfig () -> getItem <X3D::SFDouble> ("brushHeight"));
-			brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> getItem <X3D::SFDouble> ("brushWarp"));
-			brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> getItem <X3D::SFDouble> ("brushSharpness"));
-			brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> getItem <X3D::SFDouble> ("brushHardness"));
-			brush -> setField <X3D::SFDouble> ("pressure",  getConfig () -> getItem <X3D::SFDouble> ("brushPressure"));
-			brush -> setField <X3D::SFDouble> ("scale",     getConfig () -> getItem <X3D::SFDouble> ("brushScale"));
-			brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> getItem <X3D::SFDouble> ("brushSpacing"));
+			brush = getMasterBrowser () -> getExecutionContext () -> getNamedNode ("SculpToolBrush");
 		}
+		catch (const X3D::X3DError &)
+		{
+			brush = getMasterBrowser () -> getExecutionContext () -> createProto ("SculpToolBrush");
+
+			getMasterBrowser () -> getExecutionContext () -> updateNamedNode ("SculpToolBrush", brush);
+			getMasterBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (brush);
+
+			brush -> getField <X3D::SFDouble> ("radius") .setUnit (X3D::UnitCategory::LENGTH);
+			brush -> getField <X3D::SFDouble> ("height") .setUnit (X3D::UnitCategory::LENGTH);
+
+			if (getConfig () -> hasItem ("brushType"))
+			{
+				brush -> setField <X3D::SFString> ("type",      getConfig () -> getItem <X3D::SFString> ("brushType"));
+				brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> getItem <X3D::SFDouble> ("brushRadius"));
+				brush -> setField <X3D::SFDouble> ("height",    getConfig () -> getItem <X3D::SFDouble> ("brushHeight"));
+				brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> getItem <X3D::SFDouble> ("brushWarp"));
+				brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> getItem <X3D::SFDouble> ("brushSharpness"));
+				brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> getItem <X3D::SFDouble> ("brushHardness"));
+				brush -> setField <X3D::SFDouble> ("pressure",  getConfig () -> getItem <X3D::SFDouble> ("brushPressure"));
+				brush -> setField <X3D::SFDouble> ("scale",     getConfig () -> getItem <X3D::SFDouble> ("brushScale"));
+				brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> getItem <X3D::SFDouble> ("brushSpacing"));
+			}
+		}
+
+		preview -> getExecutionContext () -> getScene () -> getExportedNode <X3D::Group> ("BrushGroup") -> children () = { brush };
 
 		// Event handlers
 
 		brush -> addInterest (&X3D::Browser::addEvent, preview .getValue ());
 
-		preview -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
+		getMasterBrowser () -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
+		preview             -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
 
 		set_bbox ();
 
@@ -135,8 +150,10 @@ X3DSculpToolBrushEditor::set_initalized ()
 		scale     .setNodes (nodes);
 		spacing   .setNodes (nodes);
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
