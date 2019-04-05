@@ -264,17 +264,17 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	definitions << "#define x3d_TextureType3D              3\n";
 	definitions << "#define x3d_TextureTypeCubeMapTexture  4\n";
 
-	definitions << "#define X3D_SPHERE                      " << int (TextureCoordinateGenerator::ModeType::SPHERE) << "\n";
-	definitions << "#define X3D_CAMERASPACENORMAL           " << int (TextureCoordinateGenerator::ModeType::CAMERASPACENORMAL) << "\n";
-	definitions << "#define X3D_CAMERASPACEPOSITION         " << int (TextureCoordinateGenerator::ModeType::CAMERASPACEPOSITION) << "\n";
-	definitions << "#define X3D_CAMERASPACEREFLECTIONVECTOR " << int (TextureCoordinateGenerator::ModeType::CAMERASPACEREFLECTIONVECTOR) << "\n";
-	definitions << "#define X3D_SPHERE_LOCAL                " << int (TextureCoordinateGenerator::ModeType::SPHERE_LOCAL) << "\n";
-	definitions << "#define X3D_COORD                       " << int (TextureCoordinateGenerator::ModeType::COORD) << "\n";
-	definitions << "#define X3D_COORD_EYE                   " << int (TextureCoordinateGenerator::ModeType::COORD_EYE) << "\n";
-	definitions << "#define X3D_NOISE                       " << int (TextureCoordinateGenerator::ModeType::NOISE) << "\n";
-	definitions << "#define X3D_NOISE_EYE                   " << int (TextureCoordinateGenerator::ModeType::NOISE_EYE) << "\n";
-	definitions << "#define X3D_SPHERE_REFLECT              " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT) << "\n";
-	definitions << "#define X3D_SPHERE_REFLECT_LOCAL        " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT_LOCAL) << "\n";
+	definitions << "#define x3d_Sphere                      " << int (TextureCoordinateGenerator::ModeType::SPHERE) << "\n";
+	definitions << "#define x3d_CameraSpaceNormal           " << int (TextureCoordinateGenerator::ModeType::CAMERASPACENORMAL) << "\n";
+	definitions << "#define x3d_CameraSpacePosition         " << int (TextureCoordinateGenerator::ModeType::CAMERASPACEPOSITION) << "\n";
+	definitions << "#define x3d_CameraSpaceReflectionVector " << int (TextureCoordinateGenerator::ModeType::CAMERASPACEREFLECTIONVECTOR) << "\n";
+	definitions << "#define x3d_SphereLocal                 " << int (TextureCoordinateGenerator::ModeType::SPHERE_LOCAL) << "\n";
+	definitions << "#define x3d_Coord                       " << int (TextureCoordinateGenerator::ModeType::COORD) << "\n";
+	definitions << "#define x3d_CoordEye                    " << int (TextureCoordinateGenerator::ModeType::COORD_EYE) << "\n";
+	definitions << "#define x3d_Noise                       " << int (TextureCoordinateGenerator::ModeType::NOISE) << "\n";
+	definitions << "#define x3d_NoiseEye                    " << int (TextureCoordinateGenerator::ModeType::NOISE_EYE) << "\n";
+	definitions << "#define x3d_SphereReflect               " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT) << "\n";
+	definitions << "#define x3d_SphereReflectLocal          " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT_LOCAL) << "\n";
 
 	if (shadow)
 		definitions << "#define X3D_SHADOWS\n";
