@@ -465,6 +465,9 @@ private:
 	
 	GLint
 	getUniformLocation (GLuint program, const std::string & name, const std::string & depreciated) const;
+	
+	GLint
+	getAttribLocation (GLuint program, const std::string & name, const std::string & depreciated) const;
 
 	Matrix3d
 	getNormalMatrix (const Matrix4d & modelViewMatrix) const;
@@ -561,11 +564,11 @@ private:
 	GLint x3d_TextureMatrix;
 	GLint x3d_CameraSpaceMatrix;
 
-	GLint x3d_FogDepth;
-	GLint x3d_Color;
-	GLint x3d_TexCoord;
-	GLint x3d_Normal;
-	GLint x3d_Vertex;
+	GLint               x3d_FogDepth;
+	GLint               x3d_Color;
+	std::vector <GLint> x3d_TexCoord;
+	GLint               x3d_Normal;
+	GLint               x3d_Vertex;
 
 	GLint x3d_ParticleId;
 	GLint x3d_ParticleLife;

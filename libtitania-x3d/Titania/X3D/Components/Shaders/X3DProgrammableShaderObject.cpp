@@ -74,8 +74,6 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t MAX_TEX_COORD = 4;
-
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                            X3DBaseNode (),
 	            x3d_LogarithmicFarFactor1_2 (-1),
@@ -135,7 +133,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                  x3d_CameraSpaceMatrix (-1),
 	                           x3d_FogDepth (-1),
 	                              x3d_Color (-1),
-	                           x3d_TexCoord (-1),
+	                           x3d_TexCoord (getBrowser () -> getMaxTextures (), -1),
 	                             x3d_Normal (-1),
 	                             x3d_Vertex (-1),
 	                         x3d_ParticleId (-1),
@@ -207,6 +205,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ShadowMap                           .clear ();
 	x3d_TextureCoordinateGeneratorMode      .clear ();
 	x3d_TextureCoordinateGeneratorParameter .clear ();
+	x3d_TexCoord                            .clear ();
 
 	// Get default uniforms.
 
@@ -292,9 +291,11 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	x3d_FogDepth = glGetAttribLocation (program, "x3d_FogDepth");
 	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
-	x3d_TexCoord = glGetAttribLocation (program, "x3d_TexCoord");
 	x3d_Normal   = glGetAttribLocation (program, "x3d_Normal");
 	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
+
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		x3d_TexCoord .emplace_back (getAttribLocation (program, "x3d_TexCoord" + basic::to_string (i, std::locale::classic ()), i ? "" : "x3d_TexCoord"));
 
 	x3d_ParticleId          = glGetUniformLocation (program, "x3d_Particle.id");
 	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
@@ -327,9 +328,33 @@ X3DProgrammableShaderObject::getUniformLocation (GLuint program, const std::stri
 	location = glGetUniformLocation (program, depreciated .c_str ());
 
 	if (location not_eq -1)
-		getBrowser () -> getConsole () -> warn ("Using uniform location name »", depreciated, "« is depreciated. See http://create3000.de/x_ite/custom-shaders/.\n");
+		getBrowser () -> getConsole () -> warn ("Using uniform location name »", depreciated, "« is depreciated, use »", name, "«. See http://create3000.de/x_ite/custom-shaders/.\n");
 
 	return location;
+}
+
+GLint
+X3DProgrammableShaderObject::getAttribLocation (GLuint program, const std::string & name, const std::string & depreciated) const
+{
+	// Legacy function to get uniform location.
+
+	auto location = glGetAttribLocation (program, name .c_str ());
+
+	if (location not_eq -1)
+		return location;
+
+	// Look for depreciated location.
+	if (name .size ())
+	{
+		location = glGetAttribLocation (program, depreciated .c_str ());
+	
+		if (location not_eq -1)
+			getBrowser () -> getConsole () -> warn ("Using uniform attribute name »", depreciated, "« is depreciated, use »", name, "«. See http://create3000.de/x_ite/custom-shaders/.\n");
+	
+		return location;
+	}
+
+	return -1;
 }
 
 /*
@@ -1428,27 +1453,28 @@ X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & 
                                                    const std::vector <GLsizei> & stride,
                                                    const std::vector <GLvoid*> & pointer)
 {
-	if (x3d_TexCoord == -1)
-		return;
-
-	for (size_t i = 0, size = std::min (MAX_TEX_COORD, buffer .size ()); i < size; ++ i)
+	for (size_t i = 0, size = x3d_TexCoord .size (); i < size; ++ i)
 	{
-		glEnableVertexAttribArray (x3d_TexCoord);
+		if (x3d_TexCoord [i] == -1)
+			continue;
+
+		glEnableVertexAttribArray (x3d_TexCoord [i]);
 
 		glBindBuffer (GL_ARRAY_BUFFER, buffer [i]);
-		glVertexAttribPointer (x3d_TexCoord, 4, type, false, stride .empty () ? 0 : stride [i], pointer .empty () ? nullptr : pointer [i]);
-
-		break; // TODO: Currently only one tex coord node is supported.
+		glVertexAttribPointer (x3d_TexCoord [i], 4, type, false, stride .empty () ? 0 : stride [i], pointer .empty () ? nullptr : pointer [i]);
 	}
 }
 
 void
 X3DProgrammableShaderObject::disableTexCoordAttrib ()
 {
-	if (x3d_TexCoord == -1)
-		return;
+	for (size_t i = 0, size = x3d_TexCoord .size (); i < size; ++ i)
+	{
+		if (x3d_TexCoord [i] == -1)
+			return;
 
-	glDisableVertexAttribArray (x3d_TexCoord);
+		glDisableVertexAttribArray (x3d_TexCoord [i]);
+	}
 }
 
 void
