@@ -143,7 +143,6 @@ public:
 
 		const auto browser = X3D::createBrowser ({ inputFilename .str () });
 		//browser -> set_size_request (options .width, options. height);
-		browser -> setFixedPipeline (options .fixedPipeline);
 		browser -> setup ();
 
 		browser -> getLoadCount () .addInterest (&ExportImage::set_loadCount, this, browser .getValue ());

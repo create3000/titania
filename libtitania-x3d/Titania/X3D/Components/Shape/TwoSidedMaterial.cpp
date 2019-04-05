@@ -77,19 +77,9 @@ TwoSidedMaterial::Fields::Fields () :
 { }
 
 TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DMaterialNode (),
-	             fields (),
-	     glAmbientColor (),
-	     glDiffuseColor (),
-	    glSpecularColor (),
-	    glEmissiveColor (),
-	        glShininess (),
-	 glBackAmbientColor (),
-	 glBackDiffuseColor (),
-	glBackSpecularColor (),
-	glBackEmissiveColor (),
-	    glBackShininess ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DMaterialNode (),
+	         fields ()
 {
 	addType (X3DConstants::TwoSidedMaterial);
 
@@ -123,93 +113,16 @@ TwoSidedMaterial::initialize ()
 {
 	X3DMaterialNode::initialize ();
 
-	addInterest (&TwoSidedMaterial::eventsProcessed, this);
+	separateBackColor () .addInterest (&TwoSidedMaterial::set_transparency, this);
+	transparency ()      .addInterest (&TwoSidedMaterial::set_transparency, this);
+	backTransparency ()  .addInterest (&TwoSidedMaterial::set_transparency, this);
 
-	eventsProcessed ();
+	set_transparency ();
 }
 
 void
-TwoSidedMaterial::eventsProcessed ()
+TwoSidedMaterial::set_transparency ()
 {
-	// Front
-
-	const float alpha = 1 - std::clamp <float> (transparency (), 0, 1);
-
-	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getRed ();
-	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getGreen ();
-	glAmbientColor [2] = ambientIntensity () * diffuseColor () .getBlue ();
-	glAmbientColor [3] = alpha;
-
-	glDiffuseColor [0] = diffuseColor () .getRed ();
-	glDiffuseColor [1] = diffuseColor () .getGreen ();
-	glDiffuseColor [2] = diffuseColor () .getBlue ();
-	glDiffuseColor [3] = alpha;
-
-	glSpecularColor [0] = specularColor () .getRed ();
-	glSpecularColor [1] = specularColor () .getGreen ();
-	glSpecularColor [2] = specularColor () .getBlue ();
-	glSpecularColor [3] = alpha;
-
-	glEmissiveColor [0] = emissiveColor () .getRed ();
-	glEmissiveColor [1] = emissiveColor () .getGreen ();
-	glEmissiveColor [2] = emissiveColor () .getBlue ();
-	glEmissiveColor [3] = alpha;
-
-	glShininess = std::clamp <float> (shininess (), 0, 1) * 128;
-
-	// Back
-
-	if (separateBackColor ())
-	{
-		const float backAlpha = 1 - std::clamp <float> (backTransparency (), 0, 1);
-
-		glBackAmbientColor [0] = backAmbientIntensity () * backDiffuseColor () .getRed ();
-		glBackAmbientColor [1] = backAmbientIntensity () * backDiffuseColor () .getGreen ();
-		glBackAmbientColor [2] = backAmbientIntensity () * backDiffuseColor () .getBlue ();
-		glBackAmbientColor [3] = backAlpha;
-
-		glBackDiffuseColor [0] = backDiffuseColor () .getRed ();
-		glBackDiffuseColor [1] = backDiffuseColor () .getGreen ();
-		glBackDiffuseColor [2] = backDiffuseColor () .getBlue ();
-		glBackDiffuseColor [3] = backAlpha;
-
-		glBackSpecularColor [0] = backSpecularColor () .getRed ();
-		glBackSpecularColor [1] = backSpecularColor () .getGreen ();
-		glBackSpecularColor [2] = backSpecularColor () .getBlue ();
-		glBackSpecularColor [3] = backAlpha;
-
-		glBackEmissiveColor [0] = backEmissiveColor () .getRed ();
-		glBackEmissiveColor [1] = backEmissiveColor () .getGreen ();
-		glBackEmissiveColor [2] = backEmissiveColor () .getBlue ();
-		glBackEmissiveColor [3] = backAlpha;
-
-		glBackShininess = std::clamp <float> (backShininess (), 0, 1) * 128;
-	}
-	else
-	{
-		glBackAmbientColor [0] = glAmbientColor [0];
-		glBackAmbientColor [1] = glAmbientColor [1];
-		glBackAmbientColor [2] = glAmbientColor [2];
-		glBackAmbientColor [3] = glAmbientColor [3];
-
-		glBackDiffuseColor [0] = glDiffuseColor [0];
-		glBackDiffuseColor [1] = glDiffuseColor [1];
-		glBackDiffuseColor [2] = glDiffuseColor [2];
-		glBackDiffuseColor [3] = glDiffuseColor [3];
-
-		glBackSpecularColor [0] = glSpecularColor [0];
-		glBackSpecularColor [1] = glSpecularColor [1];
-		glBackSpecularColor [2] = glSpecularColor [2];
-		glBackSpecularColor [3] = glSpecularColor [3];
-
-		glBackEmissiveColor [0] = glEmissiveColor [0];
-		glBackEmissiveColor [1] = glEmissiveColor [1];
-		glBackEmissiveColor [2] = glEmissiveColor [2];
-		glBackEmissiveColor [3] = glEmissiveColor [3];
-
-		glBackShininess = glShininess;
-	}
-
 	setTransparent (transparency () or (separateBackColor () and backTransparency ()));
 }
 
@@ -234,27 +147,6 @@ TwoSidedMaterial::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 		glUniform1f  (shaderObject -> getBackShininessUniformLocation         (), backShininess        ());
 		glUniform1f  (shaderObject -> getBackTransparencyUniformLocation      (), backTransparency     ());
 	}
-}
-
-void
-TwoSidedMaterial::draw (X3DRenderObject* const renderObject)
-{
-	glEnable (GL_LIGHTING);
-
-	glMaterialfv (GL_FRONT, GL_AMBIENT,   glAmbientColor);
-	glMaterialfv (GL_FRONT, GL_DIFFUSE,   glDiffuseColor);
-	glMaterialfv (GL_FRONT, GL_SPECULAR,  glSpecularColor);
-	glMaterialfv (GL_FRONT, GL_EMISSION,  glEmissiveColor);
-	glMaterialf  (GL_FRONT, GL_SHININESS, glShininess);
-
-	glMaterialfv (GL_BACK, GL_AMBIENT,   glBackAmbientColor);
-	glMaterialfv (GL_BACK, GL_DIFFUSE,   glBackDiffuseColor);
-	glMaterialfv (GL_BACK, GL_SPECULAR,  glBackSpecularColor);
-	glMaterialfv (GL_BACK, GL_EMISSION,  glBackEmissiveColor);
-	glMaterialf  (GL_BACK, GL_SHININESS, glBackShininess);
-
-	glColor4fv (glEmissiveColor); // for lines and points
-
 }
 
 } // X3D

@@ -132,19 +132,7 @@ Extrusion::getClosedSpine () const
 std::vector <Vector3d>
 Extrusion::createPoints (const bool hasCaps) const
 {
-	size_t reserve = spine () .size () * crossSection () .size ();
-
-	if (hasCaps)
-	{
-		if (beginCap ())
-			reserve += crossSection () .size ();
-
-		if (endCap ())
-			reserve += crossSection () .size ();
-	}
-
 	std::vector <Vector3d> points;
-	points .reserve (reserve);
 
 	// calculate SCP rotations
 
@@ -196,7 +184,6 @@ std::vector <Matrix4d>
 Extrusion::createRotations () const
 {
 	std::vector <Matrix4d> rotations;
-	rotations .reserve (spine () .size ());
 
 	// calculate SCP rotations
 
@@ -358,8 +345,6 @@ Extrusion::build ()
 	if (spine () .size () < 2 or crossSection () .size () < 2)
 		return;
 
-	getTexCoords () .emplace_back ();
-
 	const size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
 
 	#define INDEX(n, k) ((n) * crossSectionSize + (k))
@@ -387,12 +372,6 @@ Extrusion::build ()
 	const auto points = createPoints (capMax);
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
-
-	const size_t reserve = (spine () .size () - 1) * (crossSection () .size () - 1) * 6 + (beginCap () ? (numCapPoints - 2) * 3 : 0) + (endCap () ? (numCapPoints - 2) * 3 : 0);
-
-	coordIndex          .reserve (reserve);
-	getTexCoords () [0] .reserve (reserve);
-	getNormals  ()      .reserve (reserve);
 
 	// Build body.
 
@@ -459,13 +438,15 @@ Extrusion::build ()
 			{
 				// p1
 				if (length2)
-					getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
+				{
+					getTexCoords () .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
+				}
 				else
 				{
 					// Cone case on the right side:
 					const auto texCoord = (texCoord1 + texCoord4) / 2.0f;
 
-					getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
+					getTexCoords () .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
 				}
 
 				coordIndex .emplace_back (p1);
@@ -473,13 +454,13 @@ Extrusion::build ()
 				getNormals () .emplace_back (normal1);
 	
 				// p2
-				getTexCoords () [0] .emplace_back (texCoord2 .x (), texCoord2 .y (), 0, 1);
+				getTexCoords () .emplace_back (texCoord2 .x (), texCoord2 .y (), 0, 1);
 				coordIndex .emplace_back (p2);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal1);
 	
 				// p3
-				getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
+				getTexCoords () .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
 				coordIndex .emplace_back (p3);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal1);
@@ -488,20 +469,20 @@ Extrusion::build ()
 			if (length2)
 			{
 				// p1
-				getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
+				getTexCoords () .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
 				coordIndex .emplace_back (p1);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal2);
 	
 				// p3
 				if (length1)
-					getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
+					getTexCoords () .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
 				else
 				{
 					// Cone case on the left side:
 					const auto texCoord = (texCoord3 + texCoord2) / 2.0f;
 
-					getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
+					getTexCoords () .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
 				}
 
 				coordIndex .emplace_back (p3);
@@ -509,7 +490,7 @@ Extrusion::build ()
 				getNormals () .emplace_back (normal2);
 	
 				// p4
-				getTexCoords () [0] .emplace_back (texCoord4 .x (), texCoord4 .y (), 0, 1);
+				getTexCoords () .emplace_back (texCoord4 .x (), texCoord4 .y (), 0, 1);
 				coordIndex .emplace_back (p4);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal2);
@@ -544,9 +525,9 @@ Extrusion::build ()
 				for (size_t k = 0; k < numCapPoints; ++ k)
 				{
 					const Vector2f t = (crossSection () .get1Value (numCapPoints - 1 - k) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [INDEX (j, numCapPoints - 1 - k)]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [INDEX (j, numCapPoints - 1 - k)]);
 				}
 
 				addElements (getVertexMode (numCapPoints), numCapPoints);
@@ -581,9 +562,9 @@ Extrusion::build ()
 				for (size_t k = 0; k < numCapPoints; ++ k)
 				{
 					const Vector2f t = (crossSection () .get1Value (k) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [INDEX (j, k)]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [INDEX (j, k)]);
 				}
 
 				addElements (getVertexMode (numCapPoints), numCapPoints);
@@ -680,19 +661,19 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
 					Vector2f t = (crossSection () .get1Value (std::get <K> (polygon [0] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [0] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [0] .data ())]);
 
 					t = (crossSection () .get1Value (std::get <K> (polygon [i] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [i] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [i] .data ())]);
 
 					t = (crossSection () .get1Value (std::get <K> (polygon [i + 1] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [i + 1] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [i + 1] .data ())]);
 				}
 
 				break;
@@ -702,19 +683,19 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
 					Vector2f t = (crossSection () .get1Value (std::get <K> (polygon [is_odd (i) ? i + 1 : i] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [is_odd (i) ? i + 1 : i] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [is_odd (i) ? i + 1 : i] .data ())]);
 
 					t = (crossSection () .get1Value (std::get <K> (polygon [is_odd (i) ? i : i + 1] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [is_odd (i) ? i : i + 1] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [is_odd (i) ? i : i + 1] .data ())]);
 
 					t = (crossSection () .get1Value (std::get <K> (polygon [i + 2] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [i + 2] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [i + 2] .data ())]);
 				}
 
 				break;
@@ -724,19 +705,19 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
 					Vector2f t = (crossSection () .get1Value (std::get <K> (polygon [i] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [i] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [i] .data ())]);
 
 					t = (crossSection () .get1Value (std::get <K> (polygon [i + 1] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [i + 1] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [i + 1] .data ())]);
 
 					t = (crossSection () .get1Value (std::get <K> (polygon [i + 2] .data ())) - min) / capMax;
-					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get <I> (polygon [i + 2] .data ())]);
+					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals   () .emplace_back (normal);
+					getVertices  () .emplace_back (points [std::get <I> (polygon [i + 2] .data ())]);
 				}
 
 				break;

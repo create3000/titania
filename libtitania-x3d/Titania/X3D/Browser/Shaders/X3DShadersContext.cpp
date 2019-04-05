@@ -70,8 +70,6 @@ X3DShadersContext::X3DShadersContext () :
 	  maxVertexUniformVectors (0),
 	maxFragmentUniformVectors (0),
 	      maxVertexAttributes (0),
-	            fixedPipeline (false),
-	    fixedPipelineRequired (true),
 	              pointShader (),
 	          wireframeShader (),
 	            gouraudShader (),
@@ -81,8 +79,6 @@ X3DShadersContext::X3DShadersContext () :
 	               shaderNode (nullptr)
 {
 	addChildObjects (shaders,
-	                 fixedPipeline,
-                    fixedPipelineRequired,
                     pointShader,
 	                 wireframeShader,
 	                 gouraudShader,
@@ -140,15 +136,6 @@ X3DShadersContext::initialize ()
 	}
 }
 
-void
-X3DShadersContext::setFixedPipeline (const bool value)
-{
-	fixedPipeline = value;
-
-	if (isInitialized ())
-		set_shading ();
-}
-
 X3DPtr <ComposedShader>
 X3DShadersContext::createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl, const bool shadow)
 {
@@ -193,45 +180,23 @@ X3DShadersContext::set_loaded ()
 void
 X3DShadersContext::set_shading ()
 {
-	fixedPipelineRequired = fixedPipeline or
-	                        not getBrowser () -> getLoadSensor () -> isLoaded () or
-									//not getBackgroundSphereShader () -> isValid () or
-									not pointShader -> isValid () or
-									not wireframeShader -> isValid () or
-									not gouraudShader -> isValid ();
+	const auto & shading = getBrowser () -> getBrowserOptions () -> getShading ();
 
-	if (fixedPipelineRequired)
+	if (shading == ShadingType::PHONG)
 	{
-		defaultShader = nullptr;
+		defaultShader = getPhongShader ();
 	}
-	else
+	else // GOURAUD
 	{
-		const auto & shading = getBrowser () -> getBrowserOptions () -> getShading ();
-
-		if (shading == ShadingType::PHONG)
-		{
-			defaultShader = getPhongShader ();
-		}
-		else // GOURAUD
-		{
-			defaultShader = getGouraudShader ();
-		}
+		defaultShader = getGouraudShader ();
 	}
 
 	try
 	{
 		ContextLock lock (getBrowser ());
 
-		if (fixedPipelineRequired)
-		{
-			glDisable (GL_POINT_SPRITE);
-			glDisable (GL_PROGRAM_POINT_SIZE);
-		}
-		else
-		{
-			glEnable (GL_POINT_SPRITE);
-			glEnable (GL_PROGRAM_POINT_SIZE);
-		}
+		glEnable (GL_POINT_SPRITE);
+		glEnable (GL_PROGRAM_POINT_SIZE);
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }

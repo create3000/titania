@@ -62,8 +62,6 @@ class X3DTextureNode :
 {
 public:
 
-	using X3DAppearanceChildNode::draw;
-
 	///  @name Construction
 	
 	virtual
@@ -132,9 +130,6 @@ protected:
 	                         const bool repeatS, 
 	                         const bool repeatT, 
 	                         const bool repeatR);
-
-	void
-	draw (X3DRenderObject* const renderObject, const GLenum target, const size_t components);
 
 
 private:

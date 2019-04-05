@@ -199,8 +199,6 @@ Arc2D::build ()
 
 	steps = std::max (3, steps);
 
-	getVertices () .reserve (steps + 1);
-
 	if (not circle)
 	{
 		++ steps;

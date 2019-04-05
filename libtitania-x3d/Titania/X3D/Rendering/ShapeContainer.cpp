@@ -90,23 +90,13 @@ ShapeContainer::display ()
 	for (const auto & object : getLocalObjects ())
 		object -> enable ();
 
-	for (const auto & clipPlane : getClipPlanes ())
-		clipPlane -> enable ();
-
 	for (const auto & object : getLocalLights ())
 		object -> enable ();
-
-	glLoadMatrixd (getModelViewMatrix () .front () .data ());
-
-	getFog () -> enable ();
 
 	getShape () -> display (this);
 
 	for (const auto & object : basic::make_reverse_range (getLocalLights ()))
 		object -> disable ();
-
-	for (const auto & clipPlane : basic::make_reverse_range (getClipPlanes ()))
-		clipPlane -> disable ();
 
 	for (const auto & object : basic::make_reverse_range (getLocalObjects ()))
 		object -> disable ();

@@ -221,12 +221,6 @@ ProgramShader::disable ()
 }
 
 void
-ProgramShader::draw (X3DRenderObject* const renderObject)
-{
-	glBindProgramPipeline (pipelineId);
-}
-
-void
 ProgramShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
 	glBindProgramPipeline (pipelineId);

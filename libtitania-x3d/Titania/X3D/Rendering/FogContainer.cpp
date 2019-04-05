@@ -68,60 +68,6 @@ FogContainer::FogContainer (X3DFogObject* const node, const Matrix4d & modelView
 	{ }
 }
 
-GLenum
-FogContainer::getMode () const
-{
-	switch (node -> getMode ())
-	{
-		case 1:
-			return GL_LINEAR;
-		case 2:
-			return GL_EXP;
-		case 3:
-			return GL_EXP2;
-	}
-
-	return GL_LINEAR;
-}
-
-float
-FogContainer::getDensitiy (const float visibilityRange) const
-{
-	switch (node -> getMode ())
-	{
-		case 1:
-			return 1;
-		case 2:
-			return 2 / visibilityRange;
-		case 3:
-			return 4 / visibilityRange;
-	}
-
-	return 1;
-}
-
-void
-FogContainer::enable ()
-{
-	const float glVisibilityRange = node -> getVisibilityRange ();
-	const float glDensity         = getDensitiy (glVisibilityRange);
-
-	GLfloat glColor [4];
-
-	glColor [0] = node -> color () .getRed ();
-	glColor [1] = node -> color () .getGreen ();
-	glColor [2] = node -> color () .getBlue ();
-	glColor [3] = node -> isHidden () or glVisibilityRange == 0 ? 0 : 1;
-
-	glEnable (GL_FOG);
-
-	glFogi  (GL_FOG_MODE,    getMode ());
-	glFogf  (GL_FOG_DENSITY, glDensity);
-	glFogf  (GL_FOG_START,   0);
-	glFogf  (GL_FOG_END,     glVisibilityRange);
-	glFogfv (GL_FOG_COLOR,   glColor);
-}
-
 void
 FogContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
 {

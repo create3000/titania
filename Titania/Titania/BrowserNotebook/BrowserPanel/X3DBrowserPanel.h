@@ -173,9 +173,6 @@ private:
 	set_dependent_browser ();
 
 	void
-	set_fixed_pipeline ();
-
-	void
 	set_viewer ();
 
 	void

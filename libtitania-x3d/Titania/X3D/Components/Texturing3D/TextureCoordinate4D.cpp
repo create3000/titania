@@ -81,10 +81,9 @@ TextureCoordinate4D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TextureCoordinate4D::init (TexCoordArray & texCoords, const size_t reserve) const
+TextureCoordinate4D::init (MultiTexCoordArray & texCoords) const
 {
 	texCoords .emplace_back ();
-	texCoords .back () .reserve (reserve);
 }
 
 void
@@ -103,7 +102,7 @@ TextureCoordinate4D::get1Point (const size_t index) const
 }
 
 void
-TextureCoordinate4D::addTexCoord (const size_t channel, TexCoordArray & texCoords, const size_t index) const
+TextureCoordinate4D::addTexCoord (const size_t channel, MultiTexCoordArray & texCoords, const size_t index) const
 {
 	if (index < point () .size ())
 		texCoords [channel] .emplace_back (point () [index]);

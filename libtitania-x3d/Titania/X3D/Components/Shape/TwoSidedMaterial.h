@@ -198,10 +198,6 @@ public:
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
 
-	virtual
-	void
-	draw (X3DRenderObject* const renderObject) final override;
-
 
 private:
 
@@ -214,7 +210,7 @@ private:
 	///  @name Event handlers
 
 	void
-	eventsProcessed ();
+	set_transparency ();
 
 	///  @name Static members
 

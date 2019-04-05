@@ -289,7 +289,6 @@ std::vector <Vector4f>
 ElevationGrid::createTexCoord () const
 {
 	std::vector <Vector4f> texCoord;
-	texCoord .reserve (xDimension () * zDimension ());
 
 	const float xSize = xDimension () - 1;
 	const float zSize = zDimension () - 1;
@@ -312,7 +311,6 @@ std::vector <Vector3f>
 ElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const double creaseAngle) const
 {
 	std::vector <Vector3f> normals;
-	normals .reserve (coordIndex .size ());
 
 	NormalIndex normalIndex;
 
@@ -339,7 +337,6 @@ std::vector <size_t>
 ElevationGrid::createCoordIndex () const
 {
 	std::vector <size_t> coordIndex;
-	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
 
 	for (int32_t z = 0, size = zDimension () - 1; z < size; ++ z)
 	{
@@ -367,7 +364,6 @@ std::vector <Vector3d>
 ElevationGrid::createPoints () const
 {
 	std::vector <Vector3d> points;
-	points .reserve (xDimension () * zDimension ());
 
 	for (int32_t z = 0; z < zDimension (); ++ z)
 	{
@@ -391,43 +387,22 @@ ElevationGrid::build ()
 	const std::vector <size_t>   coordIndex = createCoordIndex ();
 	const std::vector <Vector3d> points     = createPoints ();
 
-	getVertices () .reserve (coordIndex .size ());
-
 	// Vertex attribute
 
 	std::vector <std::vector <float>> attribArrays (attribNodes .size ());
-
-	for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
-		attribArrays [a] .reserve (coordIndex .size ());
-
-	// Color
-
-	if (fogCoordNode)
-		getFogDepths () .reserve (coordIndex .size ());
-
-	// Color
-
-	if (colorNode)
-		getColors () .reserve (coordIndex .size ());
 
 	// TexCoord
 
 	std::vector <Vector4f> texCoords;
 
 	if (texCoordNode)
-		texCoordNode -> init (getTexCoords (), coordIndex .size ());
+		texCoordNode -> init (getMultiTexCoords ());
 	else
-	{
-		texCoords = std::move (createTexCoord ());
-		getTexCoords () .emplace_back ();
-		getTexCoords () [0] .reserve (coordIndex .size ());
-	}
+		texCoords = createTexCoord ();
 
 	// Normals
 
-	if (normalNode)
-		getNormals () .reserve (coordIndex .size ());
-	else
+	if (not normalNode)
 		getNormals () = createNormals (points, coordIndex, creaseAngle () .getValue ());
 
 	// Build geometry
@@ -458,10 +433,10 @@ ElevationGrid::build ()
 			}
 
 			if (texCoordNode)
-				texCoordNode -> addTexCoord (getTexCoords (), i);
+				texCoordNode -> addTexCoord (getMultiTexCoords (), i);
 
 			else
-				getTexCoords () [0] .emplace_back (texCoords [i]);
+				getTexCoords () .emplace_back (texCoords [i]);
 
 			if (normalNode)
 			{

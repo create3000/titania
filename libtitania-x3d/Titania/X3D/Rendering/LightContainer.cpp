@@ -81,7 +81,7 @@ LightContainer::LightContainer (X3DBrowser* const browser, X3DLightNode* const n
 
 	try
 	{
-		if (node -> getShadowIntensity () > 0 and node -> getShadowMapSize () > 0 and not browser -> getFixedPipelineRequired ())
+		if (node -> getShadowIntensity () > 0 and node -> getShadowMapSize () > 0)
 		{
 			shadowTextureBuffer .reset (new TextureBuffer (browser,
 			                                               node -> getShadowMapSize (),
@@ -110,23 +110,6 @@ LightContainer::renderShadowMap (X3DRenderObject* const renderObject)
 void
 LightContainer::enable ()
 {
-	if (browser -> getFixedPipelineRequired ())
-	{
-		auto & lights = browser -> getLights ();
-	
-		if (not lights .empty ())
-		{
-			lightId = lights .top ();
-			lights .pop ();
-	
-			glEnable (lightId);
-	
-			glLoadMatrixd (modelViewMatrix .get () .front () .data ());
-	
-			node -> draw (lightId);
-		}
-	}
-
 	if (shadowTextureBuffer and not browser -> getCombinedTextureUnits () .empty ())
 	{
 		textureUnit = browser -> getCombinedTextureUnits () .top ();
@@ -141,15 +124,6 @@ LightContainer::enable ()
 void
 LightContainer::disable ()
 {
-	if (browser -> getFixedPipelineRequired ())
-	{
-		if (lightId)
-		{
-			glDisable (lightId);
-			browser -> getLights () .push (lightId);
-		}
-	}
-
 	if (textureUnit)
 		browser -> getCombinedTextureUnits () .push (textureUnit);
 }

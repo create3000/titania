@@ -160,6 +160,11 @@ public:
 	{ return colors; }
 
 	virtual
+	const MultiTexCoordArray &
+	getPolygonMultiTexCoords () const
+	{ return multiTexCoords; }
+
+	virtual
 	const TexCoordArray &
 	getPolygonTexCoords () const
 	{ return texCoords; }
@@ -218,7 +223,7 @@ public:
 	virtual
 	void
 	triangulate (std::vector <Color4f>* const colors,
-	             TexCoordArray* const texCoords,
+	             MultiTexCoordArray* const multiTexCoords,
 	             std::vector <Vector3f>* const faceNormals,
 	             std::vector <Vector3f>* const normals,
 	             std::vector <Vector3d>* const vertices) const;
@@ -306,6 +311,14 @@ protected:
 	const std::vector <Color4f> &
 	getColors () const
 	{ return colors; }
+
+	MultiTexCoordArray &
+	getMultiTexCoords ()
+	{ return multiTexCoords; }
+
+	const MultiTexCoordArray &
+	getMultiTexCoords () const
+	{ return multiTexCoords; }
 
 	TexCoordArray &
 	getTexCoords ()
@@ -395,9 +408,6 @@ protected:
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &, const float, const bool) const;
 
 	void
-	addMirrorVertices (const GLenum, const bool);
-
-	void
 	requestRebuild ();
 
 	virtual
@@ -428,18 +438,12 @@ private:
 	             const size_t i2,
 	             const size_t i3,
 	             std::vector <Color4f>* const colors,
-	             TexCoordArray* const texCoord,
+	             MultiTexCoordArray* const multiTexCoords,
 	             std::vector <Vector3f>* const faceNormals,
 	             std::vector <Vector3f>* const normals,
 	             std::vector <Vector3d>* const vertices) const;
 
 	///  @name Event handlers
-
-	void
-	set_fixedPipeline ();
-
-	void
-	set_live ();
 
 	void
 	set_shading (const ShadingType & value);
@@ -453,7 +457,7 @@ private:
 	transfer ();
 
 	virtual
-	void
+	const TexCoordArray &
 	buildTexCoords ();
 
 	///  @name Static members
@@ -470,6 +474,7 @@ private:
 	std::vector <float>                  fogDepths;
 	std::vector <Color4f>                colors;
 	X3DPtr <X3DTextureCoordinateNode>    textureCoordinateNode;
+	MultiTexCoordArray                   multiTexCoords;
 	TexCoordArray                        texCoords;
 	std::vector <Vector3f>               normals;
 	std::vector <Vector3f>               faceNormals;

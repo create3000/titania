@@ -71,8 +71,7 @@ RenderThread::RenderThread (const basic::uri & url,
                             const size_t width,
                             const size_t height,
                             const size_t antialiasing,
-                            const std::string & shading,
-                            const bool fixedPipeline) :
+                            const std::string & shading) :
 	X3D::X3DInterruptibleThread (),
 	              X3D::X3DInput (),
 	            sigc::trackable (),
@@ -94,7 +93,6 @@ RenderThread::RenderThread (const basic::uri & url,
 	browser -> initialized () .addInterest (&RenderThread::set_initialized, this);
 	browser -> setName ("Renderer");
 	browser -> setClock (clock);
-	browser -> setFixedPipeline (fixedPipeline);
 	browser -> setMute (true);
 }
 

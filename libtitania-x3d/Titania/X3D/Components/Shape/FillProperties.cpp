@@ -94,8 +94,6 @@ FillProperties::enable (X3DRenderObject* const renderObject)
 	lighting = glIsEnabled (GL_LIGHTING);
 
 	glDisable (GL_LIGHTING);
-
-	draw (renderObject);
 }
 
 void
@@ -111,27 +109,8 @@ FillProperties::disable (X3DRenderObject* const renderObject)
 }
 
 void
-FillProperties::draw (X3DRenderObject* const renderObject)
-{
-	if (hatched ())
-	{
-		glColor3fv (hatchColor () .getValue () .data ());
-
-		glEnable (GL_POLYGON_STIPPLE);
-
-		if (hatchStyle () > 0 and hatchStyle () < (int32_t) hatchStyles .size ())
-			glPolygonStipple (hatchStyles [hatchStyle ()] .data ());
-
-		else
-			glPolygonStipple (hatchStyles [0] .data ());
-	}
-}
-
-void
 FillProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-{
-
-}
+{ }
 
 } // X3D
 } // titania

@@ -312,7 +312,6 @@ X3DPaletteEditor <Type>::initialize ()
 	// Show browser.
 
 	preview -> initialized () .addInterest (&X3DPaletteEditor::set_browser, this);
-	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> show ();
 

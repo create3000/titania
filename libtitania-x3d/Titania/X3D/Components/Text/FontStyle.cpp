@@ -172,15 +172,9 @@ PolygonText::build ()
 	const auto   translation = Vector3d (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
 	const auto   scale       = Vector3d (size, size, size);
 
-	getText () -> getTexCoords () .emplace_back ();
-
-	auto & texCoords = getText () -> getTexCoords () .back ();
+	auto & texCoords = getText () -> getTexCoords ();
 	auto & normals   = getText () -> getNormals ();
 	auto & vertices  = getText () -> getVertices ();
-
-	texCoords .reserve (indices .size ());
-	normals   .reserve (indices .size ());
-	vertices  .reserve (indices .size ());
 
 	for (const auto index : indices)
 	{

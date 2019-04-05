@@ -148,15 +148,10 @@ NurbsSurfaceInterpolator::initialize ()
 void
 NurbsSurfaceInterpolator::set_fraction_ ()
 {
-	const auto & fraction       = set_fraction () .getValue ();
-	const auto & multiTexCoords = geometry -> getPolygonTexCoords ();
-	const auto & normals        = geometry -> getPolygonNormals ();
-	const auto & vertices       = geometry -> getPolygonVertices ();
-
-	if (multiTexCoords .empty ())
-		return;
-
-	const auto & texCoords = multiTexCoords .front ();
+	const auto & fraction  = set_fraction () .getValue ();
+	const auto & texCoords = geometry -> getPolygonTexCoords ();
+	const auto & normals   = geometry -> getPolygonNormals ();
+	const auto & vertices  = geometry -> getPolygonVertices ();
 
 	for (size_t i = 0, size = texCoords .size (); i < size; i += 3)
 	{

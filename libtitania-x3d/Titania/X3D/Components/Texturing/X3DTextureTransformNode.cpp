@@ -65,36 +65,6 @@ X3DTextureTransformNode::X3DTextureTransformNode () :
 }
 
 void
-X3DTextureTransformNode::draw (X3DRenderObject* const renderObject)
-{
-	const auto browser = renderObject -> getBrowser ();
-
-	if (browser -> getTextureStages () .empty ())
-		draw (renderObject, 0);
-
-	else
-	{
-		for (const auto & unit : browser -> getTextureStages ())
-		{
-			if (unit >= 0)
-				draw (renderObject, unit);
-		}
-	}
-}
-
-void
-X3DTextureTransformNode::draw (X3DRenderObject* const renderObject, const int32_t unit)
-{
-	glActiveTexture (GL_TEXTURE0 + unit);
-
-	glMatrixMode (GL_TEXTURE);
-
-	glLoadMatrixd (matrix .front () .data ());
-
-	glMatrixMode (GL_MODELVIEW);
-}
-
-void
 X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
 {
 	if (shaderObject -> isExtensionGPUShaderFP64Available ())

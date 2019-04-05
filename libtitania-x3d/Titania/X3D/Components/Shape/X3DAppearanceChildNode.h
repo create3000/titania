@@ -63,12 +63,6 @@ class X3DAppearanceChildNode :
 {
 public:
 
-	///  @name Operations
-
-	virtual
-	void
-	draw (X3DRenderObject* const renderObject) = 0;
-
 
 protected:
 

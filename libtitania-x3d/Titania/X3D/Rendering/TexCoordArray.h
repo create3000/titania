@@ -57,7 +57,8 @@
 namespace titania {
 namespace X3D {
 
-typedef std::vector <std::vector <Vector4f>>  TexCoordArray;
+using TexCoordArray      = std::vector <Vector4f>;
+using MultiTexCoordArray = std::vector <TexCoordArray>;
 
 } // X3D
 } // titania

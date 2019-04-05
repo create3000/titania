@@ -626,10 +626,6 @@ private:
 
 	virtual
 	void
-	on_x_ite_compatibility_toggled () final override;
-
-	virtual
-	void
 	on_logarithmic_depth_buffer_toggled () final override;
 
 	virtual

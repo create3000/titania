@@ -630,13 +630,10 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 
 	// Set global uniforms.
 
-	if (not getBrowser () -> getFixedPipelineRequired ())
-	{
-		getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
-		getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
-		getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
-		getBrowser () -> getShadowShader ()    -> setGlobalUniforms (this);
-	}
+	getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
+	getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
+	getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
+	getBrowser () -> getShadowShader ()    -> setGlobalUniforms (this);
 
 	for (const auto & shaderNode : getShaders ())
 		shaderNode -> setGlobalUniforms (this);
@@ -693,15 +690,6 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	
 	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
 		object -> disable ();
-
-	if (getBrowser () -> getFixedPipelineRequired ())
-	{
-		// Reset to default OpenGL appearance
-
-		ShapeContainer context (this, false);
-
-		getBrowser () -> getDefaultAppearance () -> enable (&context);
-	}
 
 	// Clear node arrays.
 

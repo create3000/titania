@@ -88,8 +88,7 @@ public:
 	              const size_t width,
 	              const size_t height,
 	              const size_t antialiasing,
-	              const std::string & shading,
-	              const bool fixedPipeline);
+	              const std::string & shading);
 
 	///  @name Member access
 

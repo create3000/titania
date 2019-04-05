@@ -234,26 +234,10 @@ X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 
 	std::vector <std::vector <float>> attribArrays (getAttrib () .size ());
 
-	for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
-		attribArrays [a] .reserve (size);
-
-	// Color
-
-	if (colorNode)
-		getColors () .reserve (size);
-
 	// TextureCoordinate
 
 	if (texCoordNode)
-		texCoordNode -> init (getTexCoords (), size);
-
-	// Normal
-
-	getNormals () .reserve (size);
-
-	// Vertices
-
-	getVertices () .reserve (size);
+		texCoordNode -> init (getMultiTexCoords ());
 
 	// Fill GeometryNode
 
@@ -279,7 +263,7 @@ X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 			}
 
 			if (texCoordNode)
-				texCoordNode -> addTexCoord (getTexCoords (), index);
+				texCoordNode -> addTexCoord (getMultiTexCoords (), index);
 
 			if (normalNode)
 			{

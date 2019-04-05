@@ -125,9 +125,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();
 
-	getX_ITECompatibilityMenuItem () .set_use_underline (false);
-	getBrowserX_ITECompatibilityMenuItem () .set_use_underline (false);
-
 	// Load Styles.
 
 	try
@@ -244,7 +241,6 @@ BrowserWindow::configure ()
 		getTextureQualityHighAction () -> set_active (true);
 
 	getTransformToolModeAction ()  -> set_active (getConfig () -> getItem <int32_t> ("transformToolMode", 0));
-	getX_ITECompatibilityAction () -> set_active (getConfig () -> getItem <bool> ("cobwebCompatibility", true));
 
 	if (getConfig () -> getItem <bool> ("hand", true))
 		getHandButton () .set_active (true);
@@ -308,8 +304,6 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 	
 		getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 		getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
-	
-		getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
 
 		on_transform_tool_mode_toggled ();
 	}
@@ -1988,14 +1982,6 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 }
 
 // Help menu
-
-void
-BrowserWindow::on_x_ite_compatibility_toggled ()
-{
-	getConfig () -> setItem <bool> ("cobwebCompatibility", getX_ITECompatibilityAction () -> get_active ());
-
-	getCurrentBrowser () -> setFixedPipeline (not getX_ITECompatibilityAction () -> get_active ());
-}
 
 void
 BrowserWindow::on_logarithmic_depth_buffer_toggled ()

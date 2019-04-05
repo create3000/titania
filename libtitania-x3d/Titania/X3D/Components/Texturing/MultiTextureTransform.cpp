@@ -120,42 +120,8 @@ MultiTextureTransform::set_textureTransform ()
 }
 
 void
-MultiTextureTransform::draw (X3DRenderObject* const renderObject)
-{
-	X3DBrowser* const              browser                 = renderObject -> getBrowser ();
-	X3DTextureTransformNode* const defaultTextureTransform = browser -> getDefaultTextureTransform ();
-	X3DTextureTransformNode*       last                    = defaultTextureTransform;
-	size_t                         channel                 = 0;
-	const size_t                   size                    = browser -> getTextureStages () .size ();
-
-	for (const auto & textureTransform : textureTransformNodes)
-	{
-		const int32_t unit = channel < size ? browser -> getTextureStages () [channel] : 0;
-
-		if (unit >= 0)
-			textureTransform -> draw (renderObject, unit);
-
-		last = textureTransform;
-		++ channel;
-
-		if (channel >= size)
-			break;
-	}
-
-	for ( ; channel < size; ++ channel)
-	{
-		const int32_t unit = browser -> getTextureStages () [channel];
-
-		if (unit >= 0)
-			last -> draw (renderObject, unit);
-	}
-}
-
-void
 MultiTextureTransform::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-{
-
-}
+{ }
 
 } // X3D
 } // titania

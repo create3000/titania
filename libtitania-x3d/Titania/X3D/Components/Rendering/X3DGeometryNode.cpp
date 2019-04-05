@@ -79,6 +79,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	            fogDepths (),
 	               colors (),
 	textureCoordinateNode (),
+	       multiTexCoords (),
 	            texCoords (),
 	              normals (),
 	          faceNormals (),
@@ -124,9 +125,6 @@ X3DGeometryNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
-	isLive () .addInterest (&X3DGeometryNode::set_live, this);
-
 	addInterest (&X3DGeometryNode::requestRebuild, this);
 	rebuildOutput .addInterest (&X3DGeometryNode::rebuild, this);
 
@@ -136,8 +134,6 @@ X3DGeometryNode::initialize ()
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
-
-	set_live ();
 }
 
 void
@@ -145,18 +141,11 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
-
 		if (textureCoordinateNode == getBrowser () -> getDefaultTexCoord ())
 			textureCoordinateNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
 	}
 
 	X3DNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		set_live ();
-	}
 }
 
 void
@@ -329,11 +318,11 @@ X3DGeometryNode::intersects (const Line3d & line,
 		return false;
 
 	const auto & uvt          = intersection;
-	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+	const size_t texCoordSize = multiTexCoords .empty () ? 0 : multiTexCoords [0] .size (); // LineGeometry doesn't have multiTexCoords
 	auto         texCoord     = Vector4f (0, 0, 0, 1);
 
 	if (i1 < texCoordSize)
-		texCoord = from_barycentric <float> (uvt, texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3]);
+		texCoord = from_barycentric <float> (uvt, multiTexCoords [0] [i1], multiTexCoords [0] [i2], multiTexCoords [0] [i3]);
 
 	const auto normal     = normalize (from_barycentric <float> (uvt, normals [i1], normals [i2], normals [i3]));
 	const auto faceNormal = Triangle3d (vertices [i1], vertices [i2], vertices [i3]) .normal ();
@@ -591,13 +580,13 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 
 void
 X3DGeometryNode::triangulate (std::vector <Color4f>* const colors_,
-	                           TexCoordArray* const texCoords_,
+	                           MultiTexCoordArray* const multiTexCoords_,
 	                           std::vector <Vector3f>* const faceNormals_,
 	                           std::vector <Vector3f>* const normals_,
 	                           std::vector <Vector3d>* const vertices_) const
 {
-	if (texCoords_)
-		texCoords_ -> resize (texCoords .size ());
+	if (multiTexCoords_)
+		multiTexCoords_ -> resize (multiTexCoords .size ());
 
 	for (const auto & element : elements)
 	{
@@ -607,7 +596,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f>* const colors_,
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 				{
-					triangulate (i, i + 1, i + 2, colors_, texCoords_, faceNormals_, normals_, vertices_);
+					triangulate (i, i + 1, i + 2, colors_, multiTexCoords_, faceNormals_, normals_, vertices_);
 				}
 
 				continue;
@@ -616,8 +605,8 @@ X3DGeometryNode::triangulate (std::vector <Color4f>* const colors_,
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 				{
-					triangulate (i, i + 1, i + 2, colors_, texCoords_, faceNormals_, normals_, vertices_);
-					triangulate (i, i + 2, i + 3, colors_, texCoords_, faceNormals_, normals_, vertices_);
+					triangulate (i, i + 1, i + 2, colors_, multiTexCoords_, faceNormals_, normals_, vertices_);
+					triangulate (i, i + 2, i + 3, colors_, multiTexCoords_, faceNormals_, normals_, vertices_);
 				}
 
 				continue;
@@ -628,7 +617,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f>* const colors_,
 
 				for (int32_t i = first + 1, size = element .last () - 1; i < size; ++ i)
 				{
-					triangulate (first, i, i + 1, colors_, texCoords_, faceNormals_, normals_, vertices_);
+					triangulate (first, i, i + 1, colors_, multiTexCoords_, faceNormals_, normals_, vertices_);
 				}
 
 				continue;
@@ -644,7 +633,7 @@ X3DGeometryNode::triangulate (const size_t i1,
 	                           const size_t i2,
 	                           const size_t i3,
 	                           std::vector <Color4f>* const colors_,
-	                           TexCoordArray* const texCoords_,
+	                           MultiTexCoordArray* const multiTexCoords_,
 	                           std::vector <Vector3f>* const faceNormals_,
 	                           std::vector <Vector3f>* const normals_,
 	                           std::vector <Vector3d>* const vertices_) const
@@ -659,16 +648,16 @@ X3DGeometryNode::triangulate (const size_t i1,
 		}
 	}
 
-	if (texCoords_)
+	if (multiTexCoords_)
 	{
-		for (size_t t = 0, size = texCoords .size (); t < size; ++ t)
+		for (size_t t = 0, size = multiTexCoords .size (); t < size; ++ t)
 		{
-			auto & texCoord_ = (*texCoords_) [t];
-			auto & texCoord  = texCoords [t];
+			auto & texCoords_ = (*multiTexCoords_) [t];
+			auto & texCoords  = multiTexCoords [t];
 
-			texCoord_ .emplace_back (texCoord [i1]);
-			texCoord_ .emplace_back (texCoord [i2]);
-			texCoord_ .emplace_back (texCoord [i3]);
+			texCoords_ .emplace_back (texCoords [i1]);
+			texCoords_ .emplace_back (texCoords [i2]);
+			texCoords_ .emplace_back (texCoords [i3]);
 		}
 	}
 
@@ -690,25 +679,27 @@ X3DGeometryNode::triangulate (const size_t i1,
 	}
 }
 
-void
+const TexCoordArray &
 X3DGeometryNode::buildTexCoords ()
 {
-	Vector3d min;
-	double   Ssize;
-	int32_t  Sindex, Tindex;
-
-	getTexCoordParams (min, Ssize, Sindex, Tindex);
-
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (getVertices () .size ());
-
-	for (const auto & vertex : getVertices ())
+	if (texCoords .empty ())
 	{
-		getTexCoords () [0] .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
-		                                   (vertex [Tindex] - min [Tindex]) / Ssize,
-		                                   0,
-		                                   1);
+		Vector3d min;
+		double   Ssize;
+		int32_t  Sindex, Tindex;
+	
+		getTexCoordParams (min, Ssize, Sindex, Tindex);
+	
+		for (const auto & vertex : getVertices ())
+		{
+			texCoords .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
+			                         (vertex [Tindex] - min [Tindex]) / Ssize,
+			                         0,
+			                         1);
+		}
 	}
+
+	return texCoords;
 }
 
 ///  Determine the min extent of the bbox, the largest size of the bbox and the two largest indices.
@@ -835,65 +826,11 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex,
  * Adds all vertices, normals and texCoordss mirrors onto the XY-plane to the arrays.
  * If the shape is not convext, the this not convex one point must be the first point in the arrays.
  */
-
-void
-X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
-{
-	if (getSolid ())
-		return;
-
-	if (getBrowser () -> getFixedPipelineRequired ())
-	{
-		auto & texCoords = this -> texCoords [0];
-	
-		addElements (vertexMode, getVertices () .size ());
-		setSolid (true);
-
-		if (not convex)
-		{
-			texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
-			getNormals  () .emplace_back (0, 0, -1);
-			getVertices () .emplace_back (getVertices () .front ());
-		}
-
-		const int32_t offset = convex ? 0 : 1;
-
-		for (int32_t i = getVertices () .size () - 1 - offset; i >= offset; -- i)
-		{
-			texCoords .emplace_back (1 - texCoords [i] .x (), texCoords [i] .y (), texCoords [i] .z (), texCoords [i] .w ());
-			getNormals  () .emplace_back (0, 0, -1);
-			getVertices () .emplace_back (getVertices () [i]);
-		}
-	}
-}
 	                    	                   
 bool
 X3DGeometryNode::cut (X3DRenderObject* const renderObject, const Line2d & cutLine)
 {
 	return false;
-}
-
-void
-X3DGeometryNode::set_live ()
-{
-	if (getExecutionContext () -> isLive () and isLive ())
-	{
-		getBrowser () -> getFixedPipelineRequired () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
-	}
-	else
-	{
-		getBrowser () -> getFixedPipelineRequired () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
-	}
-}
-
-void
-X3DGeometryNode::set_fixedPipeline ()
-{
-	// If there is a default shader then shader pipeline is enabled and we must rebuild Geometry2D nodes,
-	// to build double face geometry or not.
-
-	if (geometryType == 2)
-		requestRebuild ();
 }
 
 void
@@ -1018,10 +955,10 @@ X3DGeometryNode::rebuild ()
 
 	if (geometryType > 1)
 	{
-		// Autogenerate texCoords if not specified.
+		const auto maxTextures = getBrowser () -> getMaxTextures ();
 
-		if (texCoords .empty ())
-			buildTexCoords ();
+		if (multiTexCoords .size () < maxTextures)
+			multiTexCoords .resize (maxTextures, buildTexCoords ());
 	}
 
 	// Upload arrays.
@@ -1038,20 +975,18 @@ X3DGeometryNode::clear ()
 	{
 		glDeleteBuffers (attribBufferIds .size (), attribBufferIds .data ());
 
-		attribNodes .clear ();
+		attribNodes     .clear ();
 		attribBufferIds .clear ();
 	}
 
-	if (not texCoordBufferIds .empty ())
-		glDeleteBuffers (texCoordBufferIds .size (), texCoordBufferIds .data ());
-
-	fogDepths   .clear ();
-	colors      .clear ();
-	texCoords   .clear ();
-	normals     .clear ();
-	faceNormals .clear ();
-	vertices    .clear ();
-	elements    .clear ();
+	fogDepths      .clear ();
+	colors         .clear ();
+	multiTexCoords .clear ();
+	texCoords      .clear ();
+	normals        .clear ();
+	faceNormals    .clear ();
+	vertices       .clear ();
+	elements       .clear ();
 }
 
 void
@@ -1069,16 +1004,19 @@ X3DGeometryNode::transfer ()
 		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector4f) * colors .size (), colors .data (), GL_STATIC_COPY);
 	}
 
-	if (not texCoords .empty ())
+	if (not multiTexCoords .empty ())
 	{
-		texCoordBufferIds .resize (texCoords .size ());
+		for (size_t i = texCoordBufferIds .size (), size = multiTexCoords .size (); i < size; ++ i)
+		{
+			texCoordBufferIds .emplace_back ();
 
-		glGenBuffers (texCoords .size (), texCoordBufferIds .data ());
+			glGenBuffers (1, &texCoordBufferIds .back ());
+		}
 
-		for (size_t i = 0, size = texCoords .size (); i < size; ++ i)
+		for (size_t i = 0, size = multiTexCoords .size (); i < size; ++ i)
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferIds [i]);
-			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector4f) * texCoords [i] .size (), texCoords [i] .data (), GL_STATIC_COPY);
+			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector4f) * multiTexCoords [i] .size (), multiTexCoords [i] .data (), GL_STATIC_COPY);
 		}
 	}
 
@@ -1123,66 +1061,29 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		context -> setColorMaterial (not colors .empty ());
 		context -> setTextureCoordinate (textureCoordinateNode);
 
-		if (browser -> getFixedPipelineRequired ())
-		{
-			// Enable colors, texture coords, normals and vertices.
-	
-			if (not colors .empty ())
-			{
-				if (glIsEnabled (GL_LIGHTING))
-					glEnable (GL_COLOR_MATERIAL);
-	
-				glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-				glEnableClientState (GL_COLOR_ARRAY);
-				glColorPointer (4, GL_FLOAT, 0, 0);
-			}
+		// Enable shader
 
-			if (browser -> getTexture () and texCoordBufferIds .size ())
-			{
-				textureCoordinateNode -> enable (context, texCoordBufferIds);
-			}
+		shaderNode -> enable ();
+		shaderNode -> setLocalUniforms (context);
 
-			if (glIsEnabled (GL_LIGHTING) or shaderNode)
-			{
-				if (not normals .empty ())
-				{
-					glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-					glEnableClientState (GL_NORMAL_ARRAY);
-					glNormalPointer (GL_FLOAT, 0, 0);
-				}
-			}
-	
-			glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-			glEnableClientState (GL_VERTEX_ARRAY);
-			glVertexPointer (3, GL_DOUBLE, 0, 0);
-		}
+		// Enable vertex attribute nodes
 
-		if (shaderNode)
-		{
-			// Enable shader
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
 
-			shaderNode -> enable ();
-			shaderNode -> setLocalUniforms (context);
+		if (not fogDepths .empty ())
+			shaderNode -> enableFogDepthAttrib (fogDepthBufferId, GL_FLOAT, 0, nullptr);
 
-			// Enable vertex attribute nodes
+		if (not colors .empty ())
+			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
 
-			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-				attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
+		if (not multiTexCoords .empty ())
+			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
 
-			if (not fogDepths .empty ())
-				shaderNode -> enableFogDepthAttrib (fogDepthBufferId, GL_FLOAT, 0, nullptr);
+		if (not normals .empty ())
+			shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
 
-			if (not colors .empty ())
-				shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
-
-			if (not texCoords .empty ())
-				shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
-
-			if (not normals .empty ())
-				shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
-
-			shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
-		}
+		shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
 
 		// Draw depending on ccw, transparency and solid.
 	
@@ -1230,35 +1131,18 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	
 		// VertexAttribs
 	
-		if (browser -> getFixedPipelineRequired ())
-		{
-			// Texture
-		
-			if (browser -> getTexture ())
-				textureCoordinateNode -> disable (context);
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> disable (shaderNode);
 	
-			// Other arrays
+		// Disable shader
 	
-			glDisableClientState (GL_COLOR_ARRAY);
-			glDisableClientState (GL_NORMAL_ARRAY);
-			glDisableClientState (GL_VERTEX_ARRAY);
-		}
-	
-		if (shaderNode)
-		{
-			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-				attribNodes [i] -> disable (shaderNode);
-		
-			// Disable shader
-		
-			shaderNode -> disableFogDepthAttrib ();
-			shaderNode -> disableColorAttrib ();
-			shaderNode -> disableTexCoordAttrib ();
-			shaderNode -> disableNormalAttrib ();
-			shaderNode -> disableVertexAttrib ();
-			shaderNode -> disable ();
-		}
-	
+		shaderNode -> disableFogDepthAttrib ();
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableTexCoordAttrib ();
+		shaderNode -> disableNormalAttrib ();
+		shaderNode -> disableVertexAttrib ();
+		shaderNode -> disable ();
+
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}
 	catch (const std::exception &)
@@ -1302,7 +1186,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		if (not colors .empty ())
 			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
 
-		if (not texCoords .empty ())
+		if (not multiTexCoords .empty ())
 			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
 
 		if (not normals .empty ())

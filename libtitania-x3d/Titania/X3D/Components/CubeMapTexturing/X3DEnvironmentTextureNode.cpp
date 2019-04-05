@@ -140,12 +140,6 @@ X3DEnvironmentTextureNode::updateTextureProperties ()
 }
 
 void
-X3DEnvironmentTextureNode::draw (X3DRenderObject* const renderObject)
-{
-	X3DTextureNode::draw (renderObject, GL_TEXTURE_CUBE_MAP, getComponents ());
-}
-
-void
 X3DEnvironmentTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
 {
 	static const auto textureType = std::vector <GLint> ({ 4 }); 

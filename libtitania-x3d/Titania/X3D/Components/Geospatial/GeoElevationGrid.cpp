@@ -365,19 +365,13 @@ GeoElevationGrid::build ()
 	std::vector <Vector4f> texCoords;
 
 	if (texCoordNode)
-		texCoordNode -> init (getTexCoords (), coordIndex .size ());
+		texCoordNode -> init (getMultiTexCoords ());
 	else
-	{
-		texCoords = std::move (createTexCoord ());
-		getTexCoords () .emplace_back ();
-		getTexCoords () [0] .reserve (coordIndex .size ());
-	}
+		texCoords = createTexCoord ();
 
 	// Normals
 
-	if (normalNode)
-		getNormals () .reserve (coordIndex .size ());
-	else
+	if (not normalNode)
 		getNormals () = createNormals (points, coordIndex, creaseAngle ());
 
 	// Build geometry
@@ -393,10 +387,10 @@ GeoElevationGrid::build ()
 			const size_t i = *index;
 
 			if (texCoordNode)
-				texCoordNode -> addTexCoord (getTexCoords (), i);
+				texCoordNode -> addTexCoord (getMultiTexCoords (), i);
 
 			else
-				getTexCoords () [0] .emplace_back (texCoords [i]);
+				getTexCoords () .emplace_back (texCoords [i]);
 
 			if (colorNode)
 			{

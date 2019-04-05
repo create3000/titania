@@ -184,8 +184,6 @@ Cone::build ()
 
 	const double xDimension = optionsNode -> xDimension ();
 
-	getTexCoords () .emplace_back ();
-
 	const double y1 = height () / 2;
 	const double y2 = -y1;
 	const auto   nz = std::polar <double> (1, -pi <double> / 2 + std::atan (bottomRadius () / height ()));
@@ -215,19 +213,19 @@ Cone::build ()
 			 */
 
 			// p1
-			getTexCoords () [0] .emplace_back (u1, 1, 0, 1);
-			getNormals  () .emplace_back (n1 .imag (), nz .real (), n1 .real ());
-			getVertices () .emplace_back (0, y1, 0);
+			getTexCoords () .emplace_back (u1, 1, 0, 1);
+			getNormals   () .emplace_back (n1 .imag (), nz .real (), n1 .real ());
+			getVertices  () .emplace_back (0, y1, 0);
 
 			// p2
-			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
-			getNormals  () .emplace_back (n2 .imag (), nz .real (), n2 .real ());
-			getVertices () .emplace_back (p2 .imag (), y2, p2 .real ());
+			getTexCoords () .emplace_back (u2, 0, 0, 1);
+			getNormals   () .emplace_back (n2 .imag (), nz .real (), n2 .real ());
+			getVertices  () .emplace_back (p2 .imag (), y2, p2 .real ());
 
 			// p3
-			getTexCoords () [0] .emplace_back (u3, 0, 0, 1);
-			getNormals  () .emplace_back (n3 .imag (), nz .real (), n3 .real ());
-			getVertices () .emplace_back (p3 .imag (), y2, p3 .real ());
+			getTexCoords () .emplace_back (u3, 0, 0, 1);
+			getNormals   () .emplace_back (n3 .imag (), nz .real (), n3 .real ());
+			getVertices  () .emplace_back (p3 .imag (), y2, p3 .real ());
 		}
 
 		addElements (GL_TRIANGLES, getVertices () .size ());
@@ -242,9 +240,9 @@ Cone::build ()
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
 
-			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (p .imag (), y2, p .real ());
+			getTexCoords () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
+			getNormals   () .emplace_back (0, -1, 0);
+			getVertices  () .emplace_back (p .imag (), y2, p .real ());
 		}
 
 		addElements (GL_POLYGON, xDimension);

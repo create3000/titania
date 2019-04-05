@@ -299,7 +299,7 @@ private:
 	buildNormals (const PolygonArray & polygons);
 
 	void
-	tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices) const;
+	tessellate (const bool convex, PolygonArray & polygons) const;
 
 	void
 	tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons) const;

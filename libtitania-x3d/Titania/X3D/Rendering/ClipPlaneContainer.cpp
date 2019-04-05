@@ -71,39 +71,6 @@ ClipPlaneContainer::isClipped (const Vector3d & point) const
 }
 
 void
-ClipPlaneContainer::enable ()
-{
-	if (browser -> getFixedPipelineRequired ())
-	{
-		auto & clipPlanes = browser -> getClipPlanes ();
-
-		if (not clipPlanes .empty ())
-		{
-			planeId = clipPlanes .top ();
-			clipPlanes .pop ();
-
-			glLoadMatrixd (modelViewMatrix .front () .data ());
-
-			glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
-			glEnable (planeId);
-		}
-	}
-}
-
-void
-ClipPlaneContainer::disable ()
-{
-	if (browser -> getFixedPipelineRequired ())
-	{
-		if (planeId)
-		{
-			browser -> getClipPlanes () .push (planeId);
-			glDisable (planeId);
-		}
-	}
-}
-
-void
 ClipPlaneContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
 	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);

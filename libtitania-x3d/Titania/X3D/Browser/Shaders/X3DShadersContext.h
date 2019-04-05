@@ -123,17 +123,6 @@ public:
 	getShader () const
 	{ return shaderNode; }
 
-	void
-	setFixedPipeline (const bool);
-
-	const SFBool &
-	getFixedPipeline () const
-	{ return fixedPipeline; }
-
-	const SFBool &
-	getFixedPipelineRequired () const
-	{ return fixedPipelineRequired; }
-
 	///  @name Destruction
 
 	virtual
@@ -182,8 +171,6 @@ private:
 	int32_t                 maxVertexUniformVectors;
 	int32_t                 maxFragmentUniformVectors;
 	int32_t                 maxVertexAttributes;
-	SFBool                  fixedPipeline;
-	SFBool                  fixedPipelineRequired;
 	X3DPtr <ComposedShader> pointShader;
 	X3DPtr <ComposedShader> wireframeShader;
 	X3DPtr <ComposedShader> gouraudShader;

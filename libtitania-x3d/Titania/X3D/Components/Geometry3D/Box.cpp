@@ -104,20 +104,15 @@ Box::build ()
 {
 	const auto & options = getBrowser () -> getBoxOptions ();
 
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (options -> getTexCoords () .size ());
-	getTexCoords () [0] = options -> getTexCoords ();
-
-	getNormals () .reserve (options -> getNormals () .size ());
-	getNormals  () = options -> getNormals  ();
+	getTexCoords () = options -> getTexCoords ();
+	getNormals   () = options -> getNormals  ();
 
 	if (size () == Vector3f (2, 2, 2))
+	{
 		getVertices () = options -> getVertices ();
-
+	}
 	else
 	{
-		getVertices () .reserve (options -> getVertices () .size ());
-
 		const auto size1_2 = Vector3d (size () .getValue ()) / 2.0;
 
 		for (const auto & vertex : options -> getVertices ())

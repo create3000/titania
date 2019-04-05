@@ -73,11 +73,13 @@ public:
 
 	virtual
 	void
-	enable () final override;
+	enable () final override
+	{ }
 
 	virtual
 	void
-	disable () final override;
+	disable () final override
+	{ }
 
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i);

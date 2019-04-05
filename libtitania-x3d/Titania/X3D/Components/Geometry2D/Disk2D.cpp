@@ -196,11 +196,11 @@ Disk2D::build ()
 		// Circle
 
 		if (radius == 1)
+		{
 			getVertices () = optionsNode -> getVertices ();
-
+		}
 		else
 		{
-			getVertices () .reserve (optionsNode -> getVertices () .size ());
 
 			for (const auto & vertex : optionsNode -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
@@ -216,25 +216,17 @@ Disk2D::build ()
 	{
 		// Disk
 
-		const double radius   = std::abs (std::max (innerRadius (), outerRadius ()));
-		const size_t elements = solid () ? 1 : 2;
+		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
 
-		getTexCoords () .emplace_back ();
-		getTexCoords () [0] .reserve (elements * optionsNode -> getTexCoords () .size ());
-		getTexCoords () [0] = optionsNode -> getTexCoords ();
-
-		getNormals () .reserve (elements * optionsNode -> getNormals  () .size ());
-		getNormals () = optionsNode -> getNormals  ();
-
-		getVertices () .reserve (elements * optionsNode -> getVertices () .size ());
+		getTexCoords () = optionsNode -> getTexCoords ();
+		getNormals   () = optionsNode -> getNormals  ();
 
 		if (radius == 1)
+		{
 			getVertices () = optionsNode -> getVertices ();
-
+		}
 		else
 		{
-			getVertices () .reserve (optionsNode -> getVertices () .size ());
-
 			for (const auto & vertex : optionsNode -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
 		}
@@ -242,19 +234,10 @@ Disk2D::build ()
 		addElements (GL_POLYGON, getVertices () .size ());
 		setGeometryType (2);
 		setSolid (solid ());
-		addMirrorVertices (optionsNode -> getVertexMode (), true);
 		return;
 	}
 
 	// Disk with hole
-
-	const size_t elements = solid () ? 1 : 2;
-
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (elements * (optionsNode -> getTexCoords () .size () + 2));
-
-	getNormals  () .reserve (elements * (optionsNode -> getNormals  () .size () + 2));
-	getVertices () .reserve (elements * (optionsNode -> getVertices () .size () + 2));
 
 	// Texture Coordinates
 
@@ -271,10 +254,10 @@ Disk2D::build ()
 
 		// TexCoords
 	
-		getTexCoords () [0] .emplace_back (texCoords [i] .x () * scale + (1 - scale) / 2, texCoords [i] .y () * scale + (1 - scale) / 2, 0, 1);
-		getTexCoords () [0] .emplace_back (texCoords [i]);
-		getTexCoords () [0] .emplace_back (texCoords [i1]);
-		getTexCoords () [0] .emplace_back (texCoords [i1] .x () * scale + (1 - scale) / 2, texCoords [i1] .y () * scale + (1 - scale) / 2, 0, 1);
+		getTexCoords () .emplace_back (texCoords [i] .x () * scale + (1 - scale) / 2, texCoords [i] .y () * scale + (1 - scale) / 2, 0, 1);
+		getTexCoords () .emplace_back (texCoords [i]);
+		getTexCoords () .emplace_back (texCoords [i1]);
+		getTexCoords () .emplace_back (texCoords [i1] .x () * scale + (1 - scale) / 2, texCoords [i1] .y () * scale + (1 - scale) / 2, 0, 1);
 
 		// Normals
 	
@@ -294,7 +277,6 @@ Disk2D::build ()
 	addElements (GL_QUADS, getVertices () .size ());
 	setGeometryType (2);
 	setSolid (solid ());
-	addMirrorVertices (GL_QUADS, true);
 }
 
 bool

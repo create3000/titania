@@ -173,10 +173,6 @@ public:
 	getTransformToolModeAction () const
 	{ return m_TransformToolModeAction; }
 
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getX_ITECompatibilityAction () const
-	{ return m_X_ITECompatibilityAction; }
-
 	Gtk::Image &
 	getFileImportImage () const
 	{ return *m_FileImportImage; }
@@ -636,10 +632,6 @@ public:
 	Gtk::MenuItem &
 	getBrowserHelpMenuItem () const
 	{ return *m_BrowserHelpMenuItem; }
-
-	Gtk::CheckMenuItem &
-	getBrowserX_ITECompatibilityMenuItem () const
-	{ return *m_BrowserX_ITECompatibilityMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getBrowserLogarithmicDepthBufferMenuItem () const
@@ -1110,10 +1102,6 @@ public:
 	{ return *m_HelpMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getX_ITECompatibilityMenuItem () const
-	{ return *m_X_ITECompatibilityMenuItem; }
-
-	Gtk::CheckMenuItem &
 	getLogarithmicDepthBufferMenuItem () const
 	{ return *m_LogarithmicDepthBufferMenuItem; }
 
@@ -1442,10 +1430,6 @@ public:
 	virtual
 	void
 	on_transform_tool_mode_toggled () = 0;
-
-	virtual
-	void
-	on_x_ite_compatibility_toggled () = 0;
 
 	virtual
 	void
@@ -1976,7 +1960,6 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityMediumAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ToolbarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TransformToolModeAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_X_ITECompatibilityAction;
 	Gtk::Image* m_FileImportImage;
 	Gtk::Image* m_FileImportImage1;
 	Gtk::Menu* m_HistoryMenu;
@@ -2092,7 +2075,6 @@ private:
 	Gtk::MenuItem* m_BrowserScenesMenuItem;
 	Gtk::Menu* m_BrowserScenesMenu;
 	Gtk::MenuItem* m_BrowserHelpMenuItem;
-	Gtk::CheckMenuItem* m_BrowserX_ITECompatibilityMenuItem;
 	Gtk::CheckMenuItem* m_BrowserLogarithmicDepthBufferMenuItem;
 	Gtk::ImageMenuItem* m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow* m_Window;
@@ -2210,7 +2192,6 @@ private:
 	Gtk::MenuItem* m_ScenesMenuItem;
 	Gtk::Menu* m_ScenesMenu;
 	Gtk::MenuItem* m_HelpMenuItem;
-	Gtk::CheckMenuItem* m_X_ITECompatibilityMenuItem;
 	Gtk::CheckMenuItem* m_LogarithmicDepthBufferMenuItem;
 	Gtk::ImageMenuItem* m_InfoMenuItem;
 	Gtk::Box* m_Toolbar;

@@ -73,12 +73,7 @@ Material::Fields::Fields () :
 Material::Material (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DMaterialNode (),
-	         fields (),
-	 glAmbientColor (),
-	 glDiffuseColor (),
-	glSpecularColor (),
-	glEmissiveColor (),
-	    glShininess ()
+	         fields ()
 {
 	addType (X3DConstants::Material);
 
@@ -102,38 +97,14 @@ Material::initialize ()
 {
 	X3DMaterialNode::initialize ();
 
-	addInterest (&Material::eventsProcessed, this);
+	transparency () .addInterest (&Material::set_transparency, this);
 
-	eventsProcessed ();
+	set_transparency ();
 }
 
 void
-Material::eventsProcessed ()
+Material::set_transparency ()
 {
-	const float alpha = 1 - std::clamp <float> (transparency (), 0, 1);
-
-	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getRed ();
-	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getGreen ();
-	glAmbientColor [2] = ambientIntensity () * diffuseColor () .getBlue ();
-	glAmbientColor [3] = alpha;
-
-	glDiffuseColor [0] = diffuseColor () .getRed ();
-	glDiffuseColor [1] = diffuseColor () .getGreen ();
-	glDiffuseColor [2] = diffuseColor () .getBlue ();
-	glDiffuseColor [3] = alpha;
-
-	glSpecularColor [0] = specularColor () .getRed ();
-	glSpecularColor [1] = specularColor () .getGreen ();
-	glSpecularColor [2] = specularColor () .getBlue ();
-	glSpecularColor [3] = alpha;
-
-	glEmissiveColor [0] = emissiveColor () .getRed ();
-	glEmissiveColor [1] = emissiveColor () .getGreen ();
-	glEmissiveColor [2] = emissiveColor () .getBlue ();
-	glEmissiveColor [3] = alpha;
-
-	glShininess = std::clamp <float> (shininess (), 0, 1) * 128;
-
 	setTransparent (transparency ());
 }
 
@@ -148,20 +119,6 @@ Material::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) co
 	glUniform3fv (shaderObject -> getEmissiveColorUniformLocation    (), 1, emissiveColor () .getValue () .data ());
 	glUniform1f  (shaderObject -> getShininessUniformLocation        (), shininess        ());
 	glUniform1f  (shaderObject -> getTransparencyUniformLocation     (), transparency     ());
-}
-
-void
-Material::draw (X3DRenderObject* const renderObject)
-{
-	glEnable (GL_LIGHTING);
-
-	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,   glAmbientColor);
-	glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,   glDiffuseColor);
-	glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,  glSpecularColor);
-	glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,  glEmissiveColor);
-	glMaterialf  (GL_FRONT_AND_BACK, GL_SHININESS, glShininess);
-
-	glColor4fv (glEmissiveColor); // for lines and points
 }
 
 } // X3D

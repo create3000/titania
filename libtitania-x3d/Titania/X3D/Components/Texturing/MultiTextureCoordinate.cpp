@@ -140,14 +140,14 @@ MultiTextureCoordinate::set_texCoord ()
 }
 
 void
-MultiTextureCoordinate::init (TexCoordArray & texCoordArray, const size_t reserve) const
+MultiTextureCoordinate::init (MultiTexCoordArray & texCoordArray) const
 {
 	for (const auto & texCoordNode : texCoords)
-		texCoordNode -> init (texCoordArray, reserve);
+		texCoordNode -> init (texCoordArray);
 }
 
 void
-MultiTextureCoordinate::addTexCoord (const size_t, TexCoordArray & texCoordArray, const size_t index) const
+MultiTextureCoordinate::addTexCoord (const size_t, MultiTexCoordArray & texCoordArray, const size_t index) const
 {
 	size_t channel = 0;
 

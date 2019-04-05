@@ -73,9 +73,6 @@ public:
 	///  @name Operations
 
 	void
-	enable ();
-
-	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject);
 
 	///  @name Destruction
@@ -84,14 +81,6 @@ public:
 
 
 private:
-
-	///  @name Member access
-
-	GLenum
-	getMode () const;
-
-	float
-	getDensitiy (const float visibilityRange) const;
 
 	///  @name Members
 

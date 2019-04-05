@@ -80,7 +80,6 @@ void
 X3DSculpToolBrushEditor::initialize ()
 {
 	preview -> initialized () .addInterest (&X3DSculpToolBrushEditor::set_initalized, this);
-	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> show ();
 

@@ -98,7 +98,7 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, const size_t) const final override;
+	init (MultiTexCoordArray &) const final override;
 
 	virtual
 	void
@@ -110,7 +110,7 @@ public:
 
 	virtual
 	void
-	addTexCoord (const size_t, TexCoordArray &, const size_t) const final override;
+	addTexCoord (const size_t, MultiTexCoordArray &, const size_t) const final override;
 
 	virtual
 	void

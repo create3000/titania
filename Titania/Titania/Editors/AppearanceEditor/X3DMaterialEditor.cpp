@@ -106,7 +106,6 @@ X3DMaterialEditor::initialize ()
 	materialNodeBuffer .addInterest (&X3DMaterialEditor::set_node, this);
 
 	preview -> initialized () .addInterest (&X3DMaterialEditor::set_initialized, this);
-	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> show ();
 

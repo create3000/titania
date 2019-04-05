@@ -211,12 +211,6 @@ X3DTexture2DNode::updateImage (const GLenum format, const void* const data)
 }
 
 void
-X3DTexture2DNode::draw (X3DRenderObject* const renderObject)
-{
-	X3DTextureNode::draw (renderObject, GL_TEXTURE_2D, components ());
-}
-
-void
 X3DTexture2DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
 {
 	static const auto textureType = std::vector <GLint> ({ 2 }); 

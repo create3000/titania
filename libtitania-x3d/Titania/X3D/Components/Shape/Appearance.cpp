@@ -294,39 +294,6 @@ Appearance::enable (ShapeContainer* const context)
 	const auto renderObject = context -> getRenderer ();
 	const auto browser      = renderObject -> getBrowser ();
 
-	if (browser -> getFixedPipelineRequired ())
-	{
-		// Material
-
-		if (materialNode)
-		{
-			materialNode -> draw (renderObject);
-		}
-		else
-		{
-			glDisable (GL_LIGHTING);
-			glColor4f (1, 1, 1, 1);
-		}
-	
-		// Texture
-
-		if (browser -> getTexturing () and textureNode)
-		{
-			textureNode -> draw (renderObject);
-
-			browser -> setTexture (textureNode);
-		}
-	
-		// TextureTransform
-	
-		textureTransformNode -> draw (renderObject);
-	
-		// Shader
-	
-		if (browser -> getShaders () and shaderNode)
-			shaderNode -> draw (renderObject);
-	}
-
 	browser -> setLineProperties (linePropertiesNode);
 	browser -> setMaterial (materialNode);
 	browser -> setTexture (browser -> getTexturing () ? textureNode : nullptr);

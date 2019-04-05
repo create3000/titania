@@ -212,7 +212,6 @@ RenderPanel::setRendering (const bool value)
 		const size_t height        = getHeightAdjustment ()       -> get_value ();
 		const size_t antialiasing  = getAntialiasingAdjustment () -> get_value ();
 		const auto   shading       = getShadingButton () .get_active_text ();
-		const size_t fixedPipeline = getPage () -> getMainBrowser () -> getFixedPipeline ();
 
 		worldURL .fragment (viewpoint);
 
@@ -233,7 +232,7 @@ RenderPanel::setRendering (const bool value)
 
 		try
 		{
-			renderThread = std::make_unique <RenderThread> (worldURL, filename, codec, duration, frameRate, width, height, antialiasing, shading, fixedPipeline);
+			renderThread = std::make_unique <RenderThread> (worldURL, filename, codec, duration, frameRate, width, height, antialiasing, shading);
 
 			renderThread -> signal_load_count_changed () .connect (sigc::mem_fun (this, &RenderPanel::on_load_count_changed));
 			renderThread -> signal_frame_changed ()      .connect (sigc::mem_fun (this, &RenderPanel::on_frame_changed));

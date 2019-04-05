@@ -350,15 +350,13 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// End tessellation
 
-	getTexCoords () .emplace_back ();
-
 	// Triangles
 
 	const auto & triangles = tessellator .triangles ();
 
-	getTexCoords () [0] .insert (getTexCoords () [0] .end (), triangles .tex_coords () .begin (), triangles .tex_coords () .end ());
-	getNormals ()       .insert (getNormals ()       .end (), triangles .normals ()    .begin (), triangles .normals ()    .end ());
-	getVertices ()      .insert (getVertices ()      .end (), triangles .vertices ()   .begin (), triangles .vertices ()   .end ());
+	getTexCoords () .insert (getTexCoords () .end (), triangles .tex_coords () .begin (), triangles .tex_coords () .end ());
+	getNormals ()   .insert (getNormals ()   .end (), triangles .normals ()    .begin (), triangles .normals ()    .end ());
+	getVertices ()  .insert (getVertices ()  .end (), triangles .vertices ()   .begin (), triangles .vertices ()   .end ());
 
 	addElements (GL_TRIANGLES, triangles .vertices () .size ());
 
@@ -366,9 +364,9 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	const auto & quads = tessellator .quads ();
 
-	getTexCoords () [0] .insert (getTexCoords () [0] .end (), quads .tex_coords () .begin (), quads .tex_coords () .end ());
-	getNormals ()       .insert (getNormals ()       .end (), quads .normals ()    .begin (), quads .normals ()    .end ());
-	getVertices ()      .insert (getVertices ()      .end (), quads .vertices ()   .begin (), quads .vertices ()   .end ());
+	getTexCoords () .insert (getTexCoords () .end (), quads .tex_coords () .begin (), quads .tex_coords () .end ());
+	getNormals ()   .insert (getNormals ()   .end (), quads .normals ()    .begin (), quads .normals ()    .end ());
+	getVertices ()  .insert (getVertices ()  .end (), quads .vertices ()   .begin (), quads .vertices ()   .end ());
 
 	addElements (GL_QUADS, quads .vertices () .size ());
 

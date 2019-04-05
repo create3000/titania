@@ -99,7 +99,6 @@ X3DBrowserWindowInterface::create ()
 	m_TextureQualityMediumAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
 	m_ToolbarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolbarAction"));
 	m_TransformToolModeAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformToolModeAction"));
-	m_X_ITECompatibilityAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("X_ITECompatibilityAction"));
 
 	// Get widgets.
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
@@ -217,7 +216,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserScenesMenuItem", m_BrowserScenesMenuItem);
 	m_builder -> get_widget ("BrowserScenesMenu", m_BrowserScenesMenu);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
-	m_builder -> get_widget ("BrowserX_ITECompatibilityMenuItem", m_BrowserX_ITECompatibilityMenuItem);
 	m_builder -> get_widget ("BrowserLogarithmicDepthBufferMenuItem", m_BrowserLogarithmicDepthBufferMenuItem);
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
@@ -335,7 +333,6 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("ScenesMenuItem", m_ScenesMenuItem);
 	m_builder -> get_widget ("ScenesMenu", m_ScenesMenu);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
-	m_builder -> get_widget ("X_ITECompatibilityMenuItem", m_X_ITECompatibilityMenuItem);
 	m_builder -> get_widget ("LogarithmicDepthBufferMenuItem", m_LogarithmicDepthBufferMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("Toolbar", m_Toolbar);
@@ -420,7 +417,6 @@ X3DBrowserWindowInterface::create ()
 	m_TextureQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_texture_quality_medium_toggled));
 	m_ToolbarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_toolbar_toggled));
 	m_TransformToolModeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_tool_mode_toggled));
-	m_X_ITECompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_x_ite_compatibility_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
 	m_BrowserNewMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_new_activated));

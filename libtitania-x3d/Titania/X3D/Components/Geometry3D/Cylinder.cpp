@@ -189,8 +189,6 @@ Cylinder::build ()
 
 	const double xDimension = optionsNode -> xDimension ();
 
-	getTexCoords () .emplace_back ();
-
 	const double y1 = height () / 2;
 	const double y2 = -y1;
 
@@ -213,24 +211,24 @@ Cylinder::build ()
 			// p2 - p3
 
 			// p1
-			getTexCoords () [0] .emplace_back (u1, 1, 0, 1);
-			getNormals  () .emplace_back (n1 .imag (), 0, n1 .real ());
-			getVertices () .emplace_back (p1 .imag (), y1, p1 .real ());
+			getTexCoords () .emplace_back (u1, 1, 0, 1);
+			getNormals   () .emplace_back (n1 .imag (), 0, n1 .real ());
+			getVertices  () .emplace_back (p1 .imag (), y1, p1 .real ());
 
 			// p2
-			getTexCoords () [0] .emplace_back (u1, 0, 0, 1);
-			getNormals  () .emplace_back (n1 .imag (), 0, n1 .real ());
-			getVertices () .emplace_back (p1 .imag (), y2, p1 .real ());
+			getTexCoords () .emplace_back (u1, 0, 0, 1);
+			getNormals   () .emplace_back (n1 .imag (), 0, n1 .real ());
+			getVertices  () .emplace_back (p1 .imag (), y2, p1 .real ());
 
 			// p3
-			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
-			getNormals  () .emplace_back (n2 .imag (), 0, n2 .real ());
-			getVertices () .emplace_back (p2 .imag (), y2, p2 .real ());
+			getTexCoords () .emplace_back (u2, 0, 0, 1);
+			getNormals   () .emplace_back (n2 .imag (), 0, n2 .real ());
+			getVertices  () .emplace_back (p2 .imag (), y2, p2 .real ());
 
 			// p4
-			getTexCoords () [0] .emplace_back (u2, 1, 0, 1);
-			getNormals  () .emplace_back (n2 .imag (), 0, n2 .real ());
-			getVertices () .emplace_back (p2 .imag (), y1, p2 .real ());
+			getTexCoords () .emplace_back (u2, 1, 0, 1);
+			getNormals   () .emplace_back (n2 .imag (), 0, n2 .real ());
+			getVertices  () .emplace_back (p2 .imag (), y1, p2 .real ());
 		}
 
 		addElements (GL_QUADS, xDimension * 4);
@@ -245,9 +243,9 @@ Cylinder::build ()
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
-			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
-			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (p .imag (), y1, p .real ());
+			getTexCoords () .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
+			getNormals   () .emplace_back (0, 1, 0);
+			getVertices  () .emplace_back (p .imag (), y1, p .real ());
 		}
 
 		addElements (GL_POLYGON, xDimension);
@@ -262,9 +260,9 @@ Cylinder::build ()
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
-			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
-			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (p .imag (), y2, p .real ());
+			getTexCoords () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
+			getNormals   () .emplace_back (0, -1, 0);
+			getVertices  () .emplace_back (p .imag (), y2, p .real ());
 		}
 
 		addElements (GL_POLYGON, xDimension);

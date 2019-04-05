@@ -545,8 +545,7 @@ X3DBrowserPanel::set_dependent_browser ()
 
 		const auto & mainBrowser = getPage () -> getMainBrowser ();
 	
-		mainBrowser -> getFixedPipeline () .addInterest (&X3DBrowserPanel::set_fixed_pipeline, this);
-		mainBrowser -> getViewer ()        .addInterest (&X3DBrowserPanel::set_viewer,         this);
+		mainBrowser -> getViewer () .addInterest (&X3DBrowserPanel::set_viewer, this);
 
 		// Setup dependent browser.
 
@@ -601,7 +600,6 @@ X3DBrowserPanel::set_dependent_browser ()
 		viewpoint -> setPosition (positions .at (type));
 		viewpoint -> setOrientation (orientations .at (type));
 
-		set_fixed_pipeline ();
 		set_viewer ();
 		set_background_texture ();
 		set_background_texture_transparency ();
@@ -611,15 +609,6 @@ X3DBrowserPanel::set_dependent_browser ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-X3DBrowserPanel::set_fixed_pipeline ()
-{
-	if (type == BrowserPanelType::MAIN_VIEW)
-		return;
-
-	browser -> setFixedPipeline (getPage () -> getMainBrowser () -> getFixedPipeline ());
 }
 
 void

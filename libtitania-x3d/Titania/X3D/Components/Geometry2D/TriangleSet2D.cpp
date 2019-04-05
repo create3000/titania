@@ -94,12 +94,6 @@ TriangleSet2D::create (X3DExecutionContext* const executionContext) const
 void
 TriangleSet2D::build ()
 {
-	const size_t elements = solid () ? 1 : 2;
-	const size_t reserve  = elements * vertices () .size ();
-
-	getNormals  () .reserve (reserve);
-	getVertices () .reserve (reserve);
-
 	for (const auto & vertex : basic::make_const_range (vertices ()))
 	{
 		getNormals  () .emplace_back (0, 0, 1);
@@ -115,28 +109,27 @@ TriangleSet2D::build ()
 	setSolid (solid ());
 }
 
-void
+const TexCoordArray &
 TriangleSet2D::buildTexCoords ()
 {
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (getVertices () .size ());
-
-	Vector3d min;
-	double   Ssize;
-	int32_t  Sindex, Tindex;
-
-	getTexCoordParams (min, Ssize, Sindex, Tindex);
-
-	for (const auto & vertex : getVertices ())
+	if (getTexCoords () .empty ())
 	{
-		getTexCoords () [0] .emplace_back ((vertex [0] - min [0]) / Ssize,
-		                                   (vertex [1] - min [1]) / Ssize,
-		                                   0,
-		                                   1);
+		Vector3d min;
+		double   Ssize;
+		int32_t  Sindex, Tindex;
+	
+		getTexCoordParams (min, Ssize, Sindex, Tindex);
+	
+		for (const auto & vertex : getVertices ())
+		{
+			getTexCoords () .emplace_back ((vertex [0] - min [0]) / Ssize,
+			                               (vertex [1] - min [1]) / Ssize,
+			                               0,
+			                               1);
+		}
 	}
 
-	// This function is always called and we can now savely add the back vertices.
-	addMirrorVertices (GL_TRIANGLES, true);
+	return getTexCoords ();
 }
 
 SFNode
@@ -152,7 +145,7 @@ TriangleSet2D::toPrimitive () const
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 
-	for (const auto & point : basic::make_range (getTexCoords () [0] .cbegin (), getElements () [0] .count ()))
+	for (const auto & point : basic::make_range (getTexCoords () .cbegin (), getElements () [0] .count ()))
 		texCoord -> point () .emplace_back (point .x (), point .y ());
 
 	coord -> point () .assign (getVertices () .cbegin (), getVertices () .cbegin () + getElements () [0] .count ());

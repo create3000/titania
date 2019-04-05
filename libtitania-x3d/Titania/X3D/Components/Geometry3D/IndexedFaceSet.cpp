@@ -174,9 +174,8 @@ IndexedFaceSet::build ()
 	// Tessellate
 
 	PolygonArray polygons;
-	size_t       reserve = 0;
 
-	tessellate (convex (), polygons, reserve);
+	tessellate (convex (), polygons);
 
 	// Build arrays
 
@@ -187,26 +186,8 @@ IndexedFaceSet::build ()
 
 	std::vector <std::vector <float>> attribArrays (getAttrib () .size ());
 
-	for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
-		attribArrays [a] .reserve (reserve);
-
-	// Color
-
-	if (getColor ())
-		getColors () .reserve (reserve);
-
-	// TextureCoordinate
-
 	if (getTexCoord ())
-		getTexCoord () -> init (getTexCoords (), reserve);
-
-	// Normal
-
-	getNormals () .reserve (reserve);
-
-	// Vertices
-
-	getVertices () .reserve (reserve);
+		getTexCoord () -> init (getMultiTexCoords ());
 
 	// Fill GeometryNode
 
@@ -252,7 +233,7 @@ IndexedFaceSet::build ()
 				}
 
 				if (getTexCoord ())
-					getTexCoord () -> addTexCoord (getTexCoords (), getVertexTexCoordIndex (i));
+					getTexCoord () -> addTexCoord (getMultiTexCoords (), getVertexTexCoordIndex (i));
 
 				if (getNormal ())
 				{
@@ -281,7 +262,7 @@ IndexedFaceSet::build ()
 }
 
 void
-IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices) const
+IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons) const
 {
 	if (not getCoord ())
 		return;
@@ -335,8 +316,6 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 						}
 						case 3:
 						{
-							numVertices += 3;
-
 							// Add polygon with one triangle.
 
 							polygons .back () .elements .emplace_back (vertices);
@@ -345,8 +324,6 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 						}
 						default:
 						{
-							numVertices += convex ? vertices .size () : (vertices .size () - 2) * 3;
-
 							// Tessellate polygons.
 
 							tessellate (tessellator, polygons);
@@ -722,9 +699,8 @@ void
 IndexedFaceSet::addNormals ()
 {
 	PolygonArray polygons;
-	size_t       reserve = 0;
 
-	tessellate (true, polygons, reserve);
+	tessellate (true, polygons);
 
 	const auto normals    = createNormals (polygons);
 	const auto normalNode = getExecutionContext () -> createNode <Normal> ();

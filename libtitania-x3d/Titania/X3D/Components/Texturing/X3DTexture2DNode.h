@@ -141,10 +141,6 @@ public:
 
 	virtual
 	void
-	draw (X3DRenderObject* const renderObject) override;
-
-	virtual
-	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const final override;
 
 

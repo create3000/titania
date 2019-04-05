@@ -110,10 +110,6 @@ PackagedShader::disable ()
 { }
 
 void
-PackagedShader::draw (X3DRenderObject* const renderObject)
-{ }
-
-void
 PackagedShader::dispose ()
 {
 	X3DProgrammableShaderObject::dispose ();

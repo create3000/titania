@@ -95,7 +95,7 @@ X3DParametricGeometryNode::toPrimitive () const
 	bool       tex3D          = false;
 	bool       tex4D          = false;
 
-	for (const auto & texCoord : getTexCoords () [0])
+	for (const auto & texCoord : getTexCoords ())
 	{
 		if (std::abs (texCoord .w () - 1) > 1e-5)
 			tex4D = true;
@@ -117,7 +117,7 @@ X3DParametricGeometryNode::toPrimitive () const
 	geometryNode -> texCoord ()    = texCoordNode;
 	geometryNode -> coord ()       = coordinateNode;
 
-	for (const auto & texCoord : getTexCoords () [0])
+	for (const auto & texCoord : getTexCoords ())
 		texCoordMap .emplace (texCoord, texCoordMap .size ());
 
 	for (const auto & vertex : getVertices ())
@@ -131,9 +131,9 @@ X3DParametricGeometryNode::toPrimitive () const
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 				{
-					const auto & texCoord1 = getTexCoords () [0] [i];
-					const auto & texCoord2 = getTexCoords () [0] [i + 1];
-					const auto & texCoord3 = getTexCoords () [0] [i + 2];
+					const auto & texCoord1 = getTexCoords () [i];
+					const auto & texCoord2 = getTexCoords () [i + 1];
+					const auto & texCoord3 = getTexCoords () [i + 2];
 
 					const auto & vertex1 = getVertices () [i];
 					const auto & vertex2 = getVertices () [i + 1];
@@ -156,10 +156,10 @@ X3DParametricGeometryNode::toPrimitive () const
 			{
 				for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 				{
-					const auto & texCoord1 = getTexCoords () [0] [i];
-					const auto & texCoord2 = getTexCoords () [0] [i + 1];
-					const auto & texCoord3 = getTexCoords () [0] [i + 2];
-					const auto & texCoord4 = getTexCoords () [0] [i + 3];
+					const auto & texCoord1 = getTexCoords () [i];
+					const auto & texCoord2 = getTexCoords () [i + 1];
+					const auto & texCoord3 = getTexCoords () [i + 2];
+					const auto & texCoord4 = getTexCoords () [i + 3];
 
 					const auto & vertex1 = getVertices () [i];
 					const auto & vertex2 = getVertices () [i + 1];

@@ -1,6 +1,6 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.h" Line="116" Column="15" />
       <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp" Line="267" Column="1" />

@@ -435,8 +435,7 @@ ParticleSystem::initialize ()
 	getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
 	isLive () .addInterest (&ParticleSystem::set_live, this);
 
-	getBrowser () -> getDefaultShader ()         .addInterest (&ParticleSystem::set_shader, this);
-	getBrowser () -> getFixedPipelineRequired () .addInterest (&ParticleSystem::set_shader, this);
+	getBrowser () -> getDefaultShader () .addInterest (&ParticleSystem::set_shader, this);
 
 	enabled ()           .addInterest (&ParticleSystem::set_enabled,          this);
 	geometryType ()      .addInterest (&ParticleSystem::set_geometryType,     this);
@@ -493,7 +492,6 @@ ParticleSystem::setExecutionContext (X3DExecutionContext* const executionContext
 	if (isInitialized ())
 	{
 		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&ParticleSystem::set_shader, this);
-		getBrowser () -> getFixedPipelineRequired ()        .removeInterest (&ParticleSystem::set_shader, this);
 
 		getBrowser () -> sensorEvents ()    .removeInterest (&ParticleSystem::animateParticles, this);
 		getBrowser () -> sensorEvents ()    .removeInterest (&ParticleSystem::updateParticles, this);
@@ -505,7 +503,6 @@ ParticleSystem::setExecutionContext (X3DExecutionContext* const executionContext
 	if (isInitialized ())
 	{
 		getBrowser () -> getBrowserOptions () -> Shading () .addInterest (&ParticleSystem::set_shader, this);
-		getBrowser () -> getFixedPipelineRequired ()        .addInterest (&ParticleSystem::set_shader, this);
 
 		getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
 
@@ -1694,30 +1691,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 		{
 			case GeometryType::POINT:
 			{
-				if (browser -> getFixedPipelineRequired ())
-				{
-					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-	
-					if (numColors)
-					{
-						if (glIsEnabled (GL_LIGHTING))
-							glEnable (GL_COLOR_MATERIAL);
-	
-						glEnableClientState (GL_COLOR_ARRAY);
-						glColorPointer (4, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
-					}
-	
-					glEnableClientState (GL_VERTEX_ARRAY);
-					glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
-	
-					glDrawArrays (GL_POINTS, 0, numParticles);
-	
-					glDisableClientState (GL_COLOR_ARRAY);
-					glDisableClientState (GL_VERTEX_ARRAY);
-					glBindBuffer (GL_ARRAY_BUFFER, 0);
-					break;
-				}
-
 				// Enable shader.
 			
 				shaderNode -> enable ();
@@ -1760,36 +1733,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 			case GeometryType::TRIANGLE:
 			case GeometryType::QUAD:
 			{
-				if (browser -> getFixedPipelineRequired ())
-				{
-					glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-	
-					if (numColors)
-					{
-						if (glIsEnabled (GL_LIGHTING))
-							glEnable (GL_COLOR_MATERIAL);
-	
-						glEnableClientState (GL_COLOR_ARRAY);
-						glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
-					}
-	
-					if (browser -> getTexture ())
-						enableTexCoord (browser);
-	
-					glEnableClientState (GL_VERTEX_ARRAY);
-					glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
-	
-					glDrawArrays (glGeometryType, 0, numParticles * numVertices);
-	
-					if (browser -> getTexture ())
-						disableTexCoord (browser);
-	
-					glDisableClientState (GL_COLOR_ARRAY);
-					glDisableClientState (GL_VERTEX_ARRAY);
-					glBindBuffer (GL_ARRAY_BUFFER, 0);
-					break;
-				}
-
 				// Enable shader.
 			
 				shaderNode -> enable ();
@@ -1838,24 +1781,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 					glBindBuffer (GL_ARRAY_BUFFER, 0);
 
 					// Draw geometries.
-
-					if (browser -> getFixedPipelineRequired ())
-					{
-						for (const auto & position : positions)
-						{
-							glPushMatrix ();
-	
-							glTranslatef (position .x (),
-							              position .y (),
-							              position .z ());
-	
-							geometryNode -> draw (context);
-	
-							glPopMatrix ();
-						}
-
-						break;
-					}
 
 					const auto modelViewMatrix = context -> getModelViewMatrix ();
 

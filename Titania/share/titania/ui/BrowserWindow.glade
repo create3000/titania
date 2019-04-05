@@ -126,9 +126,6 @@
   <object class="GtkToggleAction" id="TransformToolModeAction">
     <signal name="toggled" handler="on_transform_tool_mode_toggled" swapped="no"/>
   </object>
-  <object class="GtkToggleAction" id="X_ITECompatibilityAction">
-    <signal name="toggled" handler="on_x_ite_compatibility_toggled" swapped="no"/>
-  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1704,15 +1701,6 @@
             <property name="can_focus">False</property>
             <property name="accel_group">AccelGroup</property>
             <child>
-              <object class="GtkCheckMenuItem" id="BrowserX_ITECompatibilityMenuItem">
-                <property name="related_action">X_ITECompatibilityAction</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="accel_path">&lt;Titania&gt;/Help/X_ITE Compatibility Mode</property>
-                <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
-              </object>
-            </child>
-            <child>
               <object class="GtkCheckMenuItem" id="BrowserLogarithmicDepthBufferMenuItem">
                 <property name="related_action">LogarithmicDepthBufferAction</property>
                 <property name="visible">True</property>
@@ -3214,15 +3202,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="accel_group">AccelGroup</property>
-                            <child>
-                              <object class="GtkCheckMenuItem" id="X_ITECompatibilityMenuItem">
-                                <property name="related_action">X_ITECompatibilityAction</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="accel_path">&lt;Titania&gt;/Help/X_ITE Compatibility Mode</property>
-                                <property name="label" translatable="yes">X_ITE Compatibility Mode</property>
-                              </object>
-                            </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="LogarithmicDepthBufferMenuItem">
                                 <property name="related_action">LogarithmicDepthBufferAction</property>

@@ -195,25 +195,15 @@ ArcClose2D::build ()
 	const auto   circle     = sweepAngle == pi2 <double>;
 	const auto   steps      = std::max <int32_t> (4, sweepAngle * optionsNode -> dimension () / (2 * pi <double>) + 1);
 
-	const size_t elements = solid () ? 1 : 2;
-	const size_t vertices = steps + 2;
-	const size_t reserve  = elements * vertices;
-
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (reserve);
-
-	getNormals  () .reserve (reserve);
-	getVertices () .reserve (reserve);
-
 	if (not circle)
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
 
 		if (closureType () not_eq "CHORD")
 		{
-			getTexCoords () [0] .emplace_back (0.5, 0.5, 0, 1);
-			getNormals  () .emplace_back (0, 0, 1);
-			getVertices () .emplace_back (0, 0, 0);
+			getTexCoords () .emplace_back (0.5, 0.5, 0, 1);
+			getNormals   () .emplace_back (0, 0, 1);
+			getVertices  () .emplace_back (0, 0, 0);
 		}
 	}
 
@@ -226,14 +216,13 @@ ArcClose2D::build ()
 		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
 		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
 
-		getTexCoords () [0] .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (point .real (), point .imag (), 0);
+		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
+		getNormals   () .emplace_back (0, 0, 1);
+		getVertices  () .emplace_back (point .real (), point .imag (), 0);
 	}
 
 	addElements (GL_POLYGON, getVertices () .size ());
 	setSolid (solid ());
-	addMirrorVertices (GL_POLYGON, false);
 }
 
 SFNode

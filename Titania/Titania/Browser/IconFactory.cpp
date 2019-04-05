@@ -90,11 +90,9 @@ IconFactory::initialize ()
 	// Off-Screen Browser
 
 	materialPreview -> initialized () .addInterest (&IconFactory::set_material_preview, this);
-	materialPreview -> setFixedPipeline (false);
 	materialPreview -> setup ();
 
 	texturePreview -> initialized () .addInterest (&IconFactory::set_texture_preview, this);
-	texturePreview -> setFixedPipeline (false);
 	texturePreview -> setup ();
 }
 

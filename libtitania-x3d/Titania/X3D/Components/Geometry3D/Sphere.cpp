@@ -168,10 +168,9 @@ Sphere::build ()
 	if (options ())
 		optionsNode -> toMetaData (createMetadataSet ("/Sphere/options"));
 
-	getTexCoords () .emplace_back (optionsNode -> getTexCoords ());
-
-	getNormals ()  = optionsNode -> getNormals ();
-	getVertices () = optionsNode -> getVertices ();
+	getTexCoords () = optionsNode -> getTexCoords ();
+	getNormals   () = optionsNode -> getNormals ();
+	getVertices  () = optionsNode -> getVertices ();
 
 	if (radius () not_eq 1.0f)
 	{

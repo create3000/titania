@@ -81,10 +81,9 @@ TextureCoordinate3D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TextureCoordinate3D::init (TexCoordArray & texCoords, const size_t reserve) const
+TextureCoordinate3D::init (MultiTexCoordArray & texCoords) const
 {
 	texCoords .emplace_back ();
-	texCoords .back () .reserve (reserve);
 }
 
 void
@@ -106,7 +105,7 @@ TextureCoordinate3D::get1Point (const size_t index) const
 }
 
 void
-TextureCoordinate3D::addTexCoord (const size_t channel, TexCoordArray & texCoords, const size_t index) const
+TextureCoordinate3D::addTexCoord (const size_t channel, MultiTexCoordArray & texCoords, const size_t index) const
 {
 	if (index < point () .size ())
 	{

@@ -68,7 +68,7 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, const size_t) const = 0;
+	init (MultiTexCoordArray &) const = 0;
 
 	virtual
 	void
@@ -79,12 +79,12 @@ public:
 	get1Point (const size_t) const = 0;
 
 	void
-	addTexCoord (TexCoordArray & texCoord, const size_t index) const
+	addTexCoord (MultiTexCoordArray & texCoord, const size_t index) const
 	{ addTexCoord (0, texCoord, index); }
 
 	virtual
 	void
-	addTexCoord (const size_t, TexCoordArray &, const size_t) const = 0;
+	addTexCoord (const size_t, MultiTexCoordArray &, const size_t) const = 0;
 
 	virtual
 	void

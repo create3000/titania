@@ -137,33 +137,6 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 }
 
 void
-X3DTextureNode::draw (X3DRenderObject* const renderObject, const GLenum target, const size_t components)
-{
-	glEnable (target);
-	glBindTexture (target, getTextureId ());
-
-	if (glIsEnabled (GL_LIGHTING))
-	{
-		// Texture color modulates material diffuse color.
-		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	}
-	else
-	{
-		switch (components)
-		{
-			case 1:
-			case 2:
-				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				break;
-			case 3:
-			case 4:
-				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-				break;
-		}
-	}
-}
-
-void
 X3DTextureNode::dispose ()
 {
 	try

@@ -142,10 +142,6 @@ public:
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
 
-	virtual
-	void
-	draw (X3DRenderObject* const renderObject) final override;
-
 
 private:
 
@@ -158,7 +154,7 @@ private:
 	///  @name Event handlers
 
 	void
-	eventsProcessed ();
+	set_transparency ();
 
 	///  @name Static members
 
@@ -166,7 +162,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -181,12 +177,6 @@ private:
 	};
 
 	Fields fields;
-
-	GLfloat glAmbientColor [4];
-	GLfloat glDiffuseColor [4];
-	GLfloat glSpecularColor [4];
-	GLfloat glEmissiveColor [4];
-	GLfloat glShininess;
 
 };
 

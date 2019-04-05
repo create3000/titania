@@ -107,24 +107,15 @@ Rectangle2D::build ()
 {
 	const auto & options = getBrowser () -> getRectangle2DOptions ();
 
-	size_t elements = solid () ? 1 : 2;
-
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (elements * options -> getTexCoords () .size ());
-	getTexCoords () [0] = options -> getTexCoords ();
-
-	getNormals () .reserve (elements * options -> getNormals  () .size ());
-	getNormals () = options -> getNormals  ();
-
-	getVertices () .reserve (elements * options -> getVertices () .size ());
+	getTexCoords () = options -> getTexCoords ();
+	getNormals   () = options -> getNormals  ();
 
 	if (size () == Vector2f (2, 2))
+	{
 		getVertices () = options -> getVertices ();
-
+	}
 	else
 	{
-		getVertices () .reserve (options -> getVertices () .size ());
-
 		const auto size1_2 = Vector3d (size () .getX (), size () .getY (), 0) / 2.0;
 
 		for (const auto & vertex : options -> getVertices ())
@@ -133,7 +124,6 @@ Rectangle2D::build ()
 
 	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
-	addMirrorVertices (options -> getVertexMode (), true);
 }
 
 SFNode

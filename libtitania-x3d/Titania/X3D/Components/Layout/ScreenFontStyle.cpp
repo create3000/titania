@@ -359,15 +359,9 @@ ScreenText::build ()
 
 	// Create geometry
 
-	getText () -> getTexCoords () .emplace_back ();
-
-	auto & texCoords = getText () -> getTexCoords () .back ();
+	auto & texCoords = getText () -> getTexCoords ();
 	auto & normals   = getText () -> getNormals ();
 	auto & vertices  = getText () -> getVertices ();
-
-	texCoords .reserve (4);
-	normals   .reserve (4);
-	vertices  .reserve (4);
 
 	texCoords .emplace_back (0, 1, 0, 1);
 	normals   .emplace_back (0, 0, 1);
@@ -448,19 +442,6 @@ void
 ScreenText::draw (ShapeContainer* const context)
 {
 	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
-
-	if (context -> getBrowser () -> getFixedPipelineRequired ())
-	{
-		glEnable (GL_TEXTURE_2D);
-		glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
-		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-		glMatrixMode (GL_TEXTURE);
-		glLoadIdentity ();
-		glMatrixMode (GL_MODELVIEW);
-
-		glLoadMatrixd (modelViewMatrix .front () .data ());
-	}
 
 	context -> getBrowser () -> setTexture (textureNode);
 	context -> getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());

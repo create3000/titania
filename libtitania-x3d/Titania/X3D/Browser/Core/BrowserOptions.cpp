@@ -436,10 +436,6 @@ BrowserOptions::set_Shading ()
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 			glShadeModel (GL_SMOOTH);
-
-			if (getBrowser () -> getFixedPipelineRequired ())
-				getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
-
 			break;
 		}
 	}

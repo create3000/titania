@@ -146,6 +146,11 @@ public:
 	{ return getNode <X3DGeometryNode> () -> getPolygonColors (); }
 
 	virtual
+	const MultiTexCoordArray &
+	getPolygonMultiTexCoords () const final override
+	{ return getNode <X3DGeometryNode> () -> getPolygonMultiTexCoords (); }
+
+	virtual
 	const TexCoordArray &
 	getPolygonTexCoords () const final override
 	{ return getNode <X3DGeometryNode> () -> getPolygonTexCoords (); }
@@ -208,7 +213,7 @@ public:
 	virtual
 	void
 	triangulate (std::vector <Color4f>* const colors,
-	             TexCoordArray* const texCoords,
+	             MultiTexCoordArray* const texCoords,
 	             std::vector <Vector3f>* const faceNormals,
 	             std::vector <Vector3f>* const normals,
 	             std::vector <Vector3d>* const vertices) const final override

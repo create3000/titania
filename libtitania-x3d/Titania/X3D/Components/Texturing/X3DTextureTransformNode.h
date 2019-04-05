@@ -71,14 +71,6 @@ public:
 
 	virtual
 	void
-	draw (X3DRenderObject* const renderObject) override;
-
-	virtual
-	void
-	draw (X3DRenderObject* const renderObject, const int32_t unit);
-
-	virtual
-	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 	{ setShaderUniforms (shaderObject, 0); }
 

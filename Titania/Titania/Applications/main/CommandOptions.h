@@ -70,7 +70,6 @@ public:
 		              height (100),
 		        alphaChannel (false),
 		        antialiasing (4),
-		       fixedPipeline (false),
 		      exportFilename (),
 		         exportStyle (),
 		         exportInfer (false),
@@ -83,7 +82,6 @@ public:
 		Glib::OptionEntry optionHeight;
 		Glib::OptionEntry optionAlphaChannel;
 		Glib::OptionEntry optionAntialiasing;
-		Glib::OptionEntry optionFixedPipeline;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
 		Glib::OptionEntry optionExportInfer;
@@ -122,10 +120,6 @@ public:
 		optionAntialiasing .set_arg_description ("SAMPLES");
 		optionAntialiasing .set_description ("Set image antialiasing samples.");
 
-		optionFixedPipeline .set_short_name ('f');
-		optionFixedPipeline .set_long_name ("fixed-pipeline");
-		optionFixedPipeline .set_description ("Set whether fixed pipeline should be used or shader pipeline.");
-
 		optionExportFilename .set_short_name ('e');
 		optionExportFilename .set_long_name ("export");
 		optionExportFilename .set_arg_description ("FILENAME");
@@ -157,7 +151,6 @@ public:
 		imageGroup  .add_entry (optionHeight,               height);
 		imageGroup  .add_entry (optionAlphaChannel,         alphaChannel);
 		imageGroup  .add_entry (optionAntialiasing,         antialiasing);
-		imageGroup  .add_entry (optionFixedPipeline,        fixedPipeline);
 		exportGroup .add_entry (optionExportFilename,       exportFilename);
 		exportGroup .add_entry (optionExportStyle,          exportStyle);
 		exportGroup .add_entry (optionExportInfer,          exportInfer);
@@ -181,7 +174,6 @@ public:
 	int32_t                     height;
 	bool                        alphaChannel;
 	int32_t                     antialiasing;
-	bool                        fixedPipeline;
 	Glib::ustring               exportFilename;
 	Glib::ustring               exportStyle;
 	bool                        exportInfer;

@@ -432,26 +432,14 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 		modelViewMatrix .get (translation, rotation);
 		modelViewMatrix .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue));
 
-		if (browser -> getFixedPipelineRequired ())
-		{
-			glLoadMatrixd (modelViewMatrix .front () .data ());
+		renderObject -> getModelViewMatrix () .push (modelViewMatrix);
 
-			// Draw background sphere and texture cube.
-	
-			drawSphere (renderObject);
-			drawCube   (renderObject);
-		}
-		else
-		{
-			renderObject -> getModelViewMatrix () .push (modelViewMatrix);
+		// Draw background sphere and texture cube.
 
-			// Draw background sphere and texture cube.
-	
-			drawSphere (renderObject);
-			drawCube   (renderObject);
-	
-			renderObject -> getModelViewMatrix () .pop ();
-		}
+		drawSphere (renderObject);
+		drawCube   (renderObject);
+
+		renderObject -> getModelViewMatrix () .pop ();
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -482,57 +470,39 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 	else
 		glDisable (GL_BLEND);
 
-	if (browser -> getFixedPipelineRequired ())
+	shaderNode -> enable ();
+
+	// Clip planes
+
+	shaderNode -> setClipPlanes (browser, clipPlanes);
+
+	// Enable vertex attribute arrays.
+
+	shaderNode -> enableColorAttrib  (sphereColorBufferId,  GL_FLOAT,  0, nullptr);
+	shaderNode -> enableVertexAttrib (sphereVertexBufferId, GL_DOUBLE, 0, nullptr);
+
+	// Uniforms
+
+	if (shaderNode -> isExtensionGPUShaderFP64Available ())
 	{
-		glBindBuffer (GL_ARRAY_BUFFER, sphereColorBufferId);
-		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (4, GL_FLOAT, 0, 0);
-
-		glBindBuffer (GL_ARRAY_BUFFER, sphereVertexBufferId);
-		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_DOUBLE, 0, 0);
-
-		glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
-
-		glDisableClientState (GL_COLOR_ARRAY);
-		glDisableClientState (GL_VERTEX_ARRAY);
+		glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
+		glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, renderObject -> getModelViewMatrix ()  .get () .front () .data ());
 	}
 	else
 	{
-		shaderNode -> enable ();
-
-		// Clip planes
-
-		shaderNode -> setClipPlanes (browser, clipPlanes);
-
-		// Enable vertex attribute arrays.
-
-		shaderNode -> enableColorAttrib  (sphereColorBufferId,  GL_FLOAT,  0, nullptr);
-		shaderNode -> enableVertexAttrib (sphereVertexBufferId, GL_DOUBLE, 0, nullptr);
-
-		// Uniforms
-
-		if (shaderNode -> isExtensionGPUShaderFP64Available ())
-		{
-			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
-			glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, renderObject -> getModelViewMatrix ()  .get () .front () .data ());
-		}
-		else
-		{
-			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
-			glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getModelViewMatrix ()  .get ()) .front () .data ());
-		}
-
-		// Draw.
-
-		glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
-
-		// Disable vertex attribute arrays.
-
-		shaderNode -> disableColorAttrib ();
-		shaderNode -> disableVertexAttrib ();
-		shaderNode -> disable ();
+		glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
+		glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getModelViewMatrix ()  .get ()) .front () .data ());
 	}
+
+	// Draw.
+
+	glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
+
+	// Disable vertex attribute arrays.
+
+	shaderNode -> disableColorAttrib ();
+	shaderNode -> disableVertexAttrib ();
+	shaderNode -> disable ();
 
 	glDisable (GL_BLEND);
 	glDepthMask (GL_TRUE);
@@ -553,67 +523,44 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	glEnable (GL_CULL_FACE);
 	glFrontFace (GL_CCW);
 
-	if (browser -> getFixedPipelineRequired ())
+	shaderNode -> enable ();
+
+	// Clip planes
+
+	shaderNode -> setClipPlanes (browser, clipPlanes);
+
+	// Uniforms
+
+	glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
+	glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
+	glUniform1i (shaderNode -> getLightingUniformLocation (),      false);
+
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		glUniform1i (shaderNode -> getTextureCoordinateGeneratorModeUniformLocation () [i], 0);
+
+	// ProjectionMatrix
+	// TexureMatrix
+
+	if (shaderNode -> isExtensionGPUShaderFP64Available ())
 	{
-		glDisable (GL_LIGHTING);
-		glColor4f (1, 1, 1, 1);
-
-		glMatrixMode (GL_TEXTURE);
-		glLoadIdentity ();
-		glMatrixMode (GL_MODELVIEW);
-	
-		glBindBuffer (GL_ARRAY_BUFFER, cubeTexCoordBufferId);
-		glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-		glTexCoordPointer (4, GL_FLOAT, 0, 0);
-	
-		glBindBuffer (GL_ARRAY_BUFFER, cubeVertexBufferId);
-		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_DOUBLE, 0, 0);
-
-		glPushMatrix ();
-		glScalef (cubeScale, cubeScale, cubeScale);
+		glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
+		glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .front () .data ());
 	}
 	else
 	{
-		shaderNode -> enable ();
-
-		// Clip planes
-
-		shaderNode -> setClipPlanes (browser, clipPlanes);
-	
-		// Uniforms
-	
-		glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
-		glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
-		glUniform1i (shaderNode -> getLightingUniformLocation (),      false);
-
-		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-			glUniform1i (shaderNode -> getTextureCoordinateGeneratorModeUniformLocation () [i], 0);
-
-		// ProjectionMatrix
-		// TexureMatrix
-
-		if (shaderNode -> isExtensionGPUShaderFP64Available ())
-		{
-			glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
-			glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .front () .data ());
-		}
-		else
-		{
-			glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
-			glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .front () .data ());
-		}
-
-		// ModelViewMatrix
-
-		renderObject -> getModelViewMatrix () .push ();
-		renderObject -> getModelViewMatrix () .scale (Vector3d (cubeScale, cubeScale, cubeScale));
-
-		// Attributes
-
-		shaderNode -> enableTexCoordAttrib ({ cubeTexCoordBufferId }, GL_FLOAT, { }, { });
-		shaderNode -> enableVertexAttrib (cubeVertexBufferId, GL_DOUBLE, 0, nullptr);
+		glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
+		glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .front () .data ());
 	}
+
+	// ModelViewMatrix
+
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .scale (Vector3d (cubeScale, cubeScale, cubeScale));
+
+	// Attributes
+
+	shaderNode -> enableTexCoordAttrib ({ cubeTexCoordBufferId }, GL_FLOAT, { }, { });
+	shaderNode -> enableVertexAttrib (cubeVertexBufferId, GL_DOUBLE, 0, nullptr);
 
 	for (size_t i = 0; i < 6; ++ i)
 	{
@@ -630,50 +577,26 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 		else
 			glDisable (GL_BLEND);
 
-		if (browser -> getFixedPipelineRequired ())
-		{
-			glPushMatrix ();
-			glMultMatrixd (cubeRotations [i] .front () .data ());
+		renderObject -> getModelViewMatrix () .push ();
+		renderObject -> getModelViewMatrix () .mult_left (cubeRotations [i]);
 
-			texture -> draw (renderObject);
-
-			glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
-
-			glPopMatrix ();
-		}
+		if (shaderNode -> isExtensionGPUShaderFP64Available ())
+			glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .front () .data ());
 		else
-		{
-			renderObject -> getModelViewMatrix () .push ();
-			renderObject -> getModelViewMatrix () .mult_left (cubeRotations [i]);
+			glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .front () .data ());
 
-			if (shaderNode -> isExtensionGPUShaderFP64Available ())
-				glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, renderObject -> getModelViewMatrix () .get () .front () .data ());
-			else
-				glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getModelViewMatrix () .get ()) .front () .data ());
+		texture -> setShaderUniforms (shaderNode);
 
-			texture -> setShaderUniforms (shaderNode);
-
-			glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
-
-			renderObject -> getModelViewMatrix () .pop ();
-		}
-	}
-
-	if (browser -> getFixedPipelineRequired ())
-	{
-		glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState (GL_VERTEX_ARRAY);
-
-		glPopMatrix ();
-	}
-	else
-	{
-		shaderNode -> disableTexCoordAttrib ();
-		shaderNode -> disableVertexAttrib ();
-		shaderNode -> disable ();
+		glDrawArrays (GL_TRIANGLES, 0, cubeVertices .size ());
 
 		renderObject -> getModelViewMatrix () .pop ();
 	}
+
+	shaderNode -> disableTexCoordAttrib ();
+	shaderNode -> disableVertexAttrib ();
+	shaderNode -> disable ();
+
+	renderObject -> getModelViewMatrix () .pop ();
 
 	glDisable (GL_TEXTURE_2D);
 
