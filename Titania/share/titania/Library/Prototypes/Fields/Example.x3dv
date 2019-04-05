@@ -11,10 +11,10 @@ EXTERNPROTO RadioButton [
   inputOutput    MFNode  children
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/RadioButton.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/RadioButton.x3d",
-  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/RadioButton.x3d",
-  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/RadioButton.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d",
+  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d",
+  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d"
 ]
 
 EXTERNPROTO CheckButton [
@@ -29,10 +29,10 @@ EXTERNPROTO CheckButton [
   inputOutput    MFNode  children
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/CheckButton.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/CheckButton.x3d",
-  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/CheckButton.x3d",
-  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/CheckButton.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d",
+  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d",
+  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d"
 ]
 
 EXTERNPROTO Button [
@@ -48,10 +48,10 @@ EXTERNPROTO Button [
   inputOutput    MFNode   children
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/Button.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/Button.x3d",
-  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/Button.x3d",
-  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Widgets/Button.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d",
+  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d",
+  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d"
 ]
 
 EXTERNPROTO SFInt32 [
@@ -60,10 +60,10 @@ EXTERNPROTO SFInt32 [
   outputOnly  SFInt32 value_changed
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/SFInt32.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/SFInt32.x3d",
-  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/SFInt32.x3d",
-  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Fields/SFInt32.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Fields/SFInt32.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Fields/SFInt32.x3d",
+  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Fields/SFInt32.x3d",
+  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Fields/SFInt32.x3d"
 ]
 
 EXTERNPROTO EnterWorld [
@@ -71,10 +71,10 @@ EXTERNPROTO EnterWorld [
   outputOnly SFTime enterTime
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d",
-  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d",
-  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d",
+  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d",
+  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d"
 ]
 
 DEF Summer Background {

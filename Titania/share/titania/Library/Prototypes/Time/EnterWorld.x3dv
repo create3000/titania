@@ -5,10 +5,10 @@ EXTERNPROTO EnterWorld [
   outputOnly SFTime enterTime
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d",
-  "https://rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d",
-  "http://rawgit.com/create3000/Library/1.0.11/Prototypes/Time/EnterWorld.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d",
+  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d",
+  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Time/EnterWorld.x3d"
 ]
 
 EnterWorld { }

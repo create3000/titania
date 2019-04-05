@@ -2146,9 +2146,7 @@
     <None Include="share\titania\Library\Components\Shaders\.Titania\FloatVertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\Matrix3VertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\Matrix4VertexAttribute" />
-    <None Include="share\titania\Library\Components\Shaders\.Titania\ProgramShader" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\ShaderPart" />
-    <None Include="share\titania\Library\Components\Shaders\.Titania\ShaderProgram" />
     <None Include="share\titania\Library\Components\Shape\Appearance.x3dv" />
     <None Include="share\titania\Library\Components\Shape\FillProperties.x3dv" />
     <None Include="share\titania\Library\Components\Shape\LineProperties.x3dv" />
@@ -2156,7 +2154,6 @@
     <None Include="share\titania\Library\Components\Shape\Shape.x3dv" />
     <None Include="share\titania\Library\Components\Shape\TwoSidedMaterial.x3dv" />
     <None Include="share\titania\Library\Components\Shape\.Titania\Appearance" />
-    <None Include="share\titania\Library\Components\Shape\.Titania\FillProperties" />
     <None Include="share\titania\Library\Components\Shape\.Titania\LineProperties" />
     <None Include="share\titania\Library\Components\Shape\.Titania\Material" />
     <None Include="share\titania\Library\Components\Shape\.Titania\Shape" />
@@ -2195,9 +2192,6 @@
     <None Include="share\titania\Library\Components\Texturing3D\TextureCoordinate4D.x3dv" />
     <None Include="share\titania\Library\Components\Texturing3D\TextureTransform3D.x3dv" />
     <None Include="share\titania\Library\Components\Texturing3D\TextureTransformMatrix3D.x3dv" />
-    <None Include="share\titania\Library\Components\Texturing3D\.Titania\ComposedTexture3D" />
-    <None Include="share\titania\Library\Components\Texturing3D\.Titania\ImageTexture3D" />
-    <None Include="share\titania\Library\Components\Texturing3D\.Titania\PixelTexture3D" />
     <None Include="share\titania\Library\Components\Texturing3D\.Titania\TextureCoordinate3D" />
     <None Include="share\titania\Library\Components\Texturing3D\.Titania\TextureCoordinate4D" />
     <None Include="share\titania\Library\Components\Texturing3D\.Titania\TextureTransform3D" />

@@ -2,8 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.h" Line="116" Column="15" />
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp" Line="267" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="171" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1078" Column="74" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="470" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="356" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
