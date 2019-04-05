@@ -4192,7 +4192,7 @@ X3DEditor::undoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoordNo
 		{
 			const X3DPtr <MultiTextureCoordinate> node (texCoordNode);
 
-			for (const auto & texCoordNode : node -> getTexCoord ())
+			for (const auto & texCoordNode : node -> getTextureCoordinates ())
 				undoSetTexCoordImpl (texCoordNode, undoStep);
 
 			break;
@@ -4365,7 +4365,7 @@ X3DEditor::redoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoordNo
 		{
 			const X3DPtr <MultiTextureCoordinate> node (texCoordNode);
 
-			for (const auto & texCoordNode : node -> getTexCoord ())
+			for (const auto & texCoordNode : node -> getTextureCoordinates ())
 				redoSetTexCoordImpl (texCoordNode, undoStep);
 
 			break;

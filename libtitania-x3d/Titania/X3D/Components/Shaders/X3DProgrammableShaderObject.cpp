@@ -129,7 +129,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                   x3d_ProjectionMatrix (-1),
 	                    x3d_ModelViewMatrix (-1),
 	                       x3d_NormalMatrix (-1),
-	                      x3d_TextureMatrix (-1),
+	                      x3d_TextureMatrix (getBrowser () -> getMaxTextures (), -1),
 	                  x3d_CameraSpaceMatrix (-1),
 	                           x3d_FogDepth (-1),
 	                              x3d_Color (-1),
@@ -205,6 +205,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ShadowMap                           .clear ();
 	x3d_TextureCoordinateGeneratorMode      .clear ();
 	x3d_TextureCoordinateGeneratorParameter .clear ();
+	x3d_TextureMatrix                       .clear ();
 	x3d_TexCoord                            .clear ();
 
 	// Get default uniforms.
@@ -271,7 +272,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	x3d_NumTextures    = glGetUniformLocation (program, "x3d_NumTextures");
 	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
-	x3d_Texture2D      = getUniformLocation (program, "x3d_Texture2D", "x3d_Texture");
+	x3d_Texture2D      = getUniformLocation   (program, "x3d_Texture2D", "x3d_Texture");
 	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
@@ -286,8 +287,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
 	x3d_ModelViewMatrix   = glGetUniformLocation (program, "x3d_ModelViewMatrix");
 	x3d_NormalMatrix      = glGetUniformLocation (program, "x3d_NormalMatrix");
-	x3d_TextureMatrix     = glGetUniformLocation (program, "x3d_TextureMatrix");
 	x3d_CameraSpaceMatrix = glGetUniformLocation (program, "x3d_CameraSpaceMatrix");
+
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ()));
 
 	x3d_FogDepth = glGetAttribLocation (program, "x3d_FogDepth");
 	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
@@ -1201,7 +1204,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	// Matrices
 
-	textureTransformNode -> setShaderUniforms (this);
+	textureTransformNode  -> setShaderUniforms (this);
 	textureCoordinateNode -> setShaderUniforms (this);
 
 	if (extensionGPUShaderFP64)

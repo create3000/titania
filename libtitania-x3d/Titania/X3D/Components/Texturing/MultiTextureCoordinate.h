@@ -118,8 +118,8 @@ public:
 	{ }
 
 	const X3DPtrArray <X3DTextureCoordinateNode> &
-	getTexCoord () const
-	{ return texCoords; }
+	getTextureCoordinates () const
+	{ return textureCoordinateNodes; }
 
 	virtual
 	bool
@@ -144,24 +144,6 @@ public:
 	virtual
 	void
 	resize (const size_t value) final override;
-
-	virtual
-	void
-	enable (ShapeContainer* const context, const std::vector <GLuint> &) const final override;
-
-	virtual
-	void
-	enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const final override
-	{ }
-
-	virtual
-	void
-	disable (ShapeContainer* const context) const final override;
-
-	virtual
-	void
-	disable (ShapeContainer* const context, const int32_t unit) const final override
-	{ }
 
 
 private:
@@ -191,7 +173,7 @@ private:
 
 	Fields fields;
 
-	X3DPtrArray <X3DTextureCoordinateNode> texCoords;
+	X3DPtrArray <X3DTextureCoordinateNode> textureCoordinateNodes;
 
 };
 

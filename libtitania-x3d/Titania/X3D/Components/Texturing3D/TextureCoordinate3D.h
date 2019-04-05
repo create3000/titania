@@ -117,14 +117,6 @@ public:
 	getTexCoord (std::vector <Vector4f> & texCoords) const final override;
 
 	virtual
-	void
-	enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const final override;
-
-	virtual
-	void
-	disable (ShapeContainer* const context, const int32_t unit) const final override;
-
-	virtual
 	bool
 	isEmpty () const final override
 	{ return point () .empty (); }

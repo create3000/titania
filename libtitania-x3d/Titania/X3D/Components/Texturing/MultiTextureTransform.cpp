@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Shaders/X3DProgrammableShaderObject.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 
@@ -97,8 +98,8 @@ MultiTextureTransform::initialize ()
 void
 MultiTextureTransform::set_textureTransform ()
 {
-	for (const auto & node : textureTransformNodes)
-		node -> removeInterest (this);
+	for (const auto & textureTransformNode : textureTransformNodes)
+		textureTransformNode -> removeInterest (this);
 
 	std::vector <X3DTextureTransformNode*> value;
 
@@ -115,13 +116,26 @@ MultiTextureTransform::set_textureTransform ()
 
 	textureTransformNodes .set (value .cbegin (), value .cend ());
 
-	for (const auto & node : textureTransformNodes)
-		node -> addInterest (this);
+	for (const auto & textureTransformNode : textureTransformNodes)
+		textureTransformNode -> addInterest (this);
 }
 
 void
 MultiTextureTransform::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-{ }
+{
+	const auto channels = std::min (getBrowser () -> getMaxTextures (), textureTransformNodes .size ());
+
+	for (size_t i = 0; i < channels; ++ i)
+		textureTransformNodes [i] -> setShaderUniforms (shaderObject, i);
+
+	for (size_t i = channels, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+	{
+		if (shaderObject -> isExtensionGPUShaderFP64Available ())
+			glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, Matrix4d () .front () .data ());
+		else
+			glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, Matrix4f () .front () .data ());
+	}
+}
 
 } // X3D
 } // titania

@@ -71,12 +71,11 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-	{ setShaderUniforms (shaderObject, 0); }
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const;
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const;
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const;
 
 
 protected:

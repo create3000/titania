@@ -105,15 +105,15 @@ TextureCoordinate::get1Point (const size_t index) const
 }
 
 void
-TextureCoordinate::addTexCoord (const size_t channel, MultiTexCoordArray & texCoords, const size_t index) const
+TextureCoordinate::addTexCoord (const size_t i, MultiTexCoordArray & texCoords, const size_t index) const
 {
 	if (index < point () .size ())
 	{
 		const Vector2f & point2 = point () [index];
-		texCoords [channel] .emplace_back (point2 .x (), point2 .y (), 0, 1);
+		texCoords [i] .emplace_back (point2 .x (), point2 .y (), 0, 1);
 	}
 	else
-		texCoords [channel] .emplace_back (0, 0, 0, 1);
+		texCoords [i] .emplace_back (0, 0, 0, 1);
 }
 
 void
@@ -130,22 +130,6 @@ TextureCoordinate::erasePoint (const size_t index)
 {
 	if (index < point () .size ())
 		point () .erase (point () .begin () + index);
-}
-
-void
-TextureCoordinate::enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const
-{
-	glClientActiveTexture (GL_TEXTURE0 + unit);
-	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferIds [channel]);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer (4, GL_FLOAT, 0, 0);
-}
-
-void
-TextureCoordinate::disable (ShapeContainer* const context, const int32_t unit) const
-{
-	glClientActiveTexture (GL_TEXTURE0 + unit);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 }
 
 } // X3D

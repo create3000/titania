@@ -1641,10 +1641,10 @@ TextureMappingEditor::set_texCoord (const X3D::SFNode & value)
 	{
 		multiTexCoord -> addInterest (&TextureMappingEditor::set_texCoord, this, value);
 
-		if (multiTexCoord -> getTexCoord () .empty ())
+		if (multiTexCoord -> getTextureCoordinates () .empty ())
 			texCoordNode = nullptr;
 		else
-			texCoordNode = multiTexCoord -> getTexCoord () [std::min (stage, multiTexCoord -> getTexCoord () .size () - 1)];
+			texCoordNode = multiTexCoord -> getTextureCoordinates () [std::min (stage, multiTexCoord -> getTextureCoordinates () .size () - 1)];
 	}
 	else
 		texCoordNode = value;

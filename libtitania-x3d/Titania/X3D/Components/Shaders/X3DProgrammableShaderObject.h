@@ -299,7 +299,7 @@ public:
 	getNormalMatrixUniformLocation () const
 	{ return x3d_NormalMatrix; }
 
-	GLint
+	const std::vector <GLint> &
 	getTextureMatrixUniformLocation () const
 	{ return x3d_TextureMatrix; }
 
@@ -557,12 +557,12 @@ private:
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
 
-	GLint x3d_Viewport;
-	GLint x3d_ProjectionMatrix;
-	GLint x3d_ModelViewMatrix;
-	GLint x3d_NormalMatrix;
-	GLint x3d_TextureMatrix;
-	GLint x3d_CameraSpaceMatrix;
+	GLint               x3d_Viewport;
+	GLint               x3d_ProjectionMatrix;
+	GLint               x3d_ModelViewMatrix;
+	GLint               x3d_NormalMatrix;
+	std::vector <GLint> x3d_TextureMatrix;
+	GLint               x3d_CameraSpaceMatrix;
 
 	GLint               x3d_FogDepth;
 	GLint               x3d_Color;

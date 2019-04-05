@@ -106,11 +106,11 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const final override;
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const final override
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const final override
 	{ }
 
 

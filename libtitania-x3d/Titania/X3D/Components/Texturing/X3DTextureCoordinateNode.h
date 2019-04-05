@@ -98,24 +98,6 @@ public:
 	size_t
 	getSize () const = 0;
 
-	///  @name Rendering
-
-	virtual
-	void
-	enable (ShapeContainer* const context, const std::vector <GLuint> &) const;
-
-	virtual
-	void
-	enable (ShapeContainer* const context, const int32_t, const size_t, const std::vector <GLuint> &) const = 0;
-
-	virtual
-	void
-	disable (ShapeContainer* const context) const;
-
-	virtual
-	void
-	disable (ShapeContainer* const context, const int32_t) const = 0;
-
 	///  @name Operations
 
 	virtual

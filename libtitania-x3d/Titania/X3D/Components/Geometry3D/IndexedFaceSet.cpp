@@ -1066,7 +1066,7 @@ IndexedFaceSet::rebuildTexCoord ()
 		{
 			const X3DPtr <MultiTextureCoordinate> multiTexCoordNode (texCoordNode);
 
-			for (const auto & texCoordNode : multiTexCoordNode -> getTexCoord ())
+			for (const auto & texCoordNode : multiTexCoordNode -> getTextureCoordinates ())
 			   rebuildTexCoord (texCoordNode, map);
 
 			break;

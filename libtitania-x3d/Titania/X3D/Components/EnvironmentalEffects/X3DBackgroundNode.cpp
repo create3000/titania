@@ -543,13 +543,13 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 
 	if (shaderNode -> isExtensionGPUShaderFP64Available ())
 	{
-		glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
-		glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4d () .front () .data ());
+		glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (),  1, false, renderObject -> getProjectionMatrix () .get () .front () .data ());
+		glUniformMatrix4dv (shaderNode -> getTextureMatrixUniformLocation () [0], 1, false, Matrix4d () .front () .data ());
 	}
 	else
 	{
-		glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
-		glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation (),    1, false, Matrix4f () .front () .data ());
+		glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (),  1, false, Matrix4f (renderObject -> getProjectionMatrix () .get ()) .front () .data ());
+		glUniformMatrix4fv (shaderNode -> getTextureMatrixUniformLocation () [0], 1, false, Matrix4f () .front () .data ());
 	}
 
 	// ModelViewMatrix

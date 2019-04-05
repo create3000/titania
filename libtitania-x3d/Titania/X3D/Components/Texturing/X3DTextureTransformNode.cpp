@@ -65,12 +65,21 @@ X3DTextureTransformNode::X3DTextureTransformNode () :
 }
 
 void
-X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
+X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		setShaderUniforms (shaderObject, i);
+}
+
+void
+X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
+{
+__LOG__ << shaderObject -> getTextureMatrixUniformLocation () [i] << std::endl;
+
 	if (shaderObject -> isExtensionGPUShaderFP64Available ())
-		glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, matrix .front () .data ());
+		glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, matrix .front () .data ());
 	else
-		glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, Matrix4f (matrix) .front () .data ());
+		glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, Matrix4f (matrix) .front () .data ());
 }
 
 } // X3D

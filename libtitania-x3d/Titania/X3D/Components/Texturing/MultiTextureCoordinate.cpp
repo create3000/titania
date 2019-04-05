@@ -72,14 +72,14 @@ MultiTextureCoordinate::MultiTextureCoordinate (X3DExecutionContext* const execu
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureCoordinateNode (),
 	                  fields (),
-	               texCoords ()
+	  textureCoordinateNodes ()
 {
 	addType (X3DConstants::MultiTextureCoordinate);
 
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "texCoord", texCoord ());
 
-	addChildObjects (texCoords);
+	addChildObjects (textureCoordinateNodes);
 }
 
 X3DBaseNode*
@@ -101,15 +101,15 @@ MultiTextureCoordinate::initialize ()
 void
 MultiTextureCoordinate::set1Point (const size_t index, const Vector4f & value)
 {
-	for (const auto & texCoordNode : texCoords)
-		texCoordNode -> set1Point (index, value);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		textureCoordinateNode -> set1Point (index, value);
 }
 
 Vector4f
 MultiTextureCoordinate::get1Point (const size_t index) const
 {
-	for (const auto & texCoordNode : texCoords)
-		return texCoordNode -> get1Point (index);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		return textureCoordinateNode -> get1Point (index);
 
 	return Vector4d (0, 0, 0, 1);
 }
@@ -117,8 +117,8 @@ MultiTextureCoordinate::get1Point (const size_t index) const
 void
 MultiTextureCoordinate::set_texCoord ()
 {
-	for (const auto & node : texCoords)
-		node -> removeInterest (this);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		textureCoordinateNode -> removeInterest (this);
 
 	std::vector <X3DTextureCoordinateNode*> value;
 
@@ -133,118 +133,50 @@ MultiTextureCoordinate::set_texCoord ()
 			value .emplace_back (texCoordNode);
 	}
 
-	texCoords .set (value .cbegin (), value .cend ());
+	textureCoordinateNodes .set (value .cbegin (), value .cend ());
 
-	for (const auto & node : texCoords)
-		node -> addInterest (this);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		textureCoordinateNode -> addInterest (this);
 }
 
 void
 MultiTextureCoordinate::init (MultiTexCoordArray & texCoordArray) const
 {
-	for (const auto & texCoordNode : texCoords)
-		texCoordNode -> init (texCoordArray);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		textureCoordinateNode -> init (texCoordArray);
 }
 
 void
 MultiTextureCoordinate::addTexCoord (const size_t, MultiTexCoordArray & texCoordArray, const size_t index) const
 {
-	size_t channel = 0;
+	size_t i = 0;
 
-	for (const auto & texCoordNode : texCoords)
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
 	{
-		texCoordNode -> addTexCoord (channel, texCoordArray, index);
-		++ channel;
+		textureCoordinateNode -> addTexCoord (i, texCoordArray, index);
+		++ i;
 	}
 }
 
 void
 MultiTextureCoordinate::assign (const X3DPtr <X3DTextureCoordinateNode> & other)
 {
-	for (const auto & texCoordNode : texCoords)
-	   texCoordNode -> assign (other);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+	   textureCoordinateNode -> assign (other);
 }
 
 void
 MultiTextureCoordinate::erasePoint (const size_t index)
 {
-	for (const auto & texCoordNode : texCoords)
-		texCoordNode -> erasePoint (index);
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		textureCoordinateNode -> erasePoint (index);
 }
 
 void
 MultiTextureCoordinate::resize (const size_t value)
 {
-	for (const auto & texCoordNode : texCoords)
-		texCoordNode -> resize (value);
-}
-
-void
-MultiTextureCoordinate::enable (ShapeContainer* const context, const std::vector <GLuint> & texCoordBufferIds) const
-{
-	const auto                browser = context -> getBrowser ();
-	X3DTextureCoordinateNode* last    = nullptr;
-	size_t                    channel = 0;
-	const size_t              size    = browser -> getTextureStages () .size ();
-
-	for (const auto & texCoordNode : texCoords)
-	{
-		const int32_t unit = channel < size ? browser -> getTextureStages () [channel] : 0;
-
-		if (unit >= 0)
-			texCoordNode -> enable (context, unit, channel, texCoordBufferIds);
-
-		last = texCoordNode;
-		++ channel;
-
-		if (channel >= size)
-			break;
-	}
-
-	if (last)
-	{
-		for (size_t lastChannel = channel - 1; channel < size; ++ channel)
-		{
-			const int32_t unit = browser -> getTextureStages () [channel];
-		
-			if (unit >= 0)
-				last -> enable (context, unit, lastChannel, texCoordBufferIds);
-		}
-	}
-}
-
-void
-MultiTextureCoordinate::disable (ShapeContainer* const context) const
-{
-	const auto                browser = context -> getBrowser ();
-	X3DTextureCoordinateNode* last    = nullptr;
-	size_t                    channel = 0;
-	const  size_t             size    = browser -> getTextureStages () .size ();
-
-	for (const auto & texCoordNode : texCoords)
-	{
-		int32_t unit = channel < size ? browser -> getTextureStages () [channel] : 0;
-		
-		if (unit >= 0)
-			texCoordNode -> disable (context, unit);
-
-		last = texCoordNode;
-		++ channel;
-
-		if (channel >= size)
-			break;
-	}
-
-	if (last)
-	{
-		for ( ; channel < size; ++ channel)
-		{
-			int32_t unit = browser -> getTextureStages () [channel];
-
-			if (unit >= 0)
-				last -> disable (context, unit);
-		}
-	}
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+		textureCoordinateNode -> resize (value);
 }
 
 } // X3D

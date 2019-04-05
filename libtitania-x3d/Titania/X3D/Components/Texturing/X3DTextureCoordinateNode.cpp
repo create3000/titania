@@ -75,44 +75,6 @@ X3DTextureCoordinateNode::assign (const X3DPtr <X3DTextureCoordinateNode> & othe
 }
 
 void
-X3DTextureCoordinateNode::enable (ShapeContainer* const context, const std::vector <GLuint> & texCoordBufferIds) const
-{
-	const auto browser = context -> getBrowser ();
-
-	if (browser -> getTextureStages () .empty ())
-	{
-		enable (context, 0, 0, texCoordBufferIds);
-	}
-	else
-	{
-		for (const auto & unit : browser -> getTextureStages ())
-		{
-			if (unit >= 0)
-				enable (context, unit, 0, texCoordBufferIds);
-		}
-	}
-}
-
-void
-X3DTextureCoordinateNode::disable (ShapeContainer* const context) const
-{
-	const auto browser = context -> getBrowser ();
-
-	if (browser -> getTextureStages () .empty ())
-	{
-		disable (context, 0);
-	}
-	else
-	{
-		for (const auto & unit : browser -> getTextureStages ())
-		{
-			if (unit >= 0)
-				disable (context, unit);
-		}
-	}
-}
-
-void
 X3DTextureCoordinateNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
 	setShaderUniforms (shaderObject, 0);
