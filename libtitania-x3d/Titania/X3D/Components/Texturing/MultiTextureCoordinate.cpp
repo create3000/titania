@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -178,6 +179,25 @@ MultiTextureCoordinate::resize (const size_t value)
 	for (const auto & textureCoordinateNode : textureCoordinateNodes)
 		textureCoordinateNode -> resize (value);
 }
+
+void
+MultiTextureCoordinate::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	size_t i = 0;
+
+	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+	{
+		textureCoordinateNode -> setShaderUniforms (shaderObject, i);
+		++ i;
+	}
+
+	for (size_t size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		glUniform1i (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], 0);
+}
+
+void
+MultiTextureCoordinate::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
+{ }
 
 } // X3D
 } // titania

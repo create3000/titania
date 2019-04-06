@@ -145,6 +145,16 @@ public:
 	void
 	resize (const size_t value) final override;
 
+	///  @name Shader
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const final override;
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const final override;
+
 
 private:
 
