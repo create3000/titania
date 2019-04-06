@@ -150,13 +150,8 @@ MultiTextureCoordinate::init (MultiTexCoordArray & texCoordArray) const
 void
 MultiTextureCoordinate::addTexCoord (const size_t, MultiTexCoordArray & texCoordArray, const size_t index) const
 {
-	size_t i = 0;
-
-	for (const auto & textureCoordinateNode : textureCoordinateNodes)
-	{
-		textureCoordinateNode -> addTexCoord (i, texCoordArray, index);
-		++ i;
-	}
+	for (size_t i = 0, size = textureCoordinateNodes .size (); i < size; ++ i)
+		textureCoordinateNodes [i] -> addTexCoord (i, texCoordArray, index);
 }
 
 void
