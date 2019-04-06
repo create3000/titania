@@ -188,15 +188,15 @@ MultiTextureCoordinate::setShaderUniforms (X3DProgrammableShaderObject* const sh
 	for (size_t i = 0; i < channels; ++ i)
 		textureCoordinateNodes [i] -> setShaderUniforms (shaderObject, i);
 
-	if (textureCoordinateNodes .empty ())
-	{
-		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-			X3DTextureCoordinateNode::setShaderUniforms (shaderObject, i);
-	}
-	else
+	if (channels)
 	{
 		for (size_t i = channels, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
 			textureCoordinateNodes .back () -> setShaderUniforms (shaderObject, i);
+	}
+	else
+	{
+		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+			X3DTextureCoordinateNode::setShaderUniforms (shaderObject, i);
 	}
 }
 

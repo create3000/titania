@@ -128,15 +128,15 @@ MultiTextureTransform::setShaderUniforms (X3DProgrammableShaderObject* const sha
 	for (size_t i = 0; i < channels; ++ i)
 		textureTransformNodes [i] -> setShaderUniforms (shaderObject, i);
 
-	if (textureTransformNodes .empty ())
-	{
-		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-			X3DTextureTransformNode::setShaderUniforms (shaderObject, i);
-	}
-	else
+	if (channels)
 	{
 		for (size_t i = channels, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
 			textureTransformNodes .back () -> setShaderUniforms (shaderObject, i);
+	}
+	else
+	{
+		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+			X3DTextureTransformNode::setShaderUniforms (shaderObject, i);
 	}
 }
 
