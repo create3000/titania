@@ -183,21 +183,22 @@ MultiTextureCoordinate::resize (const size_t value)
 void
 MultiTextureCoordinate::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
-	size_t i = 0;
+	const auto channels = std::min (getBrowser () -> getMaxTextures (), textureCoordinateNodes .size ());
 
-	for (const auto & textureCoordinateNode : textureCoordinateNodes)
+	for (size_t i = 0; i < channels; ++ i)
+		textureCoordinateNodes [i] -> setShaderUniforms (shaderObject, i);
+
+	if (textureCoordinateNodes .empty ())
 	{
-		textureCoordinateNode -> setShaderUniforms (shaderObject, i);
-		++ i;
+		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+			X3DTextureCoordinateNode::setShaderUniforms (shaderObject, i);
 	}
-
-	for (size_t size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-		glUniform1i (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], 0);
+	else
+	{
+		for (size_t i = channels, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+			textureCoordinateNodes .back () -> setShaderUniforms (shaderObject, i);
+	}
 }
-
-void
-MultiTextureCoordinate::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
-{ }
 
 } // X3D
 } // titania

@@ -128,19 +128,15 @@ MultiTextureTransform::setShaderUniforms (X3DProgrammableShaderObject* const sha
 	for (size_t i = 0; i < channels; ++ i)
 		textureTransformNodes [i] -> setShaderUniforms (shaderObject, i);
 
-	for (size_t i = channels, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+	if (textureTransformNodes .empty ())
 	{
-		if (textureTransformNodes .empty ())
-		{
-			if (shaderObject -> isExtensionGPUShaderFP64Available ())
-				glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, Matrix4d () .front () .data ());
-			else
-				glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, Matrix4f () .front () .data ());
-		}
-		else
-		{
+		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+			X3DTextureTransformNode::setShaderUniforms (shaderObject, i);
+	}
+	else
+	{
+		for (size_t i = channels, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
 			textureTransformNodes .back () -> setShaderUniforms (shaderObject, i);
-		}
 	}
 }
 
