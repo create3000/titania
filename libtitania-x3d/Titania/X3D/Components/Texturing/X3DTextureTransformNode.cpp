@@ -74,8 +74,6 @@ X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const s
 void
 X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
 {
-__LOG__ << shaderObject -> getTextureMatrixUniformLocation () [i] << std::endl;
-
 	if (shaderObject -> isExtensionGPUShaderFP64Available ())
 		glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation () [i], 1, false, matrix .front () .data ());
 	else
