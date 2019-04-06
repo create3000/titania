@@ -365,9 +365,15 @@ GeoElevationGrid::build ()
 	std::vector <Vector4f> texCoords;
 
 	if (texCoordNode)
+	{
 		texCoordNode -> init (getMultiTexCoords ());
+	}
 	else
+	{
 		texCoords = createTexCoord ();
+
+		getMultiTexCoords () .emplace_back ();
+	}
 
 	// Normals
 

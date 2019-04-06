@@ -168,6 +168,8 @@ Sphere::build ()
 	if (options ())
 		optionsNode -> toMetaData (createMetadataSet ("/Sphere/options"));
 
+	getMultiTexCoords () .emplace_back ();
+
 	getTexCoords () = optionsNode -> getTexCoords ();
 	getNormals   () = optionsNode -> getNormals ();
 	getVertices  () = optionsNode -> getVertices ();

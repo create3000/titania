@@ -104,6 +104,8 @@ Box::build ()
 {
 	const auto & options = getBrowser () -> getBoxOptions ();
 
+	getMultiTexCoords () .emplace_back ();
+
 	getTexCoords () = options -> getTexCoords ();
 	getNormals   () = options -> getNormals  ();
 

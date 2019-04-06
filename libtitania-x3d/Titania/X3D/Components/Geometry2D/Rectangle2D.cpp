@@ -107,6 +107,8 @@ Rectangle2D::build ()
 {
 	const auto & options = getBrowser () -> getRectangle2DOptions ();
 
+	getMultiTexCoords () .emplace_back ();
+
 	getTexCoords () = options -> getTexCoords ();
 	getNormals   () = options -> getNormals  ();
 

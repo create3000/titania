@@ -352,6 +352,8 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// Triangles
 
+	getMultiTexCoords () .emplace_back ();
+
 	const auto & triangles = tessellator .triangles ();
 
 	getTexCoords () .insert (getTexCoords () .end (), triangles .tex_coords () .begin (), triangles .tex_coords () .end ());

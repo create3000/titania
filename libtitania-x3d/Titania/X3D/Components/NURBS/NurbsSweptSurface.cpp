@@ -161,6 +161,8 @@ NurbsSweptSurface::build ()
 
 	extrusionNode -> rebuild ();
 
+	getMultiTexCoords () .emplace_back ();
+
 	getColors ()    = extrusionNode -> getPolygonColors ();
 	getTexCoords () = extrusionNode -> getPolygonTexCoords ();
 	getNormals ()   = extrusionNode -> getPolygonNormals ();

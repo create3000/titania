@@ -109,27 +109,26 @@ TriangleSet2D::build ()
 	setSolid (solid ());
 }
 
-const TexCoordArray &
+TexCoordArray
 TriangleSet2D::buildTexCoords ()
 {
-	if (getTexCoords () .empty ())
+	TexCoordArray texCoords;
+
+	Vector3d min;
+	double   Ssize;
+	int32_t  Sindex, Tindex;
+
+	getTexCoordParams (min, Ssize, Sindex, Tindex);
+
+	for (const auto & vertex : getVertices ())
 	{
-		Vector3d min;
-		double   Ssize;
-		int32_t  Sindex, Tindex;
-	
-		getTexCoordParams (min, Ssize, Sindex, Tindex);
-	
-		for (const auto & vertex : getVertices ())
-		{
-			getTexCoords () .emplace_back ((vertex [0] - min [0]) / Ssize,
-			                               (vertex [1] - min [1]) / Ssize,
-			                               0,
-			                               1);
-		}
+		texCoords .emplace_back ((vertex [0] - min [0]) / Ssize,
+		                         (vertex [1] - min [1]) / Ssize,
+		                         0,
+		                         1);
 	}
 
-	return getTexCoords ();
+	return texCoords;
 }
 
 SFNode

@@ -187,10 +187,11 @@ Cylinder::build ()
 	if (options ())
 		optionsNode -> toMetaData (createMetadataSet ("/Cylinder/options"));
 
-	const double xDimension = optionsNode -> xDimension ();
+	getMultiTexCoords () .emplace_back ();
 
-	const double y1 = height () / 2;
-	const double y2 = -y1;
+	const double xDimension = optionsNode -> xDimension ();
+	const double y1         = height () / 2;
+	const double y2         = -y1;
 
 	if (side ())
 	{

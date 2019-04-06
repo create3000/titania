@@ -345,6 +345,8 @@ Extrusion::build ()
 	if (spine () .size () < 2 or crossSection () .size () < 2)
 		return;
 
+	getMultiTexCoords () .emplace_back ();
+
 	const size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
 
 	#define INDEX(n, k) ((n) * crossSectionSize + (k))

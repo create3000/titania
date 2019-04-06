@@ -167,7 +167,7 @@ public:
 	virtual
 	const TexCoordArray &
 	getPolygonTexCoords () const
-	{ return texCoords; }
+	{ return multiTexCoords [0]; }
 
 	virtual
 	const std::vector <Vector3f> &
@@ -322,11 +322,11 @@ protected:
 
 	TexCoordArray &
 	getTexCoords ()
-	{ return texCoords; }
+	{ return multiTexCoords [0]; }
 
 	const TexCoordArray &
 	getTexCoords () const
-	{ return texCoords; }
+	{ return multiTexCoords [0]; }
 
 	void
 	setTextureCoordinate (X3DTextureCoordinateNode* const);
@@ -401,6 +401,10 @@ protected:
 	getMatrix () const
 	{ return matrix; }
 
+	virtual
+	TexCoordArray
+	buildTexCoords ();
+
 	void
 	getTexCoordParams (Vector3d &, double &, int32_t &, int32_t &);
 
@@ -456,10 +460,6 @@ private:
 	void
 	transfer ();
 
-	virtual
-	const TexCoordArray &
-	buildTexCoords ();
-
 	///  @name Static members
 
 	static const Matrix4d matrix;
@@ -475,7 +475,6 @@ private:
 	std::vector <Color4f>                colors;
 	X3DPtr <X3DTextureCoordinateNode>    textureCoordinateNode;
 	MultiTexCoordArray                   multiTexCoords;
-	TexCoordArray                        texCoords;
 	std::vector <Vector3f>               normals;
 	std::vector <Vector3f>               faceNormals;
 	std::vector <Vector3d>               vertices;

@@ -183,10 +183,11 @@ Cone::build ()
 		optionsNode -> toMetaData (createMetadataSet ("/Cone/options"));
 
 	const double xDimension = optionsNode -> xDimension ();
+	const double y1         = height () / 2;
+	const double y2         = -y1;
+	const auto   nz         = std::polar <double> (1, -pi <double> / 2 + std::atan (bottomRadius () / height ()));
 
-	const double y1 = height () / 2;
-	const double y2 = -y1;
-	const auto   nz = std::polar <double> (1, -pi <double> / 2 + std::atan (bottomRadius () / height ()));
+	getMultiTexCoords () .emplace_back ();
 
 	if (side ())
 	{

@@ -129,7 +129,7 @@ private:
 	build () final override;
 
 	virtual
-	const TexCoordArray &
+	TexCoordArray
 	buildTexCoords () final override;
 
 

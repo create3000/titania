@@ -359,6 +359,8 @@ ScreenText::build ()
 
 	// Create geometry
 
+	getText () -> getMultiTexCoords () .emplace_back ();
+
 	auto & texCoords = getText () -> getTexCoords ();
 	auto & normals   = getText () -> getNormals ();
 	auto & vertices  = getText () -> getVertices ();

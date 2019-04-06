@@ -80,7 +80,6 @@ X3DGeometryNode::X3DGeometryNode () :
 	               colors (),
 	textureCoordinateNode (),
 	       multiTexCoords (),
-	            texCoords (),
 	              normals (),
 	          faceNormals (),
 	             vertices (),
@@ -679,24 +678,23 @@ X3DGeometryNode::triangulate (const size_t i1,
 	}
 }
 
-const TexCoordArray &
+TexCoordArray
 X3DGeometryNode::buildTexCoords ()
 {
-	if (texCoords .empty ())
+	TexCoordArray texCoords;
+
+	Vector3d min;
+	double   Ssize;
+	int32_t  Sindex, Tindex;
+
+	getTexCoordParams (min, Ssize, Sindex, Tindex);
+
+	for (const auto & vertex : getVertices ())
 	{
-		Vector3d min;
-		double   Ssize;
-		int32_t  Sindex, Tindex;
-	
-		getTexCoordParams (min, Ssize, Sindex, Tindex);
-	
-		for (const auto & vertex : getVertices ())
-		{
-			texCoords .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
-			                         (vertex [Tindex] - min [Tindex]) / Ssize,
-			                         0,
-			                         1);
-		}
+		texCoords .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
+		                         (vertex [Tindex] - min [Tindex]) / Ssize,
+		                         0,
+		                         1);
 	}
 
 	return texCoords;
@@ -955,12 +953,10 @@ X3DGeometryNode::rebuild ()
 
 	if (geometryType > 1)
 	{
-		const auto maxTextures = getBrowser () -> getMaxTextures ();
-
 		if (multiTexCoords .empty ())
-			multiTexCoords .resize (maxTextures, buildTexCoords ());
-		else
-			multiTexCoords .resize (maxTextures, multiTexCoords .back ());
+			multiTexCoords .emplace_back (buildTexCoords ());
+
+		multiTexCoords .resize (getBrowser () -> getMaxTextures (), multiTexCoords .back ());
 	}
 
 	// Upload arrays.
@@ -984,7 +980,6 @@ X3DGeometryNode::clear ()
 	fogDepths      .clear ();
 	colors         .clear ();
 	multiTexCoords .clear ();
-	texCoords      .clear ();
 	normals        .clear ();
 	faceNormals    .clear ();
 	vertices       .clear ();

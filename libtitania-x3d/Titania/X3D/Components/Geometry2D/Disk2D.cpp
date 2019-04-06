@@ -218,6 +218,8 @@ Disk2D::build ()
 
 		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
 
+		getMultiTexCoords () .emplace_back ();
+
 		getTexCoords () = optionsNode -> getTexCoords ();
 		getNormals   () = optionsNode -> getNormals  ();
 
@@ -240,6 +242,8 @@ Disk2D::build ()
 	// Disk with hole
 
 	// Texture Coordinates
+
+	getMultiTexCoords () .emplace_back ();
 
 	const auto & texCoords = optionsNode -> getTexCoords ();
 	const auto & normals   = optionsNode -> getNormals ();

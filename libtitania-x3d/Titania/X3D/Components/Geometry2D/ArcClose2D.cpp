@@ -195,6 +195,8 @@ ArcClose2D::build ()
 	const auto   circle     = sweepAngle == pi2 <double>;
 	const auto   steps      = std::max <int32_t> (4, sweepAngle * optionsNode -> dimension () / (2 * pi <double>) + 1);
 
+	getMultiTexCoords () .emplace_back ();
+
 	if (not circle)
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
