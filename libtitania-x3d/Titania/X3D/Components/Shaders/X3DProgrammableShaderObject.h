@@ -266,12 +266,12 @@ public:
 	///  @name Uniform location access texture
 
 	GLint
+	getNumTexturesUniformLocation () const
+	{ return x3d_NumTextures; }
+
+	const std::vector <GLint> &
 	getTextureTypeUniformLocation () const
 	{ return x3d_TextureType; }
-
-	GLint
-	getTexture2DUniformLocation () const
-	{ return x3d_Texture2D; }
 
 	const std::vector <GLint> &
 	getTextureCoordinateGeneratorModeUniformLocation () const
@@ -549,10 +549,10 @@ private:
 	GLint x3d_BackShininess;
 	GLint x3d_BackTransparency;
 
-	GLint x3d_NumTextures;
-	GLint x3d_TextureType;
-	GLint x3d_Texture2D;
-	GLint x3d_CubeMapTexture;
+	GLint               x3d_NumTextures;
+	std::vector <GLint> x3d_TextureType;
+	std::vector <GLint> x3d_Texture2D;
+	std::vector <GLint> x3d_CubeMapTexture;
 
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
@@ -574,13 +574,11 @@ private:
 	GLint x3d_ParticleLife;
 	GLint x3d_ParticleElapsedTime;
 
-	bool                      extensionGPUShaderFP64;
-	std::vector <std::string> transformFeedbackVaryings;
-	size_t                    numGlobalLights;
-
-	FogContainer*                 fogContainer;
-	std::vector <LightContainer*> lightContainers;
-
+	bool                                             extensionGPUShaderFP64;
+	std::vector <std::string>                        transformFeedbackVaryings;
+	size_t                                           numGlobalLights;
+	FogContainer*                                    fogContainer;
+	std::vector <LightContainer*>                    lightContainers;
 	std::map <GLint, std::shared_ptr <TextureValue>> textures;
 
 };

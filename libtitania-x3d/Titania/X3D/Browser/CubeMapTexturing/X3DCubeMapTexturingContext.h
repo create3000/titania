@@ -67,12 +67,6 @@ class X3DCubeMapTexturingContext :
 {
 public:
 
-	///  @name Member access
-
-	const X3DPtr <TextureProperties> &
-	getDefaultCubeMapTextureProperties () const
-	{ return defaultCubeMapTextureProperties; }
-
 	///  @name Destruction
 
 	virtual
@@ -86,6 +80,12 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class BrowserOptions;
+	friend class X3DEnvironmentTextureNode;
+	friend class X3DProgrammableShaderObject;
+
 	///  @name Construction
 
 	X3DCubeMapTexturingContext ();
@@ -94,11 +94,22 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	std::vector <int32_t>
+	getCubeMapTextureUnits ()
+	{ return cubeMapTextureUnits; }
+
+	const X3DPtr <TextureProperties> &
+	getDefaultCubeMapTextureProperties () const
+	{ return defaultCubeMapTextureProperties; }
+
 
 private:
 
 	///  @name Members
 
+	std::vector <int32_t>      cubeMapTextureUnits;
 	X3DPtr <TextureProperties> defaultCubeMapTextureProperties;
 
 };

@@ -65,11 +65,9 @@ X3DTexturingContext::X3DTexturingContext () :
 	                textureMemory (0),
 	               minTextureSize (16),
 	               maxTextureSize (0),
-	              maxTextureUnits (0),
 	      maxCombinedTextureUnits (0),
-	                 textureUnits (),
 	         combinedTextureUnits (),
-	                textureStages (),
+	               texture2DUnits (),
 	     defaultTextureProperties (new TextureProperties (getExecutionContext ())),
 	defaultMovieTextureProperties (new TextureProperties (getExecutionContext ())),
 	      defaultTextureTransform (new TextureTransform (getExecutionContext ())),
@@ -98,22 +96,18 @@ X3DTexturingContext::initialize ()
 		textureMemory = size_t (kbytes) * 1024;
 	}
 
-	int32_t maxTextureCoords;
-
 	glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &maxTextureSize);
-	glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &maxTextureCoords); // Max multi texture coords
-	glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &maxTextureUnits);
 	glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxCombinedTextureUnits);
 
-	maxTextureUnits = std::min (maxCombinedTextureUnits / 2, std::min (maxTextureCoords, maxTextureUnits));
-
-	// For single and multi texturing
-	for (int32_t i = maxTextureUnits - 1; i >= 0; -- i)
-		textureUnits .push (i);                                              // Don't add GL_TEXTURE0
-
 	// For shaders
-	for (int32_t i = maxTextureUnits; i < maxCombinedTextureUnits; ++ i)
-		combinedTextureUnits .push (i);                                      // Don't add GL_TEXTURE0
+	for (int32_t i = 1; i < maxCombinedTextureUnits; ++ i)
+		combinedTextureUnits .push (i); // Don't add GL_TEXTURE0
+
+	for (size_t i = 0, size = getMaxTextures (); i < size; ++ i)
+	{
+		texture2DUnits .emplace_back (combinedTextureUnits .top ());
+		combinedTextureUnits .pop ();
+	}
 
 	defaultTextureProperties      -> setup ();
 	defaultMovieTextureProperties -> setup ();

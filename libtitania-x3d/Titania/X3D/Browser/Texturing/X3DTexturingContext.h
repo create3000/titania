@@ -66,7 +66,6 @@ class X3DTextureNode;
 class X3DTextureTransformNode;
 
 using TextureUnitStack = std::stack <int32_t, std::vector <int32_t>>;
-using TextureArray     = std::vector <int32_t>;
 
 class X3DTexturingContext :
 	virtual public X3DBaseNode
@@ -102,10 +101,6 @@ public:
 	{ return maxTextureSize; }
 
 	size_t
-	getMaxTextureUnits () const
-	{ return maxTextureUnits; }
-
-	size_t
 	getMaxCombinedTextureUnits () const
 	{ return maxCombinedTextureUnits; }
 
@@ -136,12 +131,14 @@ protected:
 	friend class TextureProperties;
 	friend class SoftSystem;
 	friend class ScreenText;
+	friend class X3DCubeMapTexturingContext;
 	friend class X3DGeometryNode;
 	friend class X3DLineGeometryNode;
 	friend class X3DTexture2DNode;
 	friend class X3DTexture3DNode;
 	friend class X3DTextureCoordinateNode;
 	friend class X3DTextureTransformNode;
+	friend class X3DTexturing3DContext;
 	friend class X3DProgrammableShaderObject;
 	friend class X3DShapeNode;
 
@@ -156,16 +153,12 @@ protected:
 	///  @name Member access
 
 	TextureUnitStack &
-	getTextureUnits ()
-	{ return textureUnits; }
-
-	TextureUnitStack &
 	getCombinedTextureUnits ()
 	{ return combinedTextureUnits; }
 
-	TextureArray &
-	getTextureStages ()
-	{ return textureStages; }
+	std::vector <int32_t> &
+	getTexture2DUnits ()
+	{ return texture2DUnits; }
 
 	const X3DPtr <TextureProperties> &
 	getDefaultTextureProperties () const
@@ -204,15 +197,13 @@ private:
 
 	///  @name Members
 
-	SFBool           texturing;
-	size_t           textureMemory;
-	size_t           minTextureSize;
-	int32_t          maxTextureSize;
-	int32_t          maxTextureUnits;
-	int32_t          maxCombinedTextureUnits;
-	TextureUnitStack textureUnits;
-	TextureUnitStack combinedTextureUnits;
-	TextureArray     textureStages;
+	SFBool                texturing;
+	size_t                textureMemory;
+	size_t                minTextureSize;
+	int32_t               maxTextureSize;
+	int32_t               maxCombinedTextureUnits;
+	TextureUnitStack      combinedTextureUnits;
+	std::vector <int32_t> texture2DUnits;
 
 	X3DPtr <TextureProperties>        defaultTextureProperties;
 	X3DPtr <TextureProperties>        defaultMovieTextureProperties;

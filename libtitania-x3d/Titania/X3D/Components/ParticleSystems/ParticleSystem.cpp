@@ -1836,50 +1836,6 @@ ParticleSystem::getScreenAlignedRotation (const Matrix4d & modelViewMatrix) cons
 }
 
 void
-ParticleSystem::enableTexCoord (X3DBrowser* const browser) const
-{
-	if (browser -> getTextureStages () .empty ())
-	{
-		glClientActiveTexture (GL_TEXTURE0);
-		glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-		glTexCoordPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, texCoord));
-	}
-	else
-	{
-		for (const auto & unit : browser -> getTextureStages ())
-		{
-			if (unit >= 0)
-			{
-				glClientActiveTexture (GL_TEXTURE0 + unit);
-				glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-				glTexCoordPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, texCoord));
-			}
-		}
-	}
-}
-
-void
-ParticleSystem::disableTexCoord (X3DBrowser* const browser) const
-{
-	if (browser -> getTextureStages () .empty ())
-	{
-		glClientActiveTexture (GL_TEXTURE0);
-		glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-	}
-	else
-	{
-		for (const auto & unit : browser -> getTextureStages ())
-		{
-			if (unit >= 0)
-			{
-				glClientActiveTexture (GL_TEXTURE0 + unit);
-				glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-			}
-		}
-	}
-}
-
-void
 ParticleSystem::dispose ()
 {
 	try

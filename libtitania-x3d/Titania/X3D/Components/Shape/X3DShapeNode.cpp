@@ -184,19 +184,13 @@ X3DShapeNode::display (ShapeContainer* const context)
 		draw (context);
 
 		appearanceNode -> getLineProperties () -> disable (renderObject);
-
-		disableTextures (browser);
 	}
 	else
 	{
 		// Draw geometry.
 
 		if (appearanceNode -> getFillProperties () -> filled ())
-		{
 			draw (context);
-
-			disableTextures (browser);
-		}
 
 		// Draw hatch on top of whatever appearance is specified.
 
@@ -233,37 +227,6 @@ X3DShapeNode::display (ShapeContainer* const context)
 
 	glDisable (GL_FOG);
 	glDisable (GL_COLOR_MATERIAL);
-}
-
-void
-X3DShapeNode::disableTextures (X3DBrowser* const browser)
-{
-	if (browser -> getTextureStages () .empty ())
-	{
-		glActiveTexture (GL_TEXTURE0);
-		glDisable (GL_TEXTURE_2D);
-		glDisable (GL_TEXTURE_3D);
-		glDisable (GL_TEXTURE_CUBE_MAP);
-	}
-	else
-	{
-		for (const auto & unit : basic::make_reverse_range (browser -> getTextureStages ()))
-		{
-			if (unit < 0)
-				continue;
-
-			glActiveTexture (GL_TEXTURE0 + unit);
-
-			glDisable (GL_TEXTURE_2D);
-			glDisable (GL_TEXTURE_3D);
-			glDisable (GL_TEXTURE_CUBE_MAP);
-
-			browser -> getTextureUnits () .push (unit);
-		}
-
-		browser -> getTextureStages () .clear ();
-		glActiveTexture (GL_TEXTURE0);
-	}
 }
 
 void

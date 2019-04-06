@@ -187,11 +187,6 @@ private:
 	void
 	set_geometry ();
 
-	///  @name Operations
-	
-	void
-	disableTextures (X3DBrowser* const browser);
-
 	///  @name Members
 
 	struct Fields

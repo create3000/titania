@@ -120,9 +120,9 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                      x3d_BackShininess (-1),
 	                   x3d_BackTransparency (-1),
 	                        x3d_NumTextures (-1),
-	                        x3d_TextureType (-1),
-	                          x3d_Texture2D (-1),
-	                     x3d_CubeMapTexture (-1),
+	                        x3d_TextureType (getBrowser () -> getMaxTextures (), -1),
+	                          x3d_Texture2D (getBrowser () -> getMaxTextures (), -1),
+	                     x3d_CubeMapTexture (getBrowser () -> getMaxTextures (), -1),
 	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
 	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
 	                           x3d_Viewport (-1),
@@ -205,6 +205,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ShadowMap                           .clear ();
 	x3d_TextureCoordinateGeneratorMode      .clear ();
 	x3d_TextureCoordinateGeneratorParameter .clear ();
+	x3d_TextureType                         .clear ();
+	x3d_Texture2D                           .clear ();
+	x3d_CubeMapTexture                      .clear ();
 	x3d_TextureMatrix                       .clear ();
 	x3d_TexCoord                            .clear ();
 
@@ -270,10 +273,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_BackShininess        = getUniformLocation (program, "x3d_BackMaterial.shininess",        "x3d_BackShininess");
 	x3d_BackTransparency     = getUniformLocation (program, "x3d_BackMaterial.transparency",     "x3d_BackTransparency");
 
-	x3d_NumTextures    = glGetUniformLocation (program, "x3d_NumTextures");
-	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
-	x3d_Texture2D      = getUniformLocation   (program, "x3d_Texture2D", "x3d_Texture");
-	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
+	x3d_NumTextures = glGetUniformLocation (program, "x3d_NumTextures");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
 	{
@@ -281,6 +281,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 		x3d_TextureCoordinateGeneratorMode      .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ()));
 		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
+
+		x3d_TextureType    .emplace_back (glGetUniformLocation (program, ("x3d_TextureType[" + is + "]")    .c_str ()));
+		x3d_Texture2D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture2D[" + is + "]")      .c_str ()));
+		x3d_CubeMapTexture .emplace_back (glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ()));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
@@ -304,16 +308,15 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
 	x3d_ParticleElapsedTime = glGetUniformLocation (program, "x3d_Particle.elapsedTime");
 
-	static const auto textureType    = std::vector <int32_t> ({ 0 });
-	static const auto texture2D      = std::vector <int32_t> ({ 2 });
-	static const auto cubeMapTexture = std::vector <int32_t> ({ 4 });
-	static const auto shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 5);
+	static const auto & texture2D      = getBrowser () -> getTexture2DUnits ();
+	static const auto & cubeMapTexture = getBrowser () -> getCubeMapTextureUnits ();
+	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
 
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
-	glUniform1iv (x3d_TextureType,          textureType    .size (), textureType    .data ());
-	glUniform1iv (x3d_Texture2D,            texture2D      .size (), texture2D      .data ()); // Set texture to active texture unit 2.
-	glUniform1iv (x3d_CubeMapTexture,       cubeMapTexture .size (), cubeMapTexture .data ()); // Set cube map texture to active texture unit 4.
-	glUniform1iv (glGetUniformLocation (program, "x3d_ShadowMap"), shadowMap .size (), shadowMap .data ()); // Set cube map texture to active texture unit 5
+	glUniform1i  (x3d_NumTextures,          0);
+	glUniform1iv (x3d_Texture2D [0],      texture2D      .size (), texture2D      .data ());
+	glUniform1iv (x3d_CubeMapTexture [0], cubeMapTexture .size (), cubeMapTexture .data ());
+	glUniform1iv (x3d_ShadowMap [0],      shadowMap      .size (), shadowMap      .data ());
 }
 
 GLint
@@ -328,12 +331,17 @@ X3DProgrammableShaderObject::getUniformLocation (GLuint program, const std::stri
 
 	// Look for depreciated location.
 
-	location = glGetUniformLocation (program, depreciated .c_str ());
+	if (depreciated .size ())
+	{
+		location = glGetUniformLocation (program, depreciated .c_str ());
+	
+		if (location not_eq -1)
+			getBrowser () -> getConsole () -> warn ("Using uniform location name »", depreciated, "« is depreciated, use »", name, "«. See http://create3000.de/x_ite/custom-shaders/.\n");
+	
+		return location;
+	}
 
-	if (location not_eq -1)
-		getBrowser () -> getConsole () -> warn ("Using uniform location name »", depreciated, "« is depreciated, use »", name, "«. See http://create3000.de/x_ite/custom-shaders/.\n");
-
-	return location;
+	return -1;
 }
 
 GLint
@@ -347,7 +355,8 @@ X3DProgrammableShaderObject::getAttribLocation (GLuint program, const std::strin
 		return location;
 
 	// Look for depreciated location.
-	if (name .size ())
+
+	if (depreciated .size ())
 	{
 		location = glGetAttribLocation (program, depreciated .c_str ());
 	
@@ -1139,8 +1148,6 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 void
 X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
-	static const auto textureType = std::vector <int32_t> ({ 0 });
-
 	const auto & browser               = context -> getBrowser ();
 	const auto & renderObject          = context -> getRenderer ();
 	const auto & clipPlanes            = context -> getClipPlanes ();
@@ -1198,9 +1205,15 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 		glUniform1i (x3d_Lighting, false);
 
 	if (textureNode)
+	{
+		glUniform1i (x3d_NumTextures, textureNode -> getSize ());
+
 		textureNode -> setShaderUniforms (this);
+	}
 	else
-		glUniform1iv (x3d_TextureType, 1, textureType .data ());
+	{
+		glUniform1i (x3d_NumTextures, 0);
+	}
 
 	// Matrices
 
@@ -1266,6 +1279,7 @@ X3DProgrammableShaderObject::enable ()
 		}
 	
 		const auto textureUnit = object -> textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+
 		getBrowser () -> getCombinedTextureUnits () .pop ();
 
 		glUniform1i (location, textureUnit);

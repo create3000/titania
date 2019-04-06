@@ -1,18 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp">
     <Files>
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="572" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1212" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DComposedGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTextureCoordinate.cpp" Line="156" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureCoordinateNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureCoordinateNode.cpp" Line="83" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureTransformNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTextureTransform.cpp" Line="124" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.cpp" Line="87" Column="57" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinateGenerator.h" Line="135" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureCoordinate.cpp" Line="117" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

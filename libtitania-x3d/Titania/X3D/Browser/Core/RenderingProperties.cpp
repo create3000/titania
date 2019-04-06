@@ -334,7 +334,7 @@ RenderingProperties::build ()
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
 		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getViewport () [2], getBrowser () -> getViewport () [3]));
-		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getTextureUnits () .size (), getBrowser () -> getCombinedTextureUnits () .size ()));
+		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd"), getBrowser () -> getCombinedTextureUnits () .size ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), MaxLights () .getValue ()));
@@ -369,7 +369,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tShading language version: " << glGetString (GL_SHADING_LANGUAGE_VERSION) << ", 1.0 es X_ITE (default)" << std::endl
 
 		<< "\tRendering Properties" << std::endl
-		<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl
+		<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () << std::endl
 		<< "\t\tMax texture size: " << MaxTextureSize () << " × " << MaxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << MaxLights () << std::endl
 		<< "\t\tMax clip planes: " << getBrowser () -> getMaxClipPlanes () << std::endl

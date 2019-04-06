@@ -140,13 +140,13 @@ X3DEnvironmentTextureNode::updateTextureProperties ()
 }
 
 void
-X3DEnvironmentTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
+X3DEnvironmentTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
 {
-	static const auto textureType = std::vector <GLint> ({ 4 }); 
+	const auto browser = shaderObject -> getBrowser ();
 
-	glActiveTexture (GL_TEXTURE4);
+	glActiveTexture (GL_TEXTURE0 + browser -> getCubeMapTextureUnits () [i]);
 	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-	glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
+	glUniform1i (shaderObject -> getTextureTypeUniformLocation () [i], 4);
 }
 
 } // X3D

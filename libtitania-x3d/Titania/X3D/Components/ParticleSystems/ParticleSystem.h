@@ -408,12 +408,6 @@ private:
 	Matrix3d
 	getScreenAlignedRotation (const Matrix4d & modelViewMatrix) const;
 
-	void
-	enableTexCoord (X3DBrowser* const browser) const;
-
-	void
-	disableTexCoord (X3DBrowser* const browser) const;
-
 	///  @name Static members
 
 	static const Component   component;

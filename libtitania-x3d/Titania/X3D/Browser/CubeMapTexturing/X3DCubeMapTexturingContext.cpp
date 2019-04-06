@@ -50,6 +50,7 @@
 
 #include "X3DCubeMapTexturingContext.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Texturing/TextureProperties.h"
 
 namespace titania {
@@ -57,6 +58,7 @@ namespace X3D {
 
 X3DCubeMapTexturingContext::X3DCubeMapTexturingContext () :
 	                    X3DBaseNode (),
+	            cubeMapTextureUnits (),
    defaultCubeMapTextureProperties (new TextureProperties (getExecutionContext ()))
 {
 	addChildObjects (defaultCubeMapTextureProperties);
@@ -65,6 +67,12 @@ X3DCubeMapTexturingContext::X3DCubeMapTexturingContext () :
 void
 X3DCubeMapTexturingContext::initialize ()
 {
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+	{
+		cubeMapTextureUnits .emplace_back (getBrowser () -> getCombinedTextureUnits () .top ());
+		getBrowser () -> getCombinedTextureUnits () .pop ();
+	}
+
 	defaultCubeMapTextureProperties -> minificationFilter ()  = "AVG_PIXEL";
 	defaultCubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
 	defaultCubeMapTextureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";

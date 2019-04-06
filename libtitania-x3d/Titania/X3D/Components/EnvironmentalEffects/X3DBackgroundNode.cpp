@@ -531,12 +531,11 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 
 	// Uniforms
 
-	glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
-	glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
-	glUniform1i (shaderNode -> getLightingUniformLocation (),      false);
-
-	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-		glUniform1i (shaderNode -> getTextureCoordinateGeneratorModeUniformLocation () [i], 0);
+	glUniform1i (shaderNode -> getFogTypeUniformLocation (),                            0);
+	glUniform1i (shaderNode -> getColorMaterialUniformLocation (),                      false);
+	glUniform1i (shaderNode -> getLightingUniformLocation (),                           false);
+	glUniform1i (shaderNode -> getNumTexturesUniformLocation (),                        1);
+	glUniform1i (shaderNode -> getTextureCoordinateGeneratorModeUniformLocation () [0], 0);
 
 	// ProjectionMatrix
 	// TexureMatrix

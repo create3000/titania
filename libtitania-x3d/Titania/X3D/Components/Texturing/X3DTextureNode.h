@@ -70,6 +70,11 @@ public:
 
 	///  @name Member access
 
+	virtual
+	size_t
+	getSize () const
+	{ return 1; }
+
 	const SFBool &
 	isTransparent () const
 	{ return transparent; }
