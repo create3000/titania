@@ -77,10 +77,8 @@ X3DTextureCoordinateNode::assign (const X3DPtr <X3DTextureCoordinateNode> & othe
 void
 X3DTextureCoordinateNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
-	setShaderUniforms (shaderObject, 0);
-
-	for (size_t i = 1, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-		glUniform1i (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], 0);
+	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		setShaderUniforms (shaderObject, i);
 }
 
 void
