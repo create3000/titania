@@ -957,8 +957,10 @@ X3DGeometryNode::rebuild ()
 	{
 		const auto maxTextures = getBrowser () -> getMaxTextures ();
 
-		if (multiTexCoords .size () < maxTextures)
+		if (multiTexCoords .empty ())
 			multiTexCoords .resize (maxTextures, buildTexCoords ());
+		else
+			multiTexCoords .resize (maxTextures, multiTexCoords .back ());
 	}
 
 	// Upload arrays.
