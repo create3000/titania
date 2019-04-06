@@ -126,23 +126,21 @@ public:
 
 	virtual
 	void
-	init (MultiTexCoordArray &) const final override
-	{ }
+	init (MultiTexCoordArray & texCoords) const final override;
 
 	virtual
 	void
-	set1Point (const size_t, const Vector4f &) final override
+	set1Point (const size_t index, const Vector4f & point) final override
 	{ }
 
 	virtual
 	Vector4f
-	get1Point (const size_t) const final override
+	get1Point (const size_t index) const final override
 	{ return Vector4f (0, 0, 0, 1); }
 
 	virtual
 	void
-	addTexCoord (const size_t, MultiTexCoordArray &, const size_t) const final override
-	{ }
+	addTexCoord (const size_t i, MultiTexCoordArray & texCoords, const size_t index) const final override;
 
 	virtual
 	void
