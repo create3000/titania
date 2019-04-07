@@ -12,13 +12,13 @@ getTexCoord (const in int i)
 }
 
 vec4
-getTextureCoordinate (const in x3d_TextureCoordinateGeneratorParameters textureCoordinateGenerator, const in vec4 t)
+getTextureCoordinate (const in x3d_TextureCoordinateGeneratorParameters textureCoordinateGenerator, const in int i)
 {
 	int mode = textureCoordinateGenerator .mode;
 
 	if (mode == x3d_None)
 	{
-		return t;
+		return getTexCoord (i);
 	}
 	else if (mode == x3d_Sphere)
 	{
@@ -76,7 +76,7 @@ getTextureCoordinate (const in x3d_TextureCoordinateGeneratorParameters textureC
 		return vec4 (refract (normalize (lV - eye), -lN, eta), 1.0);
 	}
 
-	return t;
+	return getTexCoord (i);
 }
 
 vec4
@@ -89,7 +89,7 @@ getTextureColor (const in vec4 diffuseColor, const in vec4 specularColor)
 		if (i == x3d_NumTextures)
 			break;
 
-		vec4 texCoords    = getTextureCoordinate (x3d_TextureCoordinateGenerator [i], getTexCoord (i));
+		vec4 texCoords    = getTextureCoordinate (x3d_TextureCoordinateGenerator [i], i);
 		vec4 textureColor = vec4 (1.0, 1.0, 1.0, 1.0);
 	
 		if (x3d_TextureType [i] == x3d_TextureType2D)

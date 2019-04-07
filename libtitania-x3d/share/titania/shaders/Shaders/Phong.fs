@@ -95,7 +95,7 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		{
 			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor (vec4 (C .rgb, C .a * alpha), vec4 (material .specularColor, 1.0));
+				vec4 T = getTextureColor (vec4 (C .rgb, C .a * alpha), vec4 (material .specularColor, alpha));
 
 				diffuseFactor = T .rgb;
 				alpha         = T .a;
@@ -109,7 +109,7 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		{
 			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor (vec4 (material .diffuseColor, alpha), vec4 (material .specularColor, 1.0));
+				vec4 T = getTextureColor (vec4 (material .diffuseColor, alpha), vec4 (material .specularColor, alpha));
 
 				diffuseFactor = T .rgb;
 				alpha         = T .a;
