@@ -3246,6 +3246,9 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.X_ITE\Contact" />
     <None Include="share\titania\Library\Components\Texturing\.X_ITE\TextureCoordinateGenerator" />
     <None Include="share\titania\Library\Components\Texturing\.Titania\TextureCoordinateGenerator" />
+    <None Include="share\titania\Library\Components\Texturing\.X_ITE\MultiTexture" />
+    <None Include="share\titania\Library\Components\Texturing\.X_ITE\MultiTextureCoordinate" />
+    <None Include="share\titania\Library\Components\Texturing\.X_ITE\MultiTextureTransform" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

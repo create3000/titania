@@ -208,8 +208,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ShadowMatrix                        .clear ();
 	x3d_ShadowMapSize                       .clear ();
 	x3d_ShadowMap                           .clear ();
-	x3d_TextureCoordinateGeneratorMode      .clear ();
-	x3d_TextureCoordinateGeneratorParameter .clear ();
 	x3d_TextureType                         .clear ();
 	x3d_Texture2D                           .clear ();
 	x3d_CubeMapTexture                      .clear ();
@@ -217,6 +215,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_MultiTextureAlphaMode               .clear ();
 	x3d_MultiTextureSource                  .clear ();
 	x3d_MultiTextureFunction                .clear ();
+	x3d_TextureCoordinateGeneratorMode      .clear ();
+	x3d_TextureCoordinateGeneratorParameter .clear ();
 	x3d_TextureMatrix                       .clear ();
 	x3d_TexCoord                            .clear ();
 
@@ -289,9 +289,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	{
 		const auto is = basic::to_string (i, std::locale::classic ());
 
-		x3d_TextureCoordinateGeneratorMode      .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ()));
-		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
-
 		x3d_TextureType    .emplace_back (glGetUniformLocation (program, ("x3d_TextureType[" + is + "]")    .c_str ()));
 		x3d_Texture2D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture2D[" + is + "]")      .c_str ()));
 		x3d_CubeMapTexture .emplace_back (glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ()));
@@ -300,6 +297,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_MultiTextureAlphaMode .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].alphaMode") .c_str ()));
 		x3d_MultiTextureSource    .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].source")    .c_str ()));
 		x3d_MultiTextureFunction  .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].function")  .c_str ()));
+
+		x3d_TextureCoordinateGeneratorMode      .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ()));
+		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");

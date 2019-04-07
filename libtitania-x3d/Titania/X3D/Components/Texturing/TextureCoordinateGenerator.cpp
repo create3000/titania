@@ -148,7 +148,7 @@ TextureCoordinateGenerator::addTexCoord (const size_t i, MultiTexCoordArray & te
 void
 TextureCoordinateGenerator::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
 {
-	glUniform1i (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], int (modeType));
+	glUniform1i  (shaderObject -> getTextureCoordinateGeneratorModeUniformLocation () [i], int (modeType));
 	glUniform1fv (shaderObject -> getTextureCoordinateGeneratorParameterUniformLocation () [i], parameterArray .size (), parameterArray .data ());
 }
 
