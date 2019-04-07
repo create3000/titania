@@ -28,15 +28,15 @@ uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator 
 
 uniform x3d_FogParameters x3d_Fog;
 
-varying float fogDepth;   // fog depth
-varying vec4  frontColor; // color
-varying vec4  backColor;  // color
-varying vec4  texCoord0;  // texCoord0
-varying vec4  texCoord1;  // texCoord1
-varying vec3  vN;         // normal vector at this point on geometry
-varying vec3  v;          // point on geometry
-varying vec3  lN;         // normal vector at this point on geometry in local coordinates
-varying vec3  lV;         // point on geometry in local coordinates
+varying float fogDepth;    // fog depth
+varying vec4  frontColor;  // color
+varying vec4  backColor;   // color
+varying vec4  texCoord0;   // texCoord0
+varying vec4  texCoord1;   // texCoord1
+varying vec3  normal;      // normal vector at this point on geometry
+varying vec3  vertex;      // point on geometry
+varying vec3  localNormal; // normal vector at this point on geometry in local coordinates
+varying vec3  localVertex; // point on geometry in local coordinates
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;
@@ -53,7 +53,7 @@ clip ()
 		if (i == x3d_NumClipPlanes)
 			break;
 
-		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
+		if (dot (vertex, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
 			discard;
 	}
 }
@@ -71,7 +71,7 @@ getFogInterpolant ()
 	if (visibilityRange <= 0.0)
 		return 1.0;
 
-	float dV = length (x3d_Fog .matrix * v);
+	float dV = length (x3d_Fog .matrix * vertex);
 
 	if (dV >= visibilityRange)
 		return 0.0;

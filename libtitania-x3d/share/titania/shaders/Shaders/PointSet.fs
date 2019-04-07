@@ -14,8 +14,8 @@ uniform float x3d_LinewidthScaleFactor;
 uniform x3d_FogParameters x3d_Fog;
 
 varying float fogDepth; // fog depth
-varying vec4  C;        // color
-varying vec3  v;        // point on geometry
+varying vec4  color;    // color
+varying vec3  vertex;   // point on geometry
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;
@@ -30,7 +30,7 @@ clip ()
 		if (i == x3d_NumClipPlanes)
 			break;
 
-		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
+		if (dot (vertex, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
 			discard;
 	}
 }
@@ -48,7 +48,7 @@ getFogInterpolant ()
 	if (visibilityRange <= 0.0)
 		return 1.0;
 
-	float dV = length (x3d_Fog .matrix * v);
+	float dV = length (x3d_Fog .matrix * vertex);
 
 	if (dV >= visibilityRange)
 		return 0.0;
@@ -76,8 +76,8 @@ main ()
 	float lw = (x3d_LinewidthScaleFactor + 1.0) / 2.0;
 	float t  = distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * lw - lw + 1.0;
 
-	gl_FragColor .rgb = getFogColor (C .rgb);
-	gl_FragColor .a   = mix (C .a, 0.0, clamp (t, 0.0, 1.0));
+	gl_FragColor .rgb = getFogColor (color .rgb);
+	gl_FragColor .a   = mix (color .a, 0.0, clamp (t, 0.0, 1.0));
 
 	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 	//http://outerra.blogspot.com/2013/07/logarithmic-depth-buffer-optimizations.html

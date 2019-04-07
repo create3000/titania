@@ -6,8 +6,8 @@ precision mediump int;
 uniform int  x3d_NumClipPlanes;
 uniform vec4 x3d_ClipPlane [x3d_MaxClipPlanes];
 
-varying vec4 C; // color
-varying vec3 v; // point on geometry
+varying vec4 color;  // color
+varying vec3 vertex; // point on geometry
 
 void
 clip ()
@@ -18,7 +18,7 @@ clip ()
 		if (i == x3d_NumClipPlanes)
 			break;
 
-		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
+		if (dot (vertex, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
 			discard;
 	}
 }
@@ -29,5 +29,5 @@ main ()
 	// THERE IS A BUG with x3d_NumClipPlanes AND INT UNIFORMS for the first frame in on_size_allocate.
 	//clip ();
 
-	gl_FragColor = C;
+	gl_FragColor = color;
 }

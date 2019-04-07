@@ -75,7 +75,7 @@ attribute vec4 x3d_Vertex;
 #endif
 
 #ifdef HAS_TEXCOORDS
-	attribute vec4 x3d_TexCoord;
+	attribute vec4 x3d_TexCoord0;
 #endif
 
 #ifdef HAS_TANGENTS
@@ -122,7 +122,7 @@ main ()
 	#endif
 
 	#ifdef HAS_TEXCOORDS
-		texCoord = vec2 (x3d_TexCoord .s, 1.0 - x3d_TexCoord .t);
+		texCoord = vec2 (x3d_TexCoord0 .s, 1.0 - x3d_TexCoord0 .t);
 	#else
 		texCoord = vec2 (0.0, 0.0);
 	#endif

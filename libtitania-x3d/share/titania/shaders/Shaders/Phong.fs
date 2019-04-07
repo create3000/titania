@@ -34,14 +34,14 @@ uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator 
 
 uniform x3d_FogParameters x3d_Fog;
 
-varying float fogDepth;  // fog depth
-varying vec4  C;         // color
-varying vec4  texCoord0; // texCoord0
-varying vec4  texCoord1; // texCoord1
-varying vec3  vN;        // normal vector at this point on geometry
-varying vec3  v;         // point on geometry
-varying vec3  lN;        // normal vector at this point on geometry in local coordinates
-varying vec3  lV;        // point on geometry in local coordinates
+varying float fogDepth;    // fog depth
+varying vec4  color;       // color
+varying vec4  texCoord0;   // texCoord0
+varying vec4  texCoord1;   // texCoord1
+varying vec3  normal;      // normal vector at this point on geometry
+varying vec3  vertex;      // point on geometry
+varying vec3  localNormal; // normal vector at this point on geometry in local coordinates
+varying vec3  localVertex; // point on geometry in local coordinates
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;
@@ -59,7 +59,7 @@ clip ()
 		if (i == x3d_NumClipPlanes)
 			break;
 
-		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
+		if (dot (vertex, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
 			discard;
 	}
 }
@@ -82,9 +82,9 @@ getMaterialColor (const in x3d_MaterialParameters material)
 {
 	if (x3d_Lighting)
 	{
-		vec3  N  = normalize (gl_FrontFacing ? vN : -vN);
-		vec3  V  = normalize (-v); // normalized vector from point on geometry to viewer's position
-		float dV = length (v);
+		vec3  N  = normalize (gl_FrontFacing ? normal : -normal);
+		vec3  V  = normalize (-vertex); // normalized vector from point on geometry to viewer's position
+		float dV = length (vertex);
 
 		// Calculate diffuseFactor & alpha
 
@@ -95,15 +95,15 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		{
 			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor (vec4 (C .rgb, C .a * alpha), vec4 (material .specularColor, alpha));
+				vec4 T = getTextureColor (vec4 (color .rgb, color .a * alpha), vec4 (material .specularColor, alpha));
 
 				diffuseFactor = T .rgb;
 				alpha         = T .a;
 			}
 			else
-				diffuseFactor = C .rgb;
+				diffuseFactor = color .rgb;
 
-			alpha *= C .a;
+			alpha *= color .a;
 		}
 		else
 		{
@@ -131,7 +131,7 @@ getMaterialColor (const in x3d_MaterialParameters material)
 
 			x3d_LightSourceParameters light = x3d_LightSource [i];
 
-			vec3  vL = light .location - v; // Light to fragment
+			vec3  vL = light .location - vertex; // Light to fragment
 			float dL = length (light .matrix * vL);
 			bool  di = light .type == x3d_DirectionalLight;
 
@@ -174,10 +174,10 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		{
 			if (x3d_NumTextures > 0)
 			{
-				finalColor = getTextureColor (C, vec4 (1.0));
+				finalColor = getTextureColor (color, vec4 (1.0));
 			}
 			else
-				finalColor = C;
+				finalColor = color;
 		}
 		else
 		{
@@ -202,7 +202,7 @@ getFogInterpolant ()
 	if (visibilityRange <= 0.0)
 		return 1.0;
 
-	float dV = length (x3d_Fog .matrix * v);
+	float dV = length (x3d_Fog .matrix * vertex);
 
 	if (dV >= visibilityRange)
 		return 0.0;
