@@ -991,6 +991,8 @@
     <None Include="share\titania\shaders\Shaders\Include\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Include\Perlin.h" />
     <None Include="share\titania\shaders\Shaders\Include\Texture.h" />
+    <None Include="share\titania\shaders\Shaders\Include\Fog.h" />
+    <None Include="share\titania\shaders\Shaders\Include\ClipPlanes.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

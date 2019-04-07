@@ -2,6 +2,16 @@
 
 #pragma X3D include "Perlin.h"
 
+uniform int         x3d_NumTextures;
+uniform int         x3d_TextureType [x3d_MaxTextures]; // x3d_None, x3d_TextureType2D or x3d_TextureTypeCubeMapTexture
+uniform sampler2D   x3d_Texture2D [x3d_MaxTextures];
+uniform samplerCube x3d_CubeMapTexture [x3d_MaxTextures];
+
+uniform vec4 x3d_MultiTextureColor;
+uniform x3d_MultiTextureParameters x3d_MultiTexture [x3d_MaxTextures];
+
+uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator [x3d_MaxTextures];  
+
 vec4
 getTexCoord (const in int i)
 {
@@ -133,7 +143,7 @@ getTextureColor (const in vec4 diffuseColor, const in vec4 specularColor)
 		if (function == x3d_Complement)
 			arg1 = 1.0 - arg1;
 		else if (function == x3d_AlphaReplicate)
-			arg1 .a = currentColor .a;
+			arg1 .a = arg2 .a;
 
 		// Mode
 
