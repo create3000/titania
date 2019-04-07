@@ -144,8 +144,8 @@ X3DTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 	setShaderUniforms (shaderObject, 0);
 
 	glUniform1i (shaderObject -> getNumTexturesUniformLocation (),               1);
-	glUniform1i (shaderObject -> getMultiTextureModeUniformLocation () [0],      int (MultiTexture::ModeType::SELECTARG2));
-	glUniform1i (shaderObject -> getMultiTextureAlphaModeUniformLocation () [0], int (MultiTexture::ModeType::SELECTARG2));
+	glUniform1i (shaderObject -> getMultiTextureModeUniformLocation () [0],      int (MultiTexture::ModeType::MODULATE));
+	glUniform1i (shaderObject -> getMultiTextureAlphaModeUniformLocation () [0], int (MultiTexture::ModeType::MODULATE));
 	glUniform1i (shaderObject -> getMultiTextureSourceUniformLocation () [0],    int (MultiTexture::SourceType::DEFAULT));
 	glUniform1i (shaderObject -> getMultiTextureFunctionUniformLocation () [0],  int (MultiTexture::FunctionType::DEFAULT));
 }

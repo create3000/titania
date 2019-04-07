@@ -990,6 +990,7 @@
     <None Include="share\titania\shaders\Shaders\Include\Shadow.h" />
     <None Include="share\titania\shaders\Shaders\Include\Pack.h" />
     <None Include="share\titania\shaders\Shaders\Include\Perlin.h" />
+    <None Include="share\titania\shaders\Shaders\Include\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

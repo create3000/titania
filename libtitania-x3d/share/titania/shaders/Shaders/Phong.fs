@@ -36,7 +36,8 @@ uniform x3d_FogParameters x3d_Fog;
 
 varying float fogDepth; // fog depth
 varying vec4  C;        // color
-varying vec4  t0;       // texCoord
+varying vec4  t0;       // texCoord0
+varying vec4  t1;       // texCoord1
 varying vec3  vN;       // normal vector at this point on geometry
 varying vec3  v;        // point on geometry
 varying vec3  lN;       // normal vector at this point on geometry in local coordinates
@@ -47,8 +48,8 @@ uniform float x3d_LogarithmicFarFactor1_2;
 varying float depth;
 #endif
 
+#pragma X3D include "Include/Texture.h"
 #pragma X3D include "Include/Shadow.h"
-#pragma X3D include "Include/Perlin.h"
 
 void
 clip ()
@@ -77,222 +78,6 @@ getSpotFactor (const in float cutOffAngle, const in float beamWidth, const in ve
 }
 
 vec4
-getTextureCoordinate (const in x3d_TextureCoordinateGeneratorParameters textureCoordinateGenerator, const in vec4 t)
-{
-	int mode = textureCoordinateGenerator .mode;
-
-	if (mode == x3d_None)
-	{
-		return t;
-	}
-	else if (mode == x3d_Sphere)
-	{
-		return vec4 (vN .x / 2.0 + 0.5, vN .y / 2.0 + 0.5, 0.0, 1.0);
-	}
-	else if (mode == x3d_CameraSpaceNormal)
-	{
-		return vec4 (vN, 1.0);
-	}
-	else if (mode == x3d_CameraSpacePosition)
-	{
-		return vec4 (v, 1.0);
-	}
-	else if (mode == x3d_CameraSpaceReflectionVector)
-	{
-		return vec4 (reflect (normalize (v), -vN), 1.0);
-	}
-	else if (mode == x3d_SphereLocal)
-	{
-		return vec4 (lN .x / 2.0 + 0.5, lN .y / 2.0 + 0.5, 0.0, 1.0);
-	}
-	else if (mode == x3d_Coord)
-	{
-		return vec4 (lV, 1.0);
-	}
-	else if (mode == x3d_CoordEye)
-	{
-		return vec4 (v, 1.0);
-	}
-	else if (mode == x3d_Noise)
-	{
-		vec3 scale       = vec3 (textureCoordinateGenerator .parameter [0], textureCoordinateGenerator .parameter [1], textureCoordinateGenerator .parameter [2]);
-		vec3 translation = vec3 (textureCoordinateGenerator .parameter [3], textureCoordinateGenerator .parameter [4], textureCoordinateGenerator .parameter [5]);
-
-		return vec4 (perlin (lV * scale + translation), 1.0);
-	}
-	else if (mode == x3d_NoiseEye)
-	{
-		vec3 scale       = vec3 (textureCoordinateGenerator .parameter [0], textureCoordinateGenerator .parameter [1], textureCoordinateGenerator .parameter [2]);
-		vec3 translation = vec3 (textureCoordinateGenerator .parameter [3], textureCoordinateGenerator .parameter [4], textureCoordinateGenerator .parameter [5]);
-
-		return vec4 (perlin (v * scale + translation), 1.0);
-	}
-	else if (mode == x3d_SphereReflect)
-	{
-		float eta = textureCoordinateGenerator .parameter [0];
-
-		return vec4 (refract (normalize (v), -vN, eta), 1.0);
-	}
-	else if (mode == x3d_SphereReflectLocal)
-	{
-		float eta = textureCoordinateGenerator .parameter [0];
-		vec3  eye = vec3 (textureCoordinateGenerator .parameter [1], textureCoordinateGenerator .parameter [2], textureCoordinateGenerator .parameter [3]);
-
-		return vec4 (refract (normalize (lV - eye), -lN, eta), 1.0);
-	}
-
-	return t;
-}
-
-vec4
-getTextureColor (const in x3d_MaterialParameters material)
-{
-	vec4 currentColor = vec4 (material .diffuseColor, 1.0);
-
-	for (int i = 0; i < x3d_MaxTextures; ++ i)
-	{
-		if (i == x3d_NumTextures)
-			break;
-
-		vec4 texCoords    = getTextureCoordinate (x3d_TextureCoordinateGenerator [i], t0);
-		vec4 textureColor = vec4 (1.0, 1.0, 1.0, 1.0);
-	
-		if (x3d_TextureType [i] == x3d_TextureType2D)
-		{
-			if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
-				textureColor = texture2D (x3d_Texture2D [i], vec2 (texCoords));
-			else
-				// If dimension is x3d_Geometry2D the texCoords must be flipped.
-				textureColor = texture2D (x3d_Texture2D [i], vec2 (1.0 - texCoords .s, texCoords .t));
-		}
-	 	else if (x3d_TextureType [i] == x3d_TextureTypeCubeMapTexture)
-		{
-			if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
-				textureColor = textureCube (x3d_CubeMapTexture [i], vec3 (texCoords));
-			else
-				// If dimension is x3d_Geometry2D the texCoords must be flipped.
-				textureColor = textureCube (x3d_CubeMapTexture [i], vec3 (1.0 - texCoords .s, texCoords .t, texCoords .z));
-		}
-
-		// Multi texturing
-
-		x3d_MultiTextureParameters multiTexture = x3d_MultiTexture [i];
-
-		// Source
-
-		int  source = multiTexture .source;
-		vec4 arg1   = currentColor;
-		vec4 arg2   = textureColor;
-
-		if (source == x3d_Diffuse)
-		{
-			arg2 = vec4 (material .diffuseColor, 1.0);
-		}
-		else if (source == x3d_Specular)
-		{
-			arg2 = vec4 (material .specularColor, 1.0);
-		}
-		else if (source == x3d_Factor)
-		{
-			arg2 = x3d_MultiTextureColor;
-		}
-
-		// Mode
-
-		int mode      = multiTexture .mode;
-		int alphaMode = multiTexture .alphaMode;
-
-		// RGB
-
-		if (mode == x3d_Replace)
-			currentColor .rgb = arg1 .rgb;
-		else if (mode == x3d_Modulate)
-			currentColor .rgb = arg1 .rgb * arg2 .rgb;
-		else if (mode == x3d_Modulate2X)
-			;
-		else if (mode == x3d_Modulate4X)
-			;
-		else if (mode == x3d_Add)
-			currentColor .rgb = arg1 .rgb + arg2 .rgb;
-		else if (mode == x3d_AddSigned)
-			;
-		else if (mode == x3d_AddSigned2X)
-			;
-		else if (mode == x3d_AddSmooth)
-			;
-		else if (mode == x3d_Subtract)
-			currentColor .rgb = arg1 .rgb - arg2 .rgb;
-		else if (mode == x3d_BlendDiffuseAlpha)
-			;
-		else if (mode == x3d_BlendTextureAlpha)
-			;
-		else if (mode == x3d_BlendFactorAlpha)
-			;
-		else if (mode == x3d_BlendCurrentAlpha)
-			;
-		else if (mode == x3d_ModulateAlphaAddColor)
-			;
-		else if (mode == x3d_ModulateInvAlphaAddColor)
-			;
-		else if (mode == x3d_ModulateInvColorAddAlpha)
-			;
-		else if (mode == x3d_DotProduct3)
-			;
-		else if (mode == x3d_SelectArg1)
-			currentColor .rgb = arg1 .rgb;
-		else if (mode == x3d_SelectArg2)
-			currentColor .rgb = arg2 .rgb;
-		else if (mode == x3d_Off)
-			;
-
-		// Alpha
-
-		if (alphaMode == x3d_Replace)
-			currentColor .a = arg1 .a;
-		else if (alphaMode == x3d_Modulate)
-			currentColor .a = arg1 .a * arg2 .a;
-		else if (mode == x3d_Modulate2X)
-			;
-		else if (mode == x3d_Modulate4X)
-			;
-		else if (mode == x3d_Add)
-			currentColor .a = arg1 .a + arg2 .a;
-		else if (mode == x3d_AddSigned)
-			;
-		else if (mode == x3d_AddSigned2X)
-			;
-		else if (mode == x3d_AddSmooth)
-			;
-		else if (mode == x3d_Subtract)
-			currentColor .a = arg1 .a - arg2 .a;
-		else if (mode == x3d_BlendDiffuseAlpha)
-			;
-		else if (mode == x3d_BlendTextureAlpha)
-			;
-		else if (mode == x3d_BlendFactorAlpha)
-			;
-		else if (mode == x3d_BlendCurrentAlpha)
-			;
-		else if (mode == x3d_ModulateAlphaAddColor)
-			;
-		else if (mode == x3d_ModulateInvAlphaAddColor)
-			;
-		else if (mode == x3d_ModulateInvColorAddAlpha)
-			;
-		else if (mode == x3d_DotProduct3)
-			;
-		else if (mode == x3d_SelectArg1)
-			currentColor .a = arg1 .a;
-		else if (mode == x3d_SelectArg2)
-			currentColor .a = arg2 .a;
-		else if (mode == x3d_Off)
-			;
-	}
-
-	return currentColor;
-}
-
-vec4
 getMaterialColor (const in x3d_MaterialParameters material)
 {
 	if (x3d_Lighting)
@@ -303,17 +88,17 @@ getMaterialColor (const in x3d_MaterialParameters material)
 
 		// Calculate diffuseFactor & alpha
 
-		vec3  diffuseFactor = vec3 (1.0, 1.0, 1.0);
+		vec3  diffuseFactor = vec3 (1.0);
 		float alpha         = 1.0 - material .transparency;
 
 		if (x3d_ColorMaterial)
 		{
 			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor (material);
+				vec4 T = getTextureColor (vec4 (C .rgb, C .a * alpha), vec4 (material .specularColor, 1.0));
 
-				diffuseFactor  = T .rgb * C .rgb;
-				alpha         *= T .a;
+				diffuseFactor = T .rgb;
+				alpha         = T .a;
 			}
 			else
 				diffuseFactor = C .rgb;
@@ -324,10 +109,10 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		{
 			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor (material);
+				vec4 T = getTextureColor (vec4 (material .diffuseColor, alpha), vec4 (material .specularColor, 1.0));
 
-				diffuseFactor  = T .rgb * material .diffuseColor;
-				alpha         *= T .a;
+				diffuseFactor = T .rgb;
+				alpha         = T .a;
 			}
 			else
 				diffuseFactor = material .diffuseColor;
@@ -383,23 +168,21 @@ getMaterialColor (const in x3d_MaterialParameters material)
 	}
 	else
 	{
-		vec4 finalColor = vec4 (1.0, 1.0, 1.0, 1.0);
+		vec4 finalColor = vec4 (1.0);
 	
 		if (x3d_ColorMaterial)
 		{
-			if (x3d_TextureType [0] != x3d_None)
+			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor (material);
-
-				finalColor = T * C;
+				finalColor = getTextureColor (C, vec4 (1.0));
 			}
 			else
 				finalColor = C;
 		}
 		else
 		{
-			if (x3d_TextureType [0] != x3d_None)
-				finalColor = getTextureColor (material);
+			if (x3d_NumTextures > 0)
+				finalColor = getTextureColor (vec4 (1.0), vec4 (1.0));
 		}
 
 		return finalColor;
