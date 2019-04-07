@@ -15,10 +15,16 @@ uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator 
 vec4
 getTexCoord (const in int i)
 {
-	if (i == 1)
+	if (i == 0)
+	{
+		return texCoord0;
+	}
+	else if (i == 1)
+	{
 		return texCoord1;
+	}
 
-	return texCoord0;
+	return texCoord1;
 }
 
 vec4
@@ -99,6 +105,8 @@ getTextureColor (const in vec4 diffuseColor, const in vec4 specularColor)
 		if (i == x3d_NumTextures)
 			break;
 
+		// Get texture color.
+
 		vec4 texCoords    = getTextureCoordinate (x3d_TextureCoordinateGenerator [i], i);
 		vec4 textureColor = vec4 (1.0, 1.0, 1.0, 1.0);
 	
@@ -130,20 +138,30 @@ getTextureColor (const in vec4 diffuseColor, const in vec4 specularColor)
 		vec4 arg2   = currentColor;
 
 		if (source == x3d_Diffuse)
+		{
 			arg1 = diffuseColor;
+		}
 		else if (source == x3d_Specular)
+		{
 			arg1 = specularColor;
+		}
 		else if (source == x3d_Factor)
+		{
 			arg1 = x3d_MultiTextureColor;
+		}
 
 		// Function
 
 		int function = multiTexture .function;
 
 		if (function == x3d_Complement)
+		{
 			arg1 = 1.0 - arg1;
+		}
 		else if (function == x3d_AlphaReplicate)
+		{
 			arg1 .a = arg2 .a;
+		}
 
 		// Mode
 
@@ -153,86 +171,162 @@ getTextureColor (const in vec4 diffuseColor, const in vec4 specularColor)
 		// RGB
 
 		if (mode == x3d_Replace)
+		{
 			currentColor .rgb = arg1 .rgb;
+		}
 		else if (mode == x3d_Modulate)
+		{
 			currentColor .rgb = arg1 .rgb * arg2 .rgb;
+		}
 		else if (mode == x3d_Modulate2X)
+		{
 			currentColor .rgb = (arg1 .rgb * arg2 .rgb) * 2.0;
+		}
 		else if (mode == x3d_Modulate4X)
+		{
 			currentColor .rgb = (arg1 .rgb * arg2 .rgb) * 4.0;
+		}
 		else if (mode == x3d_Add)
+		{
 			currentColor .rgb = arg1 .rgb + arg2 .rgb;
+		}
 		else if (mode == x3d_AddSigned)
+		{
 			currentColor .rgb = arg1 .rgb + arg2 .rgb - 0.5;
+		}
 		else if (mode == x3d_AddSigned2X)
+		{
 			currentColor .rgb = (arg1 .rgb + arg2 .rgb - 0.5) * 2.0;
+		}
 		else if (mode == x3d_AddSmooth)
+		{
 			currentColor .rgb = arg1 .rgb + (1.0 - arg1 .rgb) * arg2 .rgb;
+		}
 		else if (mode == x3d_Subtract)
+		{
 			currentColor .rgb = arg1 .rgb - arg2 .rgb;
+		}
 		else if (mode == x3d_BlendDiffuseAlpha)
+		{
 			currentColor .rgb = arg1 .rgb * diffuseColor .a + arg2 .rgb * (1.0 - diffuseColor .a);
+		}
 		else if (mode == x3d_BlendTextureAlpha)
+		{
 			currentColor .rgb = arg1 .rgb * arg1 .a + arg2 .rgb * (1.0 - arg1 .a);
+		}
 		else if (mode == x3d_BlendFactorAlpha)
+		{
 			currentColor .rgb = arg1 .rgb * x3d_MultiTextureColor .a + arg2 .rgb * (1.0 - x3d_MultiTextureColor .a);
+		}
 		else if (mode == x3d_BlendCurrentAlpha)
+		{
 			currentColor .rgb = arg1 .rgb * arg2 .a + arg2 .rgb * (1.0 - arg2 .a);
+		}
 		else if (mode == x3d_ModulateAlphaAddColor)
+		{
 			currentColor .rgb = arg1 .rgb + arg1 .a * arg2 .rgb;
+		}
 		else if (mode == x3d_ModulateInvAlphaAddColor)
+		{
 			currentColor .rgb = (1.0 - arg1 .a) * arg2 .rgb + arg1 .rgb;
+		}
 		else if (mode == x3d_ModulateInvColorAddAlpha)
+		{
 			currentColor .rgb = (1.0 - arg1 .rgb) * arg2 .rgb + arg1 .a;
+		}
 		else if (mode == x3d_DotProduct3)
+		{
 			currentColor .rgb = vec3 (dot (arg1 .rgb * 2.0 - 1.0, arg2 .rgb * 2.0 - 1.0));
+		}
 		else if (mode == x3d_SelectArg1)
+		{
 			currentColor .rgb = arg1 .rgb;
+		}
 		else if (mode == x3d_SelectArg2)
+		{
 			currentColor .rgb = arg2 .rgb;
+		}
 		else if (mode == x3d_Off)
 			;
 
 		// Alpha
 
 		if (alphaMode == x3d_Replace)
+		{
 			currentColor .a = arg1 .a;
+		}
 		else if (alphaMode == x3d_Modulate)
+		{
 			currentColor .a = arg1 .a * arg2 .a;
+		}
 		else if (mode == x3d_Modulate2X)
+		{
 			currentColor .a = (arg1 .a * arg2 .a) * 2.0;
+		}
 		else if (mode == x3d_Modulate4X)
+		{
 			currentColor .a = (arg1 .a * arg2 .a) * 4.0;
+		}
 		else if (mode == x3d_Add)
+		{
 			currentColor .a = arg1 .a + arg2 .a;
+		}
 		else if (mode == x3d_AddSigned)
+		{
 			currentColor .a = arg1 .a + arg2 .a - 0.5;
+		}
 		else if (mode == x3d_AddSigned2X)
+		{
 			currentColor .a = (arg1 .a + arg2 .a - 0.5) * 2.0;
+		}
 		else if (mode == x3d_AddSmooth)
+		{
 			currentColor .a = arg1 .a + (1.0 - arg1 .a) * arg2 .a;
+		}
 		else if (mode == x3d_Subtract)
+		{
 			currentColor .a = arg1 .a - arg2 .a;
+		}
 		else if (mode == x3d_BlendDiffuseAlpha)
+		{
 			currentColor .a = arg1 .a * diffuseColor .a + arg2 .a * (1.0 - diffuseColor .a);
+		}
 		else if (mode == x3d_BlendTextureAlpha)
+		{
 			currentColor .a = arg1 .a * arg1 .a + arg2 .a * (1.0 - arg1 .a);
+		}
 		else if (mode == x3d_BlendFactorAlpha)
+		{
 			currentColor .a = arg1 .a * x3d_MultiTextureColor .a + arg2 .a * (1.0 - x3d_MultiTextureColor .a);
+		}
 		else if (mode == x3d_BlendCurrentAlpha)
+		{
 			currentColor .a = arg1 .a * arg2 .a + arg2 .a * (1.0 - arg2 .a);
+		}
 		else if (mode == x3d_ModulateAlphaAddColor)
+		{
 			currentColor .a = arg1 .a + arg1 .a * arg2 .a;
+		}
 		else if (mode == x3d_ModulateInvAlphaAddColor)
+		{
 			currentColor .a = (1.0 - arg1 .a) * arg2 .a + arg1 .a;
+		}
 		else if (mode == x3d_ModulateInvColorAddAlpha)
+		{
 			currentColor .a = (1.0 - arg1 .a) * arg2 .a + arg1 .a;
+		}
 		else if (mode == x3d_DotProduct3)
+		{
 			currentColor .a = dot (arg1 .rgb * 2.0 - 1.0, arg2 .rgb * 2.0 - 1.0);
+		}
 		else if (mode == x3d_SelectArg1)
+		{
 			currentColor .a = arg1 .a;
+		}
 		else if (mode == x3d_SelectArg2)
+		{
 			currentColor .a = arg2 .a;
+		}
 		else if (mode == x3d_Off)
 			;
 	}
