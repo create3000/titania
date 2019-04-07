@@ -34,14 +34,14 @@ uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator 
 
 uniform x3d_FogParameters x3d_Fog;
 
-varying float fogDepth; // fog depth
-varying vec4  C;        // color
-varying vec4  t0;       // texCoord0
-varying vec4  t1;       // texCoord1
-varying vec3  vN;       // normal vector at this point on geometry
-varying vec3  v;        // point on geometry
-varying vec3  lN;       // normal vector at this point on geometry in local coordinates
-varying vec3  lV;       // point on geometry in local coordinates
+varying float fogDepth;  // fog depth
+varying vec4  C;         // color
+varying vec4  texCoord0; // texCoord0
+varying vec4  texCoord1; // texCoord1
+varying vec3  vN;        // normal vector at this point on geometry
+varying vec3  v;         // point on geometry
+varying vec3  lN;        // normal vector at this point on geometry in local coordinates
+varying vec3  lV;        // point on geometry in local coordinates
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;

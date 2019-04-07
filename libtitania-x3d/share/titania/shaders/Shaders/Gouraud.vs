@@ -28,8 +28,8 @@ attribute vec4  x3d_Vertex;
 varying float fogDepth;   // fog depth
 varying vec4  frontColor; // color
 varying vec4  backColor;  // color
-varying vec4  t0;         // texCoord0
-varying vec4  t1;         // texCoord1
+varying vec4  texCoord0;  // texCoord0
+varying vec4  texCoord1;  // texCoord1
 varying vec3  vN;         // normal vector at this point on geometry
 varying vec3  v;          // point on geometry
 varying vec3  lN;         // normal vector at this point on geometry in local coordinates
@@ -123,13 +123,13 @@ main ()
 
 	vec4 p = x3d_ModelViewMatrix * x3d_Vertex;
 
-	fogDepth = x3d_FogDepth;
-	t0       = x3d_TextureMatrix [0] * x3d_TexCoord0;
-	t1       = x3d_TextureMatrix [1] * x3d_TexCoord1;
-	v        = p .xyz;
-	vN       = normalize (x3d_NormalMatrix * x3d_Normal);
-	lN       = x3d_Normal;
-	lV       = vec3 (x3d_Vertex);
+	fogDepth  = x3d_FogDepth;
+	texCoord0 = x3d_TextureMatrix [0] * x3d_TexCoord0;
+	texCoord1 = x3d_TextureMatrix [1] * x3d_TexCoord1;
+	v         = p .xyz;
+	vN        = normalize (x3d_NormalMatrix * x3d_Normal);
+	lN        = x3d_Normal;
+	lV        = vec3 (x3d_Vertex);
 
 	gl_Position = x3d_ProjectionMatrix * p;
 

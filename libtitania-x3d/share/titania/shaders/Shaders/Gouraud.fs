@@ -31,8 +31,8 @@ uniform x3d_FogParameters x3d_Fog;
 varying float fogDepth;   // fog depth
 varying vec4  frontColor; // color
 varying vec4  backColor;  // color
-varying vec4  t0;         // texCoord0
-varying vec4  t1;         // texCoord1
+varying vec4  texCoord0;  // texCoord0
+varying vec4  texCoord1;  // texCoord1
 varying vec3  vN;         // normal vector at this point on geometry
 varying vec3  v;          // point on geometry
 varying vec3  lN;         // normal vector at this point on geometry in local coordinates

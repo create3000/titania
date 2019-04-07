@@ -6,9 +6,9 @@ vec4
 getTexCoord (const in int i)
 {
 	if (i == 1)
-		return t1;
+		return texCoord1;
 
-	return t0;
+	return texCoord0;
 }
 
 vec4
