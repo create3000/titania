@@ -5,7 +5,9 @@
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTexture.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTexture.cpp" Line="120" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTexture.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp" Line="244" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="70" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
