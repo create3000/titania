@@ -131,11 +131,12 @@ getTextureColor (const in vec4 diffuseColor, const in vec4 specularColor)
 
 		x3d_MultiTextureParameters multiTexture = x3d_MultiTexture [i];
 
+		vec4 arg1 = textureColor;
+		vec4 arg2 = currentColor;
+
 		// Source
 
-		int  source = multiTexture .source;
-		vec4 arg1   = textureColor;
-		vec4 arg2   = currentColor;
+		int source = multiTexture .source;
 
 		if (source == x3d_Diffuse)
 		{

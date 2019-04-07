@@ -98,7 +98,7 @@ const io::character Grammar::NumberSign ('#');
 
 // Misc
 const io::quoted_string Grammar::String ('\"');
-const io::sequence      Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
+const io::sequence      Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
 
 // Values
 

@@ -6,13 +6,14 @@ COMPONENT EnvironmentalEffects : 3
 COMPONENT Layering : 1
 COMPONENT Layout : 1
 COMPONENT Shape : 3
+COMPONENT X_ITE : 1
 
 META "comment" "World of Titania"
 META "created" "Thu, 10 Jul 2014 17:28:33 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.4.5, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TexturePreview.x3dv"
-META "modified" "Tue, 02 Apr 2019 17:16:46 GMT"
+META "modified" "Sun, 07 Apr 2019 13:57:07 GMT"
 
 PROTO Volume [
   inputOutput SFInt32 dimension 10
@@ -199,9 +200,243 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF CubeMapTexture Transform {
+            value DEF Texture2D Transform {
               children Shape {
-                appearance DEF Appearance Appearance { }
+                appearance DEF Appearance Appearance {
+                  blendMode BlendMode { }
+                }
+                geometry Rectangle2D { }
+              }
+            }
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+    ]
+  }
+  title "TexturePreview"
+}
+
+LayerSet {
+  activeLayer 2
+  order [
+    1,
+    2
+  ]
+  layers [
+    DEF CheckerBoard LayoutLayer {
+      isPickable FALSE
+      layout Layout {
+        scaleMode [
+          "PIXEL",
+          "PIXEL"
+        ]
+      }
+      children [
+        DEF Gray Background {
+          skyColor 0.4 0.4 0.4
+        }
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+              emissiveColor 0.6 0.6 0.6
+            }
+            texture PixelTexture {
+              image 2 2 2
+                0xffff 0
+                0 0xffff
+            }
+            textureTransform TextureTransform {
+              scale 5000 5000
+            }
+          }
+          geometry Rectangle2D {
+            size 80000 80000
+          }
+        }
+      ]
+    }
+    Layer {
+      children [
+        DEF Texture2DNavigationInfo NavigationInfo {
+          type "PLANE_create3000.de"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF Texture3DNavigationInfo NavigationInfo {
+          type "EXAMINE"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF CubeMapTextureNavigationInfo NavigationInfo {
+          type "EXAMINE"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF Texture2DViewpoint OrthoViewpoint { }
+        DEF Texture3DViewpoint Viewpoint {
+          position 1.86252 2.136 2.97602
+          orientation -0.70089 0.681223 0.211398 0.83363
+          centerOfRotation -0.00853324 -0.18822 0.156491
+        }
+        DEF CubeMapViewpoint Viewpoint {
+          position 0 0 2.84738
+        }
+        DEF _1 Switch {
+          children [
+            USE Texture2D
+            DEF Texture3D Group {
+              children [
+                DEF Volume Group {
+                  children [
+                    DEF _2 ClipPlane {
+                      plane 0 0 -1 1
+                    }
+                    Transform {
+                      children Volume {
+                        dimension 200
+                        appearance USE Appearance
+                      }
+                    }
+                  ]
+                }
+                DEF VisibleClipPlane Group {
+                  children [
+                    DEF ClipPlaneScript Script {
+                      inputOnly  SFVec3f set_translation
+                      outputOnly SFVec4f plane_changed
+
+                      url "ecmascript:
+
+function set_translation (value)
+{
+	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
+
+	plane_changed = new SFVec4f (0,0,-1, -distanceFromOrigin);
+}
+"
+                    }
+                    Transform {
+                      translation 0 0 0.01
+                      children [
+                        DEF Rectangle2D Transform {
+                          translation 3.62463e-06 0 1
+                          children Shape {
+                            appearance Appearance {
+                              fillProperties FillProperties {
+                                filled FALSE
+                                hatched FALSE
+                              }
+                              lineProperties LineProperties {
+                                linewidthScaleFactor 3
+                              }
+                              material Material {
+                                diffuseColor 0 0 0
+                                emissiveColor 0.876 0.876 0.876
+                              }
+                            }
+                            geometry Rectangle2D { }
+                          }
+                        }
+                        DEF PlaneSensor PlaneSensor {
+                          axisRotation 0 1 0 1.5708
+                          offset 3.62463e-06 0 1
+                          minPosition -1 0
+                          maxPosition 0.99 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+                DEF Box Transform {
+                  children Shape {
+                    appearance Appearance {
+                      fillProperties FillProperties {
+                        filled FALSE
+                        hatched FALSE
+                      }
+                      lineProperties LineProperties {
+                        linewidthScaleFactor 2
+                      }
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry IndexedLineSet {
+                      coordIndex [
+                        0,
+                        1,
+                        2,
+                        3,
+                        0,
+                        -1,
+                        5,
+                        4,
+                        7,
+                        6,
+                        5,
+                        -1,
+                        3,
+                        2,
+                        6,
+                        7,
+                        3,
+                        -1,
+                        4,
+                        5,
+                        1,
+                        0,
+                        4,
+                        -1,
+                        4,
+                        0,
+                        3,
+                        7,
+                        4,
+                        -1,
+                        1,
+                        5,
+                        6,
+                        2,
+                        1,
+                        -1
+                      ]
+                      coord Coordinate {
+                        point [
+                          -1 -1 1,
+                          1 -1 1,
+                          1 1 1,
+                          -1 1 1,
+                          -1 -1 -1,
+                          1 -1 -1,
+                          1 1 -1,
+                          -1 1 -1
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+            DEF CubeMapTexture Transform {
+              children Shape {
+                appearance USE Appearance
                 geometry IndexedFaceSet {
                   creaseAngle 3.14159
                   coordIndex [
@@ -11192,238 +11427,6 @@ WorldInfo {
                 }
               }
             }
-          }
-        ]
-      }
-      DEF Page MetadataSet {
-        name "Page"
-        reference "http://titania.create3000.de"
-        value [
-          DEF activeView MetadataInteger {
-            name "activeView"
-            reference "http://titania.create3000.de"
-            value 1
-          }
-          DEF multiView MetadataInteger {
-            name "multiView"
-            reference "http://titania.create3000.de"
-            value 0
-          }
-        ]
-      }
-    ]
-  }
-  title "TexturePreview"
-}
-
-LayerSet {
-  activeLayer 2
-  order [
-    1,
-    2
-  ]
-  layers [
-    DEF CheckerBoard LayoutLayer {
-      isPickable FALSE
-      layout Layout {
-        scaleMode [
-          "PIXEL",
-          "PIXEL"
-        ]
-      }
-      children [
-        DEF Gray Background {
-          skyColor 0.4 0.4 0.4
-        }
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
-              emissiveColor 0.6 0.6 0.6
-            }
-            texture PixelTexture {
-              image 2 2 2
-                0xffff 0
-                0 0xffff
-            }
-            textureTransform TextureTransform {
-              scale 5000 5000
-            }
-          }
-          geometry Rectangle2D {
-            size 80000 80000
-          }
-        }
-      ]
-    }
-    Layer {
-      children [
-        DEF Texture2DNavigationInfo NavigationInfo {
-          type "PLANE_create3000.de"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF Texture3DNavigationInfo NavigationInfo {
-          type "EXAMINE"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF CubeMapTextureNavigationInfo NavigationInfo {
-          type "EXAMINE"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF Texture2DViewpoint OrthoViewpoint { }
-        DEF Texture3DViewpoint Viewpoint {
-          position 1.86252 2.136 2.97602
-          orientation -0.70089 0.681223 0.211398 0.83363
-          centerOfRotation -0.00853324 -0.18822 0.156491
-        }
-        DEF CubeMapViewpoint Viewpoint {
-          position 0 0 2.84738
-        }
-        DEF _1 Switch {
-          children [
-            DEF Texture2D Transform {
-              children Shape {
-                appearance USE Appearance
-                geometry Rectangle2D { }
-              }
-            }
-            DEF Texture3D Group {
-              children [
-                DEF Volume Group {
-                  children [
-                    DEF _2 ClipPlane {
-                      plane 0 0 -1 1
-                    }
-                    Transform {
-                      children Volume {
-                        dimension 200
-                        appearance USE Appearance
-                      }
-                    }
-                  ]
-                }
-                DEF VisibleClipPlane Group {
-                  children [
-                    DEF ClipPlaneScript Script {
-                      inputOnly  SFVec3f set_translation
-                      outputOnly SFVec4f plane_changed
-
-                      url "ecmascript:
-
-function set_translation (value)
-{
-	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
-
-	plane_changed = new SFVec4f (0,0,-1, -distanceFromOrigin);
-}
-"
-                    }
-                    Transform {
-                      translation 0 0 0.01
-                      children [
-                        DEF Rectangle2D Transform {
-                          translation 3.62463e-06 0 1
-                          children Shape {
-                            appearance Appearance {
-                              fillProperties FillProperties {
-                                filled FALSE
-                                hatched FALSE
-                              }
-                              lineProperties LineProperties {
-                                linewidthScaleFactor 3
-                              }
-                              material Material {
-                                diffuseColor 0 0 0
-                                emissiveColor 0.876 0.876 0.876
-                              }
-                            }
-                            geometry Rectangle2D { }
-                          }
-                        }
-                        DEF PlaneSensor PlaneSensor {
-                          axisRotation 0 1 0 1.5708
-                          offset 3.62463e-06 0 1
-                          minPosition -1 0
-                          maxPosition 0.99 0
-                        }
-                      ]
-                    }
-                  ]
-                }
-                DEF Box Transform {
-                  children Shape {
-                    appearance Appearance {
-                      fillProperties FillProperties {
-                        filled FALSE
-                        hatched FALSE
-                      }
-                      lineProperties LineProperties {
-                        linewidthScaleFactor 2
-                      }
-                      material Material {
-                        diffuseColor 0 0 0
-                      }
-                    }
-                    geometry IndexedLineSet {
-                      coordIndex [
-                        0,
-                        1,
-                        2,
-                        3,
-                        0,
-                        -1,
-                        5,
-                        4,
-                        7,
-                        6,
-                        5,
-                        -1,
-                        3,
-                        2,
-                        6,
-                        7,
-                        3,
-                        -1,
-                        4,
-                        5,
-                        1,
-                        0,
-                        4,
-                        -1,
-                        4,
-                        0,
-                        3,
-                        7,
-                        4,
-                        -1,
-                        1,
-                        5,
-                        6,
-                        2,
-                        1,
-                        -1
-                      ]
-                      coord Coordinate {
-                        point [
-                          -1 -1 1,
-                          1 -1 1,
-                          1 1 1,
-                          -1 1 1,
-                          -1 -1 -1,
-                          1 -1 -1,
-                          1 1 -1,
-                          -1 1 -1
-                        ]
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-            USE CubeMapTexture
           ]
         }
         DEF TextureScript Script {
