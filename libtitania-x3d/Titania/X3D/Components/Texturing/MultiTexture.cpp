@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 #include <Titania/String.h>
 
@@ -98,7 +99,7 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 
 	addChildObjects (textureNodes);
 
-	setTransparent (true);
+	setTransparent (false);
 }
 
 X3DBaseNode*
@@ -164,7 +165,7 @@ MultiTexture::getFunction (size_t index) const
 void
 MultiTexture::set_mode ()
 {
-	static std::map <std::string, ModeType> map = {
+	static std::map <std::string, ModeType> modeTypes = {
 		std::pair ("REPLACE",                   ModeType::REPLACE),
 		std::pair ("MODULATE",                  ModeType::MODULATE),
 		std::pair ("MODULATE2X",                ModeType::MODULATE2X),
@@ -187,7 +188,7 @@ MultiTexture::set_mode ()
 		std::pair ("OFF",                       ModeType::OFF)
 	};
 
-	modes .clear ();
+	modes      .clear ();
 	alphaModes .clear ();
 
 	for (const auto & string : mode ())
@@ -199,14 +200,17 @@ MultiTexture::set_mode ()
 		for (auto & s : mode)
 			s = basic::trim (s);
 
+		if  (mode .empty ())
+			mode .emplace_back ("MODULATE");
+
 		if (mode .size () < 2)
 			mode .emplace_back (mode [0]);
 
 		// RGB
 		{
-			auto iter = map .find (mode [0]);
+			const auto iter = modeTypes .find (mode [0]);
 
-			if (iter not_eq map .end ())
+			if (iter not_eq modeTypes .end ())
 				modes .emplace_back (iter -> second);
 
 			else
@@ -215,9 +219,9 @@ MultiTexture::set_mode ()
 
 		// Alpha
 		{
-			auto iter = map .find (mode [1]);
+			const auto iter = modeTypes .find (mode [1]);
 
-			if (iter not_eq map .end ())
+			if (iter not_eq modeTypes .end ())
 				alphaModes .emplace_back (iter -> second);
 
 			else
@@ -229,7 +233,7 @@ MultiTexture::set_mode ()
 void
 MultiTexture::set_source ()
 {
-	static std::map <std::string, SourceType> map = {
+	static std::map <std::string, SourceType> sourceTypes = {
 		std::pair ("DIFFUSE",  SourceType::DIFFUSE),
 		std::pair ("SPECULAR", SourceType::SPECULAR),
 		std::pair ("FACTOR",   SourceType::FACTOR)
@@ -239,9 +243,9 @@ MultiTexture::set_source ()
 
 	for (const auto & string : source ())
 	{
-		auto iter = map .find (string .get ());
+		const auto iter = sourceTypes .find (string .get ());
 
-		if (iter not_eq map .end ())
+		if (iter not_eq sourceTypes .end ())
 			sources .emplace_back (iter -> second);
 
 		else
@@ -252,7 +256,7 @@ MultiTexture::set_source ()
 void
 MultiTexture::set_function ()
 {
-	static std::map <std::string, FunctionType> map = {
+	static std::map <std::string, FunctionType> functionTypes = {
 		std::pair ("COMPLEMENT",     FunctionType::COMPLEMENT),
 		std::pair ("ALPHAREPLICATE", FunctionType::ALPHAREPLICATE)
 	};
@@ -261,9 +265,9 @@ MultiTexture::set_function ()
 
 	for (const auto & string : function ())
 	{
-		auto iter = map .find (string .get ());
+		const auto iter = functionTypes .find (string .get ());
 
-		if (iter not_eq map .end ())
+		if (iter not_eq functionTypes .end ())
 			functions .emplace_back (iter -> second);
 
 		else
@@ -299,7 +303,22 @@ MultiTexture::traverse (const TraverseType type, X3DRenderObject* const renderOb
 
 void
 MultiTexture::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-{ }
+{
+	const auto channels = std::min (getBrowser () -> getMaxTextures (), textureNodes .size ());
+
+	glUniform1i (shaderObject -> getNumTexturesUniformLocation (),       channels);
+	glUniform4f (shaderObject -> getMultiTextureColorUniformLocation (), color () .getRed (),  color () .getGreen (), color () .getBlue (), alpha ());
+
+	for (size_t i = 0; i < channels; ++ i)
+	{
+		textureNodes [i] -> setShaderUniforms (shaderObject, i);
+
+		glUniform1i (shaderObject -> getMultiTextureModeUniformLocation () [i],      int (getMode (i)));
+		glUniform1i (shaderObject -> getMultiTextureAlphaModeUniformLocation () [i], int (getAlphaMode (i)));
+		glUniform1i (shaderObject -> getMultiTextureSourceUniformLocation () [i],    int (getSource (i)));
+		glUniform1i (shaderObject -> getMultiTextureFunctionUniformLocation () [i],  int (getFunction (i)));
+	}
+}
 
 } // X3D
 

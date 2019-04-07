@@ -273,6 +273,28 @@ public:
 	getTextureTypeUniformLocation () const
 	{ return x3d_TextureType; }
 
+
+	GLint
+	getMultiTextureColorUniformLocation () const
+	{ return x3d_MultiTextureColor; }
+
+	const std::vector <GLint> &
+	getMultiTextureModeUniformLocation () const
+	{ return x3d_MultiTextureMode; }
+
+	const std::vector <GLint> &
+	getMultiTextureAlphaModeUniformLocation () const
+	{ return x3d_MultiTextureAlphaMode; }
+
+	const std::vector <GLint> &
+	getMultiTextureSourceUniformLocation () const
+	{ return x3d_MultiTextureSource; }
+
+	const std::vector <GLint> &
+	getMultiTextureFunctionUniformLocation () const
+	{ return x3d_MultiTextureFunction; }
+
+
 	const std::vector <GLint> &
 	getTextureCoordinateGeneratorModeUniformLocation () const
 	{ return x3d_TextureCoordinateGeneratorMode; }
@@ -553,6 +575,12 @@ private:
 	std::vector <GLint> x3d_TextureType;
 	std::vector <GLint> x3d_Texture2D;
 	std::vector <GLint> x3d_CubeMapTexture;
+
+	GLint               x3d_MultiTextureColor;
+	std::vector <GLint> x3d_MultiTextureMode;
+	std::vector <GLint> x3d_MultiTextureAlphaMode;
+	std::vector <GLint> x3d_MultiTextureSource;
+	std::vector <GLint> x3d_MultiTextureFunction;
 
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;

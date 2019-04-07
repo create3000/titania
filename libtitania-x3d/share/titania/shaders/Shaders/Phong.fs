@@ -27,6 +27,9 @@ uniform int         x3d_TextureType [x3d_MaxTextures]; // x3d_None, x3d_TextureT
 uniform sampler2D   x3d_Texture2D [x3d_MaxTextures];
 uniform samplerCube x3d_CubeMapTexture [x3d_MaxTextures];
 
+uniform vec4 x3d_MultiTextureColor;
+uniform x3d_MultiTextureParameters x3d_MultiTexture [x3d_MaxTextures];
+
 uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator [x3d_MaxTextures];  
 
 uniform x3d_FogParameters x3d_Fog;
@@ -74,7 +77,7 @@ getSpotFactor (const in float cutOffAngle, const in float beamWidth, const in ve
 }
 
 vec4
-getTextureCoordinate (x3d_TextureCoordinateGeneratorParameters textureCoordinateGenerator, in vec4 t)
+getTextureCoordinate (const in x3d_TextureCoordinateGeneratorParameters textureCoordinateGenerator, const in vec4 t)
 {
 	int mode = textureCoordinateGenerator .mode;
 
@@ -142,29 +145,151 @@ getTextureCoordinate (x3d_TextureCoordinateGeneratorParameters textureCoordinate
 }
 
 vec4
-getTextureColor ()
+getTextureColor (const in x3d_MaterialParameters material)
 {
-	vec4 texCoords = getTextureCoordinate (x3d_TextureCoordinateGenerator [0], t0);
+	vec4 currentColor = vec4 (material .diffuseColor, 1.0);
 
-	if (x3d_TextureType [0] == x3d_TextureType2D)
+	for (int i = 0; i < x3d_MaxTextures; ++ i)
 	{
-		if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
-			return texture2D (x3d_Texture2D [0], vec2 (texCoords));
+		if (i == x3d_NumTextures)
+			break;
 
-		// If dimension is x3d_Geometry2D the texCoords must be flipped.
-		return texture2D (x3d_Texture2D [0], vec2 (1.0 - texCoords .s, texCoords .t));
+		vec4 texCoords    = getTextureCoordinate (x3d_TextureCoordinateGenerator [i], t0);
+		vec4 textureColor = vec4 (1.0, 1.0, 1.0, 1.0);
+	
+		if (x3d_TextureType [i] == x3d_TextureType2D)
+		{
+			if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
+				textureColor = texture2D (x3d_Texture2D [i], vec2 (texCoords));
+			else
+				// If dimension is x3d_Geometry2D the texCoords must be flipped.
+				textureColor = texture2D (x3d_Texture2D [i], vec2 (1.0 - texCoords .s, texCoords .t));
+		}
+	 	else if (x3d_TextureType [i] == x3d_TextureTypeCubeMapTexture)
+		{
+			if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
+				textureColor = textureCube (x3d_CubeMapTexture [i], vec3 (texCoords));
+			else
+				// If dimension is x3d_Geometry2D the texCoords must be flipped.
+				textureColor = textureCube (x3d_CubeMapTexture [i], vec3 (1.0 - texCoords .s, texCoords .t, texCoords .z));
+		}
+
+		// Multi texturing
+
+		x3d_MultiTextureParameters multiTexture = x3d_MultiTexture [i];
+
+		// Source
+
+		int  source = multiTexture .source;
+		vec4 arg1   = currentColor;
+		vec4 arg2   = textureColor;
+
+		if (source == x3d_Diffuse)
+		{
+			arg2 = vec4 (material .diffuseColor, 1.0);
+		}
+		else if (source == x3d_Specular)
+		{
+			arg2 = vec4 (material .specularColor, 1.0);
+		}
+		else if (source == x3d_Factor)
+		{
+			arg2 = x3d_MultiTextureColor;
+		}
+
+		// Mode
+
+		int mode      = multiTexture .mode;
+		int alphaMode = multiTexture .alphaMode;
+
+		// RGB
+
+		if (mode == x3d_Replace)
+			currentColor .rgb = arg1 .rgb;
+		else if (mode == x3d_Modulate)
+			currentColor .rgb = arg1 .rgb * arg2 .rgb;
+		else if (mode == x3d_Modulate2X)
+			;
+		else if (mode == x3d_Modulate4X)
+			;
+		else if (mode == x3d_Add)
+			currentColor .rgb = arg1 .rgb + arg2 .rgb;
+		else if (mode == x3d_AddSigned)
+			;
+		else if (mode == x3d_AddSigned2X)
+			;
+		else if (mode == x3d_AddSmooth)
+			;
+		else if (mode == x3d_Subtract)
+			currentColor .rgb = arg1 .rgb - arg2 .rgb;
+		else if (mode == x3d_BlendDiffuseAlpha)
+			;
+		else if (mode == x3d_BlendTextureAlpha)
+			;
+		else if (mode == x3d_BlendFactorAlpha)
+			;
+		else if (mode == x3d_BlendCurrentAlpha)
+			;
+		else if (mode == x3d_ModulateAlphaAddColor)
+			;
+		else if (mode == x3d_ModulateInvAlphaAddColor)
+			;
+		else if (mode == x3d_ModulateInvColorAddAlpha)
+			;
+		else if (mode == x3d_DotProduct3)
+			;
+		else if (mode == x3d_SelectArg1)
+			currentColor .rgb = arg1 .rgb;
+		else if (mode == x3d_SelectArg2)
+			currentColor .rgb = arg2 .rgb;
+		else if (mode == x3d_Off)
+			;
+
+		// Alpha
+
+		if (alphaMode == x3d_Replace)
+			currentColor .a = arg1 .a;
+		else if (alphaMode == x3d_Modulate)
+			currentColor .a = arg1 .a * arg2 .a;
+		else if (mode == x3d_Modulate2X)
+			;
+		else if (mode == x3d_Modulate4X)
+			;
+		else if (mode == x3d_Add)
+			currentColor .a = arg1 .a + arg2 .a;
+		else if (mode == x3d_AddSigned)
+			;
+		else if (mode == x3d_AddSigned2X)
+			;
+		else if (mode == x3d_AddSmooth)
+			;
+		else if (mode == x3d_Subtract)
+			currentColor .a = arg1 .a - arg2 .a;
+		else if (mode == x3d_BlendDiffuseAlpha)
+			;
+		else if (mode == x3d_BlendTextureAlpha)
+			;
+		else if (mode == x3d_BlendFactorAlpha)
+			;
+		else if (mode == x3d_BlendCurrentAlpha)
+			;
+		else if (mode == x3d_ModulateAlphaAddColor)
+			;
+		else if (mode == x3d_ModulateInvAlphaAddColor)
+			;
+		else if (mode == x3d_ModulateInvColorAddAlpha)
+			;
+		else if (mode == x3d_DotProduct3)
+			;
+		else if (mode == x3d_SelectArg1)
+			currentColor .a = arg1 .a;
+		else if (mode == x3d_SelectArg2)
+			currentColor .a = arg2 .a;
+		else if (mode == x3d_Off)
+			;
 	}
 
- 	if (x3d_TextureType [0] == x3d_TextureTypeCubeMapTexture)
-	{
-		if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
-			return textureCube (x3d_CubeMapTexture [0], vec3 (texCoords));
-		
-		// If dimension is x3d_Geometry2D the texCoords must be flipped.
-		return textureCube (x3d_CubeMapTexture [0], vec3 (1.0 - texCoords .s, texCoords .t, texCoords .z));
-	}
- 
-	return vec4 (1.0, 1.0, 1.0, 1.0);
+	return currentColor;
 }
 
 vec4
@@ -183,9 +308,9 @@ getMaterialColor (const in x3d_MaterialParameters material)
 
 		if (x3d_ColorMaterial)
 		{
-			if (x3d_TextureType [0] != x3d_None)
+			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor ();
+				vec4 T = getTextureColor (material);
 
 				diffuseFactor  = T .rgb * C .rgb;
 				alpha         *= T .a;
@@ -197,9 +322,9 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		}
 		else
 		{
-			if (x3d_TextureType [0] != x3d_None)
+			if (x3d_NumTextures > 0)
 			{
-				vec4 T = getTextureColor ();
+				vec4 T = getTextureColor (material);
 
 				diffuseFactor  = T .rgb * material .diffuseColor;
 				alpha         *= T .a;
@@ -264,7 +389,7 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		{
 			if (x3d_TextureType [0] != x3d_None)
 			{
-				vec4 T = getTextureColor ();
+				vec4 T = getTextureColor (material);
 
 				finalColor = T * C;
 			}
@@ -274,7 +399,7 @@ getMaterialColor (const in x3d_MaterialParameters material)
 		else
 		{
 			if (x3d_TextureType [0] != x3d_None)
-				finalColor = getTextureColor ();
+				finalColor = getTextureColor (material);
 		}
 
 		return finalColor;

@@ -70,11 +70,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	size_t
-	getSize () const
-	{ return 1; }
-
 	const SFBool &
 	isTransparent () const
 	{ return transparent; }
@@ -95,8 +90,7 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-	{ setShaderUniforms (shaderObject, 0); }
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const;
 
 	virtual
 	void

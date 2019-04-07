@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/RenderingProperties.h"
 #include "../../Browser/Networking/config.h"
+#include "../../Components/Texturing/MultiTexture.h"
 #include "../../Components/Texturing/TextureCoordinateGenerator.h"
 #include "../../InputOutput/FileLoader.h"
 
@@ -263,6 +264,34 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	definitions << "#define x3d_TextureType2D              2\n";
 	definitions << "#define x3d_TextureType3D              3\n";
 	definitions << "#define x3d_TextureTypeCubeMapTexture  4\n";
+
+	definitions << "#define x3d_Replace                   " << int (MultiTexture::ModeType::REPLACE) << "\n";
+	definitions << "#define x3d_Modulate                  " << int (MultiTexture::ModeType::MODULATE) << "\n";
+	definitions << "#define x3d_Modulate2X                " << int (MultiTexture::ModeType::MODULATE2X) << "\n";
+	definitions << "#define x3d_Modulate4X                " << int (MultiTexture::ModeType::MODULATE4X) << "\n";
+	definitions << "#define x3d_Add                       " << int (MultiTexture::ModeType::ADD) << "\n";
+	definitions << "#define x3d_AddSigned                 " << int (MultiTexture::ModeType::ADDSIGNED) << "\n";
+	definitions << "#define x3d_AddSigned2X               " << int (MultiTexture::ModeType::ADDSIGNED2X) << "\n";
+	definitions << "#define x3d_AddSmooth                 " << int (MultiTexture::ModeType::ADDSMOOTH) << "\n";
+	definitions << "#define x3d_Subtract                  " << int (MultiTexture::ModeType::SUBTRACT) << "\n";
+	definitions << "#define x3d_BlendDiffuseAlpha         " << int (MultiTexture::ModeType::BLENDDIFFUSEALPHA) << "\n";
+	definitions << "#define x3d_BlendTextureAlpha         " << int (MultiTexture::ModeType::BLENDTEXTUREALPHA) << "\n";
+	definitions << "#define x3d_BlendFactorAlpha          " << int (MultiTexture::ModeType::BLENDFACTORALPHA) << "\n";
+	definitions << "#define x3d_BlendCurrentAlpha         " << int (MultiTexture::ModeType::BLENDCURRENTALPHA) << "\n";
+	definitions << "#define x3d_ModulateAlphaAddColor     " << int (MultiTexture::ModeType::MODULATEALPHA_ADDCOLOR) << "\n";
+	definitions << "#define x3d_ModulateInvAlphaAddColor  " << int (MultiTexture::ModeType::MODULATEINVALPHA_ADDCOLOR) << "\n";
+	definitions << "#define x3d_ModulateInvColorAddAlpha  " << int (MultiTexture::ModeType::MODULATEINVCOLOR_ADDALPHA) << "\n";
+	definitions << "#define x3d_DotProduct3               " << int (MultiTexture::ModeType::DOTPRODUCT3) << "\n";
+	definitions << "#define x3d_SelectArg1                " << int (MultiTexture::ModeType::SELECTARG1) << "\n";
+	definitions << "#define x3d_SelectArg2                " << int (MultiTexture::ModeType::SELECTARG2) << "\n";
+	definitions << "#define x3d_Off                       " << int (MultiTexture::ModeType::OFF) << "\n";
+
+	definitions << "#define x3d_Diffuse  " << int (MultiTexture::SourceType::DIFFUSE) << "\n";
+	definitions << "#define x3d_Specular " << int (MultiTexture::SourceType::SPECULAR) << "\n";
+	definitions << "#define x3d_Factor   " << int (MultiTexture::SourceType::FACTOR) << "\n";
+
+	definitions << "#define x3d_Complement     " << int (MultiTexture::FunctionType::COMPLEMENT) << "\n";
+	definitions << "#define x3d_AlphaReplicate " << int (MultiTexture::FunctionType::ALPHAREPLICATE) << "\n";
 
 	definitions << "#define x3d_Sphere                      " << int (TextureCoordinateGenerator::ModeType::SPHERE) << "\n";
 	definitions << "#define x3d_CameraSpaceNormal           " << int (TextureCoordinateGenerator::ModeType::CAMERASPACENORMAL) << "\n";

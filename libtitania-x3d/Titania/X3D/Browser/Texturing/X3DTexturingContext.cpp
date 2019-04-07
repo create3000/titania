@@ -118,7 +118,7 @@ X3DTexturingContext::initialize ()
 size_t
 X3DTexturingContext::getMaxTextures () const
 {
-	return 1;
+	return 2;
 }
 
 size_t

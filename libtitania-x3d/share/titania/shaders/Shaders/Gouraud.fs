@@ -125,27 +125,37 @@ getTextureCoordinate (x3d_TextureCoordinateGeneratorParameters textureCoordinate
 vec4
 getTextureColor ()
 {
-	vec4 texCoords = getTextureCoordinate (x3d_TextureCoordinateGenerator [0], t0);
+	vec4 currentColor = vec4 (1.0, 1.0, 1.0, 1.0);
 
-	if (x3d_TextureType [0] == x3d_TextureType2D)
+	for (int i = 0; i < x3d_MaxTextures; ++ i)
 	{
-		if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
-			return texture2D (x3d_Texture2D [0], vec2 (texCoords));
+		if (i == x3d_NumTextures)
+			break;
 
-		// If dimension is x3d_Geometry2D the texCoords must be flipped.
-		return texture2D (x3d_Texture2D [0], vec2 (1.0 - texCoords .s, texCoords .t));
+		vec4 texCoords    = getTextureCoordinate (x3d_TextureCoordinateGenerator [i], t0);
+		vec4 textureColor = vec4 (1.0, 1.0, 1.0, 1.0);
+	
+		if (x3d_TextureType [i] == x3d_TextureType2D)
+		{
+			if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
+				textureColor = texture2D (x3d_Texture2D [i], vec2 (texCoords));
+			else
+				// If dimension is x3d_Geometry2D the texCoords must be flipped.
+				textureColor = texture2D (x3d_Texture2D [i], vec2 (1.0 - texCoords .s, texCoords .t));
+		}
+	 	else if (x3d_TextureType [i] == x3d_TextureTypeCubeMapTexture)
+		{
+			if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
+				textureColor = textureCube (x3d_CubeMapTexture [i], vec3 (texCoords));
+			else
+				// If dimension is x3d_Geometry2D the texCoords must be flipped.
+				textureColor = textureCube (x3d_CubeMapTexture [i], vec3 (1.0 - texCoords .s, texCoords .t, texCoords .z));
+		}
+
+		currentColor *= textureColor;
 	}
 
- 	if (x3d_TextureType [0] == x3d_TextureTypeCubeMapTexture)
-	{
-		if (x3d_GeometryType == x3d_Geometry3D || gl_FrontFacing)
-			return textureCube (x3d_CubeMapTexture [0], vec3 (texCoords));
-		
-		// If dimension is x3d_Geometry2D the texCoords must be flipped.
-		return textureCube (x3d_CubeMapTexture [0], vec3 (1.0 - texCoords .s, texCoords .t, texCoords .z));
-	}
- 
-	return vec4 (1.0, 1.0, 1.0, 1.0);
+	return currentColor;
 }
 
 float
@@ -188,7 +198,7 @@ main ()
 
 	vec4 finalColor = gl_FrontFacing ? frontColor : backColor;
 
-	if (x3d_TextureType [0] != x3d_None)
+	if (x3d_NumTextures > 0)
 	{
 		if (x3d_Lighting)
 		{

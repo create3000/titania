@@ -61,6 +61,47 @@ class MultiTexture :
 {
 public:
 
+	///  @name Member types
+
+	enum class ModeType
+	{
+		REPLACE,
+		MODULATE,
+		MODULATE2X,
+		MODULATE4X,
+		ADD,
+		ADDSIGNED,
+		ADDSIGNED2X,
+		ADDSMOOTH,
+		SUBTRACT,
+		BLENDDIFFUSEALPHA,
+		BLENDTEXTUREALPHA,
+		BLENDFACTORALPHA,
+		BLENDCURRENTALPHA,
+		MODULATEALPHA_ADDCOLOR,
+		MODULATEINVALPHA_ADDCOLOR,
+		MODULATEINVCOLOR_ADDALPHA,
+		DOTPRODUCT3,
+		SELECTARG1,
+		SELECTARG2,
+		OFF
+	};
+
+	enum class SourceType
+	{
+		DEFAULT,
+		DIFFUSE,
+		SPECULAR,
+		FACTOR
+	};
+	
+	enum class FunctionType
+	{
+		DEFAULT,
+		COMPLEMENT,
+		ALPHAREPLICATE
+	};
+	
 	///  @name Construction
 
 	MultiTexture (X3DExecutionContext* const executionContext);
@@ -140,7 +181,7 @@ public:
 
 	virtual
 	GLenum
-	getTarget () const
+	getTarget () const final override
 	{ return GL_NONE; }
 
 	virtual
@@ -170,42 +211,6 @@ public:
 
 private:
 
-	enum class ModeType : uint8_t {
-		REPLACE,
-		MODULATE,
-		MODULATE2X,
-		MODULATE4X,
-		ADD,
-		ADDSIGNED,
-		ADDSIGNED2X,
-		ADDSMOOTH,
-		SUBTRACT,
-		BLENDDIFFUSEALPHA,
-		BLENDTEXTUREALPHA,
-		BLENDFACTORALPHA,
-		BLENDCURRENTALPHA,
-		MODULATEALPHA_ADDCOLOR,
-		MODULATEINVALPHA_ADDCOLOR,
-		MODULATEINVCOLOR_ADDALPHA,
-		DOTPRODUCT3,
-		SELECTARG1,
-		SELECTARG2,
-		OFF
-	};
-
-	enum class SourceType : uint8_t {
-		DEFAULT,
-		DIFFUSE,
-		SPECULAR,
-		FACTOR
-	};
-	
-	enum class FunctionType : uint8_t {
-		DEFAULT,
-		COMPLEMENT,
-		ALPHAREPLICATE
-	};
-	
 	virtual
 	void
 	initialize () final override;

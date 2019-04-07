@@ -123,6 +123,11 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                        x3d_TextureType (getBrowser () -> getMaxTextures (), -1),
 	                          x3d_Texture2D (getBrowser () -> getMaxTextures (), -1),
 	                     x3d_CubeMapTexture (getBrowser () -> getMaxTextures (), -1),
+	                  x3d_MultiTextureColor (-1),
+	                   x3d_MultiTextureMode (getBrowser () -> getMaxTextures (), -1),
+	              x3d_MultiTextureAlphaMode (getBrowser () -> getMaxTextures (), -1),
+	                 x3d_MultiTextureSource (getBrowser () -> getMaxTextures (), -1),
+	               x3d_MultiTextureFunction (getBrowser () -> getMaxTextures (), -1),
 	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
 	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
 	                           x3d_Viewport (-1),
@@ -208,6 +213,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_TextureType                         .clear ();
 	x3d_Texture2D                           .clear ();
 	x3d_CubeMapTexture                      .clear ();
+	x3d_MultiTextureMode                    .clear ();
+	x3d_MultiTextureAlphaMode               .clear ();
+	x3d_MultiTextureSource                  .clear ();
+	x3d_MultiTextureFunction                .clear ();
 	x3d_TextureMatrix                       .clear ();
 	x3d_TexCoord                            .clear ();
 
@@ -273,7 +282,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_BackShininess        = getUniformLocation (program, "x3d_BackMaterial.shininess",        "x3d_BackShininess");
 	x3d_BackTransparency     = getUniformLocation (program, "x3d_BackMaterial.transparency",     "x3d_BackTransparency");
 
-	x3d_NumTextures = glGetUniformLocation (program, "x3d_NumTextures");
+	x3d_NumTextures       = glGetUniformLocation (program, "x3d_NumTextures");
+	x3d_MultiTextureColor = glGetUniformLocation (program, "x3d_MultiTextureColor");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
 	{
@@ -285,6 +295,11 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_TextureType    .emplace_back (glGetUniformLocation (program, ("x3d_TextureType[" + is + "]")    .c_str ()));
 		x3d_Texture2D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture2D[" + is + "]")      .c_str ()));
 		x3d_CubeMapTexture .emplace_back (glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ()));
+
+		x3d_MultiTextureMode      .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].mode")      .c_str ()));
+		x3d_MultiTextureAlphaMode .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].alphaMode") .c_str ()));
+		x3d_MultiTextureSource    .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].source")    .c_str ()));
+		x3d_MultiTextureFunction  .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].function")  .c_str ()));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
@@ -1205,15 +1220,9 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 		glUniform1i (x3d_Lighting, false);
 
 	if (textureNode)
-	{
-		glUniform1i (x3d_NumTextures, textureNode -> getSize ());
-
 		textureNode -> setShaderUniforms (this);
-	}
 	else
-	{
 		glUniform1i (x3d_NumTextures, 0);
-	}
 
 	// Matrices
 

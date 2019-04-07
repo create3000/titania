@@ -52,6 +52,8 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
+#include "../Texturing/MultiTexture.h"
 
 namespace titania {
 namespace X3D {
@@ -134,6 +136,18 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 	glTexParameterf  (target, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
 
 	glBindTexture (target, 0);
+}
+
+void
+X3DTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	setShaderUniforms (shaderObject, 0);
+
+	glUniform1i (shaderObject -> getNumTexturesUniformLocation (),               1);
+	glUniform1i (shaderObject -> getMultiTextureModeUniformLocation () [0],      int (MultiTexture::ModeType::SELECTARG2));
+	glUniform1i (shaderObject -> getMultiTextureAlphaModeUniformLocation () [0], int (MultiTexture::ModeType::SELECTARG2));
+	glUniform1i (shaderObject -> getMultiTextureSourceUniformLocation () [0],    int (MultiTexture::SourceType::DEFAULT));
+	glUniform1i (shaderObject -> getMultiTextureFunctionUniformLocation () [0],  int (MultiTexture::FunctionType::DEFAULT));
 }
 
 void

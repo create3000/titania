@@ -47,10 +47,10 @@
     </columns>
     <data>
       <row>
-        <col id="0">MODULATE</col>
+        <col id="0">REPLACE</col>
       </row>
       <row>
-        <col id="0">REPLACE</col>
+        <col id="0">MODULATE</col>
       </row>
       <row>
         <col id="0">MODULATE2X</col>
@@ -68,10 +68,10 @@
         <col id="0">ADDSIGNED2X</col>
       </row>
       <row>
-        <col id="0">SUBTRACT</col>
+        <col id="0">ADDSMOOTH</col>
       </row>
       <row>
-        <col id="0">ADDSMOOTH</col>
+        <col id="0">SUBTRACT</col>
       </row>
       <row>
         <col id="0">BLENDDIFFUSEALPHA</col>
@@ -95,7 +95,7 @@
         <col id="0">MODULATEINVCOLOR_ADDALPHA</col>
       </row>
       <row>
-        <col id="0">OFF</col>
+        <col id="0">DOTPRODUCT3</col>
       </row>
       <row>
         <col id="0">SELECTARG1</col>
@@ -104,7 +104,7 @@
         <col id="0">SELECTARG2</col>
       </row>
       <row>
-        <col id="0">DOTPRODUCT3</col>
+        <col id="0">OFF</col>
       </row>
     </data>
   </object>
