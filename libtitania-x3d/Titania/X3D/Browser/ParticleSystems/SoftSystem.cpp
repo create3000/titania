@@ -1118,7 +1118,7 @@ SoftSystem::draw (ShapeContainer* const context)
 		else
 		{
 			const auto browser    = context -> getBrowser ();
-			auto       shaderNode = browser -> getShader ();
+			auto       shaderNode = context -> getShader ();
 
 			if (shaderNode == browser -> getDefaultShader ())
 				shaderNode = this -> shaderNode;

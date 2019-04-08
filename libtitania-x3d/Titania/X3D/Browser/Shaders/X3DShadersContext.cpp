@@ -75,8 +75,7 @@ X3DShadersContext::X3DShadersContext () :
 	            gouraudShader (),
 	              phongShader (),
 	            defaultShader (),
-	             shadowShader (),
-	               shaderNode (nullptr)
+	             shadowShader ()
 {
 	addChildObjects (shaders,
                     pointShader,

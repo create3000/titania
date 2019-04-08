@@ -71,9 +71,7 @@ X3DTexturingContext::X3DTexturingContext () :
 	     defaultTextureProperties (new TextureProperties (getExecutionContext ())),
 	defaultMovieTextureProperties (new TextureProperties (getExecutionContext ())),
 	      defaultTextureTransform (new TextureTransform (getExecutionContext ())),
-	              defaultTexCoord (new TextureCoordinate (getExecutionContext ())),
-	                      texture (nullptr),
-	             textureTransform (defaultTextureTransform)
+	              defaultTexCoord (new TextureCoordinate (getExecutionContext ()))
 {
 	addChildObjects (texturing,
 	                 defaultTextureProperties,

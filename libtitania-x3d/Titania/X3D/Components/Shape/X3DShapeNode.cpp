@@ -170,7 +170,6 @@ X3DShapeNode::set_transparent ()
 void
 X3DShapeNode::display (ShapeContainer* const context)
 {
-	const auto browser      = context -> getBrowser ();
 	const auto renderObject = context -> getRenderer ();
 	const auto geometryType = getGeometryType ();
 

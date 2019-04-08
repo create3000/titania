@@ -445,9 +445,8 @@ ScreenText::draw (ShapeContainer* const context)
 {
 	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
 
-	context -> getBrowser () -> setTexture (textureNode);
-	context -> getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());
-
+	context -> setTexture (textureNode);
+	context -> setTextureTransform (context -> getBrowser () -> getDefaultTextureTransform ());
 	context -> setModelViewMatrix (modelViewMatrix);
 }
 

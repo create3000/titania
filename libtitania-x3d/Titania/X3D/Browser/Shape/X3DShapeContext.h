@@ -80,22 +80,6 @@ public:
 	getDefaultAppearance () const
 	{ return defaultAppearance; }
 
-	void
-	setLineProperties (LineProperties* const value) 
-	{ lineProperties = value; }
-
-	LineProperties*
-	getLineProperties () const
-	{ return lineProperties; }
-
-	void
-	setMaterial (X3DMaterialNode* const value) 
-	{ material = value; }
-
-	X3DMaterialNode*
-	getMaterial () const
-	{ return material; }
-
 	///  @name Destruction
 
 	virtual
@@ -125,8 +109,6 @@ private:
 	X3DPtr <LineProperties>    defaultLineProperties;
 	X3DPtr <FillProperties>    defaultFillProperties;
 	X3DPtr <X3DAppearanceNode> defaultAppearance;
-	LineProperties*            lineProperties;
-	X3DMaterialNode*           material;
 
 };
 

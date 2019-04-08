@@ -117,6 +117,46 @@ public:
 	{ shadow = value; }
 
 	void
+	setLineProperties (LineProperties* const value) 
+	{ lineProperties = value; }
+
+	LineProperties*
+	getLineProperties () const
+	{ return lineProperties; }
+
+	void
+	setMaterial (X3DMaterialNode* const value) 
+	{ material = value; }
+
+	X3DMaterialNode*
+	getMaterial () const
+	{ return material; }
+
+	void
+	setTexture (X3DTextureNode* const value)
+	{ texture = value; }
+
+	X3DTextureNode*
+	getTexture () const
+	{ return texture; }
+
+	void
+	setTextureTransform (X3DTextureTransformNode* const value)
+	{ textureTransform = value; }
+
+	X3DTextureTransformNode*
+	getTextureTransform () const
+	{ return textureTransform; }
+
+	void
+	setShader (X3DShaderNode* const value)
+	{ shaderNode = value; }
+
+	X3DShaderNode*
+	getShader () const
+	{ return shaderNode; }
+
+	void
 	setGeometryType (const size_t value)
 	{ geometryType = value; }
 
@@ -125,20 +165,20 @@ public:
 	{ return geometryType; }
 
 	void
-	setFogCoord (const bool value)
-	{ fogCoord = value; }
-
-	bool
-	getFogCoord () const
-	{ return fogCoord; }
-
-	void
 	setColorMaterial (const bool value)
 	{ colorMaterial = value; }
 
 	bool
 	getColorMaterial () const
 	{ return colorMaterial; }
+
+	void
+	setFogCoord (const bool value)
+	{ fogCoord = value; }
+
+	bool
+	getFogCoord () const
+	{ return fogCoord; }
 
 	void
 	setTextureCoordinate (X3DTextureCoordinateNode* const value)
@@ -171,9 +211,14 @@ private:
 	FogContainerPtr           fog;
 	LightContainerArray       localLights;
 	bool                      shadow;
+	LineProperties*           lineProperties;
+	X3DMaterialNode*          material;
+	X3DTextureNode*           texture;
+	X3DTextureTransformNode*  textureTransform;
+	X3DShaderNode*            shaderNode;
 	size_t                    geometryType;
-	bool                      fogCoord;
 	bool                      colorMaterial;
+	bool                      fogCoord;
 	X3DTextureCoordinateNode* textureCoordinate;
 	double                    distance;
 

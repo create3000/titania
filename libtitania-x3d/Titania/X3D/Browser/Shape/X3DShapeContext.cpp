@@ -61,9 +61,7 @@ X3DShapeContext::X3DShapeContext () :
 	          X3DBaseNode (),
 	defaultLineProperties (new LineProperties (getExecutionContext ())),
 	defaultFillProperties (new FillProperties (getExecutionContext ())),
-	    defaultAppearance (new Appearance (getExecutionContext ())),
-	       lineProperties (nullptr),
-	             material (nullptr)
+	    defaultAppearance (new Appearance (getExecutionContext ()))
 {
 	addChildObjects (defaultLineProperties,
 	                 defaultFillProperties,

@@ -176,22 +176,6 @@ protected:
 	getDefaultTexCoord () const
 	{ return defaultTexCoord; }
 
-	void
-	setTexture (X3DTextureNode* const value)
-	{ texture = value; }
-
-	X3DTextureNode*
-	getTexture () const
-	{ return texture; }
-
-	void
-	setTextureTransform (X3DTextureTransformNode* const value)
-	{ textureTransform = value; }
-
-	X3DTextureTransformNode*
-	getTextureTransform () const
-	{ return textureTransform; }
-
 
 private:
 
@@ -209,8 +193,6 @@ private:
 	X3DPtr <TextureProperties>        defaultMovieTextureProperties;
 	X3DPtr <X3DTextureTransformNode>  defaultTextureTransform;
 	X3DPtr <X3DTextureCoordinateNode> defaultTexCoord;
-	X3DTextureNode*                   texture;
-	X3DTextureTransformNode*          textureTransform;
 
 };
 

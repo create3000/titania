@@ -1166,10 +1166,10 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & browser               = context -> getBrowser ();
 	const auto & renderObject          = context -> getRenderer ();
 	const auto & clipPlanes            = context -> getClipPlanes ();
-	const auto & linePropertiesNode    = browser -> getLineProperties ();
-	const auto & materialNode          = browser -> getMaterial ();
-	const auto & textureNode           = browser -> getTexture ();
-	const auto & textureTransformNode  = browser -> getTextureTransform ();
+	const auto   linePropertiesNode    = context -> getLineProperties ();
+	const auto   materialNode          = context -> getMaterial ();
+	const auto   textureNode           = context -> getTexture ();
+	const auto   textureTransformNode  = context -> getTextureTransform ();
 	const auto   textureCoordinateNode = context -> getTextureCoordinate ();
 	const auto & modelViewMatrix       = context -> getModelViewMatrix ();
 	const auto   normalMatrix          = getNormalMatrix (modelViewMatrix); // Transposed when uniform is set.

@@ -115,14 +115,6 @@ public:
 	getShadowShader () const
 	{ return shadowShader; }
 
-	void
-	setShader (X3DShaderNode* const value)
-	{ shaderNode = value; }
-
-	X3DShaderNode*
-	getShader () const
-	{ return shaderNode; }
-
 	///  @name Destruction
 
 	virtual
@@ -177,7 +169,6 @@ private:
 	X3DPtr <ComposedShader> phongShader;
 	X3DPtr <ComposedShader> defaultShader;
 	X3DPtr <ComposedShader> shadowShader;
-	X3DShaderNode*          shaderNode;
 
 
 };

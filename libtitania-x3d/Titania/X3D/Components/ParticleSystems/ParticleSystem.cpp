@@ -1674,7 +1674,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 		// Draw.
 
 		const auto browser    = context -> getBrowser ();
-		auto       shaderNode = browser -> getShader ();
+		auto       shaderNode = context -> getShader ();
 
 		if (shaderNode == browser -> getDefaultShader ())
 			shaderNode = this -> shaderNode;

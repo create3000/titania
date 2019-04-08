@@ -294,17 +294,17 @@ Appearance::enable (ShapeContainer* const context)
 	const auto renderObject = context -> getRenderer ();
 	const auto browser      = renderObject -> getBrowser ();
 
-	browser -> setLineProperties (linePropertiesNode);
-	browser -> setMaterial (materialNode);
-	browser -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
-	browser -> setTextureTransform (textureTransformNode);
+	context -> setLineProperties (linePropertiesNode);
+	context -> setMaterial (materialNode);
+	context -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
+	context -> setTextureTransform (textureTransformNode);
 
 	if (browser -> getShaders () and shaderNode)
-		browser -> setShader (shaderNode);
+		context -> setShader (shaderNode);
 	else if (context -> getShadow ())
-		browser -> setShader (browser -> getShadowShader ());
+		context -> setShader (browser -> getShadowShader ());
 	else
-		browser -> setShader (browser -> getDefaultShader ());
+		context -> setShader (browser -> getDefaultShader ());
 
 	if (blendModeNode)
 		blendModeNode -> enable ();
