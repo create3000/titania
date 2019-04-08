@@ -1163,8 +1163,8 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 void
 X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
-	const auto & browser               = context -> getBrowser ();
-	const auto & renderObject          = context -> getRenderer ();
+	const auto   browser               = context -> getBrowser ();
+	const auto   renderObject          = context -> getRenderer ();
 	const auto & clipPlanes            = context -> getClipPlanes ();
 	const auto   linePropertiesNode    = context -> getLineProperties ();
 	const auto   materialNode          = context -> getMaterial ();
