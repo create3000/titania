@@ -1479,7 +1479,9 @@ X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & 
                                                    const std::vector <GLsizei> & stride,
                                                    const std::vector <GLvoid*> & pointer)
 {
-	for (size_t i = 0, size = x3d_TexCoord .size (); i < size; ++ i)
+	const auto channels = std::min (buffer .size (), x3d_TexCoord .size ());
+
+	for (size_t i = 0; i < channels; ++ i)
 	{
 		if (x3d_TexCoord [i] == -1)
 			continue;
