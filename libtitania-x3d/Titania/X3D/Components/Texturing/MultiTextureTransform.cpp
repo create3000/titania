@@ -100,9 +100,6 @@ MultiTextureTransform::initialize ()
 void
 MultiTextureTransform::set_textureTransform ()
 {
-	for (const auto & textureTransformNode : textureTransformNodes)
-		textureTransformNode -> removeInterest (this);
-
 	std::vector <X3DTextureTransformNode*> value;
 
 	for (const auto & node : textureTransform ())
@@ -117,9 +114,6 @@ MultiTextureTransform::set_textureTransform ()
 	}
 
 	textureTransformNodes .set (value .cbegin (), value .cend ());
-
-	for (const auto & textureTransformNode : textureTransformNodes)
-		textureTransformNode -> addInterest (this);
 }
 
 void
