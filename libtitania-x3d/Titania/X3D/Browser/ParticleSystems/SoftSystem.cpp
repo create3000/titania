@@ -180,6 +180,9 @@ SoftSystem::initialize ()
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
 
+	for (size_t i = 1, channels = particleSystem -> getBrowser () -> getMaxTextures (); i < channels; ++ i)
+		texCoordBufferIds .emplace_back (texCoordBufferIds [0]);
+
 	// Call order is higly important at startup.
 	set_emitter ();
 	set_enabled ();
