@@ -665,7 +665,6 @@
     <None Include="share\titania\tools\SoundTool.x3dv" />
     <None Include="Titania\X3D\Tools\Sound\X3DSoundNodeTool.h" />
     <None Include="Titania\X3D\Tools\Sound\SoundTool.h" />
-    <None Include="share\titania\tools\library\QuadSphere.x3dv" />
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
