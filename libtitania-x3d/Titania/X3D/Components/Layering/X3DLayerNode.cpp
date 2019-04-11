@@ -371,10 +371,10 @@ X3DLayerNode::camera (const TraverseType type, X3DRenderObject* const renderObje
 {
 	getModelViewMatrix () .push (Matrix4d ());
 
-	defaultNavigationInfo -> traverse (TraverseType::CAMERA, renderObject);
-	defaultViewpoint      -> traverse (TraverseType::CAMERA, renderObject);
-	defaultBackground     -> traverse (TraverseType::CAMERA, renderObject);
-	defaultFog            -> traverse (TraverseType::CAMERA, renderObject);
+	defaultNavigationInfo -> traverse (type, renderObject);
+	defaultViewpoint      -> traverse (type, renderObject);
+	defaultBackground     -> traverse (type, renderObject);
+	defaultFog            -> traverse (type, renderObject);
 
 	currentViewport -> push (this);
 	collect (type, renderObject);
@@ -393,7 +393,9 @@ X3DLayerNode::picking (const TraverseType type, X3DRenderObject* const renderObj
 {
 	getModelViewMatrix () .push (Matrix4d ());
 
+	currentViewport -> push (this);
 	collect (type, renderObject);
+	currentViewport -> pop (this);
 
 	getModelViewMatrix () .pop ();
 }
