@@ -252,7 +252,12 @@ public:
 	virtual
 	void
 	depth (const X3DShapeContainer* const context) final override
-	{ return X3DShapeNodeTool::depth (context); }
+	{ X3DShapeNodeTool::depth (context); }
+
+	virtual
+	void
+	display (ShapeContainer* const context) final override
+	{ X3DShapeNodeTool::display (context); }
 
 	///  @name Destruction
 

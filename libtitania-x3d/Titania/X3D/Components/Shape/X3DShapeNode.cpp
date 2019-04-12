@@ -168,67 +168,6 @@ X3DShapeNode::set_transparent ()
 }
 
 void
-X3DShapeNode::display (ShapeContainer* const context)
-{
-	const auto renderObject = context -> getRenderer ();
-	const auto geometryType = getGeometryType ();
-
-	appearanceNode -> enable (context);
-
-	if (geometryType < 2)
-	{
-		appearanceNode -> getLineProperties () -> enable (renderObject);
-
-		glDisable (GL_LIGHTING);
-		draw (context);
-
-		appearanceNode -> getLineProperties () -> disable (renderObject);
-	}
-	else
-	{
-		// Draw geometry.
-
-		if (appearanceNode -> getFillProperties () -> filled ())
-			draw (context);
-
-		// Draw hatch on top of whatever appearance is specified.
-
-		GLint polygonMode [2]; // Front and back value.
-		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
-
-		if (polygonMode [0] == GL_FILL)
-		{
-			if (appearanceNode -> getFillProperties () -> hatched ())
-			{
-				appearanceNode -> getFillProperties () -> enable (renderObject);
-				draw (context);
-				appearanceNode -> getFillProperties () -> disable (renderObject);
-			}
-		}
-
-		// Draw line geometry on top of whatever appearance is specified.
-
-		if (appearanceNode -> getLineProperties () -> applied ())
-		{
-			if (polygonMode [0] == GL_FILL)
-				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-
-			appearanceNode -> getLineProperties () -> enable (renderObject);
-			draw (context);
-			appearanceNode -> getLineProperties () -> disable (renderObject);
-
-			glPolygonMode (GL_FRONT, polygonMode [0]);
-			glPolygonMode (GL_BACK,  polygonMode [1]);
-		}
-	}
-
-	appearanceNode -> disable (context);
-
-	glDisable (GL_FOG);
-	glDisable (GL_COLOR_MATERIAL);
-}
-
-void
 X3DShapeNode::dispose ()
 {
 	X3DBoundedObject::dispose ();

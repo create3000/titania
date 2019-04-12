@@ -130,6 +130,10 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_MultiTextureFunction (getBrowser () -> getMaxTextures (), -1),
 	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
 	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
+	                        x3d_HatchFilled (-1),
+	                       x3d_HatchHatched (-1),
+	                         x3d_HatchColor (-1),
+	                         x3d_HatchStyle (-1),
 	                           x3d_Viewport (-1),
 	                   x3d_ProjectionMatrix (-1),
 	                    x3d_ModelViewMatrix (-1),
@@ -302,6 +306,11 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
 	}
 
+	x3d_HatchFilled  = glGetUniformLocation (program, "x3d_Hatch.filled");
+	x3d_HatchHatched = glGetUniformLocation (program, "x3d_Hatch.hatched");
+	x3d_HatchColor   = glGetUniformLocation (program, "x3d_Hatch.color");
+	x3d_HatchStyle   = glGetUniformLocation (program, "x3d_Hatch.style");
+
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
 	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
 	x3d_ModelViewMatrix   = glGetUniformLocation (program, "x3d_ModelViewMatrix");
@@ -329,9 +338,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
 	glUniform1i  (x3d_NumTextures,          0);
-	glUniform1iv (x3d_Texture2D [0],      texture2D      .size (), texture2D      .data ());
-	glUniform1iv (x3d_CubeMapTexture [0], cubeMapTexture .size (), cubeMapTexture .data ());
-	glUniform1iv (x3d_ShadowMap [0],      shadowMap      .size (), shadowMap      .data ());
+	glUniform1iv (x3d_Texture2D [0],        texture2D      .size (), texture2D      .data ());
+	glUniform1iv (x3d_CubeMapTexture [0],   cubeMapTexture .size (), cubeMapTexture .data ());
+	glUniform1iv (x3d_ShadowMap [0],        shadowMap      .size (), shadowMap      .data ());
+	glUniform1i  (x3d_HatchStyle,           0);
 }
 
 GLint

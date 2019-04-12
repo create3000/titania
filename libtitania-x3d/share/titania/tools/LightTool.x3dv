@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V4.4.0
+#X3D V3.3 utf8 Titania V4.5.0
 
 PROFILE Immersive
 
@@ -8,9 +8,9 @@ COMPONENT Shape : 4
 META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.4.0, http://titania.create3000.de"
+META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/LightTool.x3dv"
-META "modified" "Sat, 02 Feb 2019 19:41:42 GMT"
+META "modified" "Fri, 12 Apr 2019 15:58:07 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -77,81 +77,265 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-            value DEF Cone Transform {
-              children Transform {
-                translation 0 0 -0.373349
-                rotation 1 0 0 4.71239
-                scale 1.70236 1.70236 1.70236
-                children Shape {
-                  appearance DEF _1 Appearance {
-                    fillProperties FillProperties {
-                      filled FALSE
-                      hatched FALSE
-                    }
-                    lineProperties LineProperties {
-                      linewidthScaleFactor 2
-                    }
-                    material DEF _2 Material {
-                      ambientIntensity 0.1
-                      specularColor 0.8 0.8 0.8
-                      emissiveColor 1 1 1
-                      shininess 1
-                    }
-                    shaders DEF _3 ToolShader { }
-                  }
-                  geometry Cone {
-                    bottom FALSE
-                    bottomRadius 1.2
-                    solid FALSE
-                  }
-                }
-              }
-            }
-          }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF Tool Script {
-              inputOutput    SFBool     enabled FALSE
-              inputOutput    SFBool     selected FALSE
-              inputOutput    SFColor    diffuseColor 0 0 0
-              inputOutput    SFColor    emissiveColor 1 1 1
-              inputOutput    SFFloat    emissiveIntensity 0.67
-              outputOnly     SFInt32    whichChoice_changed
-              inputOnly      SFBool     set_lightOn
-              inputOnly      SFColor    set_lightColor
-              inputOnly      SFFloat    set_lightIntensity
-              inputOnly      SFVec3f    set_lightDirection
-              inputOnly      SFVec3f    set_connectLightDirection
-              inputOnly      SFFloat    set_lightAngle
-              inputOnly      SFRotation set_rotation
-              inputOnly      SFRotation set_connectRotation
-              initializeOnly SFNode     transform DEF TransformTool Transform {
-                children ScreenGroup {
-                  children DEF Box Transform {
-                    scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
-                    children Shape {
-                      appearance Appearance {
-                        material Material {
-                          transparency 1
-                        }
-                        shaders USE _3
-                      }
-                      geometry Box {
-                        size 60 60 60
-                      }
-                    }
-                  }
-                }
-              }
-              initializeOnly SFNode     cone USE Cone
-              inputOutput    SFNode     light NULL
-              inputOutput    SFNode     self USE Tool
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+    ]
+  }
+  title "LightTool"
+}
 
-              url "ecmascript:
+DEF Tool Script {
+  inputOutput    SFBool     enabled FALSE
+  inputOutput    SFBool     selected FALSE
+  inputOutput    SFColor    diffuseColor 0 0 0
+  inputOutput    SFColor    emissiveColor 1 1 1
+  inputOutput    SFFloat    emissiveIntensity 0.67
+  outputOnly     SFInt32    whichChoice_changed
+  inputOnly      SFBool     set_lightOn
+  inputOnly      SFColor    set_lightColor
+  inputOnly      SFFloat    set_lightIntensity
+  inputOnly      SFVec3f    set_lightDirection
+  inputOnly      SFVec3f    set_connectLightDirection
+  inputOnly      SFFloat    set_lightAngle
+  inputOnly      SFRotation set_rotation
+  inputOnly      SFRotation set_connectRotation
+  initializeOnly SFNode     transform DEF TransformTool Transform {
+    children ScreenGroup {
+      children DEF Box Transform {
+        scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
+        children Shape {
+          appearance Appearance {
+            material Material {
+              transparency 1
+            }
+            shaders DEF _1 ToolShader { }
+          }
+          geometry Box {
+            size 60 60 60
+          }
+        }
+      }
+    }
+  }
+  initializeOnly SFNode     cone DEF Cone Transform {
+    children Transform {
+      translation 0 0 -0.373349
+      rotation 1 0 0 4.71239
+      scale 1.70236 1.70236 1.70236
+      children Shape {
+        appearance DEF _2 Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 2
+          }
+          material DEF _3 Material {
+            ambientIntensity 0.1
+            specularColor 0.8 0.8 0.8
+            emissiveColor 1 1 1
+            shininess 1
+          }
+          shaders USE _1
+        }
+        geometry IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            2,
+            0,
+            -1,
+            2,
+            3,
+            0,
+            -1,
+            3,
+            4,
+            0,
+            -1,
+            4,
+            5,
+            0,
+            -1,
+            5,
+            6,
+            0,
+            -1,
+            6,
+            7,
+            0,
+            -1,
+            7,
+            8,
+            0,
+            -1,
+            8,
+            9,
+            0,
+            -1,
+            9,
+            10,
+            0,
+            -1,
+            10,
+            11,
+            0,
+            -1,
+            11,
+            12,
+            0,
+            -1,
+            12,
+            13,
+            0,
+            -1,
+            13,
+            14,
+            0,
+            -1,
+            14,
+            15,
+            0,
+            -1,
+            15,
+            16,
+            0,
+            -1,
+            16,
+            17,
+            0,
+            -1,
+            17,
+            18,
+            0,
+            -1,
+            18,
+            19,
+            0,
+            -1,
+            19,
+            20,
+            0,
+            -1,
+            20,
+            21,
+            0,
+            -1,
+            21,
+            22,
+            0,
+            -1,
+            22,
+            23,
+            0,
+            -1,
+            23,
+            24,
+            0,
+            -1,
+            24,
+            25,
+            0,
+            -1,
+            25,
+            26,
+            0,
+            -1,
+            26,
+            27,
+            0,
+            -1,
+            27,
+            28,
+            0,
+            -1,
+            28,
+            29,
+            0,
+            -1,
+            29,
+            30,
+            0,
+            -1,
+            30,
+            31,
+            0,
+            -1,
+            31,
+            32,
+            0,
+            -1,
+            32,
+            1,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              0 1 0,
+              -0 -1 -1.2,
+              -0.234108 -1 -1.17694,
+              -0.45922 -1 -1.10866,
+              -0.666684 -1 -0.997764,
+              -0.848528 -1 -0.848528,
+              -0.997764 -1 -0.666684,
+              -1.10866 -1 -0.45922,
+              -1.17694 -1 -0.234108,
+              -1.2 -1 -7.34788e-17,
+              -1.17694 -1 0.234108,
+              -1.10866 -1 0.45922,
+              -0.997764 -1 0.666684,
+              -0.848528 -1 0.848528,
+              -0.666684 -1 0.997764,
+              -0.45922 -1 1.10866,
+              -0.234108 -1 1.17694,
+              -1.46958e-16 -1 1.2,
+              0.234108 -1 1.17694,
+              0.45922 -1 1.10866,
+              0.666684 -1 0.997764,
+              0.848528 -1 0.848528,
+              0.997764 -1 0.666684,
+              1.10866 -1 0.45922,
+              1.17694 -1 0.234108,
+              1.2 -1 2.20436e-16,
+              1.17694 -1 -0.234108,
+              1.10866 -1 -0.45922,
+              0.997764 -1 -0.666684,
+              0.848528 -1 -0.848528,
+              0.666684 -1 -0.997764,
+              0.45922 -1 -1.10866,
+              0.234108 -1 -1.17694
+            ]
+          }
+        }
+      }
+    }
+  }
+  inputOutput    SFNode     light NULL
+  inputOutput    SFNode     self USE Tool
+
+  url "ecmascript:
 
 function set_light ()
 {
@@ -303,38 +487,8 @@ function set_color (on, color, intensity)
 	diffuseColor = emissiveColor = new SFColor ();
 }
 "
-              directOutput TRUE
-            }
-          }
-          DEF selectGeometry MetadataBoolean {
-            name "selectGeometry"
-            reference "http://titania.create3000.de"
-            value FALSE
-          }
-        ]
-      }
-      DEF Page MetadataSet {
-        name "Page"
-        reference "http://titania.create3000.de"
-        value [
-          DEF activeView MetadataInteger {
-            name "activeView"
-            reference "http://titania.create3000.de"
-            value 1
-          }
-          DEF multiView MetadataInteger {
-            name "multiView"
-            reference "http://titania.create3000.de"
-            value 0
-          }
-        ]
-      }
-    ]
-  }
-  title "LightTool"
+  directOutput TRUE
 }
-
-USE Tool
 
 Collision {
   enabled FALSE
@@ -361,7 +515,7 @@ Collision {
                 children [
                   DEF Rays Transform {
                     children Shape {
-                      appearance USE _1
+                      appearance USE _2
                       geometry IndexedLineSet {
                         coordIndex [
                           0,
@@ -421,8 +575,8 @@ Collision {
                     scale 1 0.61803 0.1
                     children Shape {
                       appearance DEF _9 Appearance {
-                        material USE _2
-                        shaders USE _3
+                        material USE _3
+                        shaders USE _1
                       }
                       geometry Box { }
                     }
@@ -506,7 +660,7 @@ Collision {
                   DEF Ray1 Transform {
                     scale 2 2 2
                     children DEF _20 Shape {
-                      appearance USE _1
+                      appearance USE _2
                       geometry IndexedLineSet {
                         coordIndex [
                           0,
@@ -563,7 +717,7 @@ Collision {
                       DEF Ray1_22 Transform {
                         scale 2 2 2
                         children Shape {
-                          appearance USE _1
+                          appearance USE _2
                           geometry IndexedLineSet {
                             coordIndex [
                               0,
@@ -594,7 +748,7 @@ Collision {
                         scale 2 2 2
                         scaleOrientation 0.747418900311875 -0.663392911518968 0.035704795237819 1.19385
                         children Shape {
-                          appearance USE _1
+                          appearance USE _2
                           geometry IndexedLineSet {
                             coordIndex [
                               0,
@@ -625,7 +779,7 @@ Collision {
                         scale 2 2 2
                         scaleOrientation -0.805953410514892 -0.138029070305539 0.575662293215391 0.849512
                         children Shape {
-                          appearance USE _1
+                          appearance USE _2
                           geometry IndexedLineSet {
                             coordIndex [
                               0,
@@ -663,8 +817,8 @@ Collision {
   ]
 }
 
-ROUTE Tool.diffuseColor_changed TO _2.set_diffuseColor
-ROUTE Tool.emissiveColor_changed TO _2.set_emissiveColor
+ROUTE Tool.diffuseColor_changed TO _3.set_diffuseColor
+ROUTE Tool.emissiveColor_changed TO _3.set_emissiveColor
 ROUTE Tool.whichChoice_changed TO _7.set_whichChoice
 ROUTE Tool.selected_changed TO _4.set_whichChoice
 ROUTE TransformTool.translation_changed TO _6.set_translation

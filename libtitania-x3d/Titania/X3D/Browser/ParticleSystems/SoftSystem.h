@@ -86,7 +86,7 @@ public:
 	depth (const X3DShapeContainer* const context);
 
 	void
-	draw (ShapeContainer* const context);
+	display (ShapeContainer* const context);
 
 	///  @name Destruction
 

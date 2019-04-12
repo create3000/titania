@@ -87,40 +87,6 @@ LineProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-LineProperties::enable (X3DRenderObject* const renderObject)
-{
-	if (applied ())
-	{
-		glEnable (GL_LINE_STIPPLE);
-
-		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
-			glLineStipple (1, linetypes [linetype ()]);
-
-		else
-			glLineStipple (1, int32_t (LineType::SOLID));
-
-		if (linewidthScaleFactor () > 0)
-		{
-			glLineWidth (linewidthScaleFactor ());
-			glPointSize (linewidthScaleFactor ());
-		}
-		else
-		{
-			glLineWidth (1);
-			glPointSize (1);
-		}
-	}
-}
-
-void
-LineProperties::disable (X3DRenderObject* const renderObject)
-{
-	glDisable (GL_LINE_STIPPLE);
-	glLineWidth (1);
-	glPointSize (1);
-}
-
-void
 LineProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
 	if (applied ())

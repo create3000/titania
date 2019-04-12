@@ -1,15 +1,20 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.5.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT CADGeometry : 1
+COMPONENT Layering : 1
+COMPONENT Layout : 2
+COMPONENT Shape : 4
 
 UNIT angle degree 0.0174532925199433
 
 META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/GradientTool.x3dv"
-META "modified" "Mon, 07 Jan 2019 02:04:28 GMT"
+META "modified" "Fri, 12 Apr 2019 15:55:58 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -88,10 +93,6 @@ PROTO Arrow [
                   children [
                     Shape {
                       appearance Appearance {
-                        fillProperties DEF _3 FillProperties {
-                          filled FALSE
-                          hatched FALSE
-                        }
                         lineProperties LineProperties {
                           linewidthScaleFactor 1
                         }
@@ -100,17 +101,24 @@ PROTO Arrow [
                           emissiveColor 1 1 1
                         }
                       }
-                      geometry DEF _4 TriangleSet2D {
-                        vertices [
-                          0 1,
-                          -0.866025 -0.5,
-                          0.866025 -0.5
+                      geometry IndexedLineSet {
+                        coordIndex [
+                          0,
+                          1,
+                          2,
+                          0
                         ]
+                        coord Coordinate {
+                          point [
+                            0 1 0,
+                            -0.866025 -0.5 0,
+                            0.866025 -0.5 0
+                          ]
+                        }
                       }
                     }
                     Shape {
                       appearance Appearance {
-                        fillProperties USE _3
                         lineProperties LineProperties {
                           linewidthScaleFactor 2
                         }
@@ -118,7 +126,21 @@ PROTO Arrow [
                           diffuseColor 0 0 0
                         }
                       }
-                      geometry USE _4
+                      geometry IndexedLineSet {
+                        coordIndex [
+                          0,
+                          1,
+                          2,
+                          0
+                        ]
+                        coord Coordinate {
+                          point [
+                            0 1 0,
+                            -0.866025 -0.5 0,
+                            0.866025 -0.5 0
+                          ]
+                        }
+                      }
                     }
                   ]
                 }
@@ -127,11 +149,11 @@ PROTO Arrow [
           }
         }
       }
-      DEF _5 TouchSensor {
+      DEF _3 TouchSensor {
         isActive IS isActive
         touchTime IS touchTime
       }
-      DEF _6 PlaneSensor {
+      DEF _4 PlaneSensor {
         enabled IS enabled
         offset IS offset
         maxPosition 1 0
@@ -140,32 +162,32 @@ PROTO Arrow [
     ]
   }
 
-  DEF _7 DoubleClick {
+  DEF _5 DoubleClick {
     doubleClickTime IS doubleClickTime
   }
 
-  DEF _8 BooleanToggle {
+  DEF _6 BooleanToggle {
     toggle IS active
   }
 
-  DEF _9 BooleanFilter { }
+  DEF _7 BooleanFilter { }
 
-  DEF _10 IntegerTrigger {
+  DEF _8 IntegerTrigger {
     integerKey 0
   }
 
-  DEF _11 IntegerTrigger {
+  DEF _9 IntegerTrigger {
     integerKey 1
   }
 
-  ROUTE _6.translation_changed TO _1.set_translation
-  ROUTE _5.touchTime TO _7.set_time
-  ROUTE _8.toggle_changed TO _9.set_boolean
-  ROUTE _9.inputFalse TO _10.set_boolean
-  ROUTE _10.triggerValue TO _2.set_whichChoice
-  ROUTE _9.inputTrue TO _11.set_boolean
-  ROUTE _11.triggerValue TO _2.set_whichChoice
-  ROUTE _6.translation_changed TO _6.set_offset
+  ROUTE _4.translation_changed TO _1.set_translation
+  ROUTE _3.touchTime TO _5.set_time
+  ROUTE _6.toggle_changed TO _7.set_boolean
+  ROUTE _7.inputFalse TO _8.set_boolean
+  ROUTE _8.triggerValue TO _2.set_whichChoice
+  ROUTE _7.inputTrue TO _9.set_boolean
+  ROUTE _9.triggerValue TO _2.set_whichChoice
+  ROUTE _4.translation_changed TO _4.set_offset
 }
 
 PROTO Gradient [
@@ -183,7 +205,7 @@ PROTO Gradient [
     appearance Appearance {
       material Material { }
     }
-    geometry DEF _12 IndexedQuadSet {
+    geometry DEF _10 IndexedQuadSet {
       index [
         0,
         2,
@@ -216,7 +238,7 @@ PROTO Gradient [
   DEF GradientScript Script {
     inputOutput    MFFloat     position IS position
     inputOutput    MFColorRGBA color IS color
-    initializeOnly SFNode      geometry USE _12
+    initializeOnly SFNode      geometry USE _10
 
     url "ecmascript:
 
@@ -335,7 +357,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value NULL
           }
         ]
       }
@@ -375,11 +396,11 @@ LayerSet {
       }
       viewport Viewport { }
       children [
-        DEF Gradient_13 Transform {
+        DEF Gradient_11 Transform {
           translation -0.5 0 0
           scale 1 0.5 1
           children [
-            DEF _14 Gradient {
+            DEF _12 Gradient {
               position [
                 0.147972,
                 0.850492
@@ -389,8 +410,8 @@ LayerSet {
                 0 0 0 0
               ]
             }
-            DEF _15 TouchSensor { }
-            DEF _16 DoubleClick { }
+            DEF _13 TouchSensor { }
+            DEF _14 DoubleClick { }
           ]
         }
         DEF GradientEditorScript Script {
@@ -419,15 +440,15 @@ LayerSet {
           initializeOnly SFInt32     whichChoice 0
           initializeOnly SFNode      arrows DEF Colors Group {
             children [
-              DEF _17 Arrow {
+              DEF _15 Arrow {
                 color 0.844259 0.651834 0.281599
               }
-              DEF _18 Arrow {
+              DEF _16 Arrow {
                 color 0.643032 0.378889 0.422449
               }
             ]
           }
-          initializeOnly SFNode      gradientTouch USE _15
+          initializeOnly SFNode      gradientTouch USE _13
 
           url "ecmascript:
 
@@ -770,13 +791,13 @@ function lowerBound (array, first, last, value, comp)
   ]
 }
 
-ROUTE _15.touchTime TO _16.set_time
-ROUTE _17.isActive TO GradientEditorScript.set_active
-ROUTE _18.isActive TO GradientEditorScript.set_active
-ROUTE _16.doubleClickTime TO GradientEditorScript.set_addTime
-ROUTE _18.doubleClickTime TO GradientEditorScript.set_removeTime
-ROUTE _17.doubleClickTime TO GradientEditorScript.set_removeTime
-ROUTE GradientEditorScript.position_changed TO _14.set_position
-ROUTE GradientEditorScript.color_changed TO _14.set_color
+ROUTE _13.touchTime TO _14.set_time
+ROUTE _14.doubleClickTime TO GradientEditorScript.set_addTime
+ROUTE GradientEditorScript.position_changed TO _12.set_position
+ROUTE GradientEditorScript.color_changed TO _12.set_color
+ROUTE _15.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _15.isActive TO GradientEditorScript.set_active
+ROUTE _16.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _16.isActive TO GradientEditorScript.set_active
 
 EXPORT GradientEditorScript AS Tool

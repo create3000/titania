@@ -71,14 +71,6 @@ public:
 	isTransparent () const
 	{ return transparent; }
 
-	virtual
-	const X3DPtr <FillProperties> &
-	getFillProperties () const = 0;
-
-	virtual
-	const X3DPtr <LineProperties> &
-	getLineProperties () const = 0;
-
 	///  @name Operations
 
 	virtual

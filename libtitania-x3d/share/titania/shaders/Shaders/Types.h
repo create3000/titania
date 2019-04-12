@@ -5,7 +5,7 @@ struct x3d_FogParameters {
 	mediump vec3  color;
 	mediump float visibilityRange;
 	mediump mat3  matrix;
-	bool fogCoord;
+	bool          fogCoord;
 };
 
 //uniform x3d_FogParameters x3d_Fog;
@@ -63,6 +63,16 @@ struct x3d_TextureCoordinateGeneratorParameters
 };
 
 //uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator [x3d_MaxTextures;  
+
+struct x3d_HatchParameters  
+{   
+	bool         filled;
+	bool         hatched;
+	mediump vec3 color;
+	sampler2D    style;
+};
+
+//uniform x3d_HatchParameters x3d_Hatch;  
 
 struct x3d_ParticleParameters  
 {   

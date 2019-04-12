@@ -314,9 +314,11 @@ Shape::depth (const X3DShapeContainer* const context)
 }
 
 void
-Shape::draw (ShapeContainer* const context)
+Shape::display (ShapeContainer* const context)
 {
-	getGeometry () -> draw (context);
+	getAppearance () -> enable  (context);
+	getGeometry ()   -> draw    (context);
+	getAppearance () -> disable (context);
 }
 
 } // X3D

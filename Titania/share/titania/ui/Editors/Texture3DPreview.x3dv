@@ -1,13 +1,17 @@
-#X3D V3.3 utf8 Titania V4.3.8
+#X3D V3.3 utf8 Titania V4.5.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT EnvironmentalEffects : 3
+COMPONENT Shape : 4
+COMPONENT Texturing3D : 1
 
 META "comment" "World of Titania"
 META "created" "Sun, 31 Jan 2016 11:29:00 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.3.8, http://titania.create3000.de"
+META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Texture3DPreview.x3dv"
-META "modified" "Mon, 07 Jan 2019 02:07:28 GMT"
+META "modified" "Fri, 12 Apr 2019 15:49:04 GMT"
 
 PROTO Volume [
   inputOutput SFInt32 dimension 10
@@ -19,7 +23,6 @@ PROTO Volume [
       translation 0 0 1
       children Shape {
         appearance Appearance { }
-        geometry NULL
       }
     }
   }
@@ -151,7 +154,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value NULL
           }
         ]
       }
@@ -243,16 +245,28 @@ function set_translation (value)
           translation 3.62463e-06 0 1
           children Shape {
             appearance Appearance {
-              fillProperties FillProperties {
-                filled FALSE
-                hatched FALSE
-              }
               lineProperties LineProperties {
                 linewidthScaleFactor 3
               }
               material Material { }
             }
-            geometry Rectangle2D { }
+            geometry IndexedLineSet {
+              coordIndex [
+                0,
+                1,
+                2,
+                3,
+                0
+              ]
+              coord Coordinate {
+                point [
+                  -1 -1 0,
+                  1 -1 0,
+                  1 1 0,
+                  -1 1 0
+                ]
+              }
+            }
           }
         }
       ]

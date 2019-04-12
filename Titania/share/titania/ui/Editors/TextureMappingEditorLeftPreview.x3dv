@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V4.4.5
+#X3D V3.3 utf8 Titania V4.5.0
 
 PROFILE Immersive
 
@@ -11,9 +11,9 @@ COMPONENT Shape : 4
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.4.5, http://titania.create3000.de"
+META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TextureMappingEditorLeftPreview.x3dv"
-META "modified" "Fri, 05 Apr 2019 10:29:26 GMT"
+META "modified" "Fri, 12 Apr 2019 15:51:47 GMT"
 
 PROTO IndexedPointSet [
   inputOnly      MFInt32 set_coordIndex
@@ -371,10 +371,6 @@ function set_active (value)
                         DEF Circle2D_10 Transform {
                           children Shape {
                             appearance DEF _11 Appearance {
-                              fillProperties FillProperties {
-                                filled FALSE
-                                hatched FALSE
-                              }
                               lineProperties LineProperties {
                                 linewidthScaleFactor 2.5
                               }
@@ -382,13 +378,29 @@ function set_active (value)
                                 diffuseColor 0 0 0
                               }
                             }
-                            geometry DEF _12 Rectangle2D { }
+                            geometry IndexedLineSet {
+                              coordIndex [
+                                0,
+                                1,
+                                2,
+                                3,
+                                0
+                              ]
+                              coord Coordinate {
+                                point [
+                                  -1 -1 0,
+                                  1 -1 0,
+                                  1 1 0,
+                                  -1 1 0
+                                ]
+                              }
+                            }
                           }
                         }
-                        DEF IndexedLineSet_13 Transform {
+                        DEF IndexedLineSet_12 Transform {
                           children Shape {
                             appearance USE _11
-                            geometry DEF _14 IndexedLineSet {
+                            geometry DEF _13 IndexedLineSet {
                               coordIndex [
                                 0,
                                 1,
@@ -426,11 +438,7 @@ function set_active (value)
                   children [
                     DEF Circle2D Transform {
                       children Shape {
-                        appearance DEF _15 Appearance {
-                          fillProperties FillProperties {
-                            filled FALSE
-                            hatched FALSE
-                          }
+                        appearance DEF _14 Appearance {
                           lineProperties LineProperties {
                             linewidthScaleFactor 1
                           }
@@ -439,25 +447,41 @@ function set_active (value)
                             emissiveColor 1 0 0
                           }
                         }
-                        geometry USE _12
+                        geometry IndexedLineSet {
+                          coordIndex [
+                            0,
+                            1,
+                            2,
+                            3,
+                            0
+                          ]
+                          coord Coordinate {
+                            point [
+                              -1 -1 0,
+                              1 -1 0,
+                              1 1 0,
+                              -1 1 0
+                            ]
+                          }
+                        }
                       }
                     }
                     DEF IndexedLineSet Transform {
                       children Shape {
-                        appearance USE _15
-                        geometry USE _14
+                        appearance USE _14
+                        geometry USE _13
                       }
                     }
                   ]
                 }
-                DEF Rectangle2D_16 Transform {
+                DEF Rectangle2D_15 Transform {
                   children Shape {
                     appearance Appearance {
                       material Material {
                         transparency 1
                       }
                     }
-                    geometry USE _12
+                    geometry Rectangle2D { }
                   }
                 }
               ]
@@ -486,7 +510,7 @@ function set_active (value)
   ]
 }
 
-DEF BackScript_17 Script {
+DEF BackScript_16 Script {
   outputOnly SFInt32 whichChoice_changed
 
   url "ecmascript:
@@ -502,5 +526,5 @@ ROUTE TouchSensor.isOver TO PointScript.set_active
 ROUTE PointScript.whichChoice_changed TO ActivePoint.set_whichChoice
 ROUTE TouchSensor.isActive TO CenterPointScript.set_active
 ROUTE CenterPointScript.isPickable TO Center.set_isPickable
-ROUTE BackScript_17.whichChoice_changed TO _9.set_whichChoice
-ROUTE BackScript_17.whichChoice_changed TO _5.set_whichChoice
+ROUTE BackScript_16.whichChoice_changed TO _9.set_whichChoice
+ROUTE BackScript_16.whichChoice_changed TO _5.set_whichChoice

@@ -89,26 +89,6 @@ FillProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-FillProperties::enable (X3DRenderObject* const renderObject)
-{
-	lighting = glIsEnabled (GL_LIGHTING);
-
-	glDisable (GL_LIGHTING);
-}
-
-void
-FillProperties::disable (X3DRenderObject* const renderObject)
-{
-	if (lighting)
-		glEnable (GL_LIGHTING);
-
-	else
-		glColor3f (1, 1, 1);
-
-	glDisable (GL_POLYGON_STIPPLE);
-}
-
-void
 FillProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 { }
 

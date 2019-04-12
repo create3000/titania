@@ -1094,7 +1094,7 @@ SoftSystem::depth (const X3DShapeContainer* const context)
 }
 
 void
-SoftSystem::draw (ShapeContainer* const context)
+SoftSystem::display (ShapeContainer* const context)
 {
 	try
 	{
@@ -1103,7 +1103,7 @@ SoftSystem::draw (ShapeContainer* const context)
 
 		// Traverse appearance before everything.
 
-		//particleSystem -> getAppearance () -> draw (context);
+		particleSystem -> getAppearance () -> enable (context);
 
 		// Update geometry if SPRITE.
 
@@ -1205,6 +1205,8 @@ SoftSystem::draw (ShapeContainer* const context)
 			shaderNode -> disableVertexAttrib ();
 			shaderNode -> disable ();
 		}
+
+		particleSystem -> getAppearance () -> disable (context);
 	}
 	catch (const std::exception & error)
 	{

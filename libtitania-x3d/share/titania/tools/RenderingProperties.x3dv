@@ -1,13 +1,18 @@
-#X3D V3.3 utf8 Titania V3.0.4
+#X3D V3.3 utf8 Titania V4.5.0
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Grouping : 3
+COMPONENT Layering : 1
+COMPONENT Layout : 1
+COMPONENT Shape : 4
 
 META "comment" "World of Titania"
 META "created" "Thu, 12 May 2016 09:18:21 GMT"
 META "creator" "holger"
-META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/RenderingProperties.x3dv"
-META "modified" "Wed, 10 May 2017 08:24:07 GMT"
+META "modified" "Fri, 12 Apr 2019 16:02:58 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO RoundedRectangle2D [
@@ -89,71 +94,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF _1 PolygonMode {
-              children [
-                DEF Background Transform {
-                  translation 10 10 0
-                  children [
-                    Transform {
-                      translation 0 0 -1
-                      children DEF Surface Shape {
-                        appearance Appearance {
-                          material DEF BackgroundMaterial Material {
-                            diffuseColor 1 1 1
-                            transparency 0.385057
-                          }
-                          texture ImageTexture {
-                            url "library/gradient.png"
-                          }
-                        }
-                        geometry DEF BackgroundGeometry RoundedRectangle2D {
-                          cornerRadius 5
-                          size 26 26
-                        }
-                      }
-                    }
-                    Transform {
-                      children DEF Border Shape {
-                        appearance Appearance {
-                          fillProperties FillProperties {
-                            filled FALSE
-                            hatched FALSE
-                          }
-                          lineProperties DEF LineProperties LineProperties {
-                            linewidthScaleFactor 4
-                          }
-                          material DEF BorderMaterial Material {
-                            diffuseColor 0.461 0.461 0.461
-                          }
-                        }
-                        geometry USE BackgroundGeometry
-                      }
-                    }
-                  ]
-                }
-                DEF Statistics Transform {
-                  translation 10 10 0
-                  children Shape {
-                    appearance Appearance {
-                      material DEF TextMaterial Material {
-                        diffuseColor 1 1 1
-                      }
-                    }
-                    geometry DEF Text Text {
-                      fontStyle ScreenFontStyle {
-                        family "monospace"
-                        pointSize 7.5
-                        spacing 1.2
-                        justify [
-                          "BEGIN",
-                          "END"
-                        ]
-                      }
-                    }
-                  }
-                }
-              ]
-            }
           }
         ]
       }
@@ -165,6 +105,22 @@ WorldInfo {
           reference "http://titania.create3000.de"
           value -1
         }
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
       }
     ]
   }
@@ -191,7 +147,52 @@ LayerSet {
       DEF RenderingProperties Interface {
         linewidthScaleFactor 4
       }
-      USE _1
+      PolygonMode {
+        children [
+          DEF Background Transform {
+            translation 10 10 0
+            children Transform {
+              translation 0 0 -1
+              children DEF Surface Shape {
+                appearance Appearance {
+                  material DEF BackgroundMaterial Material {
+                    diffuseColor 1 1 1
+                    transparency 0.385057
+                  }
+                  texture ImageTexture {
+                    url "library/gradient.png"
+                  }
+                }
+                geometry DEF BackgroundGeometry RoundedRectangle2D {
+                  cornerRadius 5
+                  size 26 26
+                }
+              }
+            }
+          }
+          DEF Statistics Transform {
+            translation 10 10 0
+            children Shape {
+              appearance Appearance {
+                material DEF TextMaterial Material {
+                  diffuseColor 1 1 1
+                }
+              }
+              geometry DEF Text Text {
+                fontStyle ScreenFontStyle {
+                  family "monospace"
+                  pointSize 7.5
+                  spacing 1.2
+                  justify [
+                    "BEGIN",
+                    "END"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
       DEF RenderingPropertiesScript Script {
         inputOnly      SFVec2f set_textBounds
         inputOutput    SFFloat cornerRadius 5
@@ -244,7 +245,6 @@ function is_odd (value)
 
 ROUTE Text.textBounds TO RenderingPropertiesScript.set_textBounds
 ROUTE RenderingProperties.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
-ROUTE RenderingProperties.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
 ROUTE RenderingProperties.string_changed TO Text.set_string
 ROUTE RenderingProperties.cornerRadius_changed TO RenderingPropertiesScript.set_cornerRadius
 ROUTE RenderingProperties.linewidthScaleFactor_changed TO RenderingPropertiesScript.set_linewidthScaleFactor

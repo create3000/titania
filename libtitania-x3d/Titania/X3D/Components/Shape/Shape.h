@@ -112,6 +112,10 @@ public:
 	void
 	depth (const X3DShapeContainer* const context) override;
 
+	virtual
+	void
+	display (ShapeContainer* const) override;
+
 
 protected:
 
@@ -143,10 +147,6 @@ private:
 
 	void
 	picking (X3DRenderObject* const renderObject);
-
-	virtual
-	void
-	draw (ShapeContainer* const) final override;
 
 	///  @name Static members
 

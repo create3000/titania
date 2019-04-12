@@ -144,12 +144,12 @@ public:
 	virtual
 	void
 	depth (const X3DShapeContainer* const context) override
-	{ return getNode <X3DShapeNode> () -> depth (context); }
+	{ getNode <X3DShapeNode> () -> depth (context); }
 
 	virtual
 	void
-	display (ShapeContainer* const context) final override
-	{ return getNode <X3DShapeNode> () -> display (context); }
+	display (ShapeContainer* const context) override
+	{ getNode <X3DShapeNode> () -> display (context); }
 
 	/// @name Destruction
 

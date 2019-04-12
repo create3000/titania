@@ -155,14 +155,12 @@ public:
 
 	///  @name MemberAccess
 
-	virtual
 	const X3DPtr <FillProperties> &
-	getFillProperties () const final override
+	getFillProperties () const
 	{ return fillPropertiesNode; }
 
-	virtual
 	const X3DPtr <LineProperties> &
-	getLineProperties () const final override
+	getLineProperties () const
 	{ return linePropertiesNode; }
 
 	const X3DPtr <X3DMaterialNode> &

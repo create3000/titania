@@ -262,6 +262,10 @@ public:
 	void
 	depth (const X3DShapeContainer* const context) override;
 
+	virtual
+	void
+	display (ShapeContainer* const context) override;
+
 	///  @name Destruction
 
 	virtual
@@ -399,10 +403,6 @@ private:
 
 	void
 	updateGeometry (const Matrix4d & modelViewMatrix);
-
-	virtual
-	void
-	draw (ShapeContainer* const context) final override;
 
 	///  throws std::domain_error
 	Matrix3d

@@ -303,6 +303,24 @@ public:
 	getTextureCoordinateGeneratorParameterUniformLocation () const
 	{ return x3d_TextureCoordinateGeneratorParameter; }
 
+	///  @name Hatch
+
+	GLint
+	getHatchFilledUniformLocation () const
+	{ return x3d_HatchFilled; }
+
+	GLint
+	getHatchHatchedUniformLocation () const
+	{ return x3d_HatchHatched; }
+
+	GLint
+	getHatchColorUniformLocation () const
+	{ return x3d_HatchColor; }
+
+	GLint
+	getHatchStyleUniformLocation () const
+	{ return x3d_HatchStyle; }
+
 	///  @name Matrices
 
 	GLint
@@ -584,6 +602,11 @@ private:
 
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
+
+	GLint x3d_HatchFilled;
+	GLint x3d_HatchHatched;
+	GLint x3d_HatchColor;
+	GLint x3d_HatchStyle;
 
 	GLint               x3d_Viewport;
 	GLint               x3d_ProjectionMatrix;

@@ -120,12 +120,6 @@ public:
 
 	///  @name Operations
 
-	void
-	enable (X3DRenderObject* const renderObject);
-
-	void
-	disable (X3DRenderObject* const renderObject);
-
 	virtual
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const) const;

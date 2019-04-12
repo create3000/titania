@@ -1656,15 +1656,19 @@ ParticleSystem::depth (const X3DShapeContainer* const context)
 }
 
 void
-ParticleSystem::draw (ShapeContainer* const context)
+ParticleSystem::display (ShapeContainer* const context)
 {
 	try
 	{
 		if (isSoftSystem ())
 		{
-			softSystem -> draw (context);
+			softSystem -> display (context);
 			return;
 		}
+
+		// Traverse appearance before everything.
+
+		getAppearance () -> enable (context);
 
 		// Geometry shader.
 	
@@ -1799,6 +1803,8 @@ ParticleSystem::draw (ShapeContainer* const context)
 				break;
 			}
 		}
+
+		getAppearance () -> disable (context);
 
 		// Set model view matrix for transparency sorting.
 

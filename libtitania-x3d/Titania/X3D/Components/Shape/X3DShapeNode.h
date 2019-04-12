@@ -141,7 +141,7 @@ public:
 
 	virtual
 	void
-	display (ShapeContainer* const context);
+	display (ShapeContainer* const context) = 0;
 
 	///  @name Destruction
 
@@ -169,12 +169,6 @@ protected:
 	virtual
 	void
 	set_transparent ();
-
-	///  @name Operations
-	
-	virtual
-	void
-	draw (ShapeContainer* const) = 0;
 
 
 private:
