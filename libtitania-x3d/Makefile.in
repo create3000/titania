@@ -173,6 +173,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/KeyDeviceSensor/Keys.lo \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.lo \
 	Titania/X3D/Browser/Layering/X3DLayeringContext.lo \
+	Titania/X3D/Browser/Layout/ScreenText.lo \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.lo \
 	Titania/X3D/Browser/Navigation/ExamineViewer.lo \
 	Titania/X3D/Browser/Navigation/FlyViewer.lo \
@@ -210,7 +211,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Text/Font.lo \
 	Titania/X3D/Browser/Text/FontFace.lo \
 	Titania/X3D/Browser/Text/FontStyleOptions.lo \
+	Titania/X3D/Browser/Text/PolygonText.lo \
 	Titania/X3D/Browser/Text/X3DTextContext.lo \
+	Titania/X3D/Browser/Text/X3DTextGeometry.lo \
 	Titania/X3D/Browser/Texturing/Texture.lo \
 	Titania/X3D/Browser/Texturing/X3DTexture.lo \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.lo \
@@ -867,6 +870,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/Keys.Plo \
 	Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo \
 	Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo \
+	Titania/X3D/Browser/Layout/$(DEPDIR)/ScreenText.Plo \
 	Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo \
 	Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo \
 	Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo \
@@ -902,7 +906,9 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/Text/$(DEPDIR)/Font.Plo \
 	Titania/X3D/Browser/Text/$(DEPDIR)/FontFace.Plo \
 	Titania/X3D/Browser/Text/$(DEPDIR)/FontStyleOptions.Plo \
+	Titania/X3D/Browser/Text/$(DEPDIR)/PolygonText.Plo \
 	Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextContext.Plo \
+	Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextGeometry.Plo \
 	Titania/X3D/Browser/Texturing/$(DEPDIR)/Texture.Plo \
 	Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo \
 	Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo \
@@ -1784,6 +1790,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/KeyDeviceSensor/Keys.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
+	Titania/X3D/Browser/Layout/ScreenText.cpp \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
 	Titania/X3D/Browser/Navigation/ExamineViewer.cpp \
 	Titania/X3D/Browser/Navigation/FlyViewer.cpp \
@@ -1821,7 +1828,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Text/Font.cpp \
 	Titania/X3D/Browser/Text/FontFace.cpp \
 	Titania/X3D/Browser/Text/FontStyleOptions.cpp \
+	Titania/X3D/Browser/Text/PolygonText.cpp \
 	Titania/X3D/Browser/Text/X3DTextContext.cpp \
+	Titania/X3D/Browser/Text/X3DTextGeometry.cpp \
 	Titania/X3D/Browser/Texturing/Texture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
@@ -2701,6 +2710,15 @@ Titania/X3D/Browser/Layering/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Browser/Layering/X3DLayeringContext.lo:  \
 	Titania/X3D/Browser/Layering/$(am__dirstamp) \
 	Titania/X3D/Browser/Layering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Layout/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Browser/Layout
+	@: > Titania/X3D/Browser/Layout/$(am__dirstamp)
+Titania/X3D/Browser/Layout/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Browser/Layout/$(DEPDIR)
+	@: > Titania/X3D/Browser/Layout/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Layout/ScreenText.lo:  \
+	Titania/X3D/Browser/Layout/$(am__dirstamp) \
+	Titania/X3D/Browser/Layout/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Lighting/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Lighting
 	@: > Titania/X3D/Browser/Lighting/$(am__dirstamp)
@@ -2889,7 +2907,13 @@ Titania/X3D/Browser/Text/FontFace.lo:  \
 Titania/X3D/Browser/Text/FontStyleOptions.lo:  \
 	Titania/X3D/Browser/Text/$(am__dirstamp) \
 	Titania/X3D/Browser/Text/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Text/PolygonText.lo:  \
+	Titania/X3D/Browser/Text/$(am__dirstamp) \
+	Titania/X3D/Browser/Text/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Text/X3DTextContext.lo:  \
+	Titania/X3D/Browser/Text/$(am__dirstamp) \
+	Titania/X3D/Browser/Text/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Text/X3DTextGeometry.lo:  \
 	Titania/X3D/Browser/Text/$(am__dirstamp) \
 	Titania/X3D/Browser/Text/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Texturing/$(am__dirstamp):
@@ -5229,6 +5253,8 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/*.lo
 	-rm -f Titania/X3D/Browser/Layering/*.$(OBJEXT)
 	-rm -f Titania/X3D/Browser/Layering/*.lo
+	-rm -f Titania/X3D/Browser/Layout/*.$(OBJEXT)
+	-rm -f Titania/X3D/Browser/Layout/*.lo
 	-rm -f Titania/X3D/Browser/Lighting/*.$(OBJEXT)
 	-rm -f Titania/X3D/Browser/Lighting/*.lo
 	-rm -f Titania/X3D/Browser/NURBS/*.$(OBJEXT)
@@ -5484,6 +5510,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/Keys.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Layout/$(DEPDIR)/ScreenText.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo@am__quote@ # am--include-marker
@@ -5519,7 +5546,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/Font.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/FontFace.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/FontStyleOptions.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/PolygonText.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextGeometry.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/Texture.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo@am__quote@ # am--include-marker
@@ -6192,6 +6221,7 @@ clean-libtool:
 	-rm -rf Titania/X3D/Browser/Geospatial/.libs Titania/X3D/Browser/Geospatial/_libs
 	-rm -rf Titania/X3D/Browser/KeyDeviceSensor/.libs Titania/X3D/Browser/KeyDeviceSensor/_libs
 	-rm -rf Titania/X3D/Browser/Layering/.libs Titania/X3D/Browser/Layering/_libs
+	-rm -rf Titania/X3D/Browser/Layout/.libs Titania/X3D/Browser/Layout/_libs
 	-rm -rf Titania/X3D/Browser/Lighting/.libs Titania/X3D/Browser/Lighting/_libs
 	-rm -rf Titania/X3D/Browser/NURBS/.libs Titania/X3D/Browser/NURBS/_libs
 	-rm -rf Titania/X3D/Browser/Navigation/.libs Titania/X3D/Browser/Navigation/_libs
@@ -6439,6 +6469,8 @@ distclean-generic:
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Layering/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Layering/$(am__dirstamp)
+	-rm -f Titania/X3D/Browser/Layout/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Browser/Layout/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Lighting/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Lighting/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/NURBS/$(DEPDIR)/$(am__dirstamp)
@@ -6700,6 +6732,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/Keys.Plo
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo
 	-rm -f Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo
+	-rm -f Titania/X3D/Browser/Layout/$(DEPDIR)/ScreenText.Plo
 	-rm -f Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo
 	-rm -f Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo
@@ -6735,7 +6768,9 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/Font.Plo
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/FontFace.Plo
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/FontStyleOptions.Plo
+	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/PolygonText.Plo
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextContext.Plo
+	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextGeometry.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/Texture.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo
@@ -7428,6 +7463,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/Keys.Plo
 	-rm -f Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR)/X3DKeyDeviceSensorContext.Plo
 	-rm -f Titania/X3D/Browser/Layering/$(DEPDIR)/X3DLayeringContext.Plo
+	-rm -f Titania/X3D/Browser/Layout/$(DEPDIR)/ScreenText.Plo
 	-rm -f Titania/X3D/Browser/Lighting/$(DEPDIR)/X3DLightingContext.Plo
 	-rm -f Titania/X3D/Browser/NURBS/$(DEPDIR)/NURBS.Plo
 	-rm -f Titania/X3D/Browser/Navigation/$(DEPDIR)/ExamineViewer.Plo
@@ -7463,7 +7499,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/Font.Plo
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/FontFace.Plo
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/FontStyleOptions.Plo
+	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/PolygonText.Plo
 	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextContext.Plo
+	-rm -f Titania/X3D/Browser/Text/$(DEPDIR)/X3DTextGeometry.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/Texture.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo

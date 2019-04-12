@@ -48,22 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYOUT_SCREEN_FONT_STYLE_H__
-#define __TITANIA_X3D_COMPONENTS_LAYOUT_SCREEN_FONT_STYLE_H__
+#ifndef __TITANIA_X3D_BROWSER_LAYOUT_SCREEN_TEXT_H__
+#define __TITANIA_X3D_BROWSER_LAYOUT_SCREEN_TEXT_H__
 
-#include "../Text/X3DFontStyleNode.h"
+#include "../../Browser/Text/X3DTextGeometry.h"
+#include "../../Components/Text/X3DFontStyleNode.h"
+
+#include <cairomm/cairomm.h>
 
 namespace titania {
 namespace X3D {
 
-class ScreenFontStyle :
-	public X3DFontStyleNode
+class PixelTexture;
+class ScreenFontStyle;
+class ShapeContainer;
+
+class ScreenText :
+	public X3DTextGeometry
 {
 public:
 
 	///  @name Construction
 
-	ScreenFontStyle (X3DExecutionContext* const executionContext);
+	ScreenText (Text* const, const ScreenFontStyle* const);
 
 	virtual
 	X3DBaseNode*
@@ -86,71 +93,62 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
-	///  @name Fields
-
-	SFFloat &
-	pointSize ()
-	{ return *fields .pointSize; }
-
-	const SFFloat &
-	pointSize () const
-	{ return *fields .pointSize; }
-
 	///  @name Member access
 
-	double
-	getSize () const;
+	virtual
+	bool
+	isTransparent () const
+	{ return true; }
 
 	virtual
-	double
-	getLineHeight () const final override;
+	const Box3d &
+	getBBox () const final override
+	{ return bbox; }
 
 	virtual
-	double
-	getScale () const final override
-	{ return 1; }
+	const Matrix4d &
+	getMatrix () const final override
+	{ return matrix; }
+
+	///  @name Operations
 
 	virtual
-	X3DPtr <X3DTextGeometry>
-	getTextGeometry (Text* const) const;
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	virtual
-	const Font &
-	getFont () const final override
-	{ return font; }
+	void
+	draw (ShapeContainer* const shapeContainer) final override;
 
 	virtual
-	const FontFace &
-	getFontFace () const final override
-	{ return fontFace; }
+	SFNode
+	toPrimitive () const final override;
 
 	///  @name Destruction
 
 	virtual
-	void
-	dispose () final override;
-
-	virtual
-	~ScreenFontStyle () final override;
-
-
-protected:
-
-	friend class ScreenText;
-
+	~ScreenText () final override;
 
 private:
 
-	///  @name Construction
+	///  @name Operations
+
+	void
+	configure (const Cairo::RefPtr <Cairo::Context> &);
 
 	virtual
 	void
-	initialize () final override;
+	getLineExtents (const String & line, Vector2d & min, Vector2d & max) const final override;
 
-	///  @name Event handlers
-	
 	void
-	set_font ();
+	setTextBounds ();
+
+	virtual
+	void
+	build () final override;
+
+	void
+	transform (X3DRenderObject* const renderObject);
 
 	///  @name Static members
 
@@ -160,17 +158,13 @@ private:
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const pointSize;
-	};
-
-	Fields fields;
-
-	Font     font;
-	FontFace fontFace;
+	const ScreenFontStyle* const   fontStyle;
+	Cairo::RefPtr <Cairo::Context> context;
+	Vector3d                       min;
+	Vector3d                       max;
+	Box3d                          bbox;
+	Matrix4d                       matrix;
+	X3DPtr <PixelTexture>          textureNode;
 
 };
 

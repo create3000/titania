@@ -52,85 +52,13 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 
 #include "../Text/X3DFontStyleNode.h"
+
 #include <Titania/FTGL.h>
 
 namespace titania {
 namespace X3D {
 
-class FontStyle;
-
-class PolygonText :
-	public X3DTextGeometry
-{
-public:
-
-	///  @name Construction
-
-	PolygonText (Text* const, const FontStyle* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return false; }
-
-	///  @name Operations
-
-	virtual
-	SFNode
-	toPrimitive () const final override;
-
-
-private:
-
-	///  @name Operations
-
-	virtual
-	void
-	getLineExtents (const String & line, Vector2d & min, Vector2d & max) const final override;
-
-	void
-	triangulate (std::vector <size_t> &, std::vector <Vector3d> &) const;
-
-	virtual
-	void
-	build () final override;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	const FontStyle* const fontStyle;
-
-};
-
-typedef std::unique_ptr <FTGL::PolygonFont> PolygonFontPtr;
+using PolygonFontPtr = std::unique_ptr <FTGL::PolygonFont>;
 
 class FontStyle :
 	public X3DFontStyleNode
@@ -211,6 +139,9 @@ public:
 	virtual
 	void
 	dispose () final override;
+
+	virtual
+	~FontStyle () final override;
 
 
 private:

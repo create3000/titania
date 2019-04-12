@@ -992,6 +992,9 @@
     <None Include="share\titania\shaders\Shaders\Include\Texture.h" />
     <None Include="share\titania\shaders\Shaders\Include\Fog.h" />
     <None Include="share\titania\shaders\Shaders\Include\ClipPlanes.h" />
+    <None Include="Titania\X3D\Browser\Layout\ScreenText.h" />
+    <None Include="Titania\X3D\Browser\Text\X3DTextGeometry.h" />
+    <None Include="Titania\X3D\Browser\Text\PolygonText.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1676,6 +1679,9 @@
     <Compile Include="Titania\X3D\Browser\Picking\X3DPickingContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\VolumePicker.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DChildNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Browser\Layout\ScreenText.cpp" />
+    <Compile Include="Titania\X3D\Browser\Text\X3DTextGeometry.cpp" />
+    <Compile Include="Titania\X3D\Browser\Text\PolygonText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
 #include "../../Browser/Text/Font.h"
-#include "../../Types/Geometry.h"
+#include "../../Browser/Text/X3DTextGeometry.h"
 #include "../Core/X3DNode.h"
 
 #include <Titania/Basic/URI.h>
@@ -61,119 +61,6 @@
 
 namespace titania {
 namespace X3D {
-
-class Text;
-class X3DFontStyleNode;
-class ShapeContainer;
-
-class X3DTextGeometry :
-	virtual public X3DBaseNode
-{
-public:
-
-	virtual
-	bool
-	isTransparent () const = 0;
-
-	virtual
-	const Matrix4d &
-	getMatrix () const
-	{ return matrix; }
-
-	virtual
-	const Box3d &
-	getBBox () const
-	{ return bbox; }
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject)
-	{ }
-
-	virtual
-	void
-	draw (ShapeContainer* const shapeContainer);
-
-	virtual
-	SFNode
-	toPrimitive () const = 0;
-
-	virtual
-	~X3DTextGeometry () override;
-
-
-protected:
-
-	X3DTextGeometry (Text* const, const X3DFontStyleNode* const);
-
-	void
-	initialize ();
-
-	X3DBrowser*
-	getBrowser () const;
-
-	Text*
-	getText () const
-	{ return text; }
-
-	void
-	setBBox (const Box3d & value)
-	{ bbox = value; }
-
-	const std::vector <double> &
-	getCharSpacing () const
-	{ return charSpacings; }
-
-	const Vector2d &
-	getBearing () const
-	{ return bearing; }
-
-	const Vector2d &
-	getMinorAlignment () const
-	{ return minorAlignment; }
-
-	const std::vector <Vector2d> &
-	getTranslations () const
-	{ return translations; }
-
-	virtual
-	void
-	getLineExtents (const String & line, Vector2d & min, Vector2d & max) const = 0;
-
-	virtual
-	void
-	build () = 0;
-
-
-private:
-
-	void
-	horizontal ();
-
-	void
-	vertical ();
-
-	void
-	getHorizontalLineExtents (const String &, Vector2d &, Vector2d &) const;
-
-	void
-	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
-
-	///  @name Static members
-
-	static const Matrix4d matrix;;
-
-	///  @name Members
-
-	Text* const                   text;
-	const X3DFontStyleNode* const fontStyle;
-	Box3d                         bbox;
-	std::vector <double>          charSpacings;
-	Vector2d                      bearing;
-	Vector2d                      minorAlignment;
-	std::vector <Vector2d>        translations;
-
-};
 
 class X3DFontStyleNode :
 	public X3DNode
@@ -303,6 +190,9 @@ public:
 	virtual
 	void
 	dispose () override;
+
+	virtual
+	~X3DFontStyleNode () override;
 
 
 protected:

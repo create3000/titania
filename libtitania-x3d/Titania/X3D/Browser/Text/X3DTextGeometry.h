@@ -48,129 +48,125 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LAYOUT_SCREEN_FONT_STYLE_H__
-#define __TITANIA_X3D_COMPONENTS_LAYOUT_SCREEN_FONT_STYLE_H__
+#ifndef __TITANIA_X3D_BROWSER_TEXT_X3DTEXT_GEOMETRY_H__
+#define __TITANIA_X3D_BROWSER_TEXT_X3DTEXT_GEOMETRY_H__
 
-#include "../Text/X3DFontStyleNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
 
-class ScreenFontStyle :
-	public X3DFontStyleNode
+class Text;
+class X3DFontStyleNode;
+class ShapeContainer;
+
+class X3DTextGeometry :
+	virtual public X3DBaseNode
 {
 public:
 
-	///  @name Construction
-
-	ScreenFontStyle (X3DExecutionContext* const executionContext);
+	virtual
+	bool
+	isTransparent () const = 0;
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
+	const Matrix4d &
+	getMatrix () const
+	{ return matrix; }
 
 	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	pointSize ()
-	{ return *fields .pointSize; }
-
-	const SFFloat &
-	pointSize () const
-	{ return *fields .pointSize; }
-
-	///  @name Member access
-
-	double
-	getSize () const;
-
-	virtual
-	double
-	getLineHeight () const final override;
-
-	virtual
-	double
-	getScale () const final override
-	{ return 1; }
-
-	virtual
-	X3DPtr <X3DTextGeometry>
-	getTextGeometry (Text* const) const;
-
-	virtual
-	const Font &
-	getFont () const final override
-	{ return font; }
-
-	virtual
-	const FontFace &
-	getFontFace () const final override
-	{ return fontFace; }
-
-	///  @name Destruction
+	const Box3d &
+	getBBox () const
+	{ return bbox; }
 
 	virtual
 	void
-	dispose () final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject)
+	{ }
 
 	virtual
-	~ScreenFontStyle () final override;
+	void
+	draw (ShapeContainer* const shapeContainer);
+
+	virtual
+	SFNode
+	toPrimitive () const = 0;
+
+	virtual
+	~X3DTextGeometry () override;
 
 
 protected:
 
-	friend class ScreenText;
+	X3DTextGeometry (Text* const, const X3DFontStyleNode* const);
+
+	void
+	initialize ();
+
+	X3DBrowser*
+	getBrowser () const;
+
+	Text*
+	getText () const
+	{ return text; }
+
+	void
+	setBBox (const Box3d & value)
+	{ bbox = value; }
+
+	const std::vector <double> &
+	getCharSpacing () const
+	{ return charSpacings; }
+
+	const Vector2d &
+	getBearing () const
+	{ return bearing; }
+
+	const Vector2d &
+	getMinorAlignment () const
+	{ return minorAlignment; }
+
+	const std::vector <Vector2d> &
+	getTranslations () const
+	{ return translations; }
+
+	virtual
+	void
+	getLineExtents (const String & line, Vector2d & min, Vector2d & max) const = 0;
+
+	virtual
+	void
+	build () = 0;
 
 
 private:
 
-	///  @name Construction
-
-	virtual
 	void
-	initialize () final override;
+	horizontal ();
 
-	///  @name Event handlers
-	
 	void
-	set_font ();
+	vertical ();
+
+	void
+	getHorizontalLineExtents (const String &, Vector2d &, Vector2d &) const;
+
+	void
+	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
 
 	///  @name Static members
 
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
+	static const Matrix4d matrix;;
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const pointSize;
-	};
-
-	Fields fields;
-
-	Font     font;
-	FontFace fontFace;
+	Text* const                   text;
+	const X3DFontStyleNode* const fontStyle;
+	Box3d                         bbox;
+	std::vector <double>          charSpacings;
+	Vector2d                      bearing;
+	Vector2d                      minorAlignment;
+	std::vector <Vector2d>        translations;
 
 };
 

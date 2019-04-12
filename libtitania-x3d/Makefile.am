@@ -48,6 +48,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/KeyDeviceSensor/Keys.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/X3DKeyDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Layering/X3DLayeringContext.cpp \
+	Titania/X3D/Browser/Layout/ScreenText.cpp \
 	Titania/X3D/Browser/Lighting/X3DLightingContext.cpp \
 	Titania/X3D/Browser/Navigation/ExamineViewer.cpp \
 	Titania/X3D/Browser/Navigation/FlyViewer.cpp \
@@ -85,7 +86,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Text/Font.cpp \
 	Titania/X3D/Browser/Text/FontFace.cpp \
 	Titania/X3D/Browser/Text/FontStyleOptions.cpp \
+	Titania/X3D/Browser/Text/PolygonText.cpp \
 	Titania/X3D/Browser/Text/X3DTextContext.cpp \
+	Titania/X3D/Browser/Text/X3DTextGeometry.cpp \
 	Titania/X3D/Browser/Texturing/Texture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
