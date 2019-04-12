@@ -189,6 +189,13 @@ TextEditor::set_node ()
 {
 	undoStep .reset ();
 
+	if (text)
+	{
+		measure = nullptr;
+
+		text -> length () .removeInterest (&TextEditor::set_length, this);
+	}
+
 	auto  tuple             = getSelection <X3D::Text> (shapeNodes, "geometry");
 	const int32_t active    = std::get <1> (tuple);
 	const bool    hasParent = std::get <2> (tuple);
@@ -198,7 +205,8 @@ TextEditor::set_node ()
 
 	if (text)
 	{
-		measure = text -> getExecutionContext () -> createNode <X3D::Text> ();
+		measure = new X3D::Text (text -> getExecutionContext ());
+
 		measure -> lineBounds () .addInterest (&TextEditor::set_lineBounds, this);
 
 		text -> length ()    .addInterest (&TextEditor::set_length, this);
@@ -207,6 +215,8 @@ TextEditor::set_node ()
 
 		measure -> string ()    = text -> string ();
 		measure -> fontStyle () = text -> fontStyle ();
+
+		measure -> setup ();
 
 		set_length ();
 	}
