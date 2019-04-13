@@ -118,6 +118,12 @@ public:
 	hatchStyle () const
 	{ return *fields .hatchStyle; }
 
+	///  @name Member access
+
+	const SFBool &
+	isTransparent () const
+	{ return transparent; }
+
 	///  @name Operations
 
 	virtual
@@ -130,7 +136,21 @@ public:
 	~FillProperties () final override;
 
 
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
 private:
+
+	///  @name Event handlers
+
+	void
+	set_transparent ();
 
 
 	///  @name Static members
@@ -139,7 +159,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -153,9 +173,9 @@ private:
 
 	Fields fields;
 	
-	bool    lighting;
-	GLfloat color [4];
+	///  @name Members
 
+	SFBool transparent;
 
 };
 

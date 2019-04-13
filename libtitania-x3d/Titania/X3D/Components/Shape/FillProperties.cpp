@@ -73,7 +73,7 @@ FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAppearanceChildNode (),
 	                fields (),
-	              lighting (false)
+	           transparent ()
 {
 	addType (X3DConstants::FillProperties);
 
@@ -82,12 +82,30 @@ FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "hatched",    hatched ());
 	addField (inputOutput, "hatchColor", hatchColor ());
 	addField (inputOutput, "hatchStyle", hatchStyle ());
+
+	addChildObjects (transparent);
 }
 
 X3DBaseNode*
 FillProperties::create (X3DExecutionContext* const executionContext) const
 {
 	return new FillProperties (executionContext);
+}
+
+void
+FillProperties::initialize ()
+{
+	X3DAppearanceChildNode::initialize ();
+
+	filled () .addInterest (&FillProperties::set_transparent, this);
+
+	set_transparent ();
+}
+
+void
+FillProperties::set_transparent ()
+{
+	transparent = not filled ();
 }
 
 void

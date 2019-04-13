@@ -135,8 +135,8 @@ Appearance::initialize ()
 
 	shaderNodes .addInterest (&Appearance::set_shader, this);
 
-	set_lineProperties ();
 	set_fillProperties ();
+	set_lineProperties ();
 	set_material ();
 	set_texture ();
 	set_textureTransform ();
@@ -151,8 +151,8 @@ Appearance::setExecutionContext (X3DExecutionContext* const executionContext)
 
 	if (isInitialized ())
 	{
-		set_lineProperties ();
 		set_fillProperties ();
+		set_lineProperties ();
 		set_textureTransform ();
 	}
 }
@@ -160,12 +160,20 @@ Appearance::setExecutionContext (X3DExecutionContext* const executionContext)
 void
 Appearance::set_fillProperties ()
 {
+	if (fillPropertiesNode)
+		fillPropertiesNode -> isTransparent () .removeInterest (&Appearance::set_transparent, this);
+
 	fillPropertiesNode .set (x3d_cast <FillProperties*> (fillProperties ()));
 
 	if (fillPropertiesNode)
 		return;
 
 	fillPropertiesNode .set (getBrowser () -> getDefaultFillProperties ());
+
+	if (fillPropertiesNode)
+		fillPropertiesNode -> isTransparent () .addInterest (&Appearance::set_transparent, this);
+
+	set_transparent ();
 }
 
 void
@@ -273,7 +281,8 @@ Appearance::set_blendMode ()
 void
 Appearance::set_transparent ()
 {
-	setTransparent ((materialNode and materialNode -> isTransparent ()) or
+	setTransparent (fillPropertiesNode or
+	                (materialNode and materialNode -> isTransparent ()) or
 	                (textureNode  and textureNode -> isTransparent ()) or
 	                 blendModeNode);
 }
@@ -294,8 +303,8 @@ Appearance::enable (ShapeContainer* const context)
 	const auto renderObject = context -> getRenderer ();
 	const auto browser      = renderObject -> getBrowser ();
 
-	context -> setLineProperties (linePropertiesNode);
 	context -> setFillProperties (fillPropertiesNode);
+	context -> setLineProperties (linePropertiesNode);
 	context -> setMaterial (materialNode);
 	context -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
 	context -> setTextureTransform (textureTransformNode);
@@ -317,6 +326,9 @@ Appearance::disable (ShapeContainer* const context)
 	if (blendModeNode)
 		blendModeNode -> disable ();
 }
+
+Appearance::~Appearance ()
+{ }
 
 } // X3D
 } // titania

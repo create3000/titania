@@ -98,20 +98,20 @@ public:
 	///  @name Fields
 
 	SFNode &
-	lineProperties ()
-	{ return *fields .lineProperties; }
-
-	const SFNode &
-	lineProperties () const
-	{ return *fields .lineProperties; }
-
-	SFNode &
 	fillProperties ()
 	{ return *fields .fillProperties; }
 
 	const SFNode &
 	fillProperties () const
 	{ return *fields .fillProperties; }
+
+	SFNode &
+	lineProperties ()
+	{ return *fields .lineProperties; }
+
+	const SFNode &
+	lineProperties () const
+	{ return *fields .lineProperties; }
 
 	SFNode &
 	material ()
@@ -201,6 +201,11 @@ public:
 	void
 	disable (ShapeContainer* const context) final override;
 
+	///  @name Destruction
+
+	virtual
+	~Appearance () final override;
+
 
 private:
 
@@ -213,10 +218,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_lineProperties ();
+	set_fillProperties ();
 
 	void
-	set_fillProperties ();
+	set_lineProperties ();
 
 	void
 	set_material ();
