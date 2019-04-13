@@ -105,7 +105,10 @@ FillProperties::initialize ()
 void
 FillProperties::set_transparent ()
 {
-	transparent = not filled ();
+	const auto value = not filled ();
+
+	if (value not_eq transparent)
+		transparent = value;
 }
 
 void
