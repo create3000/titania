@@ -281,7 +281,7 @@ Appearance::set_blendMode ()
 void
 Appearance::set_transparent ()
 {
-	setTransparent (fillPropertiesNode or
+	setTransparent (fillPropertiesNode -> isTransparent () or
 	                (materialNode and materialNode -> isTransparent ()) or
 	                (textureNode  and textureNode -> isTransparent ()) or
 	                 blendModeNode);
