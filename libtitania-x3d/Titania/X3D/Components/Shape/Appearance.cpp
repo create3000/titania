@@ -66,13 +66,13 @@
 namespace titania {
 namespace X3D {
 
-const Component   Appearance::component      = Component ("Shape", 4);
+const Component   Appearance::component      = Component ("Shape", 1);
 const std::string Appearance::typeName       = "Appearance";
 const std::string Appearance::containerField = "appearance";
 
 Appearance::Fields::Fields () :
-	  fillProperties (new SFNode ()),
 	  lineProperties (new SFNode ()),
+	  fillProperties (new SFNode ()),
 	        material (new SFNode ()),
 	         texture (new SFNode ()),
 	textureTransform (new SFNode ()),
@@ -84,8 +84,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	   X3DAppearanceNode (),
 	              fields (),
-	  fillPropertiesNode (),
 	  linePropertiesNode (),
+	  fillPropertiesNode (),
 	        materialNode (),
 	         textureNode (),
 	textureTransformNode (),
@@ -96,16 +96,16 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::Appearance);
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "fillProperties",   fillProperties ());
 	addField (inputOutput, "lineProperties",   lineProperties ());
+	addField (inputOutput, "fillProperties",   fillProperties ());
 	addField (inputOutput, "material",         material ());
 	addField (inputOutput, "texture",          texture ());
 	addField (inputOutput, "textureTransform", textureTransform ());
 	addField (inputOutput, "shaders",          shaders ());
 	addField (inputOutput, "blendMode",        blendMode ());
 
-	addChildObjects (fillPropertiesNode,
-	                 linePropertiesNode,
+	addChildObjects (linePropertiesNode,
+	                 fillPropertiesNode,
 	                 materialNode,
 	                 textureNode,
 	                 textureTransformNode,
@@ -125,8 +125,8 @@ Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
 
-	fillProperties ()   .addInterest (&Appearance::set_fillProperties,   this);
 	lineProperties ()   .addInterest (&Appearance::set_lineProperties,   this);
+	fillProperties ()   .addInterest (&Appearance::set_fillProperties,   this);
 	material ()         .addInterest (&Appearance::set_material,         this);
 	texture ()          .addInterest (&Appearance::set_texture,          this);
 	textureTransform () .addInterest (&Appearance::set_textureTransform, this);
@@ -135,8 +135,8 @@ Appearance::initialize ()
 
 	shaderNodes .addInterest (&Appearance::set_shader, this);
 
-	set_fillProperties ();
 	set_lineProperties ();
+	set_fillProperties ();
 	set_material ();
 	set_texture ();
 	set_textureTransform ();
@@ -151,10 +151,21 @@ Appearance::setExecutionContext (X3DExecutionContext* const executionContext)
 
 	if (isInitialized ())
 	{
-		set_fillProperties ();
 		set_lineProperties ();
+		set_fillProperties ();
 		set_textureTransform ();
 	}
+}
+
+void
+Appearance::set_lineProperties ()
+{
+	linePropertiesNode .set (x3d_cast <LineProperties*> (lineProperties ()));
+
+	if (linePropertiesNode)
+		return;
+
+	linePropertiesNode .set (getBrowser () -> getDefaultLineProperties ());
 }
 
 void
@@ -174,17 +185,6 @@ Appearance::set_fillProperties ()
 		fillPropertiesNode -> isTransparent () .addInterest (&Appearance::set_transparent, this);
 
 	set_transparent ();
-}
-
-void
-Appearance::set_lineProperties ()
-{
-	linePropertiesNode .set (x3d_cast <LineProperties*> (lineProperties ()));
-
-	if (linePropertiesNode)
-		return;
-
-	linePropertiesNode .set (getBrowser () -> getDefaultLineProperties ());
 }
 
 void
@@ -303,8 +303,8 @@ Appearance::enable (ShapeContainer* const context)
 	const auto renderObject = context -> getRenderer ();
 	const auto browser      = renderObject -> getBrowser ();
 
-	context -> setFillProperties (fillPropertiesNode);
 	context -> setLineProperties (linePropertiesNode);
+	context -> setFillProperties (fillPropertiesNode);
 	context -> setMaterial (materialNode);
 	context -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
 	context -> setTextureTransform (textureTransformNode);

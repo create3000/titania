@@ -98,20 +98,20 @@ public:
 	///  @name Fields
 
 	SFNode &
-	fillProperties ()
-	{ return *fields .fillProperties; }
-
-	const SFNode &
-	fillProperties () const
-	{ return *fields .fillProperties; }
-
-	SFNode &
 	lineProperties ()
 	{ return *fields .lineProperties; }
 
 	const SFNode &
 	lineProperties () const
 	{ return *fields .lineProperties; }
+
+	SFNode &
+	fillProperties ()
+	{ return *fields .fillProperties; }
+
+	const SFNode &
+	fillProperties () const
+	{ return *fields .fillProperties; }
 
 	SFNode &
 	material ()
@@ -153,40 +153,6 @@ public:
 	blendMode () const
 	{ return *fields .blendMode; }
 
-	///  @name MemberAccess
-
-	const X3DPtr <FillProperties> &
-	getFillProperties () const
-	{ return fillPropertiesNode; }
-
-	const X3DPtr <LineProperties> &
-	getLineProperties () const
-	{ return linePropertiesNode; }
-
-	const X3DPtr <X3DMaterialNode> &
-	getMaterial () const
-	{ return materialNode; }
-
-	const X3DPtr <X3DTextureNode> &
-	getTexture () const
-	{ return textureNode; }
-
-	const X3DPtr <X3DTextureTransformNode> &
-	getTextureTransform () const
-	{ return textureTransformNode; }
-
-	const X3DPtrArray <X3DShaderNode> &
-	getShaders () const
-	{ return shaderNodes; }
-
-	const X3DPtr <X3DShaderNode> &
-	getShader () const
-	{ return shaderNode; }
-
-	const X3DPtr <BlendMode> &
-	getBlendMode () const
-	{ return blendModeNode; }
-
 	///  @name Tests
 
 	virtual
@@ -218,10 +184,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_fillProperties ();
+	set_lineProperties ();
 
 	void
-	set_lineProperties ();
+	set_fillProperties ();
 
 	void
 	set_material ();
@@ -256,8 +222,8 @@ private:
 	{
 		Fields ();
 
-		SFNode* const fillProperties;
 		SFNode* const lineProperties;
+		SFNode* const fillProperties;
 		SFNode* const material;
 		SFNode* const texture;
 		SFNode* const textureTransform;
@@ -267,8 +233,8 @@ private:
 
 	Fields fields;
 
-	X3DPtr <FillProperties>          fillPropertiesNode;
 	X3DPtr <LineProperties>          linePropertiesNode;
+	X3DPtr <FillProperties>          fillPropertiesNode;
 	X3DPtr <X3DMaterialNode>         materialNode;
 	X3DPtr <X3DTextureNode>          textureNode;
 	X3DPtr <X3DTextureTransformNode> textureTransformNode;
