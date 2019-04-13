@@ -66,6 +66,9 @@ basic::uri
 get_shader (const std::string & filename);
 
 basic::uri
+get_hatching (const int32_t index);
+
+basic::uri
 get_tool (const std::string & filename);
 
 basic::uri

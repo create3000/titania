@@ -50,13 +50,13 @@
 
 #include "X3DShapeContext.h"
 
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/TextureProperties.h"
-#include "HatchStyles.h"
 
 namespace titania {
 namespace X3D {
@@ -107,7 +107,7 @@ X3DShapeContext::getHatchStyle (int32_t index) const
 	{
 		hatchStyleTexture = MakePtr <ImageTexture> (getExecutionContext ());
 
-		hatchStyleTexture -> url ()               = { hatchStyles [index] };
+		hatchStyleTexture -> url ()               = { get_hatching (index) .str () };
 		hatchStyleTexture -> textureProperties () = hatchStyleTextureProperties;
 
 		hatchStyleTexture -> setup ();
