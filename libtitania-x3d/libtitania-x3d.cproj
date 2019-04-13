@@ -996,6 +996,7 @@
     <None Include="Titania\X3D\Browser\Text\X3DTextGeometry.h" />
     <None Include="Titania\X3D\Browser\Text\PolygonText.h" />
     <None Include="share\titania\shaders\Shaders\Include\Hatch.h" />
+    <None Include="share\titania\tools\library\LineRoundedRectangle.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

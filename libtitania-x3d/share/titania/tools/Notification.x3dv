@@ -14,7 +14,7 @@ META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/Notification.x3dv"
-META "modified" "Fri, 12 Apr 2019 16:02:29 GMT"
+META "modified" "Sat, 13 Apr 2019 04:47:13 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO RoundedRectangle2D [
@@ -23,6 +23,13 @@ EXTERNPROTO RoundedRectangle2D [
   initializeOnly SFBool  solid
 ]
 "library/RoundedRectangle2D.x3dv"
+
+EXTERNPROTO LineRoundedRectangle [
+  inputOutput    SFFloat cornerRadius
+  inputOutput    SFVec2f size
+  initializeOnly SFBool  solid
+]
+"library/LineRoundedRectangle.x3dv"
 
 PROTO Interface [
   # Custom fields
@@ -98,6 +105,73 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF _1 PolygonMode {
+              children [
+                DEF _2 Transform {
+                  translation -14 -10 0
+                  children [
+                    Transform {
+                      translation 0 0 -1
+                      children Shape {
+                        appearance Appearance {
+                          material DEF BackgroundMaterial Material {
+                            diffuseColor 1 1 1
+                          }
+                          texture ImageTexture {
+                            url "library/gradient.png"
+                          }
+                          textureTransform DEF _3 TextureTransform {
+                            scale 1 1.8
+                          }
+                        }
+                        geometry DEF BackgroundGeometry RoundedRectangle2D {
+                          cornerRadius 4
+                          size 36 20
+                        }
+                      }
+                    }
+                    Transform {
+                      children Shape {
+                        appearance Appearance {
+                          lineProperties DEF LineProperties LineProperties {
+                            linewidthScaleFactor 4
+                          }
+                          material DEF BorderMaterial Material {
+                            emissiveColor 0.461 0.461 0.461
+                          }
+                        }
+                        geometry DEF LineGeometry LineRoundedRectangle {
+                          cornerRadius 4
+                          size 36 20
+                        }
+                      }
+                    }
+                  ]
+                }
+                Transform {
+                  translation -15 -10 0
+                  children Shape {
+                    appearance Appearance {
+                      material DEF TextMaterial Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry DEF Text Text {
+                      string ""
+                      fontStyle ScreenFontStyle {
+                        family "SANS"
+                        pointSize 9
+                        spacing 1.6
+                        justify [
+                          "END",
+                          "BEGIN"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       }
@@ -167,55 +241,7 @@ LayerSet {
         padding 18 10
         isActive TRUE
       }
-      PolygonMode {
-        children [
-          DEF _1 Transform {
-            translation -14 -10 0
-            children Transform {
-              translation 0 0 -1
-              children Shape {
-                appearance Appearance {
-                  material DEF BackgroundMaterial Material {
-                    diffuseColor 1 1 1
-                  }
-                  texture ImageTexture {
-                    url "library/gradient.png"
-                  }
-                  textureTransform DEF _2 TextureTransform {
-                    scale 1 1.8
-                  }
-                }
-                geometry DEF BackgroundGeometry RoundedRectangle2D {
-                  cornerRadius 4
-                  size 36 20
-                }
-              }
-            }
-          }
-          Transform {
-            translation -15 -10 0
-            children Shape {
-              appearance Appearance {
-                material DEF TextMaterial Material {
-                  diffuseColor 1 1 1
-                }
-              }
-              geometry DEF Text Text {
-                string ""
-                fontStyle ScreenFontStyle {
-                  family "SANS"
-                  pointSize 9
-                  spacing 1.6
-                  justify [
-                    "END",
-                    "BEGIN"
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      }
+      USE _1
       DEF NotificationScript Script {
         inputOnly      SFString set_string
         inputOnly      SFVec2f  set_textBounds
@@ -316,6 +342,7 @@ function is_odd (value)
 }
 
 ROUTE Notification.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
+ROUTE Notification.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
 ROUTE Notification.string_changed TO NotificationScript.set_string
 ROUTE Notification.cycleInterval_changed TO NotificationScript.set_cycleInterval
 ROUTE Notification.linewidthScaleFactor_changed TO NotificationScript.set_linewidthScaleFactor
@@ -330,12 +357,16 @@ ROUTE EndTimer.isActive TO NotificationScript.set_end
 
 ROUTE StartTimer.fraction_changed TO FadeIn.set_fraction
 ROUTE FadeIn.value_changed TO BackgroundMaterial.set_transparency
+ROUTE FadeIn.value_changed TO BorderMaterial.set_transparency
 ROUTE NotificationScript.isActive TO Notification.set_isActive
+ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency
-ROUTE NotificationScript.translation_changed TO _1.set_translation
+ROUTE NotificationScript.translation_changed TO _2.set_translation
 ROUTE Notification.padding_changed TO NotificationScript.set_padding
-ROUTE NotificationScript.scale_changed TO _2.set_scale
+ROUTE NotificationScript.scale_changed TO _3.set_scale
 ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
 ROUTE FadeIn.value_changed TO TextMaterial.set_transparency
+ROUTE Notification.cornerRadius_changed TO LineGeometry.set_cornerRadius
+ROUTE BackgroundGeometry.size_changed TO LineGeometry.set_size
 
 EXPORT Notification

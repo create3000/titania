@@ -12,7 +12,7 @@ META "created" "Thu, 12 May 2016 09:18:21 GMT"
 META "creator" "holger"
 META "generator" "Titania V4.5.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/RenderingProperties.x3dv"
-META "modified" "Fri, 12 Apr 2019 16:02:58 GMT"
+META "modified" "Sat, 13 Apr 2019 04:42:38 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO RoundedRectangle2D [
@@ -21,6 +21,13 @@ EXTERNPROTO RoundedRectangle2D [
   initializeOnly SFBool  solid
 ]
 "library/RoundedRectangle2D.x3dv"
+
+EXTERNPROTO LineRoundedRectangle [
+  inputOutput    SFFloat cornerRadius
+  inputOutput    SFVec2f size
+  initializeOnly SFBool  solid
+]
+"library/LineRoundedRectangle.x3dv"
 
 PROTO Interface [
   # Custom fields
@@ -94,6 +101,10 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF BackgroundGeometry RoundedRectangle2D {
+              cornerRadius 5
+              size 26 26
+            }
           }
         ]
       }
@@ -151,24 +162,39 @@ LayerSet {
         children [
           DEF Background Transform {
             translation 10 10 0
-            children Transform {
-              translation 0 0 -1
-              children DEF Surface Shape {
-                appearance Appearance {
-                  material DEF BackgroundMaterial Material {
-                    diffuseColor 1 1 1
-                    transparency 0.385057
+            children [
+              Transform {
+                translation 0 0 -1
+                children DEF Surface Shape {
+                  appearance Appearance {
+                    material DEF BackgroundMaterial Material {
+                      diffuseColor 1 1 1
+                      transparency 0.385057
+                    }
+                    texture ImageTexture {
+                      url "library/gradient.png"
+                    }
                   }
-                  texture ImageTexture {
-                    url "library/gradient.png"
-                  }
-                }
-                geometry DEF BackgroundGeometry RoundedRectangle2D {
-                  cornerRadius 5
-                  size 26 26
+                  geometry USE BackgroundGeometry
                 }
               }
-            }
+              Transform {
+                children DEF Border Shape {
+                  appearance Appearance {
+                    lineProperties DEF LineProperties LineProperties {
+                      linewidthScaleFactor 4
+                    }
+                    material DEF BorderMaterial Material {
+                      emissiveColor 0.461 0.461 0.461
+                    }
+                  }
+                  geometry DEF LineGeometry LineRoundedRectangle {
+                    cornerRadius 5
+                    size 26 26
+                  }
+                }
+              }
+            ]
           }
           DEF Statistics Transform {
             translation 10 10 0
@@ -245,9 +271,12 @@ function is_odd (value)
 
 ROUTE Text.textBounds TO RenderingPropertiesScript.set_textBounds
 ROUTE RenderingProperties.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
+ROUTE RenderingProperties.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
 ROUTE RenderingProperties.string_changed TO Text.set_string
 ROUTE RenderingProperties.cornerRadius_changed TO RenderingPropertiesScript.set_cornerRadius
 ROUTE RenderingProperties.linewidthScaleFactor_changed TO RenderingPropertiesScript.set_linewidthScaleFactor
 ROUTE RenderingProperties.borderWidth_changed TO RenderingPropertiesScript.set_borderWidth
+ROUTE RenderingProperties.cornerRadius_changed TO LineGeometry.set_cornerRadius
+ROUTE BackgroundGeometry.size_changed TO LineGeometry.set_size
 
 EXPORT RenderingProperties
