@@ -50,22 +50,31 @@
 
 #include "X3DShapeContext.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
+#include "../../Components/Texturing/ImageTexture.h"
+#include "../../Components/Texturing/TextureProperties.h"
+#include "HatchStyles.h"
 
 namespace titania {
 namespace X3D {
 
 X3DShapeContext::X3DShapeContext () :
-	          X3DBaseNode (),
-	defaultLineProperties (new LineProperties (getExecutionContext ())),
-	defaultFillProperties (new FillProperties (getExecutionContext ())),
-	    defaultAppearance (new Appearance (getExecutionContext ()))
+	                X3DBaseNode (),
+	      defaultLineProperties (new LineProperties (getExecutionContext ())),
+	      defaultFillProperties (new FillProperties (getExecutionContext ())),
+	          defaultAppearance (new Appearance (getExecutionContext ())),
+	hatchStyleTextureProperties (new TextureProperties (getExecutionContext ())),
+	         hatchStyleTextures (20),
+	             hatchStyleUnit (0)
 {
 	addChildObjects (defaultLineProperties,
 	                 defaultFillProperties,
-	                 defaultAppearance);
+	                 defaultAppearance,
+	                 hatchStyleTextureProperties,
+	                 hatchStyleTextures);
 }
 
 void
@@ -74,9 +83,43 @@ X3DShapeContext::initialize ()
 	defaultLineProperties -> applied () = false;
 	defaultFillProperties -> hatched () = false;
 
-	defaultLineProperties -> setup ();
-	defaultFillProperties -> setup ();
-	defaultAppearance     -> setup ();
+	defaultLineProperties       -> setup ();
+	defaultFillProperties       -> setup ();
+	defaultAppearance           -> setup ();
+	hatchStyleTextureProperties -> setup ();
+
+	if (getBrowser () -> getCombinedTextureUnits () .size ())
+	{
+		hatchStyleUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+		getBrowser () -> getCombinedTextureUnits () .pop ();
+	}
+}
+
+const X3DPtr <ImageTexture> &
+X3DShapeContext::getHatchStyle (int32_t index) const
+{
+	if (index < 0 or index > 19)
+		index = 0;
+
+	auto & hatchStyleTexture = hatchStyleTextures [index];
+
+	if (not hatchStyleTexture)
+	{
+		hatchStyleTexture = MakePtr <ImageTexture> (getExecutionContext ());
+
+		hatchStyleTexture -> url ()               = { hatchStyles [index] };
+		hatchStyleTexture -> textureProperties () = hatchStyleTextureProperties;
+
+		hatchStyleTexture -> setup ();
+	}
+
+	return hatchStyleTexture;
+}
+
+int32_t
+X3DShapeContext::getHatchStyleUnit () const
+{
+	return hatchStyleUnit;
 }
 
 X3DShapeContext::~X3DShapeContext ()

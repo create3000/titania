@@ -125,6 +125,14 @@ public:
 	{ return lineProperties; }
 
 	void
+	setFillProperties (FillProperties* const value) 
+	{ fillProperties = value; }
+
+	FillProperties*
+	getFillProperties () const
+	{ return fillProperties; }
+
+	void
 	setMaterial (X3DMaterialNode* const value) 
 	{ material = value; }
 
@@ -212,6 +220,7 @@ private:
 	LightContainerArray       localLights;
 	bool                      shadow;
 	LineProperties*           lineProperties;
+	FillProperties*           fillProperties;
 	X3DMaterialNode*          material;
 	X3DTextureNode*           texture;
 	X3DTextureTransformNode*  textureTransform;

@@ -50,8 +50,10 @@
 
 #include "FillProperties.h"
 
-#include "../../Browser/Shape/HatchStyles.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
+#include "../Texturing/ImageTexture.h"
 
 namespace titania {
 namespace X3D {
@@ -63,8 +65,8 @@ const std::string FillProperties::containerField = "fillProperties";
 FillProperties::Fields::Fields () :
 	    filled (new SFBool (true)),
 	   hatched (new SFBool (true)),
-	hatchStyle (new SFInt32 (1)),
-	hatchColor (new SFColor (1, 1, 1))
+	hatchColor (new SFColor (1, 1, 1)),
+	hatchStyle (new SFInt32 (1))
 { }
 
 FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
@@ -78,8 +80,8 @@ FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",   metadata ());
 	addField (inputOutput, "filled",     filled ());
 	addField (inputOutput, "hatched",    hatched ());
-	addField (inputOutput, "hatchStyle", hatchStyle ());
 	addField (inputOutput, "hatchColor", hatchColor ());
+	addField (inputOutput, "hatchStyle", hatchStyle ());
 }
 
 X3DBaseNode*
@@ -90,6 +92,21 @@ FillProperties::create (X3DExecutionContext* const executionContext) const
 
 void
 FillProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	glUniform1i (shaderObject -> getFillPropertiesFilledUniformLocation (),  filled ());
+	glUniform1i (shaderObject -> getFillPropertiesHatchedUniformLocation (), hatched ());
+
+	if (hatched ())
+	{
+		const auto textureNode = getBrowser () -> getHatchStyle (hatchStyle ());
+
+		glUniform3fv (shaderObject -> getFillPropertiesHatchColorUniformLocation (), 1, hatchColor () .getValue () .data ());
+		glActiveTexture (GL_TEXTURE0 + getBrowser () -> getHatchStyleUnit ());
+		glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
+	}
+}
+
+FillProperties::~FillProperties ()
 { }
 
 } // X3D

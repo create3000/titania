@@ -102,14 +102,6 @@ public:
 	hatched () const
 	{ return *fields .hatched; }
 
-	SFInt32 &
-	hatchStyle ()
-	{ return *fields .hatchStyle; }
-
-	const SFInt32 &
-	hatchStyle () const
-	{ return *fields .hatchStyle; }
-
 	SFColor &
 	hatchColor ()
 	{ return *fields .hatchColor; }
@@ -118,11 +110,24 @@ public:
 	hatchColor () const
 	{ return *fields .hatchColor; }
 
+	SFInt32 &
+	hatchStyle ()
+	{ return *fields .hatchStyle; }
+
+	const SFInt32 &
+	hatchStyle () const
+	{ return *fields .hatchStyle; }
+
 	///  @name Operations
 
 	virtual
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const) const;
+
+	///  @name Destruction
+
+	virtual
+	~FillProperties () final override;
 
 
 private:
@@ -142,8 +147,8 @@ private:
 
 		SFBool* const filled;
 		SFBool* const hatched;
-		SFInt32* const hatchStyle;
 		SFColor* const hatchColor;
+		SFInt32* const hatchStyle;
 	};
 
 	Fields fields;

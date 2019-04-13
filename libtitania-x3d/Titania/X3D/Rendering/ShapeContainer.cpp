@@ -67,6 +67,7 @@ ShapeContainer::ShapeContainer (X3DRenderObject* const renderObject, const bool 
 	      localLights (),
 	           shadow (false),
 	   lineProperties (nullptr),
+	   fillProperties (nullptr),
 	         material (nullptr),
 	          texture (nullptr),
 	 textureTransform (nullptr),

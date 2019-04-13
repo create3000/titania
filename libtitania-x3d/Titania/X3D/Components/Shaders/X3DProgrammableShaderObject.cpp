@@ -62,6 +62,7 @@
 #include "../Navigation/NavigationInfo.h"
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Shape/LineProperties.h"
+#include "../Shape/FillProperties.h"
 #include "../Shape/X3DAppearanceNode.h"
 #include "../Shape/X3DMaterialNode.h"
 #include "../Shape/X3DShapeNode.h"
@@ -130,10 +131,10 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_MultiTextureFunction (getBrowser () -> getMaxTextures (), -1),
 	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
 	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
-	                        x3d_HatchFilled (-1),
-	                       x3d_HatchHatched (-1),
-	                         x3d_HatchColor (-1),
-	                         x3d_HatchStyle (-1),
+	               x3d_FillPropertiesFilled (-1),
+	              x3d_FillPropertiesHatched (-1),
+	           x3d_FillPropertiesHatchColor (-1),
+	           x3d_FillPropertiesHatchStyle (-1),
 	                           x3d_Viewport (-1),
 	                   x3d_ProjectionMatrix (-1),
 	                    x3d_ModelViewMatrix (-1),
@@ -306,10 +307,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
 	}
 
-	x3d_HatchFilled  = glGetUniformLocation (program, "x3d_Hatch.filled");
-	x3d_HatchHatched = glGetUniformLocation (program, "x3d_Hatch.hatched");
-	x3d_HatchColor   = glGetUniformLocation (program, "x3d_Hatch.color");
-	x3d_HatchStyle   = glGetUniformLocation (program, "x3d_Hatch.style");
+	x3d_FillPropertiesFilled     = glGetUniformLocation (program, "x3d_FillProperties.filled");
+	x3d_FillPropertiesHatched    = glGetUniformLocation (program, "x3d_FillProperties.hatched");
+	x3d_FillPropertiesHatchColor = glGetUniformLocation (program, "x3d_FillProperties.hatchColor");
+	x3d_FillPropertiesHatchStyle = glGetUniformLocation (program, "x3d_FillProperties.hatchStyle");
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
 	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
@@ -335,13 +336,14 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	static const auto & texture2D      = getBrowser () -> getTexture2DUnits ();
 	static const auto & cubeMapTexture = getBrowser () -> getCubeMapTextureUnits ();
 	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
+	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
 
-	glUniform1f  (x3d_LinewidthScaleFactor, 1);
-	glUniform1i  (x3d_NumTextures,          0);
-	glUniform1iv (x3d_Texture2D [0],        texture2D      .size (), texture2D      .data ());
-	glUniform1iv (x3d_CubeMapTexture [0],   cubeMapTexture .size (), cubeMapTexture .data ());
-	glUniform1iv (x3d_ShadowMap [0],        shadowMap      .size (), shadowMap      .data ());
-	glUniform1i  (x3d_HatchStyle,           0);
+	glUniform1f  (x3d_LinewidthScaleFactor,     1);
+	glUniform1i  (x3d_NumTextures,              0);
+	glUniform1iv (x3d_Texture2D [0],            texture2D      .size (), texture2D      .data ());
+	glUniform1iv (x3d_CubeMapTexture [0],       cubeMapTexture .size (), cubeMapTexture .data ());
+	glUniform1iv (x3d_ShadowMap [0],            shadowMap      .size (), shadowMap      .data ());
+	glUniform1i  (x3d_FillPropertiesHatchStyle, hatchStyle);
 }
 
 GLint
@@ -1177,6 +1179,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto   renderObject          = context -> getRenderer ();
 	const auto & clipPlanes            = context -> getClipPlanes ();
 	const auto   linePropertiesNode    = context -> getLineProperties ();
+	const auto   fillPropertiesNode    = context -> getFillProperties ();
 	const auto   materialNode          = context -> getMaterial ();
 	const auto   textureNode           = context -> getTexture ();
 	const auto   textureTransformNode  = context -> getTextureTransform ();
@@ -1217,6 +1220,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	glUniform1i (x3d_ColorMaterial, context -> getColorMaterial ());
 
 	linePropertiesNode -> setShaderUniforms (this);
+	fillPropertiesNode -> setShaderUniforms (this);
 
 	if (materialNode)
 	{

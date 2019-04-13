@@ -116,6 +116,11 @@ public:
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const) const;
 
+	///  @name Destruction
+
+	virtual
+	~LineProperties () final override;
+
 
 private:
 

@@ -306,20 +306,20 @@ public:
 	///  @name Hatch
 
 	GLint
-	getHatchFilledUniformLocation () const
-	{ return x3d_HatchFilled; }
+	getFillPropertiesFilledUniformLocation () const
+	{ return x3d_FillPropertiesFilled; }
 
 	GLint
-	getHatchHatchedUniformLocation () const
-	{ return x3d_HatchHatched; }
+	getFillPropertiesHatchedUniformLocation () const
+	{ return x3d_FillPropertiesHatched; }
 
 	GLint
-	getHatchColorUniformLocation () const
-	{ return x3d_HatchColor; }
+	getFillPropertiesHatchColorUniformLocation () const
+	{ return x3d_FillPropertiesHatchColor; }
 
 	GLint
-	getHatchStyleUniformLocation () const
-	{ return x3d_HatchStyle; }
+	getFillPropertiesHatchStyleUniformLocation () const
+	{ return x3d_FillPropertiesHatchStyle; }
 
 	///  @name Matrices
 
@@ -603,10 +603,10 @@ private:
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
 
-	GLint x3d_HatchFilled;
-	GLint x3d_HatchHatched;
-	GLint x3d_HatchColor;
-	GLint x3d_HatchStyle;
+	GLint x3d_FillPropertiesFilled;
+	GLint x3d_FillPropertiesHatched;
+	GLint x3d_FillPropertiesHatchColor;
+	GLint x3d_FillPropertiesHatchStyle;
 
 	GLint               x3d_Viewport;
 	GLint               x3d_ProjectionMatrix;

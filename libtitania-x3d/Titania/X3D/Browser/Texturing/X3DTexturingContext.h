@@ -134,6 +134,7 @@ protected:
 	friend class X3DCubeMapTexturingContext;
 	friend class X3DGeometryNode;
 	friend class X3DLineGeometryNode;
+	friend class X3DShapeContext;
 	friend class X3DTexture2DNode;
 	friend class X3DTexture3DNode;
 	friend class X3DTextureCoordinateNode;

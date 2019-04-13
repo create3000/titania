@@ -43,8 +43,8 @@ struct x3d_MaterialParameters
 	mediump float transparency;
 };
 
-//uniform x3d_MaterialParameters x3d_FrontMaterial;  
-//uniform x3d_MaterialParameters x3d_BackMaterial;    
+//uniform x3d_MaterialParameters x3d_FrontMaterial;
+//uniform x3d_MaterialParameters x3d_BackMaterial;
     
 struct x3d_MultiTextureParameters  
 {   
@@ -62,17 +62,17 @@ struct x3d_TextureCoordinateGeneratorParameters
 	mediump float parameter [6];
 };
 
-//uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator [x3d_MaxTextures;  
+//uniform x3d_TextureCoordinateGeneratorParameters x3d_TextureCoordinateGenerator [x3d_MaxTextures;
 
-struct x3d_HatchParameters  
+struct x3d_FillParameters  
 {   
 	bool         filled;
 	bool         hatched;
-	mediump vec3 color;
-	sampler2D    style;
+	mediump vec3 hatchColor;
+	sampler2D    hatchStyle;
 };
 
-//uniform x3d_HatchParameters x3d_Hatch;  
+//uniform x3d_FillParameters x3d_FillProperties;
 
 struct x3d_ParticleParameters  
 {   
@@ -81,4 +81,4 @@ struct x3d_ParticleParameters
 	mediump float elapsedTime;
 };
 
-//uniform x3d_ParticleParameters x3d_Particle;  
+//uniform x3d_ParticleParameters x3d_Particle;

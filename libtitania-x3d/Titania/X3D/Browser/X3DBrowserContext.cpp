@@ -78,11 +78,11 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	X3DPointingDeviceSensorContext (),
 	           X3DRenderingContext (),
 	           X3DScriptingContext (),
-	               X3DShapeContext (),
 	               X3DSoundContext (),
 	                X3DTextContext (),
 	           X3DTexturingContext (),
 	    X3DCubeMapTexturingContext (),
+	               X3DShapeContext (),
 	X3DEnvironmentalEffectsContext (),
 	                X3DTimeContext (),
 	                X3DToolContext (),
@@ -152,11 +152,11 @@ X3DBrowserContext::initialize ()
 	X3DPointingDeviceSensorContext::initialize ();
 	X3DRenderingContext::initialize ();
 	X3DScriptingContext::initialize ();
-	X3DShapeContext::initialize ();
 	X3DSoundContext::initialize ();
 	X3DTextContext::initialize ();
 	X3DTexturingContext::initialize ();
 	X3DCubeMapTexturingContext::initialize ();
+	X3DShapeContext::initialize ();
 	X3DEnvironmentalEffectsContext::initialize ();
 	X3DTimeContext::initialize ();
 	X3DToolContext::initialize ();
@@ -459,11 +459,11 @@ X3DBrowserContext::dispose ()
 	X3DToolContext::dispose ();
 	X3DTimeContext::dispose ();
 	X3DEnvironmentalEffectsContext::dispose ();
+	X3DShapeContext::dispose ();
 	X3DCubeMapTexturingContext::dispose ();
 	X3DTexturingContext::dispose ();
 	X3DTextContext::dispose ();
 	X3DSoundContext::dispose ();
-	X3DShapeContext::dispose ();
 	X3DScriptingContext::dispose ();
 	X3DRenderingContext::dispose ();
 	X3DPointingDeviceSensorContext::dispose ();

@@ -113,5 +113,8 @@ LineProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 	glUniform1f (shaderObject -> getLinewidthScaleFactorUniformLocation (), 1);
 }
 
+LineProperties::~LineProperties ()
+{ }
+
 } // X3D
 } // titania

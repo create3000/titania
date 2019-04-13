@@ -104,11 +104,11 @@ class X3DBrowserContext :
 	public X3DPointingDeviceSensorContext,
 	public X3DRenderingContext,
 	public X3DScriptingContext,
-	public X3DShapeContext,
 	public X3DSoundContext,
 	public X3DTextContext,
 	public X3DTexturingContext,
 	public X3DCubeMapTexturingContext,
+	public X3DShapeContext,
 	public X3DEnvironmentalEffectsContext,
 	public X3DTimeContext,
 	public X3DToolContext

@@ -295,6 +295,7 @@ Appearance::enable (ShapeContainer* const context)
 	const auto browser      = renderObject -> getBrowser ();
 
 	context -> setLineProperties (linePropertiesNode);
+	context -> setFillProperties (fillPropertiesNode);
 	context -> setMaterial (materialNode);
 	context -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
 	context -> setTextureTransform (textureTransformNode);

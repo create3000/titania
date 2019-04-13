@@ -80,6 +80,12 @@ public:
 	getDefaultAppearance () const
 	{ return defaultAppearance; }
 
+	const X3DPtr <ImageTexture> &
+	getHatchStyle (int32_t index) const;
+
+	int32_t
+	getHatchStyleUnit () const;
+
 	///  @name Destruction
 
 	virtual
@@ -106,9 +112,12 @@ private:
 
 	///  @name Members
 
-	X3DPtr <LineProperties>    defaultLineProperties;
-	X3DPtr <FillProperties>    defaultFillProperties;
-	X3DPtr <X3DAppearanceNode> defaultAppearance;
+	X3DPtr <LineProperties>            defaultLineProperties;
+	X3DPtr <FillProperties>            defaultFillProperties;
+	X3DPtr <X3DAppearanceNode>         defaultAppearance;
+	X3DPtr <TextureProperties>         hatchStyleTextureProperties;
+	mutable X3DPtrArray <ImageTexture> hatchStyleTextures;
+	int32_t                            hatchStyleUnit;
 
 };
 

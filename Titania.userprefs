@@ -1,11 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Shape/HatchStyles.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/shaders/Shaders/Include/Hatch.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="13" Column="54" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shape/HatchStyles.h" Line="175" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="317" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="134" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Types.h" Line="75" Column="49" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Include/Hatch.h" Line="13" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.h" Line="151" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.cpp" Line="56" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shape/X3DShapeContext.h" Line="85" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shape/X3DShapeContext.cpp" Line="99" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
