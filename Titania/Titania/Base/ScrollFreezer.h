@@ -85,9 +85,7 @@ public:
 
 		adjustment -> set_value (value);
 
-		connection .disconnect ();
-
-		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &AdjustmentFreezer::block), adjustment, value), false);
+		connect (adjustment, value);
 	}
 
 private:
@@ -95,15 +93,23 @@ private:
 	void
 	block (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
-		if (chrono::now () - startTime > 0.4)
-		{
-			connection .disconnect ();
-		}
-		else
+		connection .disconnect ();
+
+		if (chrono::now () - startTime < 0.4)
 		{
 			adjustment -> set_value (value);
 			adjustment -> signal_changed () .emission_stop ();
+
+			connect (adjustment, value);
 		}
+	}
+
+	void
+	connect (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+	{
+		connection .disconnect ();
+
+		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &AdjustmentFreezer::block), adjustment, value), false);
 	}
 
 	sigc::connection connection;
