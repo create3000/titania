@@ -72,9 +72,6 @@ public:
 	void
 	freeze (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
 	{
-		if (connection .connected ())
-			return;
-
 		restore (adjustment, adjustment -> get_value ());
 	}
 
@@ -103,7 +100,8 @@ private:
 
 };
 
-class ScrollFreezer
+class ScrollFreezer :
+	public sigc::trackable
 {
 public:
 
@@ -112,16 +110,30 @@ public:
 	{ }
 
 	ScrollFreezer (Gtk::Scrollable* const scrollable) :
-		 scrollable (scrollable),
-		hadjustment (),
-		vadjustment ()
+		sigc::trackable (),
+		     scrollable (scrollable),
+		    hadjustment (),
+		    vadjustment (),
+		              x (0),
+		              y (0)
 	{ }
 
 	void
 	freeze ()
 	{
+		x = scrollable -> get_hadjustment () -> get_value ();
+		y = scrollable -> get_vadjustment () -> get_value ();
+
 		hadjustment .freeze (scrollable -> get_hadjustment ());
 		vadjustment .freeze (scrollable -> get_vadjustment ());
+	}
+
+	void
+	restore ()
+	{
+		restore (x, y);
+
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, (void (ScrollFreezer::*) (const double, const double)) &ScrollFreezer::restore), x, y));
 	}
 
 	void
@@ -137,6 +149,8 @@ private:
 	Gtk::Scrollable* const scrollable;
 	AdjustmentFreezer      hadjustment;
 	AdjustmentFreezer      vadjustment;
+	double                 x;
+	double                 y;
 
 };
 

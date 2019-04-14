@@ -109,8 +109,8 @@ private:
 	void
 	toggle_path (const Gtk::TreeModel::Path &);
 
-//	bool
-//	getToggle (const Gtk::TreeModel::iterator &) const;
+	bool
+	needsRefresh (const Gtk::TreeModel::Path & path) const;
 
 	///  @name Members
 

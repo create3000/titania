@@ -509,6 +509,8 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 {
 	//__LOG__ << std::endl;
 
+	// Freeze scroll.
+
 	getScrollFreezer () -> freeze ();
 
 	// Determine open paths.
@@ -642,6 +644,10 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 
 		enable_shift_key ();
 	}
+
+	// Restore scroll.
+
+	getScrollFreezer () -> restore ();
 }
 
 void

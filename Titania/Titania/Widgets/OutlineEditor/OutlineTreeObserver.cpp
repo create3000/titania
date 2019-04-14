@@ -434,6 +434,11 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	if (not treeView -> row_expanded (path))
 		return;
 
+	if (not needsRefresh (path))
+		return;
+
+	// Freeze scroll.
+
 	treeView -> getScrollFreezer () -> freeze ();
 
 	// Determine open paths.
@@ -453,66 +458,72 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	treeView -> reopen_objects (treeView -> get_model () -> get_iter (path), opened);
 
 	treeView -> enable_shift_key ();
+
+	// Restore scroll.
+
+	treeView -> getScrollFreezer () -> restore ();
 }
 
-//bool
-//OutlineTreeObserver::getToggle (const Gtk::TreeModel::iterator & iter) const
-//{
-//	if (treeView -> get_data_type (iter) == OutlineIterType::X3DField)
-//	{
-//		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-//
-//		switch (field -> getType ())
-//		{
-//			case X3D::X3DConstants::SFNode:
-//			{
-//				const auto & sfnode   = *static_cast <X3D::SFNode*> (field);
-//				const auto   children = iter -> children ();
-//
-//				if (children .empty ())
-//					return true;
-//
-//				if (treeView -> get_data_type (children [0]) == OutlineIterType::NULL_)
-//				{
-//					if (sfnode)
-//						return true;
-//				}
-//
-//				const auto rhs = static_cast <X3D::SFNode*> (treeView -> get_object (children [0]));
-//
-//				return sfnode != *rhs;
-//			}
-//			case X3D::X3DConstants::MFNode:
-//			{
-//				const auto & mfnode   = *static_cast <X3D::MFNode*> (field);
-//				const auto   children = iter -> children ();
-//
-//				if (mfnode .size () != children .size ())
-//					return true;
-//
-//				for (size_t i = 0; i < mfnode .size (); ++ i)
-//				{
-//					if (treeView -> get_data_type (children [i]) == OutlineIterType::NULL_)
-//					{
-//						if (mfnode [i])
-//							return true;
-//					}
-//
-//					const auto rhs = static_cast <X3D::SFNode*> (treeView -> get_object (children [i]));
-//
-//					if (mfnode [i] != *rhs)
-//						return true;
-//				}
-//
-//				return false;
-//			}
-//			default:
-//				return true;
-//		}
-//	}
-//
-//	return true;
-//}
+bool
+OutlineTreeObserver::needsRefresh (const Gtk::TreeModel::Path & path) const
+{
+	const auto iter = treeView -> get_model () -> get_iter (path);
+
+	if (treeView -> get_data_type (iter) == OutlineIterType::X3DField)
+	{
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			{
+				const auto & sfnode   = *static_cast <X3D::SFNode*> (field);
+				const auto   children = iter -> children ();
+
+				if (children .empty ())
+					return true;
+
+				if (treeView -> get_data_type (children [0]) == OutlineIterType::NULL_)
+				{
+					if (sfnode)
+						return true;
+				}
+
+				const auto rhs = static_cast <X3D::SFNode*> (treeView -> get_object (children [0]));
+
+				return sfnode != *rhs;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				const auto & mfnode   = *static_cast <X3D::MFNode*> (field);
+				const auto   children = iter -> children ();
+
+				if (mfnode .size () != children .size ())
+					return true;
+
+				for (size_t i = 0; i < mfnode .size (); ++ i)
+				{
+					if (treeView -> get_data_type (children [i]) == OutlineIterType::NULL_)
+					{
+						if (mfnode [i])
+							return true;
+					}
+
+					const auto rhs = static_cast <X3D::SFNode*> (treeView -> get_object (children [i]));
+
+					if (mfnode [i] != *rhs)
+						return true;
+				}
+
+				return false;
+			}
+			default:
+				return true;
+		}
+	}
+
+	return true;
+}
 
 OutlineTreeObserver::~OutlineTreeObserver ()
 { }
