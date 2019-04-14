@@ -736,7 +736,10 @@ OutlineTreeViewEditor::select_color (const double x, const double y)
 								colorNode -> isLive () .removeInterest (&OutlineTreeViewEditor::set_color_node_live, this);
 
 							if (colorField)
-								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+							{
+								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color,    this);
+								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::connectColor, this);
+							}
 
 							colorNode .setValue (*node);
 							colorField .setValue (color);
@@ -768,7 +771,10 @@ OutlineTreeViewEditor::select_color (const double x, const double y)
 								colorNode -> isLive () .removeInterest (&OutlineTreeViewEditor::set_color_node_live, this);
 
 							if (colorField)
-								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+							{
+								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color,    this);
+								colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::connectColor, this);
+							}
 
 							colorNode .setValue (*node);
 							colorField .setValue (color);
@@ -825,9 +831,12 @@ OutlineTreeViewEditor::on_color_selection_unmap ()
 		colorNode -> isLive () .removeInterest (&OutlineTreeViewEditor::set_color_node_live, this);
 
 	if (colorField)
-		colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color, this);
+	{
+		colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::set_color,    this);
+		colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::connectColor, this);
+	}
 
-	colorNode .setValue (nullptr);
+	colorNode  .setValue (nullptr);
 	colorField .setValue (nullptr);
 }
 
@@ -835,6 +844,9 @@ void
 OutlineTreeViewEditor::on_color_changed ()
 {
 	if (changing)
+		return;
+
+	if (not colorField)
 		return;
 
 	const auto rgba  = colorSelectionDialog .get_color_selection () -> get_current_rgba ();
@@ -923,7 +935,10 @@ OutlineTreeViewEditor::set_color ()
 void
 OutlineTreeViewEditor::connectColor ()
 {
-	colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::connectColor,  this);
+	if (not colorField)
+		return;
+
+	colorField .getValue () -> removeInterest (&OutlineTreeViewEditor::connectColor, this);
 	colorField .getValue () -> addInterest (&OutlineTreeViewEditor::set_color, this);
 }
 
