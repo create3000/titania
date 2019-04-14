@@ -56,6 +56,8 @@
 #include <sigc++/connection.h>
 #include <sigc++/trackable.h>
 
+#include <Titania/Chrono/Now.h>
+
 namespace titania {
 namespace puck {
 
@@ -66,7 +68,8 @@ public:
 
 	AdjustmentFreezer () :
 		     sigc::trackable (),
-		          connection ()
+		          connection (),
+		           startTime (0)
 	{ }
 
 	void
@@ -78,6 +81,8 @@ public:
 	void
 	restore (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
+		startTime = chrono::now ();
+
 		adjustment -> set_value (value);
 
 		connection .disconnect ();
@@ -90,13 +95,19 @@ private:
 	void
 	block (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
-		connection .disconnect ();
-
-		adjustment -> set_value (value);
-		adjustment -> signal_changed () .emission_stop ();
+		if (chrono::now () - startTime > 0.4)
+		{
+			connection .disconnect ();
+		}
+		else
+		{
+			adjustment -> set_value (value);
+			adjustment -> signal_changed () .emission_stop ();
+		}
 	}
 
 	sigc::connection connection;
+	double           startTime;
 
 };
 
@@ -113,21 +124,14 @@ public:
 		sigc::trackable (),
 		     scrollable (scrollable),
 		    hadjustment (),
-		    vadjustment (),
-		              x (0),
-		              y (0)
+		    vadjustment ()
 	{ }
 
 	void
 	freeze ()
 	{
-		x = scrollable -> get_hadjustment () -> get_value ();
-		y = scrollable -> get_vadjustment () -> get_value ();
-
 		hadjustment .freeze (scrollable -> get_hadjustment ());
 		vadjustment .freeze (scrollable -> get_vadjustment ());
-
-		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ScrollFreezer::restore), x, y), Glib::PRIORITY_HIGH_IDLE);
 	}
 
 	void
@@ -143,8 +147,6 @@ private:
 	Gtk::Scrollable* const scrollable;
 	AdjustmentFreezer      hadjustment;
 	AdjustmentFreezer      vadjustment;
-	double                 x;
-	double                 y;
 
 };
 
