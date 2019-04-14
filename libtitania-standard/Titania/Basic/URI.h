@@ -676,6 +676,9 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::transform (const basic_uri & reference) const
 {
+	if (reference .scheme () == DataSchemeId)
+		return reference;
+
 	bool        T_local;
 	bool        T_absolute;
 	string_type T_scheme;

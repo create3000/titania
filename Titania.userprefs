@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="317" Column="44" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Types.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="62" Column="43" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.cpp" Line="109" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

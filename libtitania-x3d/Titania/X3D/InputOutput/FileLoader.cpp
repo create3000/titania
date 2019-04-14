@@ -263,9 +263,9 @@ FileLoader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
 	if (istream .stopping ())
 		return;
 
-	const bool data = uri .scheme () == "data";
+	const auto transformed = referer .transform (uri);
 
-	istream .open (data ? uri : referer .transform (uri), 30'000);
+	istream .open (transformed, 30'000);
 
 	if (istream)
 	{
@@ -275,15 +275,17 @@ FileLoader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
 
 		if (istream)
 		{
-			if (not data)
+			if (transformed .scheme () not_eq "data")
 			{
-				worldURL = istream .url ();
+				worldURL = transformed;
 
 				//std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
 				//std::clog << "Done." << std::endl;
 			}
 			else
+			{
 				worldURL = referer;
+			}
 
 			return;
 		}
