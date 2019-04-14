@@ -60,6 +60,7 @@
 #include "../Editors/HistoryEditor/History.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
 #include <Titania/X3D/Browser/Core/RenderingProperties.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
@@ -322,7 +323,7 @@ X3DBrowserNotebook::setPage (const NotebookPagePtr & value)
 	browser -> initialized () .addInterest (&X3DBrowserNotebook::set_executionContext, this);
 	browser -> getUrlError () .addInterest (&X3DBrowserNotebook::set_urlError,         this);
 
-	browser -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
+	browser -> getBrowserOptions () -> StraightenHorizon () = getStraightenHorizonButton () .get_active ();
 
 	isLive (isLive ());
 }

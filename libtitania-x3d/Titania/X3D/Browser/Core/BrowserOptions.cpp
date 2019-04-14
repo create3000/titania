@@ -111,7 +111,8 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	   MotionBlurIntensity (new SFFloat (0.7)),
 	     AnimateStairWalks (new SFBool ()),
 	               Gravity (new SFFloat (gn <float>)),
-	LogarithmicDepthBuffer (new SFBool (false))
+	LogarithmicDepthBuffer (new SFBool (false)),
+	     StraightenHorizon (new SFBool (false))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -139,6 +140,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "AnimateStairWalks",      AnimateStairWalks ());
 	addField (inputOutput, "Gravity",                Gravity ());
 	addField (inputOutput, "LogarithmicDepthBuffer", LogarithmicDepthBuffer ());
+	addField (inputOutput, "StraightenHorizon",      StraightenHorizon ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 

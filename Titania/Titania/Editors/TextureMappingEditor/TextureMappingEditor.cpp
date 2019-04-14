@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/Core/BrowserOptions.h>
 #include <Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Layering/X3DViewportNode.h>
@@ -1179,7 +1180,7 @@ TextureMappingEditor::on_right_arrow_toggled ()
 void
 TextureMappingEditor::on_right_straighten_horizon_toggled ()
 {
-	right -> setStraightenHorizon (getRightStraightenHorizonButton () .get_active ());
+	right -> getBrowserOptions () -> StraightenHorizon () = getRightStraightenHorizonButton () .get_active ();
 
 	if (getRightStraightenHorizonButton () .get_active ())
 	{

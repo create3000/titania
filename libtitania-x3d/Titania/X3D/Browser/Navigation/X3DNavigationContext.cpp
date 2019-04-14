@@ -92,7 +92,6 @@ X3DNavigationContext::X3DNavigationContext () :
 	          availableViewers (),
 	               viewerNode  (new NoneViewer (getBrowser ())),
 	           activeViewpoint (),
-	         straightenHorizon (),
 	          activeCollisions ()
 {
 	addChildObjects (headlightNode,
@@ -102,8 +101,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	                 privateViewer,
 	                 availableViewers,
 	                 viewerNode,
-	                 activeViewpoint,
-	                 straightenHorizon);
+	                 activeViewpoint);
 }
 
 void

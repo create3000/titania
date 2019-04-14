@@ -260,14 +260,14 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getViewerType ()        .removeInterest (&BrowserWindow::set_viewer,             this);
 		getCurrentBrowser () -> getPrivateViewer ()     .removeInterest (&BrowserWindow::set_viewer,             this);
 		getCurrentBrowser () -> getAvailableViewers ()  .removeInterest (&BrowserWindow::set_available_viewers,  this);
-		getCurrentBrowser () -> getStraightenHorizon () .removeInterest (&BrowserWindow::set_straighten_horizon, this);
 
 		getCurrentBrowser () -> getSnapTarget () -> enabled () .removeInterest (&BrowserWindow::set_snapTarget, this);
 		getCurrentBrowser () -> getSnapSource () -> enabled () .removeInterest (&BrowserWindow::set_snapSource, this);
 
-		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
-		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
-		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()   .removeInterest (&BrowserWindow::set_textureQuality,   this);
+		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()         .removeInterest (&BrowserWindow::set_dashboard,          this);
+		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ()  .removeInterest (&BrowserWindow::set_primitiveQuality,   this);
+		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()    .removeInterest (&BrowserWindow::set_textureQuality,     this);
+		getCurrentBrowser () -> getBrowserOptions () -> StraightenHorizon () .removeInterest (&BrowserWindow::set_straighten_horizon, this);
 	}
 
 	// Set page.
@@ -282,14 +282,14 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		getCurrentBrowser () -> getViewerType ()        .addInterest (&BrowserWindow::set_viewer,             this);
 		getCurrentBrowser () -> getPrivateViewer ()     .addInterest (&BrowserWindow::set_viewer,             this);
 		getCurrentBrowser () -> getAvailableViewers ()  .addInterest (&BrowserWindow::set_available_viewers,  this);
-		getCurrentBrowser () -> getStraightenHorizon () .addInterest (&BrowserWindow::set_straighten_horizon, this);
 
 		getCurrentBrowser () -> getSnapTarget () -> enabled () .addInterest (&BrowserWindow::set_snapTarget, this);
 		getCurrentBrowser () -> getSnapSource () -> enabled () .addInterest (&BrowserWindow::set_snapSource, this);
 	
-		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
-		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
-		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()   .addInterest (&BrowserWindow::set_textureQuality,   this);
+		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()         .addInterest (&BrowserWindow::set_dashboard,          this);
+		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ()  .addInterest (&BrowserWindow::set_primitiveQuality,   this);
+		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()    .addInterest (&BrowserWindow::set_textureQuality,     this);
+		getCurrentBrowser () -> getBrowserOptions () -> StraightenHorizon () .addInterest (&BrowserWindow::set_straighten_horizon, this);
 
 		// Initialize
 
@@ -2458,7 +2458,7 @@ BrowserWindow::set_straighten_horizon ()
 {
 	changing = true;
 
-	getStraightenHorizonButton () .set_active (getCurrentBrowser () -> getStraightenHorizon ());
+	getStraightenHorizonButton () .set_active (getCurrentBrowser () -> getBrowserOptions () -> StraightenHorizon ());
 
 	changing = false;
 }
@@ -2475,7 +2475,7 @@ BrowserWindow::on_straighten_clicked ()
 void
 BrowserWindow::on_straighten_horizon_toggled ()
 {
-	getCurrentBrowser () -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
+	getCurrentBrowser () -> getBrowserOptions () -> StraightenHorizon () = getStraightenHorizonButton () .get_active ();
 
 	if (getStraightenHorizonButton () .get_active ())
 		on_straighten_clicked ();

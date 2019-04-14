@@ -497,7 +497,7 @@ PolygonColoringEditor::on_checkerboard_toggled ()
 void
 PolygonColoringEditor::on_straighten_horizon_toggled ()
 {
-	preview -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
+	preview -> getBrowserOptions () -> StraightenHorizon () = getStraightenHorizonButton () .get_active ();
 
 	if (getStraightenHorizonButton () .get_active ())
 	{

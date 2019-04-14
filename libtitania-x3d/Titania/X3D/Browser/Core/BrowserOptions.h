@@ -222,6 +222,14 @@ public:
 	LogarithmicDepthBuffer ()
 	{ return *fields .LogarithmicDepthBuffer; }
 
+	const SFBool &
+	StraightenHorizon () const
+	{ return *fields .StraightenHorizon; }
+
+	SFBool &
+	StraightenHorizon ()
+	{ return *fields .StraightenHorizon; }
+
 	///  @name Member access
 
 	const SFEnum <TextureQualityType> &
@@ -294,6 +302,7 @@ private:
 		SFBool* const AnimateStairWalks;
 		SFFloat* const Gravity;
 		SFBool* const LogarithmicDepthBuffer;
+		SFBool* const StraightenHorizon;
 	};
 
 	Fields fields;

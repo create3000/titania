@@ -123,16 +123,6 @@ public:
 	noexcept (true)
 	{ return viewerNode; }
 
-	void
-	setStraightenHorizon (const bool value)
-	noexcept (true)
-	{ straightenHorizon = value; }
-
-	const SFBool &
-	getStraightenHorizon () const
-	noexcept (true)
-	{ return straightenHorizon; }
-
 	///  @name Operations
 
 	void
@@ -218,7 +208,6 @@ private:
 	MFEnum <X3DConstants::NodeType>  availableViewers;
 	X3DPtr <X3DViewer>               viewerNode;
 	X3DWeakPtr <X3DViewpointNode>    activeViewpoint;
-	SFBool                           straightenHorizon;
 	std::set <const X3DBaseNode*>    activeCollisions;
 
 };

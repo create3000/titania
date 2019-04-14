@@ -50,8 +50,9 @@
 
 #include "X3DExamineViewer.h"
 
-#include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Browser/Core/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Navigation/NavigationInfo.h"
 
 #include <cmath>
 
@@ -115,7 +116,7 @@ X3DExamineViewer::disconnect ()
 void
 X3DExamineViewer::set_activeViewpoint ()
 {
-	if (getBrowser () -> getStraightenHorizon ())
+	if (getBrowser () -> getBrowserOptions () -> StraightenHorizon ())
 	{
 		if (getActiveViewpoint ())
 			getActiveViewpoint () -> orientationOffset () = getOrientationOffset (Rotation4d (), false);
@@ -309,7 +310,7 @@ X3DExamineViewer::on_1button1_release_event (GdkEventButton* event)
 	{
 		rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
 
-		if (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
+		if (getBrowser () -> getBrowserOptions () -> StraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
 			rotation = getHorizonRotation (rotation);
 
 		addSpinning ();
@@ -497,7 +498,7 @@ X3DExamineViewer::getOrientationOffset (const Rotation4d & rotation, const bool 
 
 	auto orientationOffsetAfter = ~viewpoint -> getOrientation () * rotation * viewpoint -> getUserOrientation ();
 
-	if (getBrowser () -> getStraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
+	if (getBrowser () -> getBrowserOptions () -> StraightenHorizon () and not viewpoint -> isType ({ X3DConstants::GeoViewpoint }))
 	{
 		orientationOffsetAfter *= viewpoint -> straightenHorizon (viewpoint -> getOrientation () * orientationOffsetAfter);
 

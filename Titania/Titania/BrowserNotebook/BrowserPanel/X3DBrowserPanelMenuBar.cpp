@@ -110,21 +110,23 @@ X3DBrowserPanelMenuBar::initialize ()
 void
 X3DBrowserPanelMenuBar::setLocalBrowser (const X3D::BrowserPtr & value)
 {
-	browser -> getBrowserOptions () -> Shading () .removeInterest (&X3DBrowserPanelMenuBar::set_shading, this);
-	browser -> initialized ()          .removeInterest (&X3DBrowserPanelMenuBar::set_initialized,        this);
-	browser -> getViewer ()            .removeInterest (&X3DBrowserPanelMenuBar::set_viewer,             this);
-	browser -> getStraightenHorizon () .removeInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
-	browser -> getTexturing ()         .removeInterest (&X3DBrowserPanelMenuBar::set_texturing,          this);
-	browser -> getShaders ()           .removeInterest (&X3DBrowserPanelMenuBar::set_shaders,            this);
+	browser -> getBrowserOptions () -> Shading ()           .removeInterest (&X3DBrowserPanelMenuBar::set_shading,            this);
+	browser -> getBrowserOptions () -> StraightenHorizon () .removeInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+
+	browser -> initialized ()  .removeInterest (&X3DBrowserPanelMenuBar::set_initialized, this);
+	browser -> getViewer ()    .removeInterest (&X3DBrowserPanelMenuBar::set_viewer,      this);
+	browser -> getTexturing () .removeInterest (&X3DBrowserPanelMenuBar::set_texturing,   this);
+	browser -> getShaders ()   .removeInterest (&X3DBrowserPanelMenuBar::set_shaders,     this);
 
 	browser = value;
 
-	browser -> getBrowserOptions () -> Shading () .addInterest (&X3DBrowserPanelMenuBar::set_shading, this);
-	browser -> initialized ()          .addInterest (&X3DBrowserPanelMenuBar::set_initialized,       this);
-	browser -> getViewer ()            .addInterest (&X3DBrowserPanelMenuBar::set_viewer,             this);
-	browser -> getStraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
-	browser -> getTexturing ()         .addInterest (&X3DBrowserPanelMenuBar::set_texturing,          this);
-	browser -> getShaders ()           .addInterest (&X3DBrowserPanelMenuBar::set_shaders,            this);
+	browser -> getBrowserOptions () -> Shading ()           .addInterest (&X3DBrowserPanelMenuBar::set_shading,            this);
+	browser -> getBrowserOptions () -> StraightenHorizon () .addInterest (&X3DBrowserPanelMenuBar::set_straighten_horizon, this);
+
+	browser -> initialized ()  .addInterest (&X3DBrowserPanelMenuBar::set_initialized, this);
+	browser -> getViewer ()    .addInterest (&X3DBrowserPanelMenuBar::set_viewer,      this);
+	browser -> getTexturing () .addInterest (&X3DBrowserPanelMenuBar::set_texturing,   this);
+	browser -> getShaders ()   .addInterest (&X3DBrowserPanelMenuBar::set_shaders,     this);
 
 	viewpointObserver .reset (new ViewpointObserver (getBrowserWindow (), browser));
 	viewpointObserver -> getUndoHistory () -> addInterest (&X3DBrowserPanelMenuBar::set_undoHistory, this);
@@ -240,7 +242,7 @@ X3DBrowserPanelMenuBar::set_straighten_horizon ()
 {
 	changing = true;
 
-	getStraightenHorizonMenuItem () .set_active (getLocalBrowser () -> getStraightenHorizon ());
+	getStraightenHorizonMenuItem () .set_active (getLocalBrowser () -> getBrowserOptions () -> StraightenHorizon ());
 
 	changing = false;
 }
@@ -252,7 +254,8 @@ X3DBrowserPanelMenuBar::on_straighten_horizon_toggled ()
 		return;
 
 	getConfig () -> setItem <bool> ("straightenHorizon", getStraightenHorizonMenuItem () .get_active ());
-	getLocalBrowser () -> setStraightenHorizon (getStraightenHorizonMenuItem () .get_active ());
+
+	getLocalBrowser () -> getBrowserOptions () -> StraightenHorizon () = getStraightenHorizonMenuItem () .get_active ();
 
 	if (getStraightenHorizonMenuItem () .get_active ())
 		on_straighten_clicked ();
