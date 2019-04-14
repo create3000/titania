@@ -126,14 +126,8 @@ public:
 
 		hadjustment .freeze (scrollable -> get_hadjustment ());
 		vadjustment .freeze (scrollable -> get_vadjustment ());
-	}
 
-	void
-	restore ()
-	{
-		restore (x, y);
-
-		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, (void (ScrollFreezer::*) (const double, const double)) &ScrollFreezer::restore), x, y));
+		Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &ScrollFreezer::restore), x, y), Glib::PRIORITY_HIGH_IDLE);
 	}
 
 	void

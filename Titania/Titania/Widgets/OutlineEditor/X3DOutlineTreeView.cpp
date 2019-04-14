@@ -644,10 +644,6 @@ X3DOutlineTreeView::set_rootNodes (const bool reopen)
 
 		enable_shift_key ();
 	}
-
-	// Restore scroll.
-
-	getScrollFreezer () -> restore ();
 }
 
 void

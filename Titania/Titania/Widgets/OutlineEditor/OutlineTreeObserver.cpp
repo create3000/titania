@@ -458,10 +458,6 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	treeView -> reopen_objects (treeView -> get_model () -> get_iter (path), opened);
 
 	treeView -> enable_shift_key ();
-
-	// Restore scroll.
-
-	treeView -> getScrollFreezer () -> restore ();
 }
 
 bool
