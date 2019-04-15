@@ -26,7 +26,7 @@ uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
 uniform mat3 x3d_NormalMatrix;
 
-uniform float x3d_LinewidthScaleFactor;
+uniform x3d_LineParameters x3d_LineProperties;
 
 attribute vec4 x3d_Vertex;
 attribute vec3 x3d_Normal;
@@ -39,7 +39,7 @@ varying vec4 C;
 void
 main ()
 {
-	gl_PointSize = x3d_LinewidthScaleFactor + 1.0;
+	gl_PointSize = x3d_LineProperties .linewidthScaleFactor + 1.0;
 
 	v  = vec3 (x3d_ModelViewMatrix * x3d_Vertex);
 	vN = normalize (x3d_NormalMatrix * x3d_Normal);
@@ -56,7 +56,7 @@ main ()
 precision mediump float;
 
 uniform int x3d_GeometryType;
-uniform float x3d_LinewidthScaleFactor;
+uniform x3d_LineParameters x3d_LineProperties;
 uniform bool x3d_Lighting;
 uniform x3d_MaterialParameters x3d_FrontMaterial;  
 uniform bool x3d_ColorMaterial;
@@ -71,7 +71,7 @@ main ()
 	vec3  finalColor = vec3 (0.0, 0.0, 0.0);
 	float alpha      = 1.0;
 	
-	float lw = (x3d_LinewidthScaleFactor + 1.0) / 2.0;
+	float lw = (x3d_LineProperties .linewidthScaleFactor + 1.0) / 2.0;
 	float t  = x3d_GeometryType == x3d_Points ? distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * lw - lw + 1.0 : 0.0;
 
 	if (x3d_Lighting)

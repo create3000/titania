@@ -126,8 +126,26 @@ public:
 	///  @name Uniform location access line properties
 
 	GLint
-	getLinewidthScaleFactorUniformLocation () const
-	{ return x3d_LinewidthScaleFactor; }
+	getLinePropertiesLinewidthScaleFactorUniformLocation () const
+	{ return x3d_LinePropertiesLinewidthScaleFactor; }
+
+	///  @name Hatch
+
+	GLint
+	getFillPropertiesFilledUniformLocation () const
+	{ return x3d_FillPropertiesFilled; }
+
+	GLint
+	getFillPropertiesHatchedUniformLocation () const
+	{ return x3d_FillPropertiesHatched; }
+
+	GLint
+	getFillPropertiesHatchColorUniformLocation () const
+	{ return x3d_FillPropertiesHatchColor; }
+
+	GLint
+	getFillPropertiesHatchStyleUniformLocation () const
+	{ return x3d_FillPropertiesHatchStyle; }
 
 	///  @name Uniform location access lighting
 
@@ -302,24 +320,6 @@ public:
 	const std::vector <GLint> &
 	getTextureCoordinateGeneratorParameterUniformLocation () const
 	{ return x3d_TextureCoordinateGeneratorParameter; }
-
-	///  @name Hatch
-
-	GLint
-	getFillPropertiesFilledUniformLocation () const
-	{ return x3d_FillPropertiesFilled; }
-
-	GLint
-	getFillPropertiesHatchedUniformLocation () const
-	{ return x3d_FillPropertiesHatched; }
-
-	GLint
-	getFillPropertiesHatchColorUniformLocation () const
-	{ return x3d_FillPropertiesHatchColor; }
-
-	GLint
-	getFillPropertiesHatchStyleUniformLocation () const
-	{ return x3d_FillPropertiesHatchStyle; }
 
 	///  @name Matrices
 
@@ -548,7 +548,12 @@ private:
 	GLint x3d_FogMatrix;
 	GLint x3d_FogCoord;
 
-	GLint x3d_LinewidthScaleFactor;
+	GLint x3d_LinePropertiesLinewidthScaleFactor;
+
+	GLint x3d_FillPropertiesFilled;
+	GLint x3d_FillPropertiesHatched;
+	GLint x3d_FillPropertiesHatchColor;
+	GLint x3d_FillPropertiesHatchStyle;
 
 	GLint x3d_Lighting;
 	GLint x3d_ColorMaterial;
@@ -602,11 +607,6 @@ private:
 
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
-
-	GLint x3d_FillPropertiesFilled;
-	GLint x3d_FillPropertiesHatched;
-	GLint x3d_FillPropertiesHatchColor;
-	GLint x3d_FillPropertiesHatchStyle;
 
 	GLint               x3d_Viewport;
 	GLint               x3d_ProjectionMatrix;

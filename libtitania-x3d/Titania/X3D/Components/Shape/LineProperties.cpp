@@ -103,14 +103,15 @@ LineProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 		{
 			glLineWidth (linewidthScaleFactor ());
 			glPointSize (linewidthScaleFactor ());
-			glUniform1f (shaderObject -> getLinewidthScaleFactorUniformLocation (), linewidthScaleFactor ());
+			glUniform1f (shaderObject -> getLinePropertiesLinewidthScaleFactorUniformLocation (), linewidthScaleFactor ());
 			return;
 		}
 	}
 
+	glDisable (GL_LINE_STIPPLE);
 	glLineWidth (1);
 	glPointSize (1);
-	glUniform1f (shaderObject -> getLinewidthScaleFactorUniformLocation (), 1);
+	glUniform1f (shaderObject -> getLinePropertiesLinewidthScaleFactorUniformLocation (), 1);
 }
 
 LineProperties::~LineProperties ()

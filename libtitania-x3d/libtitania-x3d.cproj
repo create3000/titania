@@ -1016,6 +1016,7 @@
     <None Include="share\titania\hatching\17.png" />
     <None Include="share\titania\hatching\18.png" />
     <None Include="share\titania\hatching\19.png" />
+    <None Include="share\titania\shaders\Shaders\PointSet.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

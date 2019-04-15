@@ -86,7 +86,11 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                 x3d_FogVisibilityRange (-1),
 	                          x3d_FogMatrix (-1),
 	                           x3d_FogCoord (-1),
-	               x3d_LinewidthScaleFactor (-1),
+	 x3d_LinePropertiesLinewidthScaleFactor (-1),
+	               x3d_FillPropertiesFilled (-1),
+	              x3d_FillPropertiesHatched (-1),
+	           x3d_FillPropertiesHatchColor (-1),
+	           x3d_FillPropertiesHatchStyle (-1),
 	                           x3d_Lighting (-1),
 	                      x3d_ColorMaterial (-1),
 	                          x3d_NumLights (-1),
@@ -131,10 +135,6 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_MultiTextureFunction (getBrowser () -> getMaxTextures (), -1),
 	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
 	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
-	               x3d_FillPropertiesFilled (-1),
-	              x3d_FillPropertiesHatched (-1),
-	           x3d_FillPropertiesHatchColor (-1),
-	           x3d_FillPropertiesHatchStyle (-1),
 	                           x3d_Viewport (-1),
 	                   x3d_ProjectionMatrix (-1),
 	                    x3d_ModelViewMatrix (-1),
@@ -241,7 +241,12 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_FogMatrix          = getUniformLocation (program, "x3d_Fog.matrix",          "x3d_FogMatrix");
 	x3d_FogCoord           = getUniformLocation (program, "x3d_Fog.fogCoord",        "x3d_FogCoord");
 
-	x3d_LinewidthScaleFactor = glGetUniformLocation (program, "x3d_LinewidthScaleFactor");
+	x3d_LinePropertiesLinewidthScaleFactor = getUniformLocation (program, "x3d_LineProperties.linewidthScaleFactor", "x3d_LinewidthScaleFactor");
+
+	x3d_FillPropertiesFilled     = glGetUniformLocation (program, "x3d_FillProperties.filled");
+	x3d_FillPropertiesHatched    = glGetUniformLocation (program, "x3d_FillProperties.hatched");
+	x3d_FillPropertiesHatchColor = glGetUniformLocation (program, "x3d_FillProperties.hatchColor");
+	x3d_FillPropertiesHatchStyle = glGetUniformLocation (program, "x3d_FillProperties.hatchStyle");
 
 	x3d_Lighting      = glGetUniformLocation (program, "x3d_Lighting");
 	x3d_ColorMaterial = glGetUniformLocation (program, "x3d_ColorMaterial");
@@ -307,11 +312,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
 	}
 
-	x3d_FillPropertiesFilled     = glGetUniformLocation (program, "x3d_FillProperties.filled");
-	x3d_FillPropertiesHatched    = glGetUniformLocation (program, "x3d_FillProperties.hatched");
-	x3d_FillPropertiesHatchColor = glGetUniformLocation (program, "x3d_FillProperties.hatchColor");
-	x3d_FillPropertiesHatchStyle = glGetUniformLocation (program, "x3d_FillProperties.hatchStyle");
-
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
 	x3d_ProjectionMatrix  = glGetUniformLocation (program, "x3d_ProjectionMatrix");
 	x3d_ModelViewMatrix   = glGetUniformLocation (program, "x3d_ModelViewMatrix");
@@ -338,12 +338,11 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
 	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
 
-	glUniform1f  (x3d_LinewidthScaleFactor,     1);
+	glUniform1i  (x3d_FillPropertiesHatchStyle, hatchStyle);
 	glUniform1i  (x3d_NumTextures,              0);
 	glUniform1iv (x3d_Texture2D [0],            texture2D      .size (), texture2D      .data ());
 	glUniform1iv (x3d_CubeMapTexture [0],       cubeMapTexture .size (), cubeMapTexture .data ());
 	glUniform1iv (x3d_ShadowMap [0],            shadowMap      .size (), shadowMap      .data ());
-	glUniform1i  (x3d_FillPropertiesHatchStyle, hatchStyle);
 }
 
 GLint
