@@ -80,11 +80,19 @@ public:
 	getDefaultAppearance () const
 	{ return defaultAppearance; }
 
-	const X3DPtr <ImageTexture> &
+	const X3DPtr <X3DTexture2DNode> &
+	getLinetype (int32_t index) const;
+
+	const X3DPtr <X3DTexture2DNode> &
 	getHatchStyle (int32_t index) const;
 
 	int32_t
-	getHatchStyleUnit () const;
+	getLinetypeUnit () const
+	{ return linetypeUnit; }
+
+	int32_t
+	getHatchStyleUnit () const
+	{ return hatchStyleUnit; }
 
 	///  @name Destruction
 
@@ -112,12 +120,14 @@ private:
 
 	///  @name Members
 
-	X3DPtr <LineProperties>            defaultLineProperties;
-	X3DPtr <FillProperties>            defaultFillProperties;
-	X3DPtr <X3DAppearanceNode>         defaultAppearance;
-	X3DPtr <TextureProperties>         hatchStyleTextureProperties;
-	mutable X3DPtrArray <ImageTexture> hatchStyleTextures;
-	int32_t                            hatchStyleUnit;
+	X3DPtr <LineProperties>                defaultLineProperties;
+	X3DPtr <FillProperties>                defaultFillProperties;
+	X3DPtr <X3DAppearanceNode>             defaultAppearance;
+	X3DPtr <TextureProperties>             lineFillTextureProperties;
+	mutable X3DPtrArray <X3DTexture2DNode> linetypeTextures;
+	mutable X3DPtrArray <X3DTexture2DNode> hatchStyleTextures;
+	int32_t                                linetypeUnit;
+	int32_t                                hatchStyleUnit;
 
 };
 

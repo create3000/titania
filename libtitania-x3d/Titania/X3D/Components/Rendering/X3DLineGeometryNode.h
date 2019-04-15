@@ -113,6 +113,10 @@ protected:
 	const X3DPtr <ComposedShader> &
 	getShaderNode (X3DBrowser* const browser) = 0;
 
+	virtual
+	void
+	transfer () final override;
+
 
 private:
 

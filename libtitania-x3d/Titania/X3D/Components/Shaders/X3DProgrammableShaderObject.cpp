@@ -86,7 +86,9 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                 x3d_FogVisibilityRange (-1),
 	                          x3d_FogMatrix (-1),
 	                           x3d_FogCoord (-1),
+	              x3d_LinePropertiesApplied (-1),
 	 x3d_LinePropertiesLinewidthScaleFactor (-1),
+	             x3d_LinePropertiesLinetype (-1),
 	               x3d_FillPropertiesFilled (-1),
 	              x3d_FillPropertiesHatched (-1),
 	           x3d_FillPropertiesHatchColor (-1),
@@ -241,7 +243,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_FogMatrix          = getUniformLocation (program, "x3d_Fog.matrix",          "x3d_FogMatrix");
 	x3d_FogCoord           = getUniformLocation (program, "x3d_Fog.fogCoord",        "x3d_FogCoord");
 
+	x3d_LinePropertiesApplied              = glGetUniformLocation (program, "x3d_LineProperties.applied");
 	x3d_LinePropertiesLinewidthScaleFactor = getUniformLocation (program, "x3d_LineProperties.linewidthScaleFactor", "x3d_LinewidthScaleFactor");
+	x3d_LinePropertiesLinetype             = glGetUniformLocation (program, "x3d_LineProperties.linetype");
 
 	x3d_FillPropertiesFilled     = glGetUniformLocation (program, "x3d_FillProperties.filled");
 	x3d_FillPropertiesHatched    = glGetUniformLocation (program, "x3d_FillProperties.hatched");
@@ -333,11 +337,13 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
 	x3d_ParticleElapsedTime = glGetUniformLocation (program, "x3d_Particle.elapsedTime");
 
+	static const auto   linetype       = getBrowser () -> getLinetypeUnit ();
+	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
 	static const auto & texture2D      = getBrowser () -> getTexture2DUnits ();
 	static const auto & cubeMapTexture = getBrowser () -> getCubeMapTextureUnits ();
 	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
-	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
 
+	glUniform1i  (x3d_LinePropertiesLinetype,   linetype);
 	glUniform1i  (x3d_FillPropertiesHatchStyle, hatchStyle);
 	glUniform1i  (x3d_NumTextures,              0);
 	glUniform1iv (x3d_Texture2D [0],            texture2D      .size (), texture2D      .data ());

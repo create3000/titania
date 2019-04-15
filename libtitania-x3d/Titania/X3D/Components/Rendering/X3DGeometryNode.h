@@ -379,8 +379,8 @@ protected:
 	{ return colorBufferId; }
 
 	const std::vector <GLuint> &
-	getTexCoordBufferIds () const
-	{ return texCoordBufferIds; }
+	getMultiTexCoordBufferIds () const
+	{ return multiTexCoordBufferIds; }
 
 	GLuint
 	getNormalBufferId () const
@@ -417,6 +417,10 @@ protected:
 	virtual
 	void
 	build () = 0;
+
+	virtual
+	void
+	transfer ();
 
 
 private:
@@ -457,9 +461,6 @@ private:
 	void
 	clear ();
 
-	void
-	transfer ();
-
 	///  @name Static members
 
 	static const Matrix4d matrix;
@@ -488,7 +489,7 @@ private:
 	std::vector <GLuint> attribBufferIds;
 	GLuint               fogDepthBufferId;
 	GLuint               colorBufferId;
-	std::vector <GLuint> texCoordBufferIds;
+	std::vector <GLuint> multiTexCoordBufferIds;
 	GLuint               normalBufferId;
 	GLuint               vertexBufferId;
 

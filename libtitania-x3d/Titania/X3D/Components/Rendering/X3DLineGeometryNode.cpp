@@ -95,6 +95,25 @@ X3DLineGeometryNode::intersects (X3DRenderObject* const renderObject,
 }
 
 void
+X3DLineGeometryNode::transfer ()
+{
+	if (getGeometryType () == 1)
+	{
+		getMultiTexCoords () .emplace_back ();
+	
+		for (size_t i = 0, size = getVertices () .size (); i < size; i += 2)
+		{
+			const auto & p = getVertices () [i];
+
+			getTexCoords () .emplace_back (p .x (), p .y (), p .z (), 1);
+			getTexCoords () .emplace_back (p .x (), p .y (), p .z (), 1);
+		}
+	}
+
+	X3DGeometryNode::transfer ();
+}
+
+void
 X3DLineGeometryNode::depth (const X3DShapeContainer* const context)
 { }
 
@@ -131,6 +150,9 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		if (not getColors () .empty ())
 			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
 	
+		if (not getMultiTexCoords () .empty ())
+			shaderNode -> enableTexCoordAttrib (getMultiTexCoordBufferIds (), GL_FLOAT, { }, { });
+
 		shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
 	
 		// Draw
@@ -148,6 +170,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	
 		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableTexCoordAttrib ();
 		shaderNode -> disableVertexAttrib ();
 		shaderNode -> disable ();
 	
@@ -195,6 +218,9 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		if (not getColors () .empty ())
 			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
 	
+		if (not getMultiTexCoords () .empty ())
+			shaderNode -> enableTexCoordAttrib (getMultiTexCoordBufferIds (), GL_FLOAT, { }, { });
+
 		shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
 	
 		// Draw
@@ -226,6 +252,7 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 	
 		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableTexCoordAttrib ();
 		shaderNode -> disableVertexAttrib ();
 		shaderNode -> disable ();
 	

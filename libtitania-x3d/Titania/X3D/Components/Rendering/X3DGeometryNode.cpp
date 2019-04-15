@@ -70,31 +70,31 @@ namespace X3D {
 const Matrix4d X3DGeometryNode::matrix;
 
 X3DGeometryNode::X3DGeometryNode () :
-	              X3DNode (),
-	         cameraObject (),
-	          transparent (),
-	        rebuildOutput (),
-	                 bbox (),
-	          attribNodes (),
-	            fogDepths (),
-	               colors (),
-	textureCoordinateNode (),
-	       multiTexCoords (),
-	              normals (),
-	          faceNormals (),
-	             vertices (),
-	         geometryType (3),
-	                solid (true),
-	            frontFace (GL_CCW),
-	          flatShading (false),
-	             elements (),
-	            pickShape (),
-	      attribBufferIds (),
-	     fogDepthBufferId (0),
-	        colorBufferId (0),
-	    texCoordBufferIds (),
-	       normalBufferId (0),
-	       vertexBufferId (0)
+	               X3DNode (),
+	          cameraObject (),
+	           transparent (),
+	         rebuildOutput (),
+	                  bbox (),
+	           attribNodes (),
+	             fogDepths (),
+	                colors (),
+	 textureCoordinateNode (),
+	        multiTexCoords (),
+	               normals (),
+	           faceNormals (),
+	              vertices (),
+	          geometryType (3),
+	                 solid (true),
+	             frontFace (GL_CCW),
+	           flatShading (false),
+	              elements (),
+	             pickShape (),
+	       attribBufferIds (),
+	      fogDepthBufferId (0),
+	         colorBufferId (0),
+	multiTexCoordBufferIds (),
+	        normalBufferId (0),
+	        vertexBufferId (0)
 
 {
 	addType (X3DConstants::X3DGeometryNode);
@@ -1003,16 +1003,16 @@ X3DGeometryNode::transfer ()
 
 	if (not multiTexCoords .empty ())
 	{
-		for (size_t i = texCoordBufferIds .size (), size = multiTexCoords .size (); i < size; ++ i)
+		for (size_t i = multiTexCoordBufferIds .size (), size = multiTexCoords .size (); i < size; ++ i)
 		{
-			texCoordBufferIds .emplace_back ();
+			multiTexCoordBufferIds .emplace_back ();
 
-			glGenBuffers (1, &texCoordBufferIds .back ());
+			glGenBuffers (1, &multiTexCoordBufferIds .back ());
 		}
 
 		for (size_t i = 0, size = multiTexCoords .size (); i < size; ++ i)
 		{
-			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferIds [i]);
+			glBindBuffer (GL_ARRAY_BUFFER, multiTexCoordBufferIds [i]);
 			glBufferData (GL_ARRAY_BUFFER, sizeof (Vector4f) * multiTexCoords [i] .size (), multiTexCoords [i] .data (), GL_STATIC_COPY);
 		}
 	}
@@ -1075,7 +1075,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
 
 		if (not multiTexCoords .empty ())
-			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
+			shaderNode -> enableTexCoordAttrib (multiTexCoordBufferIds, GL_FLOAT, { }, { });
 
 		if (not normals .empty ())
 			shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
@@ -1184,7 +1184,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
 
 		if (not multiTexCoords .empty ())
-			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
+			shaderNode -> enableTexCoordAttrib (multiTexCoordBufferIds, GL_FLOAT, { }, { });
 
 		if (not normals .empty ())
 			shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
@@ -1289,8 +1289,8 @@ X3DGeometryNode::dispose ()
 		if (colorBufferId)
 			glDeleteBuffers (1, &colorBufferId);
 
-		if (not texCoordBufferIds .empty ())
-			glDeleteBuffers (texCoordBufferIds .size (), texCoordBufferIds .data ());
+		if (not multiTexCoordBufferIds .empty ())
+			glDeleteBuffers (multiTexCoordBufferIds .size (), multiTexCoordBufferIds .data ());
 
 		if (normalBufferId)
 			glDeleteBuffers (1, &normalBufferId);

@@ -76,6 +76,12 @@ get_shader (const std::string & filename)
 }
 
 basic::uri
+get_linetype (const int32_t index)
+{
+	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + "linetype/" + basic::to_string (index, std::locale::classic ()) + ".png")) .escape ();
+}
+
+basic::uri
 get_hatching (const int32_t index)
 {
 	return "file://" + basic::path (os::find_data_file (TITANIA_DATA_DIR + "hatching/" + basic::to_string (index, std::locale::classic ()) + ".png")) .escape ();

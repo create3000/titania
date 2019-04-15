@@ -1017,6 +1017,24 @@
     <None Include="share\titania\hatching\18.png" />
     <None Include="share\titania\hatching\19.png" />
     <None Include="share\titania\shaders\Shaders\PointSet.vs" />
+    <None Include="share\titania\linetype\0.png" />
+    <None Include="share\titania\linetype\1.png" />
+    <None Include="share\titania\linetype\2.png" />
+    <None Include="share\titania\linetype\3.png" />
+    <None Include="share\titania\linetype\4.png" />
+    <None Include="share\titania\linetype\5.png" />
+    <None Include="share\titania\linetype\6.png" />
+    <None Include="share\titania\linetype\7.png" />
+    <None Include="share\titania\linetype\8.png" />
+    <None Include="share\titania\linetype\9.png" />
+    <None Include="share\titania\linetype\10.png" />
+    <None Include="share\titania\linetype\11.png" />
+    <None Include="share\titania\linetype\12.png" />
+    <None Include="share\titania\linetype\13.png" />
+    <None Include="share\titania\linetype\14.png" />
+    <None Include="share\titania\linetype\15.png" />
+    <None Include="share\titania\linetype\16.png" />
+    <None Include="Titania\X3D\Browser\Shape\Linetype.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1814,6 +1832,7 @@
     <Folder Include="Titania\X3D\Browser\Picking\" />
     <Folder Include="share\titania\shaders\Shaders\Include\" />
     <Folder Include="share\titania\hatching\" />
+    <Folder Include="share\titania\linetype\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

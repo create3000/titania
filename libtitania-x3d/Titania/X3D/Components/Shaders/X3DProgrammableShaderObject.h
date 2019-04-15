@@ -126,8 +126,16 @@ public:
 	///  @name Uniform location access line properties
 
 	GLint
+	getLinePropertiesAppliedUniformLocation () const
+	{ return x3d_LinePropertiesApplied; }
+
+	GLint
 	getLinePropertiesLinewidthScaleFactorUniformLocation () const
 	{ return x3d_LinePropertiesLinewidthScaleFactor; }
+
+	GLint
+	getLinePropertiesLinetypeUniformLocation () const
+	{ return x3d_LinePropertiesLinetype; }
 
 	///  @name Hatch
 
@@ -548,7 +556,9 @@ private:
 	GLint x3d_FogMatrix;
 	GLint x3d_FogCoord;
 
+	GLint x3d_LinePropertiesApplied;
 	GLint x3d_LinePropertiesLinewidthScaleFactor;
+	GLint x3d_LinePropertiesLinetype;
 
 	GLint x3d_FillPropertiesFilled;
 	GLint x3d_FillPropertiesHatched;

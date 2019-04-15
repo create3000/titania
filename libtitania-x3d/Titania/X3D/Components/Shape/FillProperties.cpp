@@ -53,7 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
-#include "../Texturing/ImageTexture.h"
+#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -122,6 +122,7 @@ FillProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 		const auto textureNode = getBrowser () -> getHatchStyle (hatchStyle ());
 
 		glUniform3fv (shaderObject -> getFillPropertiesHatchColorUniformLocation (), 1, hatchColor () .getValue () .data ());
+
 		glActiveTexture (GL_TEXTURE0 + getBrowser () -> getHatchStyleUnit ());
 		glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
 	}

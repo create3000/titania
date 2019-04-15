@@ -51,8 +51,10 @@
 #include "LineProperties.h"
 
 #include "../../Browser/Shape/Linetypes.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
+#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -91,27 +93,29 @@ LineProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 {
 	if (applied ())
 	{
+		const auto textureNode = getBrowser () -> getLinetype (linetype ());
+
 		glEnable (GL_LINE_STIPPLE);
 
 		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
 			glLineStipple (1, linetypes [linetype ()]);
-	
 		else
 			glLineStipple (1, int32_t (LineType::SOLID));
 
-		if (linewidthScaleFactor () > 0)
-		{
-			glLineWidth (linewidthScaleFactor ());
-			glPointSize (linewidthScaleFactor ());
-			glUniform1f (shaderObject -> getLinePropertiesLinewidthScaleFactorUniformLocation (), linewidthScaleFactor ());
-			return;
-		}
-	}
+		glLineWidth (linewidthScaleFactor ());
+		glUniform1i (shaderObject -> getLinePropertiesAppliedUniformLocation (),              true);
+		glUniform1f (shaderObject -> getLinePropertiesLinewidthScaleFactorUniformLocation (), linewidthScaleFactor ());
 
-	glDisable (GL_LINE_STIPPLE);
-	glLineWidth (1);
-	glPointSize (1);
-	glUniform1f (shaderObject -> getLinePropertiesLinewidthScaleFactorUniformLocation (), 1);
+		glActiveTexture (GL_TEXTURE0 + getBrowser () -> getLinetypeUnit ());
+		glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
+	}
+	else
+	{
+		glDisable (GL_LINE_STIPPLE);
+		glLineWidth (1);
+		glUniform1i (shaderObject -> getLinePropertiesAppliedUniformLocation (),              false);
+		glUniform1f (shaderObject -> getLinePropertiesLinewidthScaleFactorUniformLocation (), 1);
+	}
 }
 
 LineProperties::~LineProperties ()

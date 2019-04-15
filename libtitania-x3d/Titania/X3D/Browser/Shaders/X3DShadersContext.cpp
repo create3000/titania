@@ -189,16 +189,6 @@ X3DShadersContext::set_shading ()
 	{
 		defaultShader = getGouraudShader ();
 	}
-
-	try
-	{
-		ContextLock lock (getBrowser ());
-
-		glEnable (GL_POINT_SPRITE);
-		glEnable (GL_PROGRAM_POINT_SIZE);
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
 }
 
 X3DShadersContext::~X3DShadersContext ()

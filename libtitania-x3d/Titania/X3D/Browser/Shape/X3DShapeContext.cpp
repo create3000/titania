@@ -66,14 +66,17 @@ X3DShapeContext::X3DShapeContext () :
 	      defaultLineProperties (new LineProperties (getExecutionContext ())),
 	      defaultFillProperties (new FillProperties (getExecutionContext ())),
 	          defaultAppearance (new Appearance (getExecutionContext ())),
-	hatchStyleTextureProperties (new TextureProperties (getExecutionContext ())),
+	  lineFillTextureProperties (new TextureProperties (getExecutionContext ())),
+	           linetypeTextures (16),
 	         hatchStyleTextures (20),
+	               linetypeUnit (0),
 	             hatchStyleUnit (0)
 {
 	addChildObjects (defaultLineProperties,
 	                 defaultFillProperties,
 	                 defaultAppearance,
-	                 hatchStyleTextureProperties,
+	                 lineFillTextureProperties,
+	                 linetypeTextures,
 	                 hatchStyleTextures);
 }
 
@@ -86,7 +89,13 @@ X3DShapeContext::initialize ()
 	defaultLineProperties       -> setup ();
 	defaultFillProperties       -> setup ();
 	defaultAppearance           -> setup ();
-	hatchStyleTextureProperties -> setup ();
+	lineFillTextureProperties   -> setup ();
+
+	if (getBrowser () -> getCombinedTextureUnits () .size ())
+	{
+		linetypeUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+		getBrowser () -> getCombinedTextureUnits () .pop ();
+	}
 
 	if (getBrowser () -> getCombinedTextureUnits () .size ())
 	{
@@ -95,31 +104,46 @@ X3DShapeContext::initialize ()
 	}
 }
 
-const X3DPtr <ImageTexture> &
-X3DShapeContext::getHatchStyle (int32_t index) const
+const X3DPtr <X3DTexture2DNode> &
+X3DShapeContext::getLinetype (int32_t index) const
 {
-	if (index < 0 or index > 19)
-		index = 0;
+	if (index < 1 or index > 15)
+		index = 1;
 
-	auto & hatchStyleTexture = hatchStyleTextures [index];
+	const auto & texture = linetypeTextures [index];
 
-	if (not hatchStyleTexture)
-	{
-		hatchStyleTexture = MakePtr <ImageTexture> (getExecutionContext ());
+	if (texture)
+		return texture;
 
-		hatchStyleTexture -> url ()               = { get_hatching (index) .str () };
-		hatchStyleTexture -> textureProperties () = hatchStyleTextureProperties;
+	const auto linetypeTexture = MakePtr <ImageTexture> (getExecutionContext ());
 
-		hatchStyleTexture -> setup ();
-	}
+	linetypeTexture -> url ()               = { get_linetype (index) .str () };
+	linetypeTexture -> textureProperties () = lineFillTextureProperties;
 
-	return hatchStyleTexture;
+	linetypeTexture -> setup ();
+
+	return linetypeTextures [index] = linetypeTexture;
 }
 
-int32_t
-X3DShapeContext::getHatchStyleUnit () const
+const X3DPtr <X3DTexture2DNode> &
+X3DShapeContext::getHatchStyle (int32_t index) const
 {
-	return hatchStyleUnit;
+	if (index < 1 or index > 19)
+		index = 1;
+
+	const auto & texture = hatchStyleTextures [index];
+
+	if (texture)
+		return texture;
+
+	const auto hatchStyleTexture = MakePtr <ImageTexture> (getExecutionContext ());
+
+	hatchStyleTexture -> url ()               = { get_hatching (index) .str () };
+	hatchStyleTexture -> textureProperties () = lineFillTextureProperties;
+
+	hatchStyleTexture -> setup ();
+
+	return hatchStyleTextures [index] = hatchStyleTexture;
 }
 
 X3DShapeContext::~X3DShapeContext ()
