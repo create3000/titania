@@ -26,7 +26,7 @@ uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
 uniform mat3 x3d_NormalMatrix;
 
-uniform x3d_LineParameters x3d_LineProperties;
+uniform x3d_LinePropertiesParameters x3d_LineProperties;
 
 attribute vec4 x3d_Vertex;
 attribute vec3 x3d_Normal;
@@ -56,7 +56,7 @@ main ()
 precision mediump float;
 
 uniform int x3d_GeometryType;
-uniform x3d_LineParameters x3d_LineProperties;
+uniform x3d_LinePropertiesParameters x3d_LineProperties;
 uniform bool x3d_Lighting;
 uniform x3d_MaterialParameters x3d_FrontMaterial;  
 uniform bool x3d_ColorMaterial;
