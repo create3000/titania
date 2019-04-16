@@ -87,8 +87,7 @@ namespace X3D {
 // Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects.
 // MotionBlur              Boolean                                  False                        Render animations with motion blur.
 //
-// SplashScreenURL         String Array                             Implementation-dependent     The url of the file that should be used as splash screen.
-// MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1).
+// MotionBlurIntensity     Number                                   0.25                         Motion blur intensity in the range (0, 1).
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 // LogarithmicDepthBuffer  Boolean                                  False                        Whether to use a logarithmic depth buffer. It may be neccesary to use this if dealing with huge differences in scale in a single scene.
