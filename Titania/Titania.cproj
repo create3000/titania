@@ -3249,6 +3249,8 @@
     <None Include="share\titania\Library\Components\Texturing\.X_ITE\MultiTexture" />
     <None Include="share\titania\Library\Components\Texturing\.X_ITE\MultiTextureCoordinate" />
     <None Include="share\titania\Library\Components\Texturing\.X_ITE\MultiTextureTransform" />
+    <None Include="share\titania\Library\Components\Shape\.X_ITE\FillProperties" />
+    <None Include="share\titania\Library\Components\Shape\.Titania\FillProperties" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
