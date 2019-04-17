@@ -583,6 +583,9 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 void
 X3DBaseNode::set_sceneGraph ()
 {
+	if (executionContext == this)
+		return;
+
 	const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
 	const_cast <SFTime &> (executionContext -> bbox_changed ())       = getCurrentTime ();
 }
