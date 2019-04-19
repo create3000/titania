@@ -218,17 +218,19 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	#define UNDEF        "#undef\\s+.*?\\n"
 	#define PRAGMA       "#pragma\\s+.*?\\n"
 	#define PREPROCESSOR  LINE "|" IF "|" ELIF "|" IFDEF "|" IFNDEF "|" ELSE "|" ENDIF "|" DEFINE "|" UNDEF "|" PRAGMA
+	#define VERSION      "#version\\s+.*?\\n"
 	#define EXTENSION    "#extension\\s+.*?\\n"
 
-	static const std::regex head ("^((?:" COMMENTS "|" PREPROCESSOR "|" EXTENSION ")*)");
+	static const std::regex head ("^((?:" VERSION ")?)((?:" COMMENTS "|" PREPROCESSOR "|" EXTENSION ")*)");
 
 	std::smatch hmatch;
 
 	if (not std::regex_search (source, hmatch, head))
 		return source;
 
-	const auto begin    = hmatch .str (1);
-	const auto numLines = std::count (begin .begin (), begin .end (), '\n');
+	const auto version  = hmatch .str (1);
+	const auto begin    = hmatch .str (2);
+	const auto numLines = std::count (version .begin (), version .end (), '\n') + std::count (begin .begin (), begin .end (), '\n');
 
 	std::ostringstream constants;
 	std::ostringstream definitions;
@@ -236,7 +238,9 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	definitions .imbue (std::locale::classic ());
 
-	constants << "#version 100\n#line 1\n";
+	if (version .empty ())
+		constants << "#version 100\n#line 1\n";
+
 	constants << "#define TITANIA\n";
 
 	if (browser -> getRenderingProperties () -> LogarithmicDepthBuffer ())
@@ -358,7 +362,7 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	definitions << "#line " << (numLines - 1)  << "\n";
 
-	return constants .str () + begin + definitions .str () + source .substr (begin .size ());
+	return version + constants .str () + begin + definitions .str () + source .substr (version .size () + begin .size ());
 }
 
 void
