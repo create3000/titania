@@ -11,42 +11,42 @@ getShadowDepth (const in int index, const in vec2 shadowCoord)
 {
 	#if x3d_MaxLights > 0
 	if (index == 0)
-		return unpack (texture2D (x3d_ShadowMap [0], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [0], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 1
 	if (index == 1)
-		return unpack (texture2D (x3d_ShadowMap [1], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [1], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 2
 	if (index == 2)
-		return unpack (texture2D (x3d_ShadowMap [2], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [2], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 3
 	if (index == 3)
-		return unpack (texture2D (x3d_ShadowMap [3], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [3], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 4
 	if (index == 4)
-		return unpack (texture2D (x3d_ShadowMap [4], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [4], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 5
 	if (index == 5)
-		return unpack (texture2D (x3d_ShadowMap [5], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [5], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 6
 	if (index == 6)
-		return unpack (texture2D (x3d_ShadowMap [6], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [6], shadowCoord));
 	#endif
 
 	#if x3d_MaxLights > 7
 	if (index == 7)
-		return unpack (texture2D (x3d_ShadowMap [7], shadowCoord));
+		return unpack (texture (x3d_ShadowMap [7], shadowCoord));
 	#endif
 
 	return 0.0;

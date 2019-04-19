@@ -1,8 +1,5 @@
+#version 300 es
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
-
-#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
-#extension GL_EXT_frag_depth : enable
-#endif
 
 precision mediump float;
 precision mediump int;
@@ -18,19 +15,21 @@ uniform bool x3d_SeparateBackColor;
 uniform x3d_MaterialParameters x3d_FrontMaterial;  
 uniform x3d_MaterialParameters x3d_BackMaterial;        
 
-varying float fogDepth;    // fog depth
-varying vec4  color;       // color
-varying vec4  texCoord0;   // texCoord0
-varying vec4  texCoord1;   // texCoord1
-varying vec3  normal;      // normal vector at this point on geometry
-varying vec3  vertex;      // point on geometry
-varying vec3  localNormal; // normal vector at this point on geometry in local coordinates
-varying vec3  localVertex; // point on geometry in local coordinates
+in float fogDepth;    // fog depth
+in vec4  color;       // color
+in vec4  texCoord0;   // texCoord0
+in vec4  texCoord1;   // texCoord1
+in vec3  normal;      // normal vector at this point on geometry
+in vec3  vertex;      // point on geometry
+in vec3  localNormal; // normal vector at this point on geometry in local coordinates
+in vec3  localVertex; // point on geometry in local coordinates
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;
-varying float depth;
+in float depth;
 #endif
+
+out vec4 x3d_FragColor;
 
 #pragma X3D include "Include/Shadow.h"
 #pragma X3D include "Include/Texture.h"
@@ -173,25 +172,25 @@ main ()
 
 	bool frontColor = gl_FrontFacing || ! x3d_SeparateBackColor;
 
-	gl_FragColor      = frontColor ? getMaterialColor (x3d_FrontMaterial) : getMaterialColor (x3d_BackMaterial);
-	gl_FragColor      = getHatchColor (gl_FragColor);
-	gl_FragColor .rgb = getFogColor (gl_FragColor .rgb);
+	x3d_FragColor      = frontColor ? getMaterialColor (x3d_FrontMaterial) : getMaterialColor (x3d_BackMaterial);
+	x3d_FragColor      = getHatchColor (x3d_FragColor);
+	x3d_FragColor .rgb = getFogColor (x3d_FragColor .rgb);
 
 	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 	//http://outerra.blogspot.com/2013/07/logarithmic-depth-buffer-optimizations.html
 	if (x3d_LogarithmicFarFactor1_2 > 0.0)
-		gl_FragDepthEXT = log2 (depth) * x3d_LogarithmicFarFactor1_2;
+		gl_FragDepth = log2 (depth) * x3d_LogarithmicFarFactor1_2;
 	else
-		gl_FragDepthEXT = gl_FragCoord .z;
+		gl_FragDepth = gl_FragCoord .z;
 	#endif
 
 	// DEBUG
 	#ifdef X3D_SHADOWS
-	//gl_FragColor .rgb = texture2D (x3d_ShadowMap [0], gl_FragCoord .xy / vec2 (x3d_Viewport .zw)) .rgb;
-	//gl_FragColor .rgb = mix (tex .rgb, gl_FragColor .rgb, 0.5);
+	//x3d_FragColor .rgb = texture2D (x3d_ShadowMap [0], gl_FragCoord .xy / vec2 (x3d_Viewport .zw)) .rgb;
+	//x3d_FragColor .rgb = mix (tex .rgb, x3d_FragColor .rgb, 0.5);
 	#endif
 
 	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
-	//gl_FragColor .rgb = mix (vec3 (1.0, 0.0, 0.0), gl_FragColor .rgb, 0.5);
+	//x3d_FragColor .rgb = mix (vec3 (1.0, 0.0, 0.0), x3d_FragColor .rgb, 0.5);
 	#endif
 }

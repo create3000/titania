@@ -1,3 +1,4 @@
+#version 300 es
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
 precision mediump float;
@@ -6,11 +7,11 @@ precision mediump int;
 uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
 
-attribute vec4 x3d_Color;
-attribute vec4 x3d_Vertex;
+in vec4 x3d_Color;
+in vec4 x3d_Vertex;
 
-varying vec4 color;  // color
-varying vec3 vertex; // point on geometry
+out vec4 color;  // color
+out vec3 vertex; // point on geometry
 
 void
 main ()

@@ -1,3 +1,4 @@
+#version 300 es
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
 precision mediump float;
@@ -17,25 +18,25 @@ uniform bool x3d_SeparateBackColor;
 uniform x3d_MaterialParameters x3d_FrontMaterial;  
 uniform x3d_MaterialParameters x3d_BackMaterial;
 
-attribute float x3d_FogDepth;
-attribute vec4  x3d_Color;
-attribute vec4  x3d_TexCoord0;
-attribute vec4  x3d_TexCoord1;
-attribute vec3  x3d_Normal;
-attribute vec4  x3d_Vertex;
+in float x3d_FogDepth;
+in vec4  x3d_Color;
+in vec4  x3d_TexCoord0;
+in vec4  x3d_TexCoord1;
+in vec3  x3d_Normal;
+in vec4  x3d_Vertex;
 
-varying float fogDepth;    // fog depth
-varying vec4  frontColor;  // color
-varying vec4  backColor;   // color
-varying vec4  texCoord0;   // texCoord0
-varying vec4  texCoord1;   // texCoord1
-varying vec3  normal;      // normal vector at this point on geometry
-varying vec3  vertex;      // point on geometry
-varying vec3  localNormal; // normal vector at this point on geometry in local coordinates
-varying vec3  localVertex; // point on geometry in local coordinates
+out float fogDepth;    // fog depth
+out vec4  frontColor;  // color
+out vec4  backColor;   // color
+out vec4  texCoord0;   // texCoord0
+out vec4  texCoord1;   // texCoord1
+out vec3  normal;      // normal vector at this point on geometry
+out vec3  vertex;      // point on geometry
+out vec3  localNormal; // normal vector at this point on geometry in local coordinates
+out vec3  localVertex; // point on geometry in local coordinates
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
-varying float depth;
+out float depth;
 #endif
 
 float

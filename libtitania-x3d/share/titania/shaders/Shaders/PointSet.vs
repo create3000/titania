@@ -1,3 +1,4 @@
+#version 300 es
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
 precision mediump float;
@@ -12,16 +13,16 @@ uniform x3d_MaterialParameters x3d_FrontMaterial;
 uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
 
-attribute float x3d_FogDepth;
-attribute vec4  x3d_Color;
-attribute vec4  x3d_Vertex;
+in float x3d_FogDepth;
+in vec4  x3d_Color;
+in vec4  x3d_Vertex;
 
-varying float fogDepth; // fog depth
-varying vec4  color;    // color
-varying vec3  vertex;   // point on geometry
+out float fogDepth; // fog depth
+out vec4  color;    // color
+out vec3  vertex;   // point on geometry
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
-varying float depth;
+out float depth;
 #endif
 
 void
