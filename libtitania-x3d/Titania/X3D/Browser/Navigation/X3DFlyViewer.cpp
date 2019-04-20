@@ -103,7 +103,7 @@ X3DFlyViewer::initialize ()
 
 	getBrowser () -> getControlKey () .addInterest (&X3DFlyViewer::disconnect, this);
 
-	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn ¨¹berhaupt.
+	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn Ã¼berhaupt.
 
 	glGenBuffers (1, &lineBufferId);
 }
@@ -488,16 +488,18 @@ X3DFlyViewer::display (const MoveType type)
 	shaderNode -> setClipPlanes (getBrowser (), { });
 	shaderNode -> enableVertexAttrib (lineBufferId, GL_DOUBLE, 0, nullptr);
 
-	glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
-	glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
-	glUniform1i (shaderNode -> getLightingUniformLocation (),      true);
+	glUniform1i (shaderNode -> getFogTypeUniformLocation (),               0);
+	glUniform1i (shaderNode -> getColorMaterialUniformLocation (),         false);
+	glUniform1i (shaderNode -> getLightingUniformLocation (),              true);
+	glUniform1i (shaderNode -> getLinePropertiesAppliedUniformLocation (), false);
+	glDisable (GL_LINE_STIPPLE);
 
 	// Projection
 
 	if (shaderNode -> isExtensionGPUShaderFP64Available ())
 	{
 		glUniformMatrix4dv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, projection .front () .data ());
-		glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (), 1, false, Matrix4d () .front () .data ());
+		glUniformMatrix4dv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4d () .front () .data ());
 	}
 	else
 	{
