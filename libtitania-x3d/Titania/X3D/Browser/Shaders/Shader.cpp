@@ -246,7 +246,8 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	if (browser -> getRenderingProperties () -> LogarithmicDepthBuffer ())
 		constants << "#define X3D_LOGARITHMIC_DEPTH_BUFFER\n";
 
-	constants << "#define X3D_MULTI_TEXTURING\n";
+	if (browser -> getMultiTexturing ())
+		constants << "#define X3D_MULTI_TEXTURING\n";
 
 	definitions << "#define x3d_None 0\n";
 

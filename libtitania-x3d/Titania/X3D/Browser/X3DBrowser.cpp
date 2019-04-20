@@ -140,18 +140,7 @@ X3DBrowser::initialize ()
 
 	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents, this);
 
-	getLoadSensor () -> isLoaded () .addInterest (&X3DBrowser::set_loaded, this);
-
 	replaceWorld (executionContext);
-}
-
-void
-X3DBrowser::set_loaded (const bool loaded)
-{
-	// Set load state.
-
-	getLoadSensor () -> isLoaded () .removeInterest (&X3DBrowser::set_loaded, this);
-	getLoadSensor () -> enabled () = false;
 
 	// Load initial url or start with empty scene.
 
@@ -192,9 +181,6 @@ X3DBrowser::set_loaded (const bool loaded)
 	                      std::string (80, '*'), '\n',
 	                      '\n',
 	                      '\n');
-
-	if (not loaded)
-		getConsole () -> warn ("*** Warning: X_ITE compatibility mode not fully possible!\n\n");
 }
 
 void

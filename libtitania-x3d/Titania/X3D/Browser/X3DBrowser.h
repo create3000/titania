@@ -268,9 +268,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_loaded (const bool);
-
-	void
 	set_prepareEvents ();
 
 	void

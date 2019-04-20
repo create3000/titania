@@ -481,6 +481,9 @@ X3DFlyViewer::display (const MoveType type)
 
 	const auto & shaderNode = getBrowser () -> getWireframeShader ();
 
+	if (not shaderNode -> isValid ())
+		return;
+
 	shaderNode -> enable ();
 	shaderNode -> setClipPlanes (getBrowser (), { });
 	shaderNode -> enableVertexAttrib (lineBufferId, GL_DOUBLE, 0, nullptr);

@@ -1123,11 +1123,11 @@ SoftSystem::display (ShapeContainer* const context)
 			const auto browser    = context -> getBrowser ();
 			auto       shaderNode = context -> getShader ();
 
+			if (not shaderNode -> isValid ())
+				return;
+
 			if (shaderNode == browser -> getDefaultShader ())
 				shaderNode = this -> shaderNode;
-
-			if (not shaderNode)
-				return;
 
 			// Setup shader.
 

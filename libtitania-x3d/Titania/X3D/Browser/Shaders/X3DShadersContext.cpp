@@ -75,7 +75,8 @@ X3DShadersContext::X3DShadersContext () :
 	            gouraudShader (),
 	              phongShader (),
 	            defaultShader (),
-	             shadowShader ()
+	             shadowShader (),
+	           multiTexturing (true)
 {
 	addChildObjects (shaders,
                     pointShader,
@@ -111,11 +112,9 @@ X3DShadersContext::initialize ()
 			phongShader     = getBrowser () -> getSharedContext () -> getPhongShader ();
 			shadowShader    = getBrowser () -> getSharedContext () -> getShadowShader ();
 
-			getBrowser () -> getLoadSensor () -> watchList () .append (pointShader     -> parts ());
-			getBrowser () -> getLoadSensor () -> watchList () .append (wireframeShader -> parts ());
-			getBrowser () -> getLoadSensor () -> watchList () .append (gouraudShader   -> parts ());
-			getBrowser () -> getLoadSensor () -> watchList () .append (phongShader     -> parts ());
-			getBrowser () -> getLoadSensor () -> watchList () .append (shadowShader    -> parts ());
+			gouraudShader -> isValid () .addInterest (&X3DShadersContext::set_gouraud_shader_valid, this);
+			phongShader   -> isValid () .addInterest (&X3DShadersContext::set_phong_shader_valid,   this);
+			shadowShader  -> isValid () .addInterest (&X3DShadersContext::set_shadow_shader_valid,  this);
 		}
 		else
 		{
@@ -128,7 +127,6 @@ X3DShadersContext::initialize ()
 
 		// Shading
 
-		getBrowser () -> getLoadSensor () -> isLoaded ()       .addInterest (&X3DShadersContext::set_loaded,  this);
 		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (&X3DShadersContext::set_shading, this);
 
 		set_shading ();
@@ -156,24 +154,51 @@ X3DShadersContext::createShader (const std::string & name, const MFString & vert
 	shader -> parts () .emplace_back (vertexPart);
 	shader -> parts () .emplace_back (fragmentPart);
 
-	getBrowser () -> getLoadSensor () -> watchList () .emplace_back (vertexPart);
-	getBrowser () -> getLoadSensor () -> watchList () .emplace_back (fragmentPart);
-
 	return shader;
 }
 
 void
-X3DShadersContext::set_loaded ()
+X3DShadersContext::set_gouraud_shader_valid ()
 {
-	getBrowser () -> getLoadSensor () -> isLoaded () .removeInterest (&X3DShadersContext::set_loaded,  this);
+	gouraudShader -> isValid () .removeInterest (&X3DShadersContext::set_gouraud_shader_valid, this);
 
-	if (not phongShader -> isValid ())
-		phongShader = gouraudShader;
+	if (gouraudShader -> isValid ())
+		return;
 
-	if (not shadowShader -> isValid ())
-		shadowShader = gouraudShader;
+	getBrowser () -> getConsole () -> warn ("*** Warning: Disabling multi-texuring, as it might not work.\n\n");
+
+	multiTexturing = false;
+
+	gouraudShader -> parts () [0] -> getField ("url") -> addEvent ();
+	gouraudShader -> parts () [1] -> getField ("url") -> addEvent ();
+}
+
+void
+X3DShadersContext::set_phong_shader_valid ()
+{
+	phongShader -> isValid () .removeInterest (&X3DShadersContext::set_phong_shader_valid, this);
+
+	if (phongShader -> isValid ())
+		return;
+
+	getBrowser () -> getConsole () -> warn ("*** Warning: Phong shading not possible, using Gouraud shading.\n\n");
+
+	phongShader = gouraudShader;
 
 	set_shading ();
+}
+
+void
+X3DShadersContext::set_shadow_shader_valid ()
+{
+	shadowShader -> isValid () .removeInterest (&X3DShadersContext::set_shadow_shader_valid, this);
+
+	if (shadowShader -> isValid ())
+		return;
+
+	getBrowser () -> getConsole () -> warn ("*** Warning: Shadow shading not possible, using Gouraud shading.\n\n");
+
+	shadowShader = gouraudShader;
 }
 
 void

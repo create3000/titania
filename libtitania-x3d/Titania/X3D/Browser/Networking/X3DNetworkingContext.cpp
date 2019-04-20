@@ -69,7 +69,6 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
 	         userAgent (),
 	      privateScene (new Scene (getBrowser ())),
-	        loadSensor (new LoadSensor (getExecutionContext ())),
 	downloadMutexIndex (0),
 	   downloadMutexes ({ std::make_shared <std::mutex> () }),
 	     downloadMutex (),
@@ -81,7 +80,6 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	      monitorFiles (false)
 {
 	addChildObjects (privateScene,
-	                 loadSensor,
 	                 loadingTotal,
 	                 loadCount,
 	                 loadUrlObjects,
@@ -96,7 +94,6 @@ X3DNetworkingContext::initialize ()
 
 	privateScene -> setPrivate (true);
 	privateScene -> setup ();
-	loadSensor   -> setup ();
 
 	downloadMutexes .resize (DOWNLOAD_THREADS_MAX);
 

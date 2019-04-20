@@ -159,10 +159,6 @@ protected:
 	getPrivateScene () const
 	{ return privateScene; }
 
-	const X3DPtr <LoadSensor> &
-	getLoadSensor () const
-	{ return loadSensor; }
-
 	const std::shared_ptr <std::mutex> &
 	getDownloadMutex ();
 
@@ -185,9 +181,7 @@ private:
 
 	std::string userAgent;
 
-	X3DScenePtr         privateScene;
-	X3DPtr <LoadSensor> loadSensor;
-
+	X3DScenePtr                               privateScene;
 	size_t                                    downloadMutexIndex;
 	std::deque <std::shared_ptr <std::mutex>> downloadMutexes;
 	std::mutex                                downloadMutex;

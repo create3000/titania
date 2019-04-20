@@ -72,8 +72,6 @@ X3DEnvironmentalEffectsContext::initialize ()
 	if (getBrowser () -> getSharedContext ())
 	{
 		backgroundSphereShader = getBrowser () -> getSharedContext () -> getBackgroundSphereShader ();
-
-		getBrowser () -> getLoadSensor () -> watchList () .append (backgroundSphereShader -> parts ());
 	}
 	else
 	{

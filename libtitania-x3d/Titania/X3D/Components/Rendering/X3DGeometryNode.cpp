@@ -1050,6 +1050,9 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		const auto browser    = context -> getBrowser ();
 		const auto shaderNode = context -> getShader ();
 
+		if (not shaderNode -> isValid ())
+			return;
+
 		// Upload normals or flat normals.
 		set_shading (browser -> getBrowserOptions () -> getShading ());
 
@@ -1156,7 +1159,7 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		const auto browser    = context -> getBrowser ();
 		const auto shaderNode = context -> getShader ();
 
-		if (not shaderNode)
+		if (not shaderNode -> isValid ())
 			return;
 
 		// Upload normals or flat normals.

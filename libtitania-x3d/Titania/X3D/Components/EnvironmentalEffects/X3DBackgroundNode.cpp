@@ -457,6 +457,9 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 	const auto   browser    = renderObject -> getBrowser ();
 	const auto & shaderNode = browser -> getBackgroundSphereShader ();
 
+	if (not shaderNode -> isValid ())
+		return;
+
 	// Draw
 
 	glDisable (GL_DEPTH_TEST);
@@ -514,6 +517,9 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 {
 	const auto   browser    = renderObject -> getBrowser ();
 	const auto & shaderNode = browser -> getGouraudShader ();
+
+	if (not shaderNode -> isValid ())
+		return;
 
 	// GL
 

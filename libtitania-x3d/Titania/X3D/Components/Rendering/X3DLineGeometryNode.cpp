@@ -122,9 +122,12 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
 	try
 	{
-		const auto browser       = context -> getBrowser ();
-		const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
-		auto       shaderNode    = context -> getShader ();
+		const auto browser      = context -> getBrowser ();
+		const bool pointShading = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
+		auto       shaderNode   = context -> getShader ();
+
+		if (not shaderNode -> isValid ())
+			return;
 	
 		if (shaderNode == browser -> getDefaultShader ())
 			shaderNode = getShaderNode (browser);
@@ -191,7 +194,7 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
 		auto       shaderNode    = context -> getShader ();
 	
-		if (not shaderNode)
+		if (not shaderNode -> isValid ())
 			return;
 	
 		if (shaderNode == browser -> getDefaultShader ())
