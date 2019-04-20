@@ -1035,6 +1035,7 @@
     <None Include="share\titania\linetype\15.png" />
     <None Include="share\titania\linetype\16.png" />
     <None Include="Titania\X3D\Browser\Shape\Linetype.xcf" />
+    <None Include="Titania\X3D\Browser\Shaders\ShaderTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1722,6 +1723,7 @@
     <Compile Include="Titania\X3D\Browser\Layout\ScreenText.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\X3DTextGeometry.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\PolygonText.cpp" />
+    <Compile Include="Titania\X3D\Browser\Shaders\ShaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -204,6 +204,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.lo \
 	Titania/X3D/Browser/Selection.lo \
 	Titania/X3D/Browser/Shaders/Shader.lo \
+	Titania/X3D/Browser/Shaders/ShaderTest.lo \
 	Titania/X3D/Browser/Shaders/X3DShadersContext.lo \
 	Titania/X3D/Browser/Shape/X3DShapeContext.lo \
 	Titania/X3D/Browser/Sound/MediaStream.lo \
@@ -899,6 +900,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DRenderingContext.Plo \
 	Titania/X3D/Browser/Scripting/$(DEPDIR)/X3DScriptingContext.Plo \
 	Titania/X3D/Browser/Shaders/$(DEPDIR)/Shader.Plo \
+	Titania/X3D/Browser/Shaders/$(DEPDIR)/ShaderTest.Plo \
 	Titania/X3D/Browser/Shaders/$(DEPDIR)/X3DShadersContext.Plo \
 	Titania/X3D/Browser/Shape/$(DEPDIR)/X3DShapeContext.Plo \
 	Titania/X3D/Browser/Sound/$(DEPDIR)/MediaStream.Plo \
@@ -1821,6 +1823,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Shaders/Shader.cpp \
+	Titania/X3D/Browser/Shaders/ShaderTest.cpp \
 	Titania/X3D/Browser/Shaders/X3DShadersContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Sound/MediaStream.cpp \
@@ -2866,6 +2869,9 @@ Titania/X3D/Browser/Shaders/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Shaders/$(DEPDIR)
 	@: > Titania/X3D/Browser/Shaders/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Shaders/Shader.lo:  \
+	Titania/X3D/Browser/Shaders/$(am__dirstamp) \
+	Titania/X3D/Browser/Shaders/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Shaders/ShaderTest.lo:  \
 	Titania/X3D/Browser/Shaders/$(am__dirstamp) \
 	Titania/X3D/Browser/Shaders/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Shaders/X3DShadersContext.lo:  \
@@ -5539,6 +5545,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DRenderingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Scripting/$(DEPDIR)/X3DScriptingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Shaders/$(DEPDIR)/Shader.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Shaders/$(DEPDIR)/ShaderTest.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Shaders/$(DEPDIR)/X3DShadersContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Shape/$(DEPDIR)/X3DShapeContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Sound/$(DEPDIR)/MediaStream.Plo@am__quote@ # am--include-marker
@@ -6761,6 +6768,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DRenderingContext.Plo
 	-rm -f Titania/X3D/Browser/Scripting/$(DEPDIR)/X3DScriptingContext.Plo
 	-rm -f Titania/X3D/Browser/Shaders/$(DEPDIR)/Shader.Plo
+	-rm -f Titania/X3D/Browser/Shaders/$(DEPDIR)/ShaderTest.Plo
 	-rm -f Titania/X3D/Browser/Shaders/$(DEPDIR)/X3DShadersContext.Plo
 	-rm -f Titania/X3D/Browser/Shape/$(DEPDIR)/X3DShapeContext.Plo
 	-rm -f Titania/X3D/Browser/Sound/$(DEPDIR)/MediaStream.Plo
@@ -7492,6 +7500,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DRenderingContext.Plo
 	-rm -f Titania/X3D/Browser/Scripting/$(DEPDIR)/X3DScriptingContext.Plo
 	-rm -f Titania/X3D/Browser/Shaders/$(DEPDIR)/Shader.Plo
+	-rm -f Titania/X3D/Browser/Shaders/$(DEPDIR)/ShaderTest.Plo
 	-rm -f Titania/X3D/Browser/Shaders/$(DEPDIR)/X3DShadersContext.Plo
 	-rm -f Titania/X3D/Browser/Shape/$(DEPDIR)/X3DShapeContext.Plo
 	-rm -f Titania/X3D/Browser/Sound/$(DEPDIR)/MediaStream.Plo

@@ -50,13 +50,14 @@
 
 #include "X3DShadersContext.h"
 
+#include "../../Browser/Core/BrowserOptions.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/Shaders/ShaderTest.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Networking/LoadSensor.h"
 #include "../../Components/Shaders/ComposedShader.h"
 #include "../../Components/Shaders/ShaderPart.h"
 #include "../../Rendering/OpenGL.h"
-#include "../Core/BrowserOptions.h"
-#include "../Networking/config.h"
-#include "../X3DBrowser.h"
 
 #include <regex>
 
@@ -111,10 +112,6 @@ X3DShadersContext::initialize ()
 			gouraudShader   = getBrowser () -> getSharedContext () -> getGouraudShader ();
 			phongShader     = getBrowser () -> getSharedContext () -> getPhongShader ();
 			shadowShader    = getBrowser () -> getSharedContext () -> getShadowShader ();
-
-			gouraudShader -> isValid () .addInterest (&X3DShadersContext::set_gouraud_shader_valid, this);
-			phongShader   -> isValid () .addInterest (&X3DShadersContext::set_phong_shader_valid,   this);
-			shadowShader  -> isValid () .addInterest (&X3DShadersContext::set_shadow_shader_valid,  this);
 		}
 		else
 		{
@@ -123,6 +120,10 @@ X3DShadersContext::initialize ()
 			gouraudShader   = createShader ("TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
 			phongShader     = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
 			shadowShader    = createShader ("TitaniaShadow",    { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () }, true);
+
+			gouraudShader -> isValid () .addInterest (&X3DShadersContext::set_gouraud_shader_valid, this);
+			phongShader   -> isValid () .addInterest (&X3DShadersContext::set_phong_shader_valid,   this);
+			shadowShader  -> isValid () .addInterest (&X3DShadersContext::set_shadow_shader_valid,  this);
 		}
 
 		// Shading
@@ -162,7 +163,7 @@ X3DShadersContext::set_gouraud_shader_valid ()
 {
 	gouraudShader -> isValid () .removeInterest (&X3DShadersContext::set_gouraud_shader_valid, this);
 
-	if (gouraudShader -> isValid ())
+	if (gouraudShader -> isValid () and ShaderTest::verify (getBrowser (), gouraudShader))
 		return;
 
 	getBrowser () -> getConsole () -> warn ("*** Warning: Disabling multi-texuring, as it might not work.\n\n");
@@ -178,7 +179,7 @@ X3DShadersContext::set_phong_shader_valid ()
 {
 	phongShader -> isValid () .removeInterest (&X3DShadersContext::set_phong_shader_valid, this);
 
-	if (phongShader -> isValid ())
+	if (phongShader -> isValid () and ShaderTest::verify (getBrowser (), phongShader))
 		return;
 
 	getBrowser () -> getConsole () -> warn ("*** Warning: Phong shading not possible, using Gouraud shading.\n\n");
@@ -193,7 +194,7 @@ X3DShadersContext::set_shadow_shader_valid ()
 {
 	shadowShader -> isValid () .removeInterest (&X3DShadersContext::set_shadow_shader_valid, this);
 
-	if (shadowShader -> isValid ())
+	if (shadowShader -> isValid () and ShaderTest::verify (getBrowser (), shadowShader))
 		return;
 
 	getBrowser () -> getConsole () -> warn ("*** Warning: Shadow shading not possible, using Gouraud shading.\n\n");

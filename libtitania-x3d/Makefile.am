@@ -79,6 +79,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Shaders/Shader.cpp \
+	Titania/X3D/Browser/Shaders/ShaderTest.cpp \
 	Titania/X3D/Browser/Shaders/X3DShadersContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Sound/MediaStream.cpp \
