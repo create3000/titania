@@ -82,6 +82,7 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 
 	FrameBuffer frameBuffer (browser, 16, 16, 0);
 
+	frameBuffer .setup ();
 	frameBuffer .bind ();
 
    GLuint normalBufferId = 0;
