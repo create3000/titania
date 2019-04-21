@@ -80,29 +80,35 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 		 2, -2, 0,
 	};
 
+	FrameBuffer frameBuffer (browser, 16, 16, 0);
+
+	frameBuffer .bind ();
+
    GLuint normalBufferId = 0;
    GLuint vertexBufferId = 0;
 	
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
 
-	FrameBuffer frameBuffer (browser, 16, 16, 0);
-
-	frameBuffer .bind ();
-	shaderNode  -> enable ();
-	glViewport (0, 0, 16, 16);
-
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (double) * vertices .size (), vertices .data (), GL_STATIC_COPY);
 	glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (float) * normals .size (), normals .data (), GL_STATIC_COPY);
 
-	// Set clip planes and lights to none.
+	shaderNode -> enable ();
 	shaderNode -> setClipPlanes (browser, { });
 
-	glUniform1i (shaderNode -> getFogTypeUniformLocation (),       0);
-	glUniform1i (shaderNode -> getColorMaterialUniformLocation (), false);
-	glUniform1i (shaderNode -> getLightingUniformLocation (),      true);
+	glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, camera <float>::ortho (-1, 1, -1, 1, -1, 1) .front () .data ());
+	glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f () .front () .data ());
+	glUniformMatrix3fv (shaderNode -> getNormalMatrixUniformLocation (),     1, false, Matrix3f () .front () .data ());
+
+	glUniform1i (shaderNode -> getFogTypeUniformLocation (),               0);
+	glUniform1i (shaderNode -> getFillPropertiesFilledUniformLocation (),  true);
+	glUniform1i (shaderNode -> getFillPropertiesHatchedUniformLocation (), false);
+	glUniform1i (shaderNode -> getColorMaterialUniformLocation (),         false);
+	glUniform1i (shaderNode -> getLightingUniformLocation (),              true);
+	glUniform1i (shaderNode -> getNumLightsUniformLocation (),             0);
+	glUniform1i (shaderNode -> getNumTexturesUniformLocation (),           0);
 
 	glUniform1i (shaderNode -> getSeparateBackColorUniformLocation (), false);
 	glUniform1f (shaderNode -> getAmbientIntensityUniformLocation (),  0);
@@ -112,14 +118,10 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 	glUniform1f (shaderNode -> getShininessUniformLocation (),         0);
 	glUniform1f (shaderNode -> getTransparencyUniformLocation (),      0);
 
-	glUniform1i (shaderNode -> getNumTexturesUniformLocation (),           0);
-	glUniform1i (shaderNode -> getFillPropertiesFilledUniformLocation (),  true);
-	glUniform1i (shaderNode -> getFillPropertiesHatchedUniformLocation (), false);
+	glClearColor (0, 0, 0, 0);
+	glClear (GL_COLOR_BUFFER_BIT);
 
-	glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, camera <float>::ortho (-1, 1, -1, 1, -1, 1) .front () .data ());
-	glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f () .front () .data ());
-	glUniformMatrix3fv (shaderNode -> getNormalMatrixUniformLocation (),     1, false, Matrix3f () .front () .data ());
-
+	glDisable (GL_DEPTH_TEST);
 	glDisable (GL_BLEND);
 	glFrontFace (GL_CCW);
 	glEnable (GL_CULL_FACE);
@@ -130,9 +132,6 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 
 	glDrawArrays (GL_TRIANGLES, 0, 6);
 
-	frameBuffer .readPixels ();
-	frameBuffer .unbind ();
-
 	shaderNode -> disableNormalAttrib ();
 	shaderNode -> disableVertexAttrib ();
 	shaderNode -> disable ();
@@ -140,8 +139,10 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 	glDeleteBuffers (1, &normalBufferId);
 	glDeleteBuffers (1, &vertexBufferId);
 
-	const auto & data = frameBuffer .getPixels ();
-	
+	const auto & data = frameBuffer .readPixels ();
+
+	frameBuffer .unbind ();
+
 //	for (const auto p : data)
 //		std::clog << int (p) << " ";
 //	std::clog << std::endl;

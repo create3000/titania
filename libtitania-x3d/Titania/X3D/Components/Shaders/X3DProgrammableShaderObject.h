@@ -158,6 +158,10 @@ public:
 	///  @name Uniform location access lighting
 
 	GLint
+	getNumLightsUniformLocation () const
+	{ return x3d_NumLights; }
+
+	GLint
 	getLightingUniformLocation () const
 	{ return x3d_Lighting; }
 

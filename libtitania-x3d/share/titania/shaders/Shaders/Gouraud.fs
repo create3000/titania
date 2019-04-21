@@ -56,7 +56,7 @@ main ()
 		}
 	}
 
-	finalColor        = getHatchColor (finalColor);
+	finalColor         = getHatchColor (finalColor);
 	x3d_FragColor .rgb = getFogColor (finalColor .rgb);
 	x3d_FragColor .a   = finalColor .a;
 

@@ -648,12 +648,6 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
 
-	// Setup projection matrix
-	// for fixed pipeline, background, particle systems.
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .front () .data ());
-	glMatrixMode (GL_MODELVIEW);
-
 	// Draw background.
 
 	glClear (GL_DEPTH_BUFFER_BIT);
