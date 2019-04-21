@@ -137,6 +137,7 @@ main ()
 
 	if (x3d_Lighting)
 	{
+
 		frontColor = getMaterialColor (normal, vertex, x3d_FrontMaterial);
 
 		x3d_MaterialParameters backMaterial = x3d_FrontMaterial;

@@ -985,16 +985,9 @@
     <None Include="Titania\X3D\Browser\Picking\PickingHierarchyGuard.h" />
     <None Include="Titania\X3D\Browser\Picking\VolumePicker.h" />
     <None Include="Titania\X3D\Browser\Picking\MatchCriterionType.h" />
-    <None Include="share\titania\shaders\Shaders\Include\Shadow.h" />
-    <None Include="share\titania\shaders\Shaders\Include\Pack.h" />
-    <None Include="share\titania\shaders\Shaders\Include\Perlin.h" />
-    <None Include="share\titania\shaders\Shaders\Include\Texture.h" />
-    <None Include="share\titania\shaders\Shaders\Include\Fog.h" />
-    <None Include="share\titania\shaders\Shaders\Include\ClipPlanes.h" />
     <None Include="Titania\X3D\Browser\Layout\ScreenText.h" />
     <None Include="Titania\X3D\Browser\Text\X3DTextGeometry.h" />
     <None Include="Titania\X3D\Browser\Text\PolygonText.h" />
-    <None Include="share\titania\shaders\Shaders\Include\Hatch.h" />
     <None Include="share\titania\tools\library\LineRoundedRectangle.x3dv" />
     <None Include="share\titania\hatching\0.png" />
     <None Include="share\titania\hatching\1.png" />
@@ -1036,6 +1029,13 @@
     <None Include="share\titania\linetype\16.png" />
     <None Include="Titania\X3D\Browser\Shape\Linetype.xcf" />
     <None Include="Titania\X3D\Browser\Shaders\ShaderTest.h" />
+    <None Include="share\titania\shaders\Shaders\includes\Shadow.h" />
+    <None Include="share\titania\shaders\Shaders\includes\Pack.h" />
+    <None Include="share\titania\shaders\Shaders\includes\Perlin.h" />
+    <None Include="share\titania\shaders\Shaders\includes\Texture.h" />
+    <None Include="share\titania\shaders\Shaders\includes\Fog.h" />
+    <None Include="share\titania\shaders\Shaders\includes\ClipPlanes.h" />
+    <None Include="share\titania\shaders\Shaders\includes\Hatch.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1832,9 +1832,9 @@
     <Folder Include="Titania\X3D\Browser\NURBS\" />
     <Folder Include="Titania\X3D\Tools\H-Anim\" />
     <Folder Include="Titania\X3D\Browser\Picking\" />
-    <Folder Include="share\titania\shaders\Shaders\Include\" />
     <Folder Include="share\titania\hatching\" />
     <Folder Include="share\titania\linetype\" />
+    <Folder Include="share\titania\shaders\Shaders\includes\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

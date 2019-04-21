@@ -25,10 +25,10 @@ in float depth;
 
 out vec4 x3d_FragColor;
 
-#pragma X3D include "Include/Texture.h"
-#pragma X3D include "Include/Hatch.h"
-#pragma X3D include "Include/Fog.h"
-#pragma X3D include "Include/ClipPlanes.h"
+#pragma X3D include "includes/Texture.h"
+#pragma X3D include "includes/Hatch.h"
+#pragma X3D include "includes/Fog.h"
+#pragma X3D include "includes/ClipPlanes.h"
 
 void
 main ()
@@ -56,7 +56,7 @@ main ()
 		}
 	}
 
-	finalColor         = getHatchColor (finalColor);
+	finalColor        = getHatchColor (finalColor);
 	x3d_FragColor .rgb = getFogColor (finalColor .rgb);
 	x3d_FragColor .a   = finalColor .a;
 
