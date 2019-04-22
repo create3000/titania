@@ -1,4 +1,3 @@
-#version 300 es
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
 precision mediump float;
@@ -11,15 +10,15 @@ uniform mat4 x3d_TextureMatrix [1];
 
 uniform bool x3d_ColorMaterial;
 
-in vec4 x3d_Vertex;
-in vec3 x3d_Normal;
-in vec4 x3d_TexCoord0;
-in vec4 x3d_Color;
+attribute vec4 x3d_Vertex;
+attribute vec3 x3d_Normal;
+attribute vec4 x3d_TexCoord0;
+attribute vec4 x3d_Color;
 
-out vec3 vertex;
-out vec3 normal;
-out vec4 texCoord;
-out vec4 color;
+varying vec3 vertex;
+varying vec3 normal;
+varying vec4 texCoord;
+varying vec4 color;
 
 void
 main ()

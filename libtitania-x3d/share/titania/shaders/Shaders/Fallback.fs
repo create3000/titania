@@ -1,4 +1,3 @@
-#version 300 es
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
 precision mediump float;
@@ -11,17 +10,15 @@ uniform x3d_MaterialParameters x3d_FrontMaterial;
 uniform int       x3d_NumTextures;
 uniform sampler2D x3d_Texture2D [1];
 
-in vec3 vertex;
-in vec3 normal;
-in vec4 texCoord;
-in vec4 color;
-
-out vec4 x3d_FragColor;
+varying vec3 vertex;
+varying vec3 normal;
+varying vec4 texCoord;
+varying vec4 color;
 
 void
 main ()
 {
-	vec4  textureColor = x3d_NumTextures > 0 ? texture (x3d_Texture2D [0], texCoord .st) : vec4 (1.0);
+	vec4  textureColor = x3d_NumTextures > 0 ? texture2D (x3d_Texture2D [0], texCoord .st) : vec4 (1.0);
 	vec3  finalColor   = vec3 (0.0);
 	float alpha        = 1.0;
 	
@@ -50,5 +47,5 @@ main ()
 		alpha      = textureColor .a * color .a;
 	}
 
-	x3d_FragColor = vec4 (finalColor, alpha);
+	gl_FragColor = vec4 (finalColor, alpha);
 }
