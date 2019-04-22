@@ -1029,13 +1029,13 @@
     <None Include="share\titania\linetype\16.png" />
     <None Include="Titania\X3D\Browser\Shape\Linetype.xcf" />
     <None Include="Titania\X3D\Browser\Shaders\ShaderTest.h" />
-    <None Include="share\titania\shaders\Shaders\includes\Shadow.h" />
-    <None Include="share\titania\shaders\Shaders\includes\Pack.h" />
-    <None Include="share\titania\shaders\Shaders\includes\Perlin.h" />
-    <None Include="share\titania\shaders\Shaders\includes\Texture.h" />
-    <None Include="share\titania\shaders\Shaders\includes\Fog.h" />
-    <None Include="share\titania\shaders\Shaders\includes\ClipPlanes.h" />
-    <None Include="share\titania\shaders\Shaders\includes\Hatch.h" />
+    <None Include="share\titania\shaders\Shaders\include\Shadow.h" />
+    <None Include="share\titania\shaders\Shaders\include\Pack.h" />
+    <None Include="share\titania\shaders\Shaders\include\Perlin.h" />
+    <None Include="share\titania\shaders\Shaders\include\Texture.h" />
+    <None Include="share\titania\shaders\Shaders\include\Fog.h" />
+    <None Include="share\titania\shaders\Shaders\include\ClipPlanes.h" />
+    <None Include="share\titania\shaders\Shaders\include\Hatch.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1834,7 +1834,7 @@
     <Folder Include="Titania\X3D\Browser\Picking\" />
     <Folder Include="share\titania\hatching\" />
     <Folder Include="share\titania\linetype\" />
-    <Folder Include="share\titania\shaders\Shaders\includes\" />
+    <Folder Include="share\titania\shaders\Shaders\include\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
