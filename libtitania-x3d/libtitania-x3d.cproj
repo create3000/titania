@@ -1036,6 +1036,8 @@
     <None Include="share\titania\shaders\Shaders\include\Fog.h" />
     <None Include="share\titania\shaders\Shaders\include\ClipPlanes.h" />
     <None Include="share\titania\shaders\Shaders\include\Hatch.h" />
+    <None Include="share\titania\shaders\Shaders\Fallback.fs" />
+    <None Include="share\titania\shaders\Shaders\Fallback.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

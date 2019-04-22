@@ -158,6 +158,9 @@ private:
 	set_gouraud_shader_valid ();
 
 	void
+	set_fallback_shader_valid ();
+
+	void
 	set_phong_shader_valid ();
 
 	void

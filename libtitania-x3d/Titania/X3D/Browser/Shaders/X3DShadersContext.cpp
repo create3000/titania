@@ -168,10 +168,26 @@ X3DShadersContext::set_gouraud_shader_valid ()
 
 	getBrowser () -> getConsole () -> warn ("*** Warning: Disabling multi-texuring, as it might not work.\n\n");
 
+	gouraudShader -> isValid () .addInterest (&X3DShadersContext::set_fallback_shader_valid, this);
+
 	multiTexturing = false;
 
 	gouraudShader -> parts () [0] -> getField ("url") -> addEvent ();
 	gouraudShader -> parts () [1] -> getField ("url") -> addEvent ();
+}
+
+void
+X3DShadersContext::set_fallback_shader_valid ()
+{
+	gouraudShader -> isValid () .removeInterest (&X3DShadersContext::set_fallback_shader_valid, this);
+
+	if (gouraudShader -> isValid () and ShaderTest::verify (getBrowser (), gouraudShader))
+		return;
+
+	getBrowser () -> getConsole () -> warn ("*** Warning: Shaders do not work, using fallback shader.\n\n");
+
+	gouraudShader -> parts () [0] -> setField <MFString> ("url", MFString ({ get_shader ("Shaders/Fallback.vs") .str () }));
+	gouraudShader -> parts () [1] -> setField <MFString> ("url", MFString ({ get_shader ("Shaders/Fallback.fs") .str () }));
 }
 
 void
