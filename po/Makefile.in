@@ -28,7 +28,7 @@ top_srcdir = ..
 top_builddir = ..
 
 
-prefix = /home/holger/Projekte/Titania/debian/titania/usr
+prefix = /usr/local
 exec_prefix = ${prefix}
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
