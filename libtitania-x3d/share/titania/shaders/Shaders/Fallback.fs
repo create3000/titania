@@ -16,9 +16,8 @@ varying vec4 color;
 void
 main ()
 {
-	vec4  textureColor = x3d_NumTextures > 0 ? texture2D (x3d_Texture2D [0], texCoord .st) : vec4 (1.0);
-	vec3  finalColor   = vec3 (0.0);
-	float alpha        = 1.0;
+	vec4 textureColor = x3d_NumTextures > 0 ? texture2D (x3d_Texture2D [0], texCoord .st) : vec4 (1.0);
+	vec4 finalColor   = vec4 (0.0);
 
 	if (x3d_Lighting)
 	{
@@ -34,16 +33,15 @@ main ()
 		float specularFactor = bool (x3d_FrontMaterial .shininess) ? pow (max (dot (N, H), 0.0), x3d_FrontMaterial .shininess * 128.0) : 1.0;
 		vec3  specularTerm   = x3d_FrontMaterial .specularColor * specularFactor;
 
-		finalColor += diffuseTerm + specularTerm;
-		finalColor += x3d_FrontMaterial .emissiveColor;
+		finalColor .rgb += diffuseTerm + specularTerm;
+		finalColor .rgb += x3d_FrontMaterial .emissiveColor;
 
-		alpha = textureColor .a * color .a * (1.0 - x3d_FrontMaterial .transparency);
+		finalColor .a = textureColor .a * color .a * (1.0 - x3d_FrontMaterial .transparency);
 	}
 	else
 	{
-		finalColor = textureColor .rgb * color .rgb;
-		alpha      = textureColor .a * color .a;
+		finalColor = textureColor * color;
 	}
 
-	gl_FragColor = vec4 (finalColor, alpha);
+	gl_FragColor = finalColor;
 }

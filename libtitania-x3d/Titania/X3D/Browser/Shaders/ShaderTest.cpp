@@ -87,7 +87,7 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 
 	GLuint normalBufferId = 0;
 	GLuint vertexBufferId = 0;
-	
+
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
 

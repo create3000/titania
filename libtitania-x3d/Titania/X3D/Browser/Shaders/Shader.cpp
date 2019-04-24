@@ -361,9 +361,11 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	// Combine
 
-	definitions << "#line " << (numLines - 1)  << "\n";
+	definitions << "#line " << std::max <int32_t> (0, numLines - 1)  << "\n";
 
-	return version + constants .str () + begin + definitions .str () + source .substr (version .size () + begin .size ());
+	const auto shader = version + constants .str () + begin + definitions .str () + source .substr (version .size () + begin .size ());
+
+	return shader;
 }
 
 void
@@ -380,7 +382,7 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
                             const std::string & typeName,
                             const std::string & name,
                             const std::string & type,
-                            const GLint shaderId, 
+                            const GLint shaderId,
                             const std::vector <basic::uri> & sources)
 {
 	if (not shaderId)
@@ -402,7 +404,7 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
 			infoLog .resize (infoLogLength - 1);
 
 		basic::uri filename;
-	
+
 		try
 		{
 			std::smatch match;
