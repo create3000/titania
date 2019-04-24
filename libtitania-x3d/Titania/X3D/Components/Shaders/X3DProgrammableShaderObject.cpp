@@ -314,6 +314,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 		x3d_TextureCoordinateGeneratorMode      .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ()));
 		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
+
+		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ()));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
@@ -321,9 +323,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ModelViewMatrix   = glGetUniformLocation (program, "x3d_ModelViewMatrix");
 	x3d_NormalMatrix      = glGetUniformLocation (program, "x3d_NormalMatrix");
 	x3d_CameraSpaceMatrix = glGetUniformLocation (program, "x3d_CameraSpaceMatrix");
-
-	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ()));
 
 	x3d_FogDepth = glGetAttribLocation (program, "x3d_FogDepth");
 	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
