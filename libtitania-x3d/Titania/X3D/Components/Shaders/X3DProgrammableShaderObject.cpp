@@ -316,6 +316,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
 
 		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ()));
+		x3d_TexCoord      .emplace_back (getAttribLocation (program, "x3d_TexCoord" + is, i ? "" : "x3d_TexCoord"));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
@@ -328,9 +329,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
 	x3d_Normal   = glGetAttribLocation (program, "x3d_Normal");
 	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
-
-	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
-		x3d_TexCoord .emplace_back (getAttribLocation (program, "x3d_TexCoord" + basic::to_string (i, std::locale::classic ()), i ? "" : "x3d_TexCoord"));
 
 	x3d_ParticleId          = glGetUniformLocation (program, "x3d_Particle.id");
 	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
