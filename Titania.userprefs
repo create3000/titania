@@ -1,13 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shaders/X3DShaderNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/run.pl">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.h" Line="161" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.cpp" Line="188" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="66" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/ShaderTest.cpp" Line="151" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/ShaderTest.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DShaderNode.cpp" Line="1" Column="1" />
+      <File FileName="Titania/run.pl" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

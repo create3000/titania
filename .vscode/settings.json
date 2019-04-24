@@ -1,5 +1,6 @@
 {
     "files.exclude": {
+        ".vscode/ipch": true,
         "**/.bzr": true,
         "**/.deps": true,
         "**/.dirstamp": true,
