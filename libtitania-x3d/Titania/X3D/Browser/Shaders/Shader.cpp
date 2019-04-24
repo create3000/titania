@@ -230,7 +230,8 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	const auto version  = hmatch .str (1);
 	const auto begin    = hmatch .str (2);
-	const auto numLines = std::count (version .begin (), version .end (), '\n') + std::count (begin .begin (), begin .end (), '\n');
+	const auto lines1   = std::count (version .begin (), version .end (), '\n');
+	const auto lines2   = std::count (begin .begin (), begin .end (), '\n');
 
 	std::ostringstream constants;
 	std::ostringstream definitions;
@@ -248,6 +249,8 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	if (browser -> getMultiTexturing ())
 		constants << "#define X3D_MULTI_TEXTURING\n";
+
+	constants << "#line " << (lines1 + 1) << std::endl;
 
 	definitions << "#define x3d_None 0\n";
 
@@ -358,10 +361,9 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 
 	definitions << types;
 	definitions << "\n";
+	definitions << "#line " << (lines1 + lines2 + 1) << std::endl;
 
 	// Combine
-
-	definitions << "#line " << std::max <int32_t> (0, numLines - 1)  << "\n";
 
 	const auto shader = version + constants .str () + begin + definitions .str () + source .substr (version .size () + begin .size ());
 
