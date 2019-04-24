@@ -366,10 +366,10 @@ X3DProgrammableShaderObject::getUniformLocation (GLuint program, const std::stri
 	if (depreciated .size ())
 	{
 		location = glGetUniformLocation (program, depreciated .c_str ());
-	
+
 		if (location not_eq -1)
 			getBrowser () -> getConsole () -> warn ("Using uniform location name »", depreciated, "« is depreciated, use »", name, "«. See http://create3000.de/x_ite/custom-shaders/.\n");
-	
+
 		return location;
 	}
 
@@ -391,10 +391,10 @@ X3DProgrammableShaderObject::getAttribLocation (GLuint program, const std::strin
 	if (depreciated .size ())
 	{
 		location = glGetAttribLocation (program, depreciated .c_str ());
-	
+
 		if (location not_eq -1)
 			getBrowser () -> getConsole () -> warn ("Using uniform attribute name »", depreciated, "« is depreciated, use »", name, "«. See http://create3000.de/x_ite/custom-shaders/.\n");
-	
+
 		return location;
 	}
 
@@ -447,21 +447,21 @@ X3DProgrammableShaderObject::removeUserDefinedField (const std::string & name)
 			case X3DConstants::SFNode:
 			{
 				const GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
-	
+
 				textures .erase (location);
 				break;
 			}
 			case X3DConstants::MFNode:
 			{
 				const auto & mfnode = *static_cast <MFNode*> (field);
-	
+
 				for (size_t i = 0, size = mfnode .size (); i < size; ++ i)
 				{
 					const auto location = glGetUniformLocation (getProgramId (), (field -> getName () + "[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ());
-	
+
 					textures .erase (location);
 				}
-	
+
 				break;
 			}
 			default:
@@ -822,7 +822,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				const auto & sfnode  = mfnode [i];
 				const auto   texture = x3d_cast <X3DTextureNode*> (sfnode);
-	
+
 				if (texture and not x3d_cast <MultiTexture*> (sfnode))
 				{
 					textures [location] = std::make_shared <TextureValue> (field -> getName (), texture -> getTarget (), texture -> getTextureId (), -1);
@@ -845,20 +845,20 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			{
 				std::vector <Matrix3d> vector;
 				vector .reserve (array -> size ());
-	
+
 				for (const auto & value : *array)
 					vector .emplace_back (value .matrix ());
-	
+
 				glUniformMatrix3dv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 			else
 			{
 				std::vector <Matrix3f> vector;
 				vector .reserve (array -> size ());
-	
+
 				for (const auto & value : *array)
 					vector .emplace_back (value .matrix ());
-	
+
 				glUniformMatrix3fv (location, vector .size (), false, vector [0] .front () .data ());
 			}
 
@@ -1092,7 +1092,7 @@ X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
 //					wireframe     = false;
 //					break;
 //				}
-//			}	
+//			}
 //
 //			break;
 //		}
@@ -1117,9 +1117,9 @@ X3DProgrammableShaderObject::hasLight (const size_t index, LightContainer* const
 	{
 		if (lightContainers [index] == lightContainer)
 			return true;
-	
+
 		lightContainers [index] = lightContainer;
-	
+
 		return false;
 	}
 	else
@@ -1232,9 +1232,9 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	if (materialNode)
 	{
 		glUniform1i (x3d_Lighting, true);
-		
+
 		// Material
-		
+
 		materialNode -> setShaderUniforms (this);
 	}
 	else
@@ -1307,7 +1307,7 @@ X3DProgrammableShaderObject::enable ()
 			getBrowser () -> getConsole () -> warn ("Warning: Not enough combined texture units for uniform variable '", object -> name, "' available.");
 			continue;
 		}
-	
+
 		const auto textureUnit = object -> textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
 
 		getBrowser () -> getCombinedTextureUnits () .pop ();

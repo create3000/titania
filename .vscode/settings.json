@@ -1,0 +1,36 @@
+{
+    "files.exclude": {
+        "**/.bzr": true,
+        "**/.deps": true,
+        "**/.dirstamp": true,
+        "**/.libs": true,
+        "**/*.la": true,
+        "**/*.lo": true,
+        "**/*.o": true,
+        "**/*~": true,
+        "**/autom4te.cache": true,
+        "**/Makefile": true,
+        "aclocal.m4": true,
+        "compile": true,
+        "config.h": true,
+        "config.log": true,
+        "config.make": true,
+        "config.status": true,
+        "Documentation/Titania": true,
+        "intltool-extract.in": true,
+        "intltool-merge.in": true,
+        "intltool-update.in": true,
+        "libtool": true,
+        "Makefile.include": true,
+        "missing": true,
+        "mkinstalldirs": true,
+        "rules.make": true,
+        "stamp-h1": true
+    },
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.watcherExclude": {
+        "**/.bzr/**": true
+    }
+}

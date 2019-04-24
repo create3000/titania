@@ -52,5 +52,5 @@ Documentation/Titania/html
 titania_*.snap
 
 .vs
-.vscode
+.vscode/ipch
 

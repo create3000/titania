@@ -1,0 +1,67 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Make",
+            "type": "shell",
+            "command": "make",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "make",
+            "args": ["run"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Configure Solution",
+            "type": "shell",
+            "command": "./autogen.sh",
+            "args": ["--enable-debug", "--enable-feature"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Make Version",
+            "type": "shell",
+            "command": "make",
+            "args": ["version"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Git Push GitHub",
+            "type": "shell",
+            "command": "git",
+            "args": ["push", "github"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Git List Untracked Files",
+            "type": "shell",
+            "command": "git",
+            "args": ["ls-files", "--others", "--exclude-standard"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Commit Library",
+            "type": "shell",
+            "command": "/home/holger/bin/git-commit-library.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "Erzeugung oder Ausführung anhalten",
+            "type": "shell",
+            "command": "killall",
+            "args": ["make"],
+            "problemMatcher": []
+        },
+    ]
+}
