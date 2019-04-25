@@ -184,7 +184,7 @@ X3DShadersContext::set_fallback_shader_valid ()
 	if (gouraudShader -> isValid () and ShaderTest::verify (getBrowser (), gouraudShader))
 		return;
 
-	getBrowser () -> getConsole () -> warn ("*** Warning: Shaders do not work, using fallback shader.\n\n");
+	getBrowser () -> getConsole () -> warn ("*** Warning: All else fails, using fallback shader.\n\n");
 
 	gouraudShader -> parts () [0] -> setField <MFString> ("url", MFString ({ get_shader ("Shaders/Fallback.vs") .str () }));
 	gouraudShader -> parts () [1] -> setField <MFString> ("url", MFString ({ get_shader ("Shaders/Fallback.fs") .str () }));
