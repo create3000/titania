@@ -1,0 +1,40 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/libtitania-ftgl",
+                "${workspaceFolder}/libtitania-sqlite",
+                "${workspaceFolder}/libtitania-standard",
+                "${workspaceFolder}/libtitania-stream",
+                "${workspaceFolder}/libtitania-x3d",
+                "/usr/include",
+                "/usr/include/atk-1.0",
+                "/usr/include/atkmm-1.6",
+                "/usr/include/cairo",
+                "/usr/include/cairomm-1.0",
+                "/usr/include/freetype2",
+                "/usr/include/giomm-2.4",
+                "/usr/include/gdkmm-3.0",
+                "/usr/include/gdk-pixbuf-2.0",
+                "/usr/include/glib-2.0",
+                "/usr/include/glibmm-2.4",
+                "/usr/include/gtk-3.0",
+                "/usr/include/gtkmm-3.0",
+                "/usr/include/ImageMagick-6",
+                "/usr/include/pango-1.0",
+                "/usr/include/pangomm-1.4",
+                "/usr/include/sigc++-2.0",
+                "/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include",
+                "/usr/lib/x86_64-linux-gnu/giomm-2.4/include",
+                "/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+                "/usr/lib/x86_64-linux-gnu/glibmm-2.4/include",
+                "/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include",
+                "/usr/include/x86_64-linux-gnu/ImageMagick-6",
+                "/usr/lib/x86_64-linux-gnu/pangomm-1.4/include",
+                "/usr/lib/x86_64-linux-gnu/sigc++-2.0/include"
+            ]
+        }
+    ]
+}
