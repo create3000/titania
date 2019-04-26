@@ -61,9 +61,8 @@ namespace spidermonkey {
 const JSClassOps ComponentInfo::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -98,7 +97,7 @@ ComponentInfo::init (JSContext* const cx, JS::HandleObject global, JS::HandleObj
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -122,12 +121,12 @@ ComponentInfo::create (JSContext* const cx, const X3D::ComponentInfoPtr & compon
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto self = new internal_type (componentInfo);
-	
+
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);

@@ -74,7 +74,7 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp);
 
 template <>
 bool
-MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result);
+MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result);
 
 template <>
 bool

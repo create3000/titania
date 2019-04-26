@@ -156,7 +156,7 @@ private:
 
 	void
 	addClasses ();
-	
+
 	void
 	addUserDefinedFields ();
 
@@ -165,15 +165,15 @@ private:
 	                X3D::X3DFieldDefinition* const field,
 	                const std::string & name,
 	                const uint32_t attrs);
-	
+
 	static
 	bool
-	setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult& result);
+	setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult& result);
 
 	static
 	bool
 	getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
-	
+
 	static
 	bool
 	getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);

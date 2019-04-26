@@ -78,9 +78,8 @@ namespace spidermonkey {
 const JSClassOps X3DBrowser::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	nullptr, // finalize
@@ -111,35 +110,35 @@ const JSPropertySpec X3DBrowser::properties [ ] = {
 const JSFunctionSpec X3DBrowser::functions [ ] = {
 	// X3D functions
 
-	JS_FS ("replaceWorld",         replaceWorld,         1, JSPROP_PERMANENT),
-	JS_FS ("createX3DFromString",  createX3DFromString,  1, JSPROP_PERMANENT),
-	JS_FS ("createX3DFromURL",     createX3DFromURL,     1, JSPROP_PERMANENT),
-	JS_FS ("loadURL",              loadURL,              2, JSPROP_PERMANENT),
-	JS_FS ("getRenderingProperty", getRenderingProperty, 1, JSPROP_PERMANENT),
-	JS_FS ("getBrowserProperty",   getBrowserProperty,   1, JSPROP_PERMANENT),
-	JS_FS ("getBrowserOption",     getBrowserOption,     1, JSPROP_PERMANENT),
-	JS_FS ("setBrowserOption",     setBrowserOption,     2, JSPROP_PERMANENT),
+	JS_FN ("replaceWorld",         replaceWorld,         1, JSPROP_PERMANENT),
+	JS_FN ("createX3DFromString",  createX3DFromString,  1, JSPROP_PERMANENT),
+	JS_FN ("createX3DFromURL",     createX3DFromURL,     1, JSPROP_PERMANENT),
+	JS_FN ("loadURL",              loadURL,              2, JSPROP_PERMANENT),
+	JS_FN ("getRenderingProperty", getRenderingProperty, 1, JSPROP_PERMANENT),
+	JS_FN ("getBrowserProperty",   getBrowserProperty,   1, JSPROP_PERMANENT),
+	JS_FN ("getBrowserOption",     getBrowserOption,     1, JSPROP_PERMANENT),
+	JS_FN ("setBrowserOption",     setBrowserOption,     2, JSPROP_PERMANENT),
 
-	JS_FS ("firstViewpoint",       firstViewpoint,       0, JSPROP_PERMANENT),
-	JS_FS ("previousViewpoint",    previousViewpoint,    0, JSPROP_PERMANENT),
-	JS_FS ("nextViewpoint",        nextViewpoint,        0, JSPROP_PERMANENT),
-	JS_FS ("lastViewpoint",        lastViewpoint,        0, JSPROP_PERMANENT),
+	JS_FN ("firstViewpoint",       firstViewpoint,       0, JSPROP_PERMANENT),
+	JS_FN ("previousViewpoint",    previousViewpoint,    0, JSPROP_PERMANENT),
+	JS_FN ("nextViewpoint",        nextViewpoint,        0, JSPROP_PERMANENT),
+	JS_FN ("lastViewpoint",        lastViewpoint,        0, JSPROP_PERMANENT),
 
-	JS_FS ("print",                print,                1, JSPROP_PERMANENT),
-	JS_FS ("println",              println,              1, JSPROP_PERMANENT),
+	JS_FN ("print",                print,                1, JSPROP_PERMANENT),
+	JS_FN ("println",              println,              1, JSPROP_PERMANENT),
 
 	// VRML functions
 
-	JS_FS ("getName",              getName,              0, JSPROP_PERMANENT),
-	JS_FS ("getVersion",           getVersion,           0, JSPROP_PERMANENT),
-	JS_FS ("getCurrentSpeed",      getCurrentSpeed,      0, JSPROP_PERMANENT),
-	JS_FS ("getCurrentFrameRate",  getCurrentFrameRate,  0, JSPROP_PERMANENT),
-	JS_FS ("getWorldURL",          getWorldURL,          0, JSPROP_PERMANENT),
-	JS_FS ("setDescription",       setDescription,       1, JSPROP_PERMANENT),
-	JS_FS ("createVrmlFromString", createVrmlFromString, 1, JSPROP_PERMANENT),
-	JS_FS ("createVrmlFromURL",    createVrmlFromURL,    3, JSPROP_PERMANENT),
-	JS_FS ("addRoute",             addRoute,             4, JSPROP_PERMANENT),
-	JS_FS ("deleteRoute",          deleteRoute,          4, JSPROP_PERMANENT),
+	JS_FN ("getName",              getName,              0, JSPROP_PERMANENT),
+	JS_FN ("getVersion",           getVersion,           0, JSPROP_PERMANENT),
+	JS_FN ("getCurrentSpeed",      getCurrentSpeed,      0, JSPROP_PERMANENT),
+	JS_FN ("getCurrentFrameRate",  getCurrentFrameRate,  0, JSPROP_PERMANENT),
+	JS_FN ("getWorldURL",          getWorldURL,          0, JSPROP_PERMANENT),
+	JS_FN ("setDescription",       setDescription,       1, JSPROP_PERMANENT),
+	JS_FN ("createVrmlFromString", createVrmlFromString, 1, JSPROP_PERMANENT),
+	JS_FN ("createVrmlFromURL",    createVrmlFromURL,    3, JSPROP_PERMANENT),
+	JS_FN ("addRoute",             addRoute,             4, JSPROP_PERMANENT),
+	JS_FN ("deleteRoute",          deleteRoute,          4, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -178,7 +177,7 @@ X3DBrowser::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .name: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 
@@ -198,7 +197,7 @@ X3DBrowser::getVersion (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .version: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 
@@ -218,7 +217,7 @@ X3DBrowser::getCurrentSpeed (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .currentSpeed: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 
@@ -238,7 +237,7 @@ X3DBrowser::getCurrentFrameRate (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .currentFrameRate: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 
@@ -258,7 +257,7 @@ X3DBrowser::setDescription (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .description: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args        = JS::CallArgsFromVp (argc, vp);
 		const auto browser     = getContext (cx) -> getBrowser ();
 		const auto description = getArgument <std::string> (cx, args, 0);
@@ -281,7 +280,7 @@ X3DBrowser::getDescription (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .description: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 
@@ -360,7 +359,7 @@ X3DBrowser::replaceWorld (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .replaceWorld: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 
@@ -391,7 +390,7 @@ X3DBrowser::createX3DFromString (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args      = JS::CallArgsFromVp (argc, vp);
 		const auto & script    = getContext (cx) -> getScriptNode ();
 		const auto   x3dSyntax = getArgument <std::string> (cx, args, 0);
@@ -414,7 +413,7 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1 and argc not_eq 3)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args    = JS::CallArgsFromVp (argc, vp);
 		const auto   context = getContext (cx);
 		const auto & script  = context -> getScriptNode ();
@@ -437,19 +436,19 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 
 				if (not node -> getValue ())
 					return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: node is NULL.", getClass () -> name);
-		
+
 				try
 				{
 					const auto field = node -> getValue () -> getField (event);
-		
+
 					if (not field -> isInput ())
 						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not an eventIn.", getClass () -> name, event .c_str ());
-		
+
 					if (field -> getType () not_eq X3D::X3DConstants::MFNode)
 						return ThrowException <JSProto_Error> (cx, "%s .prototype .createX3DFromURL: field '%s' is not a MFNode.", getClass () -> name, event .c_str ());
-		
+
 					using namespace std::placeholders;
-		
+
 					context -> addFuture (X3D::MakePtr <X3D::SceneFuture> (script -> getExecutionContext (),
 					                                                       *url,
 					                                                       false,
@@ -478,7 +477,7 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 
 			JS::RootedValue     rval (cx);
 			JS::AutoValueVector argv (cx);
-	
+
 			argv .append (X3DScene::create (cx, scene));
 			argv .append (JS::DoubleValue (script -> getCurrentTime ()));
 
@@ -506,7 +505,7 @@ X3DBrowser::loadURL (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .loadURL: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args      = JS::CallArgsFromVp (argc, vp);
 		const auto & script    = getContext (cx) -> getScriptNode ();
 		const auto   url       = getArgument <MFString> (cx, args, 0);
@@ -530,7 +529,7 @@ X3DBrowser::getRenderingProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getRenderingProperty: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 		const auto name    = getArgument <std::string> (cx, args, 0);
@@ -560,7 +559,7 @@ X3DBrowser::getBrowserProperty (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getBrowserProperty: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 		const auto name    = getArgument <std::string> (cx, args, 0);
@@ -590,7 +589,7 @@ X3DBrowser::getBrowserOption (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getBrowserOption: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 		const auto name    = getArgument <std::string> (cx, args, 0);
@@ -620,7 +619,7 @@ X3DBrowser::setBrowserOption (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setBrowserOption: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
 		const auto name    = getArgument <std::string> (cx, args, 0);
@@ -652,12 +651,12 @@ X3DBrowser::firstViewpoint (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .firstViewpoint: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
-	
+
 		browser -> firstViewpoint ();
-	
+
 		args .rval () .setUndefined ();
 		return true;
 	}
@@ -674,12 +673,12 @@ X3DBrowser::previousViewpoint (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .previousViewpoint: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
-	
+
 		browser -> previousViewpoint ();
-	
+
 		args .rval () .setUndefined ();
 		return true;
 	}
@@ -696,12 +695,12 @@ X3DBrowser::nextViewpoint (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .nextViewpoint: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
-	
+
 		browser -> nextViewpoint ();
-	
+
 		args .rval () .setUndefined ();
 		return true;
 	}
@@ -718,12 +717,12 @@ X3DBrowser::lastViewpoint (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lastViewpoint: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
-	
+
 		browser -> lastViewpoint ();
-	
+
 		args .rval () .setUndefined ();
 		return true;
 	}
@@ -740,10 +739,10 @@ X3DBrowser::print (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		const auto args    = JS::CallArgsFromVp (argc, vp);
 		const auto browser = getContext (cx) -> getBrowser ();
-	
+
 		for (uint32_t i = 0; i < argc; ++ i)
 			browser -> print (getArgument <std::string> (cx, args, i));
-	
+
 		args .rval () .setUndefined ();
 		return true;
 	}
@@ -759,11 +758,11 @@ X3DBrowser::println (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto browser = getContext (cx) -> getBrowser ();
-	
+
 		print (cx, argc, vp);
-	
+
 		browser -> println ();
-	
+
 		return true;
 	}
 	catch (const std::exception & error)
@@ -781,7 +780,7 @@ X3DBrowser::getWorldURL (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getWorldURL: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args             = JS::CallArgsFromVp (argc, vp);
 		const auto executionContext = getContext (cx) -> getExecutionContext ();
 
@@ -801,7 +800,7 @@ X3DBrowser::createVrmlFromString (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .createVrmlFromString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args       = JS::CallArgsFromVp (argc, vp);
 		const auto & script     = getContext (cx) -> getScriptNode ();
 		const auto   vrmlSyntax = getArgument <std::string> (cx, args, 0);
@@ -835,7 +834,7 @@ X3DBrowser::createVrmlFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 3)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .createVrmlFromURL: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args    = JS::CallArgsFromVp (argc, vp);
 		const auto   context = getContext (cx);
 		const auto & script  = context -> getScriptNode ();
@@ -888,7 +887,7 @@ X3DBrowser::addRoute (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 4)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .addRoute: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args         = JS::CallArgsFromVp (argc, vp);
 		const auto & script       = getContext (cx) -> getScriptNode ();
 		const auto   fromNode     = getArgument <SFNode> (cx, args, 0);
@@ -914,7 +913,7 @@ X3DBrowser::deleteRoute (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 4)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .deleteRoute: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args         = JS::CallArgsFromVp (argc, vp);
 		const auto & script       = getContext (cx) -> getScriptNode ();
 		const auto   fromNode     = getArgument <SFNode> (cx, args, 0);

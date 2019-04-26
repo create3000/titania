@@ -77,9 +77,8 @@ namespace spidermonkey {
 const JSClassOps X3DExecutionContext::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -111,23 +110,23 @@ const JSPropertySpec X3DExecutionContext::properties [ ] = {
 };
 
 const JSFunctionSpec X3DExecutionContext::functions [ ] = {
-	JS_FS ("fromUnit",           fromUnit,           2, JSPROP_PERMANENT),
-	JS_FS ("toUnit",             toUnit,             2, JSPROP_PERMANENT),
-	JS_FS ("createNode",         createNode,         1, JSPROP_PERMANENT),
-	JS_FS ("createProto",        createProto,        1, JSPROP_PERMANENT),
-	JS_FS ("addNamedNode",       addNamedNode,       2, JSPROP_PERMANENT),
-	JS_FS ("removeNamedNode",    removeNamedNode,    1, JSPROP_PERMANENT),
-	JS_FS ("updateNamedNode",    updateNamedNode,    2, JSPROP_PERMANENT),
-	JS_FS ("getNamedNode",       getNamedNode,       1, JSPROP_PERMANENT),
-	JS_FS ("addImportedNode",    addImportedNode,    2, JSPROP_PERMANENT),
-	JS_FS ("removeImportedNode", removeImportedNode, 1, JSPROP_PERMANENT),
-	JS_FS ("updateImportedNode", updateImportedNode, 2, JSPROP_PERMANENT),
-	JS_FS ("getImportedNode",    getImportedNode,    1, JSPROP_PERMANENT),
-	JS_FS ("getRootNodes",       getRootNodes,       0, JSPROP_PERMANENT),
-	JS_FS ("addRoute",           addRoute,           4, JSPROP_PERMANENT),
-	JS_FS ("deleteRoute",        deleteRoute,        1, JSPROP_PERMANENT),
-	JS_FS ("toVRMLString",       toVRMLString,       0, JSPROP_PERMANENT),
-	JS_FS ("toXMLString",        toXMLString,        0, JSPROP_PERMANENT),
+	JS_FN ("fromUnit",           fromUnit,           2, JSPROP_PERMANENT),
+	JS_FN ("toUnit",             toUnit,             2, JSPROP_PERMANENT),
+	JS_FN ("createNode",         createNode,         1, JSPROP_PERMANENT),
+	JS_FN ("createProto",        createProto,        1, JSPROP_PERMANENT),
+	JS_FN ("addNamedNode",       addNamedNode,       2, JSPROP_PERMANENT),
+	JS_FN ("removeNamedNode",    removeNamedNode,    1, JSPROP_PERMANENT),
+	JS_FN ("updateNamedNode",    updateNamedNode,    2, JSPROP_PERMANENT),
+	JS_FN ("getNamedNode",       getNamedNode,       1, JSPROP_PERMANENT),
+	JS_FN ("addImportedNode",    addImportedNode,    2, JSPROP_PERMANENT),
+	JS_FN ("removeImportedNode", removeImportedNode, 1, JSPROP_PERMANENT),
+	JS_FN ("updateImportedNode", updateImportedNode, 2, JSPROP_PERMANENT),
+	JS_FN ("getImportedNode",    getImportedNode,    1, JSPROP_PERMANENT),
+	JS_FN ("getRootNodes",       getRootNodes,       0, JSPROP_PERMANENT),
+	JS_FN ("addRoute",           addRoute,           4, JSPROP_PERMANENT),
+	JS_FN ("deleteRoute",        deleteRoute,        1, JSPROP_PERMANENT),
+	JS_FN ("toVRMLString",       toVRMLString,       0, JSPROP_PERMANENT),
+	JS_FN ("toXMLString",        toXMLString,        0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -145,7 +144,7 @@ X3DExecutionContext::init (JSContext* const cx, JS::HandleObject global, JS::Han
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -169,18 +168,18 @@ X3DExecutionContext::create (JSContext* const cx, X3D::X3DExecutionContext* cons
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto self = new internal_type (executionContext);
-	
+
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
 
 		context -> addObject (key, self, obj);
-	
+
 		return JS::ObjectValue (*obj);
 	}
 }

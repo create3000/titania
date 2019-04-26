@@ -74,14 +74,15 @@ ThrowException (JSContext* const cx, const char* format, Args && ... args)
 	{
 		JS::AutoValueVector args (cx);
 
-		args .append (StringValue (cx, message));
-
-		const auto error = JS_New (cx, constructor, args);
-
-		if (error)
+		if (args .append (StringValue (cx, message)))
 		{
-			JS_SetPendingException (cx, JS::RootedValue (cx, JS::ObjectOrNullValue (error)));
-			return false;
+			const auto error = JS_New (cx, constructor, args);
+
+			if (error)
+			{
+				JS_SetPendingException (cx, JS::RootedValue (cx, JS::ObjectOrNullValue (error)));
+				return false;
+			}
 		}
 	}
 

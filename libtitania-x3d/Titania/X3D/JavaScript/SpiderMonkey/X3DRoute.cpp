@@ -65,9 +65,8 @@ namespace spidermonkey {
 const JSClassOps X3DRoute::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -102,7 +101,7 @@ X3DRoute::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject p
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -126,18 +125,18 @@ X3DRoute::create (JSContext* const cx, const X3D::RoutePtr & route)
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto self = new internal_type (route);
-	
+
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
-	
+
 		context -> addObject (key, self, obj);
-	
+
 		return JS::ObjectValue (*obj);
 	}
 }

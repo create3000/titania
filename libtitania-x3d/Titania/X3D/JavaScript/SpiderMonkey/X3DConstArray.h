@@ -123,9 +123,8 @@ template <class ValueType, class InternalType>
 const JSClassOps X3DConstArray <ValueType, InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	resolve, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -173,12 +172,12 @@ X3DConstArray <ValueType, InternalType>::create (JSContext* const cx, const type
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto self = new internal_type (array);
-	
+
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
@@ -226,10 +225,9 @@ X3DConstArray <ValueType, InternalType>::resolve (JSContext* cx, JS::HandleObjec
 		JS_DefineProperty (cx,
 		                   obj,
 		                   basic::to_string (index, std::locale::classic ()) .c_str (),
-		                   JS::UndefinedHandleValue,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING,
 		                   JS_PROPERTYOP_GETTER (&X3DConstArray::get1Value),
-		                   nullptr);
+		                   nullptr,
+		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING);
 
 		*resolvedp = true;
 		return true;

@@ -69,8 +69,8 @@ const JSPropertySpec Globals::properties [ ] = {
 };
 
 const JSFunctionSpec Globals::functions [ ] = {
-	JS_FS ("print", Globals::print, 0, JSPROP_PERMANENT), // VRML 2.0
-	JS_FS ("trace", Globals::print, 0, JSPROP_PERMANENT), // Non standard
+	JS_FN ("print", Globals::print, 0, JSPROP_PERMANENT), // VRML 2.0
+	JS_FN ("trace", Globals::print, 0, JSPROP_PERMANENT), // Non standard
 	JS_FS_END
 };
 

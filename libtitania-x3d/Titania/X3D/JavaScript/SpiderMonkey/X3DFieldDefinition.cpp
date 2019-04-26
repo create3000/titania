@@ -63,9 +63,8 @@ namespace spidermonkey {
 const JSClassOps X3DFieldDefinition::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -99,7 +98,7 @@ X3DFieldDefinition::init (JSContext* const cx, JS::HandleObject global, JS::Hand
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -123,18 +122,18 @@ X3DFieldDefinition::create (JSContext* const cx, X3D::X3DFieldDefinition* const 
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto self = new internal_type (fieldDefinition);
-	
+
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
 
 		context -> addObject (key, self, obj);
-	
+
 		return JS::ObjectValue (*obj);
 	}
 }

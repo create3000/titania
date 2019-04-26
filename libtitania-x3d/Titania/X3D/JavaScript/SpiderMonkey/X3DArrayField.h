@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -145,7 +145,7 @@ private:
 
 	///  @name Member access
 
-	static bool set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result);
+	static bool set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result);
 	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
 
 	static bool setLength (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -316,12 +316,12 @@ private:
 		{
 			const auto value = ValueType::create (cx, new NativeArrayReference <InternalType, single_type> (array, index));
 			const auto obj   = value .toObjectOrNull ();
-	
+
 			setArray (obj, array);
 			setIndex (obj, index);
 
 			context -> addReference (array, index, obj);
-	
+
 			return value;
 		}
 	}
@@ -339,9 +339,8 @@ template <class ValueType, class InternalType>
 const JSClassOps X3DArrayFieldTemplate <ValueType, InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
-	nullptr, // enumerate, // enumerate
+	nullptr, // enumerate
+	nullptr, // newEnumerate
 	resolve, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -359,11 +358,11 @@ const JSPropertySpec X3DArrayFieldTemplate <ValueType, InternalType>::properties
 
 template <class ValueType, class InternalType>
 const JSFunctionSpec X3DArrayFieldTemplate <ValueType, InternalType>::functions [ ] = {
-	JS_FS ("pop",     pop,     0, JSPROP_PERMANENT),
-	JS_FS ("push",    push,    0, JSPROP_PERMANENT),
-	JS_FS ("shift",   shift,   0, JSPROP_PERMANENT),
-	JS_FS ("splice",  splice,  2, JSPROP_PERMANENT),
-	JS_FS ("unshift", unshift, 0, JSPROP_PERMANENT),
+	JS_FN ("pop",     pop,     0, JSPROP_PERMANENT),
+	JS_FN ("push",    push,    0, JSPROP_PERMANENT),
+	JS_FN ("shift",   shift,   0, JSPROP_PERMANENT),
+	JS_FN ("splice",  splice,  2, JSPROP_PERMANENT),
+	JS_FN ("unshift", unshift, 0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -401,7 +400,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 		{
 			const auto args  = JS::CallArgsFromVp (argc, vp);
 			const auto array = new InternalType ();
-			
+
 			for (unsigned i = 0; i < argc; ++ i)
 			{
 				array -> emplace_back (getArgument <ValueType> (cx, args, i));
@@ -456,10 +455,9 @@ X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::Han
 		JS_DefineProperty (cx,
 		                   obj,
 		                   basic::to_string (index, std::locale::classic ()) .c_str (),
-		                   JS::UndefinedHandleValue,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING,
 		                   JS_PROPERTYOP_GETTER (&X3DArrayFieldTemplate::get1Value),
-		                   JS_PROPERTYOP_SETTER (&X3DArrayFieldTemplate::set1Value));
+		                   JS_PROPERTYOP_SETTER (&X3DArrayFieldTemplate::set1Value),
+		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING);
 
 		*resolvedp = true;
 		return true;
@@ -471,7 +469,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::Han
 
 template <class ValueType, class InternalType>
 bool
-X3DArrayFieldTemplate <ValueType, InternalType>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
+X3DArrayFieldTemplate <ValueType, InternalType>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
 {
 	try
 	{
@@ -577,7 +575,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::pop (JSContext* cx, unsigned ar
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .pop: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
 
@@ -638,7 +636,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::shift (JSContext* cx, unsigned 
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .shift: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
 

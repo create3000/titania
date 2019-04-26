@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,9 +60,8 @@ namespace spidermonkey {
 const JSClassOps X3DField::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	nullptr, // finalize
@@ -83,15 +82,15 @@ const JSPropertySpec X3DField::properties [ ] = {
 };
 
 const JSFunctionSpec X3DField::functions [ ] = {
-	JS_FS ("getName",     getName,     0, JSPROP_PERMANENT),
-	JS_FS ("getTypeName", getTypeName, 0, JSPROP_PERMANENT),
-	JS_FS ("getType",     getType,     0, JSPROP_PERMANENT),
-	JS_FS ("isReadable",  isReadable,  0, JSPROP_PERMANENT),
-	JS_FS ("isWritable",  isWritable,  0, JSPROP_PERMANENT),
-	JS_FS ("toString",    toString,    0, JSPROP_PERMANENT),
+	JS_FN ("getName",     getName,     0, JSPROP_PERMANENT),
+	JS_FN ("getTypeName", getTypeName, 0, JSPROP_PERMANENT),
+	JS_FN ("getType",     getType,     0, JSPROP_PERMANENT),
+	JS_FN ("isReadable",  isReadable,  0, JSPROP_PERMANENT),
+	JS_FN ("isWritable",  isWritable,  0, JSPROP_PERMANENT),
+	JS_FN ("toString",    toString,    0, JSPROP_PERMANENT),
 
-	JS_FS ("equals",      equals,      1, JSPROP_PERMANENT),
-	JS_FS ("assign",      assign,      1, JSPROP_PERMANENT),
+	JS_FN ("equals",      equals,      1, JSPROP_PERMANENT),
+	JS_FN ("assign",      assign,      1, JSPROP_PERMANENT),
 
 	JS_FS_END
 };
@@ -103,7 +102,7 @@ X3DField::init (JSContext* const cx, JS::HandleObject global, JS::HandleObject p
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -120,7 +119,7 @@ X3DField::getName (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getName: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 
@@ -140,7 +139,7 @@ X3DField::getTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getTypeName: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 
@@ -160,7 +159,7 @@ X3DField::getType (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getType: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 
@@ -180,7 +179,7 @@ X3DField::isReadable (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .isReadable: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 
@@ -200,7 +199,7 @@ X3DField::isWritable (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .isWritable: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 
@@ -220,17 +219,17 @@ X3DField::equals (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .equals: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 
 		try
 		{
 			const auto field = getArgument <X3DField> (cx, args, 0);
-	
+
 			if (self -> getType () not_eq field -> getType ())
 				return ThrowException <JSProto_Error> (cx, "%s .prototype .equals: both arguments must be of same type.");
-	
+
 			args .rval () .setBoolean (self -> equals (*field));
 			return true;
 		}
@@ -256,7 +255,7 @@ X3DField::assign (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .assign: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto self  = getThis <X3DField> (cx, args);
 		const auto field = getArgument <X3DField> (cx, args, 0);
@@ -286,7 +285,7 @@ X3DField::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <X3DField> (cx, args);
 

@@ -85,7 +85,7 @@ SpiderMonkey::initialize ()
 	X3DJavaScriptEngine::initialize ();
 
 	description = JS_GetImplementationVersion ();
-	version     = JS_VersionToString (JSVERSION_LATEST);
+	version     = "ECMAv6";
 }
 
 JSContext*

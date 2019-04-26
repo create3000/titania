@@ -3878,7 +3878,7 @@ fi
 
 
 
-CXXFLAGS="-Wall -std=c++17 -O3 -fopenmp -Wno-narrowing -Wno-deprecated"
+CXXFLAGS="-Wall -std=c++17 -O3 -fopenmp -Wno-narrowing -Wno-deprecated -Wno-unused-result"
 
 ### add GTKMM_DISABLE_DEPRECATED
 
@@ -8395,11 +8395,8 @@ _LT_EOF
   test $ac_status = 0; }; then
     # Now try to grab the symbols.
     nlist=conftest.nm
-    if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$NM conftest.$ac_objext \| "$lt_cv_sys_global_symbol_pipe" \> $nlist\""; } >&5
-  (eval $NM conftest.$ac_objext \| "$lt_cv_sys_global_symbol_pipe" \> $nlist) 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; } && test -s "$nlist"; then
+    $ECHO "$as_me:$LINENO: $NM conftest.$ac_objext | $lt_cv_sys_global_symbol_pipe > $nlist" >&5
+    if eval "$NM" conftest.$ac_objext \| "$lt_cv_sys_global_symbol_pipe" \> $nlist 2>&5 && test -s "$nlist"; then
       # Try sorting and uniquifying the output.
       if sort "$nlist" | uniq > "$nlist"T; then
 	mv -f "$nlist"T "$nlist"
@@ -10486,6 +10483,12 @@ lt_prog_compiler_static=
       ecc*)
 	lt_prog_compiler_wl='-Wl,'
 	lt_prog_compiler_pic='-KPIC'
+	lt_prog_compiler_static='-static'
+        ;;
+      # flang / f18. f95 an alias for gfortran or flang on Debian
+      flang* | f18* | f95*)
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-fPIC'
 	lt_prog_compiler_static='-static'
         ;;
       # icc used to be incompatible with GCC.
@@ -17760,7 +17763,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17773,7 +17776,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17789,7 +17792,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17813,7 +17816,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17826,7 +17829,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17842,7 +17845,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17875,7 +17878,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17889,7 +17892,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++
@@ -17906,7 +17909,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-52
+mozjs-60
 libxml++-2.6
 json-c
 ImageMagick++

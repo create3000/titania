@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,10 +62,11 @@ main (int argc, char** argv)
 
 	try
 	{
-		// X3D::Init function must be the first X3D function call in a multi-threaded program, and it must complete before any other X3D call is made. 
+		// X3D::Init function must be the first X3D function call in a multi-threaded program, and it must complete before any other X3D call is made.
 		X3D::Init (argc, argv);
 
-		Glib::setenv ("UBUNTU_MENUPROXY", "0"); // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
+		Glib::setenv ("UBUNTU_MENUPROXY",  "0");   // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
+		//Glib::setenv ("MAGICK_OCL_DEVICE", "OFF");
 
 		// Run appropriate application.
 

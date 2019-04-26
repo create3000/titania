@@ -283,22 +283,22 @@ function set_string (value, time)
 function set_textBounds (value, time)
 {
 	background .size = value .add (padding .multiply (2));
-	
+
 	// Align background line geometry on whole pixel
-	
+
 	if (is_odd (linewidthScaleFactor))
 	{
 		if (is_even (background .size .x))
 			++ background .size .x;
-		
+
 		if (is_even (background .size .y))
 			++ background .size .y;
 	}
-	
-	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius, 
+
+	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius,
 	                                   -background .size .y / 2,
 	                                   0);
-	                                   
+
 	scale_changed .x = 1;
 	scale_changed .y = background .size .x / background .size .y;
 }

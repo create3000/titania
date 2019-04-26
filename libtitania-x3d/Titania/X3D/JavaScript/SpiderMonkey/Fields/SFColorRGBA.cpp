@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,9 +57,8 @@ namespace spidermonkey {
 const JSClassOps SFColorRGBA::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -88,9 +87,9 @@ const JSPropertySpec SFColorRGBA::properties [ ] = {
 };
 
 const JSFunctionSpec SFColorRGBA::functions [ ] = {
-	JS_FS ("getHSVA", getHSVA, 0, JSPROP_PERMANENT),
-	JS_FS ("setHSVA", setHSVA, 4, JSPROP_PERMANENT),
-	JS_FS ("lerp",    lerp,    2, JSPROP_PERMANENT),
+	JS_FN ("getHSVA", getHSVA, 0, JSPROP_PERMANENT),
+	JS_FN ("setHSVA", setHSVA, 4, JSPROP_PERMANENT),
+	JS_FN ("lerp",    lerp,    2, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -188,7 +187,7 @@ SFColorRGBA::getHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSVA: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFColorRGBA> (cx, args);
 		const auto hsva = self -> getHSVA ();
@@ -221,7 +220,7 @@ SFColorRGBA::setHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 4)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSVA: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFColorRGBA> (cx, args);
 		const auto h    = getArgument <X3D::SFColorRGBA::value_type> (cx, args, 0);
@@ -247,7 +246,7 @@ SFColorRGBA::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args        = JS::CallArgsFromVp (argc, vp);
 		const auto self        = getThis <SFColorRGBA> (cx, args);
 		const auto destination = getArgument <SFColorRGBA> (cx, args, 0);

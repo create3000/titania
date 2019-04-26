@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -140,9 +140,8 @@ template <class InternalType>
 const JSClassOps SFVec3 <InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -165,19 +164,19 @@ const JSPropertySpec SFVec3 <InternalType>::properties [ ] = {
 
 template <class InternalType>
 const JSFunctionSpec SFVec3 <InternalType>::functions [ ] = {
-	JS_FS ("add",       add,       1, JSPROP_PERMANENT),
-	JS_FS ("cross",     cross,     1, JSPROP_PERMANENT),
-	JS_FS ("distance",  distance,  1, JSPROP_PERMANENT),
-	JS_FS ("divide",    divide,    1, JSPROP_PERMANENT),
-	JS_FS ("divVec",    divVec,    1, JSPROP_PERMANENT),
-	JS_FS ("dot",       dot,       1, JSPROP_PERMANENT),
-	JS_FS ("length",    length,    0, JSPROP_PERMANENT),
-	JS_FS ("lerp",      lerp,      2, JSPROP_PERMANENT),
-	JS_FS ("multiply",  multiply,  1, JSPROP_PERMANENT),
-	JS_FS ("multVec",   multVec,   1, JSPROP_PERMANENT),
-	JS_FS ("negate",    negate,    0, JSPROP_PERMANENT),
-	JS_FS ("normalize", normalize, 0, JSPROP_PERMANENT),
-	JS_FS ("subtract",  subtract,  1, JSPROP_PERMANENT),
+	JS_FN ("add",       add,       1, JSPROP_PERMANENT),
+	JS_FN ("cross",     cross,     1, JSPROP_PERMANENT),
+	JS_FN ("distance",  distance,  1, JSPROP_PERMANENT),
+	JS_FN ("divide",    divide,    1, JSPROP_PERMANENT),
+	JS_FN ("divVec",    divVec,    1, JSPROP_PERMANENT),
+	JS_FN ("dot",       dot,       1, JSPROP_PERMANENT),
+	JS_FN ("length",    length,    0, JSPROP_PERMANENT),
+	JS_FN ("lerp",      lerp,      2, JSPROP_PERMANENT),
+	JS_FN ("multiply",  multiply,  1, JSPROP_PERMANENT),
+	JS_FN ("multVec",   multVec,   1, JSPROP_PERMANENT),
+	JS_FN ("negate",    negate,    0, JSPROP_PERMANENT),
+	JS_FN ("normalize", normalize, 0, JSPROP_PERMANENT),
+	JS_FN ("subtract",  subtract,  1, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -280,7 +279,7 @@ SFVec3 <InternalType>::add (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .add: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
@@ -302,7 +301,7 @@ SFVec3 <InternalType>::cross (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .cross: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args  = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
@@ -324,7 +323,7 @@ SFVec3 <InternalType>::distance (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .distance: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
@@ -346,7 +345,7 @@ SFVec3 <InternalType>::divide (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .divide: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto scalar = getArgument <typename InternalType::value_type> (cx, args, 0);
@@ -368,7 +367,7 @@ SFVec3 <InternalType>::divVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .divVec: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
@@ -390,7 +389,7 @@ SFVec3 <InternalType>::dot (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .dot: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
@@ -412,7 +411,7 @@ SFVec3 <InternalType>::length (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .length: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFVec3> (cx, args);
 
@@ -433,7 +432,7 @@ SFVec3 <InternalType>::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args        = JS::CallArgsFromVp (argc, vp);
 		const auto self        = getThis <SFVec3> (cx, args);
 		const auto destination = getArgument <SFVec3> (cx, args, 0);
@@ -456,7 +455,7 @@ SFVec3 <InternalType>::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multiply: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto scalar = getArgument <typename InternalType::value_type> (cx, args, 0);
@@ -478,7 +477,7 @@ SFVec3 <InternalType>::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVec: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);
@@ -500,7 +499,7 @@ SFVec3 <InternalType>::negate (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .negate: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFVec3> (cx, args);
 
@@ -521,7 +520,7 @@ SFVec3 <InternalType>::normalize (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .normalize: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFVec3> (cx, args);
 
@@ -542,7 +541,7 @@ SFVec3 <InternalType>::subtract (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .subtract: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFVec3> (cx, args);
 		const auto vector = getArgument <SFVec3> (cx, args, 0);

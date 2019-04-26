@@ -62,9 +62,8 @@ namespace spidermonkey {
 const JSClassOps ProfileInfo::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -99,7 +98,7 @@ ProfileInfo::init (JSContext* const cx, JS::HandleObject global, JS::HandleObjec
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,9 +57,8 @@ namespace spidermonkey {
 const JSClassOps SFColor::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -86,9 +85,9 @@ const JSPropertySpec SFColor::properties [ ] = {
 };
 
 const JSFunctionSpec SFColor::functions [ ] = {
-	JS_FS ("getHSV", getHSV, 0, JSPROP_PERMANENT),
-	JS_FS ("setHSV", setHSV, 3, JSPROP_PERMANENT),
-	JS_FS ("lerp",   lerp,   2, JSPROP_PERMANENT),
+	JS_FN ("getHSV", getHSV, 0, JSPROP_PERMANENT),
+	JS_FN ("setHSV", setHSV, 3, JSPROP_PERMANENT),
+	JS_FN ("lerp",   lerp,   2, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -185,7 +184,7 @@ SFColor::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getHSV: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFColor> (cx, args);
 		const auto hsv  = self -> getHSV ();
@@ -217,7 +216,7 @@ SFColor::setHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 3)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setHSV: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFColor> (cx, args);
 		const auto h    = getArgument <X3D::SFColor::value_type> (cx, args, 0);
@@ -242,7 +241,7 @@ SFColor::lerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .lerp: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args        = JS::CallArgsFromVp (argc, vp);
 		const auto self        = getThis <SFColor> (cx, args);
 		const auto destination = getArgument <SFColor> (cx, args, 0);

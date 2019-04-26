@@ -91,9 +91,8 @@ const std::string Context::containerField = "context";
 const JSClassOps Context::globalOps = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	nullptr, // finalize
@@ -213,8 +212,8 @@ Context::addClasses ()
 	addProto (MFVec4d::getId (),     MFVec4d::init     (cx, *global, getProto (X3DArrayField::getId ())));
 	addProto (MFVec4f::getId (),     MFVec4f::init     (cx, *global, getProto (X3DArrayField::getId ())));
 
-	JS_DefineProperty (cx, *global, "Browser",      JS::RootedObject (cx, X3DBrowser::create (cx)),   JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE, nullptr, nullptr);
-	JS_DefineProperty (cx, *global, "X3DConstants", JS::RootedObject (cx, X3DConstants::create (cx)), JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE, nullptr, nullptr);
+	JS_DefineProperty (cx, *global, "Browser",      JS::RootedObject (cx, X3DBrowser::create (cx)),   JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE);
+	JS_DefineProperty (cx, *global, "X3DConstants", JS::RootedObject (cx, X3DConstants::create (cx)), JSPROP_PERMANENT | JSPROP_READONLY | JSPROP_ENUMERATE);
 }
 
 void
@@ -279,10 +278,9 @@ Context::defineProperty (JS::HandleObject obj,
 			JS_DefineProperty (cx,
 			                   obj,
 			                   name .c_str (),
-			                   JS::UndefinedHandleValue,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs,
 			                   JS_PROPERTYOP_GETTER (&Context::getBuildInProperty),
-			                   JS_PROPERTYOP_SETTER (&Context::setProperty));
+			                   JS_PROPERTYOP_SETTER (&Context::setProperty),
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs);
 			break;
 		}
 		default:
@@ -290,17 +288,16 @@ Context::defineProperty (JS::HandleObject obj,
 			JS_DefineProperty (cx,
 			                   obj,
 			                   name .c_str (),
-			                   JS::UndefinedHandleValue,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs,
 			                   JS_PROPERTYOP_GETTER (&Context::getProperty),
-			                   JS_PROPERTYOP_SETTER (&Context::setProperty));
+			                   JS_PROPERTYOP_SETTER (&Context::setProperty),
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs);
 			break;
 		}
 	}
 }
 
 bool
-Context::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
+Context::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
 {
 	try
 	{
@@ -351,7 +348,7 @@ Context::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::
 bool
 Context::evaluate (const std::string & string, const std::string & filename)
 {
-	JS::CompileOptions options (cx, JSVERSION_LATEST);
+	JS::CompileOptions options (cx);
 	JS::RootedScript   script (cx);
 
 	options .setUTF8 (true);
@@ -488,8 +485,6 @@ Context::initialize ()
 	const JSAutoRequest ar (cx);
 
 	JS::CompartmentOptions options;
-
-	options .behaviors () .setVersion (JSVERSION_LATEST);
 
 	global = std::make_unique <JS::PersistentRooted <JSObject*>> (cx, JS_NewGlobalObject (cx, &globalClass, nullptr, JS::FireOnNewGlobalHook, options));
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,9 +59,8 @@ namespace spidermonkey {
 const JSClassOps SFRotation::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -90,12 +89,12 @@ const JSPropertySpec SFRotation::properties [ ] = {
 };
 
 const JSFunctionSpec SFRotation::functions [ ] = {
-	JS_FS ("getAxis",  getAxis,  0, JSPROP_PERMANENT),
-	JS_FS ("setAxis",  setAxis,  1, JSPROP_PERMANENT),
-	JS_FS ("inverse",  inverse,  0, JSPROP_PERMANENT),
-	JS_FS ("multiply", multiply, 1, JSPROP_PERMANENT),
-	JS_FS ("multVec",  multVec,  1, JSPROP_PERMANENT),
-	JS_FS ("slerp",    slerp,    2, JSPROP_PERMANENT),
+	JS_FN ("getAxis",  getAxis,  0, JSPROP_PERMANENT),
+	JS_FN ("setAxis",  setAxis,  1, JSPROP_PERMANENT),
+	JS_FN ("inverse",  inverse,  0, JSPROP_PERMANENT),
+	JS_FN ("multiply", multiply, 1, JSPROP_PERMANENT),
+	JS_FN ("multVec",  multVec,  1, JSPROP_PERMANENT),
+	JS_FN ("slerp",    slerp,    2, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -143,7 +142,7 @@ SFRotation::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				{
 					const auto arg2 = getArgument <X3D::SFRotation::value_type> (cx, args, 1);
 
-					args .rval () .set (create (cx, new X3D::SFRotation (X3D::SFVec3d (arg1 -> getValue ()), arg2)));				
+					args .rval () .set (create (cx, new X3D::SFRotation (X3D::SFVec3d (arg1 -> getValue ()), arg2)));
 				}
 
 				return true;
@@ -213,7 +212,7 @@ SFRotation::getAxis (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getAxis: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFRotation> (cx, args);
 		const auto axis = self -> getAxis ();
@@ -234,7 +233,7 @@ SFRotation::setAxis (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setAxis: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFRotation> (cx, args);
 		const auto axis = getArgument <SFVec3f> (cx, args, 0);
@@ -257,7 +256,7 @@ SFRotation::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .inverse: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFRotation> (cx, args);
 
@@ -277,7 +276,7 @@ SFRotation::multiply (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multiply: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args     = JS::CallArgsFromVp (argc, vp);
 		const auto self     = getThis <SFRotation> (cx, args);
 		const auto rotation = getArgument <SFRotation> (cx, args, 0);
@@ -298,10 +297,10 @@ SFRotation::multVec (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVec: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFRotation> (cx, args);
-		
+
 		try
 		{
 			const auto vector = getArgument <SFVec3f> (cx, args, 0);
@@ -330,7 +329,7 @@ SFRotation::slerp (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 2)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .slerp: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args        = JS::CallArgsFromVp (argc, vp);
 		const auto self        = getThis <SFRotation> (cx, args);
 		const auto destination = getArgument <SFRotation> (cx, args, 0);

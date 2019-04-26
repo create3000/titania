@@ -66,9 +66,8 @@ namespace spidermonkey {
 const JSClassOps X3DExternProtoDeclaration::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -94,9 +93,9 @@ const JSPropertySpec X3DExternProtoDeclaration::properties [ ] = {
 };
 
 const JSFunctionSpec X3DExternProtoDeclaration::functions [ ] = {
-	JS_FS ("newInstance",  newInstance,  0, JSPROP_PERMANENT),
-	JS_FS ("toVRMLString", toVRMLString, 0, JSPROP_PERMANENT),
-	JS_FS ("toXMLString",  toXMLString,  0, JSPROP_PERMANENT),
+	JS_FN ("newInstance",  newInstance,  0, JSPROP_PERMANENT),
+	JS_FN ("toVRMLString", toVRMLString, 0, JSPROP_PERMANENT),
+	JS_FN ("toXMLString",  toXMLString,  0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -107,7 +106,7 @@ X3DExternProtoDeclaration::init (JSContext* const cx, JS::HandleObject global, J
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -131,18 +130,18 @@ X3DExternProtoDeclaration::create (JSContext* const cx, const X3D::ExternProtoDe
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto self = new internal_type (externproto);
-	
+
 		setObject (obj, self);
 		setContext (obj, context);
 		setKey (obj, key);
 
 		context -> addObject (key, self, obj);
-	
+
 		return JS::ObjectValue (*obj);
 	}
 }
@@ -243,7 +242,7 @@ X3DExternProtoDeclaration::newInstance (JSContext* cx, unsigned argc, JS::Value*
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .newInstance: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args = JS::CallArgsFromVp (argc, vp);
 		const auto & self = *getThis <X3DExternProtoDeclaration> (cx, args);
 
@@ -320,7 +319,7 @@ X3DExternProtoDeclaration::toXMLString (JSContext* cx, unsigned argc, JS::Value*
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toXMLString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto   args    = JS::CallArgsFromVp (argc, vp);
 		const auto   context = getContext (cx);
 		const auto & self    = *getThis <X3DExternProtoDeclaration> (cx, args);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -139,9 +139,8 @@ template <class InternalType>
 const JSClassOps SFMatrix4 <InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -174,17 +173,17 @@ const JSPropertySpec SFMatrix4 <InternalType>::properties [ ] = {
 
 template <class InternalType>
 const JSFunctionSpec SFMatrix4 <InternalType>::functions [ ] = {
-	JS_FS ("setTransform",  setTransform,  5, JSPROP_PERMANENT),
-	JS_FS ("getTransform",  getTransform,  3, JSPROP_PERMANENT),
+	JS_FN ("setTransform",  setTransform,  5, JSPROP_PERMANENT),
+	JS_FN ("getTransform",  getTransform,  3, JSPROP_PERMANENT),
 
-	JS_FS ("transpose",     transpose,     0, JSPROP_PERMANENT),
-	JS_FS ("inverse",       inverse,       0, JSPROP_PERMANENT),
-	JS_FS ("multLeft",      multLeft,      1, JSPROP_PERMANENT),
-	JS_FS ("multRight",     multRight,     1, JSPROP_PERMANENT),
-	JS_FS ("multVecMatrix", multVecMatrix, 1, JSPROP_PERMANENT),
-	JS_FS ("multMatrixVec", multMatrixVec, 1, JSPROP_PERMANENT),
-	JS_FS ("multDirMatrix", multDirMatrix, 1, JSPROP_PERMANENT),
-	JS_FS ("multMatrixDir", multMatrixDir, 1, JSPROP_PERMANENT),
+	JS_FN ("transpose",     transpose,     0, JSPROP_PERMANENT),
+	JS_FN ("inverse",       inverse,       0, JSPROP_PERMANENT),
+	JS_FN ("multLeft",      multLeft,      1, JSPROP_PERMANENT),
+	JS_FN ("multRight",     multRight,     1, JSPROP_PERMANENT),
+	JS_FN ("multVecMatrix", multVecMatrix, 1, JSPROP_PERMANENT),
+	JS_FN ("multMatrixVec", multMatrixVec, 1, JSPROP_PERMANENT),
+	JS_FN ("multDirMatrix", multDirMatrix, 1, JSPROP_PERMANENT),
+	JS_FN ("multMatrixDir", multMatrixDir, 1, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -300,7 +299,7 @@ SFMatrix4 <InternalType>::setTransform (JSContext* cx, unsigned argc, JS::Value*
 	{
 		if (argc > 5)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .setTransform: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFMatrix4> (cx, args);
 
@@ -369,7 +368,7 @@ SFMatrix4 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 	{
 		if (argc > 5)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getTransform: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFMatrix4> (cx, args);
 
@@ -438,7 +437,7 @@ SFMatrix4 <InternalType>::transpose (JSContext* cx, unsigned argc, JS::Value* vp
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .transpose: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFMatrix4> (cx, args);
 
@@ -459,7 +458,7 @@ SFMatrix4 <InternalType>::inverse (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .inverse: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFMatrix4> (cx, args);
 
@@ -480,7 +479,7 @@ SFMatrix4 <InternalType>::multLeft (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multLeft: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFMatrix4> (cx, args);
 		const auto matrix = getArgument <SFMatrix4> (cx, args, 0);
@@ -502,7 +501,7 @@ SFMatrix4 <InternalType>::multRight (JSContext* cx, unsigned argc, JS::Value* vp
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multRight: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFMatrix4> (cx, args);
 		const auto matrix = getArgument <SFMatrix4> (cx, args, 0);
@@ -524,7 +523,7 @@ SFMatrix4 <InternalType>::multVecMatrix (JSContext* cx, unsigned argc, JS::Value
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multVecMatrix: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFMatrix4> (cx, args);
 		const auto vector = getArgument <vector_type> (cx, args, 0);
@@ -546,7 +545,7 @@ SFMatrix4 <InternalType>::multMatrixVec (JSContext* cx, unsigned argc, JS::Value
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multMatrixVec: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFMatrix4> (cx, args);
 		const auto vector = getArgument <vector_type> (cx, args, 0);
@@ -568,7 +567,7 @@ SFMatrix4 <InternalType>::multDirMatrix (JSContext* cx, unsigned argc, JS::Value
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multDirMatrix: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFMatrix4> (cx, args);
 		const auto vector = getArgument <vector_type> (cx, args, 0);
@@ -590,7 +589,7 @@ SFMatrix4 <InternalType>::multMatrixDir (JSContext* cx, unsigned argc, JS::Value
 	{
 		if (argc not_eq 1)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .multMatrixDir: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args   = JS::CallArgsFromVp (argc, vp);
 		const auto self   = getThis <SFMatrix4> (cx, args);
 		const auto vector = getArgument <vector_type> (cx, args, 0);

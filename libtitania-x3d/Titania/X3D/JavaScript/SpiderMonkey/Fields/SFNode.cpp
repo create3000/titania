@@ -64,9 +64,8 @@ namespace spidermonkey {
 const JSClassOps SFNode::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -87,14 +86,14 @@ const JSPropertySpec SFNode::properties [ ] = {
 };
 
 const JSFunctionSpec SFNode::functions [ ] = {
-	JS_FS ("getNodeTypeName",     getNodeTypeName,     0, JSPROP_PERMANENT),
-	JS_FS ("getNodeName",         getNodeName,         0, JSPROP_PERMANENT),
-	JS_FS ("getNodeType",         getNodeType,         0, JSPROP_PERMANENT),
-	JS_FS ("getFieldDefinitions", getFieldDefinitions, 0, JSPROP_PERMANENT),
+	JS_FN ("getNodeTypeName",     getNodeTypeName,     0, JSPROP_PERMANENT),
+	JS_FN ("getNodeName",         getNodeName,         0, JSPROP_PERMANENT),
+	JS_FN ("getNodeType",         getNodeType,         0, JSPROP_PERMANENT),
+	JS_FN ("getFieldDefinitions", getFieldDefinitions, 0, JSPROP_PERMANENT),
 
-	JS_FS ("toVRMLString",        toVRMLString,        0, JSPROP_PERMANENT),
-	JS_FS ("toXMLString",         toXMLString,         0, JSPROP_PERMANENT),
-	JS_FS ("toString",            toString,            0, JSPROP_PERMANENT),
+	JS_FN ("toVRMLString",        toVRMLString,        0, JSPROP_PERMANENT),
+	JS_FN ("toXMLString",         toXMLString,         0, JSPROP_PERMANENT),
+	JS_FN ("toString",            toString,            0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -125,32 +124,29 @@ SFNode::create (JSContext* const cx, const X3D::SFNode & field)
 			for (const auto fieldDefinition : node -> getFieldDefinitions ())
 			{
 				const auto & name = fieldDefinition -> getName ();
-		
+
 				JS_DefineProperty (cx,
 				                   object,
 				                   name .c_str (),
-				                   JS::UndefinedHandleValue,
-				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0),
 				                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-				                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
-	
+				                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
+				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0));
+
 				if (fieldDefinition -> getAccessType () == X3D::inputOutput)
 				{
 					JS_DefineProperty (cx,
 					                   object,
 					                   ("set_" + name) .c_str (),
-					                   JS::UndefinedHandleValue,
-					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
 					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
-		
+					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
+					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+
 					JS_DefineProperty (cx,
 					                   object,
 					                   (name + "_changed") .c_str (),
-					                   JS::UndefinedHandleValue,
-					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
 					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
+					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
 				}
 			}
 
@@ -163,28 +159,25 @@ SFNode::create (JSContext* const cx, const X3D::SFNode & field)
 					JS_DefineProperty (cx,
 					                   object,
 					                   alias .c_str (),
-					                   JS::UndefinedHandleValue,
-					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
 					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
-		
+					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
+					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+
 					if (fieldDefinition -> getAccessType () == X3D::inputOutput)
 					{
 						JS_DefineProperty (cx,
 						                   object,
 						                   ("set_" + alias) .c_str (),
-						                   JS::UndefinedHandleValue,
-						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
 						                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
-			
+						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
+						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+
 						JS_DefineProperty (cx,
 						                   object,
 						                   (alias + "_changed") .c_str (),
-						                   JS::UndefinedHandleValue,
-						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT,
 						                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty));
+						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
+						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
 					}
 				}
 			}
@@ -237,7 +230,7 @@ SFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 bool
-SFNode::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
+SFNode::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
 {
 	try
 	{
@@ -306,7 +299,7 @@ SFNode::getNodeTypeName (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeTypeName: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFNode> (cx, args);
 
@@ -326,7 +319,7 @@ SFNode::getNodeName (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeName: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFNode> (cx, args);
 
@@ -346,7 +339,7 @@ SFNode::getNodeType (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getNodeType: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFNode> (cx, args);
 		const auto node = self -> getValue ();
@@ -377,7 +370,7 @@ SFNode::getFieldDefinitions (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .getFieldDefinitions: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFNode> (cx, args);
 		const auto node = self -> getValue ();
@@ -398,7 +391,7 @@ SFNode::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toVRMLString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args             = JS::CallArgsFromVp (argc, vp);
 		const auto context          = getContext (cx);
 		const auto executionContext = context -> getExecutionContext ();
@@ -431,7 +424,7 @@ SFNode::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toXMLString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args             = JS::CallArgsFromVp (argc, vp);
 		const auto context          = getContext (cx);
 		const auto executionContext = context -> getExecutionContext ();
@@ -467,7 +460,7 @@ SFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 	{
 		if (argc not_eq 0)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
-	
+
 		const auto args = JS::CallArgsFromVp (argc, vp);
 		const auto self = getThis <SFNode> (cx, args);
 

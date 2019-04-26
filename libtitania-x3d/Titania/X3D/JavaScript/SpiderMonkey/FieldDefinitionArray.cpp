@@ -64,9 +64,8 @@ namespace spidermonkey {
 const JSClassOps FieldDefinitionArray::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
-	nullptr, // getProperty
-	nullptr, // setProperty
 	nullptr, // enumerate
+	nullptr, // newEnumerate
 	nullptr, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -98,7 +97,7 @@ FieldDefinitionArray::init (JSContext* const cx, JS::HandleObject global, JS::Ha
 
 	if (not proto)
 		throw std::runtime_error ("Couldn't initialize JavaScript global object.");
-	
+
 	return proto;
 }
 
@@ -122,12 +121,12 @@ FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArr
 	else
 	{
 		const auto obj = JS_NewObjectWithGivenProto (cx, getClass (), context -> getProto (getId ()));
-	
+
 		if (not obj)
 			throw std::runtime_error ("out of memory");
-	
+
 		const auto array = new internal_type (fieldDefinitions .begin (), fieldDefinitions .end ());
-	
+
 		setObject (obj, array);
 		setContext (obj, context);
 		setKey (obj, key);
@@ -135,18 +134,17 @@ FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArr
 		context -> addObject (key, array, obj);
 
 		const auto object = JS::RootedObject (cx, obj);
-	
+
 		for (size_t i = 0, size = array -> size (); i < size; ++ i)
 		{
 			JS_DefineProperty (cx,
 			                   object,
 			                   basic::to_string (i, std::locale::classic ()) .c_str (),
-			                   JS::UndefinedHandleValue,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE,
 			                   JS_PROPERTYOP_GETTER (&FieldDefinitionArray::get1Value),
-			                   nullptr);
+			                   nullptr,
+			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 		}
-	
+
 		return JS::ObjectValue (*obj);
 	}
 }

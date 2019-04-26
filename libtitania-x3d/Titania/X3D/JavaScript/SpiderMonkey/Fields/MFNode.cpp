@@ -86,7 +86,7 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 				catch (const std::domain_error & error)
 				{
 					array -> emplace_back ();
-				}	
+				}
 			}
 
 			args .rval () .set (create (cx, array));
@@ -105,7 +105,7 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <>
 bool
-MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp, JS::ObjectOpResult & result)
+MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
 {
 	try
 	{
@@ -121,7 +121,7 @@ MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::Mut
 			catch (const std::domain_error & error)
 			{
 				array -> set1Value (index, nullptr);
-			}	
+			}
 		}
 
 		result .succeed ();
