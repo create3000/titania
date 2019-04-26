@@ -69,7 +69,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string X3DBrowser::version = "4.5.1"; // Don't forget to call 'make version'.
+const std::string X3DBrowser::version = "4.5.2"; // Don't forget to call 'make version'.
 
 const Component   X3DBrowser::component      = Component ("Titania", 1);
 const std::string X3DBrowser::typeName       = "Browser";
@@ -161,22 +161,22 @@ X3DBrowser::initialize ()
 	                      '\n',
 	                      std::string (80, '*'), '\n',
 	                      std::string (80, '*'), '\n',
-			                
+
 	                      "Welcome to ", getName (), " X3D Browser ", getVersion (), ':', '\n',
 	                      "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
-			                
+
 	                      getRenderingProperties (), '\n',
-			                
+
 			                "\t\tMax vertex uniform vectors: ", getMaxVertexUniformVectors (), "\n",
 			                "\t\tMax fragment uniform vectors: ", getMaxFragmentUniformVectors (), "\n",
 			                "\t\tMax vertex attribs: ", getMaxVertexAttributes (), "\n",
-			                
+
 	                      getJavaScriptEngine (), '\n',
-			                
+
 	                      #ifdef TITANIA_DEBUG
 	                      "\tId: ", this, '\n',
 	                      #endif
-			                
+
 	                      std::string (80, '*'), '\n',
 	                      std::string (80, '*'), '\n',
 	                      '\n',
