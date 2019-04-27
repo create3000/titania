@@ -129,7 +129,19 @@ ExternalTool::run (const std::string & workingDirectory,
 
 	try
 	{
-		pipe .open (workingDirectory, { command }, environment);
+		const auto flatpak_spawn = Glib::find_program_in_path ("flatpak-spawn");
+
+		std::vector <std::string> commandWithArgs;
+
+		if (not flatpak_spawn .empty ())
+		{
+			commandWithArgs .emplace_back ("flatpak-spawn");
+			commandWithArgs .emplace_back ("--host");
+		}
+
+		commandWithArgs .emplace_back (command);
+
+		pipe .open (workingDirectory, commandWithArgs, environment);
 		pipe .read (100);
 		pipe .write (input .data (), input .size ());
 		pipe .close (Pipe::STDIN);
@@ -241,7 +253,7 @@ ExternalTool::saveScenes ()
 	else if (saveType == "CURRENT_SCENE")
 	{
 		if (browserWindow -> getCurrentPage () -> getModified ())
-			browserWindow -> on_save_activated ();		
+			browserWindow -> on_save_activated ();
 	}
 	else if (saveType == "ALL_SCENES")
 	{
@@ -279,7 +291,7 @@ ExternalTool::getInput () const
 	return "";
 }
 
-std::vector <std::string> 
+std::vector <std::string>
 ExternalTool::getEnvironment () const
 {
 	std::vector <std::string> environment = Pipe::getEnvironment ();
@@ -292,7 +304,7 @@ ExternalTool::getEnvironment () const
 	if (file -> has_parent ())
 	{
 		const auto folder = file -> get_parent ();
-	
+
 		environment .emplace_back ("TITANIA_CURRENT_FOLDER="     + folder -> get_path ());
 		environment .emplace_back ("TITANIA_CURRENT_FOLDER_URI=" + folder -> get_uri ());
 		environment .emplace_back ("TITANIA_CURRENT_FILE="       + file   -> get_path ());
@@ -301,7 +313,7 @@ ExternalTool::getEnvironment () const
 		for (const auto & projectPath : projects)
 		{
 			const auto project = Gio::File::create_for_path (projectPath);
-	
+
 			if (File::isSubfolder (folder, project))
 			{
 				environment .emplace_back ("TITANIA_CURRENT_PROJECT="     + project -> get_path ());
@@ -368,7 +380,7 @@ ExternalTool::processOutput (const std::string & stdout)
 			if (not selection .empty ())
 			{
 				const auto executionContext = X3D::X3DExecutionContextPtr (browserWindow -> getSelectionContext (selection));
-		
+
 				if (executionContext)
 				{
 					const auto undoStep     = std::make_shared <X3D::UndoStep> (_ (basic::sprintf (_ ("Assign Output From Tool »%s« To Selection"), name .c_str ())));
