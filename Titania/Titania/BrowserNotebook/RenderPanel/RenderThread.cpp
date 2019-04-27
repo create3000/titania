@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -153,9 +153,6 @@ RenderThread::set_loadCount ()
 {
 	try
 	{
-		// NVIDIA Driver are thread save, ATI don't know, Nouveau not yet.
-		static const std::regex threadSaveDriver (R"/(NVIDIA)/", std::regex_constants::icase);
-
 		checkForInterrupt ();
 
 		loadCountSignal .emit (browser -> getLoadCount ());
@@ -167,13 +164,7 @@ RenderThread::set_loadCount ()
 		browser -> setProcessRenderEvents (false);
 		browser -> getBrowserOptions () -> Shading () = basic::toupper (shading, std::locale::classic ());
 
-		// Start thread or timeout version depending on grafix card driver.
-
-		if (std::regex_search (browser -> getVendor (), threadSaveDriver))
-			thread = std::make_unique <std::thread> (&RenderThread::run, this);
-
-		else
-			Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_LOW);
+		Glib::signal_timeout () .connect (sigc::mem_fun (this, &RenderThread::on_timeout), 10, Glib::PRIORITY_LOW);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -181,29 +172,6 @@ RenderThread::set_loadCount ()
 	}
 	catch (const X3D::InterruptThreadException & error)
 	{ }
-}
-
-void
-RenderThread::run ()
-{
-	try
-	{
-		for (size_t frameNumber = 0; frameNumber < duration; ++ frameNumber)
-		{
-			checkForInterrupt ();
-
-			currentFrame = getFrame (frameNumber);
-
-			frameDispatcher .emit ();
-		}
-	}
-	catch (const X3D::InterruptThreadException & error)
-	{ }
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-		frameDispatcher .emit ();
-	}
 }
 
 bool
@@ -242,7 +210,7 @@ RenderThread::getFrame (const int32_t frameNumber)
 	frame -> image       = browser -> getSnapshot (width, height, false, antialiasing);
 
 	// Make PNG always RGB, otherwise the image is sometimes GRAY if ImageMagick desides that this is possible.
-	frame -> image .defineValue ("PNG", "color-type", "2"); 
+	frame -> image .defineValue ("PNG", "color-type", "2");
 
 	videoEncoder -> write (frame -> image);
 
