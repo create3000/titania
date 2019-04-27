@@ -91,7 +91,7 @@ std::vector <int32_t>
 QuadSphereOptions::createTexCoordIndex () const
 {
 	std::vector <int32_t> texCoordIndices;
-	
+
 	int32_t p = 0;
 
 	for (int32_t u = 0; u < xDimension (); ++ u, ++ p)

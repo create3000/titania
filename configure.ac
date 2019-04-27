@@ -39,7 +39,7 @@ dnl ***************************************************************************
 dnl ******* add "-flto --plugin=$(gcc --print-file-name=liblto_plugin.so)" flags (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 dnl ******* CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
 
-CXXFLAGS="-Wall -std=c++17 -O3 -fopenmp -Wno-narrowing -Wno-deprecated -Wno-unused-result"
+CXXFLAGS="-std=c++17 -O3 -fopenmp -Wall -Wno-narrowing -Wno-deprecated -Wno-unused-result"
 
 ### add GTKMM_DISABLE_DEPRECATED
 

@@ -340,7 +340,7 @@ const JSClassOps X3DArrayFieldTemplate <ValueType, InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // enumerate
-	nullptr, // newEnumerate
+	enumerate, // newEnumerate
 	resolve, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -426,12 +426,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::enumerate (JSContext* cx, JS::H
 {
 	try
 	{
-//		__LOG__ << std::endl;
-
 		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
-
-//		__LOG__ << array -> getTypeName () << std::endl;
-//		__LOG__ << array -> size () << std::endl;
 
 		for (size_t i = 0, size = array -> size (); i < size; ++ i)
 			properties .append (INT_TO_JSID (i));
