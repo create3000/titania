@@ -6,7 +6,7 @@
         {
             "label": "Make",
             "type": "shell",
-            "command": "flatpak-spawn --host make -j5",
+            "command": "make -j5",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -18,43 +18,43 @@
         {
             "label": "Run",
             "type": "shell",
-            "command": "flatpak-spawn --host make run",
+            "command": "make run",
             "problemMatcher": []
         },
         {
             "label": "Configure Solution",
             "type": "shell",
-            "command": "flatpak-spawn --host ./autogen.sh --enable-debug --enable-feature",
+            "command": "./autogen.sh --enable-debug --enable-feature",
             "problemMatcher": []
         },
         {
             "label": "Make Version",
             "type": "shell",
-            "command": "flatpak-spawn --host make version",
+            "command": "make version",
             "problemMatcher": []
         },
         {
             "label": "Git Push GitHub",
             "type": "shell",
-            "command": "flatpak-spawn --host git push github",
+            "command": "git push github",
             "problemMatcher": []
         },
         {
             "label": "Git List Untracked Files",
             "type": "shell",
-            "command": "flatpak-spawn --host git ls-files --others --exclude-standard",
+            "command": "git ls-files --others --exclude-standard",
             "problemMatcher": []
         },
         {
             "label": "Commit Library",
             "type": "shell",
-            "command": "flatpak-spawn --host /home/holger/bin/git-commit-library.sh",
+            "command": "/home/holger/bin/git-commit-library.sh",
             "problemMatcher": []
         },
         {
             "label": "Erzeugung oder Ausführung anhalten",
             "type": "shell",
-            "command": "flatpak-spawn --host killall make",
+            "command": "killall make",
             "problemMatcher": []
         },
     ]
