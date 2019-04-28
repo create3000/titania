@@ -435,7 +435,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::enumerate (JSContext* cx, JS::H
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .enumerate: %s.", getClass () -> name, error .what ());
+		return true;
 	}
 }
 

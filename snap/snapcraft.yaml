@@ -2,15 +2,27 @@ name: titania
 version: 3.1.0
 summary: Titania is a X3D/VRML editor and browser for Ubuntu.
 description: Titania is a X3D/VRML editor and browser for Ubuntu.
+
+grade: stable
 confinement: strict
+base: core18
 
 apps:
   titania:
-    command: bin/titania-wrapper
-    plugs: [network, network-bind, home, x11, unity7, gsettings]
-  titania-bin:
     command: bin/titania
-    plugs: [network, network-bind, home, x11, unity7, gsettings]
+    desktop: usr/share/applications/de.create3000.titania.desktop
+    plugs:
+     - desktop
+     - desktop-lefacy
+     - gsettings
+     - home
+     - network
+     - network-bind
+     - opengl
+     - removable-media
+     - unity7
+     - wayland
+     - x11
 
 parts:
   titania:
@@ -18,64 +30,58 @@ parts:
     source: https://github.com/create3000/titania
     source-type: git
     build-packages:
+      - gettext
+      - intltool
+      - libcgal-dev
+      - libcurl4-openssl-dev
+      - libfontconfig1-dev
+      - libgl1-mesa-dev
+      - libglew-dev
+      - libglu1-mesa-dev
+      - libgmp-dev
+      - libgstreamer-plugins-base1.0-dev
+      - libgstreamer1.0-dev
+      - libgstreamermm-1.0-dev
       - libgtkmm-3.0-dev
       - libgtksourceviewmm-3.0-dev
-      - mesa-common-dev
-      - libglu1-mesa-dev
-      - libglew-dev
-      - libgl1-mesa-dev
-      - libmozjs185-dev
-      - libxml++2.6-dev
+      - libgtop2-dev
       - libjson-c-dev
-      - libfontconfig1-dev
       - libmagick++-dev
-      - libcurl4-openssl-dev
+      - libmozjs185-dev
+      - libmpfr-dev
       - libsqlite3-dev
-      - libgstreamermm-1.0-dev
-      - libgstreamer1.0-dev
-      - libgstreamer-plugins-base1.0-dev
-      - zlib1g
-      - intltool
-      - gettext
       - libtool
       - libtool-bin
-      - libgtop2-dev
-      - libcgal-dev
-      - libgmp-dev
-      - libmpfr-dev
-    stage-packages:
-      - libc6
-      - libgtkmm-3.0-1v5
-      - libgtksourceviewmm-3.0-0v5
-      - libglu1-mesa
-      - libglew2.0
-      - libgl1-mesa-glx
-      - libmozjs185-1.0
-      - libxml++2.6-2v5
-      - libjson-c3
-      - libfontconfig1
-      - libmagick++-6.q16-7
-      - libcurl3
-      - libsqlite3-0
-      - libgstreamermm-1.0-1
+      - libxml++2.6-dev
+      - mesa-common-dev
       - zlib1g
-      - libgtop-2.0-11
-      - gettext
-      - libcgal12
-      - libgmp10
-      - libmpfr4
-      - ttf-ubuntu-font-family
-      - language-pack-en
-      - language-pack-de
-      - libc-bin
+    stage-packages:
       - ffmpeg
+      - gettext
+      - gstreamer1.0-plugins-bad
       - gstreamer1.0-plugins-base
       - gstreamer1.0-plugins-good
-      - gstreamer1.0-plugins-bad
       - gstreamer1.0-plugins-ugly
-      - inkscape
-  glue:
-    plugin: copy
-    files:
-      titania-wrapper: bin/
- 
+      - language-pack-de
+      - language-pack-en
+      - libc-bin
+      - libc6
+      - libcgal12
+      - libcurl3
+      - libfontconfig1
+      - libgl1-mesa-glx
+      - libglew2.0
+      - libglu1-mesa
+      - libgmp10
+      - libgstreamermm-1.0-1
+      - libgtkmm-3.0-1v5
+      - libgtksourceviewmm-3.0-0v5
+      - libgtop-2.0-11
+      - libjson-c3
+      - libmagick++-6.q16-7
+      - libmozjs185-1.0
+      - libmpfr4
+      - libsqlite3-0
+      - libxml++2.6-2v5
+      - ttf-ubuntu-font-family
+      - zlib1g
