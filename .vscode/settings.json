@@ -10,7 +10,6 @@
         "**/*.o": true,
         "**/*~": true,
         "**/autom4te.cache": true,
-        "**/Makefile": true,
         "aclocal.m4": true,
         "compile": true,
         "config.h": true,
@@ -26,6 +25,10 @@
         "missing": true,
         "mkinstalldirs": true,
         "rules.make": true,
+        "snap/parts": true,
+        "snap/prime": true,
+        "snap/snap": true,
+        "snap/stage": true,
         "stamp-h1": true
     },
     "files.eol": "\n",

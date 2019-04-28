@@ -2,6 +2,7 @@ name: titania
 version: 3.1.0
 summary: Titania is a X3D/VRML editor and browser for Ubuntu.
 description: Titania is a X3D/VRML editor and browser for Ubuntu.
+icon: titania.svg
 
 grade: stable
 confinement: strict
@@ -12,17 +13,19 @@ apps:
     command: bin/titania
     desktop: usr/share/applications/de.create3000.titania.desktop
     plugs:
-     - desktop
-     - desktop-lefacy
-     - gsettings
-     - home
-     - network
-     - network-bind
-     - opengl
-     - removable-media
-     - unity7
-     - wayland
-     - x11
+      - alsa
+      - desktop
+      - desktop-lefacy
+      - gsettings
+      - home
+      - network
+      - network-bind
+      - opengl
+      - pulseaudio
+      - removable-media
+      - unity7
+      - wayland
+      - x11
 
 parts:
   titania:
@@ -32,8 +35,9 @@ parts:
     build-packages:
       - gettext
       - intltool
+      - libbullet-dev
       - libcgal-dev
-      - libcurl4-openssl-dev
+      - libcurl4-gnutls-dev
       - libfontconfig1-dev
       - libgl1-mesa-dev
       - libglew-dev
@@ -47,30 +51,30 @@ parts:
       - libgtop2-dev
       - libjson-c-dev
       - libmagick++-dev
-      - libmozjs185-dev
+      - libmozjs-60-dev
       - libmpfr-dev
       - libsqlite3-dev
       - libtool
       - libtool-bin
       - libxml++2.6-dev
       - mesa-common-dev
-      - zlib1g
+      - zlib1g-dev
     stage-packages:
       - ffmpeg
       - gettext
+      - gstreamer1.0-libav
       - gstreamer1.0-plugins-bad
       - gstreamer1.0-plugins-base
       - gstreamer1.0-plugins-good
       - gstreamer1.0-plugins-ugly
-      - language-pack-de
-      - language-pack-en
+      - libbullet2.87
       - libc-bin
       - libc6
-      - libcgal12
-      - libcurl3
+      - libcgal13
+      - libcurl4
       - libfontconfig1
       - libgl1-mesa-glx
-      - libglew2.0
+      - libglew2.1
       - libglu1-mesa
       - libgmp10
       - libgstreamermm-1.0-1
@@ -78,10 +82,12 @@ parts:
       - libgtksourceviewmm-3.0-0v5
       - libgtop-2.0-11
       - libjson-c3
-      - libmagick++-6.q16-7
-      - libmozjs185-1.0
-      - libmpfr4
+      - libmagick++-6.q16-8
+      - libmozjs-60-0
+      - libmpfr6
       - libsqlite3-0
+      - libx264-155
       - libxml++2.6-2v5
+      - libxvidcore4
       - ttf-ubuntu-font-family
       - zlib1g
