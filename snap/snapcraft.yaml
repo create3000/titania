@@ -1,25 +1,38 @@
 name: titania
-version: 3.1.0
-summary: Titania is a X3D/VRML editor and browser for Ubuntu.
-description: Titania is a X3D/VRML editor and browser for Ubuntu.
+version-script: perl -wln -e 'print $1 if /version\s*=\s*"(.*?)"/' ../libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp
+version: devel
+summary: Titania is a X3D/VRML editor and browser for the Linux Platform.
+description: |
+  Whether you are a graphic designer, modeller, or scientist, Titania provides
+  you with sophisticated tools to get your job done. It supports the entirety
+  of the X3D pipeline — modeling, rigging, animation, simulation, rendering,
+  and compositing.
 icon: titania.svg
 
 grade: stable
 confinement: strict
 base: core18
 
+architectures:
+  - build-on: amd64
+ # - build-on: i386
+
 apps:
   titania:
-    command: bin/titania
-    desktop: usr/share/applications/de.create3000.titania.desktop
+    command: desktop-launch $SNAP/bin/titania
+    desktop: share/applications/de.create3000.titania.desktop
+    environment:
+      XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/share:$SNAP/usr/share:$XDG_DATA_DIRS
+      LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:$LIBGL_DRIVERS_PATH
+#      LANG: C
+#      LC_ALL: C
     plugs:
       - alsa
       - desktop
-      - desktop-lefacy
+      - desktop-legacy
       - gsettings
       - home
       - network
-      - network-bind
       - opengl
       - pulseaudio
       - removable-media
@@ -28,10 +41,39 @@ apps:
       - x11
 
 parts:
+  desktop-gtk3:
+    source: https://github.com/Ubuntu/snapcraft-desktop-helpers.git
+    source-type: git
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - libgtk-3-dev
+    stage-packages:
+      - adwaita-icon-theme
+      - dmz-cursor-theme
+      - gnome-themes-standard
+      - libappindicator3-1
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk-3-0
+      - libgtk-3-bin
+      - libxkbcommon0
+      - light-themes
+      - locales-all
+      - mesa-va-drivers
+      - mesa-vdpau-drivers
+      - mesa-vulkan-drivers
+      - shared-mime-info
+      - ttf-ubuntu-font-family
+      - unity-gtk3-module
+      - xdg-user-dirs
   titania:
     plugin: autotools
     source: https://github.com/create3000/titania
     source-type: git
+    after:
+      - desktop-gtk3
     build-packages:
       - gettext
       - intltool
@@ -89,5 +131,6 @@ parts:
       - libx264-155
       - libxml++2.6-2v5
       - libxvidcore4
+      - locales
       - ttf-ubuntu-font-family
       - zlib1g

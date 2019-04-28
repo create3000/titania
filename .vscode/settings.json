@@ -29,6 +29,7 @@
         "snap/prime": true,
         "snap/snap": true,
         "snap/stage": true,
+        "snap/titania_*.snap": true,
         "stamp-h1": true
     },
     "files.eol": "\n",

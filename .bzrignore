@@ -49,6 +49,10 @@ titania.substvars
 Documentation/Titania/html
 *.tmp
 
+snap/parts
+snap/prime
+snap/snap
+snap/stage
 titania_*.snap
 
 .vs
