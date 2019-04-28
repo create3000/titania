@@ -13,7 +13,7 @@ clean:
 
 # Or use snapcraft from /snap/bin/snapcraft
 compile:
-	snapcraft
+	/snap/bin/snapcraft
 
 install: remove
 	sudo snap install titania_*.snap --devmode --dangerous
