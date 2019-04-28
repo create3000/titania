@@ -1,5 +1,5 @@
 
-#pragma X3D include "Pack.h"
+#pragma X3D include "Pack.glsl"
 
 #ifdef X3D_SHADOWS
 

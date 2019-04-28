@@ -1,5 +1,5 @@
 
-#pragma X3D include "Perlin.h"
+#pragma X3D include "Perlin.glsl"
 
 uniform int         x3d_NumTextures;
 uniform int         x3d_TextureType [x3d_MaxTextures]; // x3d_None, x3d_TextureType2D or x3d_TextureTypeCubeMapTexture
