@@ -5,6 +5,7 @@ configure:
 	sudo snap install snapcraft --classic
 
 clean:
+	/snap/bin/snapcraft clean
 	rm -r -f parts
 	rm -r -f prime
 	rm -r -f snap

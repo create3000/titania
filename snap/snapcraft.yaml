@@ -60,6 +60,7 @@ parts:
       - libgtk-3-bin
       - libxkbcommon0
       - light-themes
+      - locales
       - locales-all
       - mesa-va-drivers
       - mesa-vdpau-drivers
@@ -131,6 +132,5 @@ parts:
       - libx264-155
       - libxml++2.6-2v5
       - libxvidcore4
-      - locales
       - ttf-ubuntu-font-family
       - zlib1g
