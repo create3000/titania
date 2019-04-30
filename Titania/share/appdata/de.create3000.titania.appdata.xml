@@ -7,6 +7,7 @@
   <translation type="gettext">titania</translation>
   <name>Titania X3D Editor</name>
   <summary>Edit X3D files</summary>
+  <content_rating type="oars-1.1"></content_rating>
   <description>
     <p>
       Whether you are a graphic designer, modeller, or scientist, Titania provides
