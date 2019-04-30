@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
-  <id>de.create3000.titania.desktop</id>
-  <name>Titania</name>
-  <summary>Titania X3D Editor</summary>
+<!-- Copyright 2019 Holger Seelig <holger.seelig@gmail.com> -->
+<component type="desktop-application">
+  <id>de.create3000.Titania</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <translation type="gettext">titania</translation>
+  <name>Titania X3D Editor</name>
+  <summary>Edit X3D files</summary>
   <description>
-    <p>Titania is a X3D/VRML editor and browser for the Linux operating system.</p>
+    <p>
+      Whether you are a graphic designer, modeller, or scientist, Titania provides
+      you with sophisticated tools to get your job done. It supports the entirety
+      of the X3D pipeline — modeling, rigging, animation, simulation, rendering,
+      and compositing.
+    </p>
   </description>
-  <developer_name>Holger Seelig</developer_name>
-  <update_contact>holger.seelig@yahoo.de</update_contact>
-  <metadata_license>GPLv3</metadata_license>
-  <project_license>GPLv3</project_license>
-  <url type="homepage">http://www.create3000.de</url>
+  <url type="homepage">http://create3000.de/</url>
   <url type="bugtracker">https://github.com/create3000/titania/issues</url>
   <screenshots>
     <screenshot type="default">
-      <image type="source">http://create3000.de/wp-content/uploads/2017/08/browser-size.png</image>
-    </screenshot>
-    <screenshot>
-      <image type="source">http://create3000.de/wp-content/uploads/2017/08/ExternalToolsEditor.png</image>
+      <image>http://create3000.de/wp-content/uploads/2017/08/mushrooms.jpg</image>
+      <caption>Main application window</caption>
     </screenshot>
   </screenshots>
+  <icon type="remote" height="64" width="64">http://create3000.de/wp-content/uploads/2019/04/icon64.png</icon>
+  <icon type="remote" height="128" width="128">http://create3000.de/wp-content/uploads/2019/04/icon128.png</icon>
+  <launchable type="desktop-id">de.create3000.Titania.desktop</launchable>
 </component>
