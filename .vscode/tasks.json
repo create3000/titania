@@ -36,7 +36,7 @@
         {
             "label": "Git Push GitHub",
             "type": "shell",
-            "command": "git push github",
+            "command": "git push github; git rev-parse HEAD",
             "problemMatcher": []
         },
         {

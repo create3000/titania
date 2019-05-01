@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2019 Holger Seelig <holger.seelig@gmail.com> -->
+<!-- Copyright 2019 Holger Seelig -->
 <component type="desktop-application">
   <id>de.create3000.Titania</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <translation type="gettext">titania</translation>
   <name>Titania X3D Editor</name>
-  <summary>Edit X3D files</summary>
+  <summary>Edit, view, and navigate in X3D worlds</summary>
   <content_rating type="oars-1.1"></content_rating>
   <description>
     <p>
@@ -16,6 +16,7 @@
       and compositing.
     </p>
   </description>
+  <update_contact>holger_dot_seelig_at_gmail.com</update_contact>
   <url type="homepage">http://create3000.de/</url>
   <url type="bugtracker">https://github.com/create3000/titania/issues</url>
   <screenshots>
@@ -27,4 +28,7 @@
   <icon type="remote" height="64" width="64">http://create3000.de/wp-content/uploads/2019/04/icon64.png</icon>
   <icon type="remote" height="128" width="128">http://create3000.de/wp-content/uploads/2019/04/icon128.png</icon>
   <launchable type="desktop-id">de.create3000.Titania.desktop</launchable>
+  <releases>
+    <release date="2019-04-30" version="4.5.3"/>
+  </releases>
 </component>
