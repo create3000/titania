@@ -137,6 +137,9 @@ ExternalTool::run (const std::string & workingDirectory,
 		{
 			commandWithArgs .emplace_back ("flatpak-spawn");
 			commandWithArgs .emplace_back ("--host");
+
+			for (const auto & variable : environment)
+				commandWithArgs .emplace_back ("--env=" + variable);
 		}
 
 		commandWithArgs .emplace_back (command);
