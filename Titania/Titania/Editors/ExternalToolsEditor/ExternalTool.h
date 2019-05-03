@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -112,6 +112,7 @@ private:
 	run (const std::string & workingDirectory,
 	     const std::string & command,
 	     const std::vector <std::string> & environment,
+	     const std::vector <std::string> & shortEnvironment,
 	     const std::string & input,
 	     const bool stdout);
 
@@ -123,7 +124,7 @@ private:
 
 	void
 	on_stdout ();
-	
+
 	void
 	on_stderr ();
 
@@ -133,8 +134,8 @@ private:
 	void
 	saveScenes ();
 
-	std::vector <std::string> 
-	getEnvironment () const;
+	std::vector <std::string>
+	getEnvironment (const bool defaultValues) const;
 
 	std::string
 	getInput () const;

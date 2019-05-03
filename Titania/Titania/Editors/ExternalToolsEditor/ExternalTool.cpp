@@ -106,7 +106,8 @@ ExternalTool::start ()
 	                      this,
 	                      Glib::get_home_dir (),
 	                      command,
-	                      getEnvironment (),
+	                      getEnvironment (true),
+	                      getEnvironment (false),
 	                      getInput (),
 	                      outputType not_eq "NOTHING");
 }
@@ -115,6 +116,7 @@ void
 ExternalTool::run (const std::string & workingDirectory,
                    const std::string & command,
                    const std::vector <std::string> & environment,
+                   const std::vector <std::string> & shortEnvironment,
                    const std::string & input,
                    const bool processOutput)
 {
@@ -138,7 +140,7 @@ ExternalTool::run (const std::string & workingDirectory,
 			commandWithArgs .emplace_back ("flatpak-spawn");
 			commandWithArgs .emplace_back ("--host");
 
-			for (const auto & variable : environment)
+			for (const auto & variable : shortEnvironment)
 				commandWithArgs .emplace_back ("--env=" + variable);
 		}
 
@@ -295,9 +297,9 @@ ExternalTool::getInput () const
 }
 
 std::vector <std::string>
-ExternalTool::getEnvironment () const
+ExternalTool::getEnvironment (const bool defaultValues) const
 {
-	std::vector <std::string> environment = Pipe::getEnvironment ();
+	auto environment = defaultValues ? Pipe::getEnvironment () : std::vector <std::string> ();
 
 	Configuration projectsEditor ("Sidebar.FilesEditor.ProjectsEditor");
 

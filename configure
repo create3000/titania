@@ -3878,7 +3878,7 @@ fi
 
 
 
-CXXFLAGS="-Wall -std=c++17 -O3 -fopenmp -Wno-narrowing -Wno-deprecated -Wno-unused-result"
+CXXFLAGS="-std=c++17 -O3 -fopenmp -Wall -Wno-narrowing -Wno-deprecated -Wno-unused-result"
 
 ### add GTKMM_DISABLE_DEPRECATED
 
