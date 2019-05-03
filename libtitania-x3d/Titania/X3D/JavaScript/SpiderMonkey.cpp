@@ -91,7 +91,7 @@ SpiderMonkey::initialize ()
 JSContext*
 SpiderMonkey::createContext ()
 {
-	const auto cx = JS_NewContext (2048L * 1024 * 1024);
+	const auto cx = JS_NewContext (2048LL * 1024 * 1024);
 
 	if (not cx)
 		return nullptr;
