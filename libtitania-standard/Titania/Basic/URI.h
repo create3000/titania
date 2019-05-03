@@ -838,6 +838,9 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::escape (const string_type & reserved_chars) const
 {
+	if (scheme () == DataSchemeId)
+		return *this;
+
 	return basic_uri (is_local (),
 	                  is_absolute (),
 	                  scheme (),
@@ -853,6 +856,9 @@ template <class StringT>
 basic_uri <StringT>
 basic_uri <StringT>::unescape () const
 {
+	if (scheme () == DataSchemeId)
+		return *this;
+
 	return basic_uri (is_local (),
 	                  is_absolute (),
 	                  scheme (),

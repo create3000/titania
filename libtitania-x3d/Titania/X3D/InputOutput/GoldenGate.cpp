@@ -106,7 +106,7 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 		try
 		{
 			const auto contentType = istream .response_headers () .at ("Content-Type");
-		
+
 			//__LOG__ << contentType << " : " << uri << std::endl;
 
 			try
@@ -123,10 +123,10 @@ GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const
 				{
 					if (Gio::content_type_is_a (contentType, "image/*"))
 						return image (scene, uri, istream);
-	
+
 					if (Gio::content_type_is_a (contentType, "audio/*"))
 						return audio (scene, uri, istream);
-	
+
 					if (Gio::content_type_is_a (contentType, "video/*"))
 						return video (scene, uri, istream);
 				}
@@ -208,18 +208,18 @@ GoldenGate::getExtensions ()
 	extensions .emplace (".vrml",   &vrml);
 	extensions .emplace (".vrm",    &vrml);
 
-	// X3D Vrml Classic Encoding 
+	// X3D Vrml Classic Encoding
 	extensions .emplace (".x3dv",    &vrml);
 	extensions .emplace (".x3dvz",   &vrml);
 	extensions .emplace (".x3dv.gz", &vrml); /// Todo: does not work with URI::extension
 
-	// X3D XML Encoding 
+	// X3D XML Encoding
 	extensions .emplace (".x3d",    &GoldenParser::parse <XMLParser>);
 	extensions .emplace (".x3dz",   &GoldenParser::parse <XMLParser>);
 	extensions .emplace (".x3d.gz", &GoldenParser::parse <XMLParser>); /// Todo: does not work with URI::extension
 	extensions .emplace (".xml",    &GoldenParser::parse <XMLParser>);
 
-	// X3D XML Encoding 
+	// X3D XML Encoding
 	extensions .emplace (".x3dj", &GoldenParser::parse <JSONParser>);
 
 	// GLTF
@@ -257,7 +257,7 @@ GoldenGate::vrml (const X3DScenePtr & scene, const basic::uri & uri, basic::ifil
 void
 GoldenGate::text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	// Test
+	// Text
 
 	std::string errorString;
 
@@ -333,7 +333,7 @@ GoldenGate::image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	// Parse into scene.
 
 	basic::ifilestream goldenstream (file);
-	
+
 	scene -> fromStream (uri, goldenstream);
 }
 
@@ -349,7 +349,7 @@ GoldenGate::audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	// Parse into scene.
 
 	basic::ifilestream goldenstream (file);
-	
+
 	scene -> fromStream (uri, goldenstream);
 }
 
@@ -376,7 +376,7 @@ GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifi
 	// Parse into scene.
 
 	basic::ifilestream goldenstream (file);
-	
+
 	scene -> fromStream (uri, goldenstream);
 }
 

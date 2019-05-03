@@ -187,7 +187,7 @@ X3DBrowserNotebook::initialize ()
 		{ }
 	}
 
-	// 
+	//
 
 	getCurrentScene ()  .addInterest (&X3DBrowserNotebook::set_history, this);
 	worldURL_changed () .addInterest (&X3DBrowserNotebook::set_history, this);
@@ -211,12 +211,12 @@ X3DBrowserNotebook::configure ()
 
 	if (not getConfig () -> hasItem ("addStandardMetaData"))
 		getConfig () -> setItem <bool> ("addStandardMetaData", true);
-	
+
 	// RenderingProperties
 
 	getRenderingPropertiesAction () -> set_active (getConfig () -> getItem <bool> ("renderingProperties"));
 
-	
+
 	// Rubberband
 
 	getRubberbandAction () -> set_active (getConfig () -> getItem <bool> ("rubberBand", true));
@@ -224,7 +224,7 @@ X3DBrowserNotebook::configure ()
 	if (not getConfig () -> hasItem ("isLive"))
 		getConfig () -> setItem <bool> ("isLive", true);
 
-	
+
 	// isLive
 
 	isLive (isLive ());
@@ -316,7 +316,7 @@ X3DBrowserNotebook::setPage (const NotebookPagePtr & value)
 	executionContext = browser -> getExecutionContext ();
 
 	setBrowser (browser);
-	
+
 	page -> updateTitle ();
 
 	browser -> shutdowned ()  .addInterest (&X3DBrowserNotebook::shutdown,             this);
@@ -453,7 +453,7 @@ X3DBrowserNotebook::save (const X3D::X3DScenePtr & scene, const basic::uri & wor
 	catch (const X3D::Error <X3D::NOT_SUPPORTED> & error)
 	{
 		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Couldn't save file!"));
 		dialog -> setText (_ ("The given filename does not have any known file extension. Please enter a known file extension like .x3d or .x3dv."));
@@ -464,12 +464,12 @@ X3DBrowserNotebook::save (const X3D::X3DScenePtr & scene, const basic::uri & wor
 	catch (const X3D::Error <X3D::INVALID_URL> & error)
 	{
 		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Couldn't save file!"));
 		dialog -> setText (_ ("Tip: check file and folder permissions."));
 		dialog -> run ();
-	
+
 		return false;
 	}
 }

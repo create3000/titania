@@ -186,7 +186,7 @@ X3DNotebookPage::setSavedTime (const basic::uri & url)
 	{
 		const auto file     = Gio::File::create_for_uri (getScene () -> getWorldURL ());
 		const auto fileInfo = file -> query_info ();
-	
+
 		savedTime = fileInfo -> modification_time () .as_double ();
 	}
 	catch (const Glib::Error & error)
@@ -462,12 +462,12 @@ X3DNotebookPage::on_file_changed ()
 	if (getModified ())
 	{
 		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (_ ("File modified externally!"));
 		dialog -> setText (_ (basic::sprintf ("»%s« has been modified by another program. Reload and discard changes?", getScene () -> getWorldURL () .basename () .c_str ())));
 		dialog -> getOkButton () .set_label ("gtk-refresh");
-	
+
 		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 			return;
 	}
