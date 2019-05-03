@@ -101,7 +101,7 @@ X3DDBusInterface::realize ()
 			return;
 
 		introspectionData = Gio::DBus::NodeInfo::create_for_xml (introspectionXML);
-      registeredId      = get_dbus_connection () -> register_object ("/de/create3000/titania", introspectionData -> lookup_interface (), interfaceVTable);
+      registeredId      = get_dbus_connection () -> register_object ("/de/create3000/Titania", introspectionData -> lookup_interface (), interfaceVTable);
 
 		getBrowserWindow () -> getCurrentScene ()             .addInterest (&X3DDBusInterface::set_current_scene, this);
 		getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DDBusInterface::set_selection,     this);
@@ -115,13 +115,13 @@ X3DDBusInterface::realize ()
 void
 X3DDBusInterface::set_current_scene ()
 {
-	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.Titania", "CurrentSceneChanged");
+	get_dbus_connection () -> emit_signal ("/de/create3000/Titania", "de.create3000.Titania", "CurrentSceneChanged");
 }
 
 void
 X3DDBusInterface::set_selection ()
 {
-	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.Titania", "SelectionChanged");
+	get_dbus_connection () -> emit_signal ("/de/create3000/Titania", "de.create3000.Titania", "SelectionChanged");
 }
 
 void
