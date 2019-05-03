@@ -58,7 +58,7 @@ namespace titania {
 namespace puck {
 
 BrowserApplication::BrowserApplication (int & argc, char** & argv) :
-	     Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
+	     Gtk::Application (argc, argv, "de.create3000.Titania", Gio::APPLICATION_HANDLES_OPEN),
 	X3DBrowserApplication (),
 	     X3DDBusInterface ()
 {

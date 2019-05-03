@@ -63,7 +63,7 @@ namespace puck {
 
 const Glib::ustring X3DDBusInterface::introspectionXML =
 "<node>"
-"  <interface name='de.create3000.titania'>"
+"  <interface name='de.create3000.Titania'>"
 "    <method name='GetCurrentScene'>"
 "      <arg type='s' name='encoding' direction='in'/>"
 "      <arg type='s' name='x3dSyntax' direction='out'/>"
@@ -115,13 +115,13 @@ X3DDBusInterface::realize ()
 void
 X3DDBusInterface::set_current_scene ()
 {
-	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "CurrentSceneChanged");
+	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.Titania", "CurrentSceneChanged");
 }
 
 void
 X3DDBusInterface::set_selection ()
 {
-	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.titania", "SelectionChanged");
+	get_dbus_connection () -> emit_signal ("/de/create3000/titania", "de.create3000.Titania", "SelectionChanged");
 }
 
 void
@@ -186,7 +186,7 @@ X3DDBusInterface::getSelection (const Glib::VariantContainerBase & parameters,
 	const auto   x3dSyntax        = X3D::X3DEditor::exportNodes (executionContext, selection, encoding .get (), false);
 	const auto   x3dSyntaxVar     = Glib::Variant <Glib::ustring>::create (x3dSyntax);
 	const auto   response         = Glib::VariantContainerBase::create_tuple (x3dSyntaxVar);
-	
+
 	invocation -> return_value (response);
 }
 
