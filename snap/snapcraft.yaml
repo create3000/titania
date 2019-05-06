@@ -17,6 +17,12 @@ architectures:
   - build-on: amd64
  # - build-on: i386
 
+slots:
+  dbus-titania:
+    interface: dbus
+    bus: session
+    name: de.create3000.titania
+
 apps:
   titania:
     command: desktop-launch $SNAP/bin/titania
@@ -26,6 +32,8 @@ apps:
       LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:$LIBGL_DRIVERS_PATH
 #      LANG: C
 #      LC_ALL: C
+    slots:
+      - dbus-titania
     plugs:
       - alsa
       - desktop
