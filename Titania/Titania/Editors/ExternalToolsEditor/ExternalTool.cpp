@@ -135,14 +135,14 @@ ExternalTool::run (const std::string & workingDirectory,
 
 		std::vector <std::string> commandWithArgs;
 
-		if (not flatpak_spawn .empty ())
-		{
-			commandWithArgs .emplace_back ("flatpak-spawn");
-			commandWithArgs .emplace_back ("--host");
+		// if (not flatpak_spawn .empty ())
+		// {
+		// 	commandWithArgs .emplace_back ("flatpak-spawn");
+		// 	commandWithArgs .emplace_back ("--host");
 
-			for (const auto & variable : shortEnvironment)
-				commandWithArgs .emplace_back ("--env=" + variable);
-		}
+		// 	for (const auto & variable : shortEnvironment)
+		// 		commandWithArgs .emplace_back ("--env=" + variable);
+		// }
 
 		commandWithArgs .emplace_back (command);
 

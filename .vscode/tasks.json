@@ -57,5 +57,11 @@
             "command": "killall make",
             "problemMatcher": []
         },
+        {
+            "label": "Generate Interfaces",
+            "type": "shell",
+            "command": "sh /home/holger/Projekte/Titania/miscellaneous/glade2c++/generate.sh",
+           "problemMatcher": []
+        }
     ]
 }
