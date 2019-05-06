@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,13 +53,23 @@
 
 #include "../../Basic/X3DBaseNode.h"
 
+#include <stack>
+
 namespace titania {
 namespace X3D {
+
+using RenderBackgroundStack = std::stack <bool, std::vector <bool>>;
 
 class X3DEnvironmentalEffectsContext :
 	virtual public X3DBaseNode
 {
 public:
+
+	///  @name Member access
+
+	RenderBackgroundStack &
+	getRenderBackground ()
+	{ return renderBackground; }
 
 	///  @name Destruction
 
@@ -98,6 +108,7 @@ private:
 	///  @name Members
 
 	X3DPtr <ComposedShader> backgroundSphereShader;
+	RenderBackgroundStack   renderBackground;
 
 };
 

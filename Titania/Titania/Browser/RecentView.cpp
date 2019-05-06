@@ -124,7 +124,7 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		// Make snapshot.
 
 		const auto worldURL = browser -> getWorldURL ();
-		auto       image    = browser -> getSnapshot (PREVIEW_SIZE * 4, PREVIEW_SIZE * 4, false, 16);
+		auto       image    = browser -> getSnapshot (PREVIEW_SIZE * 4, PREVIEW_SIZE * 4, true, false, 16);
 
 		// Scale image.
 

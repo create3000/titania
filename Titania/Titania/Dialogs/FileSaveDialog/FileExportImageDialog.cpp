@@ -184,6 +184,7 @@ FileExportImageDialog::run ()
 
 	auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
 	                                                  getImageHeightAdjustment () -> get_value (),
+	                                                  getImageRenderBackgroundSwitch () .get_active (),
 	                                                  getImageAlphaChannelSwitch () .get_active (),
 	                                                  getImageAntialiasingAdjustment () -> get_value ());
 
@@ -256,7 +257,7 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 	catch (const Magick::Exception & error)
 	{
 		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Could not save image!"));
 		dialog -> setText (_ ("Tip: check file and folder permissions."));
@@ -266,7 +267,7 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 	catch (const Glib::Error & error)
 	{
 		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Could not generate image!"));
 		dialog -> setText (error .what ());
@@ -276,7 +277,7 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 	catch (const std::exception & error)
 	{
 		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 		dialog -> setType (Gtk::MESSAGE_ERROR);
 		dialog -> setMessage (_ ("Could not generate image!"));
 		dialog -> setText (_ ("Tip: try a smaller image size and/or less antialiasing."));
@@ -304,7 +305,8 @@ FileExportImageDialog::options ()
 	if (getConfig () -> hasItem ("imageHeight"))
 		getImageHeightAdjustment () -> set_value (getConfig () -> getItem <int32_t> ("imageHeight"));
 
-	getImageAlphaChannelSwitch () .set_active (getConfig () -> getItem <bool> ("imageAlphaChannel"));
+	getImageRenderBackgroundSwitch () .set_active (getConfig () -> getItem <bool> ("imageRenderBackground", true));
+	getImageAlphaChannelSwitch ()     .set_active (getConfig () -> getItem <bool> ("imageAlphaChannel"));
 
 	if (getConfig () -> hasItem ("imageAntialiasing"))
 		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getItem <int32_t> ("imageAntialiasing"), antialiasing));
@@ -320,11 +322,12 @@ FileExportImageDialog::options ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		getConfig () -> setItem ("imageWidth",        (int) getImageWidthAdjustment () -> get_value ());
-		getConfig () -> setItem ("imageHeight",       (int) getImageHeightAdjustment () -> get_value ());
-		getConfig () -> setItem ("imageAlphaChannel", getImageAlphaChannelSwitch () .get_active ());
-		getConfig () -> setItem ("imageAntialiasing", (int) getImageAntialiasingAdjustment () -> get_value ());
-		getConfig () -> setItem ("imageCompression",  (int) getImageCompressionAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageWidth",            (int) getImageWidthAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageHeight",           (int) getImageHeightAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageRenderBackground", getImageRenderBackgroundSwitch () .get_active ());
+		getConfig () -> setItem ("imageAlphaChannel",     getImageAlphaChannelSwitch () .get_active ());
+		getConfig () -> setItem ("imageAntialiasing",     (int) getImageAntialiasingAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageCompression",      (int) getImageCompressionAdjustment () -> get_value ());
 	}
 
 	getImageOptionsDialog () .hide ();

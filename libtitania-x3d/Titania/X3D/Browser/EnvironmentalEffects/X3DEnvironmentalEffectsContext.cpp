@@ -59,7 +59,8 @@ namespace X3D {
 
 X3DEnvironmentalEffectsContext::X3DEnvironmentalEffectsContext () :
 	           X3DBaseNode (),
-   backgroundSphereShader ()
+   backgroundSphereShader (),
+	      renderBackground ({ true })
 {
 	addChildObjects (backgroundSphereShader);
 }

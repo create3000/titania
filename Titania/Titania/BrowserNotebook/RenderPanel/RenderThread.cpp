@@ -207,7 +207,7 @@ RenderThread::getFrame (const int32_t frameNumber)
 	auto frame = std::make_shared <RenderThreadFrame> ();
 
 	frame -> frameNumber = frameNumber;
-	frame -> image       = browser -> getSnapshot (width, height, false, antialiasing);
+	frame -> image       = browser -> getSnapshot (width, height, true, false, antialiasing);
 
 	// Make PNG always RGB, otherwise the image is sometimes GRAY if ImageMagick desides that this is possible.
 	frame -> image .defineValue ("PNG", "color-type", "2");

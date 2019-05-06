@@ -241,7 +241,7 @@ X3DBrowserContext::on_unmap ()
  *  throws Error <INSUFFICIENT_CAPABILITIES>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
 Magick::Image
-X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
+X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool renderBackground, const bool alphaChannel, const size_t antialiasing)
 {
 	// Make snapshot.
 
@@ -250,43 +250,45 @@ X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const b
 	if (getWorld ())
 	{
 		const auto viewport = getViewport ();
-	
+
 		// Render to frame buffer.
-	
+
 		FrameBuffer frameBuffer (this, width, height, std::min <size_t> (antialiasing, getMaxSamples ()));
-	
+
 		frameBuffer .setup ();
 		frameBuffer .bind ();
-	
-		getAlphaChannel () .push (alphaChannel);
+
+		getRenderBackground () .push (renderBackground);
 		getDisplayTools () .push (false);
-	
+
 		reshape (Vector4i (0, 0, width, height));
 		update ();
 		reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
-	
+
 		frameBuffer .readPixels ();
 		frameBuffer .unbind ();
-	
-		getDisplayTools () .pop ();
-		getAlphaChannel () .pop ();
-	
+
+		getDisplayTools ()     .pop ();
+		getRenderBackground () .pop ();
+
 		// Process image.
-	
+
 		Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
-	
+
 		if (alphaChannel)
+		{
 			image .type (Magick::TrueColorMatteType);
+		}
 		else
 		{
 			image .matte (false);
 			image .type (Magick::TrueColorType);
 		}
-	
+
 		image .flip ();
 		image .resolutionUnits (Magick::PixelsPerInchResolution);
 		image .density (Magick::Geometry (72, 72));
-	
+
 		return image;
 	}
 
@@ -366,7 +368,7 @@ X3DBrowserContext::update ()
 
 		glViewport (getViewport () [0], getViewport () [1], getViewport () [2], getViewport () [3]);
 		glScissor  (getViewport () [0], getViewport () [1], getViewport () [2], getViewport () [3]);
-	
+
 		glClearColor (0, 0, 0, 0);
 		glClear (GL_COLOR_BUFFER_BIT);
 

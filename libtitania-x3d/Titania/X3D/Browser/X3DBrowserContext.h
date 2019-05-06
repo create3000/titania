@@ -156,7 +156,7 @@ public:
 	const Output &
 	changed () const
 	{ return changedOutput; }
-	
+
 	///  @name Member access
 
 	const X3DBrowserContextPtr &
@@ -189,7 +189,7 @@ public:
 
 	///  throws Error <INSUFFICIENT_CAPABILITIES>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	Magick::Image
-	getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing);
+	getSnapshot (const size_t width, const size_t height, const bool renderBackground, const bool alphaChannel, const size_t antialiasing);
 
 	///  @name Event handling
 

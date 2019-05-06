@@ -233,6 +233,10 @@ public:
 	getImageAntialiasingBox () const
 	{ return *m_ImageAntialiasingBox; }
 
+	Gtk::Switch &
+	getImageRenderBackgroundSwitch () const
+	{ return *m_ImageRenderBackgroundSwitch; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -303,6 +307,7 @@ private:
 	Gtk::HeaderBar* m_ImageOptionsHeaderBar;
 	Gtk::Switch* m_ImageAlphaChannelSwitch;
 	Gtk::Box* m_ImageAntialiasingBox;
+	Gtk::Switch* m_ImageRenderBackgroundSwitch;
 
 };
 

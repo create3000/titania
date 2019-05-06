@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,6 +68,7 @@ public:
 		       imageFilename (),
 		               width (300),
 		              height (100),
+		      hideBackground (false),
 		        alphaChannel (false),
 		        antialiasing (4),
 		      exportFilename (),
@@ -80,6 +81,7 @@ public:
 		Glib::OptionEntry optionExportImage;
 		Glib::OptionEntry optionWidth;
 		Glib::OptionEntry optionHeight;
+		Glib::OptionEntry optionHideBackground;
 		Glib::OptionEntry optionAlphaChannel;
 		Glib::OptionEntry optionAntialiasing;
 		Glib::OptionEntry optionExportFilename;
@@ -110,6 +112,10 @@ public:
 		optionHeight .set_long_name ("height");
 		optionHeight .set_arg_description ("HEIGHT");
 		optionHeight .set_description ("Set image height.");
+
+		optionHideBackground .set_short_name ('b');
+		optionHideBackground .set_long_name ("hide-background");
+		optionHideBackground .set_description ("Set whether the background should be rendered or not.");
 
 		optionAlphaChannel .set_short_name ('c');
 		optionAlphaChannel .set_long_name ("alpha-channel");
@@ -149,6 +155,7 @@ public:
 		imageGroup  .add_entry (optionExportImage,          imageFilename);
 		imageGroup  .add_entry (optionWidth,                width);
 		imageGroup  .add_entry (optionHeight,               height);
+		imageGroup  .add_entry (optionHideBackground,       hideBackground);
 		imageGroup  .add_entry (optionAlphaChannel,         alphaChannel);
 		imageGroup  .add_entry (optionAntialiasing,         antialiasing);
 		exportGroup .add_entry (optionExportFilename,       exportFilename);
@@ -172,6 +179,7 @@ public:
 	Glib::ustring               imageFilename;
 	int32_t                     width;
 	int32_t                     height;
+	bool                        hideBackground;
 	bool                        alphaChannel;
 	int32_t                     antialiasing;
 	Glib::ustring               exportFilename;

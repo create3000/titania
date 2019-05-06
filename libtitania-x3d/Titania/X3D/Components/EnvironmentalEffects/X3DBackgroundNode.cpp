@@ -126,7 +126,7 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	addType (X3DConstants::X3DBackgroundNode);
 
 	addChildObjects (textures);
-	
+
 	skyAngle ()    .setUnit (UnitCategory::ANGLE);
 	groundAngle () .setUnit (UnitCategory::ANGLE);
 }
@@ -225,7 +225,7 @@ X3DBackgroundNode::buildHalfSphere (const double radius, const std::vector <doub
 
 	std::complex <double> y;
 	Vector3f              p;
-	
+
 	const auto    vAngleMax   = bottom ? pi_2 <double> : pi <double>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
 
@@ -387,7 +387,7 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 		case TraverseType::CAMERA:
 		{
 			renderObject -> getLayer () -> getBackgrounds () -> pushBack (this);
-			
+
 			modelMatrix = renderObject -> getModelViewMatrix () .get ();
 			break;
 		}
@@ -408,7 +408,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 	{
 		const auto browser = renderObject -> getBrowser ();
 
-		if (browser -> getAlphaChannel () .top ())
+		if (not browser -> getRenderBackground () .top ())
 			return;
 
 		if (hidden)

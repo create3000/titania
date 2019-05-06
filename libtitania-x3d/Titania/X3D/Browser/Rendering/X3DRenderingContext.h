@@ -62,8 +62,7 @@ namespace X3D {
 
 class MotionBlur;
 
-using ClipPlaneStack    = std::stack <GLenum, std::vector <GLenum>>;
-using AlphaChannelStack = std::stack <bool, std::vector <bool>>;
+using ClipPlaneStack = std::stack <GLenum, std::vector <GLenum>>;
 
 class X3DRenderingContext :
 	virtual public X3DBaseNode
@@ -82,10 +81,6 @@ public:
 	ClipPlaneStack &
 	getClipPlanes ()
 	{ return clipPlanes; }
-
-	AlphaChannelStack &
-	getAlphaChannel ()
-	{ return alphaChannel; }
 
 	const X3DPtr <MotionBlur> &
 	getMotionBlur () const
@@ -128,7 +123,6 @@ private:
 	MFInt32             viewport;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
-	AlphaChannelStack   alphaChannel;
 	X3DPtr <MotionBlur> motionBlur;
 
 };
