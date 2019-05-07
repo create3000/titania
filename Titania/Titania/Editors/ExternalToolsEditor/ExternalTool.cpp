@@ -131,18 +131,20 @@ ExternalTool::run (const std::string & workingDirectory,
 
 	try
 	{
-		const auto flatpak_spawn = Glib::find_program_in_path ("flatpak-spawn");
-
 		std::vector <std::string> commandWithArgs;
 
-		// if (not flatpak_spawn .empty ())
-		// {
-		// 	commandWithArgs .emplace_back ("flatpak-spawn");
-		// 	commandWithArgs .emplace_back ("--host");
+		#ifdef TITANIA_FLATPAK_SPAWN
+		const auto flatpak_spawn = Glib::find_program_in_path ("flatpak-spawn");
 
-		// 	for (const auto & variable : shortEnvironment)
-		// 		commandWithArgs .emplace_back ("--env=" + variable);
-		// }
+		if (not flatpak_spawn .empty ())
+		{
+			commandWithArgs .emplace_back ("flatpak-spawn");
+			commandWithArgs .emplace_back ("--host");
+
+			for (const auto & variable : shortEnvironment)
+				commandWithArgs .emplace_back ("--env=" + variable);
+		}
+		#endif
 
 		commandWithArgs .emplace_back (command);
 

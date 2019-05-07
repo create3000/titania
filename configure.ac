@@ -31,6 +31,11 @@ AC_ARG_ENABLE(feature,
 		[Enable experimental features [default=NO]]),
 		enable_feature=yes, enable_feature=no)
 
+AC_ARG_ENABLE(flatpak_spawn,
+	AC_HELP_STRING([--enable-flatpak-spawn],
+		[Enable flatpak spawn [default=NO]]),
+		enable_flatpak_spawn=yes, enable_flatpak_spawn=no)
+
 
 dnl ***************************************************************************
 dnl Compile options
@@ -49,6 +54,10 @@ fi
 
 if test "x$enable_feature" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_FEATURE"
+fi
+
+if test "x$enable_flatpak_spawn" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_FLATPAK_SPAWN"
 fi
 
 LDFLAGS="-rdynamic -latomic"

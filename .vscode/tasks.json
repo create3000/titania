@@ -24,7 +24,7 @@
         {
             "label": "Configure Solution",
             "type": "shell",
-            "command": "./autogen.sh --enable-debug --enable-feature",
+            "command": "./autogen.sh --enable-debug --enable-feature --enable-flatpak-spawn",
             "problemMatcher": []
         },
         {
