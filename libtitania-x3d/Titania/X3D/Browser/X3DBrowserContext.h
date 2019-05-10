@@ -76,6 +76,7 @@
 #include "../Browser/Sound/X3DSoundContext.h"
 #include "../Browser/Text/X3DTextContext.h"
 #include "../Browser/Texturing/X3DTexturingContext.h"
+#include "../Browser/Texturing3D/X3DTexturing3DContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 #include "../Browser/Tools/X3DToolContext.h"
 
@@ -108,6 +109,7 @@ class X3DBrowserContext :
 	public X3DTextContext,
 	public X3DTexturingContext,
 	public X3DCubeMapTexturingContext,
+	public X3DTexturing3DContext,
 	public X3DShapeContext,
 	public X3DEnvironmentalEffectsContext,
 	public X3DTimeContext,

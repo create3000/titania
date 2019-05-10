@@ -219,6 +219,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Texturing/X3DTexture.lo \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.lo \
 	Titania/X3D/Browser/Texturing3D/Texture3D.lo \
+	Titania/X3D/Browser/Texturing3D/X3DTexturing3DContext.lo \
 	Titania/X3D/Browser/Tools/LassoSelection.lo \
 	Titania/X3D/Browser/Tools/LightSaber.lo \
 	Titania/X3D/Browser/Tools/RectangleSelection.lo \
@@ -915,6 +916,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo \
 	Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo \
 	Titania/X3D/Browser/Texturing3D/$(DEPDIR)/Texture3D.Plo \
+	Titania/X3D/Browser/Texturing3D/$(DEPDIR)/X3DTexturing3DContext.Plo \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/LassoSelection.Plo \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/LightSaber.Plo \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/RectangleSelection.Plo \
@@ -1838,6 +1840,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
 	Titania/X3D/Browser/Texturing3D/Texture3D.cpp \
+	Titania/X3D/Browser/Texturing3D/X3DTexturing3DContext.cpp \
 	Titania/X3D/Browser/Tools/LassoSelection.cpp \
 	Titania/X3D/Browser/Tools/LightSaber.cpp \
 	Titania/X3D/Browser/Tools/RectangleSelection.cpp \
@@ -2944,6 +2947,9 @@ Titania/X3D/Browser/Texturing3D/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Texturing3D/$(DEPDIR)
 	@: > Titania/X3D/Browser/Texturing3D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Texturing3D/Texture3D.lo:  \
+	Titania/X3D/Browser/Texturing3D/$(am__dirstamp) \
+	Titania/X3D/Browser/Texturing3D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Texturing3D/X3DTexturing3DContext.lo:  \
 	Titania/X3D/Browser/Texturing3D/$(am__dirstamp) \
 	Titania/X3D/Browser/Texturing3D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Tools/$(am__dirstamp):
@@ -5560,6 +5566,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing3D/$(DEPDIR)/Texture3D.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing3D/$(DEPDIR)/X3DTexturing3DContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/LassoSelection.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/LightSaber.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/RectangleSelection.Plo@am__quote@ # am--include-marker
@@ -6783,6 +6790,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo
 	-rm -f Titania/X3D/Browser/Texturing3D/$(DEPDIR)/Texture3D.Plo
+	-rm -f Titania/X3D/Browser/Texturing3D/$(DEPDIR)/X3DTexturing3DContext.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/LassoSelection.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/LightSaber.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/RectangleSelection.Plo
@@ -7515,6 +7523,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo
 	-rm -f Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo
 	-rm -f Titania/X3D/Browser/Texturing3D/$(DEPDIR)/Texture3D.Plo
+	-rm -f Titania/X3D/Browser/Texturing3D/$(DEPDIR)/X3DTexturing3DContext.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/LassoSelection.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/LightSaber.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/RectangleSelection.Plo

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_X3DCUBE_MAP_TEXTURING_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_X3DCUBE_MAP_TEXTURING_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_TEXTURING3D_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_TEXTURING3D_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields.h"
@@ -59,9 +59,7 @@
 namespace titania {
 namespace X3D {
 
-class TextureProperties;
-
-class X3DCubeMapTexturingContext :
+class X3DTexturing3DContext :
 	virtual public X3DBaseNode
 {
 public:
@@ -74,20 +72,18 @@ public:
 	{ }
 
 	virtual
-	~X3DCubeMapTexturingContext () override;
+	~X3DTexturing3DContext () override;
 
 
 protected:
 
 	///  @name Friends
 
-	friend class BrowserOptions;
-	friend class X3DEnvironmentTextureNode;
 	friend class X3DProgrammableShaderObject;
 
 	///  @name Construction
 
-	X3DCubeMapTexturingContext ();
+	X3DTexturing3DContext ();
 
 	virtual
 	void
@@ -96,20 +92,15 @@ protected:
 	///  @name Member access
 
 	std::vector <int32_t>
-	getCubeMapTextureUnits ()
-	{ return cubeMapTextureUnits; }
-
-	const X3DPtr <TextureProperties> &
-	getDefaultCubeMapTextureProperties () const
-	{ return defaultCubeMapTextureProperties; }
+	getTexture3DUnits ()
+	{ return texture3DUnits; }
 
 
 private:
 
 	///  @name Members
 
-	std::vector <int32_t>      cubeMapTextureUnits;
-	X3DPtr <TextureProperties> defaultCubeMapTextureProperties;
+	std::vector <int32_t> texture3DUnits;
 
 };
 
