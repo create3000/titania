@@ -218,6 +218,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ShadowMap                           .clear ();
 	x3d_TextureType                         .clear ();
 	x3d_Texture2D                           .clear ();
+	x3d_Texture3D                           .clear ();
 	x3d_CubeMapTexture                      .clear ();
 	x3d_MultiTextureMode                    .clear ();
 	x3d_MultiTextureAlphaMode               .clear ();
@@ -339,7 +340,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	static const auto   linetype       = getBrowser () -> getLinetypeUnit ();
 	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
 	static const auto & texture2D      = getBrowser () -> getTexture2DUnits ();
-	static const auto & texture3D      = getBrowser () -> getTexture2DUnits ();
+	static const auto & texture3D      = getBrowser () -> getTexture3DUnits ();
 	static const auto & cubeMapTexture = getBrowser () -> getCubeMapTextureUnits ();
 	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
 

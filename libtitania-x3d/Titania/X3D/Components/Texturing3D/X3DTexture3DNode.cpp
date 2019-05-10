@@ -93,7 +93,7 @@ X3DTexture3DNode::initialize ()
 	repeatS ()           .addInterest (&X3DTexture3DNode::updateTextureProperties, this);
 	repeatT ()           .addInterest (&X3DTexture3DNode::updateTextureProperties, this);
 	repeatR ()           .addInterest (&X3DTexture3DNode::updateTextureProperties, this);
-	textureProperties () .addInterest (&X3DTexture3DNode::set_textureProperties, this);
+	textureProperties () .addInterest (&X3DTexture3DNode::set_textureProperties,   this);
 
 	set_textureProperties ();
 }
