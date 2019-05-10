@@ -80,6 +80,7 @@ protected:
 	///  @name Friends
 
 	friend class X3DProgrammableShaderObject;
+	friend class X3DTexture3DNode;
 
 	///  @name Construction
 

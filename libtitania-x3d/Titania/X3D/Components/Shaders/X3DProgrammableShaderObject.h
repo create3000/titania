@@ -398,7 +398,7 @@ public:
 	virtual
 	void
 	enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components);
-	
+
 	virtual
 	void
 	disableFloatAttrib (const std::string & name);
@@ -406,23 +406,23 @@ public:
 	virtual
 	void
 	enableIntegerAttrib (const std::string & name, const GLuint buffer, const size_t components);
-	
+
 	virtual
 	void
 	disableIntegerAttrib (const std::string & name);
-	
+
 	virtual
 	void
 	enableMatrix3Attrib (const std::string & name, const GLuint buffer);
-	
+
 	virtual
 	void
 	disableMatrix3Attrib (const std::string & name);
-	
+
 	virtual
 	void
 	enableMatrix4Attrib (const std::string & name, const GLuint buffer);
-	
+
 	virtual
 	void
 	disableMatrix4Attrib (const std::string & name);
@@ -430,7 +430,7 @@ public:
 	virtual
 	void
 	enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
-	
+
 	virtual
 	void
 	disableFogDepthAttrib ();
@@ -438,7 +438,7 @@ public:
 	virtual
 	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
-	
+
 	virtual
 	void
 	disableColorAttrib ();
@@ -449,7 +449,7 @@ public:
 	                      const GLenum type,
 	                      const std::vector <GLsizei> & stride,
 	                      const std::vector <GLvoid*> & pointer);
-	
+
 	virtual
 	void
 	disableTexCoordAttrib ();
@@ -457,7 +457,7 @@ public:
 	virtual
 	void
 	enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
-	
+
 	virtual
 	void
 	disableNormalAttrib ();
@@ -465,7 +465,7 @@ public:
 	virtual
 	void
 	enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
-	
+
 	virtual
 	void
 	disableVertexAttrib ();
@@ -487,10 +487,10 @@ protected:
 	{ }
 
 	///  @name Operations
-	
+
 	void
 	setOpenGLES (const bool value);
-	
+
 	void
 	applyTransformFeedbackVaryings () const;
 
@@ -514,10 +514,10 @@ protected:
 private:
 
 	///  @name Operations
-	
+
 	GLint
 	getUniformLocation (GLuint program, const std::string & name, const std::string & depreciated) const;
-	
+
 	GLint
 	getAttribLocation (GLuint program, const std::string & name, const std::string & depreciated) const;
 
@@ -525,7 +525,7 @@ private:
 	getNormalMatrix (const Matrix4d & modelViewMatrix) const;
 
 	///  @name Event handlers
-	
+
 	void
 	set_shading (const ShadingType & shading);
 
@@ -611,6 +611,7 @@ private:
 	GLint               x3d_NumTextures;
 	std::vector <GLint> x3d_TextureType;
 	std::vector <GLint> x3d_Texture2D;
+	std::vector <GLint> x3d_Texture3D;
 	std::vector <GLint> x3d_CubeMapTexture;
 
 	GLint               x3d_MultiTextureColor;

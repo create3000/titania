@@ -129,6 +129,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                        x3d_NumTextures (-1),
 	                        x3d_TextureType (getBrowser () -> getMaxTextures (), -1),
 	                          x3d_Texture2D (getBrowser () -> getMaxTextures (), -1),
+	                          x3d_Texture3D (getBrowser () -> getMaxTextures (), -1),
 	                     x3d_CubeMapTexture (getBrowser () -> getMaxTextures (), -1),
 	                  x3d_MultiTextureColor (-1),
 	                   x3d_MultiTextureMode (getBrowser () -> getMaxTextures (), -1),
@@ -305,6 +306,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 		x3d_TextureType    .emplace_back (glGetUniformLocation (program, ("x3d_TextureType[" + is + "]")    .c_str ()));
 		x3d_Texture2D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture2D[" + is + "]")      .c_str ()));
+		x3d_Texture3D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture3D[" + is + "]")      .c_str ()));
 		x3d_CubeMapTexture .emplace_back (glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ()));
 
 		x3d_MultiTextureMode      .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].mode")      .c_str ()));
@@ -337,6 +339,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	static const auto   linetype       = getBrowser () -> getLinetypeUnit ();
 	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
 	static const auto & texture2D      = getBrowser () -> getTexture2DUnits ();
+	static const auto & texture3D      = getBrowser () -> getTexture2DUnits ();
 	static const auto & cubeMapTexture = getBrowser () -> getCubeMapTextureUnits ();
 	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
 
@@ -344,6 +347,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	glUniform1i  (x3d_FillPropertiesHatchStyle, hatchStyle);
 	glUniform1i  (x3d_NumTextures,              0);
 	glUniform1iv (x3d_Texture2D [0],            texture2D      .size (), texture2D      .data ());
+	glUniform1iv (x3d_Texture3D [0],            texture3D      .size (), texture3D      .data ());
 	glUniform1iv (x3d_CubeMapTexture [0],       cubeMapTexture .size (), cubeMapTexture .data ());
 	glUniform1iv (x3d_ShadowMap [0],            shadowMap      .size (), shadowMap      .data ());
 }

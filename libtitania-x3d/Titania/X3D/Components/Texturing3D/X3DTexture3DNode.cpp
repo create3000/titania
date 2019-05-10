@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -192,8 +193,14 @@ X3DTexture3DNode::updateTextureProperties ()
 }
 
 void
-X3DTexture3DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
-{ }
+X3DTexture3DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const
+{
+	const auto browser = shaderObject -> getBrowser ();
+
+	glActiveTexture (GL_TEXTURE0 + browser -> getTexture3DUnits () [i]);
+	glBindTexture (GL_TEXTURE_3D, getTextureId ());
+	glUniform1i (shaderObject -> getTextureTypeUniformLocation () [i], 3);
+}
 
 } // X3D
 } // titania
