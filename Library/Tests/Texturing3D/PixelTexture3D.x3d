@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Immersive' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <component name='EnvironmentalEffects' level='3'/>
+    <component name='Texturing3D' level='1'/>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Sat, 11 May 2019 08:43:47 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V4.5.3, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Texturing3D/PixelTexture3D.x3d'/>
+    <meta name='modified' content='Sat, 11 May 2019 08:47:32 GMT'/>
+  </head>
+  <Scene>
+    <WorldInfo
+        title='PixelTexture3D'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='Page' containerField='value'
+            name='Page'
+            reference='http://titania.create3000.de'>
+          <MetadataInteger DEF='activeView' containerField='value'
+              name='activeView'
+              reference='http://titania.create3000.de'
+              value='1'/>
+          <MetadataInteger DEF='multiView' containerField='value'
+              name='multiView'
+              reference='http://titania.create3000.de'
+              value='0'/>
+        </MetadataSet>
+        <MetadataSet DEF='Selection' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='selectGeometry' containerField='value'
+              name='selectGeometry'
+              reference='http://titania.create3000.de'
+              value='false'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <Background
+        skyColor='0.4 0.4 0.4'/>
+    <Viewpoint
+        description='Home'
+        position='3.31565 6.65836e-07 1.54787'
+        orientation='-1.90844e-07 1 2.02396e-08 0.915605'
+        centerOfRotation='0 0 -1'/>
+    <Transform DEF='Rectangle1'>
+      <Shape>
+        <Appearance DEF='_1'>
+          <Material/>
+          <PixelTexture3D
+              image='3, 2, 2, 2, 255, 16711680, 16711680, 255, 16776960, 65280, 65280, 16776960'/>
+        </Appearance>
+        <IndexedFaceSet
+            solid='false'
+            texCoordIndex='0, 1, 2, 3, -1'
+            coordIndex='0, 1, 2, 3, -1'>
+          <TextureCoordinate3D
+              point='1 1 0, 0 1 0, 0 0 0, 1 0 0'/>
+          <Coordinate DEF='_2'
+              point='1 1 0, -1 1 0, -1 -1 0, 1 -1 0'/>
+        </IndexedFaceSet>
+      </Shape>
+    </Transform>
+    <Transform DEF='Rectangle2'
+        translation='0 0 -2'>
+      <Shape>
+        <Appearance USE='_1'/>
+        <IndexedFaceSet
+            solid='false'
+            texCoordIndex='0, 1, 2, 3, -1'
+            coordIndex='0, 1, 2, 3, -1'>
+          <TextureCoordinate3D
+              point='1 1 1, 0 1 1, 0 0 1, 1 0 1'/>
+          <Coordinate USE='_2'/>
+        </IndexedFaceSet>
+      </Shape>
+    </Transform>
+  </Scene>
+</X3D>

@@ -1,92 +1,39 @@
-#X3D V3.3 utf8 Titania V4.5.0
+#X3D V3.3 utf8 Titania V4.5.3
 
 PROFILE Immersive
 
+COMPONENT CADGeometry : 1
 COMPONENT EnvironmentalEffects : 3
 COMPONENT Layering : 1
 COMPONENT Layout : 1
-COMPONENT Shape : 3
-COMPONENT X_ITE : 1
+COMPONENT Texturing3D : 1
 
 META "comment" "World of Titania"
 META "created" "Thu, 10 Jul 2014 17:28:33 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.5.0, http://titania.create3000.de"
+META "generator" "Titania V4.5.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TexturePreview.x3dv"
-META "modified" "Fri, 12 Apr 2019 15:53:48 GMT"
+META "modified" "Sat, 11 May 2019 09:46:42 GMT"
 
 PROTO Volume [
   inputOutput SFInt32 dimension 10
   inputOutput SFNode  appearance NULL
 ]
 {
-  DEF Shapes Group {
-    children [
-      Transform {
-        translation 0 0 1
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 0.777778
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 0.555556
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 0.333333
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 0.111111
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 -0.111111
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 -0.333333
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 -0.555556
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 -0.777778
-        children Shape { }
-      }
-      Transform {
-        translation 0 0 -1
-        children Shape { }
-      }
-    ]
+  Shape {
+    appearance IS appearance
+    geometry DEF _1 QuadSet {
+      solid FALSE
+      texCoord TextureCoordinate3D { }
+      coord Coordinate { }
+    }
   }
 
   DEF VolumeScript Script {
-    inputOutput    SFInt32 dimension IS dimension
-    inputOutput    SFNode  appearance IS appearance
-    initializeOnly SFNode  shapes USE Shapes
-    initializeOnly MFInt32 coordIndex [
-      0,
-      1,
-      2,
-      3,
-      0,
-      -1
-    ]
-    initializeOnly SFNode  coord Coordinate {
-      point [
-        1 1 0,
-        -1 1 0,
-        -1 -1 0,
-        1 -1 0
-      ]
-    }
+    inputOutput SFInt32 dimension IS dimension
+    inputOutput SFNode  geometry USE _1
 
-    url "ecmascript:
+    url "vrmlscript:
 
 function initialize ()
 {
@@ -95,39 +42,31 @@ function initialize ()
 
 function set_dimension ()
 {
-	var scene = Browser .currentScene;
+	var
+		coord    = geometry .coord,
+		texCoord = geometry .texCoord;
 	
-	shapes .children .length = 0;
+	coord    .point .length = 0;
+	texCoord .point .length = 0;
 
 	for (var i = 0; i < dimension; ++ i)
 	{
-		var depth = i / (dimension - 1);
+		var
+			depth = i / (dimension - 1),
+			z     = (0.5 - depth) * 2;
 
-		var transform  = scene .createNode ('Transform');
-		var shape      = scene .createNode ('Shape');
-		var texCoord   = scene .createNode ('TextureCoordinate3D');
-		var geometry   = Browser .createVrmlFromString ('IndexedFaceSet { solid FALSE }') [0];
+		coord .point .push (new SFVec3f ( 1,  1, z),
+		                    new SFVec3f (-1,  1, z),
+		                    new SFVec3f (-1, -1, z),
+		                    new SFVec3f ( 1, -1, z));
 
-		shapes .children [i]   = transform;
-		transform .translation = new SFVec3f (0, 0, (0.5 - depth) * 2);
-		transform .children    = new MFNode (shape);
-		shape .appearance      = appearance;
-		shape .geometry        = geometry;
-
-		texCoord .point = new MFVec3f (new SFVec3f (1, 1, depth),
-		                               new SFVec3f (0, 1, depth),
-		                               new SFVec3f (0, 0, depth), 
-		                               new SFVec3f (1, 0, depth));
-
-		geometry .solid             = false;
-		geometry .set_texCoordIndex = coordIndex;
-		geometry .set_coordIndex    = coordIndex;
-		geometry .texCoord          = texCoord;
-		geometry .coord             = coord;
+		texCoord .point .push (new SFVec3f (1, 1, depth),
+		                       new SFVec3f (0, 1, depth),
+		                       new SFVec3f (0, 0, depth),
+		                       new SFVec3f (1, 0, depth));
 	}
 }
 "
-    directOutput TRUE
   }
 }
 
@@ -200,118 +139,16 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-          }
-        ]
-      }
-      DEF Page MetadataSet {
-        name "Page"
-        reference "http://titania.create3000.de"
-        value [
-          DEF activeView MetadataInteger {
-            name "activeView"
-            reference "http://titania.create3000.de"
-            value 1
-          }
-          DEF multiView MetadataInteger {
-            name "multiView"
-            reference "http://titania.create3000.de"
-            value 0
-          }
-        ]
-      }
-    ]
-  }
-  title "TexturePreview"
-}
-
-LayerSet {
-  activeLayer 2
-  order [
-    1,
-    2
-  ]
-  layers [
-    DEF CheckerBoard LayoutLayer {
-      isPickable FALSE
-      layout Layout {
-        scaleMode [
-          "PIXEL",
-          "PIXEL"
-        ]
-      }
-      children [
-        DEF Gray Background {
-          skyColor 0.4 0.4 0.4
-        }
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
-              emissiveColor 0.6 0.6 0.6
-            }
-            texture PixelTexture {
-              image 2 2 2
-                0xffff 0
-                0 0xffff
-            }
-            textureTransform TextureTransform {
-              scale 5000 5000
-            }
-          }
-          geometry Rectangle2D {
-            size 80000 80000
-          }
-        }
-      ]
-    }
-    Layer {
-      children [
-        DEF Texture2DNavigationInfo NavigationInfo {
-          type "PLANE_create3000.de"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF Texture3DNavigationInfo NavigationInfo {
-          type "EXAMINE"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF CubeMapTextureNavigationInfo NavigationInfo {
-          type "EXAMINE"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF Texture2DViewpoint OrthoViewpoint { }
-        DEF Texture3DViewpoint Viewpoint {
-          position 1.86252 2.136 2.97602
-          orientation -0.70089 0.681223 0.211398 0.83363
-          centerOfRotation -0.00853324 -0.18822 0.156491
-        }
-        DEF CubeMapViewpoint Viewpoint {
-          position 0 0 2.84738
-        }
-        DEF _1 Switch {
-          children [
-            DEF Texture2D Transform {
-              children Shape {
-                appearance DEF Appearance Appearance {
-                  blendMode BlendMode { }
-                }
-                geometry Rectangle2D { }
-              }
-            }
-            DEF Texture3D Group {
+            value DEF Texture3D Group {
               children [
                 DEF Volume Group {
                   children [
                     DEF _2 ClipPlane {
                       plane 0 0 -1 1
                     }
-                    Transform {
-                      children Volume {
-                        dimension 200
-                        appearance USE Appearance
-                      }
+                    Volume {
+                      dimension 200
+                      appearance DEF Appearance Appearance { }
                     }
                   ]
                 }
@@ -334,36 +171,46 @@ function set_translation (value)
                     Transform {
                       translation 0 0 0.01
                       children [
-                        DEF Rectangle2D Transform {
+                        DEF ClipPlane Transform {
                           translation 3.62463e-06 0 1
-                          children Shape {
-                            appearance Appearance {
-                              lineProperties LineProperties {
-                                linewidthScaleFactor 3
+                          children [
+                            Shape {
+                              appearance Appearance {
+                                lineProperties LineProperties {
+                                  linewidthScaleFactor 3
+                                }
+                                material Material {
+                                  diffuseColor 0 0 0
+                                  emissiveColor 0.876 0.876 0.876
+                                }
                               }
-                              material Material {
-                                diffuseColor 0 0 0
-                                emissiveColor 0.876 0.876 0.876
-                              }
-                            }
-                            geometry IndexedLineSet {
-                              coordIndex [
-                                0,
-                                1,
-                                2,
-                                3,
-                                0
-                              ]
-                              coord Coordinate {
-                                point [
-                                  -1 -1 0,
-                                  1 -1 0,
-                                  1 1 0,
-                                  -1 1 0
+                              geometry IndexedLineSet {
+                                coordIndex [
+                                  0,
+                                  1,
+                                  2,
+                                  3,
+                                  0
                                 ]
+                                coord Coordinate {
+                                  point [
+                                    -1 -1 0,
+                                    1 -1 0,
+                                    1 1 0,
+                                    -1 1 0
+                                  ]
+                                }
                               }
                             }
-                          }
+                            Shape {
+                              appearance Appearance {
+                                material Material {
+                                  transparency 1
+                                }
+                              }
+                              geometry Rectangle2D { }
+                            }
+                          ]
                         }
                         DEF PlaneSensor PlaneSensor {
                           axisRotation 0 1 0 1.5708
@@ -441,6 +288,114 @@ function set_translation (value)
                 }
               ]
             }
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Prototype MetadataSet {
+        name "Prototype"
+        reference "http://titania.create3000.de"
+        value DEF path MetadataString {
+          name "path"
+          reference "http://titania.create3000.de"
+          value "Volume"
+        }
+      }
+    ]
+  }
+  title "TexturePreview"
+}
+
+LayerSet {
+  activeLayer 2
+  order [
+    1,
+    2
+  ]
+  layers [
+    DEF CheckerBoard LayoutLayer {
+      isPickable FALSE
+      layout Layout {
+        scaleMode [
+          "PIXEL",
+          "PIXEL"
+        ]
+      }
+      children [
+        DEF Gray Background {
+          skyColor 0.4 0.4 0.4
+        }
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+              emissiveColor 0.6 0.6 0.6
+            }
+            texture PixelTexture {
+              image 2 2 2
+                0xffff 0
+                0 0xffff
+            }
+            textureTransform TextureTransform {
+              scale 5000 5000
+            }
+          }
+          geometry Rectangle2D {
+            size 80000 80000
+          }
+        }
+      ]
+    }
+    Layer {
+      children [
+        DEF Texture2DNavigationInfo NavigationInfo {
+          type "PLANE_create3000.de"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF Texture3DNavigationInfo NavigationInfo {
+          type "EXAMINE"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF CubeMapTextureNavigationInfo NavigationInfo {
+          type "EXAMINE"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF Texture2DViewpoint OrthoViewpoint { }
+        DEF Texture3DViewpoint Viewpoint {
+          position 1.86252 2.136 2.97602
+          orientation -0.70089 0.681223 0.211398 0.83363
+          centerOfRotation -0.00853324 -0.18822 0.156491
+        }
+        DEF CubeMapViewpoint Viewpoint {
+          position 0 0 2.84738
+        }
+        DEF _3 Switch {
+          children [
+            DEF Texture2D Transform {
+              children Shape {
+                appearance USE Appearance
+                geometry Rectangle2D { }
+              }
+            }
+            USE Texture3D
             DEF CubeMapTexture Transform {
               children Shape {
                 appearance USE Appearance
@@ -11496,8 +11451,8 @@ function set_texture (value)
 
 ROUTE ClipPlaneScript.plane_changed TO _2.set_plane
 ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation
-ROUTE PlaneSensor.translation_changed TO Rectangle2D.set_translation
-ROUTE TextureScript.whichChoice_changed TO _1.set_whichChoice
+ROUTE PlaneSensor.translation_changed TO ClipPlane.set_translation
+ROUTE TextureScript.whichChoice_changed TO _3.set_whichChoice
 ROUTE Appearance.texture_changed TO TextureScript.set_texture
 ROUTE TextureScript.textureTrue TO Texture2DViewpoint.set_bind
 ROUTE TextureScript.textureTrue TO Texture2DNavigationInfo.set_bind
