@@ -138,8 +138,8 @@ private:
 
 	Fields fields;
 
-	SFEnum <LoadState> loadState;
-	MFNode             textureNodes;
+	SFEnum <LoadState>             loadState;
+	X3DPtrArray <X3DTexture2DNode> textureNodes;
 
 };
 

@@ -81,8 +81,9 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "repeatR",           repeatR ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "texture",           texture ());
-	
-	addChildObjects (loadState, textureNodes);
+
+	addChildObjects (loadState,
+	                 textureNodes);
 }
 
 X3DBaseNode*
@@ -96,67 +97,80 @@ ComposedTexture3D::initialize ()
 {
 	X3DTexture3DNode::initialize ();
 
-	if (getBrowser () -> getLoadUrlObjects ())
-	{
-		texture () .addInterest (&ComposedTexture3D::set_texture, this);
+	if (not getBrowser () -> getLoadUrlObjects ())
+		return;
 
-		textureNodes .addInterest (&ComposedTexture3D::update, this);
+	texture () .addInterest (&ComposedTexture3D::set_texture, this);
 
-		set_texture ();
-	}
+	set_texture ();
 }
 
 void
 ComposedTexture3D::set_texture ()
 {
-	for (const auto & node : textureNodes)
-		node -> removeInterest (textureNodes);
+	for (const auto & textureNode : textureNodes)
+		textureNode -> removeInterest (&ComposedTexture3D::update, this);
 
-	textureNodes = texture ();
+	textureNodes .clear ();
 
-	for (const auto & node : textureNodes)
-		node -> addInterest (textureNodes);
+	for (const auto & node : texture ())
+	{
+		auto textureNode = x3d_cast <X3DTexture2DNode*> (node);
+
+		if (textureNode)
+			textureNodes .emplace_back (textureNode);
+	}
+
+	for (const auto & textureNode : textureNodes)
+		textureNode -> addInterest (&ComposedTexture3D::update, this);
+
+	update ();
 }
 
 void
 ComposedTexture3D::update ()
 {
-	width ()      = 0;
-	height ()     = 0;
-	components () = 0;
-	depth ()      = 0;
-
-	std::vector <char> image;
-
-	for (const auto & node : texture ())
+	if (textureNodes .empty ())
 	{
-		auto texture = x3d_cast <X3DTexture2DNode*> (node);
+		width ()      = 0;
+		height ()     = 0;
+		components () = 0;
+		depth ()      = 0;
 
-		if (texture)
+		clearTexture ();
+
+		loadState = FAILED_STATE;
+	}
+	else
+	{
+		depth () = textureNodes .size ();
+
+		std::vector <uint8_t> image;
+
+		for (const auto & textureNode : textureNodes)
 		{
-			++ depth ();
-
 			// Get texture 2d data
 
-			width ()      = texture -> getWidth ();
-			height ()     = texture -> getHeight ();
-			components () = std::max <int32_t> (components (), texture -> components ());
+			width ()      = textureNode -> getWidth ();
+			height ()     = textureNode -> getHeight ();
+			components () = textureNode -> components ();
 
 			size_t first = image .size ();
+
 			image .resize (first + width () * height () * 4);
 
-			glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+			glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data () + first);
 		}
+
+		glBindTexture (GL_TEXTURE_2D, 0);
+
+		image .resize (width () * height () * depth () * 4, 0xFF);
+
+		setImage (getInternalFormat (components ()), components (), width (), height (), depth (), GL_RGBA, image .data ());
+
+		loadState = COMPLETE_STATE;
 	}
-
-	glBindTexture (GL_TEXTURE_2D, 0);
-
-	image .resize (width () * height () * depth () * 4, 0xFF);
-
-	setImage (getInternalFormat (components ()), components (), width (), height (), depth (), GL_RGBA, image .data ());
-
-	loadState = COMPLETE_STATE;
 }
 
 } // X3D
