@@ -50,6 +50,8 @@
 
 #include "Texture3D.h"
 
+#include "NRRDParser.h"
+
 #include <Titania/LOG.h>
 
 namespace titania {
@@ -66,22 +68,56 @@ Texture3D::Texture3D (const std::string & document) :
 MagickImageArrayPtr
 Texture3D::readImages (const std::string & data)
 {
-	MagickImageArrayPtr images (X3DTexture::readImages (data));
-
-	switch (images -> size ())
+	try
 	{
-		case 0:
-			throw std::domain_error ("Image contains nothing.");
+		const auto nrrd   = NRRDParser (data) .parse ();
+		const auto width  = nrrd .width;
+		const auto height = nrrd .height;
 
-		case 1:
-			return images;
+		MagickImageArrayPtr images (new MagickImageArray ());
 
-		default:
+		for (size_t i = 0, size = nrrd .depth; i < size; ++ i)
 		{
-			if (images -> front () .magick () == "PSD")
-				images -> pop_front ();
+			auto first = nrrd .pixels .data () + (i * width * height);
+			auto last  = first + (width * height);
+			auto data  = std::vector <uint8_t> ();
 
-			return images;
+			while (first < last)
+			{
+				const auto pixel = *first ++;
+
+				data .emplace_back (pixel);
+				data .emplace_back (pixel);
+				data .emplace_back (pixel);
+			}
+
+			images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
+			images -> back () .flip ();
+		}
+
+		return images;
+	}
+	catch (const std::exception & error)
+	{
+		MagickImageArrayPtr images (X3DTexture::readImages (data));
+
+		switch (images -> size ())
+		{
+			case 0:
+			{
+				throw std::domain_error ("Image contains nothing.");
+			}
+			case 1:
+			{
+				return images;
+			}
+			default:
+			{
+				if (images -> front () .magick () == "PSD")
+					images -> pop_front ();
+
+				return images;
+			}
 		}
 	}
 }

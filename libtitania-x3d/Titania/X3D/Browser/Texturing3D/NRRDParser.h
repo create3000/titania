@@ -48,51 +48,72 @@
  *
  ******************************************************************************/
 
-#include "Texture.h"
+#ifndef __TITANIA_X3D_BROWSER_TEXTURING3D_NRRD_PARSER_H__
+#define __TITANIA_X3D_BROWSER_TEXTURING3D_NRRD_PARSER_H__
 
-#include <Titania/LOG.h>
+#include <string>
+#include <sstream>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-Texture::Texture (MagickImageArrayPtr && images) :
-	X3DTexture (std::move (images))
-{ }
-
-Texture::Texture (const std::string & document) :
-	X3DTexture (readImages (document))
-{ }
-
-MagickImageArrayPtr
-Texture::readImages (const std::string & data)
+struct NRRDImage
 {
-	MagickImageArrayPtr images (new MagickImageArray ());
+	size_t      version;
+	std::string type;
+	size_t      dimension;
+	size_t      width;
+	size_t      height;
+	size_t      depth;
+	std::string pixels;
+};
 
-	images -> emplace_back ();
-	images -> back () .backgroundColor (Magick::Color (0, 0, 0, uint16_t (-1)));
-	images -> back () .read (Magick::Blob (data .c_str (), data .length ()));
-	return images;
+class NRRDParser
+{
+public:
 
-//	MagickImageArrayPtr images (X3DTexture::readImages (data));
-//
-//	switch (images -> size ())
-//	{
-//		case 0:
-//			throw std::domain_error ("Image contains nothing.");
-//
-//		case 1:
-//			return images;
-//
-//		default:
-//		{
-//			if (images -> front () .magick () not_eq "PSD")
-//				Magick::flattenImages (&images -> front (), images -> begin (), images -> end ());
-//
-//			images -> erase (++ images -> begin (), images -> end ());
-//			return images;
-//		}
-//	}
-}
+	NRRDParser (const std::string & data);
+
+	NRRDImage
+	parse ();
+
+	virtual
+	~NRRDParser ();
+
+
+private:
+
+	class Grammar;
+
+	void
+	NRRD ();
+
+	void
+	fields ();
+
+	void
+	type (const std::string & value);
+
+	void
+	encoding (const std::string & value);
+
+	void
+	dimension (const std::string & value);
+
+	void
+	sizes (const std::string & value);
+
+	void
+	pixels ();
+
+	const std::string & data;
+	std::istringstream  istream;
+	NRRDImage           nrrd;
+
+};
 
 } // X3D
 } // titania
+
+#endif

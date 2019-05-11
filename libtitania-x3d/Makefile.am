@@ -93,6 +93,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Texturing/Texture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
+	Titania/X3D/Browser/Texturing3D/NRRDParser.cpp \
 	Titania/X3D/Browser/Texturing3D/Texture3D.cpp \
 	Titania/X3D/Browser/Texturing3D/X3DTexturing3DContext.cpp \
 	Titania/X3D/Browser/Tools/LassoSelection.cpp \
