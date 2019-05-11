@@ -60,6 +60,9 @@ namespace X3D {
 
 struct NRRDImage
 {
+	bool        nrrd;
+	bool        valid;
+	std::string error;
 	size_t      version;
 	std::string type;
 	size_t      dimension;

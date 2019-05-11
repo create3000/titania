@@ -77,15 +77,19 @@ const io::inverse_string NRRDParser::Grammar::line ("\n");
 NRRDParser::NRRDParser (const std::string & data) :
 	   data (data),
 	istream (data),
-	   nrrd ()
+	   nrrd ({ false, true, "", 0, "", 0, 0, 0, 0, "" })
 { }
 
 NRRDImage
 NRRDParser::parse ()
 {
 	NRRD ();
-	fields ();
-	pixels ();
+
+	if (nrrd .nrrd)
+	{
+		fields ();
+		pixels ();
+	}
 
 	return nrrd;
 }
@@ -95,12 +99,13 @@ NRRDParser::NRRD ()
 {
 	if (Grammar::NRRD (istream))
 	{
+		nrrd .nrrd = true;
 		istream >> nrrd .version;
 		std::istream::sentry se (istream);
 		return;
 	}
 
-	throw std::invalid_argument ("Invalid NRRD file.");
+	nrrd .nrrd = false;
 }
 
 void
@@ -161,7 +166,8 @@ NRRDParser::type (const std::string & value)
 		return;
 	}
 
-	throw std::invalid_argument ("Unsupported NRRD type.");
+	nrrd .valid = false;
+	nrrd .error = "Unsupported NRRD type.";
 }
 
 void
@@ -172,7 +178,8 @@ NRRDParser::encoding (const std::string & value)
 		return;
 	}
 
-	throw std::invalid_argument ("Unsupported NRRD encoding.");
+	nrrd .valid = false;
+	nrrd .error = "Unsupported NRRD encoding.";
 }
 
 void
@@ -182,8 +189,11 @@ NRRDParser::dimension (const std::string & value)
 
 	istream >> nrrd .dimension;
 
-	if (not istream or nrrd .dimension not_eq 3)
-		throw std::invalid_argument ("Unsupported NRRD dimension, must be 3.");
+	if (istream and nrrd .dimension == 3)
+		return;
+
+	nrrd .valid = false;
+	nrrd .error = "Unsupported NRRD dimension, must be 3.";
 }
 
 void
@@ -201,10 +211,14 @@ NRRDParser::pixels ()
 {
 	const auto size = nrrd .width * nrrd .height * nrrd .depth;
 
-	if (size == 0)
-		throw std::invalid_argument ("Invalid size.");
+	if (size > 0)
+	{
+		nrrd .pixels = data .substr (data .size () - size);
+		return;
+	}
 
-	nrrd .pixels = data .substr (data .size () - size);
+	nrrd .valid = false;
+	nrrd .error = "Invalid NRRD sizes.";
 }
 
 NRRDParser::~NRRDParser ()

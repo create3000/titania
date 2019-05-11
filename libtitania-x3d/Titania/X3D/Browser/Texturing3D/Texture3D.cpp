@@ -68,9 +68,13 @@ Texture3D::Texture3D (const std::string & document) :
 MagickImageArrayPtr
 Texture3D::readImages (const std::string & data)
 {
-	try
+	const auto nrrd = NRRDParser (data) .parse ();
+
+	if (nrrd .nrrd)
 	{
-		const auto nrrd   = NRRDParser (data) .parse ();
+		if (not nrrd .valid)
+			throw std::invalid_argument (nrrd .error);
+
 		const auto width  = nrrd .width;
 		const auto height = nrrd .height;
 
@@ -97,7 +101,7 @@ Texture3D::readImages (const std::string & data)
 
 		return images;
 	}
-	catch (const std::exception & error)
+
 	{
 		MagickImageArrayPtr images (X3DTexture::readImages (data));
 
@@ -105,7 +109,7 @@ Texture3D::readImages (const std::string & data)
 		{
 			case 0:
 			{
-				throw std::domain_error ("Image contains nothing.");
+				throw std::invalid_argument ("Image contains nothing.");
 			}
 			case 1:
 			{
