@@ -153,7 +153,7 @@ ComposedTexture3D::update ()
 
 			width ()      = textureNode -> getWidth ();
 			height ()     = textureNode -> getHeight ();
-			components () = textureNode -> components ();
+			components () = std::max <int32_t> (components (), textureNode -> components ());
 
 			size_t first = image .size ();
 
