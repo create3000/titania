@@ -128,6 +128,12 @@ public:
 	surfaceNormals () const
 	{ return *fields .surfaceNormals; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const final override;
+
 	///  @name Destruction
 
 	virtual

@@ -50,7 +50,13 @@
 
 #include "VolumeData.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/ComposedShader.h"
+#include "../Shape/Appearance.h"
+#include "../VolumeRendering/OpacityMapVolumeStyle.h"
+#include "../VolumeRendering/X3DVolumeRenderStyleNode.h"
+#include "../X_ITE/BlendMode.h"
 
 namespace titania {
 namespace X3D {
@@ -67,7 +73,9 @@ VolumeData::Fields::Fields () :
 VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DVolumeDataNode (),
-	           fields ()
+	           fields (),
+	  renderStyleNode (),
+	    blendModeNode (new BlendMode (executionContext))
 {
 	addType (X3DConstants::VolumeData);
 
@@ -77,12 +85,42 @@ VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "voxels",      voxels ());
 	addField (initializeOnly, "bboxSize",    bboxSize ());
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
+
+	addChildObjects (renderStyleNode,
+	                 blendModeNode);
 }
 
 X3DBaseNode*
 VolumeData::create (X3DExecutionContext* const executionContext) const
 {
 	return new VolumeData (executionContext);
+}
+
+void
+VolumeData::initialize ()
+{
+	X3DVolumeDataNode::initialize ();
+
+	renderStyle () .addInterest (&VolumeData::set_renderStyle, this);
+	voxels ()      .addInterest (getAppearance () -> texture ());
+
+	blendModeNode -> setup ();
+
+	getAppearance () -> texture ()   = voxels ();
+	getAppearance () -> blendMode () = blendModeNode;
+
+	set_renderStyle ();
+}
+
+void
+VolumeData::set_renderStyle ()
+{
+	renderStyleNode = x3d_cast <X3DVolumeRenderStyleNode*> (renderStyle ());
+
+	if (not renderStyleNode)
+		renderStyleNode = getBrowser () -> getDefaultVolumeStyle ();
+
+	getAppearance () -> shaders () = { renderStyleNode -> getShader () };
 }
 
 VolumeData::~VolumeData ()

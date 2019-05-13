@@ -228,6 +228,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Tools/TransformToolOptions.lo \
 	Titania/X3D/Browser/Tools/X3DSelector.lo \
 	Titania/X3D/Browser/Tools/X3DToolContext.lo \
+	Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.lo \
 	Titania/X3D/Browser/X3DBrowser.lo \
 	Titania/X3D/Browser/X3DBrowserContext.lo \
 	Titania/X3D/Components/CADGeometry/CADAssembly.lo \
@@ -926,6 +927,7 @@ am__depfiles_remade = Titania/$(DEPDIR)/X3D.Plo \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/TransformToolOptions.Plo \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo \
+	Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo \
 	Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo \
 	Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo \
 	Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo \
@@ -1851,6 +1853,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Tools/TransformToolOptions.cpp \
 	Titania/X3D/Browser/Tools/X3DSelector.cpp \
 	Titania/X3D/Browser/Tools/X3DToolContext.cpp \
+	Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
@@ -2985,6 +2988,15 @@ Titania/X3D/Browser/Tools/X3DSelector.lo:  \
 Titania/X3D/Browser/Tools/X3DToolContext.lo:  \
 	Titania/X3D/Browser/Tools/$(am__dirstamp) \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/VolumeRendering/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Browser/VolumeRendering
+	@: > Titania/X3D/Browser/VolumeRendering/$(am__dirstamp)
+Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Browser/VolumeRendering/$(DEPDIR)
+	@: > Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.lo:  \
+	Titania/X3D/Browser/VolumeRendering/$(am__dirstamp) \
+	Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/X3DBrowser.lo:  \
 	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
@@ -5305,6 +5317,8 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Browser/Texturing3D/*.lo
 	-rm -f Titania/X3D/Browser/Tools/*.$(OBJEXT)
 	-rm -f Titania/X3D/Browser/Tools/*.lo
+	-rm -f Titania/X3D/Browser/VolumeRendering/*.$(OBJEXT)
+	-rm -f Titania/X3D/Browser/VolumeRendering/*.lo
 	-rm -f Titania/X3D/Components/CADGeometry/*.$(OBJEXT)
 	-rm -f Titania/X3D/Components/CADGeometry/*.lo
 	-rm -f Titania/X3D/Components/Core/*.$(OBJEXT)
@@ -5581,6 +5595,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/TransformToolOptions.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo@am__quote@ # am--include-marker
@@ -6259,6 +6274,7 @@ clean-libtool:
 	-rm -rf Titania/X3D/Browser/Texturing/.libs Titania/X3D/Browser/Texturing/_libs
 	-rm -rf Titania/X3D/Browser/Texturing3D/.libs Titania/X3D/Browser/Texturing3D/_libs
 	-rm -rf Titania/X3D/Browser/Tools/.libs Titania/X3D/Browser/Tools/_libs
+	-rm -rf Titania/X3D/Browser/VolumeRendering/.libs Titania/X3D/Browser/VolumeRendering/_libs
 	-rm -rf Titania/X3D/Components/CADGeometry/.libs Titania/X3D/Components/CADGeometry/_libs
 	-rm -rf Titania/X3D/Components/Core/.libs Titania/X3D/Components/Core/_libs
 	-rm -rf Titania/X3D/Components/CubeMapTexturing/.libs Titania/X3D/Components/CubeMapTexturing/_libs
@@ -6524,6 +6540,8 @@ distclean-generic:
 	-rm -f Titania/X3D/Browser/Texturing3D/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Browser/Tools/$(am__dirstamp)
+	-rm -f Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Browser/VolumeRendering/$(am__dirstamp)
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Components/CADGeometry/$(am__dirstamp)
 	-rm -f Titania/X3D/Components/Core/$(DEPDIR)/$(am__dirstamp)
@@ -6806,6 +6824,7 @@ distclean: distclean-am
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/TransformToolOptions.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo
+	-rm -f Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo
@@ -7540,6 +7559,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/TransformToolOptions.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo
 	-rm -f Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo
+	-rm -f Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo
 	-rm -f Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo

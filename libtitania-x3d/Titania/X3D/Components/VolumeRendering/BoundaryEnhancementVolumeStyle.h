@@ -118,6 +118,12 @@ public:
 	retainedOpacity () const
 	{ return *fields .retainedOpacity; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const final override;
+
 	///  @name Destruction
 
 	virtual

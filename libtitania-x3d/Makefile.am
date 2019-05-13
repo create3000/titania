@@ -103,6 +103,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Tools/TransformToolOptions.cpp \
 	Titania/X3D/Browser/Tools/X3DSelector.cpp \
 	Titania/X3D/Browser/Tools/X3DToolContext.cpp \
+	Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \

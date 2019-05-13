@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,119 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_VOLUME_RENDERING_SILHOUETTE_ENHANCEMENT_VOLUME_STYLE_H__
-#define __TITANIA_X3D_COMPONENTS_VOLUME_RENDERING_SILHOUETTE_ENHANCEMENT_VOLUME_STYLE_H__
+#ifndef __TITANIA_X3D_BROWSER_X3D_VOLUME_RENDERING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_X3D_VOLUME_RENDERING_CONTEXT_H__
 
-#include "../VolumeRendering/X3DComposableVolumeRenderStyleNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
 
-class SilhouetteEnhancementVolumeStyle :
-	public X3DComposableVolumeRenderStyleNode
+class X3DVolumeRenderingContext :
+	virtual public X3DBaseNode
 {
 public:
 
-	///  @name Construction
+	const X3DPtr <OpacityMapVolumeStyle> &
+	getDefaultVolumeStyle () const;
 
-	SilhouetteEnhancementVolumeStyle (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFFloat &
-	silhouetteBoundaryOpacity ()
-	{ return *fields .silhouetteBoundaryOpacity; }
-
-	virtual
-	const SFFloat &
-	silhouetteBoundaryOpacity () const
-	{ return *fields .silhouetteBoundaryOpacity; }
-
-	virtual
-	SFFloat &
-	silhouetteRetainedOpacity ()
-	{ return *fields .silhouetteRetainedOpacity; }
-
-	virtual
-	const SFFloat &
-	silhouetteRetainedOpacity () const
-	{ return *fields .silhouetteRetainedOpacity; }
-
-	virtual
-	SFFloat &
-	silhouetteSharpness ()
-	{ return *fields .silhouetteSharpness; }
-
-	virtual
-	const SFFloat &
-	silhouetteSharpness () const
-	{ return *fields .silhouetteSharpness; }
-
-	virtual
-	SFNode &
-	surfaceNormals ()
-	{ return *fields .surfaceNormals; }
-
-	virtual
-	const SFNode &
-	surfaceNormals () const
-	{ return *fields .surfaceNormals; }
-
-	///  @name Member access
-
-	virtual
 	const X3DPtr <ComposedShader> &
-	getShader () const final override;
+	getOpacityMapVolumeStyleShader () const;
 
 	///  @name Destruction
 
 	virtual
-	~SilhouetteEnhancementVolumeStyle () final override;
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DVolumeRenderingContext () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DVolumeRenderingContext ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Static members
+	///  @name Members
 
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const silhouetteBoundaryOpacity;
-		SFFloat* const silhouetteRetainedOpacity;
-		SFFloat* const silhouetteSharpness;
-		SFNode* const surfaceNormals;
-	};
-
-	Fields fields;
+	mutable X3DPtr <OpacityMapVolumeStyle> defaultVolumeStyleNode;
+	mutable X3DPtr <ComposedShader>        opacityMapVolumeStyleShader;
 
 };
 

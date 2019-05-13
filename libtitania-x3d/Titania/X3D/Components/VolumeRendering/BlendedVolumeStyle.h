@@ -138,6 +138,12 @@ public:
 	weightFunction1 () const
 	{ return *fields .weightFunction1; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const final override;
+
 	///  @name Destruction
 
 	virtual

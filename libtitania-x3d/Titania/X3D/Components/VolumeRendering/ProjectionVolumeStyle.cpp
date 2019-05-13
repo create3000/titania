@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,9 @@
 
 #include "ProjectionVolumeStyle.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/ComposedShader.h"
 
 namespace titania {
 namespace X3D {
@@ -79,6 +81,12 @@ X3DBaseNode*
 ProjectionVolumeStyle::create (X3DExecutionContext* const executionContext) const
 {
 	return new ProjectionVolumeStyle (executionContext);
+}
+
+const X3DPtr <ComposedShader> &
+ProjectionVolumeStyle::getShader () const
+{
+	return getBrowser () -> getOpacityMapVolumeStyleShader ();
 }
 
 ProjectionVolumeStyle::~ProjectionVolumeStyle ()

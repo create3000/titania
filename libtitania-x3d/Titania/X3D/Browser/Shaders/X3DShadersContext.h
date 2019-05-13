@@ -135,6 +135,7 @@ protected:
 	///  @name Friends
 
 	friend class X3DEnvironmentalEffectsContext;
+	friend class X3DVolumeRenderingContext;
 
 	///  @name Construction
 

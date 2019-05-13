@@ -107,6 +107,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member acess
+
+	const X3DPtr <Appearance> &
+	getAppearance () const
+	{ return appearanceNode; }
+
 
 private:
 
@@ -128,8 +134,11 @@ private:
 
 	///  @name Members;
 
+	X3DPtr <ProximitySensor>     proximitySensorNode;
+	X3DPtr <Transform>           transformNode;
 	X3DPtr <Shape>               shapeNode;
 	X3DPtr <Appearance>          appearanceNode;
+	X3DPtr <TextureTransform3D>  textureTransformNode;
 	X3DPtr <QuadSet>             geometryNode;
 	X3DPtr <TextureCoordinate3D> textureCoordinateNode;
 	X3DPtr <Coordinate>          coordinateNode;

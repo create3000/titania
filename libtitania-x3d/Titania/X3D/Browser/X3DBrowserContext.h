@@ -79,6 +79,7 @@
 #include "../Browser/Texturing3D/X3DTexturing3DContext.h"
 #include "../Browser/Time/X3DTimeContext.h"
 #include "../Browser/Tools/X3DToolContext.h"
+#include "../Browser/VolumeRendering/X3DVolumeRenderingContext.h"
 
 #include "../Types/Pointer.h"
 
@@ -113,6 +114,7 @@ class X3DBrowserContext :
 	public X3DShapeContext,
 	public X3DEnvironmentalEffectsContext,
 	public X3DTimeContext,
+	public X3DVolumeRenderingContext,
 	public X3DToolContext
 {
 public:

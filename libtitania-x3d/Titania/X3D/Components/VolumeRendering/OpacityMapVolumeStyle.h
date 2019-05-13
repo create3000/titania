@@ -98,6 +98,12 @@ public:
 	transferFunction () const
 	{ return *fields .transferFunction; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const final override;
+
 	///  @name Destruction
 
 	virtual

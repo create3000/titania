@@ -73,6 +73,12 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const = 0;
+
 	///  @name Destruction
 
 	virtual

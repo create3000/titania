@@ -114,7 +114,19 @@ public:
 	~VolumeData () final override;
 
 
+protected:
+
+	virtual
+	void
+	initialize () final override;
+
+
 private:
+
+	///  @name Event handlers
+
+	void
+	set_renderStyle ();
 
 	///  @name Static members
 
@@ -133,6 +145,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DVolumeRenderStyleNode> renderStyleNode;
+	X3DPtr <BlendMode>                blendModeNode;
 
 };
 

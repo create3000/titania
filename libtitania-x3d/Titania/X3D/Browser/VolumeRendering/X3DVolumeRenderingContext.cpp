@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,48 +48,56 @@
  *
  ******************************************************************************/
 
-#include "OpacityMapVolumeStyle.h"
+#include "X3DVolumeRenderingContext.h"
 
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../Shaders/ComposedShader.h"
+#include "../../Components/Shaders/ComposedShader.h"
+#include "../../Components/VolumeRendering/OpacityMapVolumeStyle.h"
 
 namespace titania {
 namespace X3D {
 
-const Component   OpacityMapVolumeStyle::component      = Component ("VolumeRendering", 2);
-const std::string OpacityMapVolumeStyle::typeName       = "OpacityMapVolumeStyle";
-const std::string OpacityMapVolumeStyle::containerField = "renderStyle";
-
-OpacityMapVolumeStyle::Fields::Fields () :
-	transferFunction (new SFNode ())
-{ }
-
-OpacityMapVolumeStyle::OpacityMapVolumeStyle (X3DExecutionContext* const executionContext) :
-	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+X3DVolumeRenderingContext::X3DVolumeRenderingContext () :
+	                X3DBaseNode (),
+	     defaultVolumeStyleNode (),
+	opacityMapVolumeStyleShader ()
 {
-	addType (X3DConstants::OpacityMapVolumeStyle);
-
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "transferFunction", transferFunction ());
+	addChildObjects (defaultVolumeStyleNode,
+	                 opacityMapVolumeStyleShader);
 }
 
-X3DBaseNode*
-OpacityMapVolumeStyle::create (X3DExecutionContext* const executionContext) const
+void
+X3DVolumeRenderingContext::initialize ()
+{ }
+
+const X3DPtr <OpacityMapVolumeStyle> &
+X3DVolumeRenderingContext::getDefaultVolumeStyle () const
 {
-	return new OpacityMapVolumeStyle (executionContext);
+	if (defaultVolumeStyleNode)
+		return defaultVolumeStyleNode;
+
+	defaultVolumeStyleNode = new OpacityMapVolumeStyle (getExecutionContext ());
+
+	defaultVolumeStyleNode -> setup ();
+
+	return defaultVolumeStyleNode;
 }
 
 const X3DPtr <ComposedShader> &
-OpacityMapVolumeStyle::getShader () const
+X3DVolumeRenderingContext::getOpacityMapVolumeStyleShader () const
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	if (opacityMapVolumeStyleShader)
+		return opacityMapVolumeStyleShader;
+
+	opacityMapVolumeStyleShader = getBrowser () -> createShader ("OpacityMapVolumeStyle",
+	                                                             { get_shader ("VolumeRendering/OpacityMapVolumeStyle.vs")  .str () },
+	                                                             { get_shader ("VolumeRendering/OpacityMapVolumeStyle.fs")  .str () });
+
+	return opacityMapVolumeStyleShader;
 }
 
-OpacityMapVolumeStyle::~OpacityMapVolumeStyle ()
+X3DVolumeRenderingContext::~X3DVolumeRenderingContext ()
 { }
 
 } // X3D

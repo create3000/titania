@@ -86,6 +86,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	               X3DShapeContext (),
 	X3DEnvironmentalEffectsContext (),
 	                X3DTimeContext (),
+	     X3DVolumeRenderingContext (),
 	                X3DToolContext (),
 	             initializedOutput (),
 	                shutdownOutput (),
@@ -161,6 +162,7 @@ X3DBrowserContext::initialize ()
 	X3DShapeContext::initialize ();
 	X3DEnvironmentalEffectsContext::initialize ();
 	X3DTimeContext::initialize ();
+	X3DVolumeRenderingContext::initialize ();
 	X3DToolContext::initialize ();
 
 	getHeadUpDisplay () -> order () .clear ();
@@ -461,6 +463,7 @@ X3DBrowserContext::dispose ()
 	changedOutput       .dispose ();
 
 	X3DToolContext::dispose ();
+	X3DVolumeRenderingContext::dispose ();
 	X3DTimeContext::dispose ();
 	X3DEnvironmentalEffectsContext::dispose ();
 	X3DShapeContext::dispose ();

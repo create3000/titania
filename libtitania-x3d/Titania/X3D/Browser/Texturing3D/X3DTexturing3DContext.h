@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_TEXTURING3D_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_TEXTURING3D_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_X3D_TEXTURING3D_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_X3D_TEXTURING3D_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields.h"

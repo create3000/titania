@@ -98,6 +98,12 @@ public:
 	renderStyle () const
 	{ return *fields .renderStyle; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const final override;
+
 	///  @name Destruction
 
 	virtual

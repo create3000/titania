@@ -98,6 +98,12 @@ public:
 	intensityThreshold () const
 	{ return *fields .intensityThreshold; }
 
+	///  @name Member access
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShader () const final override;
+
 	///  @name Destruction
 
 	virtual
