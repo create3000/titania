@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,6 +50,12 @@
 
 #include "X3DVolumeDataNode.h"
 
+#include "../CADGeometry/QuadSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Shape/Appearance.h"
+#include "../Shape/Shape.h"
+#include "../Texturing3D/TextureCoordinate3D.h"
+
 namespace titania {
 namespace X3D {
 
@@ -58,17 +64,95 @@ X3DVolumeDataNode::Fields::Fields () :
 { }
 
 X3DVolumeDataNode::X3DVolumeDataNode () :
-	    X3DChildNode (),
-	X3DBoundedObject (),
-	          fields ()
+	         X3DChildNode (),
+	     X3DBoundedObject (),
+	               fields (),
+	            shapeNode (new Shape (getExecutionContext ())),
+	       appearanceNode (new Appearance (getExecutionContext ())),
+	         geometryNode (new QuadSet (getExecutionContext ())),
+	textureCoordinateNode (new TextureCoordinate3D (getExecutionContext ())),
+	       coordinateNode (new Coordinate (getExecutionContext ()))
 {
 	addType (X3DConstants::X3DVolumeDataNode);
+
+	addChildObjects (shapeNode,
+	                 appearanceNode,
+	                 geometryNode,
+	                 textureCoordinateNode,
+	                 coordinateNode);
+}
+
+void
+X3DVolumeDataNode::initialize ()
+{
+	X3DChildNode::initialize ();
+	X3DBoundedObject::initialize ();
+
+	dimensions () .addInterest (&X3DVolumeDataNode::set_dimensions, this);
+
+	set_dimensions ();
+
+	appearanceNode -> setPrivate (true);
+
+	shapeNode -> appearance ()  = appearanceNode;
+	shapeNode -> geometry ()    = geometryNode;
+	geometryNode -> texCoord () = textureCoordinateNode;
+	geometryNode -> coord ()    = coordinateNode;
+	geometryNode -> solid ()    = false;
+
+	coordinateNode        -> setup ();
+	textureCoordinateNode -> setup ();
+	geometryNode          -> setup ();
+	appearanceNode        -> setup ();
+	shapeNode             -> setup ();
 }
 
 Box3d
 X3DVolumeDataNode::getBBox () const
 {
 	return Box3d ();
+}
+
+void
+X3DVolumeDataNode::set_dimensions ()
+{
+	static constexpr size_t NUM_PLANES = 200;
+
+	const auto w = dimensions () .getX ();
+	const auto h = dimensions () .getY ();
+	const auto d = dimensions () .getZ ();
+
+	textureCoordinateNode -> point () .clear ();
+	coordinateNode        -> point () .clear ();
+
+	for (size_t i = 0; i < NUM_PLANES; ++ i)
+	{
+		const auto depth = i / double (NUM_PLANES - 1);
+		const auto z     = depth - 0.5;
+
+		textureCoordinateNode -> point () .emplace_back (1, 1, depth);
+		textureCoordinateNode -> point () .emplace_back (0, 1, depth);
+		textureCoordinateNode -> point () .emplace_back (0, 0, depth);
+		textureCoordinateNode -> point () .emplace_back (1, 0, depth);
+
+		coordinateNode -> point () .emplace_back ( 0.5,  0.5, z);
+		coordinateNode -> point () .emplace_back (-0.5,  0.5, z);
+		coordinateNode -> point () .emplace_back (-0.5, -0.5, z);
+		coordinateNode -> point () .emplace_back ( 0.5, -0.5, z);
+	}
+}
+
+void
+X3DVolumeDataNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	shapeNode -> traverse (type, renderObject);
+}
+
+void
+X3DVolumeDataNode::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 X3DVolumeDataNode::~X3DVolumeDataNode ()

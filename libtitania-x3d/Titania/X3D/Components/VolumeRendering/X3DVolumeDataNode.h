@@ -81,7 +81,17 @@ public:
 	Box3d
 	getBBox () const final override;
 
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
 	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 	virtual
 	~X3DVolumeDataNode () override;
@@ -93,8 +103,17 @@ protected:
 
 	X3DVolumeDataNode ();
 
+	virtual
+	void
+	initialize () override;
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_dimensions ();
 
 	///  @name Fields
 
@@ -106,6 +125,14 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members;
+
+	X3DPtr <Shape>               shapeNode;
+	X3DPtr <Appearance>          appearanceNode;
+	X3DPtr <QuadSet>             geometryNode;
+	X3DPtr <TextureCoordinate3D> textureCoordinateNode;
+	X3DPtr <Coordinate>          coordinateNode;
 
 };
 
