@@ -79,12 +79,12 @@ PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::PixelTexture3D);
 
 	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "image",             image ());
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "repeatR",           repeatR ());
-	addField (inputOutput,    "image",             image ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
-	
+
 	addChildObjects (loadState);
 }
 
@@ -110,7 +110,7 @@ PixelTexture3D::update ()
 	if (image () .size () < OFFSET)
 	{
 		setTexture (Texture3DPtr ());
-		return;	
+		return;
 	}
 
 	const auto & image       = this -> image ();
@@ -135,7 +135,7 @@ PixelTexture3D::update ()
 	for (size_t d = 0; d < depth; ++ d)
 	{
 		const size_t first = OFFSET + d * size;
-	
+
 		mimages -> emplace_back ();
 		mimages -> back () .depth (8);
 		mimages -> back () .size (Magick::Geometry (width, height));
@@ -167,7 +167,7 @@ PixelTexture3D::update ()
 				// Copy and flip image vertically.
 
 				constexpr auto components = 4;
-			
+
 				std::vector <uint8_t> pixels;
 				pixels .reserve (size * components);
 
@@ -206,7 +206,7 @@ PixelTexture3D::update ()
 					for (size_t w = 0; w < width; ++ w)
 					{
 						const auto & pixel = image [first + row + w];
-				
+
 						pixels .emplace_back (pixel >> 16);
 						pixels .emplace_back (pixel >> 8);
 						pixels .emplace_back (pixel);
@@ -232,7 +232,7 @@ PixelTexture3D::update ()
 					for (size_t w = 0; w < width; ++ w)
 					{
 						const auto & pixel = image [first + row + w];
-				
+
 						pixels .emplace_back (pixel >> 24);
 						pixels .emplace_back (pixel >> 16);
 						pixels .emplace_back (pixel >> 8);
@@ -304,15 +304,15 @@ PixelTexture3D::setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DN
 			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
-		
+
 				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
-	
+
 					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
-	
+
 						image .emplace_back (*p);
 					}
 				}
@@ -337,19 +337,19 @@ PixelTexture3D::setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DN
 			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
-	
+
 				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
-	
+
 					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
-	
+
 						uint32_t point = *p << 8; // The value is in the red channel.
 						p     += 3;
 						point |= *p;
-	
+
 						image .emplace_back (point);
 					}
 				}
@@ -374,19 +374,19 @@ PixelTexture3D::setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DN
 			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
-	
+
 				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
-	
+
 					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
-	
+
 						uint32_t point = *p ++ << 16;
 						point |= *p ++ << 8;
 						point |= *p;
-	
+
 						image .emplace_back (point);
 					}
 				}
@@ -411,20 +411,20 @@ PixelTexture3D::setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DN
 			for (int32_t i = 0; i < depth; ++ i)
 			{
 				const uint8_t* first = images .data () + i * size;
-	
+
 				for (int32_t h = 0; h < height; ++ h)
 				{
 					const auto row = h * rowStride;
-	
+
 					for (int32_t w = 0; w < rowStride; w += stride)
 					{
 						auto p = first + (row + w);
-	
+
 						uint32_t point = *p ++ << 24;
 						point |= *p ++ << 16;
 						point |= *p ++ << 8;
 						point |= *p;
-	
+
 						image .emplace_back (point);
 					}
 				}

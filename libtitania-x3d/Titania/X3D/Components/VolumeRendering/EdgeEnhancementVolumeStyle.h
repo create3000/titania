@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -94,13 +94,28 @@ public:
 	{ return *fields .edgeColor; }
 
 	virtual
+	const SFColorRGBA &
+	edgeColor () const
+	{ return *fields .edgeColor; }
+
+	virtual
 	SFFloat &
 	gradientThreshold ()
 	{ return *fields .gradientThreshold; }
 
 	virtual
+	const SFFloat &
+	gradientThreshold () const
+	{ return *fields .gradientThreshold; }
+
+	virtual
 	SFNode &
 	surfaceNormals ()
+	{ return *fields .surfaceNormals; }
+
+	virtual
+	const SFNode &
+	surfaceNormals () const
 	{ return *fields .surfaceNormals; }
 
 	///  @name Destruction

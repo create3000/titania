@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,12 +71,12 @@ VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::VolumeData);
 
-	addField (inputOutput, "dimensions", dimensions ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "renderStyle", renderStyle ());
-	addField (inputOutput, "voxels", voxels ());
-	addField (initializeOnly, "bboxCenter", bboxCenter ());
-	addField (initializeOnly, "bboxSize", bboxSize ());
+	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "dimensions",  dimensions ());
+	addField (inputOutput,    "renderStyle", renderStyle ());
+	addField (inputOutput,    "voxels",      voxels ());
+	addField (initializeOnly, "bboxSize",    bboxSize ());
+	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 }
 
 X3DBaseNode*

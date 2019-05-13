@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -94,8 +94,18 @@ public:
 	{ return *fields .renderStyle; }
 
 	virtual
+	const SFNode &
+	renderStyle () const
+	{ return *fields .renderStyle; }
+
+	virtual
 	SFNode &
 	voxels ()
+	{ return *fields .voxels; }
+
+	virtual
+	const SFNode &
+	voxels () const
 	{ return *fields .voxels; }
 
 	virtual
@@ -104,13 +114,28 @@ public:
 	{ return *fields .weightConstant1; }
 
 	virtual
+	const SFFloat &
+	weightConstant1 () const
+	{ return *fields .weightConstant1; }
+
+	virtual
 	SFFloat &
 	weightConstant2 ()
 	{ return *fields .weightConstant2; }
 
 	virtual
+	const SFFloat &
+	weightConstant2 () const
+	{ return *fields .weightConstant2; }
+
+	virtual
 	SFString &
 	weightFunction1 ()
+	{ return *fields .weightFunction1; }
+
+	virtual
+	const SFString &
+	weightFunction1 () const
 	{ return *fields .weightFunction1; }
 
 	///  @name Destruction

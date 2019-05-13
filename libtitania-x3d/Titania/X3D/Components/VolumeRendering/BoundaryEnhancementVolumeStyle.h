@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -94,13 +94,28 @@ public:
 	{ return *fields .boundaryOpacity; }
 
 	virtual
+	const SFFloat &
+	boundaryOpacity () const
+	{ return *fields .boundaryOpacity; }
+
+	virtual
 	SFFloat &
 	opacityFactor ()
 	{ return *fields .opacityFactor; }
 
 	virtual
+	const SFFloat &
+	opacityFactor () const
+	{ return *fields .opacityFactor; }
+
+	virtual
 	SFFloat &
 	retainedOpacity ()
+	{ return *fields .retainedOpacity; }
+
+	virtual
+	const SFFloat &
+	retainedOpacity () const
 	{ return *fields .retainedOpacity; }
 
 	///  @name Destruction
