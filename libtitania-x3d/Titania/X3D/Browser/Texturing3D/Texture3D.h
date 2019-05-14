@@ -61,20 +61,22 @@ class Texture3D :
 {
 public:
 
-	Texture3D (MagickImageArrayPtr &&);
+	Texture3D (MagickImageArrayPtr && images);
 
-	Texture3D (const std::string &);
+	Texture3D (const std::string & data);
 
 	virtual
-	~Texture3D () final override
-	{ }
+	~Texture3D () final override;
 
 
 private:
 
 	virtual
 	MagickImageArrayPtr
-	readImages (const std::string &) final override;
+	readImages (const std::string & data) final override;
+
+	MagickImageArrayPtr
+	readNRRD (const std::string & data);
 
 };
 

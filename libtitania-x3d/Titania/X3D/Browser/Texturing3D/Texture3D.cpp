@@ -68,6 +68,39 @@ Texture3D::Texture3D (const std::string & document) :
 MagickImageArrayPtr
 Texture3D::readImages (const std::string & data)
 {
+	auto nrrd = readNRRD (data);
+
+	if (nrrd)
+		return nrrd;
+
+	// Read psd and xcf.
+	{
+		MagickImageArrayPtr images (X3DTexture::readImages (data));
+
+		switch (images -> size ())
+		{
+			case 0:
+			{
+				throw std::invalid_argument ("Image contains nothing.");
+			}
+			case 1:
+			{
+				return images;
+			}
+			default:
+			{
+				if (images -> front () .magick () == "PSD")
+					images -> pop_front ();
+
+				return images;
+			}
+		}
+	}
+}
+
+MagickImageArrayPtr
+Texture3D::readNRRD (const std::string & data)
+{
 	const auto nrrd = NRRDParser (data) .parse ();
 
 	if (nrrd .nrrd)
@@ -176,29 +209,11 @@ Texture3D::readImages (const std::string & data)
 		return images;
 	}
 
-	{
-		MagickImageArrayPtr images (X3DTexture::readImages (data));
-
-		switch (images -> size ())
-		{
-			case 0:
-			{
-				throw std::invalid_argument ("Image contains nothing.");
-			}
-			case 1:
-			{
-				return images;
-			}
-			default:
-			{
-				if (images -> front () .magick () == "PSD")
-					images -> pop_front ();
-
-				return images;
-			}
-		}
-	}
+	return MagickImageArrayPtr ();
 }
+
+Texture3D::~Texture3D ()
+{ }
 
 } // X3D
 } // titania
