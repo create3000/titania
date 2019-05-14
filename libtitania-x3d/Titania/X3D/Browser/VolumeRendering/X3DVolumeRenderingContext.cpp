@@ -124,6 +124,7 @@ X3DVolumeRenderingContext::getDefaultTransferFunction () const
 	for (size_t i = 0; i < 256; ++ i)
 		defaultTransferFunction -> image () .getArray () [i] = (i << 8) | i;
 
+	textureProperties       -> setup ();
 	defaultTransferFunction -> setup ();
 
 	return defaultTransferFunction;
