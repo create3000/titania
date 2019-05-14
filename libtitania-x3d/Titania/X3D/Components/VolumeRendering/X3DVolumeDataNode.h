@@ -116,6 +116,11 @@ protected:
 
 private:
 
+	///  @name Member acess
+
+	size_t
+	getNumPlanes () const;
+
 	///  @name Event handlers
 
 	void

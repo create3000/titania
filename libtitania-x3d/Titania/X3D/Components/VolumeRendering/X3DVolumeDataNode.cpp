@@ -50,6 +50,9 @@
 
 #include "X3DVolumeDataNode.h"
 
+#include "../../Browser/Core/BrowserOptions.h"
+#include "../../Browser/X3DBrowser.h"
+
 #include "../CADGeometry/QuadSet.h"
 #include "../EnvironmentalSensor/ProximitySensor.h"
 #include "../Grouping/Transform.h"
@@ -99,6 +102,8 @@ X3DVolumeDataNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
+	getBrowser () -> getBrowserOptions () -> getTextureQuality () .addInterest (&X3DVolumeDataNode::set_dimensions, this);
+
 	dimensions () .addInterest (&X3DVolumeDataNode::set_dimensions, this);
 
 	set_dimensions ();
@@ -137,13 +142,35 @@ X3DVolumeDataNode::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
+size_t
+X3DVolumeDataNode::getNumPlanes () const
+{
+	switch (getBrowser () -> getBrowserOptions () -> getTextureQuality ())
+	{
+		case TextureQualityType::LOW:
+		{
+			return 200;
+		}
+		case TextureQualityType::DEFAULT:
+		case TextureQualityType::MEDIUM:
+		{
+			return 400;
+		}
+		case TextureQualityType::HIGH:
+		{
+			return 600;
+		}
+	}
+
+	return 200;
+}
+
 void
 X3DVolumeDataNode::set_dimensions ()
 {
-	static constexpr size_t NUM_PLANES = 200;
-
-	const auto size    = abs (dimensions () .getValue ());
-	const auto size1_2 = size / 2;
+	const auto NUM_PLANES = getNumPlanes ();
+	const auto size       = abs (dimensions () .getValue ());
+	const auto size1_2    = size / 2;
 
 	coordinateNode -> point () .clear ();
 
