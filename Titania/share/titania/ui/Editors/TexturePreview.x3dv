@@ -2,73 +2,26 @@
 
 PROFILE Immersive
 
-COMPONENT CADGeometry : 1
 COMPONENT EnvironmentalEffects : 3
 COMPONENT Layering : 1
 COMPONENT Layout : 1
-COMPONENT Texturing3D : 1
+COMPONENT Rendering : 5
 
 META "comment" "World of Titania"
 META "created" "Thu, 10 Jul 2014 17:28:33 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TexturePreview.x3dv"
-META "modified" "Sat, 11 May 2019 09:46:42 GMT"
+META "modified" "Tue, 14 May 2019 11:06:47 GMT"
 
-PROTO Volume [
-  inputOutput SFInt32 dimension 10
-  inputOutput SFNode  appearance NULL
+EXTERNPROTO Volume [
+  inputOutput SFVec3f dimensions
+  inputOutput SFNode  voxels
 ]
-{
-  Shape {
-    appearance IS appearance
-    geometry DEF _1 QuadSet {
-      solid FALSE
-      texCoord TextureCoordinate3D { }
-      coord Coordinate { }
-    }
-  }
-
-  DEF VolumeScript Script {
-    inputOutput SFInt32 dimension IS dimension
-    inputOutput SFNode  geometry USE _1
-
-    url "vrmlscript:
-
-function initialize ()
-{
-	set_dimension ();
-}
-
-function set_dimension ()
-{
-	var
-		coord    = geometry .coord,
-		texCoord = geometry .texCoord;
-	
-	coord    .point .length = 0;
-	texCoord .point .length = 0;
-
-	for (var i = 0; i < dimension; ++ i)
-	{
-		var
-			depth = i / (dimension - 1),
-			z     = (0.5 - depth) * 2;
-
-		coord .point .push (new SFVec3f ( 1,  1, z),
-		                    new SFVec3f (-1,  1, z),
-		                    new SFVec3f (-1, -1, z),
-		                    new SFVec3f ( 1, -1, z));
-
-		texCoord .point .push (new SFVec3f (1, 1, depth),
-		                       new SFVec3f (0, 1, depth),
-		                       new SFVec3f (0, 0, depth),
-		                       new SFVec3f (1, 0, depth));
-	}
-}
-"
-  }
-}
+[
+  "Volume.x3d#Volume",
+  "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Volume.x3d#Volume"
+]
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -139,16 +92,175 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF Texture3D Group {
+            value DEF TextureScript Script {
+              inputOutput SFNode  texture NULL
+              outputOnly  SFInt32 whichChoice_changed
+              outputOnly  SFBool  textureTrue
+              outputOnly  SFBool  texture3DTrue
+              outputOnly  SFBool  cubeMapTextureTrue
+
+              url "ecmascript:
+
+function initialize ()
+{
+	set_texture (texture);
+}
+
+function set_texture (value)
+{
+	if (value)
+	{
+		var type = value .getNodeType () .reverse ();
+	
+		for (var i = 0; i < type .length; ++ i)
+		{
+			switch (type [i])
+			{
+				case X3DConstants .MultiTexture:
+				case X3DConstants .X3DTexture2DNode:
+				{
+					textureTrue         = true;
+					whichChoice_changed = 0;
+					return;
+				}
+				case X3DConstants .X3DTexture3DNode:
+				{
+					texture3DTrue       = true;
+					whichChoice_changed = 1;
+					return;
+				}
+				case X3DConstants .X3DEnvironmentTextureNode:
+				{
+					cubeMapTextureTrue  = true;
+					whichChoice_changed = 2;
+					return;
+				}
+				default:
+					continue;
+			}
+		}
+	}
+
+	textureTrue         = true;
+	whichChoice_changed = -1;
+}"
+            }
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Prototype MetadataSet {
+        name "Prototype"
+        reference "http://titania.create3000.de"
+        value DEF path MetadataString {
+          name "path"
+          reference "http://titania.create3000.de"
+          value "Volume"
+        }
+      }
+    ]
+  }
+  title "TexturePreview"
+}
+
+LayerSet {
+  activeLayer 2
+  order [
+    1,
+    2
+  ]
+  layers [
+    DEF CheckerBoard LayoutLayer {
+      isPickable FALSE
+      layout Layout {
+        scaleMode [
+          "PIXEL",
+          "PIXEL"
+        ]
+      }
+      children [
+        DEF Gray Background {
+          skyColor 0.4 0.4 0.4
+        }
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+              emissiveColor 0.6 0.6 0.6
+            }
+            texture PixelTexture {
+              image 2 2 2
+                0xffff 0
+                0 0xffff
+            }
+            textureTransform TextureTransform {
+              scale 5000 5000
+            }
+          }
+          geometry Rectangle2D {
+            size 80000 80000
+          }
+        }
+      ]
+    }
+    Layer {
+      children [
+        DEF Texture2DNavigationInfo NavigationInfo {
+          type "PLANE_create3000.de"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF Texture3DNavigationInfo NavigationInfo {
+          type "EXAMINE"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF CubeMapTextureNavigationInfo NavigationInfo {
+          type "EXAMINE"
+          headlight FALSE
+          transitionType "TELEPORT"
+        }
+        DEF Texture2DViewpoint OrthoViewpoint { }
+        DEF Texture3DViewpoint Viewpoint {
+          position 1.86252 2.136 2.97602
+          orientation -0.70089 0.681223 0.211398 0.83363
+          centerOfRotation -0.00853324 -0.18822 0.156491
+        }
+        DEF CubeMapViewpoint Viewpoint {
+          position 0 0 2.84738
+        }
+        DEF _1 Switch {
+          children [
+            DEF Texture2D Transform {
+              children Shape {
+                appearance DEF Appearance Appearance { }
+                geometry Rectangle2D { }
+              }
+            }
+            DEF Texture3D Group {
               children [
                 DEF Volume Group {
                   children [
                     DEF _2 ClipPlane {
                       plane 0 0 -1 1
                     }
-                    Volume {
-                      dimension 200
-                      appearance DEF Appearance Appearance { }
+                    DEF _3 Volume {
+                      dimensions 2 2 2
                     }
                   ]
                 }
@@ -288,114 +400,6 @@ function set_translation (value)
                 }
               ]
             }
-          }
-        ]
-      }
-      DEF Page MetadataSet {
-        name "Page"
-        reference "http://titania.create3000.de"
-        value [
-          DEF activeView MetadataInteger {
-            name "activeView"
-            reference "http://titania.create3000.de"
-            value 1
-          }
-          DEF multiView MetadataInteger {
-            name "multiView"
-            reference "http://titania.create3000.de"
-            value 0
-          }
-        ]
-      }
-      DEF Prototype MetadataSet {
-        name "Prototype"
-        reference "http://titania.create3000.de"
-        value DEF path MetadataString {
-          name "path"
-          reference "http://titania.create3000.de"
-          value "Volume"
-        }
-      }
-    ]
-  }
-  title "TexturePreview"
-}
-
-LayerSet {
-  activeLayer 2
-  order [
-    1,
-    2
-  ]
-  layers [
-    DEF CheckerBoard LayoutLayer {
-      isPickable FALSE
-      layout Layout {
-        scaleMode [
-          "PIXEL",
-          "PIXEL"
-        ]
-      }
-      children [
-        DEF Gray Background {
-          skyColor 0.4 0.4 0.4
-        }
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
-              emissiveColor 0.6 0.6 0.6
-            }
-            texture PixelTexture {
-              image 2 2 2
-                0xffff 0
-                0 0xffff
-            }
-            textureTransform TextureTransform {
-              scale 5000 5000
-            }
-          }
-          geometry Rectangle2D {
-            size 80000 80000
-          }
-        }
-      ]
-    }
-    Layer {
-      children [
-        DEF Texture2DNavigationInfo NavigationInfo {
-          type "PLANE_create3000.de"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF Texture3DNavigationInfo NavigationInfo {
-          type "EXAMINE"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF CubeMapTextureNavigationInfo NavigationInfo {
-          type "EXAMINE"
-          headlight FALSE
-          transitionType "TELEPORT"
-        }
-        DEF Texture2DViewpoint OrthoViewpoint { }
-        DEF Texture3DViewpoint Viewpoint {
-          position 1.86252 2.136 2.97602
-          orientation -0.70089 0.681223 0.211398 0.83363
-          centerOfRotation -0.00853324 -0.18822 0.156491
-        }
-        DEF CubeMapViewpoint Viewpoint {
-          position 0 0 2.84738
-        }
-        DEF _3 Switch {
-          children [
-            DEF Texture2D Transform {
-              children Shape {
-                appearance USE Appearance
-                geometry Rectangle2D { }
-              }
-            }
-            USE Texture3D
             DEF CubeMapTexture Transform {
               children Shape {
                 appearance USE Appearance
@@ -11391,59 +11395,7 @@ LayerSet {
             }
           ]
         }
-        DEF TextureScript Script {
-          inputOutput SFNode  texture NULL
-          outputOnly  SFInt32 whichChoice_changed
-          outputOnly  SFBool  textureTrue
-          outputOnly  SFBool  texture3DTrue
-          outputOnly  SFBool  cubeMapTextureTrue
-
-          url "ecmascript:
-
-function initialize ()
-{
-	set_texture (texture);
-}
-
-function set_texture (value)
-{
-	if (value)
-	{
-		var type = value .getNodeType () .reverse ();
-	
-		for (var i = 0; i < type .length; ++ i)
-		{
-			switch (type [i])
-			{
-				case X3DConstants .MultiTexture:
-				case X3DConstants .X3DTexture2DNode:
-				{
-					textureTrue         = true;
-					whichChoice_changed = 0;
-					return;
-				}
-				case X3DConstants .X3DTexture3DNode:
-				{
-					texture3DTrue       = true;
-					whichChoice_changed = 1;
-					return;
-				}
-				case X3DConstants .X3DEnvironmentTextureNode:
-				{
-					cubeMapTextureTrue  = true;
-					whichChoice_changed = 2;
-					return;
-				}
-				default:
-					continue;
-			}
-		}
-	}
-
-	textureTrue         = true;
-	whichChoice_changed = -1;
-}"
-        }
+        USE TextureScript
       ]
     }
   ]
@@ -11452,7 +11404,7 @@ function set_texture (value)
 ROUTE ClipPlaneScript.plane_changed TO _2.set_plane
 ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation
 ROUTE PlaneSensor.translation_changed TO ClipPlane.set_translation
-ROUTE TextureScript.whichChoice_changed TO _3.set_whichChoice
+ROUTE TextureScript.whichChoice_changed TO _1.set_whichChoice
 ROUTE Appearance.texture_changed TO TextureScript.set_texture
 ROUTE TextureScript.textureTrue TO Texture2DViewpoint.set_bind
 ROUTE TextureScript.textureTrue TO Texture2DNavigationInfo.set_bind
@@ -11460,3 +11412,4 @@ ROUTE TextureScript.texture3DTrue TO Texture3DViewpoint.set_bind
 ROUTE TextureScript.texture3DTrue TO Texture3DNavigationInfo.set_bind
 ROUTE TextureScript.cubeMapTextureTrue TO CubeMapViewpoint.set_bind
 ROUTE TextureScript.cubeMapTextureTrue TO CubeMapTextureNavigationInfo.set_bind
+ROUTE Appearance.texture_changed TO _3.set_voxels

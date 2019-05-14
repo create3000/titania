@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Immersive' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <component name='CADGeometry' level='1'/>
+    <component name='Shaders' level='1'/>
+    <component name='Texturing3D' level='1'/>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Tue, 14 May 2019 10:58:30 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V4.5.3, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Library/Tests/Components/Texturing3D/Volume.x3d'/>
+    <meta name='modified' content='Tue, 14 May 2019 10:58:30 GMT'/>
+    <meta name='titania-output-style' content='Nicest'/>
+  </head>
+  <Scene>
+    <ProtoDeclare name='Volume'>
+      <ProtoInterface>
+        <field accessType='inputOutput' type='SFVec3f' name='dimensions' value='1 1 1'/>
+        <field accessType='inputOutput' type='SFNode' name='voxels'/>
+      </ProtoInterface>
+      <ProtoBody>
+        <Group>
+          <ProximitySensor DEF='_1'
+              size='-1 -1 -1'/>
+          <Transform DEF='_2'>
+            <Shape>
+              <Appearance>
+                <IS>
+                  <connect nodeField='texture' protoField='voxels'/>
+                </IS>
+                <TextureTransform3D DEF='_3'
+                    translation='0.5 0.5 0.5'
+                    center='-0.5 -0.5 -0.5'/>
+                <ComposedShader DEF='ComposedShader'
+                    language='GLSL'>
+                  <ShaderPart DEF='VertexShader'>
+<![CDATA[data:x-shader/x-vertex,#version 300 es
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat4 x3d_TextureMatrix [1];
+
+in vec4 x3d_Vertex;
+in vec4 x3d_TexCoord0;
+
+out vec3 vertex;
+out vec4 texCoord;
+
+void
+main ()
+{
+	vec4 position = x3d_ModelViewMatrix * x3d_Vertex;
+
+	vertex   = position .xyz;
+	texCoord = x3d_TextureMatrix [0] * x3d_TexCoord0;
+
+	gl_Position = x3d_ProjectionMatrix * position;
+}]]>
+                  </ShaderPart>
+                  <ShaderPart DEF='FragmentShader'
+                      type='FRAGMENT'>
+<![CDATA[data:x-shader/x-fragment,#version 300 es
+
+precision mediump float;
+precision mediump sampler3D;
+
+uniform int       x3d_NumTextures;
+uniform sampler3D x3d_Texture3D [1];
+
+uniform int  x3d_NumClipPlanes;
+uniform vec4 x3d_ClipPlane [x3d_MaxClipPlanes];
+
+in vec3 vertex;
+in vec4 texCoord;
+
+out vec4 x3d_FragColor;
+
+void
+clip ()
+{
+	for (int i = 0; i < x3d_MaxClipPlanes; ++ i)
+	{
+		if (i == x3d_NumClipPlanes)
+			break;
+
+		if (dot (vertex, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
+			discard;
+	}
+}
+
+vec4
+getTextureColor (in vec3 texCoord)
+{
+	if (x3d_NumTextures == 0)
+		vec4 (1.0, 1.0, 1.0, 1.0);
+
+	if (texCoord .s < 0.0 || texCoord .s > 1.0)
+		discard;
+
+	if (texCoord .t < 0.0 || texCoord .t > 1.0)
+		discard;
+
+	if (texCoord .p < 0.0 || texCoord .p > 1.0)
+		discard;
+
+	vec4 voxelColor   = texture (x3d_Texture3D [0], texCoord);
+	
+	return voxelColor;
+}
+
+void
+main ()
+{
+	clip ();
+
+	x3d_FragColor = getTextureColor (texCoord .stp / texCoord .q);
+}]]>
+                  </ShaderPart>
+                </ComposedShader>
+              </Appearance>
+              <QuadSet DEF='_4'>
+                <TextureCoordinate3D/>
+                <Coordinate/>
+              </QuadSet>
+            </Shape>
+          </Transform>
+        </Group>
+        <Script DEF='VolumeScript'>
+          <field accessType='inputOutput' type='SFVec3f' name='dimensions'/>
+          <field accessType='initializeOnly' type='SFNode' name='textureTransform'>
+            <TextureTransform3D USE='_3'/>
+          </field>
+          <field accessType='initializeOnly' type='SFNode' name='geometry'>
+            <QuadSet USE='_4'/>
+          </field>
+          <IS>
+            <connect nodeField='dimensions' protoField='dimensions'/>
+          </IS>
+<![CDATA[vrmlscript:
+
+var NUM_PLANES = 200;
+
+function initialize ()
+{
+	set_dimension ();
+}
+
+function set_dimension ()
+{
+	var
+		size     = dimensions .length (),
+		size1_2  = size / 2,
+		coord    = geometry .coord,
+		texCoord = geometry .texCoord;
+	
+	coord .point .length = 0;
+
+	for (var i = 0; i < NUM_PLANES; ++ i)
+	{
+		var z = i / (NUM_PLANES - 1) - 0.5;
+
+		coord .point .push (new SFVec3f ( size1_2,  size1_2, size * z),
+		                    new SFVec3f (-size1_2,  size1_2, size * z),
+		                    new SFVec3f (-size1_2, -size1_2, size * z),
+		                    new SFVec3f ( size1_2, -size1_2, size * z));
+	}
+
+	texCoord .point = coord .point;
+	
+	textureTransform .scale = new SFVec3f (1 / dimensions .x, 1 / dimensions .y, 1 / dimensions .z);
+}
+]]>
+        </Script>
+        <ROUTE fromNode='_1' fromField='orientation_changed' toNode='_2' toField='set_rotation'/>
+        <ROUTE fromNode='_1' fromField='orientation_changed' toNode='_3' toField='set_rotation'/>
+      </ProtoBody>
+    </ProtoDeclare>
+    <WorldInfo
+        title='Volume'/>
+  </Scene>
+</X3D>

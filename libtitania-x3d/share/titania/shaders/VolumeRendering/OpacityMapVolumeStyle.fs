@@ -9,10 +9,11 @@ uniform sampler3D x3d_Texture3D [1];
 uniform sampler2D transferFunction;
 
 in vec3 vertex;
-in vec3 normal;
 in vec4 texCoord;
 
 out vec4 x3d_FragColor;
+
+#pragma X3D include "../Shaders/include/ClipPlanes.glsl"
 
 vec4
 getTextureColor (in vec3 texCoord)
@@ -38,5 +39,7 @@ getTextureColor (in vec3 texCoord)
 void
 main ()
 {
+	clip ();
+
 	x3d_FragColor = getTextureColor (texCoord .stp / texCoord .q);
 }
