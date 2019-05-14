@@ -75,17 +75,18 @@ Texture3D::readImages (const std::string & data)
 		if (not nrrd .valid)
 			throw std::invalid_argument (nrrd .error);
 
-		const auto channels = nrrd .channels;
-		const auto width    = nrrd .width;
-		const auto height   = nrrd .height;
+		const auto components = nrrd .components;
+		const auto width      = nrrd .width;
+		const auto height     = nrrd .height;
+		const auto depth      = nrrd .depth;
 
 		MagickImageArrayPtr images (new MagickImageArray ());
 
-		switch (channels)
+		switch (components)
 		{
 			case 1:
 			{
-				for (size_t i = 0, size = nrrd .depth; i < size; ++ i)
+				for (size_t i = 0; i < depth; ++ i)
 				{
 					auto first = nrrd .pixels .data () + (i * width * height);
 					auto last  = first + (width * height);

@@ -210,18 +210,18 @@ NRRDParser::sizes (const std::string & value)
 	{
 		case 3:
 		{
-			nrrd .channels = 1;
-			nrrd .width    = sizes [0];
-			nrrd .height   = sizes [1];
-			nrrd .depth    = sizes [2];
+			nrrd .components = 1;
+			nrrd .width      = sizes [0];
+			nrrd .height     = sizes [1];
+			nrrd .depth      = sizes [2];
 			return;
 		}
 		case 4:
 		{
-			nrrd .channels = sizes [0];
-			nrrd .width    = sizes [1];
-			nrrd .height   = sizes [2];
-			nrrd .depth    = sizes [3];
+			nrrd .components = sizes [0];
+			nrrd .width      = sizes [1];
+			nrrd .height     = sizes [2];
+			nrrd .depth      = sizes [3];
 			return;
 		}
 	}
@@ -230,7 +230,7 @@ NRRDParser::sizes (const std::string & value)
 void
 NRRDParser::pixels ()
 {
-	const auto size = nrrd .channels * nrrd .width * nrrd .height * nrrd .depth;
+	const auto size = nrrd .components * nrrd .width * nrrd .height * nrrd .depth;
 
 	if (size > 0)
 	{
