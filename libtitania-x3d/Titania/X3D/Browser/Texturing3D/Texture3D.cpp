@@ -75,28 +75,41 @@ Texture3D::readImages (const std::string & data)
 		if (not nrrd .valid)
 			throw std::invalid_argument (nrrd .error);
 
-		const auto width  = nrrd .width;
-		const auto height = nrrd .height;
+		const auto channels = nrrd .channels;
+		const auto width    = nrrd .width;
+		const auto height   = nrrd .height;
 
 		MagickImageArrayPtr images (new MagickImageArray ());
 
-		for (size_t i = 0, size = nrrd .depth; i < size; ++ i)
+		switch (channels)
 		{
-			auto first = nrrd .pixels .data () + (i * width * height);
-			auto last  = first + (width * height);
-			auto data  = std::vector <uint8_t> ();
-
-			while (first < last)
+			case 1:
 			{
-				const auto pixel = *first ++;
+				for (size_t i = 0, size = nrrd .depth; i < size; ++ i)
+				{
+					auto first = nrrd .pixels .data () + (i * width * height);
+					auto last  = first + (width * height);
+					auto data  = std::vector <uint8_t> ();
 
-				data .emplace_back (pixel);
-				data .emplace_back (pixel);
-				data .emplace_back (pixel);
+					while (first < last)
+					{
+						const auto pixel = *first ++;
+
+						data .emplace_back (pixel);
+						data .emplace_back (pixel);
+						data .emplace_back (pixel);
+					}
+
+					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
+					images -> back () .flip ();
+				}
+
+				break;
 			}
-
-			images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
-			images -> back () .flip ();
+			default:
+			{
+				throw std::invalid_argument ("Unsupported NRRD channel size");
+			}
 		}
 
 		return images;

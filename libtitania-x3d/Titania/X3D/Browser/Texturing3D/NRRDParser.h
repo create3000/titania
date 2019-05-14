@@ -66,6 +66,7 @@ struct NRRDImage
 	size_t      version;
 	std::string type;
 	size_t      dimension;
+	size_t      channels;
 	size_t      width;
 	size_t      height;
 	size_t      depth;

@@ -77,7 +77,7 @@ const io::inverse_string NRRDParser::Grammar::line ("\n");
 NRRDParser::NRRDParser (const std::string & data) :
 	   data (data),
 	istream (data),
-	   nrrd ({ false, true, "", 0, "", 0, 0, 0, 0, "" })
+	   nrrd ({ false, true, "", 0, "", 0, 0, 0, 0, 0, "" })
 { }
 
 NRRDImage
@@ -167,7 +167,7 @@ NRRDParser::type (const std::string & value)
 	}
 
 	nrrd .valid = false;
-	nrrd .error = "Unsupported NRRD type.";
+	nrrd .error = "Unsupported NRRD type";
 }
 
 void
@@ -179,7 +179,7 @@ NRRDParser::encoding (const std::string & value)
 	}
 
 	nrrd .valid = false;
-	nrrd .error = "Unsupported NRRD encoding.";
+	nrrd .error = "Unsupported NRRD encoding";
 }
 
 void
@@ -189,27 +189,48 @@ NRRDParser::dimension (const std::string & value)
 
 	istream >> nrrd .dimension;
 
-	if (istream and nrrd .dimension == 3)
+	if (istream and (nrrd .dimension == 3 or nrrd .dimension == 4))
 		return;
 
 	nrrd .valid = false;
-	nrrd .error = "Unsupported NRRD dimension, must be 3.";
+	nrrd .error = "Unsupported NRRD dimension, must be 3";
 }
 
 void
 NRRDParser::sizes (const std::string & value)
 {
 	std::istringstream istream (value);
+	std::vector <double> sizes;
+	double size = 0;
 
-	istream >> nrrd .width;
-	istream >> nrrd .height;
-	istream >> nrrd .depth;
+	while (istream >> size)
+		sizes .emplace_back (size);
+
+	switch (sizes .size ())
+	{
+		case 3:
+		{
+			nrrd .channels = 1;
+			nrrd .width    = sizes [0];
+			nrrd .height   = sizes [1];
+			nrrd .depth    = sizes [2];
+			return;
+		}
+		case 4:
+		{
+			nrrd .channels = sizes [0];
+			nrrd .width    = sizes [1];
+			nrrd .height   = sizes [2];
+			nrrd .depth    = sizes [3];
+			return;
+		}
+	}
 }
 
 void
 NRRDParser::pixels ()
 {
-	const auto size = nrrd .width * nrrd .height * nrrd .depth;
+	const auto size = nrrd .channels * nrrd .width * nrrd .height * nrrd .depth;
 
 	if (size > 0)
 	{
@@ -218,7 +239,7 @@ NRRDParser::pixels ()
 	}
 
 	nrrd .valid = false;
-	nrrd .error = "Invalid NRRD sizes.";
+	nrrd .error = "Invalid NRRD sizes";
 }
 
 NRRDParser::~NRRDParser ()
