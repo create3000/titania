@@ -79,6 +79,7 @@ Texture3D::readImages (const std::string & data)
 		const auto width      = nrrd .width;
 		const auto height     = nrrd .height;
 		const auto depth      = nrrd .depth;
+		const auto size       = components * width * height;
 
 		MagickImageArrayPtr images (new MagickImageArray ());
 
@@ -88,8 +89,8 @@ Texture3D::readImages (const std::string & data)
 			{
 				for (size_t i = 0; i < depth; ++ i)
 				{
-					auto first = nrrd .pixels .data () + (i * width * height);
-					auto last  = first + (width * height);
+					auto first = nrrd .pixels .data () + (i * size);
+					auto last  = first + size;
 					auto data  = std::vector <uint8_t> ();
 
 					while (first < last)
@@ -102,6 +103,65 @@ Texture3D::readImages (const std::string & data)
 					}
 
 					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
+					images -> back () .flip ();
+				}
+
+				break;
+			}
+			case 2:
+			{
+				for (size_t i = 0; i < depth; ++ i)
+				{
+					auto first = nrrd .pixels .data () + (i * size);
+					auto last  = first + size;
+					auto data  = std::vector <uint8_t> ();
+
+					while (first < last)
+					{
+						const auto pixel = *first ++;
+						const auto alpha = *first ++;
+
+						data .emplace_back (pixel);
+						data .emplace_back (pixel);
+						data .emplace_back (pixel);
+						data .emplace_back (alpha);
+					}
+
+					images -> emplace_back (width, height, "RGBA", Magick::CharPixel, data .data ());
+					images -> back () .flip ();
+				}
+
+				break;
+			}
+			case 3:
+			{
+				for (size_t i = 0; i < depth; ++ i)
+				{
+					auto first = nrrd .pixels .data () + (i * size);
+					auto last  = first + size;
+					auto data  = std::vector <uint8_t> ();
+
+					while (first < last)
+						data .emplace_back (*first ++);
+
+					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
+					images -> back () .flip ();
+				}
+
+				break;
+			}
+			case 4:
+			{
+				for (size_t i = 0; i < depth; ++ i)
+				{
+					auto first = nrrd .pixels .data () + (i * size);
+					auto last  = first + size;
+					auto data  = std::vector <uint8_t> ();
+
+					while (first < last)
+						data .emplace_back (*first ++);
+
+					images -> emplace_back (width, height, "RGBA", Magick::CharPixel, data .data ());
 					images -> back () .flip ();
 				}
 
