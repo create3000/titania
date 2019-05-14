@@ -6,6 +6,7 @@ precision mediump sampler3D;
 
 uniform int       x3d_NumTextures;
 uniform sampler3D x3d_Texture3D [1];
+uniform sampler2D transferFunction;
 
 in vec3 vertex;
 in vec3 normal;
@@ -28,9 +29,8 @@ getTextureColor (in vec3 texCoord)
 	if (texCoord .p < 0.0 || texCoord .p > 1.0)
 		discard;
 
-	vec4 textureColor = texture (x3d_Texture3D [0], texCoord);
-
-	textureColor .a = textureColor .r;
+	vec4 voxelColor   = texture (x3d_Texture3D [0], texCoord);
+	vec4 textureColor = texture (transferFunction, voxelColor .ra);
 
 	return textureColor;
 }

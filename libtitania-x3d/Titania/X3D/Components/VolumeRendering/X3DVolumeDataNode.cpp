@@ -115,7 +115,6 @@ X3DVolumeDataNode::initialize ()
 	appearanceNode -> textureTransform ()  = textureTransformNode;
 	textureTransformNode -> translation () = Vector3f (0.5, 0.5, 0.5);
 	textureTransformNode -> center ()      = Vector3f (-0.5, -0.5, -0.5);
-	geometryNode -> solid ()               = false;
 	geometryNode -> texCoord ()            = textureCoordinateNode;
 	geometryNode -> coord ()               = coordinateNode;
 

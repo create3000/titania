@@ -73,7 +73,9 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	X3DProgrammableShaderObject (),
 	                     fields (),
 	                 loadSensor (new LoadSensor (executionContext)),
-	                  programId (0)
+	                  programId (0),
+	              enabledOutput (),
+	             disabledOutput ()
 {
 	addType (X3DConstants::ComposedShader);
 
@@ -83,7 +85,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isValid",    isValid ());
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "parts",      parts ());
-	
+
 	addChildObjects (loadSensor);
 }
 
@@ -160,17 +162,17 @@ ComposedShader::set_loaded ()
 		if (programId)
 		{
 			bool openGLES = false;
-	
+
 			for (const auto & part : parts ())
 			{
 				const auto partNode = x3d_cast <ShaderPart*> (part);
-	
+
 				if (partNode)
 				{
 					if (partNode -> isValid ())
 					{
 						openGLES |= partNode -> getOpenGLES ();
-	
+
 						glAttachShader (programId, partNode -> getShaderId ());
 					}
 					else
@@ -180,7 +182,7 @@ ComposedShader::set_loaded ()
 					}
 				}
 			}
-	
+
 			setOpenGLES (openGLES);
 		}
 		else
@@ -193,15 +195,15 @@ ComposedShader::set_loaded ()
 			glBindFragDataLocation (programId, 0, "x3d_FragColor");
 
 			// TransformFeedbackVaryings
-	
+
 			applyTransformFeedbackVaryings ();
-	
+
 			// Link program
-	
+
 			glLinkProgram (programId);
-	
+
 			// Check for link status
-	
+
 			glGetProgramiv (programId, GL_LINK_STATUS, &valid);
 		}
 
@@ -228,7 +230,7 @@ ComposedShader::set_loaded ()
 			for (const auto & part : parts ())
 			{
 				const auto partNode = x3d_cast <ShaderPart*> (part);
-	
+
 				if (partNode and partNode -> isValid ())
 					glDetachShader (programId, partNode -> getShaderId ());
 			}
@@ -256,11 +258,15 @@ ComposedShader::enable ()
 	glUseProgram (programId);
 
 	X3DProgrammableShaderObject::enable ();
+
+	enabledOutput .processInterests ();
 }
 
 void
 ComposedShader::disable ()
 {
+	disabledOutput .processInterests ();
+
 	X3DProgrammableShaderObject::disable ();
 
 	glUseProgram (0);

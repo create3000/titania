@@ -346,20 +346,20 @@ X3DGeometryNode::intersects (const Line3d & line,
 
 bool
 X3DGeometryNode::intersects (Box3d box,
-                             const ClipPlaneContainerArray & clipPlanes, 
+                             const ClipPlaneContainerArray & clipPlanes,
                              Matrix4d modelViewMatrix) const
 {
 	try
 	{
 		if (not box .intersects (getBBox ()))
 			return false;
-		
+
 		const auto & matrix = getMatrix ();  // Get the current matrix from screen nodes.
 
 		modelViewMatrix .mult_left (matrix); // This matrix is for clipping only.
 
 		box *= inverse (matrix);
-	
+
 		for (const auto & element : elements)
 		{
 			switch (element .vertexMode ())
@@ -374,7 +374,7 @@ X3DGeometryNode::intersects (Box3d box,
 							{
 								if (isClipped (vertices [i + 0] * modelViewMatrix, clipPlanes))
 									continue;
-	
+
 								if (isClipped (vertices [i + 1] * modelViewMatrix, clipPlanes))
 									continue;
 
@@ -426,7 +426,7 @@ X3DGeometryNode::intersects (Box3d box,
 								return true;
 						}
 					}
-	
+
 					continue;
 				}
 				case GL_POLYGON:
@@ -441,10 +441,10 @@ X3DGeometryNode::intersects (Box3d box,
 							{
 								if (isClipped (vertices [first] * modelViewMatrix, clipPlanes))
 									continue;
-		
+
 								if (isClipped (vertices [i] * modelViewMatrix, clipPlanes))
 									continue;
-		
+
 								if (isClipped (vertices [i + 1] * modelViewMatrix, clipPlanes))
 									continue;
 							}
@@ -519,13 +519,13 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 				default:
 					break;
 			}
-	
+
 			const auto index = x * 4 + y * width * 4;
-	
+
 			if (frameBuffer -> getPixels () [index])
 				hitPoints .emplace_back (vertex);
 		}
-	
+
 		std::sort (hitPoints .begin (), hitPoints .end ());
 
 		hitPoints .erase (std::unique (hitPoints .begin (), hitPoints .end ()), hitPoints .end ());
@@ -541,14 +541,14 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 				const auto invModelViewMatrix = inverse (modelViewMatrix);
 				const auto origin             = invModelViewMatrix .origin ();
 				auto       intersections      = std::vector <IntersectionPtr> ();
-		
+
 				const auto iter = std::remove_if (hitPoints .begin (), hitPoints .end (), [&] (const Vector3d & point)
 				{
 					const auto line = Line3d (origin, point, points_type ());
 					const auto z    = (point * modelViewMatrix) .z ();
-			
+
 					intersections .clear ();
-		
+
 					if (intersects (line, { }, modelViewMatrix, intersections))
 					{
 						const auto iter = std::find_if (intersections .cbegin (), intersections .cend (),
@@ -556,13 +556,13 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 						{
 							return (intersection -> getPoint () * modelViewMatrix) .z () - z > 1e-5;
 						});
-		
+
 						return iter not_eq intersections .end ();
 					}
-		
+
 					return true;
 				});
-				
+
 				hitPoints .erase (iter, hitPoints .end ());
 			}
 			default:
@@ -824,7 +824,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex,
  * Adds all vertices, normals and texCoordss mirrors onto the XY-plane to the arrays.
  * If the shape is not convext, the this not convex one point must be the first point in the arrays.
  */
-	                    	                   
+
 bool
 X3DGeometryNode::cut (X3DRenderObject* const renderObject, const Line2d & cutLine)
 {
@@ -836,12 +836,12 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 {
 	if (geometryType < 2)
 		return;
-			
+
 	const bool flatShading = shading == ShadingType::FLAT;
 
 	if (flatShading == this -> flatShading and faceNormals .size ())
 		return;
-   
+
    this -> flatShading = flatShading;
 
 	if (flatShading)
@@ -861,7 +861,7 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 							for (size_t k = 0; k < 3; ++ k)
 								faceNormals .emplace_back (n);
 						}
-		
+
 						continue;
 					}
 					case GL_QUADS:
@@ -873,7 +873,7 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 							for (size_t k = 0; k < 4; ++ k)
 								faceNormals .emplace_back (n);
 						}
-		
+
 						continue;
 					}
 					case GL_POLYGON:
@@ -882,29 +882,29 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 
 						// Determine polygon normal.
 						// We use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal here:
-					
+
 						double x = 0, y = 0, z = 0;
-					
+
 						auto next = vertices [first];
-					
+
 						for (size_t i = 0, size = element .last () - first; i < size; ++ i)
 						{
 							auto current = next;
-					
+
 							next = vertices [first + (i + 1) % size];
-					
+
 							x += (current .y () - next .y ()) * (current .z () + next .z ());
 							y += (current .z () - next .z ()) * (current .x () + next .x ());
 							z += (current .x () - next .x ()) * (current .y () + next .y ());
 						}
-						
+
 						const auto n = normalize (Vector3d (x, y, z));
 
 						// Add normal for each vertex.
 
 						for (size_t k = 0, size = element .last () - first; k < size; ++ k)
 							faceNormals .emplace_back (n);
-		
+
 						continue;
 					}
 					default:
@@ -1037,7 +1037,7 @@ X3DGeometryNode::depth (const X3DShapeContainer* const context)
 	{
 		glDrawArrays (element .vertexMode (), element .first (), element .count ());
 	}
-	
+
 	glDisableClientState (GL_VERTEX_ARRAY);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
@@ -1086,19 +1086,19 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
 
 		// Draw depending on ccw, transparency and solid.
-	
+
 		const auto positiveScale = context -> getModelViewMatrix () .submatrix () .determinant () > 0;
-	
+
 		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 		if (context -> isTransparent () && not solid)
 		{
 			glEnable (GL_CULL_FACE);
-	
+
 			// Draw
 
 			glCullFace (GL_FRONT);
-	
+
 			for (const auto & element : elements)
 			{
 				glDrawArrays (element .vertexMode (), element .first (), element .count ());
@@ -1107,7 +1107,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			// Draw
 
 			glCullFace (GL_BACK);
-	
+
 			for (const auto & element : elements)
 			{
 				glDrawArrays (element .vertexMode (), element .first (), element .count ());
@@ -1116,26 +1116,26 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		else
 		{
 			// Solid & ccw.
-	
+
 			if (solid)
 				glEnable (GL_CULL_FACE);
-	
+
 			else
 				glDisable (GL_CULL_FACE);
-	
+
 			for (const auto & element : elements)
 			{
 				glDrawArrays (element .vertexMode (), element .first (), element .count ());
 			}
 		}
-	
+
 		// VertexAttribs
-	
+
 		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 			attribNodes [i] -> disable (shaderNode);
-	
+
 		// Disable shader
-	
+
 		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableTexCoordAttrib ();
@@ -1195,14 +1195,14 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 		shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
 
 		// Draw particles.
-	
+
 		auto       modelViewMatrix = context -> getModelViewMatrix ();
 		const auto origin          = modelViewMatrix .origin ();
-	
+
 		// Draw depending on ccw, transparency and solid.
-	
+
 		const auto positiveScale = context -> getModelViewMatrix () .submatrix () .determinant () > 0;
-	
+
 		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 		if (context -> isTransparent () && not solid)
@@ -1218,19 +1218,19 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 				glEnable (GL_CULL_FACE);
 				glCullFace (GL_FRONT);
-		
+
 				for (const auto & element : elements)
 				{
 					glDrawArrays (element .vertexMode (), element .first (), element .count ());
 				}
 
 				glCullFace (GL_BACK);
-		
+
 				for (const auto & element : elements)
 				{
 					glDrawArrays (element .vertexMode (), element .first (), element .count ());
 				}
-			}	
+			}
 		}
 		else
 		{

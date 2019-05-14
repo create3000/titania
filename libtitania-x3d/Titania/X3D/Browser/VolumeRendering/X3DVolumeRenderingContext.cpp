@@ -53,6 +53,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Shaders/ComposedShader.h"
+#include "../../Components/Texturing/PixelTexture.h"
 #include "../../Components/VolumeRendering/OpacityMapVolumeStyle.h"
 
 namespace titania {
@@ -61,10 +62,12 @@ namespace X3D {
 X3DVolumeRenderingContext::X3DVolumeRenderingContext () :
 	                X3DBaseNode (),
 	     defaultVolumeStyleNode (),
-	opacityMapVolumeStyleShader ()
+	opacityMapVolumeStyleShader (),
+	    defaultTransferFunction ()
 {
 	addChildObjects (defaultVolumeStyleNode,
-	                 opacityMapVolumeStyleShader);
+	                 opacityMapVolumeStyleShader,
+	                 defaultTransferFunction);
 }
 
 void
@@ -95,6 +98,29 @@ X3DVolumeRenderingContext::getOpacityMapVolumeStyleShader () const
 	                                                             { get_shader ("VolumeRendering/OpacityMapVolumeStyle.fs")  .str () });
 
 	return opacityMapVolumeStyleShader;
+}
+
+const X3DPtr <PixelTexture> &
+X3DVolumeRenderingContext::getDefaultTransferFunction () const
+{
+	if (defaultTransferFunction)
+		return defaultTransferFunction;
+
+	defaultTransferFunction = new PixelTexture (getExecutionContext ());
+
+	defaultTransferFunction -> repeatS () = false;
+	defaultTransferFunction -> repeatT () = true;
+
+	defaultTransferFunction -> image () .setWidth (256);
+	defaultTransferFunction -> image () .setHeight (1);
+	defaultTransferFunction -> image () .setComponents (2);
+
+	for (size_t i = 0; i < 256; ++ i)
+		defaultTransferFunction -> image () .getArray () [i] = (i << 8) | i;
+
+	defaultTransferFunction -> setup ();
+
+	return defaultTransferFunction;
 }
 
 X3DVolumeRenderingContext::~X3DVolumeRenderingContext ()

@@ -95,8 +95,8 @@ protected:
 
 	///  @name Member access
 
-	std::vector <int32_t>
-	getCubeMapTextureUnits ()
+	const std::vector <int32_t>
+	getCubeMapTextureUnits () const
 	{ return cubeMapTextureUnits; }
 
 	const X3DPtr <TextureProperties> &

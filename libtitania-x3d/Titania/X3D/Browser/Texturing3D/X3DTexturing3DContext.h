@@ -92,8 +92,8 @@ protected:
 
 	///  @name Member access
 
-	std::vector <int32_t>
-	getTexture3DUnits ()
+	const std::vector <int32_t>
+	getTexture3DUnits () const
 	{ return texture3DUnits; }
 
 

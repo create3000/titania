@@ -104,61 +104,18 @@ public:
 	getMaxCombinedTextureUnits () const
 	{ return maxCombinedTextureUnits; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DTexturingContext () override;
-
-
-protected:
-
-	///  @name Friends
-
-	friend class Appearance;
-	friend class BrowserOptions;
-	friend class LightContainer; // Shadow
-	friend class MovieTexture;
-	friend class MultiTexture;
-	friend class MultiTextureCoordinate;
-	friend class MultiTextureTransform;
-	friend class ParticleSystem;
-	friend class RenderingProperties;
-	friend class TextureProperties;
-	friend class SoftSystem;
-	friend class ScreenText;
-	friend class X3DCubeMapTexturingContext;
-	friend class X3DGeometryNode;
-	friend class X3DLineGeometryNode;
-	friend class X3DShapeContext;
-	friend class X3DTexture2DNode;
-	friend class X3DTexture3DNode;
-	friend class X3DTextureCoordinateNode;
-	friend class X3DTextureTransformNode;
-	friend class X3DTexturing3DContext;
-	friend class X3DProgrammableShaderObject;
-	friend class X3DShapeNode;
-
-	///  @name Construction
-
-	X3DTexturingContext ();
-
-	virtual
-	void
-	initialize () override;
-
 	///  @name Member access
 
 	TextureUnitStack &
 	getCombinedTextureUnits ()
 	{ return combinedTextureUnits; }
 
-	std::vector <int32_t> &
-	getTexture2DUnits ()
+	const TextureUnitStack &
+	getCombinedTextureUnits () const
+	{ return combinedTextureUnits; }
+
+	const std::vector <int32_t> &
+	getTexture2DUnits () const
 	{ return texture2DUnits; }
 
 	const X3DPtr <TextureProperties> &
@@ -176,6 +133,28 @@ protected:
 	const X3DPtr <X3DTextureCoordinateNode> &
 	getDefaultTexCoord () const
 	{ return defaultTexCoord; }
+
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DTexturingContext () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTexturingContext ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:

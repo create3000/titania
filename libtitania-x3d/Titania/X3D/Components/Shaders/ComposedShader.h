@@ -126,9 +126,17 @@ public:
 	void
 	enable () final override;
 
+	const	Output &
+	enabled () const
+	{ return enabledOutput; }
+
 	virtual
 	void
 	disable () final override;
+
+	const	Output &
+	disabled () const
+	{ return disabledOutput; }
 
 	///  @name Pipeline
 
@@ -144,7 +152,7 @@ public:
 	void
 	enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components) final override
 	{ X3DProgrammableShaderObject::enableFloatAttrib (name, buffer, components); }
-	
+
 	virtual
 	void
 	disableFloatAttrib (const std::string & name) final override
@@ -154,27 +162,27 @@ public:
 	void
 	enableIntegerAttrib (const std::string & name, const GLuint buffer, const size_t components) final override
 	{ X3DProgrammableShaderObject::enableIntegerAttrib (name, buffer, components); }
-	
+
 	virtual
 	void
 	disableIntegerAttrib (const std::string & name) final override
 	{ X3DProgrammableShaderObject::disableIntegerAttrib (name); }
-	
+
 	virtual
 	void
 	enableMatrix3Attrib (const std::string & name, const GLuint buffer) final override
 	{ X3DProgrammableShaderObject::enableMatrix3Attrib (name, buffer); }
-	
+
 	virtual
 	void
 	disableMatrix3Attrib (const std::string & name) final override
 	{ X3DProgrammableShaderObject::disableMatrix3Attrib (name); }
-	
+
 	virtual
 	void
 	enableMatrix4Attrib (const std::string & name, const GLuint buffer) final override
 	{ X3DProgrammableShaderObject::enableMatrix4Attrib (name, buffer); }
-	
+
 	virtual
 	void
 	disableMatrix4Attrib (const std::string & name) final override
@@ -184,7 +192,7 @@ public:
 	void
 	enableFogDepthAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ X3DProgrammableShaderObject::enableFogDepthAttrib (buffer, type, stride, pointer); }
-	
+
 	virtual
 	void
 	disableFogDepthAttrib () final override
@@ -194,7 +202,7 @@ public:
 	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ X3DProgrammableShaderObject::enableColorAttrib (buffer, type, stride, pointer); }
-	
+
 	virtual
 	void
 	disableColorAttrib () final override
@@ -217,7 +225,7 @@ public:
 	void
 	enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ X3DProgrammableShaderObject::enableNormalAttrib (buffer, type, stride, pointer); }
-	
+
 	virtual
 	void
 	disableNormalAttrib () final override
@@ -227,7 +235,7 @@ public:
 	void
 	enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride = 0, const GLvoid* pointer = nullptr) final override
 	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer, type, stride, pointer); }
-	
+
 	virtual
 	void
 	disableVertexAttrib () final override
@@ -289,6 +297,8 @@ private:
 
 	X3DPtr <LoadSensor> loadSensor;
 	GLuint              programId;
+	Output              enabledOutput;
+	Output              disabledOutput;
 
 };
 

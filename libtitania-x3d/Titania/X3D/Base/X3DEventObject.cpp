@@ -98,33 +98,33 @@ X3DEventObject::setBrowser (X3DBrowser* const value)
 	if (initialized)
 	{
 		// Collect and remove events.
-	
+
 		std::vector <ChildrenList::value_type> objects;
-	
+
 		for (const auto & event : events)
 		{
 			if (browser -> getRouter () -> isValid (event))
 				objects .emplace_back (*event .iter);
 		}
-	
+
 		const bool tainted = browser -> getRouter () -> isValid (parentId);
-	
+
 		removeEvents ();
-	
+
 		// Replace browser.
-	
+
 		value -> addParent (this);
 		browser -> removeParent (this);
-	
+
 		browser = value;
-	
+
 		// Add events.
-		
+
 		setTainted (false);
-	
+
 		for (const auto & object : objects)
 			addEventObject (object .first, object .second);
-	
+
 		if (tainted)
 			addEvent ();
 	}

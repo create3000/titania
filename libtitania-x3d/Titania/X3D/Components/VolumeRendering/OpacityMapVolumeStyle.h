@@ -110,7 +110,27 @@ public:
 	~OpacityMapVolumeStyle () final override;
 
 
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
 private:
+
+	///  @name Event handlers
+
+	void
+	set_transferFunction ();
+
+	void
+	set_enabled ();
+
+	void
+	set_disabled ();
 
 	///  @name Static members
 
@@ -128,6 +148,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DTextureNode> transferFunctionNode;
+	int32_t                 transferFunctionTextureUnit;
 
 };
 
