@@ -72,7 +72,8 @@ ShadedVolumeStyle::Fields::Fields () :
 ShadedVolumeStyle::ShadedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::ShadedVolumeStyle);
 
@@ -83,6 +84,8 @@ ShadedVolumeStyle::ShadedVolumeStyle (X3DExecutionContext* const executionContex
 	addField (inputOutput, "shadows", shadows ());
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
 	addField (initializeOnly, "phaseFunction", phaseFunction ());
+
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -91,10 +94,10 @@ ShadedVolumeStyle::create (X3DExecutionContext* const executionContext) const
 	return new ShadedVolumeStyle (executionContext);
 }
 
-const X3DPtr <ComposedShader> &
-ShadedVolumeStyle::getShader () const
+void
+ShadedVolumeStyle::initialize ()
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	X3DComposableVolumeRenderStyleNode::initialize ();
 }
 
 ShadedVolumeStyle::~ShadedVolumeStyle ()

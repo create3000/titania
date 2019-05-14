@@ -70,15 +70,18 @@ BoundaryEnhancementVolumeStyle::Fields::Fields () :
 BoundaryEnhancementVolumeStyle::BoundaryEnhancementVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::BoundaryEnhancementVolumeStyle);
 
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "boundaryOpacity", boundaryOpacity ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "opacityFactor", opacityFactor ());
+	addField (inputOutput, "opacityFactor",   opacityFactor ());
 	addField (inputOutput, "retainedOpacity", retainedOpacity ());
+
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -87,10 +90,10 @@ BoundaryEnhancementVolumeStyle::create (X3DExecutionContext* const executionCont
 	return new BoundaryEnhancementVolumeStyle (executionContext);
 }
 
-const X3DPtr <ComposedShader> &
-BoundaryEnhancementVolumeStyle::getShader () const
+void
+BoundaryEnhancementVolumeStyle::initialize ()
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	X3DComposableVolumeRenderStyleNode::initialize ();
 }
 
 BoundaryEnhancementVolumeStyle::~BoundaryEnhancementVolumeStyle ()

@@ -71,7 +71,8 @@ SilhouetteEnhancementVolumeStyle::Fields::Fields () :
 SilhouetteEnhancementVolumeStyle::SilhouetteEnhancementVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::SilhouetteEnhancementVolumeStyle);
 
@@ -81,6 +82,8 @@ SilhouetteEnhancementVolumeStyle::SilhouetteEnhancementVolumeStyle (X3DExecution
 	addField (inputOutput, "silhouetteRetainedOpacity", silhouetteRetainedOpacity ());
 	addField (inputOutput, "silhouetteSharpness", silhouetteSharpness ());
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
+
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -89,10 +92,10 @@ SilhouetteEnhancementVolumeStyle::create (X3DExecutionContext* const executionCo
 	return new SilhouetteEnhancementVolumeStyle (executionContext);
 }
 
-const X3DPtr <ComposedShader> &
-SilhouetteEnhancementVolumeStyle::getShader () const
+void
+SilhouetteEnhancementVolumeStyle::initialize ()
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	X3DComposableVolumeRenderStyleNode::initialize ();
 }
 
 SilhouetteEnhancementVolumeStyle::~SilhouetteEnhancementVolumeStyle ()

@@ -72,17 +72,20 @@ BlendedVolumeStyle::Fields::Fields () :
 BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::BlendedVolumeStyle);
 
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "renderStyle", renderStyle ());
-	addField (inputOutput, "voxels", voxels ());
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "weightConstant1", weightConstant1 ());
 	addField (inputOutput, "weightConstant2", weightConstant2 ());
 	addField (inputOutput, "weightFunction1", weightFunction1 ());
+	addField (inputOutput, "renderStyle",     renderStyle ());
+	addField (inputOutput, "voxels",          voxels ());
+
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -91,10 +94,10 @@ BlendedVolumeStyle::create (X3DExecutionContext* const executionContext) const
 	return new BlendedVolumeStyle (executionContext);
 }
 
-const X3DPtr <ComposedShader> &
-BlendedVolumeStyle::getShader () const
+void
+BlendedVolumeStyle::initialize ()
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	X3DComposableVolumeRenderStyleNode::initialize ();
 }
 
 BlendedVolumeStyle::~BlendedVolumeStyle ()

@@ -115,11 +115,11 @@ X3DShadersContext::initialize ()
 		}
 		else
 		{
-			pointShader     = createShader ("TitaniaPointSet",  { get_shader ("Shaders/PointSet.vs")  .str () }, { get_shader ("Shaders/PointSet.fs")  .str () });
-			wireframeShader = createShader ("TitaniaWireframe", { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
-			gouraudShader   = createShader ("TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
-			phongShader     = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
-			shadowShader    = createShader ("TitaniaShadow",    { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () }, true);
+			pointShader     = createShader (getExecutionContext (), "TitaniaPointSet",  { get_shader ("Shaders/PointSet.vs")  .str () }, { get_shader ("Shaders/PointSet.fs")  .str () });
+			wireframeShader = createShader (getExecutionContext (), "TitaniaWireframe", { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
+			gouraudShader   = createShader (getExecutionContext (), "TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
+			phongShader     = createShader (getExecutionContext (), "TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
+			shadowShader    = createShader (getExecutionContext (), "TitaniaShadow",    { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () }, true);
 
 			gouraudShader -> isValid () .addInterest (&X3DShadersContext::set_gouraud_shader_valid, this);
 			phongShader   -> isValid () .addInterest (&X3DShadersContext::set_phong_shader_valid,   this);
@@ -135,11 +135,15 @@ X3DShadersContext::initialize ()
 }
 
 X3DPtr <ComposedShader>
-X3DShadersContext::createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl, const bool shadow)
+X3DShadersContext::createShader (X3DExecutionContext* const executionContext,
+                                 const std::string & name,
+                                 const MFString & vertexUrl,
+                                 const MFString & fragmentUrl,
+                                 const bool shadow)
 {
-	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
-	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
-	const auto shader       = getExecutionContext () -> createNode <ComposedShader> ();
+	const auto vertexPart   = executionContext -> createNode <ShaderPart> ();
+	const auto fragmentPart = executionContext -> createNode <ShaderPart> ();
+	const auto shader       = executionContext -> createNode <ComposedShader> ();
 
 	fragmentPart -> setName (name + "FragmentShaderPart");
 	vertexPart   -> setName (name + "VertexShaderPart");

@@ -73,9 +73,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	X3DProgrammableShaderObject (),
 	                     fields (),
 	                 loadSensor (new LoadSensor (executionContext)),
-	                  programId (0),
-	              enabledOutput (),
-	             disabledOutput ()
+	                  programId (0)
 {
 	addType (X3DConstants::ComposedShader);
 
@@ -123,9 +121,6 @@ void
 ComposedShader::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
 	X3DProgrammableShaderObject::addUserDefinedField (accessType, name, field);
-
-	if (isInitialized ())
-		loadSensor -> loadTime () .addEvent ();
 }
 
 ///  throws Error <DISPOSED>
@@ -133,9 +128,6 @@ void
 ComposedShader::removeUserDefinedField (const std::string & name)
 {
 	X3DProgrammableShaderObject::removeUserDefinedField (name);
-
-	if (isInitialized ())
-		loadSensor -> loadTime () .addEvent ();
 }
 
 void
@@ -186,7 +178,9 @@ ComposedShader::set_loaded ()
 			setOpenGLES (openGLES);
 		}
 		else
+		{
 			valid = false;
+		}
 
 		if (valid)
 		{
@@ -258,15 +252,11 @@ ComposedShader::enable ()
 	glUseProgram (programId);
 
 	X3DProgrammableShaderObject::enable ();
-
-	enabledOutput .processInterests ();
 }
 
 void
 ComposedShader::disable ()
 {
-	disabledOutput .processInterests ();
-
 	X3DProgrammableShaderObject::disable ();
 
 	glUseProgram (0);

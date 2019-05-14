@@ -126,17 +126,9 @@ public:
 	void
 	enable () final override;
 
-	const	Output &
-	enabled () const
-	{ return enabledOutput; }
-
 	virtual
 	void
 	disable () final override;
-
-	const	Output &
-	disabled () const
-	{ return disabledOutput; }
 
 	///  @name Pipeline
 
@@ -297,8 +289,6 @@ private:
 
 	X3DPtr <LoadSensor> loadSensor;
 	GLuint              programId;
-	Output              enabledOutput;
-	Output              disabledOutput;
 
 };
 

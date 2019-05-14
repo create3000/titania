@@ -61,13 +61,11 @@ namespace titania {
 namespace X3D {
 
 X3DVolumeRenderingContext::X3DVolumeRenderingContext () :
-	                X3DBaseNode (),
-	     defaultVolumeStyleNode (),
-	opacityMapVolumeStyleShader (),
-	    defaultTransferFunction ()
+	            X3DBaseNode (),
+	 defaultVolumeStyleNode (),
+	defaultTransferFunction ()
 {
 	addChildObjects (defaultVolumeStyleNode,
-	                 opacityMapVolumeStyleShader,
 	                 defaultTransferFunction);
 }
 
@@ -86,19 +84,6 @@ X3DVolumeRenderingContext::getDefaultVolumeStyle () const
 	defaultVolumeStyleNode -> setup ();
 
 	return defaultVolumeStyleNode;
-}
-
-const X3DPtr <ComposedShader> &
-X3DVolumeRenderingContext::getOpacityMapVolumeStyleShader () const
-{
-	if (opacityMapVolumeStyleShader)
-		return opacityMapVolumeStyleShader;
-
-	opacityMapVolumeStyleShader = getBrowser () -> createShader ("OpacityMapVolumeStyle",
-	                                                             { get_shader ("VolumeRendering/OpacityMapVolumeStyle.vs")  .str () },
-	                                                             { get_shader ("VolumeRendering/OpacityMapVolumeStyle.fs")  .str () });
-
-	return opacityMapVolumeStyleShader;
 }
 
 const X3DPtr <PixelTexture> &
@@ -128,6 +113,14 @@ X3DVolumeRenderingContext::getDefaultTransferFunction () const
 	defaultTransferFunction -> setup ();
 
 	return defaultTransferFunction;
+}
+
+X3DPtr <ComposedShader>
+X3DVolumeRenderingContext::createOpacityMapVolumeStyleShader (X3DExecutionContext* const executionContext) const
+{
+	return getBrowser () -> createShader (executionContext, "OpacityMapVolumeStyle",
+	                                      { get_shader ("VolumeRendering/OpacityMapVolumeStyle.vs")  .str () },
+	                                      { get_shader ("VolumeRendering/OpacityMapVolumeStyle.fs")  .str () });
 }
 
 X3DVolumeRenderingContext::~X3DVolumeRenderingContext ()

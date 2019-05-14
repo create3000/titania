@@ -65,11 +65,11 @@ public:
 	const X3DPtr <OpacityMapVolumeStyle> &
 	getDefaultVolumeStyle () const;
 
-	const X3DPtr <ComposedShader> &
-	getOpacityMapVolumeStyleShader () const;
-
 	const X3DPtr <PixelTexture> &
 	getDefaultTransferFunction () const;
+
+	X3DPtr <ComposedShader>
+	createOpacityMapVolumeStyleShader (X3DExecutionContext* const executionContext) const;
 
 	///  @name Destruction
 
@@ -98,7 +98,6 @@ private:
 	///  @name Members
 
 	mutable X3DPtr <OpacityMapVolumeStyle> defaultVolumeStyleNode;
-	mutable X3DPtr <ComposedShader>        opacityMapVolumeStyleShader;
 	mutable X3DPtr <PixelTexture>          defaultTransferFunction;
 
 };

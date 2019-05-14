@@ -71,16 +71,19 @@ CartoonVolumeStyle::Fields::Fields () :
 CartoonVolumeStyle::CartoonVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::CartoonVolumeStyle);
 
-	addField (inputOutput, "colorSteps", colorSteps ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "colorSteps",      colorSteps ());
 	addField (inputOutput, "orthogonalColor", orthogonalColor ());
-	addField (inputOutput, "parallelColor", parallelColor ());
-	addField (inputOutput, "surfaceNormals", surfaceNormals ());
+	addField (inputOutput, "parallelColor",   parallelColor ());
+	addField (inputOutput, "surfaceNormals",  surfaceNormals ());
+
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -89,10 +92,10 @@ CartoonVolumeStyle::create (X3DExecutionContext* const executionContext) const
 	return new CartoonVolumeStyle (executionContext);
 }
 
-const X3DPtr <ComposedShader> &
-CartoonVolumeStyle::getShader () const
+void
+CartoonVolumeStyle::initialize ()
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	X3DComposableVolumeRenderStyleNode::initialize ();
 }
 
 CartoonVolumeStyle::~CartoonVolumeStyle ()

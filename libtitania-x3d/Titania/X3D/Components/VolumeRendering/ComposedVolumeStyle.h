@@ -102,12 +102,22 @@ public:
 
 	virtual
 	const X3DPtr <ComposedShader> &
-	getShader () const final override;
+	getShader () const final override
+	{ return shaderNode; }
 
 	///  @name Destruction
 
 	virtual
 	~ComposedVolumeStyle () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 
 private:
@@ -128,6 +138,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <ComposedShader> shaderNode;
 
 };
 

@@ -68,13 +68,16 @@ ComposedVolumeStyle::Fields::Fields () :
 ComposedVolumeStyle::ComposedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::ComposedVolumeStyle);
 
 	addField (inputOutput, "enabled", enabled ());
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "renderStyle", renderStyle ());
+
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -83,10 +86,10 @@ ComposedVolumeStyle::create (X3DExecutionContext* const executionContext) const
 	return new ComposedVolumeStyle (executionContext);
 }
 
-const X3DPtr <ComposedShader> &
-ComposedVolumeStyle::getShader () const
+void
+ComposedVolumeStyle::initialize ()
 {
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	X3DComposableVolumeRenderStyleNode::initialize ();
 }
 
 ComposedVolumeStyle::~ComposedVolumeStyle ()

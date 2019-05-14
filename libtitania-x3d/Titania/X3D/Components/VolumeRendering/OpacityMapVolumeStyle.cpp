@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+
 #include "../Shaders/ComposedShader.h"
 #include "../Texturing/PixelTexture.h"
 #include "../Texturing/X3DTexture2DNode.h"
@@ -73,16 +74,15 @@ OpacityMapVolumeStyle::OpacityMapVolumeStyle (X3DExecutionContext* const executi
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
 	                            fields (),
-	              transferFunctionNode (),
-			 transferFunctionTextureUnit (0)
+	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
 {
 	addType (X3DConstants::OpacityMapVolumeStyle);
 
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "enabled",          enabled ());
 	addField (inputOutput, "transferFunction", transferFunction ());
 
-	addChildObjects (transferFunctionNode);
+	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*
@@ -96,23 +96,18 @@ OpacityMapVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
 
-	getShader () -> enabled ()  .addInterest (&OpacityMapVolumeStyle::set_enabled,  this);
-	getShader () -> disabled () .addInterest (&OpacityMapVolumeStyle::set_disabled, this);
-
 	transferFunction () .addInterest (&OpacityMapVolumeStyle::set_transferFunction, this);
 
-	set_transferFunction ();
-}
+	shaderNode -> addUserDefinedField (inputOutput, "transferFunction", new SFNode ());
 
-const X3DPtr <ComposedShader> &
-OpacityMapVolumeStyle::getShader () const
-{
-	return getBrowser () -> getOpacityMapVolumeStyleShader ();
+	set_transferFunction ();
 }
 
 void
 OpacityMapVolumeStyle::set_transferFunction ()
 {
+	X3DPtr <X3DTextureNode> transferFunctionNode;
+
 	transferFunctionNode = x3d_cast <X3DTexture2DNode*> (transferFunction ());
 
 	//if (not transferFunctionNode)
@@ -120,34 +115,8 @@ OpacityMapVolumeStyle::set_transferFunction ()
 
 	if (not transferFunctionNode)
 		transferFunctionNode = getBrowser () -> getDefaultTransferFunction ();
-}
 
-void
-OpacityMapVolumeStyle::set_enabled ()
-{
-	if (getBrowser () -> getCombinedTextureUnits () .empty ())
-	{
-		transferFunctionTextureUnit = 0;
-	}
-	else
-	{
-		const auto program                         = getShader () -> getProgramId ();
-		const auto transferFunctionUniformLocation = glGetUniformLocation (program, "transferFunction");
-
-		transferFunctionTextureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
-		getBrowser () -> getCombinedTextureUnits () .pop ();
-
-		glActiveTexture (GL_TEXTURE0 + transferFunctionTextureUnit);
-		glBindTexture (transferFunctionNode -> getTarget (), transferFunctionNode -> getTextureId ());
-		glUniform1i (transferFunctionUniformLocation, transferFunctionTextureUnit);
-	}
-}
-
-void
-OpacityMapVolumeStyle::set_disabled ()
-{
-	if (transferFunctionTextureUnit)
-		getBrowser () -> getCombinedTextureUnits () .push (transferFunctionTextureUnit);
+	shaderNode -> setField <SFNode> ("transferFunction", transferFunctionNode);
 }
 
 OpacityMapVolumeStyle::~OpacityMapVolumeStyle ()

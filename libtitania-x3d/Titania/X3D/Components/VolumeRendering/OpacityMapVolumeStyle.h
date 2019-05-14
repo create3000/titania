@@ -102,7 +102,8 @@ public:
 
 	virtual
 	const X3DPtr <ComposedShader> &
-	getShader () const final override;
+	getShader () const final override
+	{ return shaderNode; }
 
 	///  @name Destruction
 
@@ -126,12 +127,6 @@ private:
 	void
 	set_transferFunction ();
 
-	void
-	set_enabled ();
-
-	void
-	set_disabled ();
-
 	///  @name Static members
 
 	static const Component   component;
@@ -151,8 +146,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DTextureNode> transferFunctionNode;
-	int32_t                 transferFunctionTextureUnit;
+	X3DPtr <ComposedShader> shaderNode;
 
 };
 

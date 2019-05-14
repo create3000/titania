@@ -148,7 +148,11 @@ protected:
 	///  Operations
 
 	X3DPtr <ComposedShader>
-	createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl, const bool shadow = false);
+	createShader (X3DExecutionContext* const executionContext,
+	              const std::string & name,
+	              const MFString & vertexUrl,
+	              const MFString & fragmentUrl,
+	              const bool shadow = false);
 
 
 private:
