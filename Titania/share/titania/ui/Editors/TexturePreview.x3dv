@@ -12,16 +12,13 @@ META "created" "Thu, 10 Jul 2014 17:28:33 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/TexturePreview.x3dv"
-META "modified" "Tue, 14 May 2019 11:06:47 GMT"
+META "modified" "Tue, 14 May 2019 11:09:18 GMT"
 
 EXTERNPROTO Volume [
   inputOutput SFVec3f dimensions
   inputOutput SFNode  voxels
 ]
-[
-  "Volume.x3d#Volume",
-  "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Volume.x3d#Volume"
-]
+"Volume.x3d#Volume"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
