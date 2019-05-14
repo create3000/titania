@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Shaders/ComposedShader.h"
 #include "../../Components/Texturing/PixelTexture.h"
+#include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/VolumeRendering/OpacityMapVolumeStyle.h"
 
 namespace titania {
@@ -80,7 +81,7 @@ X3DVolumeRenderingContext::getDefaultVolumeStyle () const
 	if (defaultVolumeStyleNode)
 		return defaultVolumeStyleNode;
 
-	defaultVolumeStyleNode = new OpacityMapVolumeStyle (getExecutionContext ());
+	defaultVolumeStyleNode = MakePtr <OpacityMapVolumeStyle> (getExecutionContext ());
 
 	defaultVolumeStyleNode -> setup ();
 
@@ -106,10 +107,15 @@ X3DVolumeRenderingContext::getDefaultTransferFunction () const
 	if (defaultTransferFunction)
 		return defaultTransferFunction;
 
-	defaultTransferFunction = new PixelTexture (getExecutionContext ());
+	defaultTransferFunction = MakePtr <PixelTexture> (getExecutionContext ());
 
-	defaultTransferFunction -> repeatS () = false;
-	defaultTransferFunction -> repeatT () = true;
+	const auto textureProperties = MakePtr <TextureProperties> (getExecutionContext ());
+
+	textureProperties -> generateMipMaps () = true;
+	textureProperties -> boundaryModeS ()   = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT ()   = "REPEAT";
+
+	defaultTransferFunction -> textureProperties () = textureProperties;
 
 	defaultTransferFunction -> image () .setWidth (256);
 	defaultTransferFunction -> image () .setHeight (1);
