@@ -62,11 +62,14 @@ const std::string BlendedVolumeStyle::typeName       = "BlendedVolumeStyle";
 const std::string BlendedVolumeStyle::containerField = "renderStyle";
 
 BlendedVolumeStyle::Fields::Fields () :
-	    renderStyle (new SFNode ()),
-	         voxels (new SFNode ()),
-	weightConstant1 (new SFFloat (0.5)),
-	weightConstant2 (new SFFloat (0.5)),
-	weightFunction1 (new SFString ("CONSTANT"))
+	        weightConstant1 (new SFFloat (0.5)),
+	        weightConstant2 (new SFFloat (0.5)),
+	        weightFunction1 (new SFString ("CONSTANT")),
+	        weightFunction2 (new SFString ("CONSTANT")),
+	weightTransferFunction1 (new SFNode ()),
+	weightTransferFunction2 (new SFNode ()),
+	            renderStyle (new SFNode ()),
+	                 voxels (new SFNode ())
 { }
 
 BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionContext) :
@@ -77,13 +80,16 @@ BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionCont
 {
 	addType (X3DConstants::BlendedVolumeStyle);
 
-	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "enabled",         enabled ());
-	addField (inputOutput, "weightConstant1", weightConstant1 ());
-	addField (inputOutput, "weightConstant2", weightConstant2 ());
-	addField (inputOutput, "weightFunction1", weightFunction1 ());
-	addField (inputOutput, "renderStyle",     renderStyle ());
-	addField (inputOutput, "voxels",          voxels ());
+	addField (inputOutput, "metadata",                metadata ());
+	addField (inputOutput, "enabled",                 enabled ());
+	addField (inputOutput, "weightConstant1",         weightConstant1 ());
+	addField (inputOutput, "weightConstant2",         weightConstant2 ());
+	addField (inputOutput, "weightFunction1",         weightFunction1 ());
+	addField (inputOutput, "weightFunction2",         weightFunction2 ());
+	addField (inputOutput, "weightTransferFunction1", weightTransferFunction1 ());
+	addField (inputOutput, "weightTransferFunction2", weightTransferFunction2 ());
+	addField (inputOutput, "renderStyle",             renderStyle ());
+	addField (inputOutput, "voxels",                  voxels ());
 
 	addChildObjects (shaderNode);
 }

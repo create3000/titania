@@ -89,26 +89,6 @@ public:
 	///  @name Fields
 
 	virtual
-	SFNode &
-	renderStyle ()
-	{ return *fields .renderStyle; }
-
-	virtual
-	const SFNode &
-	renderStyle () const
-	{ return *fields .renderStyle; }
-
-	virtual
-	SFNode &
-	voxels ()
-	{ return *fields .voxels; }
-
-	virtual
-	const SFNode &
-	voxels () const
-	{ return *fields .voxels; }
-
-	virtual
 	SFFloat &
 	weightConstant1 ()
 	{ return *fields .weightConstant1; }
@@ -137,6 +117,56 @@ public:
 	const SFString &
 	weightFunction1 () const
 	{ return *fields .weightFunction1; }
+
+	virtual
+	SFString &
+	weightFunction2 ()
+	{ return *fields .weightFunction2; }
+
+	virtual
+	const SFString &
+	weightFunction2 () const
+	{ return *fields .weightFunction2; }
+
+	virtual
+	SFNode &
+	weightTransferFunction1 ()
+	{ return *fields .weightTransferFunction1; }
+
+	virtual
+	const SFNode &
+	weightTransferFunction1 () const
+	{ return *fields .weightTransferFunction1; }
+
+	virtual
+	SFNode &
+	weightTransferFunction2 ()
+	{ return *fields .weightTransferFunction2; }
+
+	virtual
+	const SFNode &
+	weightTransferFunction2 () const
+	{ return *fields .weightTransferFunction2; }
+
+	virtual
+	SFNode &
+	renderStyle ()
+	{ return *fields .renderStyle; }
+
+	virtual
+	const SFNode &
+	renderStyle () const
+	{ return *fields .renderStyle; }
+
+	virtual
+	SFNode &
+	voxels ()
+	{ return *fields .voxels; }
+
+	virtual
+	const SFNode &
+	voxels () const
+	{ return *fields .voxels; }
 
 	///  @name Member access
 
@@ -174,11 +204,14 @@ private:
 	{
 		Fields ();
 
-		SFNode* const renderStyle;
-		SFNode* const voxels;
 		SFFloat* const weightConstant1;
 		SFFloat* const weightConstant2;
 		SFString* const weightFunction1;
+		SFString* const weightFunction2;
+		SFNode* const weightTransferFunction1;
+		SFNode* const weightTransferFunction2;
+		SFNode* const renderStyle;
+		SFNode* const voxels;
 	};
 
 	Fields fields;
