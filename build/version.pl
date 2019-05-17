@@ -20,7 +20,7 @@ my $ALPHA = $VERSION =~ /a$/;
 
 sub appdata
 {
-	my $appdata = `cat Titania/Titania/share/appdata/de.create3000.titania.appdata.xml`;
+	my $appdata = `cat Titania/share/appdata/de.create3000.titania.appdata.xml`;
 
 	$appdata =~ /version="(.*?)"/s;
 
