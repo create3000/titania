@@ -24,9 +24,14 @@ sub appdata
 
 	my $appdata = `cat Titania/share/appdata/de.create3000.titania.appdata.xml`;
 
-	$appdata =~ /version="(.*?)"/s;
+	$appdata =~ /release.*?version="(.*?)"/s;
 
 	return if $VERSION eq $1;
+
+say $VERSION;
+say $1;
+say $VERSION eq $1;
+exit;
 
 	my $date = `date +"%Y-%m-%d"`;
 	chomp $date;
