@@ -10,6 +10,11 @@
   <content_rating type="oars-1.1"></content_rating>
   <description>
     <p>
+      Titania is a X3D/VRML editor and browser for the Linux Platform. It is fully
+      standard compliant. Titania fully supports the Moving Worlds specification for
+      VRML 2.0 and the X3D specification.
+    </p>
+    <p>
       Whether you are a graphic designer, modeller, or scientist, Titania provides
       you with sophisticated tools to get your job done. It supports the entirety
       of the X3D pipeline — modeling, rigging, animation, simulation, rendering,
@@ -20,13 +25,25 @@
       and a monitor resolution of at least 1280 × 1024 pixels.
     </p>
   </description>
-  <update_contact>holger_dot_seelig_at_gmail.com</update_contact>
+  <update_contact>holger.seelig@gmail.com</update_contact>
   <url type="homepage">http://create3000.de/</url>
   <url type="bugtracker">https://github.com/create3000/titania/issues</url>
   <screenshots>
     <screenshot type="default">
       <image>http://create3000.de/wp-content/uploads/2019/05/screenshot1.jpg</image>
       <caption>Main application window</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot2.png</image>
+      <caption>Route Graph Editor</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot3.png</image>
+      <caption>Script Editor</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot4.png</image>
+      <caption>Outline Editor</caption>
     </screenshot>
   </screenshots>
   <icon type="remote" height="64" width="64">http://create3000.de/wp-content/uploads/2019/04/icon64.png</icon>
