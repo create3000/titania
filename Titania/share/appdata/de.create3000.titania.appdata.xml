@@ -50,6 +50,7 @@
   <icon type="remote" height="128" width="128">http://create3000.de/wp-content/uploads/2019/04/icon128.png</icon>
   <launchable type="desktop-id">de.create3000.titania.desktop</launchable>
   <releases>
+    <release date="2019-05-17" version="4.5.3"/>
     <release date="2019-04-30" version="4.5.3"/>
   </releases>
 </component>

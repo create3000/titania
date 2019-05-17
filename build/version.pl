@@ -20,6 +20,8 @@ my $ALPHA = $VERSION =~ /a$/;
 
 sub appdata
 {
+	return if $ALPHA;
+
 	my $appdata = `cat Titania/share/appdata/de.create3000.titania.appdata.xml`;
 
 	$appdata =~ /version="(.*?)"/s;
@@ -30,6 +32,10 @@ sub appdata
 	chomp $date;
 
 	$appdata =~ s|(<releases>\n)|$1    <release date="$date" version="$VERSION"/>\n|;
+
+	open APPDATA, ">", "Titania/share/appdata/de.create3000.titania.appdata.xml";
+	print APPDATA $appdata;
+	close APPDATA;
 }
 
 sub commit
