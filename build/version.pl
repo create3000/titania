@@ -28,11 +28,6 @@ sub appdata
 
 	return if $VERSION eq $1;
 
-say $VERSION;
-say $1;
-say $VERSION eq $1;
-exit;
-
 	my $date = `date +"%Y-%m-%d"`;
 	chomp $date;
 

@@ -51,5 +51,6 @@
   <launchable type="desktop-id">de.create3000.titania.desktop</launchable>
   <releases>
     <release date="2019-05-17" version="4.5.3"/>
+    <release date="2019-04-28" version="4.5.2"/>
   </releases>
 </component>
