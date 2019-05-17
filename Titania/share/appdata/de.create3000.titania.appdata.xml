@@ -32,20 +32,20 @@
   <url type="bugtracker">https://github.com/create3000/titania/issues</url>
   <screenshots>
     <screenshot type="default">
-      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot1.jpg</image>
       <caption>Main application window</caption>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot1.jpg</image>
     </screenshot>
     <screenshot>
-      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot2.png</image>
       <caption>Route Graph Editor</caption>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot2.png</image>
     </screenshot>
     <screenshot>
-      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot3.png</image>
       <caption>Script Editor</caption>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot3.png</image>
     </screenshot>
     <screenshot>
-      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot4.png</image>
       <caption>Outline Editor</caption>
+      <image>http://create3000.de/wp-content/uploads/2019/05/screenshot4.png</image>
     </screenshot>
   </screenshots>
   <icon type="remote" height="64" width="64">http://create3000.de/wp-content/uploads/2019/04/icon64.png</icon>
