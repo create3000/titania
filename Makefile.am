@@ -27,6 +27,9 @@ run:
 version:
 	perl build/version.pl
 
+flathub:
+	perl build/flathub.pl
+
 # Remove doc directory on uninstall
 #uninstall-local:
 #	-rm -r $(titaniadocdir)

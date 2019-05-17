@@ -62,11 +62,11 @@
             "type": "shell",
             "command": "sh /home/holger/Projekte/Titania/miscellaneous/glade2c++/generate.sh",
             "problemMatcher": []
-        }
+        },
         {
             "label": "Publish to Flathub",
             "type": "shell",
-            "command": "de.create3000.titania.pl",
+            "command": "make flathub",
             "problemMatcher": []
         },
     ]
