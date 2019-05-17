@@ -6,7 +6,7 @@
   <project_license>GPL-3.0</project_license>
   <translation type="gettext">titania</translation>
   <name>Titania X3D Editor</name>
-  <summary>Edit, view, and navigate in X3D worlds</summary>
+  <summary>Edit, view, and navigate in X3D and VRML worlds</summary>
   <content_rating type="oars-1.1"></content_rating>
   <description>
     <p>
@@ -26,7 +26,9 @@
     </p>
   </description>
   <update_contact>holger.seelig@gmail.com</update_contact>
+  <developer_name>Holger Seelig</developer_name>
   <url type="homepage">http://create3000.de/</url>
+  <url type="help">http://create3000.de/titania/documentation/</url>
   <url type="bugtracker">https://github.com/create3000/titania/issues</url>
   <screenshots>
     <screenshot type="default">
