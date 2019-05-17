@@ -18,6 +18,20 @@ $VERSION = $1;
 
 my $ALPHA = $VERSION =~ /a$/;
 
+sub appdata
+{
+	my $appdata = `cat Titania/Titania/share/appdata/de.create3000.titania.appdata.xml`;
+
+	$appdata =~ /version="(.*?)"/s;
+
+	return if $VERSION eq $1;
+
+	my $date = `date +"%Y-%m-%d"`;
+	chomp $date;
+
+	$appdata =~ s|(<releases>\n)|$1    <release date="$date" version="$VERSION"/>\n|;
+}
+
 sub commit
 {
 	my $version = shift;
@@ -83,7 +97,8 @@ if ($result == 0)
 
 	# GitHub
 
-	commit;
+	appdata ();
+	commit ();
 
 	publish ("$VERSION");
 	rsync ($VERSION);
@@ -94,4 +109,8 @@ if ($result == 0)
 		publish ("latest");
 		rsync ("latest");
 	}
+}
+else
+{
+	exit 1;
 }
