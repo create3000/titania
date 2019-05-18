@@ -30,8 +30,8 @@
   <description xml:lang="de">
     <p>
       Titania ist ein X3D/VRML Editor und Browser für die Linux Platform. Titania ist voll
-      Standard konform. Titania unterstützt komplett die Moving Worlds Specification für
-      VRML 2.0 und die X3D Specification.
+      Standard konform. Titania unterstützt komplett die Moving Worlds Spezifikation für
+      VRML 2.0 und die X3D Spezifikation.
     </p>
     <p>
       Ob du nun ein Graphikdesigner, Modeller oder Wissenschafter bist, Titania bietet
@@ -41,7 +41,7 @@
     </p>
     <p>
       Titania benötigt, um zu laufen, eine NVIDIA oder ATI Graphikkarte, wenigsten
-      1024 MB RAM und eine Monitorauflösung von mindenstent 1280 × 1024 Pixeln.
+      1024 MB RAM und eine Monitorauflösung von mindestens 1280 × 1024 Pixeln.
     </p>
   </description>
   <update_contact>holger.seelig@gmail.com</update_contact>
