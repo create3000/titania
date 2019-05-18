@@ -26,12 +26,17 @@ sub appdata
 
 	$appdata =~ /release.*?version="(.*?)"/s;
 
-	return if $VERSION eq $1;
-
 	my $date = `date +"%Y-%m-%d"`;
 	chomp $date;
 
-	$appdata =~ s|(<releases>\n)|$1    <release date="$date" version="$VERSION"/>\n|;
+	if ($VERSION eq $1)
+	{
+		$appdata =~ s|<release\s+date=".*?"|<release date="$date"|s;
+	}
+	else
+	{
+		$appdata =~ s|(<releases>\n)|$1    <release date="$date" version="$VERSION"/>\n|s;
+	}
 
 	open APPDATA, ">", "Titania/share/appdata/de.create3000.titania.appdata.xml";
 	print APPDATA $appdata;
