@@ -4,10 +4,12 @@
   <id>de.create3000.titania</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
+  <content_rating type="oars-1.1"></content_rating>
   <translation type="gettext">titania</translation>
   <name>Titania X3D Editor</name>
+  <name xml:lang="de">Titania X3D Editor</name>
   <summary>Edit, view, and navigate in X3D and VRML worlds</summary>
-  <content_rating type="oars-1.1"></content_rating>
+  <summary xml:lang="de">Editiere, stöbere, and navigiere in X3D und VRML Welten</summary>
   <description>
     <p>
       Titania is a X3D/VRML editor and browser for the Linux Platform. It is fully
@@ -23,6 +25,23 @@
     <p>
       Tiania requires to run a NVIDIA or ATI graphics card, at least 1024 MB RAM,
       and a monitor resolution of at least 1280 × 1024 pixels.
+    </p>
+  </description>
+  <description xml:lang="de">
+    <p>
+      Titania ist ein X3D/VRML Editor und Browser für die Linux Platform. Titania ist voll
+      Standard konform. Titania unterstützt komplett die Moving Worlds Specification für
+      VRML 2.0 und die X3D Specification.
+    </p>
+    <p>
+      Ob du nun ein Graphikdesigner, Modeller oder Wissenschafter bist, Titania bietet
+      dir fortschrittliche Werkzeuge um deine Aufgaben zu erledigen. Titania unterstützt
+      die gesammte X3D Pipline — Modellierung, Rigging, Animation, Simulation, Rendering
+      und Compositing.
+    </p>
+    <p>
+      Titania benötigt, um zu laufen, eine NVIDIA oder ATI Graphikkarte, wenigsten
+      1024 MB RAM und eine Monitorauflösung von mindenstent 1280 × 1024 Pixeln.
     </p>
   </description>
   <update_contact>holger.seelig@gmail.com</update_contact>
