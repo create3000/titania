@@ -11,7 +11,7 @@ icon: titania.svg
 
 grade: stable
 confinement: strict
-base: core18
+#base: core18
 
 architectures:
   - build-on: amd64
@@ -25,13 +25,9 @@ slots:
 
 apps:
   titania:
-    command: desktop-launch $SNAP/bin/titania
+    command: bin/desktop-launch $SNAP/bin/titania
     desktop: share/applications/de.create3000.titania.desktop
-    environment:
-      XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/share:$SNAP/usr/share:$XDG_DATA_DIRS
-      LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:$LIBGL_DRIVERS_PATH
-#      LANG: C
-#      LC_ALL: C
+    adapter: none
     slots:
       - dbus-titania
     plugs:
@@ -55,28 +51,6 @@ parts:
     source-subdir: gtk
     plugin: make
     make-parameters: ["FLAVOR=gtk3"]
-    build-packages:
-      - libgtk-3-dev
-    stage-packages:
-      - adwaita-icon-theme
-      - dmz-cursor-theme
-      - gnome-themes-standard
-      - libappindicator3-1
-      - libgdk-pixbuf2.0-0
-      - libglib2.0-bin
-      - libgtk-3-0
-      - libgtk-3-bin
-      - libxkbcommon0
-      - light-themes
-      - locales
-      - locales-all
-      - mesa-va-drivers
-      - mesa-vdpau-drivers
-      - mesa-vulkan-drivers
-      - shared-mime-info
-      - ttf-ubuntu-font-family
-      - unity-gtk3-module
-      - xdg-user-dirs
   titania:
     plugin: autotools
     source: https://github.com/create3000/titania
@@ -84,7 +58,6 @@ parts:
     after:
       - desktop-gtk3
     build-packages:
-      - gettext
       - intltool
       - libbullet-dev
       - libcgal-dev
@@ -118,9 +91,8 @@ parts:
       - gstreamer1.0-plugins-base
       - gstreamer1.0-plugins-good
       - gstreamer1.0-plugins-ugly
+      - imagemagick
       - libbullet2.87
-      - libc-bin
-      - libc6
       - libcgal13
       - libcurl4
       - libfontconfig1
@@ -140,5 +112,31 @@ parts:
       - libx264-155
       - libxml++2.6-2v5
       - libxvidcore4
-      - ttf-ubuntu-font-family
       - zlib1g
+      - libstdc++6 # extra
+      - libc6
+      - libc-bin
+      - libxkbcommon0  # XKB_CONFIG_ROOT
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libgtk-3-0
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk-3-bin
+      - unity-gtk3-module
+      - libappindicator3-1
+      - locales-all
+      - xdg-user-dirs
+      - ibus-gtk3
+      - libibus-1.0-5
+      - fcitx-frontend-gtk3
+    override-build: |
+      set -eux
+      snapcraftctl build
+      glib-compile-schemas $SNAPCRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
+      update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
+      update-mime-database $SNAPCRAFT_PART_INSTALL/share/mime

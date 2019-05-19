@@ -1,9 +1,6 @@
 
 all: clean compile
 
-configure:
-	sudo snap install snapcraft --classic
-
 clean:
 	/snap/bin/snapcraft clean
 	rm -r -f parts
@@ -12,9 +9,8 @@ clean:
 	rm -r -f stage
 	rm -f titania_*.snap
 
-# Or use snapcraft from /snap/bin/snapcraft
 compile:
-	/snap/bin/snapcraft
+	snapcraft
 
 install: remove
 	sudo snap install titania_*.snap --devmode --dangerous
