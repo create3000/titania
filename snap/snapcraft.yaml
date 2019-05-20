@@ -11,7 +11,7 @@ icon: titania.svg
 
 grade: stable
 confinement: strict
-#base: core18
+base: core18
 
 architectures:
   - build-on: amd64
@@ -28,6 +28,8 @@ apps:
     command: bin/desktop-launch $SNAP/bin/titania
     desktop: share/applications/de.create3000.titania.desktop
     adapter: none
+    environment:
+      MAGICK_CONFIGURE_PATH: $SNAP/etc/ImageMagick-6
     slots:
       - dbus-titania
     plugs:
@@ -86,11 +88,14 @@ parts:
     stage-packages:
       - ffmpeg
       - gettext
+      - gstreamer1.0-alsa
       - gstreamer1.0-libav
       - gstreamer1.0-plugins-bad
       - gstreamer1.0-plugins-base
       - gstreamer1.0-plugins-good
       - gstreamer1.0-plugins-ugly
+      - gstreamer1.0-pulseaudio
+      - gstreamer1.0-x
       - imagemagick
       - libbullet2.87
       - libcgal13
