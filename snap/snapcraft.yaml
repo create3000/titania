@@ -3,10 +3,17 @@ version-script: perl -wln -e 'print $1 if /version\s*=\s*"(.*?)"/' ../libtitania
 version: devel
 summary: Titania is a X3D/VRML editor and browser for the Linux Platform.
 description: |
+  Titania is a X3D/VRML editor and browser for the Linux Platform. It is fully
+  standard compliant. Titania fully supports the Moving Worlds specification for
+  VRML 2.0 and the X3D specification.
+
   Whether you are a graphic designer, modeller, or scientist, Titania provides
   you with sophisticated tools to get your job done. It supports the entirety
   of the X3D pipeline — modeling, rigging, animation, simulation, rendering,
   and compositing.
+
+  Tiania requires to run a NVIDIA or ATI graphics card, at least 1024 MB RAM,
+  and a monitor resolution of at least 1280 × 1024 pixels.
 icon: titania.svg
 
 grade: stable
@@ -16,6 +23,26 @@ base: core18
 architectures:
   - build-on: amd64
  # - build-on: i386
+
+#layout:
+#  /etc/ImageMagick-6:
+#    bind: $SNAP/etc/ImageMagick-6
+#  /usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10:
+#    bind: $SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10
+
+plugs:
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes:gtk-3-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes:icon-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes:sounds-themes
 
 slots:
   dbus-titania:
@@ -29,7 +56,10 @@ apps:
     desktop: share/applications/de.create3000.titania.desktop
     adapter: none
     environment:
-      MAGICK_CONFIGURE_PATH: $SNAP/etc/ImageMagick-6
+      GIO_LAUNCH_DESKTOP: $SNAP/usr/lib/x86_64-linux-gnu/glib-2.0/gio-launch-desktop
+      MAGICK_CONFIGURE_PATH: $SNAP/etc/ImageMagick-6:$SNAP/usr/share/ImageMagick-6:$SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10/config-Q16
+      MAGICK_CODER_MODULE_PATH: $SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10/modules-Q16/coders
+      MAGICK_CODER_FILTER_PATH: $SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10/modules-Q16/filters
     slots:
       - dbus-titania
     plugs:

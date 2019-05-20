@@ -1,8 +1,10 @@
 
+SNAPCRAFT=snapcraft
+
 all: clean compile
 
 clean:
-	/snap/bin/snapcraft clean
+	${SNAPCRAFT} clean
 	rm -r -f parts
 	rm -r -f prime
 	rm -r -f snap
@@ -10,7 +12,7 @@ clean:
 	rm -f titania_*.snap
 
 compile:
-	snapcraft
+	${SNAPCRAFT}
 
 install: remove
 	sudo snap install titania_*.snap --devmode --dangerous
