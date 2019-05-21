@@ -103,6 +103,7 @@ Switch::initialize ()
 	X3DGroupingNode::initialize ();
 
 	whichChoice () .addInterest (&Switch::setPrivateChoice, this, -1);
+	children ()    .addInterest (&Switch::set_whichChoice,  this);
 
 	set_whichChoice ();
 }
@@ -116,7 +117,7 @@ Switch::getBBox () const
 
 		if (boundedObject)
 			return boundedObject -> getBBox ();
-		
+
 		return Box3d ();
 	}
 
@@ -147,7 +148,7 @@ Switch::set_whichChoice ()
 
 	if (currentChoice >= 0 and currentChoice < (int32_t) children () .size ())
 		childNode .set (x3d_cast <X3DChildNode*> (children () [currentChoice]));
-	
+
 	else
 		childNode .set (nullptr);
 
@@ -180,7 +181,7 @@ Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 		case TraverseType::POINTER:
 		{
 			HierarchyGuard guard (renderObject -> getBrowser (), this);
-		
+
 			childNode -> traverse (type, renderObject);
 			break;
 		}
