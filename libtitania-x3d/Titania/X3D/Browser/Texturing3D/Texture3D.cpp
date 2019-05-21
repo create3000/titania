@@ -136,7 +136,6 @@ Texture3D::readNRRD (const std::string & data)
 					}
 
 					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
-					images -> back () .flip ();
 				}
 
 				break;
@@ -161,7 +160,6 @@ Texture3D::readNRRD (const std::string & data)
 					}
 
 					images -> emplace_back (width, height, "RGBA", Magick::CharPixel, data .data ());
-					images -> back () .flip ();
 				}
 
 				break;
@@ -178,7 +176,6 @@ Texture3D::readNRRD (const std::string & data)
 						data .emplace_back (*first ++);
 
 					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
-					images -> back () .flip ();
 				}
 
 				break;
@@ -195,7 +192,6 @@ Texture3D::readNRRD (const std::string & data)
 						data .emplace_back (*first ++);
 
 					images -> emplace_back (width, height, "RGBA", Magick::CharPixel, data .data ());
-					images -> back () .flip ();
 				}
 
 				break;
@@ -205,6 +201,8 @@ Texture3D::readNRRD (const std::string & data)
 				throw std::invalid_argument ("Unsupported NRRD channel size");
 			}
 		}
+
+		setFlipY (false);
 
 		return images;
 	}

@@ -135,7 +135,8 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 
 		setImage (getInternalFormat (texture -> getComponents ()),
 		          texture -> getComponents (),
-		          texture -> getWidth (), texture -> getHeight (),
+		          texture -> getWidth (),
+		          texture -> getHeight (),
 		          texture -> getDepth (),
 		          texture -> getFormat (),
 		          texture -> getData ());
