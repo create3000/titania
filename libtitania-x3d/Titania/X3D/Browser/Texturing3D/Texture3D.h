@@ -87,16 +87,15 @@ public:
 	{ return depth; }
 
 	GLenum
-	getFormat ()
+	getFormat () const
 	{ return format; }
 
 	const void*
-	getData ()
+	getData () const
 	{ return data .data (); }
 
 	///  @name Destructin
 
-	virtual
 	~Texture3D ();
 
 

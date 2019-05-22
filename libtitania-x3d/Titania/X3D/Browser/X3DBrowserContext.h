@@ -83,8 +83,6 @@
 
 #include "../Types/Pointer.h"
 
-#include <Magick++.h>
-
 namespace titania {
 namespace X3D {
 
@@ -192,7 +190,7 @@ public:
 	///  @name Operations
 
 	///  throws Error <INSUFFICIENT_CAPABILITIES>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
-	Magick::Image
+	Glib::RefPtr <Gdk::Pixbuf>
 	getSnapshot (const size_t width, const size_t height, const bool renderBackground, const bool alphaChannel, const size_t antialiasing);
 
 	///  @name Event handling

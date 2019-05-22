@@ -185,7 +185,7 @@ RouteGraphPage::open ()
 }
 
 void
-RouteGraphPage::queueSave () 
+RouteGraphPage::queueSave ()
 {
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::resize));
 	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::save));
@@ -227,7 +227,7 @@ RouteGraphPage::getNode (const size_t id) const
 			found = node;
 			return false;
 		}
-		
+
 		return true;
 	},
 	X3D::TRAVERSE_PROTO_DECLARATIONS |
@@ -327,7 +327,7 @@ RouteGraphPage::getConnectedNodes (X3D::X3DExecutionContext* const executionCont
                                std::set <X3D::SFNode> & nodes) const
 {
 	if (not nodes .emplace (node) .second)
-		return; 
+		return;
 
 	if (node -> getExecutionContext () not_eq executionContext and not executionContext -> isImportedNode (node))
 		return;
@@ -527,12 +527,12 @@ RouteGraphPage::removeSelection (const RouteGraphWindowArray & windows)
 	const auto iter = std::remove_if (selection .begin (), selection .end (), [&] (const RouteGraphWindowPtr & selectedWindow)
 	{
 		const auto iter = std::find_if (windows .begin (), windows .end (), [&] (const RouteGraphWindowPtr & window) { return window == selectedWindow; });
-	
+
 		return iter not_eq windows .end ();
 	});
 
 	selection .erase (iter, selection .end ());
-	
+
 	refresh ();
 }
 
@@ -577,7 +577,7 @@ RouteGraphPage::removeRouteSelection (const RouteArray & routes)
 	const auto iter = std::remove_if (routeSelection .begin (), routeSelection .end (), [&] (const X3D::RoutePtr & selectedRoute)
 	{
 		const auto iter = std::find_if (routes .begin (), routes .end (), [&] (const X3D::RoutePtr & route) { return route == selectedRoute; });
-	
+
 		return iter not_eq routes .end ();
 	});
 
@@ -718,12 +718,6 @@ RouteGraphPage::on_export_page_activate ()
 {
 	try
 	{
-		static const std::map <int32_t, std::string> magick = {
-			std::pair (1, "GRAY"),
-			std::pair (3, "RGB"),
-			std::pair (4, "RGBA"),
-		};
-
 		const auto scrollPosition = getScrollPosition ();
 
 		Gtk::OffscreenWindow window;
@@ -745,25 +739,11 @@ RouteGraphPage::on_export_page_activate ()
 
 		getWidget () .pack_start (getOverlay (), true, true);
 
-		// Convert pixbuf to magick image
-
-		if (not pixbuf)
-			throw std::runtime_error ("RouteGraphPage::on_export_page_activate: pixbuf is NULL.");
-
-		const auto channels = pixbuf -> get_n_channels ();
-		const auto width    = pixbuf -> get_width ();
-		const auto height   = pixbuf -> get_height ();
-		const auto data     = pixbuf -> get_pixels ();
-
-		Magick::Image image (width, height, magick .at (channels), Magick::CharPixel, data);
-
-		// Save magick image
+		// Save image
 
 		const auto dialog = addDialog <FileExportImageDialog> ("FileExportImageDialog", false);
 
-		image .quality (100);
-
-		dialog -> save (image, getPageName () + ".png");
+		dialog -> save (pixbuf, getPageName () + ".png");
 
 		// Set adjustments.
 
@@ -771,7 +751,6 @@ RouteGraphPage::on_export_page_activate ()
 	}
 	catch (const std::exception & error)
 	{
-		// No magick
 		__LOG__ << error .what () << std::endl;
 	}
 }
@@ -784,7 +763,7 @@ RouteGraphPage::on_delete_activate ()
 		const auto undoStep = getSelection () .size () > 1
 		                      ? std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Nodes From Route Graph Logic »%s«"), getPageName () .c_str ()))
 		                      : std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Node From Route Graph Logic »%s«"), getPageName () .c_str ()));
-	
+
 		undoStep -> addUndoFunction (&RouteGraphPage::queueSave, this);
 
 		for (const auto & window : getSelection ())
@@ -803,7 +782,7 @@ RouteGraphPage::on_delete_activate ()
 	if (not getRouteSelection () .empty ())
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Route"));
-	
+
 		for (const auto & route : RouteArray (getRouteSelection ()))
 		{
 			X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
@@ -813,7 +792,7 @@ RouteGraphPage::on_delete_activate ()
 			                             route -> getDestinationField (),
 			                             undoStep);
 		}
-	
+
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 
@@ -853,19 +832,19 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 			try
 			{
 				// Parse node id.
-	
+
 				size_t nodeId = 0;
-	
+
 				std::istringstream isstream (selection_data .get_data_as_string ());
-	
+
 				isstream .imbue (std::locale::classic ());
-	
+
 				isstream >> nodeId;
-	
+
 				// Add node widget
-	
+
 				int xOffset, yOffset;
-			
+
 				getViewport () .translate_coordinates (getFixed (), 0, 0, xOffset, yOffset);
 
 				const auto node     = getNode (nodeId);
@@ -904,7 +883,7 @@ RouteGraphPage::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & c
 }
 
 bool
-RouteGraphPage::on_button_press_event (GdkEventButton* event) 
+RouteGraphPage::on_button_press_event (GdkEventButton* event)
 {
 	if (button)
 		return false;
@@ -920,11 +899,11 @@ RouteGraphPage::on_button_press_event (GdkEventButton* event)
 		// Selected node widget and prepare move.
 
 		// Clear connector selection.
-	
+
 		clearConnectorSelection ();
 
 		// Handle route set_selection.
-	
+
 		if (on_route_button_press_event (event))
 		{
 			button = 0;
@@ -960,7 +939,7 @@ RouteGraphPage::on_button_press_event (GdkEventButton* event)
 
 			// Prepare move
 
-			widget -> setConnectorsSensitive (false);	
+			widget -> setConnectorsSensitive (false);
 
 			return true;
 		}
@@ -988,7 +967,7 @@ RouteGraphPage::on_button_press_event (GdkEventButton* event)
 }
 
 bool
-RouteGraphPage::on_route_button_press_event (GdkEventButton* event) 
+RouteGraphPage::on_route_button_press_event (GdkEventButton* event)
 {
 	const auto pointer = X3D::Vector2d (event -> x, event -> y);
 
@@ -1069,15 +1048,15 @@ RouteGraphPage::get_arrow (const X3D::Vector2d & sourcePosition, const X3D::Vect
 }
 
 bool
-RouteGraphPage::on_button_release_event (GdkEventButton* event) 
+RouteGraphPage::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
 		for (const auto & window : getSelection ())
 		{
 			const auto & widget = window -> widget;
-	
-			widget -> setConnectorsSensitive (true);	
+
+			widget -> setConnectorsSensitive (true);
 		}
 	}
 
@@ -1090,7 +1069,7 @@ RouteGraphPage::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-RouteGraphPage::on_motion_notify_event (GdkEventMotion* event) 
+RouteGraphPage::on_motion_notify_event (GdkEventMotion* event)
 {
 	const auto pointer = X3D::Vector2d (event -> x, event -> y);
 
@@ -1124,29 +1103,29 @@ RouteGraphPage::on_motion_notify_event (GdkEventMotion* event)
 				// Move widget
 
 				auto bbox = X3D::Box2d ();
-		
+
 				for (const auto & window : selection)
 					bbox += X3D::Box2d (getBBox (window));
-		
+
 				const auto translation          = pointer - startPosition;
 				const auto extents              = bbox .extents ();
 				const auto min                  = extents .first;
 				const auto translated           = X3D::max (X3D::Vector2d (), min + translation);
 				const auto selectionTranslation = X3D::Vector2i (X3D::round (translated - min));
-		
+
 				for (const auto & window : selection)
 				{
 					auto position = getPosition (window);
-		
+
 					position += selectionTranslation;
 					position  = X3D::max (X3D::Vector2i (), position);
-		
+
 					setPosition (window, position);
 				}
-		
+
 				// Make the grid a litte larger.
 				resize ();
-		
+
 				startPosition = pointer;
 
 				Glib::signal_idle () .connect_once (sigc::mem_fun (this, &RouteGraphPage::save));
@@ -1304,7 +1283,7 @@ RouteGraphPage::on_draw_routes (const Cairo::RefPtr <Cairo::Context> & context)
 					const auto y2 = destinationPosition .y ();
 					const auto x3 = destinationPosition .x ();
 					const auto y3 = destinationPosition .y ();
- 
+
 					if (isRouteSelected (X3D::RoutePtr (route)))
 					{
 						context -> set_source_rgb (selected .r (), selected .g (), selected .b ());
@@ -1419,11 +1398,11 @@ RouteGraphPage::on_output_connector_clicked (X3D::X3DFieldDefinition* const conn
 	else
 	{
 		outputConnectorClicked = true;
-	
+
 		matchingContext = X3D::X3DExecutionContextPtr (window -> node -> getExecutionContext ());
 		routeNode       = window -> node;
 		routeField      = connectorField;
-	
+
 		for (const auto & window : windows)
 			window -> widget -> disableInputConnectors (matchingContext, routeNode, routeField);
 	}

@@ -66,7 +66,6 @@ main (int argc, char** argv)
 		X3D::Init (argc, argv);
 
 		Glib::setenv ("UBUNTU_MENUPROXY",  "0");   // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-		//Glib::setenv ("MAGICK_OCL_DEVICE", "OFF");
 
 		// Run appropriate application.
 

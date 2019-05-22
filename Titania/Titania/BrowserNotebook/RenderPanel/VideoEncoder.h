@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,8 +55,8 @@
 
 #include <Titania/Basic/URI.h>
 
-#include <Magick++.h>
-#include <glibmm/dispatcher.h>
+#include <gdkmm.h>
+#include <glibmm.h>
 #include <sigc++/signal.h>
 
 #include <mutex>
@@ -81,7 +81,7 @@ public:
 
 	std::string
 	getStdout ();
-	
+
 	std::string
 	getStderr ();
 
@@ -91,7 +91,7 @@ public:
 	open ();
 
 	void
-	write (Magick::Image & image);
+	write (const Glib::RefPtr <Gdk::Pixbuf> & image);
 
 	bool
 	close ();
@@ -119,7 +119,7 @@ private:
 
 	void
 	on_stdout (const std::string & string);
-	
+
 	void
 	on_stderr (const std::string & string);
 

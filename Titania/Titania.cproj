@@ -13,7 +13,6 @@
     </Compiler>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/pkgconfig/ImageMagick++.pc" name="ImageMagick++" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/sqlite3.pc" name="SQLite" IsProject="False" />
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />

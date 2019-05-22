@@ -113,8 +113,13 @@ public:
 			                                     options .alphaChannel,
 			                                     antialiasing);
 
-			image .quality (100);
-			image .write (outputFilename .path ());
+			const auto extension = outputFilename .extension ();
+			auto       format    = extension .empty () ? "png" : extension .substr (1);
+
+			if (format == "jpg")
+				format = "jpeg";
+
+			image -> save (outputFilename .path (), format);
 		}
 		catch (const std::exception & error)
 		{

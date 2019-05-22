@@ -67,10 +67,8 @@
 namespace titania {
 namespace puck {
 
-static constexpr size_t  ITEMS           = 9;
-static constexpr size_t  PREVIEW_SIZE    = 192;
-static constexpr size_t  PREVIEW_QUALITY = 90;
-static const std::string PREVIEW_TYPE    = "JPG";
+static constexpr size_t  ITEMS        = 9;
+static constexpr size_t  PREVIEW_SIZE = 192;
 
 RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
@@ -126,24 +124,21 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 		const auto worldURL = browser -> getWorldURL ();
 		auto       image    = browser -> getSnapshot (PREVIEW_SIZE * 4, PREVIEW_SIZE * 4, true, false, 16);
 
-		// Scale image.
+		image = image -> scale_simple (PREVIEW_SIZE, PREVIEW_SIZE, Gdk::INTERP_BILINEAR);
 
-		Magick::Geometry geometry (PREVIEW_SIZE, PREVIEW_SIZE);
+		// Get JPEG data.
 
-		image .filterType (Magick::LanczosFilter);
-		image .zoom (geometry);
+		std::string filename = "/tmp/XXXXXX.jpg";
 
-		// Write to blob.
+		::close (Glib::mkstemp (filename));
 
-		image .quality (PREVIEW_QUALITY);
-		image .magick (PREVIEW_TYPE);
+		image -> save (filename, "jpeg");
 
-		Magick::Blob blob;
-		image .write (&blob);
+		const auto preview = Glib::file_get_contents (filename);
+
+		::unlink (filename .c_str ());
 
 		// Save to history db and create icon.
-
-		const std::string preview ((char*) blob .data (), blob .length ());
 
 		getBrowserWindow () -> getHistory ()     -> setPreview (worldURL .filename (), preview);
 		getBrowserWindow () -> getIconFactory () -> createIcon (worldURL .filename (), preview);

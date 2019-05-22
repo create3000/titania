@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -114,7 +114,7 @@ VideoEncoder::VideoEncoder (const basic::uri & filename,
 	{
 		const auto iter   = codecs .find (codec);
 		const auto vcodec = iter not_eq codecs .end () ? iter -> second : "png";
-	
+
 		command = { "ffmpeg",
 		            "-y", // Overwrite output files without asking.
 		            "-f", "image2pipe",
@@ -173,15 +173,24 @@ VideoEncoder::open ()
 }
 
 void
-VideoEncoder::write (Magick::Image & image)
+VideoEncoder::write (const Glib::RefPtr <Gdk::Pixbuf> & image)
 {
-	Magick::Blob blob;
+	// Get PNG data.
 
-	image .magick ("PNG");
-	image .write (&blob);
+	std::string filename = "/tmp/XXXXXX.png";
+
+	::close (Glib::mkstemp (filename));
+
+	image -> save (filename, "png");
+
+	const auto file = Glib::file_get_contents (filename);
+
+	::unlink (filename .c_str ());
+
+	// Write to pipe.
 
 	pipe .read (50);
-	pipe .write (static_cast <const char*> (blob .data ()), blob .length ());
+	pipe .write (static_cast <const char*> (file .data ()), file .size ());
 }
 
 void

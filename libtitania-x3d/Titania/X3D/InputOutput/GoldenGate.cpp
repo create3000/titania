@@ -68,7 +68,6 @@
 #include <Titania/OS/find_data_file.h>
 #include <Titania/String/to_string.h>
 
-#include <Magick++.h>
 #include <giomm.h>
 #include <sys/wait.h>
 
@@ -316,14 +315,10 @@ GoldenGate::text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifil
 void
 GoldenGate::image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	Magick::Image image;
-	image .read (uri);
-	image .resolutionUnits (Magick::PixelsPerInchResolution);
-
-	const auto width  = double (image .size () .width  ()) / double (image .density () .width  ()) * inch <double>;
-	const auto height = double (image .size () .height ()) / double (image .density () .height ()) * inch <double>;
-
-	std::string file = Glib::file_get_contents (os::find_data_file ("titania/goldengate/image.x3dv"));
+	const auto  image  = Gdk::Pixbuf::create_from_file (uri .path ());
+	const auto  width  = image -> get_width  () / 72.0 * inch <double>;
+	const auto  height = image -> get_height () / 72.0 * inch <double>;
+	std::string file   = Glib::file_get_contents (os::find_data_file ("titania/goldengate/image.x3dv"));
 
 	file = std::regex_replace (file, Name,   GetNameFromURI (uri));
 	file = std::regex_replace (file, Width,  basic::to_string (width,  std::locale::classic ()));

@@ -138,7 +138,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet)
 

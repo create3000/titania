@@ -48,33 +48,67 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_TEXTURE_H__
-#define __TITANIA_X3D_MISCELLANEOUS_TEXTURE_H__
+#ifndef __TITANIA_X3D_BROWSER_TEXTURING_TEXTURE_H__
+#define __TITANIA_X3D_BROWSER_TEXTURING_TEXTURE_H__
 
-#include "X3DTexture.h"
+#include "../../Rendering/OpenGL.h"
+
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-class Texture :
-	public X3DTexture
+class Texture
 {
 public:
 
-	Texture (MagickImageArrayPtr &&);
+	///  @name Construction
 
-	Texture (const std::string &);
+	Texture (size_t width, size_t height, size_t components, GLenum format, std::vector <uint8_t> && data);
 
-	virtual
+	Texture (const std::string & document, const bool process = true);
+
+	///  @name Member access
+
+	size_t
+	getWidth () const
+	{ return width; }
+
+	size_t
+	getHeight () const
+	{ return height; }
+
+	size_t
+	getComponents () const
+	{ return components; }
+
+	GLenum
+	getFormat () const
+	{ return format; }
+
+	const void*
+	getData () const;
+
+	const Glib::RefPtr <Gdk::Pixbuf> &
+	getImage () const
+	{ return pixbuf; }
+
+	///  @name Destrunction
+
 	~Texture ()
 	{ }
 
 
 private:
 
-	virtual
-	MagickImageArrayPtr
-	readImages (const std::string &) final override;
+	///  @name Members
+
+	size_t                     width;
+	size_t                     height;
+	size_t                     components;
+	GLenum                     format;
+	std::vector <uint8_t>      data;
+	Glib::RefPtr <Gdk::Pixbuf> pixbuf;
 
 };
 

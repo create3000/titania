@@ -129,8 +129,6 @@ X3DPixelTextureEditor::on_pixel_texture_save_as_clicked ()
 		const auto dialog = addDialog <FileExportImageDialog> ("FileExportImageDialog", false);
 		auto       image  = pixelTexture -> getImage ();
 
-		image .quality (100);
-
 		dialog -> save (image, _ ("image.png"));
 	}
 	catch (const X3D::X3DError &)

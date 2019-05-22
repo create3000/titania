@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -88,7 +88,7 @@ public:
 	createIcon (const std::string & name, const std::string & document);
 
 	void
-	createIcon (const std::string & name, Magick::Image && image);
+	createIcon (const std::string & name, const Glib::RefPtr <Gdk::Pixbuf> & pixbuf);
 
 	void
 	createIcon (const std::string & name, const Cairo::RefPtr <Cairo::ImageSurface> & surface);
@@ -101,7 +101,7 @@ public:
 
 	void
 	createMaterialIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DMaterialNode> & materialNode);
-	
+
 	void
 	createTextureIcon (const std::string & stockId, const int32_t width, const int32_t height, const X3D::X3DPtr <X3D::X3DTextureNode> & textureNode);
 
@@ -113,13 +113,13 @@ public:
 private:
 
 	///  @name Construction
-	
+
 	void
 	set_material_preview ();
-	
+
 	void
 	set_texture_preview ();
-	
+
 	void
 	set_initialized ();
 

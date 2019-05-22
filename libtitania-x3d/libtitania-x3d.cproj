@@ -22,7 +22,6 @@
         <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
-        <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/Magick++.pc" name="Magick++" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/ftgl.pc" name="FTGL" IsProject="False" />
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="False" />

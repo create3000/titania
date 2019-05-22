@@ -91,13 +91,13 @@ public:
 	const std::string &
 	getContainerField () const final override
 	{ return containerField; }
-	
+
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Member access
-	
+
 	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const final override
@@ -113,14 +113,14 @@ public:
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
-	setUrl (Magick::Image & image);
+	setUrl (const Glib::RefPtr <Gdk::Pixbuf> & image);
 
 	///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 	void
 	setUrl (const Cairo::RefPtr <Cairo::ImageSurface> & surface);
 
 	///  @name Operations
-	
+
 	virtual
 	void
 	requestImmediateLoad () final override;
@@ -129,11 +129,11 @@ public:
 	requestAsyncLoad ();
 
 	///  @name Destruction
-	
+
 	virtual
 	void
 	dispose () final override;
-	
+
 	virtual
 	~ImageTexture () final override;
 
@@ -147,7 +147,7 @@ private:
 	initialize () final override;
 
 	///  @name Operations
-	
+
 	void
 	setTexture (const basic::uri URL, const TexturePtr & texture);
 

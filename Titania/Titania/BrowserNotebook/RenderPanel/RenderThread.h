@@ -65,8 +65,8 @@ class VideoEncoder;
 
 struct RenderThreadFrame
 {
-	size_t        frameNumber;
-	Magick::Image image;
+	size_t                     frameNumber;
+	Glib::RefPtr <Gdk::Pixbuf> image;
 };
 
 using RenderThreadFramePtr = std::shared_ptr <RenderThreadFrame>;

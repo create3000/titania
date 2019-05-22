@@ -176,15 +176,17 @@ ImageTexture::set_buffer ()
 
 ///  throws Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
 void
-ImageTexture::setUrl (Magick::Image & image)
+ImageTexture::setUrl (const Glib::RefPtr <Gdk::Pixbuf> & image)
 {
-	Magick::Blob blob;
+	std::string filename = "/tmp/XXXXXX.png";
 
-	image .magick ("PNG");
-	image .write (&blob);
+	::close (Glib::mkstemp (filename));
 
-	std::string data (static_cast <const char*> (blob .data ()),
-	                  static_cast <const char*> (blob .data ()) + blob .length ());
+	image -> save (filename, "png");
+
+	const auto data = Glib::file_get_contents (filename);
+
+	::unlink (filename .c_str ());
 
 	url () = { "data:image/png;base64," + Glib::Base64::encode (data) };
 }

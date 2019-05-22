@@ -131,12 +131,11 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 {
 	if (texture)
 	{
-		width ()      = texture -> getImageWidth ();
-		height ()     = texture -> getImageHeight ();
+		width ()      = texture -> getWidth ();
+		height ()     = texture -> getHeight ();
 		components () = texture -> getComponents ();
 
 		setImage (getInternalFormat (texture -> getComponents ()),
-		          texture -> getTransparency (),
 		          texture -> getComponents (),
 		          texture -> getWidth (), texture -> getHeight (),
 		          texture -> getFormat (),
@@ -157,12 +156,11 @@ X3DTexture2DNode::clearTexture ()
 	height ()     = 0;
 	components () = 0;
 
-	setImage (GL_RGB, false, 3, 1, 1, GL_RGB, data);
+	setImage (GL_RGB, 3, 1, 1, GL_RGB, data);
 }
 
 void
 X3DTexture2DNode::setImage (const GLenum internalFormat,
-                            const bool transparent,
                             const size_t comp,
                             const GLint width,
                             const GLint height,
@@ -174,7 +172,7 @@ X3DTexture2DNode::setImage (const GLenum internalFormat,
 	textureWidth  = width;
 	textureHeight = height;
 
-	setTransparent (transparent);
+	setTransparent (math::is_even (comp));
 	updateTextureProperties ();
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
@@ -221,30 +219,22 @@ X3DTexture2DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 }
 
 ///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
-Magick::Image
+Glib::RefPtr <Gdk::Pixbuf>
 X3DTexture2DNode::getImage () const
 {
 	// Process image.
-	const auto width     = getWidth ();
-	const auto height    = getHeight ();
-	const bool opaque    = components () % 2;
-	const auto imageData = getImageData ();
+	const auto width  = getWidth ();
+	const auto height = getHeight ();
+	const bool alpha  = not (components () % 2);
+	const auto data   = getImageData ();
 
-	Magick::Image image (width, height, opaque ? "RGB" : "RGBA", Magick::CharPixel, imageData .data ());
-
-	if (opaque)
-	{
-		image .matte (false);
-		image .type (Magick::TrueColorType);
-	}
-	else
-		image .type (Magick::TrueColorMatteType);
-
-	image .flip ();
-	image .resolutionUnits (Magick::PixelsPerInchResolution);
-	image .density (Magick::Geometry (72, 72));
-
-	return image;
+	return Gdk::Pixbuf::create_from_data (data .data (),
+		                                   Gdk::COLORSPACE_RGB,
+		                                   alpha,
+		                                   sizeof (uint8_t) * 8,
+		                                   width,
+		                                   height,
+		                                   width * (alpha ? 4 : 3)) -> flip (false);
 }
 
 ///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>

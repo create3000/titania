@@ -58,8 +58,6 @@
 #include "../Texturing/X3DTextureCoordinateNode.h"
 #include "../../Thread/TextureFuture.h"
 
-#include <Magick++.h>
-
 namespace titania {
 namespace X3D {
 
@@ -332,7 +330,7 @@ private:
 	setHeightMapTexture (const basic::uri & url, const TexturePtr & texture, const double minHeight, const double maxHeight);
 
 	void
-	setHeightMapImage (Magick::Image & image, const double minHeight, const double maxHeight);
+	setHeightMapImage (const Glib::RefPtr <Gdk::Pixbuf> & image, const double minHeight, const double maxHeight);
 
 	void
 	setLoadState (const LoadState value)

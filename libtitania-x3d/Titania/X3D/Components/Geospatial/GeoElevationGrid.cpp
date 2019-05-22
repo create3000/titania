@@ -446,45 +446,38 @@ GeoElevationGrid::setHeightMapTexture (const basic::uri & url, const TexturePtr 
 
 	setLoadState (COMPLETE_STATE);
 
-	setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
+	setHeightMapImage (texture -> getImage (), minHeight, maxHeight);
 }
 
 void
-GeoElevationGrid::setHeightMapImage (Magick::Image & image, const double minHeight, const double maxHeight)
+GeoElevationGrid::setHeightMapImage (const Glib::RefPtr <Gdk::Pixbuf> & image, const double minHeight, const double maxHeight)
 {
 	if (xDimension () < 1 or zDimension () < 1)
 		return;
 
 	// Scale image.
 
-	Magick::Geometry geometry (xDimension (), zDimension ());
-
-	geometry .aspect (true);
-
-	image .filterType (Magick::LanczosFilter);
-	image .zoom (geometry);
-	image .flip ();
-
-	// Get image data.
-
-	Magick::Blob blob;
-
-	image .magick ("GRAY");
-	image .interlaceType (Magick::NoInterlace);
-	image .endian (Magick::LSBEndian);
-	image .depth (8);
-
-	image .write (&blob);
+	auto scaled = image -> scale_simple (xDimension (), zDimension (), Gdk::INTERP_BILINEAR);
+	scaled = scaled -> flip (false);
 
 	// Set height field.
 
-	const auto   data   = static_cast <const uint8_t*> (blob .data ());
-	const size_t size   = xDimension () * zDimension ();
-	const auto   minMax = std::minmax_element (data, data + size);
+	const auto components = scaled -> get_n_channels ();
+	const auto rowstride  = scaled -> get_rowstride ();
+	const auto pixels     = scaled -> get_pixels ();
+	auto       data       = std::vector <uint8_t> ();
 
-	height () .resize (size);
+	for (size_t h = 0, hs = scaled -> get_height (); h < hs; ++ h)
+	{
+		for (size_t w = 0, ws = scaled -> get_width () * components; w < ws; w += components)
+			data .emplace_back (pixels [h * rowstride + w]);
+	}
 
-	for (size_t i = 0; i < size; ++ i)
+	const auto minMax = std::minmax_element (data .data (), data .data () + data .size ());
+
+	height () .resize (data .size ());
+
+	for (size_t i = 0, size = data .size (); i < size; ++ i)
 		height () [i] = project <double> (data [i], *minMax .first, *minMax .second, minHeight, maxHeight);
 }
 
@@ -565,7 +558,7 @@ GeoElevationGrid::toPrimitive () const
 	if (texCoord)
 	{
 		const auto texCoords = createTexCoord ();
-		
+
 		for (const auto & point : texCoords)
 			texCoord -> point () .emplace_back (point .x (), point .y ());
 	}

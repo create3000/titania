@@ -50,7 +50,6 @@
 
 #include "IconFactory.h"
 
-#include "../Browser/Image.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 
@@ -160,9 +159,13 @@ IconFactory::createIcon (const std::string & name, const std::string & document)
 	{
 		try
 		{
-			const Image icon (document);
+			const auto stream = Gio::MemoryInputStream::create ();
 
-			iconSet = Gtk::IconSet::create (icon .getIcon ());
+			stream -> add_data (document .data (), document .size (), nullptr);
+
+			const auto pixbuf = Gdk::Pixbuf::create_from_stream (stream);
+
+			iconSet = Gtk::IconSet::create (pixbuf);
 		}
 		catch (const std::exception & error)
 		{
@@ -180,15 +183,13 @@ IconFactory::createIcon (const std::string & name, const std::string & document)
 }
 
 void
-IconFactory::createIcon (const std::string & name, Magick::Image && image)
+IconFactory::createIcon (const std::string & name, const Glib::RefPtr <Gdk::Pixbuf> & pixbuf)
 {
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
 	try
 	{
-		const Image icon (std::move (image));
-
-		iconSet = Gtk::IconSet::create (icon .getIcon ());
+		iconSet = Gtk::IconSet::create (pixbuf);
 	}
 	catch (const std::exception & error)
 	{

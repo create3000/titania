@@ -17780,7 +17780,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet\""; } >&5
   ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
@@ -17793,7 +17792,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet") 2>&5
   ac_status=$?
@@ -17809,7 +17807,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
@@ -17833,7 +17830,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet\""; } >&5
   ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
@@ -17846,7 +17842,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet") 2>&5
   ac_status=$?
@@ -17862,7 +17857,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
@@ -17895,7 +17889,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet" 2>&1`
         else
@@ -17909,7 +17902,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet" 2>&1`
         fi
@@ -17926,7 +17918,6 @@ glew
 mozjs-60
 libxml++-2.6
 json-c
-ImageMagick++
 libgtop-2.0
 bullet) were not met:
 

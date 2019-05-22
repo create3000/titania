@@ -51,47 +51,66 @@
 #include "Texture.h"
 
 #include <Titania/LOG.h>
+#include <giomm.h>
 
 namespace titania {
 namespace X3D {
 
-Texture::Texture (MagickImageArrayPtr && images) :
-	X3DTexture (std::move (images))
+Texture::Texture (size_t width, size_t height, size_t components, GLenum format, std::vector <uint8_t> && data) :
+	     width (width),
+	    height (height),
+	components (components),
+	    format (format),
+	      data (data),
+	    pixbuf ()
 { }
 
-Texture::Texture (const std::string & document) :
-	X3DTexture (readImages (document))
-{ }
-
-MagickImageArrayPtr
-Texture::readImages (const std::string & data)
+Texture::Texture (const std::string & document, const bool process) :
+	Texture (0, 0, 0, GL_RGB, std::vector <uint8_t> ())
 {
-	MagickImageArrayPtr images (new MagickImageArray ());
+	const auto stream = Gio::MemoryInputStream::create ();
 
-	images -> emplace_back ();
-	images -> back () .backgroundColor (Magick::Color (0, 0, 0, uint16_t (-1)));
-	images -> back () .read (Magick::Blob (data .c_str (), data .length ()));
-	return images;
+	stream -> add_data (document .data (), document .size (), nullptr);
 
-//	MagickImageArrayPtr images (X3DTexture::readImages (data));
-//
-//	switch (images -> size ())
-//	{
-//		case 0:
-//			throw std::domain_error ("Image contains nothing.");
-//
-//		case 1:
-//			return images;
-//
-//		default:
-//		{
-//			if (images -> front () .magick () not_eq "PSD")
-//				Magick::flattenImages (&images -> front (), images -> begin (), images -> end ());
-//
-//			images -> erase (++ images -> begin (), images -> end ());
-//			return images;
-//		}
-//	}
+	pixbuf = Gdk::Pixbuf::create_from_stream (stream);
+
+	if (process)
+		pixbuf = pixbuf -> flip (false);
+
+	width      = pixbuf -> get_width ();
+	height     = pixbuf -> get_height ();
+	components = pixbuf -> get_n_channels ();
+
+	switch (components)
+	{
+		case 1:
+			format = GL_LUMINANCE;
+			break;
+		case 2:
+			format = GL_LUMINANCE_ALPHA;
+			break;
+		case 3:
+			format = GL_RGB;
+			break;
+		case 4:
+			format = GL_RGBA;
+			break;
+	}
+
+	const auto rowstride = pixbuf -> get_rowstride ();
+	const auto pixels    = pixbuf -> get_pixels ();
+
+	for (size_t h = 0; h < height; ++ h)
+	{
+		for (size_t w = 0, ws = width * components; w < ws; ++ w)
+			data .emplace_back (pixels [h * rowstride + w]);
+	}
+}
+
+const void*
+Texture::getData () const
+{
+	return data .data ();
 }
 
 } // X3D

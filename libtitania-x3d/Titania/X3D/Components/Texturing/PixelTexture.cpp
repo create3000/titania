@@ -77,7 +77,7 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
-	
+
 	addChildObjects (loadState);
 }
 
@@ -115,12 +115,8 @@ PixelTexture::update ()
 	if (array .size () < size)
 		const_cast <MFInt32 &> (array) .resize (size);
 
-	MagickImageArrayPtr mimages (new MagickImageArray ());
-	mimages -> emplace_back ();
-
-	Magick::Image & mimage = mimages -> front ();
-	mimage .depth (8);
-	mimage .size (Magick::Geometry (width, height));
+	std::vector <uint8_t> pixels;
+	GLenum format = GL_LUMINANCE;
 
 	switch (components)
 	{
@@ -128,8 +124,7 @@ PixelTexture::update ()
 		{
 			// Copy and flip image vertically.
 
-			std::vector <uint8_t> pixels;
-			pixels .reserve (size);
+			format = GL_LUMINANCE;
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -139,19 +134,13 @@ PixelTexture::update ()
 					pixels .emplace_back (array [row + w]);
 			}
 
-			Magick::Blob blob (pixels .data (), pixels .size ());
-			mimage .magick ("GRAY");
-			mimage .read (blob);
 			break;
 		}
 		case 2:
 		{
 			// Copy and flip image vertically.
-			
-			constexpr auto components = 4;
 
-			std::vector <uint8_t> pixels;
-			pixels .reserve (size * components);
+			format = GL_LUMINANCE_ALPHA;
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -163,23 +152,17 @@ PixelTexture::update ()
 					const uint8_t  color = pixel >> 8;
 
 					pixels .emplace_back (color);
-					pixels .emplace_back (color);
-					pixels .emplace_back (color);
 					pixels .emplace_back (pixel);
 				}
 			}
 
-			Magick::Blob blob (pixels .data (), pixels .size ());
-			mimage .magick ("RGBA");
-			mimage .read (blob);
 			break;
 		}
 		case 3:
 		{
 			// Copy and flip image vertically.
 
-			std::vector <uint8_t> pixels;
-			pixels .reserve (size * components);
+			format = GL_RGB;
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -188,24 +171,20 @@ PixelTexture::update ()
 				for (size_t w = 0; w < width; ++ w)
 				{
 					const uint32_t pixel = array [row + w];
-			
+
 					pixels .emplace_back (pixel >> 16);
 					pixels .emplace_back (pixel >> 8);
 					pixels .emplace_back (pixel);
 				}
 			}
 
-			Magick::Blob blob (pixels .data (), pixels .size ());
-			mimage .magick ("RGB");
-			mimage .read (blob);
 			break;
 		}
 		case 4:
 		{
 			// Copy and flip image vertically.
 
-			std::vector <uint8_t> pixels;
-			pixels .reserve (size * components);
+			format = GL_RGBA;
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -214,7 +193,7 @@ PixelTexture::update ()
 				for (size_t w = 0; w < width; ++ w)
 				{
 					const uint32_t pixel = array [row + w];
-			
+
 					pixels .emplace_back (pixel >> 24);
 					pixels .emplace_back (pixel >> 16);
 					pixels .emplace_back (pixel >> 8);
@@ -222,21 +201,13 @@ PixelTexture::update ()
 				}
 			}
 
-			Magick::Blob blob (pixels .data (), pixels .size ());
-			mimage .magick ("RGBA");
-			mimage .read (blob);
 			break;
 		}
 		default:
 			break;
 	}
 
-	TexturePtr texture (new Texture (std::move (mimages)));
-
-	texture -> process (getBrowser () -> getMinTextureSize (),
-	                    getBrowser () -> getMaxTextureSize ());
-
-	texture -> setComponents (image () .getComponents ());
+	TexturePtr texture (new Texture (width, height, components, format, std::move (pixels)));
 
 	setTexture (texture);
 
@@ -418,7 +389,7 @@ PixelTexture::setImage (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
 		r /= a;
 		g /= a;
 		b /= a;
-		
+
 		transparent |= a not_eq 1;
 
 		uint32_t pixel = 0;

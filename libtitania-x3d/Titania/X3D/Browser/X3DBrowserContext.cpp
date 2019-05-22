@@ -233,7 +233,7 @@ X3DBrowserContext::on_unmap ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /***
- *  Returns a snapshot of the current browser surface in the form of a Magick::Image.  Query for getMaxRenderBufferSize
+ *  Returns a snapshot of the current browser surface in the form of a Gdk::Pixbuf.  Query for getMaxRenderBufferSize
  *  to get the maximum width and height of the surface.  Query for getMaxSamples to get the maximum number of samples to
  *  use for antialising.  Antialiasing is only available if the browser supports GL_EXT_framebuffer_multisample.
  *
@@ -244,7 +244,7 @@ X3DBrowserContext::on_unmap ()
  *
  *  throws Error <INSUFFICIENT_CAPABILITIES>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
  */
-Magick::Image
+Glib::RefPtr <Gdk::Pixbuf>
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool renderBackground, const bool alphaChannel, const size_t antialiasing)
 {
 	// Make snapshot.
@@ -277,21 +277,15 @@ X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const b
 
 		// Process image.
 
-		Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
+		auto image = Gdk::Pixbuf::create_from_data (frameBuffer .getPixels () .data (),
+		                                            Gdk::COLORSPACE_RGB,
+		                                            true,
+		                                            sizeof (uint8_t) * 8,
+		                                            width,
+		                                            height,
+		                                            width * 4);
 
-		if (alphaChannel)
-		{
-			image .type (Magick::TrueColorMatteType);
-		}
-		else
-		{
-			image .matte (false);
-			image .type (Magick::TrueColorType);
-		}
-
-		image .flip ();
-		image .resolutionUnits (Magick::PixelsPerInchResolution);
-		image .density (Magick::Geometry (72, 72));
+		image = image -> flip (false);
 
 		return image;
 	}

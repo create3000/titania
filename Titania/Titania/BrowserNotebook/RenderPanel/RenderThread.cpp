@@ -209,9 +209,6 @@ RenderThread::getFrame (const int32_t frameNumber)
 	frame -> frameNumber = frameNumber;
 	frame -> image       = browser -> getSnapshot (width, height, true, false, antialiasing);
 
-	// Make PNG always RGB, otherwise the image is sometimes GRAY if ImageMagick desides that this is possible.
-	frame -> image .defineValue ("PNG", "color-type", "2");
-
 	videoEncoder -> write (frame -> image);
 
 	clock -> real_advance ();

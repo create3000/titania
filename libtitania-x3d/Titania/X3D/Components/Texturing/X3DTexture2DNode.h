@@ -134,7 +134,7 @@ public:
 	{ return textureHeight; }
 
 	///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
-	Magick::Image
+	Glib::RefPtr <Gdk::Pixbuf>
 	getImage () const;
 
 	///  @name Operations
@@ -169,7 +169,6 @@ protected:
 
 	void
 	setImage (const GLenum internalFormat,
-	          const bool transparent,
 	          const size_t comp,
 	          const GLint width,
 	          const GLint height,

@@ -24,12 +24,6 @@ architectures:
   - build-on: amd64
  # - build-on: i386
 
-#layout:
-#  /etc/ImageMagick-6:
-#    bind: $SNAP/etc/ImageMagick-6
-#  /usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10:
-#    bind: $SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10
-
 plugs:
   gtk-3-themes:
     interface: content
@@ -57,9 +51,6 @@ apps:
     adapter: none
     environment:
       GIO_LAUNCH_DESKTOP: $SNAP/usr/lib/x86_64-linux-gnu/glib-2.0/gio-launch-desktop
-      MAGICK_CONFIGURE_PATH: $SNAP/etc/ImageMagick-6:$SNAP/usr/share/ImageMagick-6:$SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10/config-Q16
-      MAGICK_CODER_MODULE_PATH: $SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10/modules-Q16/coders
-      MAGICK_CODER_FILTER_PATH: $SNAP/usr/lib/x86_64-linux-gnu/ImageMagick-6.9.10/modules-Q16/filters
     slots:
       - dbus-titania
     plugs:
@@ -106,7 +97,6 @@ parts:
       - libgtksourceviewmm-3.0-dev
       - libgtop2-dev
       - libjson-c-dev
-      - libmagick++-dev
       - libmozjs-60-dev
       - libmpfr-dev
       - libsqlite3-dev
@@ -126,7 +116,6 @@ parts:
       - gstreamer1.0-plugins-ugly
       - gstreamer1.0-pulseaudio
       - gstreamer1.0-x
-      - imagemagick
       - libbullet2.87
       - libcgal13
       - libcurl4
@@ -140,7 +129,6 @@ parts:
       - libgtksourceviewmm-3.0-0v5
       - libgtop-2.0-11
       - libjson-c3
-      - libmagick++-6.q16-8
       - libmozjs-60-0
       - libmpfr6
       - libsqlite3-0

@@ -58,23 +58,14 @@
 namespace titania {
 namespace puck {
 
-static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf)";
 static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
-static constexpr auto IMAGE_PDF_FILTER  = "PDF File (*.pdf)";
 static constexpr auto IMAGE_PNG_FILTER  = "PNG Image (*.png)";
-static constexpr auto IMAGE_PSD_FILTER  = "Photoshop Image (*.psd)";
-static constexpr auto IMAGE_TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
 static constexpr auto IMAGE_BMP_FILTER  = "Windows BMP Image (*.bmp)";
 
 const std::set <std::string> FileExportImageDialog::knownFileTypes = {
-	".xcf",
 	".jpeg",
 	".jpg",
-	".pdf",
 	".png",
-	".psd",
-	".tiff",
-	".tif",
 	".bmp",
 };
 
@@ -86,12 +77,8 @@ FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWin
 
 	getWindow () .set_title (_ ("Export Image …"));
 
-	getFileFilterImageXCF  () -> set_name (_ (IMAGE_XCF_FILTER));
 	getFileFilterImageJPEG () -> set_name (_ (IMAGE_JPEG_FILTER));
-	getFileFilterImagePDF  () -> set_name (_ (IMAGE_PDF_FILTER));
 	getFileFilterImagePNG  () -> set_name (_ (IMAGE_PNG_FILTER));
-	getFileFilterImagePSD  () -> set_name (_ (IMAGE_PSD_FILTER));
-	getFileFilterImageTIFF () -> set_name (_ (IMAGE_TIFF_FILTER));
 	getFileFilterImageBMP  () -> set_name (_ (IMAGE_BMP_FILTER));
 
 	setTitleBar (getImageOptionsDialog (), getImageOptionsHeaderBar ());
@@ -106,33 +93,15 @@ FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWin
 void
 FileExportImageDialog::setFileFilter (const std::string & name)
 {
-	if (Glib::find_program_in_path ("gimp") .size ())
-		getWindow () .add_filter (getFileFilterImageXCF ());
-
 	getWindow () .add_filter (getFileFilterImageJPEG ());
-	getWindow () .add_filter (getFileFilterImagePDF ());
 	getWindow () .add_filter (getFileFilterImagePNG ());
-	getWindow () .add_filter (getFileFilterImagePSD ());
-	getWindow () .add_filter (getFileFilterImageTIFF ());
 	getWindow () .add_filter (getFileFilterImageBMP ());
 
-	if (name == _(IMAGE_XCF_FILTER))
-		getWindow () .set_filter (getFileFilterImageXCF ());
-
-	else if (name == _(IMAGE_JPEG_FILTER))
+	if (name == _(IMAGE_JPEG_FILTER))
 		getWindow () .set_filter (getFileFilterImageJPEG ());
-
-	else if (name == _(IMAGE_PDF_FILTER))
-		getWindow () .set_filter (getFileFilterImagePDF ());
 
 	else if (name == _(IMAGE_PNG_FILTER))
 		getWindow () .set_filter (getFileFilterImagePNG ());
-
-	else if (name == _(IMAGE_PSD_FILTER))
-		getWindow () .set_filter (getFileFilterImagePSD ());
-
-	else if (name == _(IMAGE_TIFF_FILTER))
-		getWindow () .set_filter (getFileFilterImageTIFF ());
 
 	else if (name == _(IMAGE_BMP_FILTER))
 		getWindow () .set_filter (getFileFilterImageBMP ());
@@ -144,23 +113,11 @@ FileExportImageDialog::setFileFilter (const std::string & name)
 std::string
 FileExportImageDialog::getExtension () const
 {
-	if (getWindow () .get_filter () == getFileFilterImageXCF ())
-		return ".xcf";
-
-	else if (getWindow () .get_filter () == getFileFilterImageJPEG ())
+	if (getWindow () .get_filter () == getFileFilterImageJPEG ())
 		return ".jpg";
-
-	else if (getWindow () .get_filter () == getFileFilterImagePDF ())
-		return ".pdf";
 
 	else if (getWindow () .get_filter () == getFileFilterImagePNG ())
 		return ".png";
-
-	else if (getWindow () .get_filter () == getFileFilterImagePSD ())
-		return ".psd";
-
-	else if (getWindow () .get_filter () == getFileFilterImageTIFF ())
-		return ".tiff";
 
 	else if (getWindow () .get_filter () == getFileFilterImageBMP ())
 		return ".bmp";
@@ -188,13 +145,11 @@ FileExportImageDialog::run ()
 	                                                  getImageAlphaChannelSwitch () .get_active (),
 	                                                  getImageAntialiasingAdjustment () -> get_value ());
 
-	image .quality (getImageCompressionAdjustment () -> get_value ());
-
 	return save (image);
 }
 
 bool
-FileExportImageDialog::save (Magick::Image & image, const std::string & basename)
+FileExportImageDialog::save (const Glib::RefPtr <Gdk::Pixbuf> & image, const std::string & basename)
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
@@ -221,48 +176,16 @@ FileExportImageDialog::save (Magick::Image & image, const std::string & basename
 
 	try
 	{
-		auto url = getUrl ();
+		const auto url       = getUrl ();
+		const auto extension = url .extension ();
+		auto       format    = extension .empty () ? "png" : extension .substr (1);
 
-		const auto gimp = Glib::find_program_in_path ("gimp");
+		if (format == "jpg")
+			format = "jpeg";
 
-		if (url .extension () == ".xcf" and not gimp .empty ())
-		{
-			std::string pngFilename = "/tmp/titania-XXXXXX.png";
-
-			::close (Glib::mkstemp (pngFilename));
-
-			const auto quotes = std::regex  (R"/(")/");
-			const auto path   = url = std::regex_replace (url .path (), quotes, "\\\"");
-
-			image .write (pngFilename);
-
-			const auto gimp_command_line = std::vector <std::string> ({
-				gimp, "-i", "-b",
-				"(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
-				"(drawable (car (gimp-image-get-active-layer image))))"
-				"(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + path + "\" \"" + path + "\")"
-				"(gimp-image-delete image)"
-				"(gimp-quit 0))"
-			});
-
-			Glib::spawn_sync (Glib::get_home_dir (), gimp_command_line);
-
-			Gio::File::create_for_path (pngFilename) -> remove ();
-		}
-		else
-			image .write (url .path ());
+		image -> save (url .path (), format);
 
 		return true;
-	}
-	catch (const Magick::Exception & error)
-	{
-		const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-
-		dialog -> setType (Gtk::MESSAGE_ERROR);
-		dialog -> setMessage (_ ("Could not save image!"));
-		dialog -> setText (_ ("Tip: check file and folder permissions."));
-		dialog -> run ();
-		return false;
 	}
 	catch (const Glib::Error & error)
 	{
