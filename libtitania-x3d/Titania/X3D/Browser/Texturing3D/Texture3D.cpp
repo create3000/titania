@@ -57,143 +57,59 @@
 namespace titania {
 namespace X3D {
 
-Texture3D::Texture3D (MagickImageArrayPtr && images) :
-	X3DTexture (std::move (images))
+Texture3D::Texture3D (size_t components, size_t width, size_t height, size_t depth, GLenum format, std::vector <uint8_t> && data) :
+	components (components),
+	     width (width),
+	    height (height),
+	     depth (depth),
+	    format (format),
+	      data (std::move (data))
 { }
 
 Texture3D::Texture3D (const std::string & document) :
-	X3DTexture (readImages (document))
-{ }
-
-MagickImageArrayPtr
-Texture3D::readImages (const std::string & data)
+	Texture3D (0, 0, 0, 0, GL_RGB, std::vector <uint8_t> ())
 {
-	auto nrrd = readNRRD (data);
-
-	if (nrrd)
-		return nrrd;
-
-	// Read psd and xcf.
-	{
-		MagickImageArrayPtr images (X3DTexture::readImages (data));
-
-		switch (images -> size ())
-		{
-			case 0:
-			{
-				throw std::invalid_argument ("Image contains nothing.");
-			}
-			case 1:
-			{
-				return images;
-			}
-			default:
-			{
-				if (images -> front () .magick () == "PSD")
-					images -> pop_front ();
-
-				return images;
-			}
-		}
-	}
+	if (readNRRD (document))
+		return;
 }
 
-MagickImageArrayPtr
-Texture3D::readNRRD (const std::string & data)
+bool
+Texture3D::readNRRD (const std::string & document)
 {
-	const auto nrrd = NRRDParser (data) .parse ();
+	const auto nrrd = NRRDParser (document) .parse ();
 
 	if (nrrd .nrrd)
 	{
 		if (not nrrd .valid)
 			throw std::invalid_argument (nrrd .error);
 
-		const auto components = nrrd .components;
-		const auto width      = nrrd .width;
-		const auto height     = nrrd .height;
-		const auto depth      = nrrd .depth;
-		const auto size       = components * width * height;
+		components = nrrd .components;
+		width      = nrrd .width;
+		height     = nrrd .height;
+		depth      = nrrd .depth;
 
-		MagickImageArrayPtr images (new MagickImageArray ());
+		data .assign (nrrd .pixels .begin (), nrrd .pixels .end ());
 
 		switch (components)
 		{
 			case 1:
 			{
-				for (size_t i = 0; i < depth; ++ i)
-				{
-					auto first = nrrd .pixels .data () + (i * size);
-					auto last  = first + size;
-					auto data  = std::vector <uint8_t> ();
-
-					while (first < last)
-					{
-						const auto pixel = *first ++;
-
-						data .emplace_back (pixel);
-						data .emplace_back (pixel);
-						data .emplace_back (pixel);
-					}
-
-					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
-				}
-
+				format = GL_LUMINANCE;
 				break;
 			}
 			case 2:
 			{
-				for (size_t i = 0; i < depth; ++ i)
-				{
-					auto first = nrrd .pixels .data () + (i * size);
-					auto last  = first + size;
-					auto data  = std::vector <uint8_t> ();
-
-					while (first < last)
-					{
-						const auto pixel = *first ++;
-						const auto alpha = *first ++;
-
-						data .emplace_back (pixel);
-						data .emplace_back (pixel);
-						data .emplace_back (pixel);
-						data .emplace_back (alpha);
-					}
-
-					images -> emplace_back (width, height, "RGBA", Magick::CharPixel, data .data ());
-				}
-
+				format = GL_LUMINANCE_ALPHA;
 				break;
 			}
 			case 3:
 			{
-				for (size_t i = 0; i < depth; ++ i)
-				{
-					auto first = nrrd .pixels .data () + (i * size);
-					auto last  = first + size;
-					auto data  = std::vector <uint8_t> ();
-
-					while (first < last)
-						data .emplace_back (*first ++);
-
-					images -> emplace_back (width, height, "RGB", Magick::CharPixel, data .data ());
-				}
-
+				format = GL_RGB;
 				break;
 			}
 			case 4:
 			{
-				for (size_t i = 0; i < depth; ++ i)
-				{
-					auto first = nrrd .pixels .data () + (i * size);
-					auto last  = first + size;
-					auto data  = std::vector <uint8_t> ();
-
-					while (first < last)
-						data .emplace_back (*first ++);
-
-					images -> emplace_back (width, height, "RGBA", Magick::CharPixel, data .data ());
-				}
-
+				format = GL_RGBA;
 				break;
 			}
 			default:
@@ -202,12 +118,10 @@ Texture3D::readNRRD (const std::string & data)
 			}
 		}
 
-		setFlipY (false);
-
-		return images;
+		return true;
 	}
 
-	return MagickImageArrayPtr ();
+	return false;
 }
 
 Texture3D::~Texture3D ()

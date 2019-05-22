@@ -48,35 +48,73 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
-#define __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
+#ifndef __TITANIA_X3D_BROWSER_TEXTURING3D_TEXTURE3D_H__
+#define __TITANIA_X3D_BROWSER_TEXTURING3D_TEXTURE3D_H__
 
-#include "../Texturing/X3DTexture.h"
+#include "../../Rendering/OpenGL.h"
+
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-class Texture3D :
-	public X3DTexture
+class Texture3D
 {
 public:
 
-	Texture3D (MagickImageArrayPtr && images);
+	///  @name Construction
 
-	Texture3D (const std::string & data);
+	Texture3D (size_t components, size_t width, size_t height, size_t depth, GLenum format, std::vector <uint8_t> && data);
+
+	Texture3D (const std::string & document);
+
+	///  @name Member access
+
+	size_t
+	getComponents () const
+	{ return components; }
+
+	size_t
+	getWidth () const
+	{ return width; }
+
+	size_t
+	getHeight () const
+	{ return height; }
+
+	size_t
+	getDepth () const
+	{ return depth; }
+
+	GLenum
+	getFormat ()
+	{ return format; }
+
+	const void*
+	getData ()
+	{ return data .data (); }
+
+	///  @name Destructin
 
 	virtual
-	~Texture3D () final override;
+	~Texture3D ();
 
 
 private:
 
-	virtual
-	MagickImageArrayPtr
-	readImages (const std::string & data) final override;
+	///  @name Construction
 
-	MagickImageArrayPtr
-	readNRRD (const std::string & data);
+	bool
+	readNRRD (const std::string & document);
+
+	///  @name Members
+
+	size_t                components;
+	size_t                width;
+	size_t                height;
+	size_t                depth;
+	GLenum                format;
+	std::vector <uint8_t> data;
 
 };
 

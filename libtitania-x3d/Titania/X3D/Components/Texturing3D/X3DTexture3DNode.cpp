@@ -128,8 +128,8 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 {
 	if (texture)
 	{
-		width ()      = texture -> getImageWidth ();
-		height ()     = texture -> getImageHeight ();
+		width ()      = texture -> getWidth ();
+		height ()     = texture -> getHeight ();
 		depth ()      = texture -> getDepth ();
 		components () = texture -> getComponents ();
 
