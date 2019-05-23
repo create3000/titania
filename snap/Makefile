@@ -25,4 +25,4 @@ remove:
 
 publish:
 	snapcraft login
-	snapcraft push --release=edge titania_*.snap
+	snapcraft push --release stable titania_*.snap
