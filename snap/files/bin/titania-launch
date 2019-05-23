@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function append_dir() {
+  local var="$1"
+  local dir="$2"
+  if [ -d "$dir" ]; then
+    eval "export $var=\"\${$var:+\$$var:}\$dir\""
+  fi
+}
+
+append_dir PATH $SNAP/usr/bin
+
+export GIO_LAUNCH_DESKTOP=$SNAP/usr/lib/$SNAP_LAUNCHER_ARCH_TRIPLET/glib-2.0/gio-launch-desktop
+
+exec "$@"

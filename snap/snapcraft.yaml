@@ -46,11 +46,9 @@ slots:
 
 apps:
   titania:
-    command: bin/desktop-launch $SNAP/bin/titania
+    command: bin/desktop-launch $SNAP/bin/titania-launch $SNAP/bin/titania
     desktop: share/applications/de.create3000.titania.desktop
     adapter: none
-    environment:
-      GIO_LAUNCH_DESKTOP: $SNAP/usr/lib/x86_64-linux-gnu/glib-2.0/gio-launch-desktop
     slots:
       - dbus-titania
     plugs:
@@ -74,12 +72,22 @@ parts:
     source-subdir: gtk
     plugin: make
     make-parameters: ["FLAVOR=gtk3"]
+  desktop-titania:
+    plugin: dump
+    source: files/
+    override-build: |
+      set -eux
+      snapcraftctl build
+      chmod +x bin/titania-launch
   titania:
     plugin: autotools
     source: https://github.com/create3000/titania
     source-type: git
     after:
       - desktop-gtk3
+      - desktop-titania
+    configflags:
+      - --enable-debug
     build-packages:
       - intltool
       - libbullet-dev
