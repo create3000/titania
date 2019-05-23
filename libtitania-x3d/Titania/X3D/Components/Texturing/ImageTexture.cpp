@@ -178,15 +178,21 @@ ImageTexture::set_buffer ()
 void
 ImageTexture::setUrl (const Glib::RefPtr <Gdk::Pixbuf> & image)
 {
-	std::string filename = "/tmp/XXXXXX.png";
+	// Get PNG data.
 
-	::close (Glib::mkstemp (filename));
+	gchar* buffer      = nullptr;
+	gsize  buffer_size = 0;
 
-	image -> save (filename, "png");
+	image -> save_to_buffer (buffer, buffer_size, "png");
 
-	const auto data = Glib::file_get_contents (filename);
+	if (not buffer)
+		throw Error <DISPOSED> ("ImageTexture::setUrl");
 
-	::unlink (filename .c_str ());
+	const std::string data (buffer, buffer_size);
+
+	g_free (buffer);
+
+	// Generate data url.
 
 	url () = { "data:image/png;base64," + Glib::Base64::encode (data) };
 }

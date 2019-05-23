@@ -259,17 +259,18 @@ X3DRenderingSurface::on_timeout ()
 	try
 	{
 		ContextLock lock (this);
-	
+
 		timeoutConnection .disconnect ();
 
 		frameBuffer -> bind ();
-	
+
 		on_render ();
 		renderSignal .emit ();
 
 		queue_draw ();
 
-		frameBuffer -> unbind ();
+		if (frameBuffer)
+			frameBuffer -> unbind ();
 	}
 	catch (const std::exception & error)
 	{

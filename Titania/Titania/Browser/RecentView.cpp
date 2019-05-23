@@ -128,15 +128,17 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 
 		// Get JPEG data.
 
-		std::string filename = "/tmp/XXXXXX.jpg";
+		gchar* buffer      = nullptr;
+		gsize  buffer_size = 0;
 
-		::close (Glib::mkstemp (filename));
+		image -> save_to_buffer (buffer, buffer_size, "jpeg");
 
-		image -> save (filename, "jpeg");
+		if (not buffer)
+			return;
 
-		const auto preview = Glib::file_get_contents (filename);
+		const std::string preview (buffer, buffer_size);
 
-		::unlink (filename .c_str ());
+		g_free (buffer);
 
 		// Save to history db and create icon.
 

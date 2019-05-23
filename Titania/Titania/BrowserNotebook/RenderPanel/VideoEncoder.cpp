@@ -177,20 +177,22 @@ VideoEncoder::write (const Glib::RefPtr <Gdk::Pixbuf> & image)
 {
 	// Get PNG data.
 
-	std::string filename = "/tmp/XXXXXX.png";
+	gchar* buffer      = nullptr;
+	gsize  buffer_size = 0;
 
-	::close (Glib::mkstemp (filename));
+	image -> save_to_buffer (buffer, buffer_size, "png");
 
-	image -> save (filename, "png");
-
-	const auto file = Glib::file_get_contents (filename);
-
-	::unlink (filename .c_str ());
+	if (not buffer)
+		return;
 
 	// Write to pipe.
 
 	pipe .read (50);
-	pipe .write (static_cast <const char*> (file .data ()), file .size ());
+	pipe .write (buffer, buffer_size);
+
+	// Clean up
+
+	g_free (buffer);
 }
 
 void
