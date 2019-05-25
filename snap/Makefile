@@ -15,7 +15,7 @@ compile:
 	${SNAPCRAFT}
 
 install: remove
-	sudo snap install titania_*.snap --devmode --dangerous
+	sudo snap install titania_*_amd64.snap --devmode --dangerous
 
 run:
 	env SNAP_DESKTOP_DEBUG=1 /snap/bin/titania
@@ -25,4 +25,4 @@ remove:
 
 publish:
 	snapcraft login
-	snapcraft push --release stable titania_*.snap
+	snapcraft push --release=stable titania_*.snap

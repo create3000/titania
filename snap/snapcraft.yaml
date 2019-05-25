@@ -12,7 +12,7 @@ description: |
   of the X3D pipeline — modeling, rigging, animation, simulation, rendering,
   and compositing.
 
-  Tiania requires to run a NVIDIA or ATI graphics card, at least 1024 MB RAM,
+  Titania requires to run a NVIDIA or ATI graphics card, at least 1024 MB RAM,
   and a monitor resolution of at least 1280 × 1024 pixels.
 icon: titania.png
 
