@@ -15,7 +15,7 @@ compile:
 	${SNAPCRAFT}
 
 install: remove
-	sudo snap install titania_*_amd64.snap --devmode --dangerous
+	sudo snap install titania_*_amd64.snap --dangerous
 
 run:
 	env SNAP_DESKTOP_DEBUG=1 /snap/bin/titania
