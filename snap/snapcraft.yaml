@@ -49,6 +49,8 @@ apps:
     command: bin/desktop-launch $SNAP/bin/titania-launch $SNAP/bin/titania
     desktop: share/applications/de.create3000.titania.desktop
     adapter: none
+    environment:
+      HOME: "$SNAP_USER_COMMON"
     slots:
       - dbus-titania
     plugs:
