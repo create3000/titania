@@ -63,7 +63,7 @@ namespace puck {
 // nodes triggers two event when setNodes or ... is called because removeTool is called in X3DBrowser::getSelection.
 
 BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	         enabled (getCurrentBrowser () -> getSelectable ()),
 	  selectMultiple (getCurrentBrowser () -> getSelection () -> getSelectMultiple ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
@@ -109,8 +109,6 @@ BrowserSelection::set_browser ()
 		selection -> getNodes ()      .removeInterest (&BrowserSelection::set_selection, this);
 		selection -> getGeometries () .removeInterest (&BrowserSelection::set_selection, this);
 	}
-
-	setBrowser (getCurrentBrowser ());
 
 	browser = getCurrentBrowser ();
 

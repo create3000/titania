@@ -84,6 +84,17 @@ void
 X3DBaseInterface::setup ()
 {
 	X3D::X3DEventObject::setup ();
+
+	browserWindow -> getCurrentBrowser () .addInterest (&X3DBaseInterface::set_browser, this);
+
+	set_browser (browserWindow -> getCurrentBrowser ());
+}
+
+///  Sets the current browser to the underlying X3DParentObject.
+void
+X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
+{
+	setBrowser (value);
 }
 
 ///  Return the master browser.
@@ -194,7 +205,7 @@ X3DBaseInterface::getWorldInfo (const X3D::X3DScenePtr & scene, const bool creat
 	{
 		if (not create)
 			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
-	
+
 		auto worldInfo = scene -> createNode <X3D::WorldInfo> ();
 
 		worldInfo -> title () = scene-> getWorldURL () .stem ();
@@ -358,7 +369,7 @@ X3DBaseInterface::getContextFromPath (X3D::X3DExecutionContext* executionContext
 			// Proto
 
 			auto protoNames = std::vector <std::string> ();
-	
+
 			basic::split (std::back_inserter (protoNames), path .str (), ".");
 
 			for (const auto & protoName : protoNames)

@@ -103,7 +103,7 @@ public:
 	virtual
 	const X3D::BrowserPtr &
 	getCurrentBrowser () const;
-	
+
 	const X3D::WorldPtr &
 	getCurrentWorld () const;
 
@@ -150,7 +150,7 @@ public:
 	template <class Type>
 	void
 	setMetaData (const X3D::BrowserPtr & browser, const std::string & key, const Type & value);
-	
+
 	template <class Type>
 	Type
 	getMetaData (const X3D::BrowserPtr & browser, const std::string & key, const Type & defaultValue = Type ()) const;
@@ -176,7 +176,7 @@ public:
 
 	std::string
 	getPathFromContext (const X3D::X3DExecutionContextPtr & executionContext) const;
-	
+
 	X3D::X3DExecutionContextPtr
 	getContextFromPath (X3D::X3DExecutionContext* executionContext, const std::string & string) const;
 
@@ -187,7 +187,7 @@ public:
 	virtual
 	void
 	addUndoStep (const X3D::UndoStepPtr &);
-	
+
 	virtual
 	void
 	removeUndoStep ();
@@ -241,19 +241,24 @@ protected:
 	X3DBaseInterface (X3DBrowserWindow* const, X3D::Browser* const);
 
 	/// @name Member access
-	 
+
 	void
 	setTypeName (const std::string & value)
 	{ typeName = value; }
 
 	/// @name Operations
-	 
+
 	///  throws X3D::Error <X3D::NOT_SUPPORTED>
 	X3D::X3DPtr <X3D::WorldInfo>
 	getWorldInfo (const X3D::X3DScenePtr & scene, const bool create);
 
 
 private:
+
+	/// @name Event handlers
+
+	void
+	set_browser (const X3D::BrowserPtr & value);
 
 	/// @name Members
 
@@ -289,7 +294,7 @@ X3DBaseInterface::getMetaData (const X3D::BrowserPtr & browser, const std::strin
 	try
 	{
 		const auto & layerSet = browser -> getWorld () -> getLayerSet ();
-	
+
 		if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 			return layerSet -> getActiveLayer () -> getMetaData <Type> (key, defaultValue);
 
