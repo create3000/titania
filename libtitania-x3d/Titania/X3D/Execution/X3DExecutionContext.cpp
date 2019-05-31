@@ -210,14 +210,14 @@ X3DExecutionContext::createNode (const std::string & typeName)
 		const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (typeName);
 
 		SFNode node (declaration -> create (this));
-	
+
 		if (getRealized ())
 		{
 			ContextLock lock (getBrowser ());
-	
+
 			node -> setup ();
 		}
-	
+
 		return node;
 	}
 	catch (const Error <NOT_SUPPORTED> & error)
@@ -335,7 +335,7 @@ std::string
 X3DExecutionContext::getUniqueName (std::string name) const
 {
 	name = RemoveTrailingNumber (name);
- 	
+
 	auto   uniqueName = name;
 	size_t i          = 0;
 
@@ -399,7 +399,7 @@ X3DExecutionContext::isImportedNode (const SFNode & node) const
 		try
 		{
 			const auto & importedNode = pair .second;
-			
+
 			if (importedNode -> getExportedNode () == node)
 				return true;
 		}
@@ -442,7 +442,7 @@ X3DExecutionContext::updateImportedNode (const X3DPtr <Inline> & inlineNode, con
 	                                [&] (const ImportedNodeIndex::value_type & pair)
 	{
 		const auto & importedNode = pair .second;
-		
+
 		if (importedNode -> getInlineNode () == inlineNode and importedNode -> getExportedName () == exportedName)
 			return true;
 
@@ -452,7 +452,7 @@ X3DExecutionContext::updateImportedNode (const X3DPtr <Inline> & inlineNode, con
 	if (iter not_eq importedNodes .end ())
 	{
 		const auto importedNode = iter -> second;
-		
+
 		importedNodes .erase (iter);
 
 		const auto & renamedImportedNode = importedNodes .emplace (importedName, importedNode) .first -> second;
@@ -563,7 +563,7 @@ X3DExecutionContext::getLocalNode (const std::string & name) const
 	catch (const X3DError &)
 	{
 		const auto iter = importedNodes .find (name);
-	
+
 		if (iter not_eq importedNodes .end ())
 			return SFNode (iter -> second);
 
@@ -588,7 +588,7 @@ X3DExecutionContext::getLocalName (const SFNode & node) const
 		try
 		{
 			const auto & importedNode = pair .second;
-			
+
 			if (importedNode -> getExportedNode () == node)
 				return true;
 		}
@@ -919,7 +919,7 @@ void
 X3DExecutionContext::addExternProtoLoadCount (const ExternProtoDeclaration* const externProto)
 {
 	loadingExternProtos .emplace (externProto);
-		
+
 	externProtosLoadCount = loadingExternProtos .size ();
 }
 
@@ -928,7 +928,7 @@ X3DExecutionContext::removeExternProtoLoadCount (const ExternProtoDeclaration* c
 {
 	if (not loadingExternProtos .erase (externProto))
 		return;
- 
+
 	externProtosLoadCount = loadingExternProtos .size ();
 }
 
@@ -1167,12 +1167,12 @@ X3DExecutionContext::addSimpleRoute (const SFNode & sourceNode,      const std::
 	if (iter == routes -> cend ())
 	{
 		const auto & route = addRoute (new Route (this, sourceNode, sourceField, destinationNode, destinationField));
-	
+
 		if (getRealized ())
 			route -> setup ();
 		else
 			addUninitializedNode (route);
-	
+
 		return route;
 	}
 	else
@@ -1343,7 +1343,7 @@ X3DExecutionContext::updateNamedNodes (X3DExecutionContext* const executionConte
 			const auto & name       = pair .first;
 			const auto & namedNode  = pair .second;
 			const auto   uniqueName = getVeryUniqueName (executionContext, name);
-	
+
 			executionContext -> updateNamedNode (uniqueName, namedNode -> getLocalNode ());
 		}
 		catch (const Error <DISPOSED> & error)
@@ -1360,9 +1360,9 @@ X3DExecutionContext::updateImportedNodes (X3DExecutionContext* const executionCo
 		{
 			const auto & importedNode       = pair .second;
 			const auto   uniqueImportedName = getVeryUniqueImportedName (executionContext, importedNode -> getImportedName ()); // TODO: getVeryUniqueImportedName
-	
+
 			executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
-	
+
 			if (uniqueImportedName not_eq importedNode -> getImportedName ())
 				executionContext -> removeImportedNode (importedNode -> getImportedName ());
 		}
@@ -1666,13 +1666,13 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< ','
 				<< Generator::TidyBreak;
 		}
-	
+
 		for (const auto & externProto : getExternProtoDeclarations ())
 		{
 			ostream
 				<< Generator::Indent
 				<< JSONEncode (externProto);
-	
+
 			if (externProto not_eq getExternProtoDeclarations () .back ())
 			{
 				ostream
@@ -1680,7 +1680,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 					<< Generator::TidyBreak;
 			}
 		}
-	
+
 		lastProperty = true;
 	}
 
@@ -1695,13 +1695,13 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< ','
 				<< Generator::TidyBreak;
 		}
-	
+
 		for (const auto & proto : getProtoDeclarations ())
 		{
 			ostream
 				<< Generator::Indent
 				<< JSONEncode (proto);
-	
+
 			if (proto not_eq getProtoDeclarations () .back ())
 			{
 				ostream
@@ -1709,7 +1709,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 					<< Generator::TidyBreak;
 			}
 		}
-	
+
 		lastProperty = true;
 	}
 
@@ -1763,9 +1763,9 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 			try
 			{
 				std::ostringstream osstream;
-	
+
 				osstream << SetGenerator (ostream) << JSONEncode (importedNode .second);
-	
+
 				importedNodes .emplace_back (osstream .str ());
 			}
 			catch (const X3DError &)
@@ -1780,13 +1780,13 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 					<< ','
 					<< Generator::TidyBreak;
 			}
-	
+
 			for (const auto & importedNode : importedNodes)
 			{
 				ostream
 					<< Generator::Indent
 					<< importedNode;
-		
+
 				if (&importedNode not_eq &importedNodes .back ())
 				{
 					ostream
@@ -1794,7 +1794,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 						<< Generator::TidyBreak;
 				}
 			}
-	
+
 			lastProperty = true;
 		}
 	}
@@ -1811,9 +1811,9 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 			try
 			{
 				std::ostringstream osstream;
-	
+
 				osstream << SetGenerator (ostream) << JSONEncode (route);
-	
+
 				routes .emplace_back (osstream .str ());
 			}
 			catch (const X3DError & error)
@@ -1830,13 +1830,13 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 					<< ','
 					<< Generator::TidyBreak;
 			}
-	
+
 			for (const auto & route : routes)
 			{
 				ostream
 					<< Generator::Indent
 					<< route;
-		
+
 				if (&route not_eq &routes .back ())
 				{
 					ostream
@@ -1844,7 +1844,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 						<< Generator::TidyBreak;
 				}
 			}
-	
+
 			lastProperty = true;
 		}
 	}

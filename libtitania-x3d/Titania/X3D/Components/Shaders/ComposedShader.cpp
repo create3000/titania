@@ -239,6 +239,9 @@ ComposedShader::set_loaded ()
 void
 ComposedShader::set_field (X3DFieldDefinition* const field)
 {
+	if (not isValid ())
+		return;
+
 	glUseProgram (programId);
 
 	X3DProgrammableShaderObject::set_field (field);
