@@ -210,7 +210,7 @@ X3DSoundSourceNode::set_resume (const time_type)
 	{
 		if (speed () == 0.0f)
 			return;
-	
+
 		mediaStream -> play ();
 	}
 }
@@ -239,9 +239,9 @@ X3DSoundSourceNode::set_end ()
 				mediaStream -> seek (duration_changed ());
 				mediaStream -> play ();
 			}
-	
+
 			// The event order below is very important.
-	
+
 			elapsedTime () = getElapsedTime ();
 			cycleTime ()   = getCurrentTime ();
 		}

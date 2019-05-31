@@ -104,8 +104,8 @@ AudioClip::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getStream () -> signal_audio_changed ()  .connect (sigc::mem_fun (this, &AudioClip::on_audio_changed));
-	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &AudioClip::on_error));
+	getStream () -> signal_audio_changed () .connect (sigc::mem_fun (this, &AudioClip::on_audio_changed));
+	getStream () -> signal_error ()         .connect (sigc::mem_fun (this, &AudioClip::on_error));
 
 	url () .addInterest (&AudioClip::set_url, this);
 
