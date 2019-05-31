@@ -130,15 +130,15 @@ OpenEditorsEditor::set_pages ()
 			const auto path   = worldURL .parent () .path ();
 			const auto folder = Gio::File::create_for_path (path);
 			auto       found  = false;
-	
+
 			for (const basic::uri rootFolder : projectsEditor -> getRootFolders ())
 			{
 				const auto projectFolder = Gio::File::create_for_path (rootFolder .path ());
-	
+
 				if (File::isSubfolder (folder, projectFolder))
 				{
 					found = true;
-					
+
 					const auto releativePath = rootFolder .relative_path (path);
 					auto       string        = rootFolder .basename ();
 
@@ -152,11 +152,11 @@ OpenEditorsEditor::set_pages ()
 					break;
 				}
 			}
-	
+
 			if (not found)
 			{
 				const auto homeFolder = Gio::File::create_for_path (Glib::get_home_dir ());
-	
+
 				if (File::isSubfolder (folder, homeFolder))
 				{
 					const auto  home          = basic::uri (basic::path (Glib::get_home_dir ()) .escape () + "/");
@@ -197,12 +197,15 @@ OpenEditorsEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
 void
 OpenEditorsEditor::on_selection_changed ()
 {
-	const auto selected = getTreeView () .get_selection () -> get_selected ();
-
 	for (const auto & row : getListStore () -> children ())
 		row -> set_value (Columns::CLOSE, std::string ());
 
-	selected -> set_value (Columns::CLOSE, std::string ("gtk-close"));
+	if (getTreeView () .get_selection () -> count_selected_rows ())
+	{
+		const auto selected = getTreeView () .get_selection () -> get_selected ();
+
+		selected -> set_value (Columns::CLOSE, std::string ("gtk-close"));
+	}
 }
 
 void
@@ -229,12 +232,12 @@ OpenEditorsEditor::on_button_release_event (GdkEventButton* event)
 		Gtk::TreeViewColumn* column = nullptr;
 		int                  cell_x = 0;
 		int                  cell_y = 0;
-	
+
 		getTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
-	
+
 		if (not path .size ())
 			return false;
-	
+
 		if (column not_eq getCloseColumn () .operator -> ())
 			return false;
 
