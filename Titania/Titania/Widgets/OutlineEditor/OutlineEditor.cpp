@@ -309,7 +309,7 @@ OutlineEditor::set_scenes_menu ()
 {
 	if (scenes .empty ())
 		return;
-	
+
 	for (const auto & scene : scenes)
 	{
 	   const auto & currentScene = scene .first;
@@ -366,12 +366,12 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 	}
 
 	std::pair <Gtk::RadioMenuItem*, size_t> menuPair;
-		
+
 	for (size_t i = index, size = executionContexts .size (); i < size; ++ i)
 	{
 	   const auto executionContext = executionContexts [i];
 		const auto basename         = executionContext -> getWorldURL () .basename ();
-	
+
 		// Add menu item.
 
 		const auto label    = getSceneMenuLabelText (executionContext, false);
@@ -503,7 +503,7 @@ OutlineEditor::on_paste_activate ()
 	if (not nodePath .empty ())
 	{
 		const auto iter = treeView -> get_model () -> get_iter (nodePath);
-	
+
 		switch (treeView -> get_data_type (iter))
 		{
 			case OutlineIterType::ProtoDeclaration:
@@ -612,7 +612,7 @@ OutlineEditor::on_add_reference_activate (const X3D::SFNode & node, const X3D::F
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	X3D::X3DEditor::addReference (node, field, reference, undoStep);
-	
+
 	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	treeView -> queue_draw ();
 
@@ -628,7 +628,7 @@ OutlineEditor::on_remove_reference_activate (const X3D::SFNode & node, const X3D
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	X3D::X3DEditor::removeReference (node, field, reference, undoStep);
-	
+
 	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	treeView -> queue_draw ();
 
@@ -684,7 +684,7 @@ OutlineEditor::remove (const X3D::UndoStepPtr & undoStep)
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
-		
+
 		switch (treeView -> get_data_type (parentIter))
 		{
 			case OutlineIterType::ProtoDeclaration:
@@ -778,7 +778,7 @@ OutlineEditor::on_create_clone_activate ()
 			default:
 				break;
 		}
-	}	
+	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -817,7 +817,7 @@ OutlineEditor::on_unlink_clone_activate ()
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
-		
+
 		switch (treeView -> get_data_type (parentIter))
 		{
 			case OutlineIterType::ProtoDeclaration:
@@ -831,7 +831,7 @@ OutlineEditor::on_unlink_clone_activate ()
 		const auto field        = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 		auto &     parent       = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 		const auto exportedNode = X3D::X3DPtr <X3D::ExportedNode> (parent);
-		
+
 		if (exportedNode)
 			parent = exportedNode -> getLocalNode ();
 
@@ -906,7 +906,7 @@ OutlineEditor::on_detach_from_group_activated ()
 			default:
 				return;
 		}
-	
+
 		switch (treeView -> get_data_type (fieldIter))
 		{
 			case OutlineIterType::X3DField:
@@ -1235,7 +1235,7 @@ OutlineEditor::on_remove_parent_activate ()
 	   return;
 
 	// Child node
-	   
+
 	const auto iter       = treeView -> get_model () -> get_iter (nodePath);
 	const auto fieldIter  = iter -> parent ();
 	const auto parentIter = fieldIter -> parent ();
@@ -1260,7 +1260,7 @@ OutlineEditor::on_remove_parent_activate ()
 	if (nodePath .size () == 3 or (nodePath .size () > 3 and treeView -> get_data_type (parentIter -> parent ()) == OutlineIterType::X3DExecutionContext))
 	{
 	   // Root node
-		
+
 		auto &     rootNodes = executionContext -> getRootNodes ();
 		const auto index     = treeView -> get_index (parentIter);
 
@@ -1269,7 +1269,7 @@ OutlineEditor::on_remove_parent_activate ()
 			case X3D::X3DConstants::SFNode:
 			{
 				auto & sfnode = *static_cast <X3D::SFNode*> (field);
-	
+
 				applyTransformation (sfnode, rootNodes [index], undoStep);
 
 				X3D::X3DEditor::insertIntoArray (executionContext, rootNodes, index, sfnode, undoStep);
@@ -1279,7 +1279,7 @@ OutlineEditor::on_remove_parent_activate ()
 			case X3D::X3DConstants::MFNode:
 			{
 				auto & mfnode = *static_cast <X3D::MFNode*> (field);
-	
+
 				for (const auto & node : mfnode)
 					applyTransformation (node, rootNodes [index], undoStep);
 
@@ -1511,7 +1511,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				isUrlObject         = urlObject;
 				isCompletelyLoaded  = urlObject and urlObject -> checkLoadState () == X3D::COMPLETE_STATE;
 				isLocalNode         = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
-				inScene             = sfnode -> getScene () == treeView -> get_execution_context () -> getScene ();
+				inScene             = getInScene (sfnode);
 				isProtoNode         = sfnode -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }) and inScene;
 				break;
 			}
@@ -1524,7 +1524,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				isUrlObject        = true;
 				isCompletelyLoaded = externProto -> checkLoadState () == X3D::COMPLETE_STATE;
 				isLocalNode        = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
-				inScene            = sfnode -> getScene () == treeView -> get_execution_context () -> getScene ();
+				inScene            = getInScene (sfnode);
 				break;
 			}
 			case OutlineIterType::ProtoDeclaration:
@@ -1533,7 +1533,7 @@ OutlineEditor::selectNode (const double x, const double y)
 
 				isPrototype        = true;
 				isLocalNode        = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
-				inScene            = sfnode -> getScene () == treeView -> get_execution_context () -> getScene ();
+				inScene            = getInScene (sfnode);
 				isExecutionContext = true;
 				break;
 			}
@@ -1542,7 +1542,7 @@ OutlineEditor::selectNode (const double x, const double y)
 				const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
 				isLocalNode = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
-				inScene     = sfnode -> getScene () == treeView -> get_execution_context () -> getScene ();
+				inScene     = getInScene (sfnode);
 				break;
 			}
 			case OutlineIterType::X3DExecutionContext:
@@ -1581,7 +1581,7 @@ OutlineEditor::selectNode (const double x, const double y)
 	getCreateInstanceMenuItem ()    .set_visible ((isExternProto or isPrototype) and not inPrototypeInstance () and isLocalNode);
 	getReloadMenuItem ()            .set_visible (isUrlObject and inScene and not isInlineNode);
 	getUpdateInstancesMenuItem ()   .set_visible ((isPrototype or isExternProto) and not inPrototypeInstance () and isLocalNode);
-	
+
 	getProtoSeparator () .set_visible (getSetAsCurrentSceneMenuItem () .get_visible () or
                                       getCreateInstanceMenuItem ()    .get_visible () or
                                       getReloadMenuItem ()            .get_visible () or
@@ -1621,36 +1621,36 @@ OutlineEditor::selectField (const double x, const double y)
 		const auto   executionContext = node -> getExecutionContext ();
 
 		inProtoDeclaration = executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration });
-	
+
 		if (inProtoDeclaration)
 		{
 			hasReferences = not field -> getReferences () .empty ();
 
 			// Create reference menu
-	
+
 			for (const auto & widget : getAddReferenceMenu () .get_children ())
 				getAddReferenceMenu () .remove (*widget);
-	
+
 			for (const auto & reference : executionContext -> getFieldDefinitions ())
 			{
 				if (field -> getType () not_eq reference -> getType ())
 					continue;
-	
+
 				if (reference -> isReference (field -> getAccessType ()))
 				{
 					try
 					{
 						if (field -> getReferences () .count (reference))
 							continue;
-	
+
 						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
-	
+
 						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &OutlineEditor::on_add_reference_activate),
 						                                                     node,
 						                                                     X3D::FieldPtr (field),
 						                                                     X3D::FieldPtr (reference)));
 						menuItem -> show ();
-	
+
 						getAddReferenceMenu () .append (*menuItem);
 					}
 					catch (const X3D::X3DError & error)
@@ -1659,24 +1659,24 @@ OutlineEditor::selectField (const double x, const double y)
 					}
 				}
 			}
-	
+
 			// Remove reference menu
-	
+
 			for (const auto & widget : getRemoveReferenceMenu () .get_children ())
 				getRemoveReferenceMenu () .remove (*widget);
-	
+
 			for (const auto & reference : field -> getReferences ())
 			{
 				try
 				{
 					const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
-	
+
 					menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &OutlineEditor::on_remove_reference_activate),
 					                                                     node,
 					                                                     X3D::FieldPtr (field),
 					                                                     X3D::FieldPtr (reference)));
 					menuItem -> show ();
-	
+
 					getRemoveReferenceMenu () .append (*menuItem);
 				}
 				catch (const X3D::X3DError &)
@@ -1797,6 +1797,15 @@ OutlineEditor::getParentContext (Gtk::TreePath parentPath) const
 	return treeView -> get_execution_context ();
 }
 
+bool
+OutlineEditor::getInScene (const X3D::SFNode & node) const
+{
+	if (treeView -> get_execution_context () -> isType ({ X3D::X3DConstants::X3DScene }))
+		return node -> getScene () == treeView -> get_execution_context ();
+
+	return node -> getScene () == treeView -> get_execution_context () -> getScene ();
+}
+
 /***********************************************************************************************************************
  *
  * Save & restore expanded nodes
@@ -1822,7 +1831,7 @@ OutlineEditor::restoreExpanded ()
 		for (const auto & path_expanded : paths)
 		{
 			auto pair = std::vector <std::string> ();
-	
+
 			basic::split (std::back_inserter (pair), path_expanded, "\t");
 
 			if (pair .empty ())
