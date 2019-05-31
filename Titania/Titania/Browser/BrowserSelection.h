@@ -163,9 +163,6 @@ private:
 	///  @name Event handlers
 
 	void
-	connectNodes ();
-
-	void
 	set_browser ();
 
 	void

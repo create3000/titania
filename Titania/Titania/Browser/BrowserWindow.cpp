@@ -285,7 +285,7 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 
 		getCurrentBrowser () -> getSnapTarget () -> enabled () .addInterest (&BrowserWindow::set_snapTarget, this);
 		getCurrentBrowser () -> getSnapSource () -> enabled () .addInterest (&BrowserWindow::set_snapSource, this);
-	
+
 		getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()         .addInterest (&BrowserWindow::set_dashboard,          this);
 		getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ()  .addInterest (&BrowserWindow::set_primitiveQuality,   this);
 		getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ()    .addInterest (&BrowserWindow::set_textureQuality,     this);
@@ -301,7 +301,7 @@ BrowserWindow::setPage (const NotebookPagePtr & value)
 		set_snapTarget ();
 		set_snapSource ();
 		set_straighten_horizon ();
-	
+
 		getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 		getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 
@@ -704,7 +704,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			{
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
 				const auto nodes    = import (uris, undoStep);
-	
+
 				getSelection () -> setNodes (nodes, undoStep);
 				addUndoStep (undoStep);
 			}
@@ -1184,7 +1184,7 @@ BrowserWindow::on_menubar_toggled ()
 		getConfig () -> setItem <bool> ("menubarFullscreen", getMenubarAction () -> get_active ());
 	else
 		getConfig () -> setItem <bool> ("menubar", getMenubarAction () -> get_active ());
-	
+
 	getMenubar () .set_visible (getMenubarAction () -> get_active ());
 }
 
@@ -1206,7 +1206,7 @@ BrowserWindow::on_sidebar_toggled ()
 		getConfig () -> setItem <bool> ("sidebarFullscreen", getSidebarAction () -> get_active ());
 	else
 		getConfig () -> setItem <bool> ("sidebar", getSidebarAction () -> get_active ());
-	
+
 	getSidebarBox () .set_visible (getSidebarAction () -> get_active ());
 }
 
@@ -1425,10 +1425,10 @@ BrowserWindow::on_hide_selected_objects_activated ()
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	{
 		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-		
+
 		if (shape)
 			shape -> isHidden (true);
-		
+
 		return true;
 	},
 	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
@@ -1446,10 +1446,10 @@ BrowserWindow::on_hide_unselected_objects_activated ()
 	X3D::traverse (selection, [&visibles] (X3D::SFNode & node)
 	{
 		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-		
+
 		if (shape)
 			visibles .emplace (shape);
-		
+
 		return true;
 	},
 	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
@@ -1457,13 +1457,13 @@ BrowserWindow::on_hide_unselected_objects_activated ()
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [&visibles] (X3D::SFNode & node)
 	{
 		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-		
+
 		if (shape)
 		{
 			if (not visibles .count (shape))
 				shape -> isHidden (true);
 		}
-		
+
 		return true;
 	},
 	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
@@ -1477,10 +1477,10 @@ BrowserWindow::on_show_selected_objects_activated ()
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	{
 		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-		
+
 		if (shape)
 			shape -> isHidden (false);
-		
+
 		return true;
 	},
 	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
@@ -1492,10 +1492,10 @@ BrowserWindow::on_show_all_objects_activated ()
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 	{
 		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-		
+
 		if (shape)
 			shape -> isHidden (false);
-		
+
 		return true;
 	},
 	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
@@ -1733,7 +1733,7 @@ BrowserWindow::on_grid_properties_activated ()
 }
 
 // Snap Target
-	
+
 void
 BrowserWindow::set_snapTarget ()
 {
@@ -1755,7 +1755,7 @@ BrowserWindow::set_snapTarget ()
 
 	changing = false;
 }
-	
+
 void
 BrowserWindow::set_snapSource ()
 {
@@ -1827,9 +1827,9 @@ BrowserWindow::on_move_selection_to_snap_target_activate ()
 	{
 		const auto   undoStep  = std::make_shared <X3D::UndoStep> (_ ("Move Selection To Snap Target"));
 		const auto & selection = getSelection () -> getNodes ();
-	
+
 		on_move_selection_to_snap_target_activate (selection, undoStep);
-	
+
 		addUndoStep (undoStep);
 	}
 }
@@ -1950,7 +1950,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 
 	for (auto & widget : menu .get_children ())
 	   menu .remove (*widget);
-	
+
 	// Rebuild menu.
 
 	size_t pageNumber = 0;
@@ -2102,7 +2102,7 @@ BrowserWindow::on_primitive_clicked (const std::string & description, const std:
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (description);
 		const auto nodes    = getBrowserWindow () -> import ({ "file://" + find_data_file (path) }, undoStep);
-	
+
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}

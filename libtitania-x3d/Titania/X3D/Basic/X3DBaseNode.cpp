@@ -230,7 +230,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 	{
 		if (baseNode -> getCloneCount () > 1)
 			return true;
-	
+
 		if (baseNode -> hasRoutes ())
 			return true;
 
@@ -448,7 +448,7 @@ X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 		}
 
 		// Replace browser as last step!
-	
+
 		setBrowser (executionContext -> getBrowser ());
 		getBrowser () -> addEvent ();
 	}
@@ -628,7 +628,7 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 		{
 			-- numUserDefinedFields;
-	
+
 			//  If the field is added twice we must not remove the parent to prevent dispose.
 			if (removeParent)
 				field -> second -> removeParent (this);
@@ -638,10 +638,10 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 			//  If field is a pre defined field, we defer dispose.
 			X3DEventObject::disposed () .addInterest (&X3DFieldDefinition::removeParent, field -> second, this);
 		}
-	
+
 		if (not privateState)
 			field -> second -> removeCloneCount (1);
-	
+
 		fieldDefinitions .erase (iter);
 	}
 
@@ -1261,11 +1261,11 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 		if (field -> isInitializable ())
 		{
 			// Output build in field
-	
+
 			ostream << Generator::Indent;
-	
+
 			ostream << getFieldName (field -> getName (), Generator::SpecificationVersion (ostream));
-	
+
 			ostream
 				<< Generator::Space
 				<< *field;
@@ -1585,7 +1585,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					{
 						if (field == sourceText)
 							break;
-	
+
 						ostream
 							<< Generator::Break
 							<< Generator::Indent
@@ -1593,7 +1593,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 							<< "='"
 							<< XMLEncode (field)
 							<< "'";
-	
+
 						break;
 					}
 				}
@@ -1900,10 +1900,10 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 	if (sourceText)
 	{
 		static const std::regex ECMAScript (R"/(^\s*(?:ecmascript|javascript|vrmlscript)\:)/");
-	
+
 		if (sourceText -> size () not_eq 1)
 			sourceText = nullptr;
-	
+
 		if (sourceText and not std::regex_search (sourceText -> front () .raw (), ECMAScript))
 			sourceText = nullptr;
 	}
@@ -1914,7 +1914,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 	if (not fields .empty ())
 	{
 		FieldDefinitionArray outputFields;
-	
+
 		for (const auto & field : fields)
 		{
 			if (not Generator::MetaData (ostream) and field -> getName () == "metadata")
@@ -1922,31 +1922,31 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
 			// for this field.
-	
+
 			bool mustOutputValue = false;
-	
+
 			if (Generator::ExecutionContext (ostream))
 			{
 				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 				{
 					bool initializableReference = false;
-	
+
 					for (const auto & reference : field -> getReferences ())
 						initializableReference |= reference -> isInitializable ();
-	
+
 					if (not initializableReference)
 						mustOutputValue = true;
 				}
 			}
-	
+
 			// If we have no execution context we are not in a proto and must not generate IS references the same is true
 			// if the node is a shared node as the node does not belong to the execution context.
-	
+
 			if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream) or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
-	
+
 				if (field not_eq sourceText)
 					outputFields .emplace_back (field);
 			}
@@ -2034,7 +2034,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 			<< Generator::TidySpace
 			<< '['
 			<< Generator::TidyBreak
-			<< Generator::IncIndent;			
+			<< Generator::IncIndent;
 
 		for (const auto & field : userDefinedFields)
 		{

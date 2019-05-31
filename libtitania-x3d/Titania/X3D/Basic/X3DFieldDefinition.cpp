@@ -144,7 +144,7 @@ X3DFieldDefinition::isGeospatial () const
 {
 	if (data)
 		return data -> flags [GEO_BIT];
-	
+
 	return false;
 }
 
@@ -162,7 +162,7 @@ X3DFieldDefinition::isSet () const
 {
 	if (data)
 		return data -> flags [IS_SET_BIT];
-	
+
 	return false;
 }
 
@@ -179,7 +179,7 @@ X3DFieldDefinition::isHidden () const
 {
 	if (data)
 		return data -> flags [HIDDEN_BIT];
-	
+
 	return false;
 }
 

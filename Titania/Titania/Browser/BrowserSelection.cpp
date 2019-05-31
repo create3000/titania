@@ -63,8 +63,8 @@ namespace puck {
 // nodes triggers two event when setNodes or ... is called because removeTool is called in X3DBrowser::getSelection.
 
 BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
-	X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
-	         enabled (getCurrentBrowser () -> getSelectable ()),  
+	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	         enabled (getCurrentBrowser () -> getSelectable ()),
 	  selectMultiple (getCurrentBrowser () -> getSelection () -> getSelectMultiple ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
 	  selectGeometry (getCurrentBrowser () -> getSelection () -> getSelectGeometry ()),
@@ -84,17 +84,13 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	                 hierarchy,
 	                 browser);
 
-	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser, this);
+	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser,           this);
 	getCurrentContext () .addInterest (&BrowserSelection::set_execution_context, this);
 
 	nodes .addInterest (&BrowserSelection::set_nodes, this);
 
 	setup ();
 }
-
-void
-BrowserSelection::connectNodes ()
-{ }
 
 void
 BrowserSelection::set_browser ()
@@ -113,6 +109,8 @@ BrowserSelection::set_browser ()
 		selection -> getNodes ()      .removeInterest (&BrowserSelection::set_selection, this);
 		selection -> getGeometries () .removeInterest (&BrowserSelection::set_selection, this);
 	}
+
+	setBrowser (getCurrentBrowser ());
 
 	browser = getCurrentBrowser ();
 
@@ -373,7 +371,7 @@ BrowserSelection::filterSelection (X3D::MFNode value)
 	try
 	{
 		const auto worldInfo = getWorldInfo (getCurrentScene ());
-	
+
 		value .erase (std::remove (value .begin (), value .end (), worldInfo), value .end ());
 
 		return value;
