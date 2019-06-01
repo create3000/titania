@@ -143,7 +143,10 @@ X3DSoundSourceNode::setMedia (const bool value)
 			}
 			else
 			{
-				set_start ();
+				if (getLive ())
+					set_start ();
+				else
+					set_pause ();
 			}
 		}
 		else
