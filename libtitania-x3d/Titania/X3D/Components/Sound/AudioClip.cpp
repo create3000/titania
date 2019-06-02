@@ -51,7 +51,6 @@
 #include "AudioClip.h"
 
 #include "../../Browser/Sound/MediaStream.h"
-
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
