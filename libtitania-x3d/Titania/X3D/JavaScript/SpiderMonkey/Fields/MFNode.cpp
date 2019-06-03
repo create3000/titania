@@ -265,6 +265,61 @@ MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp)
 	}
 }
 
+template <>
+bool
+MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
+
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+
+		std::ostringstream ostream;
+
+		switch (array -> size ())
+		{
+			case 0:
+			{
+				ostream << "[ ]";
+				break;
+			}
+			case 1:
+			{
+				ostream << array -> front () -> getTypeName () + " { }";
+				break;
+			}
+			default:
+			{
+				ostream
+					<< '['
+					<< '\n';
+
+				for (const auto & node : *array)
+				{
+					ostream
+						<< "  "
+						<< node -> getTypeName () + " { }"
+						<< '\n';
+				}
+
+				ostream << ']';
+
+				break;
+			}
+		}
+
+		args .rval () .set (StringValue (cx, ostream .str ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: %s.", getClass () -> name, error .what ());
+	}
+}
+
 } // spidermonkey
 } // X3D
 } // titania

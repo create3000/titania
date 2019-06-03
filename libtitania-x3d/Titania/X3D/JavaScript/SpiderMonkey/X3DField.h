@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -108,6 +108,10 @@ protected:
 	getField (X3D::X3DFieldDefinition* const field)
 	{ return field; }
 
+	///  @name Functions
+
+	static bool toString (JSContext* cx, unsigned argc, JS::Value* vp);
+
 	///  @name Destruction
 
 	static void finalize (JSFreeOp* fop, JSObject* obj);
@@ -126,7 +130,6 @@ private:
 	static bool getType     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool isReadable  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool isWritable  (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool toString    (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	static bool equals (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool assign (JSContext* cx, unsigned argc, JS::Value* vp);

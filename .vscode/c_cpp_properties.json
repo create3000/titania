@@ -20,6 +20,7 @@
                 "/usr/include/gstreamermm-1.0",
                 "/usr/include/gtk-3.0",
                 "/usr/include/gtkmm-3.0",
+                "/usr/include/mozjs-60",
                 "/usr/include/pango-1.0",
                 "/usr/include/pangomm-1.4",
                 "/usr/include/sigc++-2.0",

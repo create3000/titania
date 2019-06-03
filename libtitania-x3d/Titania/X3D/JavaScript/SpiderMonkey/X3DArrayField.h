@@ -153,11 +153,12 @@ private:
 
 	///  @name Functions
 
-	static bool pop     (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool push    (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool shift   (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool splice  (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool unshift (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool pop      (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool push     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool shift    (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool splice   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool unshift  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool toString (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Member access
 
@@ -358,11 +359,12 @@ const JSPropertySpec X3DArrayFieldTemplate <ValueType, InternalType>::properties
 
 template <class ValueType, class InternalType>
 const JSFunctionSpec X3DArrayFieldTemplate <ValueType, InternalType>::functions [ ] = {
-	JS_FN ("pop",     pop,     0, JSPROP_PERMANENT),
-	JS_FN ("push",    push,    0, JSPROP_PERMANENT),
-	JS_FN ("shift",   shift,   0, JSPROP_PERMANENT),
-	JS_FN ("splice",  splice,  2, JSPROP_PERMANENT),
-	JS_FN ("unshift", unshift, 0, JSPROP_PERMANENT),
+	JS_FN ("pop",      pop,      0, JSPROP_PERMANENT),
+	JS_FN ("push",     push,     0, JSPROP_PERMANENT),
+	JS_FN ("shift",    shift,    0, JSPROP_PERMANENT),
+	JS_FN ("splice",   splice,   2, JSPROP_PERMANENT),
+	JS_FN ("unshift",  unshift,  0, JSPROP_PERMANENT),
+	JS_FN ("toString", toString, 0, JSPROP_PERMANENT),
 	JS_FS_END
 };
 
@@ -733,6 +735,13 @@ X3DArrayFieldTemplate <ValueType, InternalType>::unshift (JSContext* cx, unsigne
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .unshift: %s.", getClass () -> name, error .what ());
 	}
+}
+
+template <class ValueType, class InternalType>
+bool
+X3DArrayFieldTemplate <ValueType, InternalType>::toString (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	return X3DField::toString (cx, argc, vp);
 }
 
 } // spidermonkey

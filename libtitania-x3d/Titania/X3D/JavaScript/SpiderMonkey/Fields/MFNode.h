@@ -88,6 +88,10 @@ template <>
 bool
 MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp);
 
+template <>
+bool
+MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp);
+
 } // spidermonkey
 } // X3D
 } // titania
