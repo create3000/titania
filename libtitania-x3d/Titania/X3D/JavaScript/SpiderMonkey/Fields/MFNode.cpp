@@ -298,7 +298,7 @@ MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 				if (node)
 					ostream << node -> getTypeName () + " { }";
 				else
-					ostream << "NULL" << std::endl;
+					ostream << "NULL";
 
 				break;
 			}
@@ -315,7 +315,7 @@ MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 					if (node)
 						ostream << node -> getTypeName () + " { }";
 					else
-						ostream << "NULL" << std::endl;
+						ostream << "NULL";
 
 					ostream << '\n';
 				}
