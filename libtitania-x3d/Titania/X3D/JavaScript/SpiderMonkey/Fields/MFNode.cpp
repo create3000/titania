@@ -67,31 +67,23 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		if (argc == 0)
-		{
-			JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new X3D::MFNode ()));
-			return true;
-		}
-		else
-		{
-			const auto args  = JS::CallArgsFromVp (argc, vp);
-			const auto array = new X3D::MFNode ();
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = new X3D::MFNode ();
 
-			for (unsigned i = 0; i < argc; ++ i)
+		for (unsigned i = 0; i < argc; ++ i)
+		{
+			try
 			{
-				try
-				{
-					array -> emplace_back (getArgument <SFNode> (cx, args, i));
-				}
-				catch (const std::domain_error & error)
-				{
-					array -> emplace_back ();
-				}
+				array -> emplace_back (getArgument <SFNode> (cx, args, i));
 			}
-
-			args .rval () .set (create (cx, array));
-			return true;
+			catch (const std::domain_error & error)
+			{
+				array -> emplace_back ();
+			}
 		}
+
+		args .rval () .set (create (cx, array));
+		return true;
 	}
 	catch (const std::bad_alloc & error)
 	{

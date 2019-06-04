@@ -393,24 +393,16 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 {
 	try
 	{
-		if (argc == 0)
-		{
-			JS::CallArgsFromVp (argc, vp) .rval () .set (create (cx, new InternalType ()));
-			return true;
-		}
-		else
-		{
-			const auto args  = JS::CallArgsFromVp (argc, vp);
-			const auto array = new InternalType ();
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = new InternalType ();
 
-			for (unsigned i = 0; i < argc; ++ i)
-			{
-				array -> emplace_back (getArgument <ValueType> (cx, args, i));
-			}
-
-			args .rval () .set (create (cx, array));
-			return true;
+		for (unsigned i = 0; i < argc; ++ i)
+		{
+			array -> emplace_back (getArgument <ValueType> (cx, args, i));
 		}
+
+		args .rval () .set (create (cx, array));
+		return true;
 	}
 	catch (const std::bad_alloc & error)
 	{
