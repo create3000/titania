@@ -109,7 +109,7 @@ MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::Han
 {
 	try
 	{
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
+		const auto array = getThis <MFNode> (cx, obj);
 		const auto index = JSID_TO_INT (id);
 
 		if (index >= 0)
@@ -144,7 +144,7 @@ MFNode::push (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+		const auto array = getThis <MFNode> (cx, args);
 
 		for (unsigned i = 0; i < argc; ++ i)
 		{
@@ -181,7 +181,7 @@ MFNode::splice (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .splice: wrong number of arguments.", getClass () -> name);
 
 		const auto args        = JS::CallArgsFromVp (argc, vp);
-		const auto array       = getThis <X3DArrayFieldTemplate> (cx, args);
+		const auto array       = getThis <MFNode> (cx, args);
 		auto       index       = spidermonkey::getArgument <int32_t> (cx, args, 0);
 		auto       deleteCount = spidermonkey::getArgument <int32_t> (cx, args, 1);
 		auto       result      = new X3D::MFNode ();
@@ -238,7 +238,7 @@ MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp)
 	try
 	{
 		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+		const auto array = getThis <MFNode> (cx, args);
 
 		for (ssize_t i = argc - 1; i >= 0; -- i)
 		{
@@ -275,7 +275,7 @@ MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 			return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: wrong number of arguments.", getClass () -> name);
 
 		const auto args  = JS::CallArgsFromVp (argc, vp);
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
+		const auto array = getThis <MFNode> (cx, args);
 
 		std::ostringstream ostream;
 
@@ -288,7 +288,13 @@ MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 			}
 			case 1:
 			{
-				ostream << array -> front () -> getTypeName () + " { }";
+				const auto & node = array -> front ();
+
+				if (node)
+					ostream << node -> getTypeName () + " { }";
+				else
+					ostream << "NULL" << std::endl;
+
 				break;
 			}
 			default:
@@ -299,10 +305,14 @@ MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 
 				for (const auto & node : *array)
 				{
-					ostream
-						<< "  "
-						<< node -> getTypeName () + " { }"
-						<< '\n';
+					ostream << "  ";
+
+					if (node)
+						ostream << node -> getTypeName () + " { }";
+					else
+						ostream << "NULL" << std::endl;
+
+					ostream << '\n';
 				}
 
 				ostream << ']';
