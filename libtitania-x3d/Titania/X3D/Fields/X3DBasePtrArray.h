@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -84,6 +84,8 @@ public:
 	using X3DArrayField <ValueType>::emplace_back;
 	using X3DArrayField <ValueType>::erase;
 	using X3DArrayField <ValueType>::addInterest;
+	using X3DArrayField <ValueType>::addCloneCount;
+	using X3DArrayField <ValueType>::removeCloneCount;
 
 	///  @name Construction
 
@@ -244,10 +246,10 @@ public:
 	set_union (const X3DBasePtrArray & other)
 	{
 		std::set <size_t> set;
-	
+
 		for (const auto & value : *this)
 			set .emplace (value ? value -> getId () : 0);
-	
+
 		for (const auto & value : other)
 		{
 			if (not set .count (value ? value -> getId () : 0))
@@ -262,10 +264,10 @@ public:
 	set_difference (const X3DBasePtrArray & other)
 	{
 		std::set <size_t> set;
-	
+
 		for (const auto & value : other)
 			set .emplace (value ? value -> getId () : 0);
-	
+
 		erase (std::remove_if (begin (), end (),
 		                       [&set] (const ValueType & value)
 		                       { return set .count (value ? value -> getId () : 0); }),
@@ -281,10 +283,10 @@ public:
 		std::set <size_t> a;
 		std::set <size_t> b;
 		std::set <size_t> i;
-	
+
 		for (const auto & value : *this)
 			a .emplace (value ? value -> getId () : 0);
-	
+
 		for (const auto & value : other)
 			b .emplace (value ? value -> getId () : 0);
 
@@ -337,6 +339,21 @@ public:
 	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Input/Output
+
+	///  Generates a string representation of this object with locale support.
+	virtual
+	std::string
+	toLocaleString (const std::locale & locale = std::locale ()) const final override;
+
+	///  Generates a string representation of this object in X3D XML Encoding.
+	virtual
+	std::string
+	toXMLString () const final override;
+
+	///  Generates a string representation of this object in X3D JSON Encoding.
+	virtual
+	std::string
+	toJSONString () const final override;
 
 	///  Not supported.
 	///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
@@ -518,6 +535,45 @@ X3DBasePtrArray <ValueType>::operator = (X3DBasePtrArray <Up> && other)
 	other .clear ();
 
 	return *this;
+}
+
+template <class ValueType>
+std::string
+X3DBasePtrArray <ValueType>::toLocaleString (const std::locale & locale) const
+{
+	const_cast <X3DBasePtrArray <ValueType>*> (this) -> addCloneCount (1);
+
+	const auto string = X3DArrayField <ValueType>::toLocaleString (locale);
+
+	const_cast <X3DBasePtrArray <ValueType>*> (this) -> removeCloneCount (1);
+
+	return string;
+}
+
+template <class ValueType>
+std::string
+X3DBasePtrArray <ValueType>::toXMLString () const
+{
+	const_cast <X3DBasePtrArray <ValueType>*> (this) -> addCloneCount (1);
+
+	const auto string = X3DArrayField <ValueType>::toXMLString ();
+
+	const_cast <X3DBasePtrArray <ValueType>*> (this) -> removeCloneCount (1);
+
+	return string;
+}
+
+template <class ValueType>
+std::string
+X3DBasePtrArray <ValueType>::toJSONString () const
+{
+	const_cast <X3DBasePtrArray <ValueType>*> (this) -> addCloneCount (1);
+
+	const auto string = X3DArrayField <ValueType>::toJSONString ();
+
+	const_cast <X3DBasePtrArray <ValueType>*> (this) -> removeCloneCount (1);
+
+	return string;
 }
 
 ///  throws Error <INVALID_X3D>, Error <NOT_SUPPORTED>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>

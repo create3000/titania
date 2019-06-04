@@ -62,6 +62,19 @@ const JSClass MFNode::static_class = {
 };
 
 template <>
+const JSFunctionSpec MFNode::functions [ ] = {
+	JS_FN ("pop",          pop,          0, JSPROP_PERMANENT),
+	JS_FN ("push",         push,         0, JSPROP_PERMANENT),
+	JS_FN ("shift",        shift,        0, JSPROP_PERMANENT),
+	JS_FN ("splice",       splice,       2, JSPROP_PERMANENT),
+	JS_FN ("unshift",      unshift,      0, JSPROP_PERMANENT),
+	JS_FN ("toString",     toString,     0, JSPROP_PERMANENT),
+	JS_FN ("toVRMLString", toVRMLString, 0, JSPROP_PERMANENT),
+	JS_FN ("toXMLString",  toXMLString,  0, JSPROP_PERMANENT),
+	JS_FS_END
+};
+
+template <>
 bool
 MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 {
@@ -319,6 +332,48 @@ MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException <JSProto_Error> (cx, "%s .prototype .toString: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+bool
+MFNode::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .toVRMLString: wrong number of arguments.", getClass () -> name);
+
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <MFNode> (cx, args);
+
+		args .rval () .set (StringValue (cx, array -> toString ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .toVRMLString: %s.", getClass () -> name, error .what ());
+	}
+}
+
+template <>
+bool
+MFNode::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	try
+	{
+		if (argc not_eq 0)
+			return ThrowException <JSProto_Error> (cx, "%s .prototype .toXMLString: wrong number of arguments.", getClass () -> name);
+
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <MFNode> (cx, args);
+
+		args .rval () .set (StringValue (cx, array -> toXMLString ()));
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .toXMLString: %s.", getClass () -> name, error .what ());
 	}
 }
 

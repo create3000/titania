@@ -150,14 +150,17 @@ public:
 	toString () const;
 
 	///  Generates a string representation of this object with locale support.
+	virtual
 	std::string
 	toLocaleString (const std::locale & locale = std::locale ()) const;
 
 	///  Generates a string representation of this object in X3D XML Encoding.
+	virtual
 	std::string
 	toXMLString () const;
 
 	///  Generates a string representation of this object in X3D JSON Encoding.
+	virtual
 	std::string
 	toJSONString () const;
 

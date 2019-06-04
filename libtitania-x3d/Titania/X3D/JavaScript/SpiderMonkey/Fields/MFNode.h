@@ -63,6 +63,9 @@ namespace spidermonkey {
 using MFNode = X3DArrayFieldTemplate <SFNode, X3D::MFNode>;
 
 template <>
+const JSFunctionSpec MFNode::functions [ ];
+
+template <>
 constexpr
 ObjectType
 MFNode::getId ()
@@ -91,6 +94,14 @@ MFNode::unshift (JSContext* cx, unsigned argc, JS::Value* vp);
 template <>
 bool
 MFNode::toString (JSContext* cx, unsigned argc, JS::Value* vp);
+
+template <>
+bool
+MFNode::toVRMLString (JSContext* cx, unsigned argc, JS::Value* vp);
+
+template <>
+bool
+MFNode::toXMLString (JSContext* cx, unsigned argc, JS::Value* vp);
 
 } // spidermonkey
 } // X3D
