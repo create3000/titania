@@ -1,5 +1,0 @@
-Name: libtitania-ftgl
-Description: 
-Version: 0.3
-Libs: -L"/home/holger/Projekte/Titania/libtitania-ftgl/bin/Debug" -ltitania-ftgl
-Cflags: -I"/home/holger/Projekte/Titania/libtitania-ftgl/Titania/FTGL/Font" -I"/home/holger/Projekte/Titania/libtitania-ftgl/Titania/FTGL/Glyph" -I"/home/holger/Projekte/Titania/libtitania-ftgl/Titania/FTGL" -I"/home/holger/Projekte/Titania/libtitania-ftgl/Titania"
