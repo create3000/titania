@@ -44,7 +44,7 @@
       1024 MB RAM und eine Monitorauflösung von mindestens 1280 × 1024 Pixeln.
     </p>
   </description>
-  <update_contact>holger.seelig@gmail.com</update_contact>
+  <update_contact>holger.seelig@create3000.de</update_contact>
   <developer_name>Holger Seelig</developer_name>
   <url type="homepage">http://create3000.de/</url>
   <url type="help">http://create3000.de/titania/documentation/</url>
@@ -71,6 +71,7 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release date="2019-06-06" version="4.5.4"/>
     <release date="2019-05-29" version="4.5.3"/>
     <release date="2019-04-28" version="4.5.2"/>
   </releases>
