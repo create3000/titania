@@ -38,4 +38,3 @@ if (-d "$HOME/.config/Titania.O")
 	system "rm", "-r", "$HOME/.config/Titania";
 	system "mv", "$HOME/.config/Titania.O", "$HOME/.config/Titania";
 }
-

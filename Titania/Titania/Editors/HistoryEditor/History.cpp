@@ -72,10 +72,10 @@ History::History () :
 		const auto configdir    = Gio::File::create_for_path (config_dir ());
 
 		if (not configdir -> query_exists ())
-			configdir -> make_directory_with_parents (); 
+			configdir -> make_directory_with_parents ();
 
 		database .open (filename);
-	
+
 		database .query ("CREATE TABLE IF NOT EXISTS History ("
 		                 "id           INTEGER,"
 		                 "title        TEXT,"
@@ -91,48 +91,151 @@ History::History () :
 
 		if (not have_history)
 		{
-			setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Gears/gears.x3d");
-			setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Schacht/index.wrl");
-			setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Appartment/index.wrl");
-			setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/LogoPieces/index.x3d");
-	
-			setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/anatomy/anatomy.wrl");
-			setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/MovieTruck/stage/index.wrl");
-			setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/index.wrl");
-			setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Dolphin/index.wrl");
-			setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/info.wrl");
-			setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/buero.wrl");
-			setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/building.wrl");
-			setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/BIC/index.wrl");
-			setItem ("Jungle",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/jungle/jungle.wrl");
-			setItem ("Ripple",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/ripple.wrl");
-			setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/VRMLBanner/vrmlbanner.wrl");
-			setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/NIST-Logo/index.wrl");
-	
-			setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Mushrooms/index.wrl");
-			setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Rathaus/stage/index.x3d");
-			setItem ("Terrain",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Terrain/index.wrl");
-			setItem ("Approach",              "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Approach/stage/index.wrl");
-			setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/huey.wrl");
-			setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Cathedral/stage/index.wrl");
-			setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/LustForLife/stage/index.wrl");
-			setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Vattenfall/index.wrl");
-			setItem ("Foldup",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Compel/foldup.wrl");
-			setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Pong/index.wrl");
-			setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Arcadia/stage/index.wrl");
-			setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Astronomy/stage/astrnmy.wrl");
-			setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/soccer.wrl");
-			setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/ICTS/labyrinth.wrl");
-			setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Boxes/boxes.x3d");
-			setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/Library/1.0.3/Examples/Chomp/chomp.x3d");
-	
+			setItem ("BlendMode",                    "http://media.create3000.de/components/X_ITE/BlendMode/BlendMode.x3d");
+			setItem ("WaterQuality",                 "http://media.create3000.de/components/X3D/WaterQuality/WaterQuality.x3d");
+			setItem ("Vattenfall",                   "http://media.create3000.de/components/X3D/Vattenfall/Vattenfall.x3d");
+			setItem ("TreasureIsland",               "http://media.create3000.de/components/X3D/TreasureIsland/TreasureIsland.x3d");
+			setItem ("TikiWorld",                    "http://media.create3000.de/components/X3D/TikiWorld/TikiWorld.x3d");
+			setItem ("SugarSmack",                   "http://media.create3000.de/components/X3D/SugarSmack/SugarSmack.x3d");
+			setItem ("SmashingBoxes",                "http://media.create3000.de/components/X3D/SmashingBoxes/SmashingBoxes.x3d");
+			setItem ("SmartyBubbles",                "http://media.create3000.de/components/X3D/SmartyBubbles/SmartyBubbles.x3d");
+			setItem ("SlidingPuzzle",                "http://media.create3000.de/components/X3D/SlidingPuzzle/SlidingPuzzle.x3d");
+			setItem ("SecretLabyrinth",              "http://media.create3000.de/components/X3D/SecretLabyrinth/SecretLabyrinth.x3d");
+			setItem ("Pong",                         "http://media.create3000.de/components/X3D/Pong/Pong.x3d");
+			setItem ("MilkywayAndBeyond",            "http://media.create3000.de/components/X3D/MilkywayAndBeyond/MilkywayAndBeyond.x3d");
+			setItem ("MagicMushrooms",               "http://media.create3000.de/components/X3D/MagicMushrooms/MagicMushrooms.x3d");
+			setItem ("LustForLife",                  "http://media.create3000.de/components/X3D/LustForLife/LustForLife.x3d");
+			setItem ("LogoPieces",                   "http://media.create3000.de/components/X3D/LogoPieces/LogoPieces.x3d");
+			setItem ("FoldUp",                       "http://media.create3000.de/components/X3D/FoldUp/FoldUp.x3d");
+			setItem ("FlashingLights",               "http://media.create3000.de/components/X3D/FlashingLights/FlashingLights.x3d");
+			setItem ("Currencies",                   "http://media.create3000.de/components/X3D/Currencies/Currencies.x3d");
+			setItem ("CrazySpiral",                  "http://media.create3000.de/components/X3D/CrazySpiral/CrazySpiral.x3d");
+			setItem ("Circles",                      "http://media.create3000.de/components/X3D/Circles/Circles.x3d");
+			setItem ("Chomp",                        "http://media.create3000.de/components/X3D/Chomp/Chomp.x3d");
+			setItem ("BeyondGermany",                "http://media.create3000.de/components/X3D/BeyondGermany/BeyondGermany.x3d");
+			setItem ("BIC",                          "http://media.create3000.de/components/X3D/BIC/BIC.x3d");
+			setItem ("Astronomy",                    "http://media.create3000.de/components/X3D/Astronomy/Astronomy.x3d");
+			setItem ("Arcadia",                      "http://media.create3000.de/components/X3D/Arcadia/Arcadia.x3d");
+			setItem ("Approach",                     "http://media.create3000.de/components/X3D/Approach/Approach.x3d");
+			setItem ("Appartment",                   "http://media.create3000.de/components/X3D/Appartment/Appartment.x3d");
+			setItem ("TimeSensor",                   "http://media.create3000.de/components/Time/TimeSensor/TimeSensor.x3d");
+			setItem ("PixelTexture",                 "http://media.create3000.de/components/Texturing/PixelTexture/PixelTexture.x3d");
+			setItem ("MultiTexture",                 "http://media.create3000.de/components/Texturing/MultiTexture/MultiTexture.x3d");
+			setItem ("MovieTexture",                 "http://media.create3000.de/components/Texturing/MovieTexture/MovieTexture.x3d");
+			setItem ("ImageTexture",                 "http://media.create3000.de/components/Texturing/ImageTexture/ImageTexture.x3d");
+			setItem ("Text",                         "http://media.create3000.de/components/Text/Text/Text.x3d");
+			setItem ("FontStyle",                    "http://media.create3000.de/components/Text/FontStyle/FontStyle.x3d");
+			setItem ("AudioClip",                    "http://media.create3000.de/components/Sound/AudioClip/AudioClip.x3d");
+			setItem ("TwoSidedMaterial",             "http://media.create3000.de/components/Shape/TwoSidedMaterial/TwoSidedMaterial.x3d");
+			setItem ("Material",                     "http://media.create3000.de/components/Shape/Material/Material.x3d");
+			setItem ("LineProperties",               "http://media.create3000.de/components/Shape/LineProperties/LineProperties.x3d");
+			setItem ("FillProperties",               "http://media.create3000.de/components/Shape/FillProperties/FillProperties.x3d");
+			setItem ("Appearance",                   "http://media.create3000.de/components/Shape/Appearance/Appearance.x3d");
+			setItem ("ShaderPart",                   "http://media.create3000.de/components/Shaders/ShaderPart/ShaderPart.x3d");
+			setItem ("FloatVertexAttribute",         "http://media.create3000.de/components/Shaders/FloatVertexAttribute/FloatVertexAttribute.x3d");
+			setItem ("ComposedShader",               "http://media.create3000.de/components/Shaders/ComposedShader/ComposedShader.x3d");
+			setItem ("SliderJoint",                  "http://media.create3000.de/components/RigidBodyPhysics/SliderJoint/SliderJoint.x3d");
+			setItem ("SingleAxisHingeJoint",         "http://media.create3000.de/components/RigidBodyPhysics/SingleAxisHingeJoint/SingleAxisHingeJoint.x3d");
+			setItem ("RigidBodyCollection",          "http://media.create3000.de/components/RigidBodyPhysics/RigidBodyCollection/RigidBodyCollection.x3d");
+			setItem ("RigidBody",                    "http://media.create3000.de/components/RigidBodyPhysics/RigidBody/RigidBody.x3d");
+			setItem ("CollisionCollection",          "http://media.create3000.de/components/RigidBodyPhysics/CollisionCollection/CollisionCollection.x3d");
+			setItem ("CollidableShape",              "http://media.create3000.de/components/RigidBodyPhysics/CollidableShape/CollidableShape.x3d");
+			setItem ("BallJoint",                    "http://media.create3000.de/components/RigidBodyPhysics/BallJoint/BallJoint.x3d");
+			setItem ("PointSet",                     "http://media.create3000.de/components/Rendering/PointSet/PointSet.x3d");
+			setItem ("LineSet",                      "http://media.create3000.de/components/Rendering/LineSet/LineSet.x3d");
+			setItem ("IndexedTriangleSet",           "http://media.create3000.de/components/Rendering/IndexedTriangleSet/IndexedTriangleSet.x3d");
+			setItem ("IndexedTriangleFanSet",        "http://media.create3000.de/components/Rendering/IndexedTriangleFanSet/IndexedTriangleFanSet.x3d");
+			setItem ("IndexedLineSet",               "http://media.create3000.de/components/Rendering/IndexedLineSet/IndexedLineSet.x3d");
+			setItem ("Coordinate",                   "http://media.create3000.de/components/Rendering/Coordinate/Coordinate.x3d");
+			setItem ("ColorRGBA",                    "http://media.create3000.de/components/Rendering/ColorRGBA/ColorRGBA.x3d");
+			setItem ("Color",                        "http://media.create3000.de/components/Rendering/Color/Color.x3d");
+			setItem ("ClipPlane",                    "http://media.create3000.de/components/Rendering/ClipPlane/ClipPlane.x3d");
+			setItem ("PlaneSensor",                  "http://media.create3000.de/components/PointingDeviceSensor/PlaneSensor/PlaneSensor.x3d");
+			setItem ("CylinderSensor",               "http://media.create3000.de/components/PointingDeviceSensor/CylinderSensor/CylinderSensor.x3d");
+			setItem ("PrimitivePickSensor",          "http://media.create3000.de/components/Picking/PrimitivePickSensor/PrimitivePickSensor.x3d");
+			setItem ("PointPickSensor",              "http://media.create3000.de/components/Picking/PointPickSensor/PointPickSensor.x3d");
+			setItem ("LinePickSensor",               "http://media.create3000.de/components/Picking/LinePickSensor/LinePickSensor.x3d");
+			setItem ("WindPhysicsModel",             "http://media.create3000.de/components/ParticleSystems/WindPhysicsModel/WindPhysicsModel.x3d");
+			setItem ("VolumeEmitter",                "http://media.create3000.de/components/ParticleSystems/VolumeEmitter/VolumeEmitter.x3d");
+			setItem ("SurfaceEmitter",               "http://media.create3000.de/components/ParticleSystems/SurfaceEmitter/SurfaceEmitter.x3d");
+			setItem ("PolylineEmitter",              "http://media.create3000.de/components/ParticleSystems/PolylineEmitter/PolylineEmitter.x3d");
+			setItem ("PointEmitter",                 "http://media.create3000.de/components/ParticleSystems/PointEmitter/PointEmitter.x3d");
+			setItem ("ParticleSystem",               "http://media.create3000.de/components/ParticleSystems/ParticleSystem/ParticleSystem.x3d");
+			setItem ("ForcePhysicsModel",            "http://media.create3000.de/components/ParticleSystems/ForcePhysicsModel/ForcePhysicsModel.x3d");
+			setItem ("ExplosionEmitter",             "http://media.create3000.de/components/ParticleSystems/ExplosionEmitter/ExplosionEmitter.x3d");
+			setItem ("ConeEmitter",                  "http://media.create3000.de/components/ParticleSystems/ConeEmitter/ConeEmitter.x3d");
+			setItem ("LoadSensor",                   "http://media.create3000.de/components/Networking/LoadSensor/LoadSensor.x3d");
+			setItem ("Inline",                       "http://media.create3000.de/components/Networking/Inline/Inline.x3d");
+			setItem ("Anchor",                       "http://media.create3000.de/components/Networking/Anchor/Anchor.x3d");
+			setItem ("Viewpoint",                    "http://media.create3000.de/components/Navigation/Viewpoint/Viewpoint.x3d");
+			setItem ("OrthoViewpoint",               "http://media.create3000.de/components/Navigation/OrthoViewpoint/OrthoViewpoint.x3d");
+			setItem ("NavigationInfo",               "http://media.create3000.de/components/Navigation/NavigationInfo/NavigationInfo.x3d");
+			setItem ("LogarithmicDepthBuffer",       "http://media.create3000.de/components/Navigation/LogarithmicDepthBuffer/LogarithmicDepthBuffer.x3d");
+			setItem ("Collision",                    "http://media.create3000.de/components/Navigation/Collision/Collision.x3d");
+			setItem ("Billboard",                    "http://media.create3000.de/components/Navigation/Billboard/Billboard.x3d");
+			setItem ("NurbsSweptSurface",            "http://media.create3000.de/components/NURBS/NurbsSweptSurface/NurbsSweptSurface.x3d");
+			setItem ("NurbsPatchSurface",            "http://media.create3000.de/components/NURBS/NurbsPatchSurface/NurbsPatchSurface.x3d");
+			setItem ("NurbsCurve",                   "http://media.create3000.de/components/NURBS/NurbsCurve/NurbsCurve.x3d");
+			setItem ("SpotLight",                    "http://media.create3000.de/components/Lighting/SpotLight/SpotLight.x3d");
+			setItem ("Shadows",                      "http://media.create3000.de/components/Lighting/Shadows/Shadows.x3d");
+			setItem ("PointLight",                   "http://media.create3000.de/components/Lighting/PointLight/PointLight.x3d");
+			setItem ("DirectionalLight",             "http://media.create3000.de/components/Lighting/DirectionalLight/DirectionalLight.x3d");
+			setItem ("Viewport",                     "http://media.create3000.de/components/Layering/Viewport/Viewport.x3d");
+			setItem ("LayerSet",                     "http://media.create3000.de/components/Layering/LayerSet/LayerSet.x3d");
+			setItem ("StringSensor",                 "http://media.create3000.de/components/KeyDeviceSensor/StringSensor/StringSensor.x3d");
+			setItem ("KeySensor",                    "http://media.create3000.de/components/KeyDeviceSensor/KeySensor/KeySensor.x3d");
+			setItem ("SquadOrientationInterpolator", "http://media.create3000.de/components/Interpolation/SquadOrientationInterpolator/SquadOrientationInterpolator.x3d");
+			setItem ("SplineScalarInterpolator",     "http://media.create3000.de/components/Interpolation/SplineScalarInterpolator/SplineScalarInterpolator.x3d");
+			setItem ("ScalarInterpolator",           "http://media.create3000.de/components/Interpolation/ScalarInterpolator/ScalarInterpolator.x3d");
+			setItem ("PositionInterpolator2D",       "http://media.create3000.de/components/Interpolation/PositionInterpolator2D/PositionInterpolator2D.x3d");
+			setItem ("PositionInterpolator",         "http://media.create3000.de/components/Interpolation/PositionInterpolator/PositionInterpolator.x3d");
+			setItem ("OrientationInterpolator",      "http://media.create3000.de/components/Interpolation/OrientationInterpolator/OrientationInterpolator.x3d");
+			setItem ("CoordinateInterpolator",       "http://media.create3000.de/components/Interpolation/CoordinateInterpolator/CoordinateInterpolator.x3d");
+			setItem ("ColorInterpolator",            "http://media.create3000.de/components/Interpolation/ColorInterpolator/ColorInterpolator.x3d");
+			setItem ("HAnimHumanoid",                "http://media.create3000.de/components/H-Anim/HAnimHumanoid/HAnimHumanoid.x3d");
+			setItem ("Transform",                    "http://media.create3000.de/components/Grouping/Transform/Transform.x3d");
+			setItem ("Switch",                       "http://media.create3000.de/components/Grouping/Switch/Switch.x3d");
+			setItem ("Group",                        "http://media.create3000.de/components/Grouping/Group/Group.x3d");
+			setItem ("GeoViewpoint",                 "http://media.create3000.de/components/Geospatial/GeoViewpoint/GeoViewpoint.x3d");
+			setItem ("GeoLOD",                       "http://media.create3000.de/components/Geospatial/GeoLOD/GeoLOD.x3d");
+			setItem ("GeoElevationGrid",             "http://media.create3000.de/components/Geospatial/GeoElevationGrid/GeoElevationGrid.x3d");
+			setItem ("Sphere",                       "http://media.create3000.de/components/Geometry3D/Sphere/Sphere.x3d");
+			setItem ("IndexedFaceSet",               "http://media.create3000.de/components/Geometry3D/IndexedFaceSet/IndexedFaceSet.x3d");
+			setItem ("Extrusion",                    "http://media.create3000.de/components/Geometry3D/Extrusion/Extrusion.x3d");
+			setItem ("ElevationGrid",                "http://media.create3000.de/components/Geometry3D/ElevationGrid/ElevationGrid.x3d");
+			setItem ("Cylinder",                     "http://media.create3000.de/components/Geometry3D/Cylinder/Cylinder.x3d");
+			setItem ("Cone",                         "http://media.create3000.de/components/Geometry3D/Cone/Cone.x3d");
+			setItem ("Box",                          "http://media.create3000.de/components/Geometry3D/Box/Box.x3d");
+			setItem ("TriangleSet2D",                "http://media.create3000.de/components/Geometry2D/TriangleSet2D/TriangleSet2D.x3d");
+			setItem ("Rectangle2D",                  "http://media.create3000.de/components/Geometry2D/Rectangle2D/Rectangle2D.x3d");
+			setItem ("Polypoint2D",                  "http://media.create3000.de/components/Geometry2D/Polypoint2D/Polypoint2D.x3d");
+			setItem ("Polyline2D",                   "http://media.create3000.de/components/Geometry2D/Polyline2D/Polyline2D.x3d");
+			setItem ("Disk2D",                       "http://media.create3000.de/components/Geometry2D/Disk2D/Disk2D.x3d");
+			setItem ("Circle2D",                     "http://media.create3000.de/components/Geometry2D/Circle2D/Circle2D.x3d");
+			setItem ("ArcClose2D",                   "http://media.create3000.de/components/Geometry2D/ArcClose2D/ArcClose2D.x3d");
+			setItem ("Arc2D",                        "http://media.create3000.de/components/Geometry2D/Arc2D/Arc2D.x3d");
+			setItem ("ScalarChaser",                 "http://media.create3000.de/components/Followers/ScalarChaser/ScalarChaser.x3d");
+			setItem ("ColorDamper",                  "http://media.create3000.de/components/Followers/ColorDamper/ColorDamper.x3d");
+			setItem ("ColorChaser",                  "http://media.create3000.de/components/Followers/ColorChaser/ColorChaser.x3d");
+			setItem ("IntegerSequencer",             "http://media.create3000.de/components/EventUtilities/IntegerSequencer/IntegerSequencer.x3d");
+			setItem ("VisibilitySensor",             "http://media.create3000.de/components/EnvironmentalSensor/VisibilitySensor/VisibilitySensor.x3d");
+			setItem ("TransformSensor",              "http://media.create3000.de/components/EnvironmentalSensor/TransformSensor/TransformSensor.x3d");
+			setItem ("ProximitySensor",              "http://media.create3000.de/components/EnvironmentalSensor/ProximitySensor/ProximitySensor.x3d");
+			setItem ("TextureBackground",            "http://media.create3000.de/components/EnvironmentalEffects/TextureBackground/TextureBackground.x3d");
+			setItem ("LocalFog",                     "http://media.create3000.de/components/EnvironmentalEffects/LocalFog/LocalFog.x3d");
+			setItem ("Fog",                          "http://media.create3000.de/components/EnvironmentalEffects/Fog/Fog.x3d");
+			setItem ("Background",                   "http://media.create3000.de/components/EnvironmentalEffects/Background/Background.x3d");
+			setItem ("GeneratedCubeMapTexture",      "http://media.create3000.de/components/CubeMapTexturing/GeneratedCubeMapTexture/GeneratedCubeMapTexture.x3d");
+			setItem ("ComposedCubeMapTexture",       "http://media.create3000.de/components/CubeMapTexturing/ComposedCubeMapTexture/ComposedCubeMapTexture.x3d");
+			setItem ("QuadSet",                      "http://media.create3000.de/components/CADGeometry/QuadSet/QuadSet.x3d");
+
 			setItem ("about:date",  get_page ("about/date.x3dv"));
 			setItem ("about:gears", get_page ("about/gears.x3dv"));
 			setItem ("about:home",  get_page ("about/home.x3dv"));
 		}
-	
+
 		// Watch for changes
-	
+
 		connect ();
 	}
 	catch (const std::exception & error)
@@ -148,7 +251,7 @@ History::connect ()
 	// http://www.sqlite.org/c3ref/update_hook.html
 	//
 	//	void *sqlite3_update_hook (
-	//		sqlite3*, 
+	//		sqlite3*,
 	//		void(*)(void *,int ,char const *,char const *,sqlite3_int64),
 	//		void*
 	//	);
@@ -324,9 +427,9 @@ History::getItems (const size_t offset, const size_t size, const std::string & s
 		                                            "title, "
 		                                            "worldURL, "
 		                                            "(strftime('%s', lastAccess) || substr (lastAccess, 20)) AS lastAccess "
-		                                            "FROM History " + 
-		                                            where + " " + 
-		                                            order + " " + 
+		                                            "FROM History " +
+		                                            where + " " +
+		                                            order + " " +
 		                                            limit);
 
 		return items;
@@ -376,7 +479,7 @@ History::getSize () const
 		size_t size = 0;
 
 		std::istringstream isstream (database .query_array ("SELECT COUNT (*) FROM History") .at (0) .at (0));
-		
+
 		isstream >> size;
 
 		return size;
@@ -413,7 +516,7 @@ std::string
 History::getOrder (const Columns column, const SortOrder sortOrder) const
 {
 	std::string order;
-	
+
 	switch (column)
 	{
 		case TITLE:
@@ -477,7 +580,7 @@ History::~History ()
 		for (const auto item : getItems (0, 0))
 		{
 			const auto worldURL = basic::uri (item .at ("worldURL"));
-	
+
 			if (worldURL .is_local () and not Glib::file_test (worldURL .path (), Glib::FILE_TEST_EXISTS))
 			{
 				removeItem (item .at ("id"));
