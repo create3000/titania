@@ -87,7 +87,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
 	axonometricGridTool (new AxonometricGridTool (this)),
 	               keys (),
 	       accelerators (true)
-{ }  
+{ }
 
 void
 X3DBrowserWindow::initialize ()
@@ -116,9 +116,12 @@ X3DBrowserWindow::configure ()
 void
 X3DBrowserWindow::setAccelerators (const bool value)
 {
+	if (value == accelerators)
+		return;
+
 	accelerators = value;
 
-	if (value)
+	if (accelerators)
 		getWindow () .add_accel_group (getAccelGroup ());
 	else
 		getWindow () .remove_accel_group (getAccelGroup ());

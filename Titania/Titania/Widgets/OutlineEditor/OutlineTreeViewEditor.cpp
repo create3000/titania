@@ -162,7 +162,7 @@ OutlineTreeViewEditor::on_button_press_event (GdkEventButton* event)
 			if (select_field_value (event -> x, event -> y))
 				return true;
 
-			return Gtk::TreeView::on_button_press_event (event);
+			return X3DOutlineTreeView::on_button_press_event (event);
 		}
 		default:
 			break;
@@ -262,7 +262,7 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							return true;
 						}
 						catch (const std::exception & error)
-						{ 
+						{
 							__LOG__ << error .what () << std::endl;
 							break;
 						}
@@ -300,7 +300,7 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							return true;
 						}
 						catch (const std::exception & error)
-						{ 
+						{
 							__LOG__ << error .what () << std::endl;
 							break;
 						}
@@ -339,7 +339,7 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							return true;
 						}
 						catch (const std::exception & error)
-						{ 
+						{
 							__LOG__ << error .what () << std::endl;
 							break;
 						}
@@ -379,7 +379,7 @@ OutlineTreeViewEditor::on_query_tooltip (int x, int y, bool keyboard_tooltip, co
 							return true;
 						}
 						catch (const std::exception & error)
-						{ 
+						{
 							__LOG__ << error .what () << std::endl;
 							break;
 						}
@@ -426,7 +426,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 		{
 			if (field -> getUserData <UserData> () -> selected [OUTLINE_SPECIAL])
 				break;
-			
+
 			return false;
 		}
 		case OutlineIterType::ProtoDeclaration:
@@ -963,7 +963,7 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
 
-			if (not sfnode)   
+			if (not sfnode)
 				break;
 
 			if (sfnode -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
