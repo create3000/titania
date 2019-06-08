@@ -86,7 +86,7 @@ public:
 	load (const basic::uri & URL) final override;
 
 	X3D::MFNode
-	import (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep);
+	import (const X3D::X3DExecutionContextPtr & executionContext, const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep);
 
 	virtual
 	bool

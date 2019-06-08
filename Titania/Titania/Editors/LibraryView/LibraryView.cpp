@@ -139,7 +139,7 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 			case Gio::FILE_TYPE_SYMBOLIC_LINK:
 			{
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import From Library"));
-				const auto nodes    = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
+				const auto nodes    = getBrowserWindow () -> import (getCurrentContext (), { file -> get_uri () }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
@@ -166,7 +166,7 @@ LibraryView::on_row_expanded (const Gtk::TreeIter & iter, const Gtk::TreePath & 
 		const bool titania      = Gio::File::create_for_path (directory -> get_path () + "/.Titania/"      + basename) -> query_exists ();
 		const bool x_ite        = Gio::File::create_for_path (directory -> get_path () + "/.X_ITE/"        + basename) -> query_exists ();
 		const bool experimental = Gio::File::create_for_path (directory -> get_path () + "/.experimental/" + basename) -> query_exists ();
-	
+
 		#ifndef TITANIA_FEATURE
 		if (experimental and not (x_ite or titania))
 		{

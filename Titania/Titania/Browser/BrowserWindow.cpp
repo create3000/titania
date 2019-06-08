@@ -652,7 +652,7 @@ BrowserWindow::on_import_activated ()
 	if (not dialog -> run ())
 		return;
 
-	import ({ dialog -> getUrl () }, undoStep);
+	import (getCurrentContext (), { dialog -> getUrl () }, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -703,7 +703,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			else
 			{
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
-				const auto nodes    = import (uris, undoStep);
+				const auto nodes    = import (getCurrentContext (), uris, undoStep);
 
 				getSelection () -> setNodes (nodes, undoStep);
 				addUndoStep (undoStep);
@@ -2101,7 +2101,7 @@ BrowserWindow::on_primitive_clicked (const std::string & description, const std:
 	try
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (description);
-		const auto nodes    = getBrowserWindow () -> import ({ "file://" + find_data_file (path) }, undoStep);
+		const auto nodes    = getBrowserWindow () -> import (getCurrentContext (), { "file://" + find_data_file (path) }, undoStep);
 
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);

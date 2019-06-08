@@ -257,7 +257,7 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection_)
 				case X3D::X3DConstants::Collision:
 				{
 					const auto collisionNode = dynamic_cast <X3D::Collision*> (node .getValue ());
-			
+
 					if (selection .back () == collisionNode -> proxy ())
 					{
 						collisionNode -> setShowProxy (true);
@@ -267,7 +267,7 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection_)
 					const auto iter = std::find (collisionNode -> children () .begin (),
 					                             collisionNode -> children () .end (),
 					                             selection .back ());
-					
+
 					if (iter == collisionNode -> children () .end ())
 						break;
 
@@ -277,11 +277,11 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection_)
 				case X3D::X3DConstants::Switch:
 				{
 					const auto switchNode = dynamic_cast <X3D::Switch*> (node .getValue ());
-			
+
 					const auto iter = std::find (switchNode -> children () .begin (),
 					                             switchNode -> children () .end (),
 					                             selection .back ());
-			
+
 					if (iter == switchNode -> children () .end ())
 						break;
 
@@ -314,7 +314,7 @@ X3DBrowserEditor::load (const basic::uri & URL)
 }
 
 X3D::MFNode
-X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep)
+X3DBrowserEditor::import (const X3D::X3DExecutionContextPtr & executionContext, const std::vector <basic::uri> & url, const X3D::UndoStepPtr & undoStep)
 {
 	// Import into scene graph
 
@@ -329,22 +329,22 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 		try
 		{
 			const auto scene         = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
-			auto       importedNodes = X3D::X3DEditor::importScene (getCurrentContext (), scene, undoStep);
+			auto       importedNodes = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
 
 			// If more than one nodes create a parent Transform node.
-		
+
 			if (importedNodes .size () > 1)
 			{
-				const auto transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
-		
+				const auto transformNode = executionContext -> createNode <X3D::Transform> ();
+
 				transformNode -> children () = std::move (importedNodes);
-		
+
 				importedNodes .emplace_back (transformNode);
 			}
-		
+
 			// Add nodes to root nodes or layer children.
-		
-			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+
+			if (executionContext == getCurrentContext () and layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 			{
 				for (const auto & node : importedNodes)
 					X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
@@ -352,12 +352,12 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 			else
 			{
 				for (const auto & node : importedNodes)
-					X3D::X3DEditor::pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
+					X3D::X3DEditor::pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
 			}
 
 			// Bind bindables
 
-			magicImport .process (getCurrentContext (), importedNodes, scene, undoStep);
+			magicImport .process (executionContext, importedNodes, scene, undoStep);
 
 			nodes .append (std::move (importedNodes));
 		}
@@ -375,7 +375,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & url, const X3D::UndoS
 	{
 		const auto targetPosition = X3D::Vector3d (snapTarget -> position () .getValue ());
 		const auto targetNormal   = X3D::Vector3d (snapTarget -> normal () .getValue ());
-	
+
 		X3D::X3DEditor::moveNodesCenterToTarget (executionContext, nodes, targetPosition, targetNormal, X3D::Vector3d (), X3D::Vector3d (), true, undoStep);
 	}
 
@@ -637,7 +637,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 				X3D::X3DEditor::requestUpdateInstances (transform, nudgeUndoStep);
 			}
 
-			// 
+			//
 
 			getSelection () -> undoRestoreNodes (nudgeUndoStep);
 

@@ -89,6 +89,14 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getAddNodeListStore () const
+	{ return m_AddNodeListStore; }
+
+	const Glib::RefPtr <Gtk::EntryCompletion> &
+	getAddNodeCompletion () const
+	{ return m_AddNodeCompletion; }
+
 	Gtk::Menu &
 	getDragActionMenu () const
 	{ return *m_DragActionMenu; }
@@ -154,6 +162,18 @@ public:
 	{ return *m_ScrolledWindow; }
 
 	Gtk::Popover &
+	getAddNodePopover () const
+	{ return *m_AddNodePopover; }
+
+	Gtk::Entry &
+	getAddNodeEntry () const
+	{ return *m_AddNodeEntry; }
+
+	Gtk::Button &
+	getAddNodeButton () const
+	{ return *m_AddNodeButton; }
+
+	Gtk::Popover &
 	getRenamePopover () const
 	{ return *m_RenamePopover; }
 
@@ -172,6 +192,10 @@ public:
 	Gtk::Menu &
 	getContextMenu () const
 	{ return *m_ContextMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddNodeMenuItem () const
+	{ return *m_AddNodeMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getRenameMenuItem () const
@@ -420,6 +444,18 @@ public:
 	on_button_press_event (GdkEventButton* button_event) = 0;
 
 	virtual
+	bool
+	on_add_node_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_add_node_clicked () = 0;
+
+	virtual
+	void
+	on_add_node_activate () = 0;
+
+	virtual
 	void
 	on_rename_activate () = 0;
 
@@ -623,6 +659,8 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_AddNodeListStore;
+	Glib::RefPtr <Gtk::EntryCompletion> m_AddNodeCompletion;
 	Gtk::Menu* m_DragActionMenu;
 	Gtk::MenuItem* m_DragMoveMenuItem;
 	Gtk::MenuItem* m_DragCopyMenuItem;
@@ -639,11 +677,15 @@ private:
 	Gtk::Button* m_PreviousSceneButton;
 	Gtk::Button* m_NextSceneButton;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::Popover* m_AddNodePopover;
+	Gtk::Entry* m_AddNodeEntry;
+	Gtk::Button* m_AddNodeButton;
 	Gtk::Popover* m_RenamePopover;
 	Gtk::Box* m_NameBox;
 	Gtk::Entry* m_NameEntry;
 	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_ContextMenu;
+	Gtk::ImageMenuItem* m_AddNodeMenuItem;
 	Gtk::ImageMenuItem* m_RenameMenuItem;
 	Gtk::SeparatorMenuItem* m_CommonSeparator;
 	Gtk::ImageMenuItem* m_CutMenuItem;

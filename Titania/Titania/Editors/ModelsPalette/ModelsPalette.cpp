@@ -89,7 +89,7 @@ ModelsPalette::getObject (const basic::uri & URL)
 	{
 		const auto inlineNode = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
 		const auto transform  = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
-	
+
 		inlineNode -> checkLoadState () .addInterest (&ModelsPalette::set_loadState, this, inlineNode .getValue (), transform .getValue ());
 
 		inlineNode -> url ()     = { URL .str () };
@@ -110,7 +110,7 @@ ModelsPalette::set_loadState (X3D::Inline* const inlineNode,
 	switch (inlineNode -> checkLoadState ())
 	{
 		case X3D::COMPLETE_STATE:
-		{	
+		{
 			// Observe bbox changes of internal scene.
 
 			inlineNode -> getInternalScene () -> bbox_changed () .addInterest (&ModelsPalette::set_bbox, this, inlineNode, transform);
@@ -145,7 +145,7 @@ ModelsPalette::setTouchTime (const basic::uri & URL)
 	try
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import Model From Library"));
-		const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
+		const auto nodes    = getBrowserWindow () -> import (getCurrentContext (), { URL }, undoStep);
 
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);

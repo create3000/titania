@@ -359,7 +359,7 @@ ExternalTool::processOutput (const std::string & stdout)
 		else if (outputType == "APPEND_TO_CURRENT_SCENE")
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Scene", name .c_str ())));
-			const auto nodes    = browserWindow -> import ({ "data:" + File::getContentType (stdout) .first + "," + stdout }, undoStep);
+			const auto nodes    = browserWindow -> import (browserWindow -> getCurrentContext (), { "data:" + File::getContentType (stdout) .first + "," + stdout }, undoStep);
 
 			if (not nodes .empty ())
 			{
@@ -372,7 +372,7 @@ ExternalTool::processOutput (const std::string & stdout)
 		else if (outputType == "APPEND_TO_CURRENT_LAYER")
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Append Output From Tool »%s« To Current Layer", name .c_str ())));
-			const auto nodes    = browserWindow -> import ({ "data:" + File::getContentType (stdout) .first + "," + stdout }, undoStep);
+			const auto nodes    = browserWindow -> import (browserWindow -> getCurrentContext (), { "data:" + File::getContentType (stdout) .first + "," + stdout }, undoStep);
 
 			if (not nodes .empty ())
 			{

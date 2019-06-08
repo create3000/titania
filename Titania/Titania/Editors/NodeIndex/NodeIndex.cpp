@@ -118,9 +118,8 @@ NodeIndex::initialize ()
 
 	// Initialize SearchEntryCompletion:
 
-	for (const auto & pair : getCurrentBrowser () -> getSupportedNodes ())
+	for (const auto & [typeName, node] : getCurrentBrowser () -> getSupportedNodes ())
 	{
-		const auto node = pair .second;
 		const auto row  = getSearchListStore () -> append ();
 
 		row -> set_value (Search::TYPE_NAME, node -> getTypeName ());
@@ -149,7 +148,7 @@ NodeIndex::configure ()
 }
 
 void
-NodeIndex::on_map () 
+NodeIndex::on_map ()
 {
 	refreshBuffer        .addInterest (&NodeIndex::set_refresh,          this);
 	getCurrentContext () .addInterest (&NodeIndex::set_executionContext, this);
@@ -158,7 +157,7 @@ NodeIndex::on_map ()
 }
 
 void
-NodeIndex::on_unmap () 
+NodeIndex::on_unmap ()
 {
 	refreshBuffer        .removeInterest (&NodeIndex::set_refresh, this);
 	getCurrentContext () .removeInterest (&NodeIndex::set_executionContext, this);
@@ -258,22 +257,22 @@ NodeIndex::set_refresh ()
 			case ANIMATION_INDEX:
 			{
 				X3D::MFNode animations;
-	
+
 				for (const auto & basenode : getCurrentNodes ({ X3D::X3DConstants::Group }))
 				{
 					X3D::X3DPtr <X3D::X3DNode> node (basenode);
-	
+
 					if (node -> getMetaData <int32_t> ("/Animation/duration"))
 						animations .emplace_back (basenode);
 				}
-	
+
 				setNodes (std::move (animations));
 				break;
 			}
 			case PROTO_INDEX:
 			{
 				X3D::MFNode nodes;
-	
+
 				if (protoNode)
 				{
 					for (const auto & node : protoNode -> getInstances ())
@@ -282,7 +281,7 @@ NodeIndex::set_refresh ()
 							nodes .emplace_back (node);
 					}
 				}
-	
+
 				setNodes (std::move (nodes));
 				break;
 			}
@@ -509,7 +508,7 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 	{
 		if (node -> getExecutionContext () not_eq executionContext)
 			return true;
-		
+
 		for (const auto & type: basic::make_reverse_range (node -> getType ()))
 		{
 			if (types .count (type))
@@ -518,7 +517,7 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 				break;
 			}
 		}
-		
+
 		return true;
 	});
 
@@ -542,7 +541,7 @@ NodeIndex::getCurrentProtoNodes (X3D::X3DExecutionContext* const executionContex
 					break;
 				}
 			}
-			
+
 			return true;
 		});
 	}
@@ -629,9 +628,9 @@ NodeIndex::set_executionContext (const X3D::X3DExecutionContextPtr & value)
 		executionContext -> namedNodes_changed ()    .removeInterest (&NodeIndex::refresh, this);
 		executionContext -> importedNodes_changed () .removeInterest (&NodeIndex::refresh, this);
 		executionContext -> sceneGraph_changed ()    .removeInterest (&NodeIndex::refresh, this);
-	
+
 		X3D::X3DScenePtr scene (executionContext);
-	
+
 		if (scene)
 			scene -> exportedNodes_changed () .removeInterest (&NodeIndex::refresh, this);
 	}
@@ -642,7 +641,7 @@ NodeIndex::set_executionContext (const X3D::X3DExecutionContextPtr & value)
 	{
 		executionContext -> namedNodes_changed ()    .addInterest (&NodeIndex::refresh, this);
 		executionContext -> importedNodes_changed () .addInterest (&NodeIndex::refresh, this);
-	
+
 		if (indexType == TYPE_INDEX)
 			executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
@@ -663,9 +662,9 @@ NodeIndex::set_name (const size_t index)
 	try
 	{
 		Gtk::TreePath path;
-	
+
 		path .push_back (index);
-	
+
 		const auto iter = getListStore () -> get_iter (path);
 
 		iter -> set_value (Columns::NAME, getNameFromNode (nodes .at (index)));

@@ -82,6 +82,10 @@ public:
 
 private:
 
+	///  @name Member types
+
+	struct AddNode;
+
 	///  @name Construction
 
 	virtual
@@ -142,6 +146,18 @@ private:
 	getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene, const bool) const;
 
 	// Common
+
+	virtual
+	void
+	on_add_node_activate () final override;
+
+	virtual
+	bool
+	on_add_node_key_press_event (GdkEventKey* event) final override;
+
+	virtual
+	void
+	on_add_node_clicked () final override;
 
 	virtual
 	void

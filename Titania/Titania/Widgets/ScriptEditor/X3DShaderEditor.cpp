@@ -97,9 +97,9 @@ X3DShaderEditor::set_node (const X3D::SFNode & value)
 		if (node -> isType ({ X3D::X3DConstants::ShaderPart, X3D::X3DConstants::ShaderProgram }))
 		{
 			node -> getField <X3D::SFString> ("type") .addInterest (&X3DShaderEditor::set_type, this);
-	
+
 			set_type ();
-	
+
 			getShaderTypeButton () .set_visible (true);
 		}
 		else
@@ -172,7 +172,7 @@ X3DShaderEditor::on_new_shader_clicked (const std::string & typeName, const std:
 		if (executionContext)
 		{
 			const auto undoStep    = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Create New %s", typeName .c_str ())));
-			const auto nodes       = getBrowserWindow () -> import ({ URL }, undoStep);
+			const auto nodes       = getBrowserWindow () -> import (getCurrentContext (), { URL }, undoStep);
 			const auto shaderNodes = X3DEditorObject::getNodes <X3D::X3DShaderNode> (nodes, { X3D::X3DConstants::X3DShaderNode });
 
 			for (const auto & appearanceNode : appearanceNodes)
@@ -189,7 +189,7 @@ X3DShaderEditor::on_new_shader_clicked (const std::string & typeName, const std:
 		else
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Create New %s", typeName .c_str ())));
-			const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
+			const auto nodes    = getBrowserWindow () -> import (getCurrentContext (), { URL }, undoStep);
 
 			getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);

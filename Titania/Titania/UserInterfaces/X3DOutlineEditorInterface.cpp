@@ -78,6 +78,8 @@ void
 X3DOutlineEditorInterface::create ()
 {
 	// Get objects.
+	m_AddNodeListStore  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("AddNodeListStore"));
+	m_AddNodeCompletion = Glib::RefPtr <Gtk::EntryCompletion>::cast_dynamic (m_builder -> get_object ("AddNodeCompletion"));
 
 	// Get widgets.
 	m_builder -> get_widget ("DragActionMenu", m_DragActionMenu);
@@ -96,11 +98,15 @@ X3DOutlineEditorInterface::create ()
 	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);
 	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("AddNodePopover", m_AddNodePopover);
+	m_builder -> get_widget ("AddNodeEntry", m_AddNodeEntry);
+	m_builder -> get_widget ("AddNodeButton", m_AddNodeButton);
 	m_builder -> get_widget ("RenamePopover", m_RenamePopover);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
+	m_builder -> get_widget ("AddNodeMenuItem", m_AddNodeMenuItem);
 	m_builder -> get_widget ("RenameMenuItem", m_RenameMenuItem);
 	m_builder -> get_widget ("CommonSeparator", m_CommonSeparator);
 	m_builder -> get_widget ("CutMenuItem", m_CutMenuItem);
@@ -169,7 +175,14 @@ X3DOutlineEditorInterface::create ()
 	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
 	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_button_press_event));
 
-	// Connect object Gtk::ImageMenuItem with id 'RenameMenuItem'.
+	// Connect object Gtk::Entry with id 'AddNodeEntry'.
+	m_AddNodeEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_add_node_key_press_event), false);
+
+	// Connect object Gtk::Button with id 'AddNodeButton'.
+	m_AddNodeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_add_node_clicked));
+
+	// Connect object Gtk::ImageMenuItem with id 'AddNodeMenuItem'.
+	m_AddNodeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_add_node_activate));
 	m_RenameMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_rename_activate));
 	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_cut_activate));
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_copy_activate));

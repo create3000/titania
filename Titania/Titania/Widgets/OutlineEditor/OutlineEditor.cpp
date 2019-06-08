@@ -75,6 +75,11 @@
 namespace titania {
 namespace puck {
 
+struct OutlineEditor::AddNode
+{
+	static constexpr int32_t TYPE_NAME = 0;
+};
+
 OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("Widgets/OutlineEditor.glade")),
@@ -115,6 +120,15 @@ OutlineEditor::initialize ()
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
 
+	// Initialize AddNodeCompletion:
+
+	for (const auto & [typeName, node] : getCurrentBrowser () -> getSupportedNodes ())
+	{
+		const auto row = getAddNodeListStore () -> append ();
+
+		row -> set_value (AddNode::TYPE_NAME, node -> getTypeName ());
+	}
+
 	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getItem <bool> ("showExternProtos",         true));
 	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getItem <bool> ("showPrototypes",           true));
 	getShowImportedNodesMenuItem ()        .set_active (getConfig () -> getItem <bool> ("showImportedNodes",        true));
@@ -126,7 +140,7 @@ OutlineEditor::initialize ()
 	getColorizeTreeViewMenuItem () .set_active (getConfig () -> getItem <bool> ("colorizeTreeView", true));
 	getUseLocaleMenuItem ()        .set_active (getConfig () -> getItem <bool> ("useLocale",        true));
 
-	getCurrentScene ()   .addInterest (&OutlineEditor::set_scene, this);
+	getCurrentScene ()   .addInterest (&OutlineEditor::set_scene,            this);
 	getCurrentContext () .addInterest (&OutlineEditor::set_executionContext, this);
 
 	set_scene ();
@@ -419,6 +433,96 @@ OutlineEditor::getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene,
 		return scene -> isType ({ X3D::X3DConstants::ProtoDeclaration, X3D::X3DConstants::X3DPrototypeInstance })
 		       ? scene -> getTypeName () + " " + scene -> getName ()
 		       : scene -> getTypeName () + " »" + basename + "«";
+	}
+}
+
+void
+OutlineEditor::on_add_node_activate ()
+{
+	if (nodePath .empty ())
+	{
+		getAddNodePopover () .set_pointing_to (Gdk::Rectangle (0, getScrolledWindow () .get_height () / 2, 0, 0));
+	}
+	else
+	{
+		Gdk::Rectangle rectangle;
+
+		treeView -> get_cell_area (nodePath, *treeView -> getColumn (), rectangle);
+
+		getAddNodePopover () .set_pointing_to (rectangle);
+	}
+
+	getAddNodePopover () .popup ();
+	getAddNodeEntry ()   .grab_focus ();
+}
+
+bool
+OutlineEditor::on_add_node_key_press_event (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			on_add_node_clicked ();
+			return true;
+		}
+		case GDK_KEY_Escape:
+		{
+			getAddNodeEntry () .set_text ("");
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+OutlineEditor::on_add_node_clicked ()
+{
+	try
+	{
+		const auto & interface        = getCurrentBrowser () -> getSupportedNode (getAddNodeEntry () .get_text ());
+		const auto & componentName    = interface -> getComponent () .first;
+		auto         executionContext = X3D::X3DExecutionContextPtr (treeView -> get_model () -> get_execution_context ());
+
+		if (not nodePath .empty ())
+		{
+			const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+			switch (treeView -> get_data_type (iter))
+			{
+				case OutlineIterType::ProtoDeclaration:
+				case OutlineIterType::X3DExecutionContext:
+				{
+					executionContext = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+					break;
+				}
+				case OutlineIterType::X3DBaseNode:
+				{
+					const auto & node = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+					executionContext = node -> getExecutionContext ();
+					break;
+				}
+				default:
+					return;
+			}
+		}
+
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import From Library"));
+		const auto url      = "file://" + find_data_file ("Library/Components/" + componentName + "/" + interface -> getTypeName () + ".x3dv");
+		auto       nodes    = getBrowserWindow () -> import (executionContext, { url }, undoStep);
+
+		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
+
+		getAddNodePopover () .popdown ();
+	}
+	catch (const std::exception & error)
+	{
+		getAddNodeEntry () .error_bell ();
 	}
 }
 
@@ -1561,8 +1665,11 @@ OutlineEditor::selectNode (const double x, const double y)
 
 	// Common
 
-	getRenameMenuItem () .set_visible ((isExternProto or isPrototype or isNode) and inScene);
-	getCommonSeparator () .set_visible (getRenameMenuItem () .get_visible ());
+	getAddNodeMenuItem () .set_visible (((isPrototype or isNode) and inScene) or nodePath .empty ());
+	getRenameMenuItem ()  .set_visible ((isExternProto or isPrototype or isNode) and inScene);
+
+	getCommonSeparator () .set_visible (getAddNodeMenuItem () .get_visible () or
+	                                    getRenameMenuItem ()  .get_visible ());
 
 	// Clipboard
 

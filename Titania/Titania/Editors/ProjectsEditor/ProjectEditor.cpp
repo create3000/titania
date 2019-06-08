@@ -213,7 +213,7 @@ ProjectEditor::on_import_activate ()
 	{
 		const auto file     = getSelectedFiles () .front ();
 		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Import »%s« From Project"), file -> get_basename () .c_str ()));
-		const auto nodes    = getBrowserWindow () -> import ({ file -> get_uri () }, undoStep);
+		const auto nodes    = getBrowserWindow () -> import (getCurrentContext (), { file -> get_uri () }, undoStep);
 
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -268,11 +268,11 @@ ProjectEditor::on_create_file_clicked ()
 		// Create X3D file.
 
 		getCreateFilePopover () .popdown ();
-	
+
 		const auto command = std::vector <std::string> ({ Glib::find_program_in_path ("titania"), get_page ("about/new.x3dv"), "-e", file -> get_path () });
 
 		Glib::spawn_sync (Glib::get_current_dir (), command);
-	
+
 		on_file_changed (file, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
 
 		unselectAll ();
@@ -352,7 +352,7 @@ ProjectEditor::on_add_files_activate ()
 
 		if (response not_eq Gtk::RESPONSE_OK)
 			return;
-	
+
 		std::vector <Glib::RefPtr <Gio::File>> selection;
 
 		for (const auto & source : dialog -> getWindow () .get_files ())
@@ -419,13 +419,13 @@ ProjectEditor::on_create_folder_clicked ()
 	try
 	{
 		const auto folder = getNewFolder ();
-	
+
 		// Create folder.
-	
+
 		getCreateFolderPopover () .popdown ();
-	
+
 		folder -> make_directory_with_parents ();
-	
+
 		on_file_changed (folder, Glib::RefPtr <Gio::File> (), Gio::FILE_MONITOR_EVENT_CREATED);
 
 		unselectAll ();
@@ -485,10 +485,10 @@ ProjectEditor::on_add_existing_folder_activate ()
 	try
 	{
 		const auto dialog = createDialog <OpenFolderDialog> ("OpenFolderDialog");
-	
+
 		if (not dialog -> run ())
 			return;
-	
+
 		const auto source = dialog -> getWindow () .get_file ();
 		const auto folder = getSelectedFiles () .front ();
 
@@ -499,12 +499,12 @@ ProjectEditor::on_add_existing_folder_activate ()
 		getCopyFilesButton () .set_active ();
 
 		const auto response = getAddFilesDialog () .run ();
-	
+
 		getAddFilesDialog () .hide ();
-	
+
 		if (response not_eq Gtk::RESPONSE_OK)
 			return;
-	
+
 		const auto destination = folder -> get_child (source -> get_basename ());
 		auto       action      = TransferAction::COPY;
 
@@ -675,7 +675,7 @@ ProjectEditor::on_move_to_trash_activate (const Glib::RefPtr <Gio::File> & file)
 		if (getRootFolders () .count (file -> get_path ()))
 		{
 			const auto dialog = createDialog <MessageDialog> ("MessageDialog");
-	
+
 			dialog -> setType (Gtk::MESSAGE_QUESTION);
 			dialog -> setMessage ("You are about to remove a project folder to trash!");
 			dialog -> setText (basic::sprintf (_ ("Do you realy want to move project »%s« to trash?"), file -> get_basename () .c_str ()));
@@ -900,36 +900,36 @@ ProjectEditor::createOpenWithMenu (const Glib::RefPtr <Gio::File> & file)
 	try
 	{
 		// Clear »Open With ...« menu.
-	
+
 		for (const auto & widget : getOpenWithMenu () .get_children ())
 			getOpenWithMenu () .remove (*widget);
-	
+
 		// Populate »Open With ...« menu.
-	
+
 		const auto contentType  = file -> query_info () -> get_content_type ();
 		const auto appInfo      = file -> query_default_handler ();
 		const auto appInfos     = Gio::AppInfo::get_all_for_type (contentType);
 		auto       appInfoIndex = std::map <std::string, Glib::RefPtr <Gio::AppInfo>> ();
-	
+
 		// Create app info index.
-	
+
 		for (const auto & appInfo : appInfos)
 			appInfoIndex .emplace (appInfo -> get_display_name (), appInfo);
-	
+
 		appInfoIndex .erase (appInfo -> get_display_name ());
-	
+
 		// Create menu items.
-	
+
 		createOpenWithMenuItem (appInfo, file);
-	
+
 		if (not appInfoIndex .empty ())
 			getOpenWithMenu () .append (*Gtk::manage (new Gtk::SeparatorMenuItem ()));
-	
+
 		for (const auto & pair : appInfoIndex)
 			createOpenWithMenuItem (pair .second, file);
-	
+
 		// Show menu items.
-	
+
 		getOpenWithMenu ()     .show_all ();
 		getOpenWithMenuItem () .set_visible (appInfos .size ());
 	}
@@ -965,7 +965,7 @@ ProjectEditor::launchFile (const Glib::RefPtr <Gio::File> & file)
 	else
 	{
 		const auto appInfo = file -> query_default_handler ();
-	
+
 		if (appInfo)
 			appInfo -> launch (file);
 	}
@@ -978,19 +978,19 @@ ProjectEditor::canOpenFile (const Glib::RefPtr <Gio::File> & file)
 	{
 		const auto contentType = file -> query_info () -> get_content_type ();
 		const auto appInfos    = Gio::AppInfo::get_all_for_type (contentType);
-	
+
 		for (const auto & appInfo : appInfos)
 		{
 			if (appInfo -> get_executable () == "titania")
 				return true;
 		}
-	
+
 		for (const auto & goldenType : X3D::GoldenGate::getContentTypes ())
 		{
 			if (Gio::content_type_is_a (contentType, goldenType))
 				return true;
 		}
-	
+
 		return false;
 	}
 	catch (const Glib::Error & error)
