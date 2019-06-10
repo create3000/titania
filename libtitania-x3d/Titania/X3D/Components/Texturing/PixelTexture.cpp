@@ -223,9 +223,10 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 
 	ContextLock lock (texture2DNode -> getBrowser ());
 
-	int32_t       width      = 0;
-	int32_t       height     = 0;
-	const int32_t components = texture2DNode -> components ();
+	int32_t       width       = 0;
+	int32_t       height      = 0;
+	const bool    transparent = texture2DNode -> isTransparent ();
+	int32_t       components  = texture2DNode -> components ();
 	X3D::MFInt32  array;
 
 	glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
@@ -269,6 +270,8 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 			const auto stride    = 4;
 			const auto rowStride = width * stride;
 
+			components = transparent ? 2 : 1;
+
 			std::vector <uint8_t> image (width * height * stride);
 
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
@@ -283,9 +286,17 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 				{
 					const auto     p = first + (row + w);
 					const uint32_t r = *p;
-					const uint32_t a = *(p + 3);
 
-					array .emplace_back ((r << 8) | (a));
+					if (transparent)
+					{
+						const uint32_t a = *(p + 3);
+
+						array .emplace_back ((r << 8) | (a));
+					}
+					else
+					{
+						array .emplace_back (r);
+					}
 				}
 			}
 
@@ -325,8 +336,10 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 		{
 			// Copy image to array.
 
-			const int32_t stride    = components;
+			const int32_t stride    = 4;
 			const int32_t rowStride = width * stride;
+
+			components = transparent ? 4 : 3;
 
 			std::vector <uint8_t> image (width * height * stride);
 
@@ -344,9 +357,17 @@ PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNod
 					const uint32_t r = *p ++;
 					const uint32_t g = *p ++;
 					const uint32_t b = *p ++;
-					const uint32_t a = *p;
 
-					array .emplace_back ((r << 24) | (g << 16) | (b << 8) | (a));
+					if (transparent)
+					{
+						const uint32_t a = *p;
+
+						array .emplace_back ((r << 24) | (g << 16) | (b << 8) | (a));
+					}
+					else
+					{
+						array .emplace_back ((r << 16) | (g << 8) | (b));
+					}
 				}
 			}
 

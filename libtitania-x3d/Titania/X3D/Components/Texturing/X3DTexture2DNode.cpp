@@ -226,18 +226,18 @@ Glib::RefPtr <Gdk::Pixbuf>
 X3DTexture2DNode::getImage () const
 {
 	// Process image.
-	const auto width  = getWidth ();
-	const auto height = getHeight ();
-	const bool alpha  = not (components () % 2);
-	const auto data   = getImageData ();
+	const auto width       = getWidth ();
+	const auto height      = getHeight ();
+	const bool transparent = isTransparent ();
+	const auto data        = getImageData ();
 
 	return Gdk::Pixbuf::create_from_data (data .data (),
 		                                   Gdk::COLORSPACE_RGB,
-		                                   alpha,
+		                                   transparent,
 		                                   sizeof (uint8_t) * 8,
 		                                   width,
 		                                   height,
-		                                   width * (alpha ? 4 : 3)) -> flip (false);
+		                                   width * (transparent ? 4 : 3)) -> flip (false);
 }
 
 ///  throws Error <X3D::INVALID_NODE>, Error <X3D::INVALID_OPERATION_TIMING>, Error <X3D::DISPOSED>
@@ -246,8 +246,9 @@ X3DTexture2DNode::getImageData () const
 {
 	X3D::ContextLock lock (getBrowser ());
 
-	const auto width  = getWidth ();
-	const auto height = getHeight ();
+	const auto width       = getWidth ();
+	const auto height      = getHeight ();
+	const auto transparent = isTransparent ();
 
 	switch (components ())
 	{
@@ -278,13 +279,13 @@ X3DTexture2DNode::getImageData () const
 		{
 			// Copy image to array.
 
-			const auto stride = 4;
+			const auto stride = transparent ? 4 : 3;
 			const auto size   = width * height * stride;
 
 			std::vector <uint8_t> image (size);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
-			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glGetTexImage (GL_TEXTURE_2D, 0, transparent ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
 			for (size_t i = 0; i < size; i += stride)
@@ -301,7 +302,7 @@ X3DTexture2DNode::getImageData () const
 		{
 			// Copy image to array.
 
-			const auto stride = components ();
+			const auto stride = 3;
 			const auto size   = width * height * stride;
 
 			std::vector <uint8_t> image (size);
@@ -316,13 +317,13 @@ X3DTexture2DNode::getImageData () const
 		{
 			// Copy image to array.
 
-			const auto stride = components ();
+			const auto stride = transparent ? 4 : 3;
 			const auto size   = width * height * stride;
 
 			std::vector <uint8_t> image (size);
 
 			glBindTexture (GL_TEXTURE_2D, getTextureId ());
-			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glGetTexImage (GL_TEXTURE_2D, 0, transparent ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
 			return image;
