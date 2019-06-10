@@ -207,7 +207,7 @@ PixelTexture::update ()
 			break;
 	}
 
-	TexturePtr texture (new Texture (width, height, components, format, std::move (pixels)));
+	TexturePtr texture (new Texture (width, height, components, is_even (components), format, std::move (pixels)));
 
 	setTexture (texture);
 

@@ -56,18 +56,18 @@
 namespace titania {
 namespace X3D {
 
-Texture::Texture (size_t width, size_t height, size_t components, GLenum format, std::vector <uint8_t> && data) :
+Texture::Texture (size_t width, size_t height, size_t components, const bool transparent, const GLenum format, std::vector <uint8_t> && data) :
 	      width (width),
 	     height (height),
 	 components (components),
-	transparent (false),
+	transparent (transparent),
 	     format (format),
-	       data (data),
+	       data (std::move (data)),
 	     pixbuf ()
 { }
 
 Texture::Texture (const std::string & document, const bool process) :
-	Texture (0, 0, 0, GL_RGB, std::vector <uint8_t> ())
+	Texture (0, 0, 0, false, GL_RGB, std::vector <uint8_t> ())
 {
 	const auto stream = Gio::MemoryInputStream::create ();
 

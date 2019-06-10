@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	Texture (size_t width, size_t height, size_t components, GLenum format, std::vector <uint8_t> && data);
+	Texture (size_t width, size_t height, size_t components, const bool transparent, const GLenum format, std::vector <uint8_t> && data);
 
 	Texture (const std::string & document, const bool process = true);
 
