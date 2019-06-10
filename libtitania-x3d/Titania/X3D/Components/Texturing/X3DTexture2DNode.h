@@ -169,9 +169,10 @@ protected:
 
 	void
 	setImage (const GLenum internalFormat,
-	          const size_t comp,
 	          const GLint width,
 	          const GLint height,
+	          const size_t comp,
+	          const bool transparent,
 	          const GLenum format,
 	          const void* const data);
 

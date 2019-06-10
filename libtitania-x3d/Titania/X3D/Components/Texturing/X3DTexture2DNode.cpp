@@ -136,8 +136,9 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 		components () = texture -> getComponents ();
 
 		setImage (getInternalFormat (texture -> getComponents ()),
-		          texture -> getComponents (),
 		          texture -> getWidth (), texture -> getHeight (),
+		          texture -> getComponents (),
+					 texture -> getTransparent (),
 		          texture -> getFormat (),
 		          texture -> getData ());
 	}
@@ -156,14 +157,15 @@ X3DTexture2DNode::clearTexture ()
 	height ()     = 0;
 	components () = 0;
 
-	setImage (GL_RGB, 3, 1, 1, GL_RGB, data);
+	setImage (GL_RGB, 1, 1, 3, false, GL_RGB, data);
 }
 
 void
 X3DTexture2DNode::setImage (const GLenum internalFormat,
-                            const size_t comp,
                             const GLint width,
                             const GLint height,
+                            const size_t comp,
+									 const bool transparent,
                             const GLenum format,
                             const void* const data)
 {
@@ -172,7 +174,7 @@ X3DTexture2DNode::setImage (const GLenum internalFormat,
 	textureWidth  = width;
 	textureHeight = height;
 
-	setTransparent (math::is_even (comp));
+	setTransparent (transparent);
 	updateTextureProperties ();
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());

@@ -57,12 +57,13 @@ namespace titania {
 namespace X3D {
 
 Texture::Texture (size_t width, size_t height, size_t components, GLenum format, std::vector <uint8_t> && data) :
-	     width (width),
-	    height (height),
-	components (components),
-	    format (format),
-	      data (data),
-	    pixbuf ()
+	      width (width),
+	     height (height),
+	 components (components),
+	transparent (false),
+	     format (format),
+	       data (data),
+	     pixbuf ()
 { }
 
 Texture::Texture (const std::string & document, const bool process) :
@@ -104,6 +105,26 @@ Texture::Texture (const std::string & document, const bool process) :
 	{
 		for (size_t w = 0, ws = width * components; w < ws; ++ w)
 			data .emplace_back (pixels [h * rowstride + w]);
+	}
+
+	// Verify image transparency.
+
+	switch (components)
+	{
+		case 2:
+		case 4:
+		{
+			for (size_t i = components - 1, size = data .size (); i < size; i += components)
+			{
+				if (data [i] == 255)
+					continue;
+
+				transparent = true;
+				break;
+			}
+
+			break;
+		}
 	}
 }
 

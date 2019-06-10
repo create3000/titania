@@ -216,7 +216,7 @@ MovieTexture::on_buffer_changed ()
 				height () = frame -> height;
 
 			if (width () .getTainted () or height () .getTainted ())
-				setImage (GL_RGB, 3, width (), height (), GL_BGRA, frame -> image .data ());
+				setImage (GL_RGB, width (), height (), 3, false, GL_BGRA, frame -> image .data ());
 			else
 				updateImage (GL_BGRA, frame -> image .data ());
 		}

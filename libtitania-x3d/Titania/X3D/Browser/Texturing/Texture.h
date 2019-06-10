@@ -82,6 +82,10 @@ public:
 	getComponents () const
 	{ return components; }
 
+	bool
+	getTransparent () const
+	{ return transparent; }
+
 	GLenum
 	getFormat () const
 	{ return format; }
@@ -106,6 +110,7 @@ private:
 	size_t                     width;
 	size_t                     height;
 	size_t                     components;
+	bool                       transparent;
 	GLenum                     format;
 	std::vector <uint8_t>      data;
 	Glib::RefPtr <Gdk::Pixbuf> pixbuf;
