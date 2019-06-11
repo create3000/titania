@@ -207,6 +207,7 @@ FrameBuffer::readPixels (const GLenum format)
 			components = 3;
 			break;
 		case GL_RGBA:
+		case GL_BGRA:
 			components = 4;
 			break;
 	}
