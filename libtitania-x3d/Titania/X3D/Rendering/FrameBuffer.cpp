@@ -140,12 +140,12 @@ FrameBuffer::getDepth (const Matrix4d & projectionMatrix, const Vector4i & viewp
 	try
 	{
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
-	
+
 		const auto invProjectionMatrix = inverse (projectionMatrix);
 		double     winx                = 0;
 		double     winy                = 0;
 		double     winz                = std::numeric_limits <double>::infinity ();
-	
+
 		for (size_t wy = 0, i = 0; wy < height; ++ wy)
 		{
 		   for (size_t wx = 0; wx < width; ++ wx, ++ i)
@@ -193,7 +193,25 @@ FrameBuffer::unbind ()
 const std::vector <uint8_t> &
 FrameBuffer::readPixels (const GLenum format)
 {
-	pixels .resize (4 * width * height);
+	size_t components = 4;
+
+	switch (format)
+	{
+		case GL_LUMINANCE:
+			components = 1;
+			break;
+		case GL_LUMINANCE_ALPHA:
+			components = 2;
+			break;
+		case GL_RGB:
+			components = 3;
+			break;
+		case GL_RGBA:
+			components = 4;
+			break;
+	}
+
+	pixels .resize (components * width * height);
 
 	if (samples)
 	{
@@ -203,7 +221,7 @@ FrameBuffer::readPixels (const GLenum format)
 			glBindFramebuffer (GL_DRAW_FRAMEBUFFER, pixelBuffer -> id);
 			glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 			glBindFramebuffer (GL_FRAMEBUFFER, pixelBuffer -> id);
-	
+
 			glReadPixels (0, 0, width, height, format, GL_UNSIGNED_BYTE, pixels .data ());
 			glBindFramebuffer (GL_FRAMEBUFFER, id);
 		}

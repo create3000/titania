@@ -263,13 +263,13 @@ X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const b
 		frameBuffer .bind ();
 
 		getRenderBackground () .push (renderBackground);
-		getDisplayTools () .push (false);
+		getDisplayTools ()     .push (false);
 
 		reshape (Vector4i (0, 0, width, height));
 		update ();
 		reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 
-		frameBuffer .readPixels ();
+		frameBuffer .readPixels (alphaChannel ? GL_RGBA : GL_RGB);
 		frameBuffer .unbind ();
 
 		getDisplayTools ()     .pop ();
@@ -279,11 +279,11 @@ X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const b
 
 		auto image = Gdk::Pixbuf::create_from_data (frameBuffer .getPixels () .data (),
 		                                            Gdk::COLORSPACE_RGB,
-		                                            true,
+		                                            alphaChannel,
 		                                            sizeof (uint8_t) * 8,
 		                                            width,
 		                                            height,
-		                                            width * 4);
+		                                            width * (alphaChannel ? 4 : 3));
 
 		image = image -> flip (false);
 
