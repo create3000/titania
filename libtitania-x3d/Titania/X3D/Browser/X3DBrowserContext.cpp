@@ -269,11 +269,11 @@ X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const b
 		update ();
 		reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 
-		frameBuffer .readPixels (alphaChannel ? GL_RGBA : GL_RGB);
-		frameBuffer .unbind ();
-
 		getDisplayTools ()     .pop ();
 		getRenderBackground () .pop ();
+
+		frameBuffer .readPixels (alphaChannel ? GL_RGBA : GL_RGB);
+		frameBuffer .unbind ();
 
 		// Process image.
 
