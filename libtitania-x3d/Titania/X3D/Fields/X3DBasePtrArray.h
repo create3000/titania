@@ -483,6 +483,8 @@ X3DBasePtrArray <ValueType>::copy (X3DExecutionContext* const executionContext, 
 	}
 	else
 	{
+		field -> clear ();
+
 		for (const auto & value : *this)
 		{
 			if (value)

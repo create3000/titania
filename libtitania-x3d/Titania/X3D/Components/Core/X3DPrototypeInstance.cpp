@@ -209,7 +209,7 @@ X3DPrototypeInstance::construct ()
 				// If default value of protoField is different from field update default value for field.
 				*field = *protoField;
 			}
-			catch (const X3DError &)
+			catch (const X3DError & error)
 			{
 				// Definition exists in proto but does not exist in extern proto.
 
@@ -309,7 +309,7 @@ X3DPrototypeInstance::update ()
 					                                 inputRoute -> getSourceField (),
 					                                 inputRoute -> getDestinationNode (),
 					                                 inputRoute -> getDestinationField ()));
-					
+
 					inputRoute -> getExecutionContext () -> deleteRoute (inputRoute);
 				}
 
@@ -321,7 +321,7 @@ X3DPrototypeInstance::update ()
 					                                 outputRoute -> getSourceField (),
 					                                 outputRoute -> getDestinationNode (),
 					                                 outputRoute -> getDestinationField ()));
-					
+
 					outputRoute -> getExecutionContext () -> deleteRoute (outputRoute);
 				}
 
@@ -342,13 +342,13 @@ X3DPrototypeInstance::update ()
 								if (currentField -> getType () == X3DConstants::MFNode)
 								{
 									const auto mfnode = static_cast <MFNode*> (currentField);
-	
+
 									if (not mfnode -> empty ())
 										field -> set (mfnode -> front ());
-	
+
 									field -> isSet (true);
 								}
-	
+
 								break;
 							}
 							case X3DConstants::MFNode:
@@ -356,11 +356,11 @@ X3DPrototypeInstance::update ()
 								if (currentField -> getType () == X3DConstants::SFNode)
 								{
 									const auto sfnode = static_cast <SFNode*> (currentField);
-	
+
 									field -> set (MFNode ({ *sfnode }));
 									field -> isSet (true);
 								}
-	
+
 								break;
 							}
 							default:
@@ -416,9 +416,9 @@ X3DPrototypeInstance::initialize ()
 		else
 		{
 			ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
-		
+
 			metadata () = proto -> metadata ();
-		
+
 			importExternProtos (proto, COPY_OR_CLONE);
 			importProtos       (proto, COPY_OR_CLONE);
 			copyRootNodes      (proto, COPY_OR_CLONE);
@@ -447,7 +447,7 @@ X3DPrototypeInstance::initialize ()
 				if (not protoNode -> isExternproto ())
 				{
 					ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
-	
+
 					copyImportedNodes (proto, COPY_OR_CLONE);
 					copyRoutes (proto, COPY_OR_CLONE);
 				}
@@ -722,36 +722,36 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 		if (not fields .empty ())
 		{
 			FieldDefinitionArray references;
-	
+
 			for (const auto & field : fields)
 			{
 				// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
 				// for this field.
-	
+
 				bool mustOutputValue = false;
-	
+
 				if (Generator::ExecutionContext (ostream))
 				{
 					if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 					{
 						bool initializableReference = false;
-	
+
 						for (const auto & reference : field -> getReferences ())
 							initializableReference |= reference -> isInitializable ();
-	
+
 						if (not initializableReference)
 							mustOutputValue = true;
 					}
 				}
-	
+
 				// If we have no execution context we are not in a proto and must not generate IS references the same is true
 				// if the node is a shared node as the node does not belong to the execution context.
-	
+
 				if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream) or mustOutputValue)
 				{
 					if (mustOutputValue)
 						references .emplace_back (field);
-	
+
 					switch (field -> getType ())
 					{
 						case X3DConstants::MFNode:
@@ -763,7 +763,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 								<< "name='"
 								<< XMLEncode (field -> getName ())
 								<< "'";
-	
+
 							if (static_cast <MFNode*> (field) -> empty ())
 							{
 								ostream
@@ -787,13 +787,13 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 								Generator::PopContainerField (ostream);
 							}
-	
+
 							break;
 						}
 						case X3DConstants::SFNode:
 						{
 							static const SFNode null_;
-	
+
 							if (not field -> equals (null_))
 							{
 								Generator::PushContainerField (ostream, field);
@@ -816,10 +816,10 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 									<< Generator::TidyBreak;
 
 								Generator::PopContainerField (ostream);
-	
+
 								break;
 							}
-	
+
 							[[fallthrough]];
 						}
 						default:
@@ -837,7 +837,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 								<< "'"
 								<< "/>"
 								<< Generator::TidyBreak;
-	
+
 							break;
 						}
 					}
@@ -847,7 +847,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 					references .emplace_back (field);
 				}
 			}
-	
+
 			if (not references .empty ())
 			{
 				ostream
@@ -855,7 +855,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 					<< "<IS>"
 					<< Generator::TidyBreak
 					<< Generator::IncIndent;
-	
+
 				for (const auto & field : references)
 				{
 					for (const auto & reference : field -> getReferences ())
@@ -875,7 +875,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							<< Generator::TidyBreak;
 					}
 				}
-	
+
 				ostream
 					<< Generator::DecIndent
 					<< Generator::Indent
@@ -1050,38 +1050,38 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				<< '['
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
-	
+
 			FieldDefinitionArray outputFields;
-	
+
 			for (const auto & field : fields)
 			{
 				// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
 				// for this field.
-		
+
 				bool mustOutputValue = false;
-		
+
 				if (Generator::ExecutionContext (ostream))
 				{
 					if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 					{
 						bool initializableReference = false;
-		
+
 						for (const auto & reference : field -> getReferences ())
 							initializableReference |= reference -> isInitializable ();
-		
+
 						if (not initializableReference)
 							mustOutputValue = true;
 					}
 				}
-		
+
 				// If we have no execution context we are not in a proto and must not generate IS references the same is true
 				// if the node is a shared node as the node does not belong to the execution context.
-		
+
 				if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream) or mustOutputValue)
 				{
 					if (mustOutputValue)
 						references .emplace_back (field);
-	
+
 					outputFields .emplace_back (field);
 				}
 				else
@@ -1089,7 +1089,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					references .emplace_back (field);
 				}
 			}
-	
+
 			for (const auto & field : outputFields)
 			{
 				switch (field -> getType ())
@@ -1121,7 +1121,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 							<< Generator::DecIndent
 							<< Generator::Indent
 							<< '}';
-	
+
 						break;
 					}
 					case X3DConstants::SFNode:
@@ -1159,7 +1159,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 							<< Generator::DecIndent
 							<< Generator::Indent
 							<< '}';
-		
+
 						break;
 					}
 					default:
@@ -1189,11 +1189,11 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 							<< Generator::DecIndent
 							<< Generator::Indent
 							<< '}';
-	
+
 						break;
 					}
 				}
-	
+
 				if (field not_eq outputFields .back ())
 				{
 					ostream
@@ -1201,19 +1201,19 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 						<< Generator::TidyBreak;
 				}
 			}
-	
+
 			ostream
 				<< Generator::TidyBreak
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< ']';
-	
+
 			lastProperty = true;
 		}
-	
-	
+
+
 		// IS references
-	
+
 		if (not references .empty ())
 		{
 			if (lastProperty)
@@ -1222,7 +1222,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					<< ','
 					<< Generator::TidyBreak;
 			}
-	
+
 			ostream
 				<< Generator::Indent
 				<< '"'
@@ -1242,7 +1242,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				<< '['
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
-	
+
 			for (const auto & field : references)
 			{
 				for (const auto & reference : field -> getReferences ())
@@ -1252,7 +1252,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 						<< '{'
 						<< Generator::TidyBreak
 						<< Generator::IncIndent;
-	
+
 					ostream
 						<< Generator::Indent
 						<< '"'
@@ -1263,7 +1263,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 						<< SFString (field -> getName ())
 						<< ','
 						<< Generator::TidyBreak;
-	
+
 					ostream
 						<< Generator::Indent
 						<< '"'
@@ -1273,19 +1273,19 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 						<< Generator::TidySpace
 						<< SFString (reference -> getName ())
 						<< Generator::TidyBreak;
-	
+
 					ostream
 						<< Generator::DecIndent
 						<< Generator::Indent
 						<< '}';
-	
+
 					if (field == references .back () and reference == *--field -> getReferences () .end ())
 						;
 					else
 					{
 						ostream << ',';
 					}
-	
+
 					ostream << Generator::TidyBreak;
 				}
 			}
