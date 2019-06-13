@@ -51,6 +51,7 @@
 #include "X3DFontStyleNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../InputOutput/FileLoader.h"
 
 namespace titania {
 namespace X3D {
@@ -145,7 +146,7 @@ X3DFontStyleNode::createFont () const
 		for (const auto & familyName : family ())
 		{
 			const auto font = createFont (familyName .empty () ? "SERIF" : familyName, isExactMatch);
-	
+
 			if (isExactMatch)
 				return font;
 		}
@@ -168,35 +169,31 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 
 	const auto iter       = defaultFonts .find (rawFamilyName);
 	const auto familyName = iter == defaultFonts .end () ? rawFamilyName .raw () : iter -> second;
-	const auto uri        = getExecutionContext () -> getWorldURL () .transform (familyName);
-	const auto file       = Gio::File::create_for_uri (uri);
 
 	try
 	{
 		if (tempfile and tempfile -> query_exists ())
 			tempfile -> remove ();
 
-		if (file -> query_exists ())
-		{
-			const auto  extension       = uri .extension ();
-			std::string tempFilename = "/tmp/titania-XXXXXX" + extension;
+		const auto  fontData     = FileLoader (getExecutionContext ()) .loadDocument (familyName);
+		const auto  uri          = basic::uri (familyName);
+		const auto  extension    = uri .extension ();
+		std::string tempFilename = "/tmp/titania-XXXXXX" + extension;
 
-			::close (Glib::mkstemp (tempFilename));
+		::close (Glib::mkstemp (tempFilename));
 
-			const_cast <X3DFontStyleNode*> (this) -> tempfile = Gio::File::create_for_path (tempFilename);
+		const_cast <X3DFontStyleNode*> (this) -> tempfile = Gio::File::create_for_path (tempFilename);
 
-			file -> copy (tempfile, Gio::FILE_COPY_OVERWRITE);
-	
-			if (Glib::file_test (uri .path (), Glib::FILE_TEST_EXISTS))
-			{
-				isExactMatch = true;
-	
-				Font font;
-				font .setFilename (tempFilename);
-				font .substitute ();
-				return font;
-			}
-		}
+		std::ofstream ostream (tempFilename);
+
+		ostream << fontData;
+
+		isExactMatch = true;
+
+		Font font;
+		font .setFilename (tempFilename);
+		font .substitute ();
+		return font;
 	}
 	catch (const Glib::Exception & error)
 	{
