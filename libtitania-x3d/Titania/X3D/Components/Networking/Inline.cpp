@@ -203,20 +203,20 @@ Inline::requestImmediateLoad ()
 	{
 		if (not getBrowser () -> getLoadUrlObjects ())
 			return;
-	
+
 		if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 			return;
-	
+
 		if (future)
 		{
 			future -> wait ();
 			return;
 		}
-	
+
 		setLoadState (IN_PROGRESS_STATE);
-	
+
 		FileLoader loader (getExecutionContext ());
-	
+
 		try
 		{
 			auto scene = loader .createX3DFromURL (url ());
@@ -228,7 +228,7 @@ Inline::requestImmediateLoad ()
 		catch (const X3DError & error)
 		{
 			getBrowser () -> getConsole () -> error (error .what (), "\n");
-	
+
 			for (const auto & string : loader .getUrlError ())
 				getBrowser () -> getConsole () -> error (string .raw (), "\n");
 
@@ -318,7 +318,7 @@ Inline::set_live ()
 	if (checkLoadState () == COMPLETE_STATE)
 	{
 		const bool value = getExecutionContext () -> isLive () and isLive ();
-		
+
 		if (value not_eq scene -> isLive ())
 			scene -> isLive () = value;
 	}

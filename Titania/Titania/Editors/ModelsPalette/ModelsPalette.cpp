@@ -105,7 +105,7 @@ ModelsPalette::getObject (const basic::uri & URL)
 
 void
 ModelsPalette::set_loadState (X3D::Inline* const inlineNode,
-                                       X3D::Transform* const transform)
+                              X3D::Transform* const transform)
 {
 	switch (inlineNode -> checkLoadState ())
 	{
@@ -126,11 +126,11 @@ ModelsPalette::set_loadState (X3D::Inline* const inlineNode,
 
 void
 ModelsPalette::set_bbox (X3D::Inline* const inlineNode,
-                                  X3D::Transform* const transform)
+                         X3D::Transform* const transform)
 {
 	// Center and scale Inline depending on bbox in palette.
 
-	const auto bbox   = inlineNode -> getBBox ();
+	const auto bbox   = X3D::X3DBoundedObject::getBBox (inlineNode -> getInternalScene () -> getRootNodes ());
 	const auto size   = bbox .size ();
 	const auto center = bbox .center ();
 	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / maximum_norm (size);

@@ -337,6 +337,8 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 
 	set_cameraObjects ();
 	set_pickableObjects ();
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void
@@ -458,6 +460,8 @@ X3DGroupingNode::remove (const MFNode & children)
 
 	set_cameraObjects ();
 	set_pickableObjects ();
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void
