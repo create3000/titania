@@ -1,0 +1,428 @@
+#X3D V3.3 utf8 Titania V3.0.4
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Sun, 19 Feb 2017 13:26:31 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
+META "icon" "../../ui/icons/icon-bw.svg"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
+META "modified" "Mon, 17 Jul 2017 05:19:59 GMT"
+META "title" "about:home"
+
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
+]
+"library/Rotor.x3dv"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0.5
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+          DEF panels MetadataString {
+            name "panels"
+            reference "http://titania.create3000.de"
+            value [
+              "BROWSER_PANEL",
+              "BROWSER_PANEL",
+              "RENDER_PANEL",
+              "BROWSER_PANEL"
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF RenderPanel MetadataSet {
+        name "RenderPanel"
+        reference "http://titania.create3000.de"
+        value [
+          DEF filename MetadataString {
+            name "filename"
+            reference "http://titania.create3000.de"
+            value [
+              "",
+              "",
+              "file:///home/holger/Schreibtisch/home.mp4",
+              ""
+            ]
+          }
+          DEF codec MetadataString {
+            name "codec"
+            reference "http://titania.create3000.de"
+            value [
+              "",
+              "",
+              "PNG",
+              ""
+            ]
+          }
+          DEF duration MetadataInteger {
+            name "duration"
+            reference "http://titania.create3000.de"
+            value [
+              -1,
+              -1,
+              1800,
+              -1
+            ]
+          }
+          DEF frameRate MetadataInteger {
+            name "frameRate"
+            reference "http://titania.create3000.de"
+            value [
+              -1,
+              -1,
+              30,
+              -1
+            ]
+          }
+          DEF width MetadataInteger {
+            name "width"
+            reference "http://titania.create3000.de"
+            value [
+              -1,
+              -1,
+              1024,
+              -1
+            ]
+          }
+          DEF height MetadataInteger {
+            name "height"
+            reference "http://titania.create3000.de"
+            value [
+              -1,
+              -1,
+              576,
+              -1
+            ]
+          }
+          DEF antialiasing MetadataInteger {
+            name "antialiasing"
+            reference "http://titania.create3000.de"
+            value [
+              -1,
+              -1,
+              4,
+              -1
+            ]
+          }
+        ]
+      }
+      DEF BrowserPanel MetadataSet {
+        name "BrowserPanel"
+        reference "http://titania.create3000.de"
+        value [
+          DEF viewpoints MetadataSet {
+            name "viewpoints"
+            reference "http://titania.create3000.de"
+            value [
+              DEF FrontViewpoint MetadataSet {
+                name "FrontViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_1 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      10.8660253882408
+                    ]
+                  }
+                  DEF orientation_1 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                  DEF centerOfRotation_1 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 0.181865334510803
+                  }
+                ]
+              }
+              DEF PerspectiveViewpoint MetadataSet {
+                name "PerspectiveViewpoint"
+                reference "http://titania.create3000.de"
+                value [
+                  DEF position_2 MetadataDouble {
+                    name "position"
+                    reference "http://titania.create3000.de"
+                    value [
+                      1.04538297653198,
+                      1.4783935546875,
+                      1.04538297653198
+                    ]
+                  }
+                  DEF orientation_2 MetadataDouble {
+                    name "orientation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0.678598156250032,
+                      -0.678598556661039,
+                      -0.281084580209608,
+                      5.18712872208587
+                    ]
+                  }
+                  DEF centerOfRotation_2 MetadataDouble {
+                    name "centerOfRotation"
+                    reference "http://titania.create3000.de"
+                    value [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                  DEF fieldOfViewScale_1 MetadataDouble {
+                    name "fieldOfViewScale"
+                    reference "http://titania.create3000.de"
+                    value 1
+                  }
+                ]
+              }
+            ]
+          }
+          DEF type_1 MetadataString {
+            name "type"
+            reference "http://titania.create3000.de"
+            value [
+              "",
+              "",
+              "",
+              "PERSPECTIVE_VIEW"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "home"
+}
+
+DEF NavigationInfo_1 NavigationInfo {
+  type "NONE"
+}
+
+Transform {
+  rotation -0.999999999993254 -3.67320512848233e-06 8.16034767383677e-19 1.5707963267949
+  children DEF Radial Background {
+    skyAngle 0.671487
+    skyColor [
+      0.408 0.408 0.408,
+      0.285 0.285 0.285
+    ]
+  }
+}
+
+DEF Home Viewpoint {
+  description "Home"
+  position 0 0 0.5
+}
+
+DEF Fastener Rotor {
+  cycleInterval 61
+  axis 0 0 -1
+  loop TRUE
+}
+
+DEF Slower Rotor {
+  cycleInterval 67
+  loop TRUE
+}
+
+DEF _1 TimeSensor {
+  cycleInterval 40
+  startTime 1500268793.08567
+}
+
+DEF _2 ScalarInterpolator {
+  key [
+    0,
+    0.2,
+    0.25,
+    0.35,
+    1
+  ]
+  keyValue [
+    1,
+    0,
+    0,
+    1,
+    1
+  ]
+}
+
+DEF _3 PositionInterpolator {
+  key [
+    0,
+    0.35,
+    1
+  ]
+  keyValue [
+    0 0 0.5,
+    0 0 0.5,
+    0 0 34
+  ]
+}
+
+DEF Titania_1 Transform {
+  children Shape {
+    appearance Appearance {
+      material DEF _4 Material {
+        diffuseColor 0 0 0
+        transparency 0.193045
+      }
+    }
+    geometry Text {
+      string "Titania"
+      fontStyle FontStyle {
+        family [
+          "../../fonts/pt-sans/PTN77F.ttf",
+          "sans"
+        ]
+        size 0.1
+        justify [
+          "MIDDLE",
+          "MIDDLE"
+        ]
+      }
+    }
+  }
+}
+
+DEF Small Transform {
+  rotation 0 0 -1 0.741365780426241
+  scale 0.222222 0.222222 1
+  children DEF loops Inline {
+    url "library/red.orange.yellow.x3dv"
+  }
+}
+
+DEF Medium Transform {
+  children USE loops
+}
+
+DEF Large Transform {
+  rotation 0 0 1 0.674974812918815
+  scale 4.5 4.5 1
+  children USE loops
+}
+
+DEF _5 LoadSensor {
+  watchList USE loops
+}
+
+Script {
+  url "ecmascript:
+function initialize ()
+{
+	Browser .setBrowserOption ('Dashboard', false);
+}
+"
+}
+
+ROUTE Fastener.rotation_changed TO Small.set_rotation
+ROUTE Slower.rotation_changed TO Large.set_rotation
+ROUTE _2.value_changed TO _4.set_transparency
+ROUTE _3.value_changed TO Home.set_position
+ROUTE _1.fraction_changed TO _2.set_fraction
+ROUTE _1.fraction_changed TO _3.set_fraction
+ROUTE _5.loadTime TO _1.set_startTime
