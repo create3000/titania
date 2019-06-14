@@ -10,7 +10,7 @@ META "created" "Fri, 14 Jun 2019 09:09:33 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.6, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Fri, 14 Jun 2019 10:02:30 GMT"
+META "modified" "Fri, 14 Jun 2019 19:39:31 GMT"
 
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
@@ -45,9 +45,9 @@ PROTO Word [
       geometry Text {
         string IS string
         solid TRUE
-        fontStyle FontStyle {
+        fontStyle DEF _1 FontStyle {
           family [
-            "../../fonts/pt-sans/PTN77F.ttf",
+            "../../fonts/audiowide/Audiowide-Regular.ttf",
             "SANS"
           ]
           size IS size
@@ -60,7 +60,7 @@ PROTO Word [
     }
   }
 
-  DEF _1 TimeSensor {
+  DEF _2 TimeSensor {
     loop TRUE
   }
 
@@ -83,7 +83,7 @@ function set_time (value, time)
 }"
   }
 
-  ROUTE _1.time TO WordScript.set_time
+  ROUTE _2.time TO WordScript.set_time
   ROUTE WordScript.translation_changed TO Text.set_translation
 }
 
@@ -104,7 +104,7 @@ WorldInfo {
       DEF Grid MetadataSet {
         name "Grid"
         reference "http://titania.create3000.de"
-        value DEF enabled_2 MetadataBoolean {
+        value DEF enabled_3 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value FALSE
@@ -122,6 +122,7 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value NULL
           }
         ]
       }
@@ -129,7 +130,7 @@ WorldInfo {
         name "BrowserPanel"
         reference "http://titania.create3000.de"
         value [
-          DEF type_3 MetadataString {
+          DEF type_4 MetadataString {
             name "type"
             reference "http://titania.create3000.de"
             value [
@@ -147,7 +148,7 @@ WorldInfo {
                 name "PerspectiveViewpoint"
                 reference "http://titania.create3000.de"
                 value [
-                  DEF position_4 MetadataDouble {
+                  DEF position_5 MetadataDouble {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
@@ -156,7 +157,7 @@ WorldInfo {
                       13.8524446487427
                     ]
                   }
-                  DEF orientation_5 MetadataDouble {
+                  DEF orientation_6 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
@@ -166,7 +167,7 @@ WorldInfo {
                       0.568941727555854
                     ]
                   }
-                  DEF centerOfRotation_6 MetadataDouble {
+                  DEF centerOfRotation_7 MetadataDouble {
                     name "centerOfRotation"
                     reference "http://titania.create3000.de"
                     value [
@@ -186,7 +187,7 @@ WorldInfo {
                 name "TopViewpoint"
                 reference "http://titania.create3000.de"
                 value [
-                  DEF position_7 MetadataDouble {
+                  DEF position_8 MetadataDouble {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
@@ -195,7 +196,7 @@ WorldInfo {
                       0
                     ]
                   }
-                  DEF orientation_8 MetadataDouble {
+                  DEF orientation_9 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
@@ -205,7 +206,7 @@ WorldInfo {
                       4.71238898038469
                     ]
                   }
-                  DEF centerOfRotation_9 MetadataDouble {
+                  DEF centerOfRotation_10 MetadataDouble {
                     name "centerOfRotation"
                     reference "http://titania.create3000.de"
                     value [
@@ -214,7 +215,7 @@ WorldInfo {
                       0.0937320149966475
                     ]
                   }
-                  DEF fieldOfViewScale_10 MetadataDouble {
+                  DEF fieldOfViewScale_11 MetadataDouble {
                     name "fieldOfViewScale"
                     reference "http://titania.create3000.de"
                     value 1.21023944190259
@@ -225,7 +226,7 @@ WorldInfo {
                 name "FrontViewpoint"
                 reference "http://titania.create3000.de"
                 value [
-                  DEF position_11 MetadataDouble {
+                  DEF position_12 MetadataDouble {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
@@ -234,7 +235,7 @@ WorldInfo {
                       10000
                     ]
                   }
-                  DEF orientation_12 MetadataDouble {
+                  DEF orientation_13 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
@@ -244,7 +245,7 @@ WorldInfo {
                       0
                     ]
                   }
-                  DEF centerOfRotation_13 MetadataDouble {
+                  DEF centerOfRotation_14 MetadataDouble {
                     name "centerOfRotation"
                     reference "http://titania.create3000.de"
                     value [
@@ -253,7 +254,7 @@ WorldInfo {
                       0
                     ]
                   }
-                  DEF fieldOfViewScale_14 MetadataDouble {
+                  DEF fieldOfViewScale_15 MetadataDouble {
                     name "fieldOfViewScale"
                     reference "http://titania.create3000.de"
                     value 1.212467484375
@@ -297,7 +298,7 @@ NavigationInfo {
   type "NONE"
 }
 
-DEF _15 Viewpoint {
+Viewpoint {
   position 0 0 11
 }
 
@@ -383,7 +384,7 @@ DEF Words Group {
 
 DEF Logo Transform {
   translation -8.7184 3.55616 -1
-  rotation 9.89429134395502e-13 -3.67320550329189e-06 0.999999999993276 0.100187003509434
+  rotation -5.86304223936953e-13 3.67320554070332e-06 -0.999999999993254 4.03141372456707
   scale 1.24197 1.24197 1.24197
   scaleOrientation -5.32605534376168e-08 -2.65945631683307e-06 0.999999999996462 3.926990907819
   center 5.49817 -5.84809 0
