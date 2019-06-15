@@ -5,7 +5,12 @@ use strict;
 use warnings;
 use v5.10.0;
 
+use Getopt::Long;
 use File::Basename qw (dirname);
+
+my $firstTime = 0;
+
+GetOptions ("first-time" => \$firstTime);
 
 my $HOME         = $ENV{HOME};
 my $PROJECT_DIR  = dirname $0;
@@ -13,7 +18,7 @@ my $SOLUTION_DIR = "$PROJECT_DIR/../";
 
 my $min = `date +'%M'`; chomp $min;
 
-if (($min > 16 and $min < 20) or 0)
+if (($min > 16 and $min < 20) or $firstTime)
 {
 	unless (-e "$HOME/.config/Titania.O")
 	{
