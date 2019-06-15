@@ -50,7 +50,6 @@ sub commit
 	system "git", "commit", "-am", "Published version $VERSION";
 	system "git", "push";
 	system "git", "push", "origin";
-	system "git", "push", "github";
 }
 
 sub publish
@@ -59,11 +58,9 @@ sub publish
 
 	system "git", "tag", "--delete", "$version";
 	system "git", "push", "--delete", "origin", "$version";
-	system "git", "push", "--delete", "github", "$version";
 
 	system "git", "tag", "$version";
 	system "git", "push", "origin", "--tags";
-	system "git", "push", "github", "--tags";
 }
 
 sub rsync
