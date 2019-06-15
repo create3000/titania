@@ -3,6 +3,13 @@
     "configurations": [
         {
             "name": "Linux",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ]
+            },
             "includePath": [
                 "/usr/include",
                 "/usr/include/atk-1.0",

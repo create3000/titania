@@ -116,7 +116,7 @@ OutlineSelection::select (const X3D::SFNode & node) const
 		if (selectMultiple)
 			selection -> addNodes ({ node });
 		else
-			selection -> setNodes ({ node });	
+			selection -> setNodes ({ node });
 	}
 }
 

@@ -305,7 +305,7 @@ BrowserOptions::set_PrimitiveQuality ()
 	{
 		if (this -> primitiveQuality == PrimitiveQualityType::HIGH)
 			return;
-	
+
 		this -> primitiveQuality = PrimitiveQualityType::HIGH;
 
 		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 80;
@@ -331,7 +331,7 @@ BrowserOptions::set_PrimitiveQuality ()
 	{
 		if (this -> primitiveQuality == PrimitiveQualityType::LOW)
 			return;
-	
+
 		this -> primitiveQuality = PrimitiveQualityType::LOW;
 
 		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 20;
@@ -429,7 +429,7 @@ BrowserOptions::set_Shading ()
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 			glShadeModel (GL_SMOOTH);
-	
+
 			getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
 			break;
 		}
