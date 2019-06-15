@@ -101,7 +101,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_titania_experimental_OBJECTS = main.$(OBJEXT)
+am__dirstamp = $(am__leading_dot)dirstamp
+am_titania_experimental_OBJECTS = $(current_dir)/main.$(OBJEXT)
 titania_experimental_OBJECTS = $(am_titania_experimental_OBJECTS)
 am__DEPENDENCIES_1 =
 titania_experimental_DEPENDENCIES = $(am__DEPENDENCIES_1) \
@@ -128,7 +129,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/main.Po
+am__depfiles_remade = $(current_dir)/$(DEPDIR)/main.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -346,6 +347,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+current_dir = $(shell pwd)
 AM_CPPFLAGS = $(TITANIA_EXPERIMENTAL_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
 	$(TITANIA_X3D_CFLAGS)  \
@@ -360,7 +362,7 @@ titania_experimental_LDADD = $(TITANIA_EXPERIMENTAL_LIBS) \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \
 	$(top_builddir)/libtitania-x3d/libtitania-x3d.la
 
-titania_experimental_SOURCES = main.cpp
+titania_experimental_SOURCES = $(current_dir)/main.cpp
 all: all-am
 
 .SUFFIXES:
@@ -443,6 +445,14 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+$(current_dir)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)
+	@: > $(current_dir)/$(am__dirstamp)
+$(current_dir)/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/$(DEPDIR)
+	@: > $(current_dir)/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/main.$(OBJEXT): $(current_dir)/$(am__dirstamp) \
+	$(current_dir)/$(DEPDIR)/$(am__dirstamp)
 
 titania-experimental$(EXEEXT): $(titania_experimental_OBJECTS) $(titania_experimental_DEPENDENCIES) $(EXTRA_titania_experimental_DEPENDENCIES) 
 	@rm -f titania-experimental$(EXEEXT)
@@ -450,11 +460,12 @@ titania-experimental$(EXEEXT): $(titania_experimental_OBJECTS) $(titania_experim
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f $(current_dir)/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -610,6 +621,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(current_dir)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/$(am__dirstamp)" || rm -f $(current_dir)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -619,7 +632,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/main.Po
+		-rm -f $(current_dir)/$(DEPDIR)/main.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -665,7 +678,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/main.Po
+		-rm -f $(current_dir)/$(DEPDIR)/main.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

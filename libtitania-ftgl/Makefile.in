@@ -132,12 +132,18 @@ libtitania_ftgl_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libtitania_ftgl_la_OBJECTS = Titania/FTGL/Charmap.lo \
-	Titania/FTGL/Contour.lo Titania/FTGL/Face.lo \
-	Titania/FTGL/Font/Font.lo Titania/FTGL/Font/PolygonFont.lo \
-	Titania/FTGL/Glyph/Glyph.lo Titania/FTGL/Glyph/PolygonGlyph.lo \
-	Titania/FTGL/GlyphContainer.lo Titania/FTGL/Library.lo \
-	Titania/FTGL/Size.lo Titania/FTGL/Vectorizer.lo
+am_libtitania_ftgl_la_OBJECTS =  \
+	$(current_dir)/Titania/FTGL/Charmap.lo \
+	$(current_dir)/Titania/FTGL/Contour.lo \
+	$(current_dir)/Titania/FTGL/Face.lo \
+	$(current_dir)/Titania/FTGL/Font/Font.lo \
+	$(current_dir)/Titania/FTGL/Font/PolygonFont.lo \
+	$(current_dir)/Titania/FTGL/Glyph/Glyph.lo \
+	$(current_dir)/Titania/FTGL/Glyph/PolygonGlyph.lo \
+	$(current_dir)/Titania/FTGL/GlyphContainer.lo \
+	$(current_dir)/Titania/FTGL/Library.lo \
+	$(current_dir)/Titania/FTGL/Size.lo \
+	$(current_dir)/Titania/FTGL/Vectorizer.lo
 libtitania_ftgl_la_OBJECTS = $(am_libtitania_ftgl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -158,17 +164,18 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = Titania/FTGL/$(DEPDIR)/Charmap.Plo \
-	Titania/FTGL/$(DEPDIR)/Contour.Plo \
-	Titania/FTGL/$(DEPDIR)/Face.Plo \
-	Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo \
-	Titania/FTGL/$(DEPDIR)/Library.Plo \
-	Titania/FTGL/$(DEPDIR)/Size.Plo \
-	Titania/FTGL/$(DEPDIR)/Vectorizer.Plo \
-	Titania/FTGL/Font/$(DEPDIR)/Font.Plo \
-	Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo \
-	Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo \
-	Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo
+am__depfiles_remade =  \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/Charmap.Plo \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/Contour.Plo \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/Face.Plo \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/Library.Plo \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/Size.Plo \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/Vectorizer.Plo \
+	$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/Font.Plo \
+	$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo \
+	$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo \
+	$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -386,6 +393,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+current_dir = $(shell pwd)
 lib_LTLIBRARIES = \
 	libtitania-ftgl.la
 
@@ -394,17 +402,17 @@ libtitania_ftgl_la_LIBADD = $(TITANIA_FTGL_LIBS) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la
 
 libtitania_ftgl_la_SOURCES = \
-	Titania/FTGL/Charmap.cpp \
-	Titania/FTGL/Contour.cpp \
-	Titania/FTGL/Face.cpp \
-	Titania/FTGL/Font/Font.cpp \
-	Titania/FTGL/Font/PolygonFont.cpp \
-	Titania/FTGL/Glyph/Glyph.cpp \
-	Titania/FTGL/Glyph/PolygonGlyph.cpp \
-	Titania/FTGL/GlyphContainer.cpp \
-	Titania/FTGL/Library.cpp \
-	Titania/FTGL/Size.cpp \
-	Titania/FTGL/Vectorizer.cpp
+	$(current_dir)/Titania/FTGL/Charmap.cpp \
+	$(current_dir)/Titania/FTGL/Contour.cpp \
+	$(current_dir)/Titania/FTGL/Face.cpp \
+	$(current_dir)/Titania/FTGL/Font/Font.cpp \
+	$(current_dir)/Titania/FTGL/Font/PolygonFont.cpp \
+	$(current_dir)/Titania/FTGL/Glyph/Glyph.cpp \
+	$(current_dir)/Titania/FTGL/Glyph/PolygonGlyph.cpp \
+	$(current_dir)/Titania/FTGL/GlyphContainer.cpp \
+	$(current_dir)/Titania/FTGL/Library.cpp \
+	$(current_dir)/Titania/FTGL/Size.cpp \
+	$(current_dir)/Titania/FTGL/Vectorizer.cpp
 
 AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) \
 	$(TITANIA_STANDARD_CFLAGS) \
@@ -478,74 +486,84 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-Titania/FTGL/$(am__dirstamp):
-	@$(MKDIR_P) Titania/FTGL
-	@: > Titania/FTGL/$(am__dirstamp)
-Titania/FTGL/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/FTGL/$(DEPDIR)
-	@: > Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Charmap.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Contour.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Face.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Font/$(am__dirstamp):
-	@$(MKDIR_P) Titania/FTGL/Font
-	@: > Titania/FTGL/Font/$(am__dirstamp)
-Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/FTGL/Font/$(DEPDIR)
-	@: > Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Font/Font.lo: Titania/FTGL/Font/$(am__dirstamp) \
-	Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Font/PolygonFont.lo: Titania/FTGL/Font/$(am__dirstamp) \
-	Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Glyph/$(am__dirstamp):
-	@$(MKDIR_P) Titania/FTGL/Glyph
-	@: > Titania/FTGL/Glyph/$(am__dirstamp)
-Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/FTGL/Glyph/$(DEPDIR)
-	@: > Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Glyph/Glyph.lo: Titania/FTGL/Glyph/$(am__dirstamp) \
-	Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Glyph/PolygonGlyph.lo:  \
-	Titania/FTGL/Glyph/$(am__dirstamp) \
-	Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/GlyphContainer.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Library.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Size.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Vectorizer.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/FTGL
+	@: > $(current_dir)/Titania/FTGL/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/FTGL/$(DEPDIR)
+	@: > $(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Charmap.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Contour.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Face.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Font/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/FTGL/Font
+	@: > $(current_dir)/Titania/FTGL/Font/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/FTGL/Font/$(DEPDIR)
+	@: > $(current_dir)/Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Font/Font.lo:  \
+	$(current_dir)/Titania/FTGL/Font/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Font/PolygonFont.lo:  \
+	$(current_dir)/Titania/FTGL/Font/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Glyph/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/FTGL/Glyph
+	@: > $(current_dir)/Titania/FTGL/Glyph/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)
+	@: > $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Glyph/Glyph.lo:  \
+	$(current_dir)/Titania/FTGL/Glyph/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Glyph/PolygonGlyph.lo:  \
+	$(current_dir)/Titania/FTGL/Glyph/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/GlyphContainer.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Library.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Size.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/FTGL/Vectorizer.lo:  \
+	$(current_dir)/Titania/FTGL/$(am__dirstamp) \
+	$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 
 libtitania-ftgl.la: $(libtitania_ftgl_la_OBJECTS) $(libtitania_ftgl_la_DEPENDENCIES) $(EXTRA_libtitania_ftgl_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) -rpath $(libdir) $(libtitania_ftgl_la_OBJECTS) $(libtitania_ftgl_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f Titania/FTGL/*.$(OBJEXT)
-	-rm -f Titania/FTGL/*.lo
-	-rm -f Titania/FTGL/Font/*.$(OBJEXT)
-	-rm -f Titania/FTGL/Font/*.lo
-	-rm -f Titania/FTGL/Glyph/*.$(OBJEXT)
-	-rm -f Titania/FTGL/Glyph/*.lo
+	-rm -f $(current_dir)/Titania/FTGL/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/FTGL/*.lo
+	-rm -f $(current_dir)/Titania/FTGL/Font/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/FTGL/Font/*.lo
+	-rm -f $(current_dir)/Titania/FTGL/Glyph/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/FTGL/Glyph/*.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Charmap.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Contour.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Face.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Library.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Size.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Vectorizer.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Font/$(DEPDIR)/Font.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/Charmap.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/Contour.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/Face.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/Library.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/Size.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/$(DEPDIR)/Vectorizer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/Font.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -581,10 +599,10 @@ mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
+	-rm -rf $(current_dir)/Titania/FTGL/.libs $(current_dir)/Titania/FTGL/_libs
+	-rm -rf $(current_dir)/Titania/FTGL/Font/.libs $(current_dir)/Titania/FTGL/Font/_libs
+	-rm -rf $(current_dir)/Titania/FTGL/Glyph/.libs $(current_dir)/Titania/FTGL/Glyph/_libs
 	-rm -rf .libs _libs
-	-rm -rf Titania/FTGL/.libs Titania/FTGL/_libs
-	-rm -rf Titania/FTGL/Font/.libs Titania/FTGL/Font/_libs
-	-rm -rf Titania/FTGL/Glyph/.libs Titania/FTGL/Glyph/_libs
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -704,12 +722,12 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/FTGL/$(am__dirstamp)
-	-rm -f Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/FTGL/Font/$(am__dirstamp)
-	-rm -f Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/FTGL/Glyph/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/FTGL/$(am__dirstamp)" || rm -f $(current_dir)/Titania/FTGL/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/FTGL/Font/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/FTGL/Font/$(am__dirstamp)" || rm -f $(current_dir)/Titania/FTGL/Font/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/FTGL/Glyph/$(am__dirstamp)" || rm -f $(current_dir)/Titania/FTGL/Glyph/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -720,17 +738,17 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f Titania/FTGL/$(DEPDIR)/Charmap.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Contour.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Face.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Library.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Size.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Vectorizer.Plo
-	-rm -f Titania/FTGL/Font/$(DEPDIR)/Font.Plo
-	-rm -f Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo
-	-rm -f Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo
-	-rm -f Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo
+		-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Charmap.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Contour.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Face.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Library.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Size.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Vectorizer.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Font/$(DEPDIR)/Font.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -776,17 +794,17 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f Titania/FTGL/$(DEPDIR)/Charmap.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Contour.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Face.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Library.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Size.Plo
-	-rm -f Titania/FTGL/$(DEPDIR)/Vectorizer.Plo
-	-rm -f Titania/FTGL/Font/$(DEPDIR)/Font.Plo
-	-rm -f Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo
-	-rm -f Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo
-	-rm -f Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo
+		-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Charmap.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Contour.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Face.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Library.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Size.Plo
+	-rm -f $(current_dir)/Titania/FTGL/$(DEPDIR)/Vectorizer.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Font/$(DEPDIR)/Font.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo
+	-rm -f $(current_dir)/Titania/FTGL/Glyph/$(DEPDIR)/PolygonGlyph.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

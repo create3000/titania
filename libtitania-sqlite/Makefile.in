@@ -130,7 +130,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtitania_sqlite_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libtitania_sqlite_la_OBJECTS = Titania/SQL/SQLite3.lo
+am_libtitania_sqlite_la_OBJECTS =  \
+	$(current_dir)/Titania/SQL/SQLite3.lo
 libtitania_sqlite_la_OBJECTS = $(am_libtitania_sqlite_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -151,7 +152,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = Titania/SQL/$(DEPDIR)/SQLite3.Plo
+am__depfiles_remade =  \
+	$(current_dir)/Titania/SQL/$(DEPDIR)/SQLite3.Plo
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -198,7 +200,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp \
-	$(top_srcdir)/mkinstalldirs ChangeLog
+	$(top_srcdir)/mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -369,12 +371,13 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+current_dir = $(shell pwd)
 lib_LTLIBRARIES = \
 	libtitania-sqlite.la
 
-libtitania_sqlite_la_LIBADD = $(TITANIA_SQLITE_LIBS) 
-libtitania_sqlite_la_SOURCES = Titania/SQL/SQLite3.cpp
-AM_CPPFLAGS = $(TITANIA_SQLITE_CFLAGS) 
+libtitania_sqlite_la_LIBADD = $(TITANIA_SQLITE_LIBS)
+libtitania_sqlite_la_SOURCES = $(current_dir)/Titania/SQL/SQLite3.cpp
+AM_CPPFLAGS = $(TITANIA_SQLITE_CFLAGS)
 all: all-am
 
 .SUFFIXES:
@@ -443,27 +446,28 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-Titania/SQL/$(am__dirstamp):
-	@$(MKDIR_P) Titania/SQL
-	@: > Titania/SQL/$(am__dirstamp)
-Titania/SQL/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/SQL/$(DEPDIR)
-	@: > Titania/SQL/$(DEPDIR)/$(am__dirstamp)
-Titania/SQL/SQLite3.lo: Titania/SQL/$(am__dirstamp) \
-	Titania/SQL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/SQL/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/SQL
+	@: > $(current_dir)/Titania/SQL/$(am__dirstamp)
+$(current_dir)/Titania/SQL/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/SQL/$(DEPDIR)
+	@: > $(current_dir)/Titania/SQL/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/SQL/SQLite3.lo:  \
+	$(current_dir)/Titania/SQL/$(am__dirstamp) \
+	$(current_dir)/Titania/SQL/$(DEPDIR)/$(am__dirstamp)
 
 libtitania-sqlite.la: $(libtitania_sqlite_la_OBJECTS) $(libtitania_sqlite_la_DEPENDENCIES) $(EXTRA_libtitania_sqlite_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) -rpath $(libdir) $(libtitania_sqlite_la_OBJECTS) $(libtitania_sqlite_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f Titania/SQL/*.$(OBJEXT)
-	-rm -f Titania/SQL/*.lo
+	-rm -f $(current_dir)/Titania/SQL/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/SQL/*.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/SQL/$(DEPDIR)/SQLite3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/SQL/$(DEPDIR)/SQLite3.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -499,8 +503,8 @@ mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
+	-rm -rf $(current_dir)/Titania/SQL/.libs $(current_dir)/Titania/SQL/_libs
 	-rm -rf .libs _libs
-	-rm -rf Titania/SQL/.libs Titania/SQL/_libs
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -620,8 +624,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f Titania/SQL/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/SQL/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/SQL/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/SQL/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/SQL/$(am__dirstamp)" || rm -f $(current_dir)/Titania/SQL/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -632,7 +636,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f Titania/SQL/$(DEPDIR)/SQLite3.Plo
+		-rm -f $(current_dir)/Titania/SQL/$(DEPDIR)/SQLite3.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -678,7 +682,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f Titania/SQL/$(DEPDIR)/SQLite3.Plo
+		-rm -f $(current_dir)/Titania/SQL/$(DEPDIR)/SQLite3.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

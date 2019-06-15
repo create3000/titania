@@ -7,9 +7,10 @@
             "label": "Make",
             "type": "shell",
             "command": "make -j5",
-            "problemMatcher": [
-                "$gcc"
-            ],
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "absolute"
+            },
             "group": {
                 "kind": "build",
                 "isDefault": true

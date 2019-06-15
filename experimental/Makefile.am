@@ -1,9 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
+current_dir = $(shell pwd)
 
 bin_PROGRAMS =  \
 	titania-experimental
-	
+
 AM_CPPFLAGS = $(TITANIA_EXPERIMENTAL_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
 	$(TITANIA_X3D_CFLAGS)  \
@@ -18,7 +19,7 @@ titania_experimental_LDADD = $(TITANIA_EXPERIMENTAL_LIBS) \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \
 	$(top_builddir)/libtitania-x3d/libtitania-x3d.la
 
-titania_experimental_SOURCES = main.cpp
+titania_experimental_SOURCES = $(current_dir)/main.cpp
 
 run:
 	$(builddir)/$(bin_PROGRAMS)

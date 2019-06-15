@@ -130,66 +130,76 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtitania_standard_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
-	Titania/Basic/Path.lo Titania/Basic/URI.lo \
-	Titania/Chrono/ClockBase.lo Titania/Chrono/CountingClock.lo \
-	Titania/Chrono/Now.lo Titania/Chrono/StopWatch.lo \
-	Titania/Chrono/SystemClock.lo \
-	Titania/External/ApproxMVBB/AABB.lo \
-	Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo \
-	Titania/External/ApproxMVBB/ConvexHull2D.lo \
-	Titania/External/ApproxMVBB/Diameter/alloc.lo \
-	Titania/External/ApproxMVBB/Diameter/EstimateDiameter.lo \
-	Titania/External/ApproxMVBB/Diameter/rand.lo \
-	Titania/External/ApproxMVBB/Diameter/util.lo \
-	Titania/External/ApproxMVBB/GeometryPredicates/Predicates.lo \
-	Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.lo \
-	Titania/External/ApproxMVBB/MinAreaRectangle.lo \
-	Titania/External/ApproxMVBB/OOBB.lo \
-	Titania/External/ApproxMVBB/pugixml/pugixml.lo \
-	Titania/External/ApproxMVBB/RandomGenerators.lo \
-	Titania/Geospatial/BasicConverter.lo \
-	Titania/Geospatial/Geodetic.lo \
-	Titania/Geospatial/UniversalTransverseMercator.lo \
-	Titania/InputOutput/Character.lo \
-	Titania/InputOutput/InverseCharacter.lo \
-	Titania/InputOutput/InverseSequence.lo \
-	Titania/InputOutput/InverseString.lo \
-	Titania/InputOutput/MultiLineComment.lo \
-	Titania/InputOutput/MultiString.lo \
-	Titania/InputOutput/QuotedString.lo \
-	Titania/InputOutput/Sequence.lo \
-	Titania/InputOutput/SingleLineComment.lo \
-	Titania/InputOutput/String.lo \
-	Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo \
-	Titania/Math/Algorithms/L-System.lo \
-	Titania/Math/Geometry/Box2.lo Titania/Math/Geometry/Box3.lo \
-	Titania/Math/Geometry/ConvexHull2.lo \
-	Titania/Math/Geometry/ConvexHull3.lo \
-	Titania/Math/Geometry/Cylinder3.lo \
-	Titania/Math/Geometry/Line2.lo Titania/Math/Geometry/Line3.lo \
-	Titania/Math/Geometry/LineSegment2.lo \
-	Titania/Math/Geometry/LineSegment3.lo \
-	Titania/Math/Geometry/Plane3.lo \
-	Titania/Math/Geometry/Sphere3.lo \
-	Titania/Math/Geometry/Spheroid3.lo \
-	Titania/Math/Geometry/Triangle2.lo \
-	Titania/Math/Geometry/Triangle3.lo \
-	Titania/Math/Mesh/Combine.lo \
-	Titania/Math/Mesh/NurbsTessellator.lo \
-	Titania/Math/Numbers/Color3.lo Titania/Math/Numbers/Color4.lo \
-	Titania/Math/Numbers/Matrix2.lo \
-	Titania/Math/Numbers/Matrix3.lo \
-	Titania/Math/Numbers/Matrix4.lo \
-	Titania/Math/Numbers/Quaternion.lo \
-	Titania/Math/Numbers/Rotation4.lo \
-	Titania/Math/Numbers/Vector2.lo \
-	Titania/Math/Numbers/Vector3.lo \
-	Titania/Math/Numbers/Vector4.lo \
-	Titania/Math/Utility/MatrixStack.lo \
-	Titania/OS/find_data_file.lo Titania/RegEx/regex_escape.lo \
-	Titania/String/dtoa.lo Titania/String/naturally_compare.lo \
-	Titania/String/sprintf.lo Titania/String/trim.lo
+am_libtitania_standard_la_OBJECTS =  \
+	$(current_dir)/Titania/Backtrace.lo \
+	$(current_dir)/Titania/Basic/Path.lo \
+	$(current_dir)/Titania/Basic/URI.lo \
+	$(current_dir)/Titania/Chrono/ClockBase.lo \
+	$(current_dir)/Titania/Chrono/CountingClock.lo \
+	$(current_dir)/Titania/Chrono/Now.lo \
+	$(current_dir)/Titania/Chrono/StopWatch.lo \
+	$(current_dir)/Titania/Chrono/SystemClock.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/AABB.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/ConvexHull2D.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/alloc.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/EstimateDiameter.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/rand.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/util.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/Predicates.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/MinAreaRectangle.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/OOBB.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/pugixml/pugixml.lo \
+	$(current_dir)/Titania/External/ApproxMVBB/RandomGenerators.lo \
+	$(current_dir)/Titania/Geospatial/BasicConverter.lo \
+	$(current_dir)/Titania/Geospatial/Geodetic.lo \
+	$(current_dir)/Titania/Geospatial/UniversalTransverseMercator.lo \
+	$(current_dir)/Titania/InputOutput/Character.lo \
+	$(current_dir)/Titania/InputOutput/InverseCharacter.lo \
+	$(current_dir)/Titania/InputOutput/InverseSequence.lo \
+	$(current_dir)/Titania/InputOutput/InverseString.lo \
+	$(current_dir)/Titania/InputOutput/MultiLineComment.lo \
+	$(current_dir)/Titania/InputOutput/MultiString.lo \
+	$(current_dir)/Titania/InputOutput/QuotedString.lo \
+	$(current_dir)/Titania/InputOutput/Sequence.lo \
+	$(current_dir)/Titania/InputOutput/SingleLineComment.lo \
+	$(current_dir)/Titania/InputOutput/String.lo \
+	$(current_dir)/Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo \
+	$(current_dir)/Titania/Math/Algorithms/L-System.lo \
+	$(current_dir)/Titania/Math/Geometry/Box2.lo \
+	$(current_dir)/Titania/Math/Geometry/Box3.lo \
+	$(current_dir)/Titania/Math/Geometry/ConvexHull2.lo \
+	$(current_dir)/Titania/Math/Geometry/ConvexHull3.lo \
+	$(current_dir)/Titania/Math/Geometry/Cylinder3.lo \
+	$(current_dir)/Titania/Math/Geometry/Line2.lo \
+	$(current_dir)/Titania/Math/Geometry/Line3.lo \
+	$(current_dir)/Titania/Math/Geometry/LineSegment2.lo \
+	$(current_dir)/Titania/Math/Geometry/LineSegment3.lo \
+	$(current_dir)/Titania/Math/Geometry/Plane3.lo \
+	$(current_dir)/Titania/Math/Geometry/Sphere3.lo \
+	$(current_dir)/Titania/Math/Geometry/Spheroid3.lo \
+	$(current_dir)/Titania/Math/Geometry/Triangle2.lo \
+	$(current_dir)/Titania/Math/Geometry/Triangle3.lo \
+	$(current_dir)/Titania/Math/Mesh/Combine.lo \
+	$(current_dir)/Titania/Math/Mesh/NurbsTessellator.lo \
+	$(current_dir)/Titania/Math/Numbers/Color3.lo \
+	$(current_dir)/Titania/Math/Numbers/Color4.lo \
+	$(current_dir)/Titania/Math/Numbers/Matrix2.lo \
+	$(current_dir)/Titania/Math/Numbers/Matrix3.lo \
+	$(current_dir)/Titania/Math/Numbers/Matrix4.lo \
+	$(current_dir)/Titania/Math/Numbers/Quaternion.lo \
+	$(current_dir)/Titania/Math/Numbers/Rotation4.lo \
+	$(current_dir)/Titania/Math/Numbers/Vector2.lo \
+	$(current_dir)/Titania/Math/Numbers/Vector3.lo \
+	$(current_dir)/Titania/Math/Numbers/Vector4.lo \
+	$(current_dir)/Titania/Math/Utility/MatrixStack.lo \
+	$(current_dir)/Titania/OS/find_data_file.lo \
+	$(current_dir)/Titania/RegEx/regex_escape.lo \
+	$(current_dir)/Titania/String/dtoa.lo \
+	$(current_dir)/Titania/String/naturally_compare.lo \
+	$(current_dir)/Titania/String/sprintf.lo \
+	$(current_dir)/Titania/String/trim.lo
 libtitania_standard_la_OBJECTS = $(am_libtitania_standard_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -210,75 +220,75 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = Titania/$(DEPDIR)/Backtrace.Plo \
-	Titania/Basic/$(DEPDIR)/Path.Plo \
-	Titania/Basic/$(DEPDIR)/URI.Plo \
-	Titania/Chrono/$(DEPDIR)/ClockBase.Plo \
-	Titania/Chrono/$(DEPDIR)/CountingClock.Plo \
-	Titania/Chrono/$(DEPDIR)/Now.Plo \
-	Titania/Chrono/$(DEPDIR)/StopWatch.Plo \
-	Titania/Chrono/$(DEPDIR)/SystemClock.Plo \
-	Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo \
-	Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo \
-	Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo \
-	Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo \
-	Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo \
-	Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo \
-	Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo \
-	Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo \
-	Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo \
-	Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo \
-	Titania/Geospatial/$(DEPDIR)/Geodetic.Plo \
-	Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo \
-	Titania/InputOutput/$(DEPDIR)/Character.Plo \
-	Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo \
-	Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo \
-	Titania/InputOutput/$(DEPDIR)/InverseString.Plo \
-	Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo \
-	Titania/InputOutput/$(DEPDIR)/MultiString.Plo \
-	Titania/InputOutput/$(DEPDIR)/QuotedString.Plo \
-	Titania/InputOutput/$(DEPDIR)/Sequence.Plo \
-	Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo \
-	Titania/InputOutput/$(DEPDIR)/String.Plo \
-	Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo \
-	Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Box2.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Box3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Line2.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Line3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo \
-	Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo \
-	Titania/Math/Mesh/$(DEPDIR)/Combine.Plo \
-	Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Color3.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Color4.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo \
-	Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo \
-	Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo \
-	Titania/OS/$(DEPDIR)/find_data_file.Plo \
-	Titania/RegEx/$(DEPDIR)/regex_escape.Plo \
-	Titania/String/$(DEPDIR)/dtoa.Plo \
-	Titania/String/$(DEPDIR)/naturally_compare.Plo \
-	Titania/String/$(DEPDIR)/sprintf.Plo \
-	Titania/String/$(DEPDIR)/trim.Plo
+am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/Backtrace.Plo \
+	$(current_dir)/Titania/Basic/$(DEPDIR)/Path.Plo \
+	$(current_dir)/Titania/Basic/$(DEPDIR)/URI.Plo \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/ClockBase.Plo \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/CountingClock.Plo \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/Now.Plo \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/StopWatch.Plo \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/SystemClock.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo \
+	$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo \
+	$(current_dir)/Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo \
+	$(current_dir)/Titania/Geospatial/$(DEPDIR)/Geodetic.Plo \
+	$(current_dir)/Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/Character.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseString.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiString.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/QuotedString.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/Sequence.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/String.Plo \
+	$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo \
+	$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box2.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line2.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo \
+	$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/Combine.Plo \
+	$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color3.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color4.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo \
+	$(current_dir)/Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo \
+	$(current_dir)/Titania/OS/$(DEPDIR)/find_data_file.Plo \
+	$(current_dir)/Titania/RegEx/$(DEPDIR)/regex_escape.Plo \
+	$(current_dir)/Titania/String/$(DEPDIR)/dtoa.Plo \
+	$(current_dir)/Titania/String/$(DEPDIR)/naturally_compare.Plo \
+	$(current_dir)/Titania/String/$(DEPDIR)/sprintf.Plo \
+	$(current_dir)/Titania/String/$(DEPDIR)/trim.Plo
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -325,7 +335,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp \
-	$(top_srcdir)/mkinstalldirs ChangeLog
+	$(top_srcdir)/mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -496,82 +506,83 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+current_dir = $(shell pwd)
 lib_LTLIBRARIES = \
 	libtitania-standard.la
 
 libtitania_standard_la_SOURCES = \
-	Titania/Backtrace.cpp \
-	Titania/Basic/Path.cpp \
-	Titania/Basic/URI.cpp \
-	Titania/Chrono/ClockBase.cpp \
-	Titania/Chrono/CountingClock.cpp \
-	Titania/Chrono/Now.cpp \
-	Titania/Chrono/StopWatch.cpp \
-	Titania/Chrono/SystemClock.cpp \
-	Titania/External/ApproxMVBB/AABB.cpp \
-	Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.cpp \
-	Titania/External/ApproxMVBB/ConvexHull2D.cpp \
-	Titania/External/ApproxMVBB/Diameter/alloc.cpp \
-	Titania/External/ApproxMVBB/Diameter/EstimateDiameter.cpp \
-	Titania/External/ApproxMVBB/Diameter/rand.cpp \
-	Titania/External/ApproxMVBB/Diameter/util.cpp \
-	Titania/External/ApproxMVBB/GeometryPredicates/Predicates.cpp \
-	Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.cpp \
-	Titania/External/ApproxMVBB/MinAreaRectangle.cpp \
-	Titania/External/ApproxMVBB/OOBB.cpp \
-	Titania/External/ApproxMVBB/pugixml/pugixml.cpp \
-	Titania/External/ApproxMVBB/RandomGenerators.cpp \
-	Titania/Geospatial/BasicConverter.cpp \
-	Titania/Geospatial/Geodetic.cpp \
-	Titania/Geospatial/UniversalTransverseMercator.cpp \
-	Titania/InputOutput/Character.cpp \
-	Titania/InputOutput/InverseCharacter.cpp \
-	Titania/InputOutput/InverseSequence.cpp \
-	Titania/InputOutput/InverseString.cpp \
-	Titania/InputOutput/MultiLineComment.cpp \
-	Titania/InputOutput/MultiString.cpp \
-	Titania/InputOutput/QuotedString.cpp \
-	Titania/InputOutput/Sequence.cpp \
-	Titania/InputOutput/SingleLineComment.cpp \
-	Titania/InputOutput/String.cpp \
-	Titania/Math/Algorithms/CatmullRomSplineInterpolator.cpp \
-	Titania/Math/Algorithms/L-System.cpp \
-	Titania/Math/Geometry/Box2.cpp \
-	Titania/Math/Geometry/Box3.cpp \
-	Titania/Math/Geometry/ConvexHull2.cpp \
-	Titania/Math/Geometry/ConvexHull3.cpp \
-	Titania/Math/Geometry/Cylinder3.cpp \
-	Titania/Math/Geometry/Line2.cpp \
-	Titania/Math/Geometry/Line3.cpp \
-	Titania/Math/Geometry/LineSegment2.cpp \
-	Titania/Math/Geometry/LineSegment3.cpp \
-	Titania/Math/Geometry/Plane3.cpp \
-	Titania/Math/Geometry/Sphere3.cpp \
-	Titania/Math/Geometry/Spheroid3.cpp \
-	Titania/Math/Geometry/Triangle2.cpp \
-	Titania/Math/Geometry/Triangle3.cpp \
-	Titania/Math/Mesh/Combine.cpp \
-	Titania/Math/Mesh/NurbsTessellator.cpp \
-	Titania/Math/Numbers/Color3.cpp \
-	Titania/Math/Numbers/Color4.cpp \
-	Titania/Math/Numbers/Matrix2.cpp \
-	Titania/Math/Numbers/Matrix3.cpp \
-	Titania/Math/Numbers/Matrix4.cpp \
-	Titania/Math/Numbers/Quaternion.cpp \
-	Titania/Math/Numbers/Rotation4.cpp \
-	Titania/Math/Numbers/Vector2.cpp \
-	Titania/Math/Numbers/Vector3.cpp \
-	Titania/Math/Numbers/Vector4.cpp \
-	Titania/Math/Utility/MatrixStack.cpp \
-	Titania/OS/find_data_file.cpp \
-	Titania/RegEx/regex_escape.cpp \
-	Titania/String/dtoa.cpp \
-	Titania/String/naturally_compare.cpp \
-	Titania/String/sprintf.cpp \
-	Titania/String/trim.cpp
+	$(current_dir)/Titania/Backtrace.cpp \
+	$(current_dir)/Titania/Basic/Path.cpp \
+	$(current_dir)/Titania/Basic/URI.cpp \
+	$(current_dir)/Titania/Chrono/ClockBase.cpp \
+	$(current_dir)/Titania/Chrono/CountingClock.cpp \
+	$(current_dir)/Titania/Chrono/Now.cpp \
+	$(current_dir)/Titania/Chrono/StopWatch.cpp \
+	$(current_dir)/Titania/Chrono/SystemClock.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/AABB.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/ConvexHull2D.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/alloc.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/EstimateDiameter.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/rand.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/util.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/Predicates.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/MinAreaRectangle.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/OOBB.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/pugixml/pugixml.cpp \
+	$(current_dir)/Titania/External/ApproxMVBB/RandomGenerators.cpp \
+	$(current_dir)/Titania/Geospatial/BasicConverter.cpp \
+	$(current_dir)/Titania/Geospatial/Geodetic.cpp \
+	$(current_dir)/Titania/Geospatial/UniversalTransverseMercator.cpp \
+	$(current_dir)/Titania/InputOutput/Character.cpp \
+	$(current_dir)/Titania/InputOutput/InverseCharacter.cpp \
+	$(current_dir)/Titania/InputOutput/InverseSequence.cpp \
+	$(current_dir)/Titania/InputOutput/InverseString.cpp \
+	$(current_dir)/Titania/InputOutput/MultiLineComment.cpp \
+	$(current_dir)/Titania/InputOutput/MultiString.cpp \
+	$(current_dir)/Titania/InputOutput/QuotedString.cpp \
+	$(current_dir)/Titania/InputOutput/Sequence.cpp \
+	$(current_dir)/Titania/InputOutput/SingleLineComment.cpp \
+	$(current_dir)/Titania/InputOutput/String.cpp \
+	$(current_dir)/Titania/Math/Algorithms/CatmullRomSplineInterpolator.cpp \
+	$(current_dir)/Titania/Math/Algorithms/L-System.cpp \
+	$(current_dir)/Titania/Math/Geometry/Box2.cpp \
+	$(current_dir)/Titania/Math/Geometry/Box3.cpp \
+	$(current_dir)/Titania/Math/Geometry/ConvexHull2.cpp \
+	$(current_dir)/Titania/Math/Geometry/ConvexHull3.cpp \
+	$(current_dir)/Titania/Math/Geometry/Cylinder3.cpp \
+	$(current_dir)/Titania/Math/Geometry/Line2.cpp \
+	$(current_dir)/Titania/Math/Geometry/Line3.cpp \
+	$(current_dir)/Titania/Math/Geometry/LineSegment2.cpp \
+	$(current_dir)/Titania/Math/Geometry/LineSegment3.cpp \
+	$(current_dir)/Titania/Math/Geometry/Plane3.cpp \
+	$(current_dir)/Titania/Math/Geometry/Sphere3.cpp \
+	$(current_dir)/Titania/Math/Geometry/Spheroid3.cpp \
+	$(current_dir)/Titania/Math/Geometry/Triangle2.cpp \
+	$(current_dir)/Titania/Math/Geometry/Triangle3.cpp \
+	$(current_dir)/Titania/Math/Mesh/Combine.cpp \
+	$(current_dir)/Titania/Math/Mesh/NurbsTessellator.cpp \
+	$(current_dir)/Titania/Math/Numbers/Color3.cpp \
+	$(current_dir)/Titania/Math/Numbers/Color4.cpp \
+	$(current_dir)/Titania/Math/Numbers/Matrix2.cpp \
+	$(current_dir)/Titania/Math/Numbers/Matrix3.cpp \
+	$(current_dir)/Titania/Math/Numbers/Matrix4.cpp \
+	$(current_dir)/Titania/Math/Numbers/Quaternion.cpp \
+	$(current_dir)/Titania/Math/Numbers/Rotation4.cpp \
+	$(current_dir)/Titania/Math/Numbers/Vector2.cpp \
+	$(current_dir)/Titania/Math/Numbers/Vector3.cpp \
+	$(current_dir)/Titania/Math/Numbers/Vector4.cpp \
+	$(current_dir)/Titania/Math/Utility/MatrixStack.cpp \
+	$(current_dir)/Titania/OS/find_data_file.cpp \
+	$(current_dir)/Titania/RegEx/regex_escape.cpp \
+	$(current_dir)/Titania/String/dtoa.cpp \
+	$(current_dir)/Titania/String/naturally_compare.cpp \
+	$(current_dir)/Titania/String/sprintf.cpp \
+	$(current_dir)/Titania/String/trim.cpp
 
-libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
-AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS) 
+libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS)
+AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS)
 AM_LDFLAGS = -lCGAL -lgmp -lmpfr
 all: all-am
 
@@ -641,403 +652,428 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-Titania/$(am__dirstamp):
-	@$(MKDIR_P) Titania
-	@: > Titania/$(am__dirstamp)
-Titania/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/$(DEPDIR)
-	@: > Titania/$(DEPDIR)/$(am__dirstamp)
-Titania/Backtrace.lo: Titania/$(am__dirstamp) \
-	Titania/$(DEPDIR)/$(am__dirstamp)
-Titania/Basic/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Basic
-	@: > Titania/Basic/$(am__dirstamp)
-Titania/Basic/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Basic/$(DEPDIR)
-	@: > Titania/Basic/$(DEPDIR)/$(am__dirstamp)
-Titania/Basic/Path.lo: Titania/Basic/$(am__dirstamp) \
-	Titania/Basic/$(DEPDIR)/$(am__dirstamp)
-Titania/Basic/URI.lo: Titania/Basic/$(am__dirstamp) \
-	Titania/Basic/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Chrono
-	@: > Titania/Chrono/$(am__dirstamp)
-Titania/Chrono/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Chrono/$(DEPDIR)
-	@: > Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/ClockBase.lo: Titania/Chrono/$(am__dirstamp) \
-	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/CountingClock.lo: Titania/Chrono/$(am__dirstamp) \
-	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/Now.lo: Titania/Chrono/$(am__dirstamp) \
-	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/StopWatch.lo: Titania/Chrono/$(am__dirstamp) \
-	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/Chrono/SystemClock.lo: Titania/Chrono/$(am__dirstamp) \
-	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB
-	@: > Titania/External/ApproxMVBB/$(am__dirstamp)
-Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/$(DEPDIR)
-	@: > Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/AABB.lo:  \
-	Titania/External/ApproxMVBB/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Common/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/Common
-	@: > Titania/External/ApproxMVBB/Common/$(am__dirstamp)
-Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/Common/$(DEPDIR)
-	@: > Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo:  \
-	Titania/External/ApproxMVBB/Common/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/ConvexHull2D.lo:  \
-	Titania/External/ApproxMVBB/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Diameter/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/Diameter
-	@: > Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)
-Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/Diameter/$(DEPDIR)
-	@: > Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Diameter/alloc.lo:  \
-	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Diameter/EstimateDiameter.lo:  \
-	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Diameter/rand.lo:  \
-	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/Diameter/util.lo:  \
-	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/GeometryPredicates
-	@: > Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
-Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)
-	@: > Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/GeometryPredicates/Predicates.lo: Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.lo: Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/MinAreaRectangle.lo:  \
-	Titania/External/ApproxMVBB/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/OOBB.lo:  \
-	Titania/External/ApproxMVBB/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/pugixml/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/pugixml
-	@: > Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
-Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/ApproxMVBB/pugixml/$(DEPDIR)
-	@: > Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/pugixml/pugixml.lo:  \
-	Titania/External/ApproxMVBB/pugixml/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
-Titania/External/ApproxMVBB/RandomGenerators.lo:  \
-	Titania/External/ApproxMVBB/$(am__dirstamp) \
-	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/Geospatial/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Geospatial
-	@: > Titania/Geospatial/$(am__dirstamp)
-Titania/Geospatial/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Geospatial/$(DEPDIR)
-	@: > Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
-Titania/Geospatial/BasicConverter.lo:  \
-	Titania/Geospatial/$(am__dirstamp) \
-	Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
-Titania/Geospatial/Geodetic.lo: Titania/Geospatial/$(am__dirstamp) \
-	Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
-Titania/Geospatial/UniversalTransverseMercator.lo:  \
-	Titania/Geospatial/$(am__dirstamp) \
-	Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/$(am__dirstamp):
-	@$(MKDIR_P) Titania/InputOutput
-	@: > Titania/InputOutput/$(am__dirstamp)
-Titania/InputOutput/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/InputOutput/$(DEPDIR)
-	@: > Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/Character.lo: Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/InverseCharacter.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/InverseSequence.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/InverseString.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/MultiLineComment.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/MultiString.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/QuotedString.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/Sequence.lo: Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/SingleLineComment.lo:  \
-	Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/InputOutput/String.lo: Titania/InputOutput/$(am__dirstamp) \
-	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Algorithms/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Algorithms
-	@: > Titania/Math/Algorithms/$(am__dirstamp)
-Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Algorithms/$(DEPDIR)
-	@: > Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo:  \
-	Titania/Math/Algorithms/$(am__dirstamp) \
-	Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Algorithms/L-System.lo:  \
-	Titania/Math/Algorithms/$(am__dirstamp) \
-	Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Geometry
-	@: > Titania/Math/Geometry/$(am__dirstamp)
-Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Geometry/$(DEPDIR)
-	@: > Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Box2.lo: Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Box3.lo: Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/ConvexHull2.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/ConvexHull3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Cylinder3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Line2.lo: Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Line3.lo: Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/LineSegment2.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/LineSegment3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Plane3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Sphere3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Spheroid3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Triangle2.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Geometry/Triangle3.lo:  \
-	Titania/Math/Geometry/$(am__dirstamp) \
-	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Mesh/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Mesh
-	@: > Titania/Math/Mesh/$(am__dirstamp)
-Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Mesh/$(DEPDIR)
-	@: > Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Mesh/Combine.lo: Titania/Math/Mesh/$(am__dirstamp) \
-	Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Mesh/NurbsTessellator.lo:  \
-	Titania/Math/Mesh/$(am__dirstamp) \
-	Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Numbers
-	@: > Titania/Math/Numbers/$(am__dirstamp)
-Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Numbers/$(DEPDIR)
-	@: > Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Color3.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Color4.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Matrix2.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Matrix3.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Matrix4.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Quaternion.lo:  \
-	Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Rotation4.lo:  \
-	Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Vector2.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Vector3.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Numbers/Vector4.lo: Titania/Math/Numbers/$(am__dirstamp) \
-	Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Utility/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Utility
-	@: > Titania/Math/Utility/$(am__dirstamp)
-Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Math/Utility/$(DEPDIR)
-	@: > Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Utility/MatrixStack.lo:  \
-	Titania/Math/Utility/$(am__dirstamp) \
-	Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/$(am__dirstamp):
-	@$(MKDIR_P) Titania/OS
-	@: > Titania/OS/$(am__dirstamp)
-Titania/OS/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/OS/$(DEPDIR)
-	@: > Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/OS/find_data_file.lo: Titania/OS/$(am__dirstamp) \
-	Titania/OS/$(DEPDIR)/$(am__dirstamp)
-Titania/RegEx/$(am__dirstamp):
-	@$(MKDIR_P) Titania/RegEx
-	@: > Titania/RegEx/$(am__dirstamp)
-Titania/RegEx/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/RegEx/$(DEPDIR)
-	@: > Titania/RegEx/$(DEPDIR)/$(am__dirstamp)
-Titania/RegEx/regex_escape.lo: Titania/RegEx/$(am__dirstamp) \
-	Titania/RegEx/$(DEPDIR)/$(am__dirstamp)
-Titania/String/$(am__dirstamp):
-	@$(MKDIR_P) Titania/String
-	@: > Titania/String/$(am__dirstamp)
-Titania/String/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/String/$(DEPDIR)
-	@: > Titania/String/$(DEPDIR)/$(am__dirstamp)
-Titania/String/dtoa.lo: Titania/String/$(am__dirstamp) \
-	Titania/String/$(DEPDIR)/$(am__dirstamp)
-Titania/String/naturally_compare.lo: Titania/String/$(am__dirstamp) \
-	Titania/String/$(DEPDIR)/$(am__dirstamp)
-Titania/String/sprintf.lo: Titania/String/$(am__dirstamp) \
-	Titania/String/$(DEPDIR)/$(am__dirstamp)
-Titania/String/trim.lo: Titania/String/$(am__dirstamp) \
-	Titania/String/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania
+	@: > $(current_dir)/Titania/$(am__dirstamp)
+$(current_dir)/Titania/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/$(DEPDIR)
+	@: > $(current_dir)/Titania/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Backtrace.lo:  \
+	$(current_dir)/Titania/$(am__dirstamp) \
+	$(current_dir)/Titania/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Basic/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Basic
+	@: > $(current_dir)/Titania/Basic/$(am__dirstamp)
+$(current_dir)/Titania/Basic/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Basic/$(DEPDIR)
+	@: > $(current_dir)/Titania/Basic/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Basic/Path.lo:  \
+	$(current_dir)/Titania/Basic/$(am__dirstamp) \
+	$(current_dir)/Titania/Basic/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Basic/URI.lo:  \
+	$(current_dir)/Titania/Basic/$(am__dirstamp) \
+	$(current_dir)/Titania/Basic/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Chrono
+	@: > $(current_dir)/Titania/Chrono/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Chrono/$(DEPDIR)
+	@: > $(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/ClockBase.lo:  \
+	$(current_dir)/Titania/Chrono/$(am__dirstamp) \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/CountingClock.lo:  \
+	$(current_dir)/Titania/Chrono/$(am__dirstamp) \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/Now.lo:  \
+	$(current_dir)/Titania/Chrono/$(am__dirstamp) \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/StopWatch.lo:  \
+	$(current_dir)/Titania/Chrono/$(am__dirstamp) \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Chrono/SystemClock.lo:  \
+	$(current_dir)/Titania/Chrono/$(am__dirstamp) \
+	$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB
+	@: > $(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)
+	@: > $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/AABB.lo:  \
+	$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Common/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/Common
+	@: > $(current_dir)/Titania/External/ApproxMVBB/Common/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)
+	@: > $(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo: $(current_dir)/Titania/External/ApproxMVBB/Common/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/ConvexHull2D.lo:  \
+	$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/Diameter
+	@: > $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)
+	@: > $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Diameter/alloc.lo: $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Diameter/EstimateDiameter.lo: $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Diameter/rand.lo: $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/Diameter/util.lo: $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates
+	@: > $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)
+	@: > $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/Predicates.lo: $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.lo: $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/MinAreaRectangle.lo:  \
+	$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/OOBB.lo:  \
+	$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/pugixml
+	@: > $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)
+	@: > $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/pugixml/pugixml.lo: $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/External/ApproxMVBB/RandomGenerators.lo:  \
+	$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp) \
+	$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Geospatial/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Geospatial
+	@: > $(current_dir)/Titania/Geospatial/$(am__dirstamp)
+$(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Geospatial/$(DEPDIR)
+	@: > $(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Geospatial/BasicConverter.lo:  \
+	$(current_dir)/Titania/Geospatial/$(am__dirstamp) \
+	$(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Geospatial/Geodetic.lo:  \
+	$(current_dir)/Titania/Geospatial/$(am__dirstamp) \
+	$(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Geospatial/UniversalTransverseMercator.lo:  \
+	$(current_dir)/Titania/Geospatial/$(am__dirstamp) \
+	$(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/InputOutput
+	@: > $(current_dir)/Titania/InputOutput/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/InputOutput/$(DEPDIR)
+	@: > $(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/Character.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/InverseCharacter.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/InverseSequence.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/InverseString.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/MultiLineComment.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/MultiString.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/QuotedString.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/Sequence.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/SingleLineComment.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/InputOutput/String.lo:  \
+	$(current_dir)/Titania/InputOutput/$(am__dirstamp) \
+	$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Algorithms/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Algorithms
+	@: > $(current_dir)/Titania/Math/Algorithms/$(am__dirstamp)
+$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)
+	@: > $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo:  \
+	$(current_dir)/Titania/Math/Algorithms/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Algorithms/L-System.lo:  \
+	$(current_dir)/Titania/Math/Algorithms/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Geometry
+	@: > $(current_dir)/Titania/Math/Geometry/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Geometry/$(DEPDIR)
+	@: > $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Box2.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Box3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/ConvexHull2.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/ConvexHull3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Cylinder3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Line2.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Line3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/LineSegment2.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/LineSegment3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Plane3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Sphere3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Spheroid3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Triangle2.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Geometry/Triangle3.lo:  \
+	$(current_dir)/Titania/Math/Geometry/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Mesh/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Mesh
+	@: > $(current_dir)/Titania/Math/Mesh/$(am__dirstamp)
+$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Mesh/$(DEPDIR)
+	@: > $(current_dir)/Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Mesh/Combine.lo:  \
+	$(current_dir)/Titania/Math/Mesh/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Mesh/NurbsTessellator.lo:  \
+	$(current_dir)/Titania/Math/Mesh/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Numbers
+	@: > $(current_dir)/Titania/Math/Numbers/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Numbers/$(DEPDIR)
+	@: > $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Color3.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Color4.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Matrix2.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Matrix3.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Matrix4.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Quaternion.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Rotation4.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Vector2.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Vector3.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Numbers/Vector4.lo:  \
+	$(current_dir)/Titania/Math/Numbers/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Utility/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Utility
+	@: > $(current_dir)/Titania/Math/Utility/$(am__dirstamp)
+$(current_dir)/Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Math/Utility/$(DEPDIR)
+	@: > $(current_dir)/Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Math/Utility/MatrixStack.lo:  \
+	$(current_dir)/Titania/Math/Utility/$(am__dirstamp) \
+	$(current_dir)/Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/OS/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/OS
+	@: > $(current_dir)/Titania/OS/$(am__dirstamp)
+$(current_dir)/Titania/OS/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/OS/$(DEPDIR)
+	@: > $(current_dir)/Titania/OS/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/OS/find_data_file.lo:  \
+	$(current_dir)/Titania/OS/$(am__dirstamp) \
+	$(current_dir)/Titania/OS/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/RegEx/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/RegEx
+	@: > $(current_dir)/Titania/RegEx/$(am__dirstamp)
+$(current_dir)/Titania/RegEx/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/RegEx/$(DEPDIR)
+	@: > $(current_dir)/Titania/RegEx/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/RegEx/regex_escape.lo:  \
+	$(current_dir)/Titania/RegEx/$(am__dirstamp) \
+	$(current_dir)/Titania/RegEx/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/String/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/String
+	@: > $(current_dir)/Titania/String/$(am__dirstamp)
+$(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/String/$(DEPDIR)
+	@: > $(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/String/dtoa.lo:  \
+	$(current_dir)/Titania/String/$(am__dirstamp) \
+	$(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/String/naturally_compare.lo:  \
+	$(current_dir)/Titania/String/$(am__dirstamp) \
+	$(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/String/sprintf.lo:  \
+	$(current_dir)/Titania/String/$(am__dirstamp) \
+	$(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/String/trim.lo:  \
+	$(current_dir)/Titania/String/$(am__dirstamp) \
+	$(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)
 
 libtitania-standard.la: $(libtitania_standard_la_OBJECTS) $(libtitania_standard_la_DEPENDENCIES) $(EXTRA_libtitania_standard_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) -rpath $(libdir) $(libtitania_standard_la_OBJECTS) $(libtitania_standard_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f Titania/*.$(OBJEXT)
-	-rm -f Titania/*.lo
-	-rm -f Titania/Basic/*.$(OBJEXT)
-	-rm -f Titania/Basic/*.lo
-	-rm -f Titania/Chrono/*.$(OBJEXT)
-	-rm -f Titania/Chrono/*.lo
-	-rm -f Titania/External/ApproxMVBB/*.$(OBJEXT)
-	-rm -f Titania/External/ApproxMVBB/*.lo
-	-rm -f Titania/External/ApproxMVBB/Common/*.$(OBJEXT)
-	-rm -f Titania/External/ApproxMVBB/Common/*.lo
-	-rm -f Titania/External/ApproxMVBB/Diameter/*.$(OBJEXT)
-	-rm -f Titania/External/ApproxMVBB/Diameter/*.lo
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/*.$(OBJEXT)
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/*.lo
-	-rm -f Titania/External/ApproxMVBB/pugixml/*.$(OBJEXT)
-	-rm -f Titania/External/ApproxMVBB/pugixml/*.lo
-	-rm -f Titania/Geospatial/*.$(OBJEXT)
-	-rm -f Titania/Geospatial/*.lo
-	-rm -f Titania/InputOutput/*.$(OBJEXT)
-	-rm -f Titania/InputOutput/*.lo
-	-rm -f Titania/Math/Algorithms/*.$(OBJEXT)
-	-rm -f Titania/Math/Algorithms/*.lo
-	-rm -f Titania/Math/Geometry/*.$(OBJEXT)
-	-rm -f Titania/Math/Geometry/*.lo
-	-rm -f Titania/Math/Mesh/*.$(OBJEXT)
-	-rm -f Titania/Math/Mesh/*.lo
-	-rm -f Titania/Math/Numbers/*.$(OBJEXT)
-	-rm -f Titania/Math/Numbers/*.lo
-	-rm -f Titania/Math/Utility/*.$(OBJEXT)
-	-rm -f Titania/Math/Utility/*.lo
-	-rm -f Titania/OS/*.$(OBJEXT)
-	-rm -f Titania/OS/*.lo
-	-rm -f Titania/RegEx/*.$(OBJEXT)
-	-rm -f Titania/RegEx/*.lo
-	-rm -f Titania/String/*.$(OBJEXT)
-	-rm -f Titania/String/*.lo
+	-rm -f $(current_dir)/Titania/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/*.lo
+	-rm -f $(current_dir)/Titania/Basic/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Basic/*.lo
+	-rm -f $(current_dir)/Titania/Chrono/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Chrono/*.lo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/*.lo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Common/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Common/*.lo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/*.lo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/*.lo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/pugixml/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/pugixml/*.lo
+	-rm -f $(current_dir)/Titania/Geospatial/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Geospatial/*.lo
+	-rm -f $(current_dir)/Titania/InputOutput/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/InputOutput/*.lo
+	-rm -f $(current_dir)/Titania/Math/Algorithms/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Math/Algorithms/*.lo
+	-rm -f $(current_dir)/Titania/Math/Geometry/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Math/Geometry/*.lo
+	-rm -f $(current_dir)/Titania/Math/Mesh/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Math/Mesh/*.lo
+	-rm -f $(current_dir)/Titania/Math/Numbers/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Math/Numbers/*.lo
+	-rm -f $(current_dir)/Titania/Math/Utility/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Math/Utility/*.lo
+	-rm -f $(current_dir)/Titania/OS/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/OS/*.lo
+	-rm -f $(current_dir)/Titania/RegEx/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/RegEx/*.lo
+	-rm -f $(current_dir)/Titania/String/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/String/*.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/$(DEPDIR)/Backtrace.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Basic/$(DEPDIR)/Path.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Basic/$(DEPDIR)/URI.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/ClockBase.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/CountingClock.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/Now.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/StopWatch.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/SystemClock.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/Geodetic.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/Character.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseString.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/MultiString.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/QuotedString.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/Sequence.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/String.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Line2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Line3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Mesh/$(DEPDIR)/Combine.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Color3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Color4.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/find_data_file.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/RegEx/$(DEPDIR)/regex_escape.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/dtoa.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/naturally_compare.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/sprintf.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/trim.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/$(DEPDIR)/Backtrace.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Basic/$(DEPDIR)/Path.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Basic/$(DEPDIR)/URI.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Chrono/$(DEPDIR)/ClockBase.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Chrono/$(DEPDIR)/CountingClock.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Chrono/$(DEPDIR)/Now.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Chrono/$(DEPDIR)/StopWatch.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Chrono/$(DEPDIR)/SystemClock.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Geospatial/$(DEPDIR)/Geodetic.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/Character.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseString.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiString.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/QuotedString.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/Sequence.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/InputOutput/$(DEPDIR)/String.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/Combine.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color4.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/OS/$(DEPDIR)/find_data_file.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/RegEx/$(DEPDIR)/regex_escape.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/String/$(DEPDIR)/dtoa.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/String/$(DEPDIR)/naturally_compare.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/String/$(DEPDIR)/sprintf.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/String/$(DEPDIR)/trim.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -1073,25 +1109,25 @@ mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
+	-rm -rf $(current_dir)/Titania/.libs $(current_dir)/Titania/_libs
+	-rm -rf $(current_dir)/Titania/Basic/.libs $(current_dir)/Titania/Basic/_libs
+	-rm -rf $(current_dir)/Titania/Chrono/.libs $(current_dir)/Titania/Chrono/_libs
+	-rm -rf $(current_dir)/Titania/External/ApproxMVBB/.libs $(current_dir)/Titania/External/ApproxMVBB/_libs
+	-rm -rf $(current_dir)/Titania/External/ApproxMVBB/Common/.libs $(current_dir)/Titania/External/ApproxMVBB/Common/_libs
+	-rm -rf $(current_dir)/Titania/External/ApproxMVBB/Diameter/.libs $(current_dir)/Titania/External/ApproxMVBB/Diameter/_libs
+	-rm -rf $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/.libs $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/_libs
+	-rm -rf $(current_dir)/Titania/External/ApproxMVBB/pugixml/.libs $(current_dir)/Titania/External/ApproxMVBB/pugixml/_libs
+	-rm -rf $(current_dir)/Titania/Geospatial/.libs $(current_dir)/Titania/Geospatial/_libs
+	-rm -rf $(current_dir)/Titania/InputOutput/.libs $(current_dir)/Titania/InputOutput/_libs
+	-rm -rf $(current_dir)/Titania/Math/Algorithms/.libs $(current_dir)/Titania/Math/Algorithms/_libs
+	-rm -rf $(current_dir)/Titania/Math/Geometry/.libs $(current_dir)/Titania/Math/Geometry/_libs
+	-rm -rf $(current_dir)/Titania/Math/Mesh/.libs $(current_dir)/Titania/Math/Mesh/_libs
+	-rm -rf $(current_dir)/Titania/Math/Numbers/.libs $(current_dir)/Titania/Math/Numbers/_libs
+	-rm -rf $(current_dir)/Titania/Math/Utility/.libs $(current_dir)/Titania/Math/Utility/_libs
+	-rm -rf $(current_dir)/Titania/OS/.libs $(current_dir)/Titania/OS/_libs
+	-rm -rf $(current_dir)/Titania/RegEx/.libs $(current_dir)/Titania/RegEx/_libs
+	-rm -rf $(current_dir)/Titania/String/.libs $(current_dir)/Titania/String/_libs
 	-rm -rf .libs _libs
-	-rm -rf Titania/.libs Titania/_libs
-	-rm -rf Titania/Basic/.libs Titania/Basic/_libs
-	-rm -rf Titania/Chrono/.libs Titania/Chrono/_libs
-	-rm -rf Titania/External/ApproxMVBB/.libs Titania/External/ApproxMVBB/_libs
-	-rm -rf Titania/External/ApproxMVBB/Common/.libs Titania/External/ApproxMVBB/Common/_libs
-	-rm -rf Titania/External/ApproxMVBB/Diameter/.libs Titania/External/ApproxMVBB/Diameter/_libs
-	-rm -rf Titania/External/ApproxMVBB/GeometryPredicates/.libs Titania/External/ApproxMVBB/GeometryPredicates/_libs
-	-rm -rf Titania/External/ApproxMVBB/pugixml/.libs Titania/External/ApproxMVBB/pugixml/_libs
-	-rm -rf Titania/Geospatial/.libs Titania/Geospatial/_libs
-	-rm -rf Titania/InputOutput/.libs Titania/InputOutput/_libs
-	-rm -rf Titania/Math/Algorithms/.libs Titania/Math/Algorithms/_libs
-	-rm -rf Titania/Math/Geometry/.libs Titania/Math/Geometry/_libs
-	-rm -rf Titania/Math/Mesh/.libs Titania/Math/Mesh/_libs
-	-rm -rf Titania/Math/Numbers/.libs Titania/Math/Numbers/_libs
-	-rm -rf Titania/Math/Utility/.libs Titania/Math/Utility/_libs
-	-rm -rf Titania/OS/.libs Titania/OS/_libs
-	-rm -rf Titania/RegEx/.libs Titania/RegEx/_libs
-	-rm -rf Titania/String/.libs Titania/String/_libs
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -1211,42 +1247,42 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f Titania/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/$(am__dirstamp)
-	-rm -f Titania/Basic/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Basic/$(am__dirstamp)
-	-rm -f Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Chrono/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/Common/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
-	-rm -f Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Geospatial/$(am__dirstamp)
-	-rm -f Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/InputOutput/$(am__dirstamp)
-	-rm -f Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Math/Algorithms/$(am__dirstamp)
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Math/Geometry/$(am__dirstamp)
-	-rm -f Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Math/Mesh/$(am__dirstamp)
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Math/Numbers/$(am__dirstamp)
-	-rm -f Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Math/Utility/$(am__dirstamp)
-	-rm -f Titania/OS/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/OS/$(am__dirstamp)
-	-rm -f Titania/RegEx/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/RegEx/$(am__dirstamp)
-	-rm -f Titania/String/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/String/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/$(am__dirstamp)" || rm -f $(current_dir)/Titania/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Basic/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Basic/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Basic/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Basic/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Chrono/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Chrono/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/Common/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/Common/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)" || rm -f $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Geospatial/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Geospatial/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/InputOutput/$(am__dirstamp)" || rm -f $(current_dir)/Titania/InputOutput/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Algorithms/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Algorithms/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Geometry/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Geometry/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Mesh/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Mesh/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Mesh/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Numbers/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Numbers/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Utility/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Math/Utility/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Math/Utility/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/OS/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/OS/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/OS/$(am__dirstamp)" || rm -f $(current_dir)/Titania/OS/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/RegEx/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/RegEx/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/RegEx/$(am__dirstamp)" || rm -f $(current_dir)/Titania/RegEx/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/String/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/String/$(am__dirstamp)" || rm -f $(current_dir)/Titania/String/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -1257,75 +1293,75 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f Titania/$(DEPDIR)/Backtrace.Plo
-	-rm -f Titania/Basic/$(DEPDIR)/Path.Plo
-	-rm -f Titania/Basic/$(DEPDIR)/URI.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/ClockBase.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/CountingClock.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/Now.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/StopWatch.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/SystemClock.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo
-	-rm -f Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo
-	-rm -f Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo
-	-rm -f Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo
-	-rm -f Titania/Geospatial/$(DEPDIR)/Geodetic.Plo
-	-rm -f Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/Character.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/InverseString.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/MultiString.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/QuotedString.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/Sequence.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/String.Plo
-	-rm -f Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo
-	-rm -f Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Box2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Box3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Line2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Line3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo
-	-rm -f Titania/Math/Mesh/$(DEPDIR)/Combine.Plo
-	-rm -f Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color3.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color4.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo
-	-rm -f Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo
-	-rm -f Titania/OS/$(DEPDIR)/find_data_file.Plo
-	-rm -f Titania/RegEx/$(DEPDIR)/regex_escape.Plo
-	-rm -f Titania/String/$(DEPDIR)/dtoa.Plo
-	-rm -f Titania/String/$(DEPDIR)/naturally_compare.Plo
-	-rm -f Titania/String/$(DEPDIR)/sprintf.Plo
-	-rm -f Titania/String/$(DEPDIR)/trim.Plo
+		-rm -f $(current_dir)/Titania/$(DEPDIR)/Backtrace.Plo
+	-rm -f $(current_dir)/Titania/Basic/$(DEPDIR)/Path.Plo
+	-rm -f $(current_dir)/Titania/Basic/$(DEPDIR)/URI.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/ClockBase.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/CountingClock.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/Now.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/StopWatch.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/SystemClock.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo
+	-rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo
+	-rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/Geodetic.Plo
+	-rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/Character.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseString.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiString.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/QuotedString.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/Sequence.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/String.Plo
+	-rm -f $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo
+	-rm -f $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo
+	-rm -f $(current_dir)/Titania/Math/Mesh/$(DEPDIR)/Combine.Plo
+	-rm -f $(current_dir)/Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color3.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color4.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo
+	-rm -f $(current_dir)/Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo
+	-rm -f $(current_dir)/Titania/OS/$(DEPDIR)/find_data_file.Plo
+	-rm -f $(current_dir)/Titania/RegEx/$(DEPDIR)/regex_escape.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/dtoa.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/naturally_compare.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/sprintf.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/trim.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1371,75 +1407,75 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f Titania/$(DEPDIR)/Backtrace.Plo
-	-rm -f Titania/Basic/$(DEPDIR)/Path.Plo
-	-rm -f Titania/Basic/$(DEPDIR)/URI.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/ClockBase.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/CountingClock.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/Now.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/StopWatch.Plo
-	-rm -f Titania/Chrono/$(DEPDIR)/SystemClock.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo
-	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo
-	-rm -f Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo
-	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo
-	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo
-	-rm -f Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo
-	-rm -f Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo
-	-rm -f Titania/Geospatial/$(DEPDIR)/Geodetic.Plo
-	-rm -f Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/Character.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/InverseString.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/MultiString.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/QuotedString.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/Sequence.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo
-	-rm -f Titania/InputOutput/$(DEPDIR)/String.Plo
-	-rm -f Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo
-	-rm -f Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Box2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Box3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Line2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Line3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo
-	-rm -f Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo
-	-rm -f Titania/Math/Mesh/$(DEPDIR)/Combine.Plo
-	-rm -f Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color3.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Color4.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo
-	-rm -f Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo
-	-rm -f Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo
-	-rm -f Titania/OS/$(DEPDIR)/find_data_file.Plo
-	-rm -f Titania/RegEx/$(DEPDIR)/regex_escape.Plo
-	-rm -f Titania/String/$(DEPDIR)/dtoa.Plo
-	-rm -f Titania/String/$(DEPDIR)/naturally_compare.Plo
-	-rm -f Titania/String/$(DEPDIR)/sprintf.Plo
-	-rm -f Titania/String/$(DEPDIR)/trim.Plo
+		-rm -f $(current_dir)/Titania/$(DEPDIR)/Backtrace.Plo
+	-rm -f $(current_dir)/Titania/Basic/$(DEPDIR)/Path.Plo
+	-rm -f $(current_dir)/Titania/Basic/$(DEPDIR)/URI.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/ClockBase.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/CountingClock.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/Now.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/StopWatch.Plo
+	-rm -f $(current_dir)/Titania/Chrono/$(DEPDIR)/SystemClock.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo
+	-rm -f $(current_dir)/Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo
+	-rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo
+	-rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/Geodetic.Plo
+	-rm -f $(current_dir)/Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/Character.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/InverseString.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/MultiString.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/QuotedString.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/Sequence.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/SingleLineComment.Plo
+	-rm -f $(current_dir)/Titania/InputOutput/$(DEPDIR)/String.Plo
+	-rm -f $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo
+	-rm -f $(current_dir)/Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Box3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Line3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle2.Plo
+	-rm -f $(current_dir)/Titania/Math/Geometry/$(DEPDIR)/Triangle3.Plo
+	-rm -f $(current_dir)/Titania/Math/Mesh/$(DEPDIR)/Combine.Plo
+	-rm -f $(current_dir)/Titania/Math/Mesh/$(DEPDIR)/NurbsTessellator.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color3.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Color4.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix2.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix3.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Matrix4.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Quaternion.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Rotation4.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector2.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector3.Plo
+	-rm -f $(current_dir)/Titania/Math/Numbers/$(DEPDIR)/Vector4.Plo
+	-rm -f $(current_dir)/Titania/Math/Utility/$(DEPDIR)/MatrixStack.Plo
+	-rm -f $(current_dir)/Titania/OS/$(DEPDIR)/find_data_file.Plo
+	-rm -f $(current_dir)/Titania/RegEx/$(DEPDIR)/regex_escape.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/dtoa.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/naturally_compare.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/sprintf.Plo
+	-rm -f $(current_dir)/Titania/String/$(DEPDIR)/trim.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

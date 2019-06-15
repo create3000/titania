@@ -131,10 +131,12 @@ am__DEPENDENCIES_1 =
 libtitania_stream_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libtitania_stream_la_OBJECTS = Titania/Stream/GZFilterBuf.lo \
-	Titania/Stream/GZStream.lo Titania/Stream/InputFileStream.lo \
-	Titania/Stream/InputUrlStream.lo \
-	Titania/Stream/UrlStreamBuf.lo
+am_libtitania_stream_la_OBJECTS =  \
+	$(current_dir)/Titania/Stream/GZFilterBuf.lo \
+	$(current_dir)/Titania/Stream/GZStream.lo \
+	$(current_dir)/Titania/Stream/InputFileStream.lo \
+	$(current_dir)/Titania/Stream/InputUrlStream.lo \
+	$(current_dir)/Titania/Stream/UrlStreamBuf.lo
 libtitania_stream_la_OBJECTS = $(am_libtitania_stream_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -155,11 +157,12 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo \
-	Titania/Stream/$(DEPDIR)/GZStream.Plo \
-	Titania/Stream/$(DEPDIR)/InputFileStream.Plo \
-	Titania/Stream/$(DEPDIR)/InputUrlStream.Plo \
-	Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo
+am__depfiles_remade =  \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/GZStream.Plo \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/InputFileStream.Plo \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/InputUrlStream.Plo \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -206,7 +209,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp \
-	$(top_srcdir)/mkinstalldirs ChangeLog
+	$(top_srcdir)/mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -377,15 +380,16 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+current_dir = $(shell pwd)
 lib_LTLIBRARIES = \
 	libtitania-stream.la
 
 libtitania_stream_la_SOURCES = \
-	Titania/Stream/GZFilterBuf.cpp \
-	Titania/Stream/GZStream.cpp \
-	Titania/Stream/InputFileStream.cpp \
-	Titania/Stream/InputUrlStream.cpp \
-	Titania/Stream/UrlStreamBuf.cpp
+	$(current_dir)/Titania/Stream/GZFilterBuf.cpp \
+	$(current_dir)/Titania/Stream/GZStream.cpp \
+	$(current_dir)/Titania/Stream/InputFileStream.cpp \
+	$(current_dir)/Titania/Stream/InputUrlStream.cpp \
+	$(current_dir)/Titania/Stream/UrlStreamBuf.cpp
 
 libtitania_stream_la_LIBADD = $(TITANIA_STREAM_LIBS) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la
@@ -461,39 +465,44 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-Titania/Stream/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Stream
-	@: > Titania/Stream/$(am__dirstamp)
-Titania/Stream/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Stream/$(DEPDIR)
-	@: > Titania/Stream/$(DEPDIR)/$(am__dirstamp)
-Titania/Stream/GZFilterBuf.lo: Titania/Stream/$(am__dirstamp) \
-	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
-Titania/Stream/GZStream.lo: Titania/Stream/$(am__dirstamp) \
-	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
-Titania/Stream/InputFileStream.lo: Titania/Stream/$(am__dirstamp) \
-	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
-Titania/Stream/InputUrlStream.lo: Titania/Stream/$(am__dirstamp) \
-	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
-Titania/Stream/UrlStreamBuf.lo: Titania/Stream/$(am__dirstamp) \
-	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Stream/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Stream
+	@: > $(current_dir)/Titania/Stream/$(am__dirstamp)
+$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/Stream/$(DEPDIR)
+	@: > $(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Stream/GZFilterBuf.lo:  \
+	$(current_dir)/Titania/Stream/$(am__dirstamp) \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Stream/GZStream.lo:  \
+	$(current_dir)/Titania/Stream/$(am__dirstamp) \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Stream/InputFileStream.lo:  \
+	$(current_dir)/Titania/Stream/$(am__dirstamp) \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Stream/InputUrlStream.lo:  \
+	$(current_dir)/Titania/Stream/$(am__dirstamp) \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Stream/UrlStreamBuf.lo:  \
+	$(current_dir)/Titania/Stream/$(am__dirstamp) \
+	$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
 
 libtitania-stream.la: $(libtitania_stream_la_OBJECTS) $(libtitania_stream_la_DEPENDENCIES) $(EXTRA_libtitania_stream_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) -rpath $(libdir) $(libtitania_stream_la_OBJECTS) $(libtitania_stream_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f Titania/Stream/*.$(OBJEXT)
-	-rm -f Titania/Stream/*.lo
+	-rm -f $(current_dir)/Titania/Stream/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/Stream/*.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/GZStream.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/InputFileStream.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/InputUrlStream.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Stream/$(DEPDIR)/GZStream.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Stream/$(DEPDIR)/InputFileStream.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Stream/$(DEPDIR)/InputUrlStream.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -529,8 +538,8 @@ mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
+	-rm -rf $(current_dir)/Titania/Stream/.libs $(current_dir)/Titania/Stream/_libs
 	-rm -rf .libs _libs
-	-rm -rf Titania/Stream/.libs Titania/Stream/_libs
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -650,8 +659,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f Titania/Stream/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Stream/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/Stream/$(am__dirstamp)" || rm -f $(current_dir)/Titania/Stream/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -662,11 +671,11 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/GZStream.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/InputFileStream.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/InputUrlStream.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo
+		-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/GZStream.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/InputFileStream.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/InputUrlStream.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -712,11 +721,11 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/GZStream.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/InputFileStream.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/InputUrlStream.Plo
-	-rm -f Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo
+		-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/GZStream.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/InputFileStream.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/InputUrlStream.Plo
+	-rm -f $(current_dir)/Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
