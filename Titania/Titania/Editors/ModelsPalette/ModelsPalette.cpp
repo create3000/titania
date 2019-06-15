@@ -130,10 +130,12 @@ ModelsPalette::set_bbox (X3D::Inline* const inlineNode,
 {
 	// Center and scale Inline depending on bbox in palette.
 
+	static constexpr auto inlineSize = X3D::Vector3d (1.8, 1.8, 1.8);
+
 	const auto bbox   = X3D::X3DBoundedObject::getBBox (inlineNode -> getInternalScene () -> getRootNodes ());
 	const auto size   = bbox .size ();
 	const auto center = bbox .center ();
-	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / maximum_norm (size);
+	const auto scale  = inlineSize / maximum_norm (size);
 
 	transform -> translation () = -center * scale;
 	transform -> scale ()       = scale;
