@@ -10,7 +10,7 @@ META "created" "Fri, 14 Jun 2019 09:09:33 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.6, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Sat, 15 Jun 2019 05:33:11 GMT"
+META "modified" "Sat, 15 Jun 2019 11:53:32 GMT"
 
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
@@ -28,9 +28,9 @@ EXTERNPROTO Yellow [
 "library/Colors.x3dv#Yellow"
 
 PROTO Word [
+  inputOutput SFTime   cycleInterval 1
   inputOutput MFString string [ ]
   inputOutput SFFloat  size 1
-  inputOutput SFFloat  speed 0
   inputOutput SFVec3f  minPosition 0 0 0
   inputOutput SFVec3f  maxPosition 0 0 0
 ]
@@ -61,30 +61,42 @@ PROTO Word [
   }
 
   DEF _1 TimeSensor {
+    cycleInterval IS cycleInterval
     loop TRUE
   }
 
+  DEF _2 PositionInterpolator {
+    key [
+      0,
+      1
+    ]
+    keyValue [
+      0 0 0,
+      0 0 0
+    ]
+  }
+
   DEF WordScript Script {
-    inputOnly   SFTime  set_time
-    inputOutput SFFloat speed IS speed
-    inputOutput SFVec3f minPosition IS minPosition
-    inputOutput SFVec3f maxPosition IS maxPosition
-    outputOnly  SFVec3f translation_changed
+    inputOutput    SFVec3f minPosition IS minPosition
+    inputOutput    SFVec3f maxPosition IS maxPosition
+    initializeOnly SFNode  interpolator USE _2
 
     url "ecmascript:
 
-function set_time (value, time)
+function initialize ()
 {
-	var
-		v = value * speed,
-		t = v - Math .floor (v);
+	processEvents ();
+}
 
-	translation_changed = minPosition .lerp (maxPosition, t);
+function processEvents ()
+{
+	interpolator .keyValue [0] = minPosition;
+	interpolator .keyValue [1] = maxPosition;
 }"
   }
 
-  ROUTE _1.time TO WordScript.set_time
-  ROUTE WordScript.translation_changed TO Text.set_translation
+  ROUTE _1.fraction_changed TO _2.set_fraction
+  ROUTE _2.value_changed TO Text.set_translation
 }
 
 WorldInfo {
@@ -104,7 +116,7 @@ WorldInfo {
       DEF Grid MetadataSet {
         name "Grid"
         reference "http://titania.create3000.de"
-        value DEF enabled_2 MetadataBoolean {
+        value DEF enabled_3 MetadataBoolean {
           name "enabled"
           reference "http://titania.create3000.de"
           value FALSE
@@ -122,7 +134,6 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value NULL
           }
         ]
       }
@@ -130,7 +141,7 @@ WorldInfo {
         name "BrowserPanel"
         reference "http://titania.create3000.de"
         value [
-          DEF type_3 MetadataString {
+          DEF type_4 MetadataString {
             name "type"
             reference "http://titania.create3000.de"
             value [
@@ -148,7 +159,7 @@ WorldInfo {
                 name "PerspectiveViewpoint"
                 reference "http://titania.create3000.de"
                 value [
-                  DEF position_4 MetadataDouble {
+                  DEF position_5 MetadataDouble {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
@@ -157,7 +168,7 @@ WorldInfo {
                       13.8524446487427
                     ]
                   }
-                  DEF orientation_5 MetadataDouble {
+                  DEF orientation_6 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
@@ -167,7 +178,7 @@ WorldInfo {
                       0.568941727555854
                     ]
                   }
-                  DEF centerOfRotation_6 MetadataDouble {
+                  DEF centerOfRotation_7 MetadataDouble {
                     name "centerOfRotation"
                     reference "http://titania.create3000.de"
                     value [
@@ -187,7 +198,7 @@ WorldInfo {
                 name "TopViewpoint"
                 reference "http://titania.create3000.de"
                 value [
-                  DEF position_7 MetadataDouble {
+                  DEF position_8 MetadataDouble {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
@@ -196,7 +207,7 @@ WorldInfo {
                       0
                     ]
                   }
-                  DEF orientation_8 MetadataDouble {
+                  DEF orientation_9 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
@@ -206,7 +217,7 @@ WorldInfo {
                       4.71238898038469
                     ]
                   }
-                  DEF centerOfRotation_9 MetadataDouble {
+                  DEF centerOfRotation_10 MetadataDouble {
                     name "centerOfRotation"
                     reference "http://titania.create3000.de"
                     value [
@@ -215,7 +226,7 @@ WorldInfo {
                       0.0937320149966475
                     ]
                   }
-                  DEF fieldOfViewScale_10 MetadataDouble {
+                  DEF fieldOfViewScale_11 MetadataDouble {
                     name "fieldOfViewScale"
                     reference "http://titania.create3000.de"
                     value 1.21023944190259
@@ -226,7 +237,7 @@ WorldInfo {
                 name "FrontViewpoint"
                 reference "http://titania.create3000.de"
                 value [
-                  DEF position_11 MetadataDouble {
+                  DEF position_12 MetadataDouble {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
@@ -235,7 +246,7 @@ WorldInfo {
                       10000
                     ]
                   }
-                  DEF orientation_12 MetadataDouble {
+                  DEF orientation_13 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
@@ -245,7 +256,7 @@ WorldInfo {
                       0
                     ]
                   }
-                  DEF centerOfRotation_13 MetadataDouble {
+                  DEF centerOfRotation_14 MetadataDouble {
                     name "centerOfRotation"
                     reference "http://titania.create3000.de"
                     value [
@@ -254,7 +265,7 @@ WorldInfo {
                       0
                     ]
                   }
-                  DEF fieldOfViewScale_14 MetadataDouble {
+                  DEF fieldOfViewScale_15 MetadataDouble {
                     name "fieldOfViewScale"
                     reference "http://titania.create3000.de"
                     value 1.212467484375
@@ -317,65 +328,65 @@ DEF Background Transform {
 DEF Words Group {
   children [
     Word {
+      cycleInterval 6.5
       string "WebGL"
       size 0.8
-      speed 0.15
       minPosition -13 4 0
       maxPosition 13 4 0
     }
     Word {
+      cycleInterval 6.8
       string "Interpolator"
       size 0.8
-      speed -0.07
-      minPosition -13 3 0
-      maxPosition 13 3 0
+      minPosition 13 3 0
+      maxPosition -13 3 0
     }
     Word {
+      cycleInterval 6.9
       string "Prototype"
       size 0.8
-      speed 0.13
       minPosition -13 2 0
       maxPosition 13 2 0
     }
     Word {
+      cycleInterval 7
       string "X3D"
       size 0.8
-      speed -0.19
-      minPosition -13 1 0
-      maxPosition 13 1 0
+      minPosition 13 1 0
+      maxPosition -13 1 0
     }
     Word {
+      cycleInterval 6.7
       string "Titania"
       size 0.8
-      speed 0.1
       minPosition -13 0 0
       maxPosition 13 0 0
     }
     Word {
+      cycleInterval 6.6
       string "Node"
       size 0.8
-      speed -0.17
-      minPosition -13 -1 0
-      maxPosition 13 -1 0
+      minPosition 13 -1 0
+      maxPosition -13 -1 0
     }
     Word {
+      cycleInterval 6.8
       string "Animation"
       size 0.8
-      speed 0.11
       minPosition -13 -2 0
       maxPosition 13 -2 0
     }
     Word {
+      cycleInterval 6.9
       string "Routing"
       size 0.8
-      speed -0.09
-      minPosition -13 -3 0
-      maxPosition 13 -3 0
+      minPosition 13 -3 0
+      maxPosition -13 -3 0
     }
     Word {
+      cycleInterval 7
       string "X_ITE"
       size 0.8
-      speed 0.06
       minPosition -13 -4 0
       maxPosition 13 -4 0
     }
@@ -384,7 +395,7 @@ DEF Words Group {
 
 DEF Logo Transform {
   translation -8.7184 3.55616 -1
-  rotation 9.89429134395476e-13 -3.6732055032918e-06 0.99999999999325 0.122293405880707
+  rotation -3.63685259147817e-18 3.67320512848233e-06 -0.999999999993254 1.12144818847558
   scale 1.24197 1.24197 1.24197
   scaleOrientation -5.32605534376168e-08 -2.65945631683307e-06 0.999999999996462 3.926990907819
   center 5.49817 -5.84809 0
@@ -410,10 +421,10 @@ DEF Logo Transform {
         DEF LogoAnimationTimer TimeSensor {
           cycleInterval 30
           loop TRUE
-          startTime 1560506539.68697
-          resumeTime 1560506525.4899
-          pauseTime 1560506525.28229
-          stopTime 1560506539.68697
+          startTime 1560599610.12243
+          resumeTime 1560599504.67474
+          pauseTime 1560599504.16432
+          stopTime 1560599610.12243
         }
         DEF RotationInterpolator OrientationInterpolator {
           metadata DEF Interpolator MetadataSet {

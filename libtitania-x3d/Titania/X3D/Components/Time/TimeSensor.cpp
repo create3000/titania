@@ -123,15 +123,12 @@ TimeSensor::initialize  ()
 void
 TimeSensor::setRange (const float currentFraction, const float firstFraction, const float lastFraction)
 {
-	fraction = currentFraction >= 1 ? 0 : currentFraction;
 	first    = firstFraction;
 	last     = lastFraction;
 	scale    = last - first;
-
-	const time_type offset = (fraction - first) * cycleInterval ();
-
 	interval = cycleInterval () * scale;
-	cycle    = getCurrentTime () - offset;
+	fraction = fract ((currentFraction >= 1 ? 0 : currentFraction) + (getCurrentTime () - startTime ()) / interval);
+	cycle    = getCurrentTime () - (fraction - first) * cycleInterval ();
 }
 
 void
@@ -156,6 +153,8 @@ TimeSensor::set_range ()
 void
 TimeSensor::set_start ()
 {
+	auto currentFraction = range () [0];
+
 	setRange (range () [0], range () [1], range () [2]);
 
 	fraction_changed () = range () [0];
@@ -169,7 +168,7 @@ TimeSensor::set_pause ()
 void
 TimeSensor::set_resume (const time_type pauseInterval)
 {
-	setRange (fraction, range () [1], range () [2]);
+	setRange (fract (fraction - (getCurrentTime () - startTime ()) / interval), range () [1], range () [2]);
 }
 
 void
