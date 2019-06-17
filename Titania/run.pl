@@ -10,7 +10,9 @@ use File::Basename qw (dirname);
 
 my $firstTime = 0;
 
-my @argv = @ARGV;
+my @argv = grep !/--first-time/, @ARGV;
+
+$SIG{__WARN__} = sub {}; # catch unkown options
 
 GetOptions ("first-time" => \$firstTime);
 
