@@ -10,6 +10,8 @@ use File::Basename qw (dirname);
 
 my $firstTime = 0;
 
+my @argv = @ARGV;
+
 GetOptions ("first-time" => \$firstTime);
 
 my $HOME         = $ENV{HOME};
@@ -36,7 +38,7 @@ delete $ENV {GDK_PIXBUF_MODULEDIR};
 
 my $dirname = dirname $0;
 
-system "$dirname/titania", @ARGV;
+system "$dirname/titania", @argv;
 
 if (-d "$HOME/.config/Titania.O")
 {

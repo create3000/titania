@@ -63,7 +63,7 @@ class CommandOptions :
 public:
 
 	CommandOptions (int & argc, char** & argv) :
-		Glib::OptionContext ("- Titania X3D Editor"),
+		 Glib::OptionContext ("- Titania X3D Editor"),
 		           filenames (),
 		       imageFilename (),
 		               width (300),
