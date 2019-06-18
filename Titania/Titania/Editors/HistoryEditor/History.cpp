@@ -215,6 +215,7 @@ History::History () :
 			setItem ("ArcClose2D",                   "http://media.create3000.de/components/Geometry2D/ArcClose2D/ArcClose2D.x3d");
 			setItem ("Arc2D",                        "http://media.create3000.de/components/Geometry2D/Arc2D/Arc2D.x3d");
 			setItem ("ScalarChaser",                 "http://media.create3000.de/components/Followers/ScalarChaser/ScalarChaser.x3d");
+			setItem ("CoordinateChaser",             "http://media.create3000.de/components/Followers/CoordinateChaser/CoordinateChaser.x3d");
 			setItem ("ColorDamper",                  "http://media.create3000.de/components/Followers/ColorDamper/ColorDamper.x3d");
 			setItem ("ColorChaser",                  "http://media.create3000.de/components/Followers/ColorChaser/ColorChaser.x3d");
 			setItem ("IntegerSequencer",             "http://media.create3000.de/components/EventUtilities/IntegerSequencer/IntegerSequencer.x3d");
