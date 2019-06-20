@@ -153,11 +153,9 @@ TimeSensor::set_range ()
 void
 TimeSensor::set_start ()
 {
-	auto currentFraction = range () [0];
-
 	setRange (range () [0], range () [1], range () [2]);
 
-	fraction_changed () = range () [0];
+	fraction_changed () = fraction;
 	time ()             = getCurrentTime ();
 }
 

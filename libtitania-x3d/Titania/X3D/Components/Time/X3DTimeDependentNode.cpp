@@ -304,7 +304,6 @@ X3DTimeDependentNode::do_start ()
 		}
 
 		elapsedTime () = 0;
-		cycleTime ()   = getCurrentTime ();
 	}
 }
 
