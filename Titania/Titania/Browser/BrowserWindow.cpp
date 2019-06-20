@@ -206,6 +206,10 @@ BrowserWindow::initialize ()
 	getAngleGridTool ()       -> getEnabled () .addInterest (&BrowserWindow::set_angle_grid_visible,       this);
 	getAxonometricGridTool () -> getEnabled () .addInterest (&BrowserWindow::set_axonometric_grid_visible, this);
 
+	set_grid_visible ();
+	set_angle_grid_visible ();
+	set_axonometric_grid_visible ();
+
 	// Window
 
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
