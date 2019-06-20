@@ -321,12 +321,13 @@ X3DOutlineTreeView::expand_row (const Gtk::TreePath & path, const bool open_all,
 		disable_shift_key ();
 		collapse_row (path);
 		enable_shift_key ();
-		return;
 	}
-
-	disable_shift_key ();
-	expand_row (path, open_all);
-	enable_shift_key ();
+	else
+	{
+		disable_shift_key ();
+		expand_row (path, open_all);
+		enable_shift_key ();
+	}
 }
 
 void
@@ -674,7 +675,7 @@ X3DOutlineTreeView::reopen_objects (const Gtk::TreeIter & parent, std::map <size
 	{
 		const auto id    = get_reopen_id (parent);
 		auto &     tuple = opened .at (id);
-	
+
 		if (-- std::get <0> (tuple) == 0)
 		{
 			if (std::get <1> (tuple))
@@ -771,10 +772,10 @@ X3DOutlineTreeView::select_node (const Gtk::TreeIter & iter, const Gtk::TreePath
 
 				if (not localNode)
 					break;
-	
+
 				if (get_scene (localNode -> getExecutionContext ()) not_eq get_scene (get_execution_context ()))
 					break;
-	
+
 				if (localNode -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					break;
 
@@ -1051,7 +1052,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeIter & iter)
 			{
 				const auto executionContext = urlObject -> getExecutionContext ();
 
-				switch (urlObject -> checkLoadState ()) 
+				switch (urlObject -> checkLoadState ())
 				{
 					case X3D::NOT_STARTED_STATE:
 					{
