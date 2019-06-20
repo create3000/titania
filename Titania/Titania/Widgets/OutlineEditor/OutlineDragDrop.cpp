@@ -355,6 +355,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 		if (sourcePath == destinationPath)
 			return false;
 
+		const auto   iter       = treeView -> get_model () -> get_iter (sourcePath);
+		const auto & sourceNode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+
 		// Drag on field
 
 		switch (position)
@@ -424,6 +427,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 
 				const auto & destNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 				const auto   destContext = destNode -> getExecutionContext ();
+
+				if (sourceNode == destNode)
+					return false;
 
 				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
