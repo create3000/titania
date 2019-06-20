@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -252,14 +252,6 @@ protected:
 	get_alt_key ();
 
 	void
-	disable_shift_key ()
-	{ ++ expandLevel; }
-
-	void
-	enable_shift_key ()
-	{ -- expandLevel; }
-
-	void
 	get_opened_objects (const Gtk::TreeIter & parent, std::map <size_t,  std::tuple <size_t, bool, OutlineExpanded>> & opened);
 
 	void
@@ -285,7 +277,7 @@ private:
 
 	Gtk::TreePath
 	get_open_path (const Gtk::TreeIter &) const;
-	
+
 	X3D::X3DScene*
 	get_scene (X3D::X3DExecutionContext* const executionContext) const;
 
@@ -342,6 +334,14 @@ private:
 
 	void
 	auto_expand (const Gtk::TreeIter & parent);
+
+	void
+	disable_shift_key ()
+	{ ++ expandLevel; }
+
+	void
+	enable_shift_key ()
+	{ -- expandLevel; }
 
 	///  @name Members
 
