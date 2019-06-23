@@ -126,12 +126,12 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::BrowserPtr & browser, X3DOu
 	{
 		try
 		{
-			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field .second -> getTypeName () + ".svg"));
+			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field .second -> getTypeName () + ".png"));
 		}
 		catch (const std::exception &)
 		{
 			// TODO: make image.
-			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/Unkown.svg"));
+			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/Unkown.png"));
 		}
 	}
 
@@ -385,7 +385,7 @@ OutlineCellRenderer::get_icon () const
 			{
 				if (node -> isInitialized () and not node -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 					return baseNodeImage;
-				
+
 				return baseNodeUImage;
 			}
 
@@ -951,7 +951,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					x += r + ACCESS_TYPE_X_PAD;
 
 					const X3D::Box2f box (X3D::Vector2f (r * 2, r * 2), X3D::Vector2f (x, y + height / 2));
-			
+
 					if (box .intersects (point))
 						return OutlineCellContent::COLOR;
 
@@ -1231,7 +1231,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 				{
 					case X3D::X3DConstants::SFColor:
 					{
-						const auto & color = *static_cast <X3D::SFColor*> (field); 
+						const auto & color = *static_cast <X3D::SFColor*> (field);
 						const double r     = ACCESS_TYPE_RADIUS;
 						const double xc    = x + ACCESS_TYPE_X_PAD + r;
 						const double yc    = y + (height - minimum_height) / 2 + r;
@@ -1264,7 +1264,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 					}
 					case X3D::X3DConstants::SFColorRGBA:
 					{
-						const auto & color = *static_cast <X3D::SFColorRGBA*> (field); 
+						const auto & color = *static_cast <X3D::SFColorRGBA*> (field);
 						const double r     = ACCESS_TYPE_RADIUS;
 						const double xc    = x + ACCESS_TYPE_X_PAD + r;
 						const double yc    = y + (height - minimum_height) / 2 + r;
@@ -1356,7 +1356,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi_2 <double>);
 					context -> rel_line_to (FIELD_WIDTH - radius, 0);
 					context -> rel_line_to (0, -field_height + 1);
-		
+
 					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 					context -> fill ();
 				}
@@ -1372,7 +1372,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi_2 <double>, pi3_2 <double>);
 					context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
 					context -> rel_line_to (0, field_height);
-		
+
 					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 					context -> fill ();
 				}
@@ -1387,7 +1387,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi_2 <double>);
 					context -> rel_line_to (FIELD_WIDTH - radius, 0);
 					context -> rel_line_to (0, -field_height + 1);
-		
+
 					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 					context -> fill ();
 				}
@@ -1402,7 +1402,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi_2 <double>, pi3_2 <double>);
 					context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
 					context -> rel_line_to (0, field_height);
-		
+
 					//context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
 					context -> fill ();
 				}
@@ -1503,7 +1503,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		{
 			const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 			context -> move_to (input_x, input_y);
 			context -> line_to (input_x + input_w, input_y);
 			context -> stroke ();
@@ -1517,10 +1517,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			{
 				const auto & c = selected_above ? selectedColor : foregroundColor;
 				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 				context -> begin_new_sub_path ();
 				context -> arc (input_x + input_w, input_y - radius, radius, 0, pi_2 <double>);
-	
+
 				context -> move_to (connector_x, y);
 				context -> line_to (connector_x, input_y - radius);
 				context -> stroke ();
@@ -1535,10 +1535,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			{
 				const auto & c = selected_below ? selectedColor : foregroundColor;
 				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 				context -> begin_new_sub_path ();
 				context -> arc (input_x + input_w, input_y + radius, radius, pi3_2 <double>, pi2 <double>);
-	
+
 				context -> move_to (connector_x, input_y + radius);
 				context -> line_to (connector_x, y + height);
 				context -> stroke ();
@@ -1559,7 +1559,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		{
 			const auto & c = selected_above or selected_below ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 			context -> move_to (output_x, output_y);
 			context -> line_to (output_x + output_w, output_y);
 			context -> stroke ();
@@ -1573,10 +1573,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			{
 				const auto & c = selected_above ? selectedColor : foregroundColor;
 				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 				context -> begin_new_sub_path ();
 				context -> arc (output_x + output_w, output_y - radius, radius, 0, pi_2 <double>);
-	
+
 				context -> move_to (connector_x, y);
 				context -> line_to (connector_x, output_y - radius);
 				context -> stroke ();
@@ -1591,10 +1591,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			{
 				const auto & c = selected_below ? selectedColor : foregroundColor;
 				context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 				context -> begin_new_sub_path ();
 				context -> arc (output_x + output_w, output_y + radius, radius, pi3_2 <double>, pi2 <double>);
-	
+
 				context -> move_to (connector_x, output_y + radius);
 				context -> line_to (connector_x, y + height);
 				context -> stroke ();
@@ -1610,12 +1610,12 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		{
 			const double cy     = (input_y + output_y) / 2;
 			const double radius = (input_y + output_y) / 2 - input_y;
-	
+
 			context -> set_source_rgba (selectedColor .get_red (), selectedColor .get_green (), selectedColor .get_blue (), selectedColor .get_alpha ());
-	
+
 			context -> move_to (input_x, input_y);
 			context -> line_to (output_x, input_y);
-	
+
 			context -> begin_new_sub_path ();
 			context -> arc (output_x, cy, radius, pi3_2 <double>, pi_2 <double>);
 			context -> stroke ();
@@ -1632,7 +1632,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		{
 			const auto & c = selected_routed ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
-	
+
 			context -> move_to (connector_x, y - 2 * selected);
 			context -> line_to (connector_x, y + height);
 			context -> stroke ();
