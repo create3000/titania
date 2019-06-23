@@ -57,9 +57,8 @@ namespace titania {
 namespace X3D {
 
 X3DSoundSourceNode::Fields::Fields () :
-	         enabled (new SFBool (true)),
+	         enabled (true),
 	     description (new SFString ()),
-	           speed (new SFFloat (1)),
 	           pitch (new SFFloat (1)),
 	        isActive (new SFBool ()),
 	duration_changed (new SFTime (-1))
@@ -75,7 +74,8 @@ X3DSoundSourceNode::X3DSoundSourceNode (const bool video) :
 {
 	addType (X3DConstants::X3DSoundSourceNode);
 
-	addChildObjects (end);
+	addChildObjects (enabled (),
+	                 end);
 }
 
 void
@@ -245,7 +245,6 @@ X3DSoundSourceNode::set_end ()
 			// The event order below is very important.
 
 			elapsedTime () = getElapsedTime ();
-			cycleTime ()   = getCurrentTime ();
 		}
 		else
 		{

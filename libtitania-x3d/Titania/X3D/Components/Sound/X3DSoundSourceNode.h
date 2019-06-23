@@ -78,12 +78,12 @@ public:
 	virtual
 	SFBool &
 	enabled () final override
-	{ return *fields .enabled; }
+	{ return fields .enabled; }
 
 	virtual
 	const SFBool &
 	enabled () const final override
-	{ return *fields .enabled; }
+	{ return fields .enabled; }
 
 	SFString &
 	description ()
@@ -93,13 +93,13 @@ public:
 	description () const
 	{ return *fields .description; }
 
+	virtual
 	SFFloat &
-	speed ()
-	{ return *fields .speed; }
+	speed () = 0;
 
+	virtual
 	const SFFloat &
-	speed () const
-	{ return *fields .speed; }
+	speed () const = 0;
 
 	SFFloat &
 	pitch ()
@@ -159,7 +159,7 @@ protected:
 
 	void
 	setMedia (const bool value);
-	
+
 	///  @name Event handlers
 
 	virtual
@@ -202,21 +202,22 @@ private:
 	void
 	on_duration_changed ();
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
 		Fields ();
 
-		SFBool* const enabled;
+		SFBool enabled;
 		SFString* const description;
-		SFFloat* const speed;
 		SFFloat* const pitch;
 		SFBool* const isActive;
 		SFTime* const duration_changed;
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	SFTime                        end;
 	std::unique_ptr <MediaStream> mediaStream;

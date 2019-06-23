@@ -142,11 +142,17 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 			case 1:
 			{
 				soundSourceNode = audioClip;
+
+				getSoundSourceSpeedLabel ()      .set_visible (false);
+				getSoundSourceSpeedSpinButton () .set_visible (false);
 				break;
 			}
 			case 2:
 			{
 				soundSourceNode = movieTexture;
+
+				getSoundSourceSpeedLabel ()      .set_visible (true);
+				getSoundSourceSpeedSpinButton () .set_visible (true);
 				break;
 			}
 			default:
@@ -262,12 +268,16 @@ X3DSoundSourceNodeEditor::set_node ()
 		{
 			case X3D::X3DConstants::AudioClip:
 			{
-				getSoundSourceComboBoxText () .set_active (1);
+				getSoundSourceComboBoxText ()    .set_active (1);
+				getSoundSourceSpeedLabel ()      .set_visible (false);
+				getSoundSourceSpeedSpinButton () .set_visible (false);
 				break;
 			}
 			case X3D::X3DConstants::MovieTexture:
 			{
-				getSoundSourceComboBoxText () .set_active (2);
+				getSoundSourceComboBoxText ()    .set_active (2);
+				getSoundSourceSpeedLabel ()      .set_visible (true);
+				getSoundSourceSpeedSpinButton () .set_visible (true);
 				break;
 			}
 			default:

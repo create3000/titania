@@ -349,6 +349,10 @@ public:
 	getSoundSourceURLReloadButton () const
 	{ return *m_SoundSourceURLReloadButton; }
 
+	Gtk::Label &
+	getSoundSourceSpeedLabel () const
+	{ return *m_SoundSourceSpeedLabel; }
+
 	Gtk::SpinButton &
 	getSoundSourceSpeedSpinButton () const
 	{ return *m_SoundSourceSpeedSpinButton; }
@@ -504,6 +508,7 @@ private:
 	Gtk::Button* m_SoundSourceURLAddButton;
 	Gtk::Button* m_SoundSourceURLRemoveButton;
 	Gtk::Button* m_SoundSourceURLReloadButton;
+	Gtk::Label* m_SoundSourceSpeedLabel;
 	Gtk::SpinButton* m_SoundSourceSpeedSpinButton;
 	Gtk::SpinButton* m_SoundSourcePitchSpinButton;
 	Gtk::ToggleButton* m_SoundSourceLoopToggleButton;

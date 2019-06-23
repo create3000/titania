@@ -62,12 +62,17 @@ const Component   MovieTexture::component      = Component ("Texturing", 3);
 const std::string MovieTexture::typeName       = "MovieTexture";
 const std::string MovieTexture::containerField = "texture";
 
+MovieTexture::Fields::Fields () :
+	speed (new SFFloat (1))
+{ }
+
 MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DTexture2DNode (),
 	X3DSoundSourceNode (true),
 	      X3DUrlObject (),
 	   sigc::trackable (),
+	            fields (),
 	            buffer (),
 	          urlStack (),
 	               URL ()
@@ -75,7 +80,6 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::MovieTexture);
 
 	addField (inputOutput,    "metadata",          metadata ());
-	addField (inputOutput,    "enabled",           enabled ());     // non standard
 	addField (inputOutput,    "description",       description ());
 	addField (inputOutput,    "url",               url ());
 	addField (inputOutput,    "speed",             speed ());
@@ -87,7 +91,6 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "stopTime",          stopTime ());
 	addField (outputOnly,     "isPaused",          isPaused ());
 	addField (outputOnly,     "isActive",          isActive ());
-	addField (outputOnly,     "cycleTime",         cycleTime ());   // non standard
 	addField (outputOnly,     "elapsedTime",       elapsedTime ());
 	addField (outputOnly,     "duration_changed",  duration_changed ());
 	addField (initializeOnly, "repeatS",           repeatS ());

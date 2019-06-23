@@ -65,7 +65,6 @@ X3DTimeDependentNode::Fields::Fields () :
 	  pauseTime (new SFTime ()),
 	   stopTime (new SFTime ()),
 	   isPaused (new SFBool ()),
-	  cycleTime (new SFTime ()),
 	elapsedTime (new SFTime ())
 { }
 

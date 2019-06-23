@@ -95,6 +95,18 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Fields
+
+	virtual
+	SFFloat &
+	speed () final override
+	{ return *fields .speed; }
+
+	virtual
+	const SFFloat &
+	speed () const final override
+	{ return *fields .speed; }
+
 	///  @name Member access
 
 	virtual
@@ -103,7 +115,7 @@ public:
 	{ return X3DUrlObject::checkLoadState (); }
 
 	///  @name Operations
-	
+
 	virtual
 	void
 	requestImmediateLoad () final override;
@@ -162,6 +174,17 @@ private:
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const speed;
+	};
+
+	Fields fields;
 
 	///  @name Members
 

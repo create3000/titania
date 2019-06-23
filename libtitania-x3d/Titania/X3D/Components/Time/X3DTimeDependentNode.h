@@ -64,13 +64,13 @@ class X3DTimeDependentNode :
 public:
 
 	///  @name Construction
-	
+
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext) override;
 
 	///  @name Fields
-	
+
 	virtual
 	SFBool &
 	enabled () = 0;
@@ -136,14 +136,6 @@ public:
 	isActive () const = 0;
 
 	SFTime &
-	cycleTime ()
-	{ return *fields .cycleTime; }
-
-	const SFTime &
-	cycleTime () const
-	{ return *fields .cycleTime; }
-
-	SFTime &
 	elapsedTime ()
 	{ return *fields .elapsedTime; }
 
@@ -152,7 +144,7 @@ public:
 	{ return *fields .elapsedTime; }
 
 	///  @name Member access
-	
+
 	const SFBool &
 	isEvenLive () const
 	{ return evenLive; }
@@ -162,7 +154,7 @@ public:
 	{ evenLive = value; }
 
 	///  @name Destruction
-	
+
 	virtual
 	void
 	dispose () override;
@@ -171,7 +163,7 @@ public:
 protected:
 
 	///  @name Construction
-	
+
 	X3DTimeDependentNode ();
 
 	time_type
@@ -185,7 +177,7 @@ protected:
 
 	bool
 	getLive () const;
-	
+
 	///  @name Event handling
 
 	void
@@ -257,7 +249,7 @@ private:
 
 	void
 	do_pause ();
-	
+
 	void
 	do_stop ();
 
@@ -271,7 +263,7 @@ private:
 
 	void
 	removeTimeouts ();
-	
+
 	///  @name Members
 
 	struct Fields
@@ -284,12 +276,11 @@ private:
 		SFTime* const pauseTime;
 		SFTime* const stopTime;
 		SFBool* const isPaused;
-		SFTime* const cycleTime;
 		SFTime* const elapsedTime;
 	};
 
 	Fields fields;
-	
+
 	SFTime    initialized;
 	time_type startTimeValue;
 	time_type resumeTimeValue;

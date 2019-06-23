@@ -115,6 +115,14 @@ public:
 	range () const
 	{ return fields .range; }
 
+	SFTime &
+	cycleTime ()
+	{ return *fields .cycleTime; }
+
+	const SFTime &
+	cycleTime () const
+	{ return *fields .cycleTime; }
+
 	SFFloat &
 	fraction_changed ()
 	{ return *fields .fraction_changed; }
@@ -205,6 +213,7 @@ private:
 
 		SFTime* const cycleInterval;
 		MFFloat range;
+		SFTime* const cycleTime;
 		SFFloat* const fraction_changed;
 		SFTime* const time;
 	};

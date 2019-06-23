@@ -61,10 +61,15 @@ const Component   AudioClip::component      = Component ("Sound", 1);
 const std::string AudioClip::typeName       = "AudioClip";
 const std::string AudioClip::containerField = "source";
 
+AudioClip::Fields::Fields () :
+	speed (1)
+{ }
+
 AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSoundSourceNode (false),
 	      X3DUrlObject (),
+               fields (),
 	            buffer (),
 	          urlStack (),
 	               URL ()
@@ -72,10 +77,8 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::AudioClip);
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "enabled",          enabled ());             // non standard
 	addField (inputOutput, "description",      description ());
 	addField (inputOutput, "url",              url ());
-	addField (inputOutput, "speed",            speed ());               // non standard
 	addField (inputOutput, "pitch",            pitch ());
 	addField (inputOutput, "loop",             loop ());
 	addField (inputOutput, "startTime",        startTime ());
@@ -84,11 +87,11 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "stopTime",         stopTime ());
 	addField (outputOnly,  "isPaused",         isPaused ());
 	addField (outputOnly,  "isActive",         isActive ());
-	addField (outputOnly,  "cycleTime",        cycleTime ());           // non standard
 	addField (outputOnly,  "elapsedTime",      elapsedTime ());
 	addField (outputOnly,  "duration_changed", duration_changed ());
 
-	addChildObjects (buffer);
+	addChildObjects (speed (),
+	                 buffer);
 }
 
 X3DBaseNode*

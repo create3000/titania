@@ -69,6 +69,7 @@ const std::string TimeSensor::containerField = "children";
 TimeSensor::Fields::Fields () :
 	   cycleInterval (new SFTime (1)),
 	           range ({ 0, 0, 1 }),     // current, first, last (in fractions)
+	       cycleTime (new SFTime ()),
 	fraction_changed (new SFFloat ()),
 	            time (new SFTime ())
 { }

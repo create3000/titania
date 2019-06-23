@@ -145,6 +145,7 @@ X3DSoundEditorInterface::create ()
 	m_builder -> get_widget ("SoundSourceURLAddButton", m_SoundSourceURLAddButton);
 	m_builder -> get_widget ("SoundSourceURLRemoveButton", m_SoundSourceURLRemoveButton);
 	m_builder -> get_widget ("SoundSourceURLReloadButton", m_SoundSourceURLReloadButton);
+	m_builder -> get_widget ("SoundSourceSpeedLabel", m_SoundSourceSpeedLabel);
 	m_builder -> get_widget ("SoundSourceSpeedSpinButton", m_SoundSourceSpeedSpinButton);
 	m_builder -> get_widget ("SoundSourcePitchSpinButton", m_SoundSourcePitchSpinButton);
 	m_builder -> get_widget ("SoundSourceLoopToggleButton", m_SoundSourceLoopToggleButton);
