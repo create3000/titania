@@ -88,6 +88,17 @@ public:
 
 	virtual
 	MFInt32 &
+	set_index ()
+	{ return *fields .set_index; }
+
+	virtual
+	const MFInt32 &
+	set_index () const
+	{ return *fields .set_index; }
+
+
+	virtual
+	MFInt32 &
 	index ()
 	{ return *fields .index; }
 
@@ -105,6 +116,13 @@ public:
 	virtual
 	SFNode
 	toPrimitive () const override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
@@ -131,6 +149,7 @@ private:
 	{
 		Fields ();
 
+		MFInt32* const set_index;
 		MFInt32* const index;
 	};
 

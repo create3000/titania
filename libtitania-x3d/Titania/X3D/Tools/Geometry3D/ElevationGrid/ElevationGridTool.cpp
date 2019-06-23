@@ -95,7 +95,7 @@ ElevationGridTool::set_transform_tools ()
 
 	xSpacing () .addInterest (&ElevationGridTool::set_xSpacing, this);
 	zSpacing () .addInterest (&ElevationGridTool::set_zSpacing, this);
-	height ()   .addInterest (&ElevationGridTool::set_height,   this);
+	height ()   .addInterest (&ElevationGridTool::set_height_,  this);
 
 	transformTool -> scaleXBackAxis ()  = false;
 	transformTool -> scaleZBackAxis ()  = false;
@@ -104,7 +104,7 @@ ElevationGridTool::set_transform_tools ()
 
 	set_xSpacing ();
 	set_zSpacing ();
-	set_height ();
+	set_height_ ();
 }
 
 void
@@ -136,7 +136,7 @@ ElevationGridTool::set_zSpacing ()
 }
 
 void
-ElevationGridTool::set_height ()
+ElevationGridTool::set_height_ ()
 {
 	const auto & transformTool = getTransformTools () [0];
 
@@ -183,7 +183,7 @@ ElevationGridTool::set_yScale (const float yScale)
 	{
 		const auto & transformTool = getTransformTools () [0];
 
-		height () .removeInterest (&ElevationGridTool::set_height, this);
+		height () .removeInterest (&ElevationGridTool::set_height_,  this);
 		height () .addInterest (&ElevationGridTool::connectHeight, this);
 
 		const auto center    = transformTool -> translation () .getY ();
@@ -215,7 +215,7 @@ void
 ElevationGridTool::connectHeight (const MFFloat & field)
 {
 	field .removeInterest (&ElevationGridTool::connectHeight, this);
-	field .addInterest (&ElevationGridTool::set_height, this);
+	field .addInterest (&ElevationGridTool::set_height_, this);
 }
 
 void
@@ -261,7 +261,7 @@ ElevationGridTool::endUndo (const UndoStepPtr & undoStep)
 		transformTool -> addInterest (&ElevationGridTool::connectScale, this);
 
 		auto scale = transformTool -> getMatrix () .mult_dir_matrix (Vector3d (1, 1, 1));
-		
+
 		scale .y (std::abs (scale .y ()));
 
 		transformTool -> rotation () = Rotation4d ();

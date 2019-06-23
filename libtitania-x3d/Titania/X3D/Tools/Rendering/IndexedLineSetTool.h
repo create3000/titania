@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,6 +68,26 @@ public:
 	IndexedLineSetTool (X3DBaseNode* const node);
 
 	///  @name Fields
+
+	virtual
+	MFInt32 &
+	set_colorIndex () final override
+	{ return getNode <IndexedLineSet> () -> set_colorIndex (); }
+
+	virtual
+	const MFInt32 &
+	set_colorIndex () const final override
+	{ return getNode <IndexedLineSet> () -> set_colorIndex (); }
+
+	virtual
+	MFInt32 &
+	set_coordIndex () final override
+	{ return getNode <IndexedLineSet> () -> set_coordIndex (); }
+
+	virtual
+	const MFInt32 &
+	set_coordIndex () const final override
+	{ return getNode <IndexedLineSet> () -> set_coordIndex (); }
 
 	virtual
 	SFBool &

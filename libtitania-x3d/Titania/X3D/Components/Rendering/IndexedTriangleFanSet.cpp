@@ -61,7 +61,8 @@ const std::string IndexedTriangleFanSet::typeName       = "IndexedTriangleFanSet
 const std::string IndexedTriangleFanSet::containerField = "geometry";
 
 IndexedTriangleFanSet::Fields::Fields () :
-	index (new MFInt32 ())
+	set_index (new MFInt32 ()),
+	    index (new MFInt32 ())
 { }
 
 IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executionContext) :
@@ -74,12 +75,14 @@ IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executi
 
 	addField (inputOutput,    "metadata",        metadata ());
 
+	addField (inputOnly,      "set_index",       set_index ());
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
-	addField (inputOutput,    "index",           index ());
+	addField (initializeOnly, "index",           index ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
@@ -100,13 +103,14 @@ IndexedTriangleFanSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	index () .addInterest (&IndexedTriangleFanSet::set_index, this);
+	set_index () .addInterest (index ());
+	index ()     .addInterest (&IndexedTriangleFanSet::set_index_, this);
 
-	set_index ();
+	set_index_ ();
 }
 
 void
-IndexedTriangleFanSet::set_index ()
+IndexedTriangleFanSet::set_index_ ()
 {
 	// Build coordIndex
 

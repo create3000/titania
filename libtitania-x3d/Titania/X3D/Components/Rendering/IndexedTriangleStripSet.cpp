@@ -61,7 +61,8 @@ const std::string IndexedTriangleStripSet::typeName       = "IndexedTriangleStri
 const std::string IndexedTriangleStripSet::containerField = "geometry";
 
 IndexedTriangleStripSet::Fields::Fields () :
-	index (new MFInt32 ())
+	set_index (new MFInt32 ()),
+	    index (new MFInt32 ())
 { }
 
 IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const executionContext) :
@@ -74,12 +75,14 @@ IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const exe
 
 	addField (inputOutput,    "metadata",        metadata ());
 
+	addField (inputOnly,      "set_index",       set_index ());
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
-	addField (inputOutput,    "index",           index ());
+	addField (initializeOnly, "index",           index ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
@@ -100,13 +103,14 @@ IndexedTriangleStripSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	index () .addInterest (&IndexedTriangleStripSet::set_index, this);
+	set_index () .addInterest (index ());
+	index ()     .addInterest (&IndexedTriangleStripSet::set_index_, this);
 
-	set_index ();
+	set_index_ ();
 }
 
 void
-IndexedTriangleStripSet::set_index ()
+IndexedTriangleStripSet::set_index_ ()
 {
 	// Build coordIndex
 
@@ -115,7 +119,7 @@ IndexedTriangleStripSet::set_index ()
 	for (size_t i = 0, size = index () .size (); i < size; ++ i)
 	{
 		int32_t first = index () [i];
-		
+
 		if (first < 0)
 			continue;
 
@@ -124,7 +128,7 @@ IndexedTriangleStripSet::set_index ()
 		if (i < size)
 		{
 			int32_t second = index () [i];
-		
+
 			if (second < 0)
 				continue;
 

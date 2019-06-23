@@ -66,6 +66,46 @@ public:
 	///  @name Fields
 
 	virtual
+	MFInt32 &
+	set_colorIndex () final override
+	{ return getNode <IndexedFaceSet> () -> set_colorIndex (); }
+
+	virtual
+	const MFInt32 &
+	set_colorIndex () const final override
+	{ return getNode <IndexedFaceSet> () -> set_colorIndex (); }
+
+	virtual
+	MFInt32 &
+	set_texCoordIndex () final override
+	{ return getNode <IndexedFaceSet> () -> set_texCoordIndex (); }
+
+	virtual
+	const MFInt32 &
+	set_texCoordIndex () const final override
+	{ return getNode <IndexedFaceSet> () -> set_texCoordIndex (); }
+
+	virtual
+	MFInt32 &
+	set_normalIndex () final override
+	{ return getNode <IndexedFaceSet> () -> set_normalIndex (); }
+
+	virtual
+	const MFInt32 &
+	set_normalIndex () const final override
+	{ return getNode <IndexedFaceSet> () -> set_normalIndex (); }
+
+	virtual
+	MFInt32 &
+	set_coordIndex () final override
+	{ return getNode <IndexedFaceSet> () -> set_coordIndex (); }
+
+	virtual
+	const MFInt32 &
+	set_coordIndex () const final override
+	{ return getNode <IndexedFaceSet> () -> set_coordIndex (); }
+
+	virtual
 	SFBool &
 	convex () final override
 	{ return getNode <IndexedFaceSet> () -> convex (); }
@@ -87,16 +127,6 @@ public:
 
 	virtual
 	MFInt32 &
-	texCoordIndex () final override
-	{ return getNode <IndexedFaceSet> () -> texCoordIndex (); }
-
-	virtual
-	const MFInt32 &
-	texCoordIndex () const final override
-	{ return getNode <IndexedFaceSet> () -> texCoordIndex (); }
-
-	virtual
-	MFInt32 &
 	colorIndex () final override
 	{ return getNode <IndexedFaceSet> () -> colorIndex (); }
 
@@ -104,6 +134,16 @@ public:
 	const MFInt32 &
 	colorIndex () const final override
 	{ return getNode <IndexedFaceSet> () -> colorIndex (); }
+
+	virtual
+	MFInt32 &
+	texCoordIndex () final override
+	{ return getNode <IndexedFaceSet> () -> texCoordIndex (); }
+
+	virtual
+	const MFInt32 &
+	texCoordIndex () const final override
+	{ return getNode <IndexedFaceSet> () -> texCoordIndex (); }
 
 	virtual
 	MFInt32 &
@@ -176,12 +216,12 @@ public:
 	void
 	addColorIndex () final override
 	{ getNode <IndexedFaceSet> () -> addColorIndex (); }
-	
+
 	virtual
 	void
 	addTexCoordIndex () final override
 	{ getNode <IndexedFaceSet> () -> addTexCoordIndex (); }
-	
+
 	virtual
 	void
 	addNormalIndex () final override

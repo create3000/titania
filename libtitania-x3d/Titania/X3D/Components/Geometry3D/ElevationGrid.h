@@ -92,6 +92,16 @@ public:
 	///  @name Fields
 
 	virtual
+	MFFloat &
+	set_height ()
+	{ return *fields .set_height; }
+
+	virtual
+	const MFFloat &
+	set_height () const
+	{ return *fields .set_height; }
+
+	virtual
 	SFInt32 &
 	xDimension ()
 	{ return *fields .xDimension; }
@@ -355,6 +365,7 @@ private:
 	{
 		Fields ();
 
+		MFFloat* const set_height;
 		SFInt32* const xDimension;
 		SFInt32* const zDimension;
 		SFFloat* const xSpacing;

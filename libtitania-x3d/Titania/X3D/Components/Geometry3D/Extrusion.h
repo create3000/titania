@@ -98,6 +98,46 @@ public:
 	///  @name Fields
 
 	virtual
+	MFVec2f &
+	set_crossSection ()
+	{ return *fields .set_crossSection; }
+
+	virtual
+	const MFVec2f &
+	set_crossSection () const
+	{ return *fields .set_crossSection; }
+
+	virtual
+	MFRotation &
+	set_orientation ()
+	{ return *fields .set_orientation; }
+
+	virtual
+	const MFRotation &
+	set_orientation () const
+	{ return *fields .set_orientation; }
+
+	virtual
+	MFVec2f &
+	set_scale ()
+	{ return *fields .set_scale; }
+
+	virtual
+	const MFVec2f &
+	set_scale () const
+	{ return *fields .set_scale; }
+
+	virtual
+	MFVec3f &
+	set_spine ()
+	{ return *fields .set_spine; }
+
+	virtual
+	const MFVec3f &
+	set_spine () const
+	{ return *fields .set_spine; }
+
+	virtual
 	SFBool &
 	beginCap ()
 	{ return *fields .beginCap; }
@@ -226,7 +266,7 @@ private:
 
 	bool
 	getClosedCrossSection () const;
-	
+
 	bool
 	getClosedSpine () const;
 
@@ -258,6 +298,10 @@ private:
 	{
 		Fields ();
 
+		MFVec2f* const set_crossSection;
+		MFRotation* const set_orientation;
+		MFVec2f* const set_scale;
+		MFVec3f* const set_spine;
 		SFBool* const beginCap;
 		SFBool* const endCap;
 		SFBool* const solid;

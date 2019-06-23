@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,6 +68,16 @@ public:
 	ElevationGridTool (X3DBaseNode* const node);
 
 	///  @name Fields
+
+	virtual
+	MFFloat &
+	set_height () final override
+	{ return getNode <ElevationGrid> () -> set_height (); }
+
+	virtual
+	const MFFloat &
+	set_height () const final override
+	{ return getNode <ElevationGrid> () -> set_height (); }
 
 	virtual
 	SFInt32 &
@@ -281,16 +291,16 @@ private:
 
 	void
 	set_transform_tools ();
-	
+
 	void
 	set_xSpacing ();
-	
+
 	void
 	set_zSpacing ();
 
 	void
-	set_height ();
-	
+	set_height_ ();
+
 	void
 	set_scale ();
 
@@ -299,13 +309,13 @@ private:
 
 	void
 	connectXSpacing (const SFFloat & field);
-	
+
 	void
 	connectZSpacing (const SFFloat & field);
-	
+
 	void
 	connectHeight (const MFFloat & field);
-	
+
 	void
 	connectScale ();
 

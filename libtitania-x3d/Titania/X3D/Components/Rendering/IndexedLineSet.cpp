@@ -71,6 +71,8 @@ const std::string IndexedLineSet::typeName       = "IndexedLineSet";
 const std::string IndexedLineSet::containerField = "geometry";
 
 IndexedLineSet::Fields::Fields () :
+	set_colorIndex (new MFInt32 ()),
+	set_coordIndex (new MFInt32 ()),
 	colorPerVertex (new SFBool (true)),
 	    colorIndex (new MFInt32 ()),
 	    coordIndex (new MFInt32 ()),
@@ -94,9 +96,11 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::IndexedLineSet);
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOnly,      "set_colorIndex", set_colorIndex ());
+	addField (inputOnly,      "set_coordIndex", set_coordIndex ());
 	addField (initializeOnly, "colorPerVertex", colorPerVertex ());
-	addField (inputOutput,    "colorIndex",     colorIndex ());
-	addField (inputOutput,    "coordIndex",     coordIndex ());
+	addField (initializeOnly, "colorIndex",     colorIndex ());
+	addField (initializeOnly, "coordIndex",     coordIndex ());
 	addField (inputOutput,    "attrib",         attrib ());
 	addField (inputOutput,    "fogCoord",       fogCoord ());
 	addField (inputOutput,    "color",          color ());
@@ -125,11 +129,13 @@ IndexedLineSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	attrib ()   .addInterest (&IndexedLineSet::set_attrib,   this);
-	fogCoord () .addInterest (&IndexedLineSet::set_fogCoord, this);
-	color ()    .addInterest (&IndexedLineSet::set_color,    this);
-	coord ()    .addInterest (&IndexedLineSet::set_coord,    this);
-	options ()  .addInterest (&IndexedLineSet::set_options,  this);
+	set_colorIndex () .addInterest (colorIndex ());
+	set_coordIndex () .addInterest (coordIndex ());
+	attrib ()         .addInterest (&IndexedLineSet::set_attrib,   this);
+	fogCoord ()       .addInterest (&IndexedLineSet::set_fogCoord, this);
+	color ()          .addInterest (&IndexedLineSet::set_color,    this);
+	coord ()          .addInterest (&IndexedLineSet::set_coord,    this);
+	options ()        .addInterest (&IndexedLineSet::set_options,  this);
 
 	set_attrib ();
 	set_fogCoord ();
@@ -140,7 +146,7 @@ IndexedLineSet::initialize ()
 	{
 		const auto typeName    = getMetaData <std::string> ("/IndexedLineSet/options/@typeName");
 		const auto metaOptions = getMetadataSet ("/IndexedLineSet/options");
-	
+
 		if (typeName == "L-System" or typeName == "LSystemOptions")
 			optionsNode .set (MakePtr <LSystem> (getExecutionContext ()));
 
@@ -173,7 +179,7 @@ IndexedLineSet::set_attrib ()
 	for (const auto & node : attrib ())
 	{
 		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
-		
+
 		if (attribNode)
 			value .emplace_back (attribNode);
 	}
@@ -211,7 +217,7 @@ IndexedLineSet::set_color ()
 	{
 		colorNode -> addInterest (&IndexedLineSet::requestRebuild,  this);
 		colorNode -> isTransparent () .addInterest (&IndexedLineSet::set_transparent, this);
-	
+
 		set_transparent ();
 	}
 	else
@@ -302,7 +308,7 @@ IndexedLineSet::getPolylines () const
 	return polylines;
 }
 
-std::vector <std::vector <size_t>> 
+std::vector <std::vector <size_t>>
 IndexedLineSet::getPolylineIndices () const
 {
 	std::vector <std::vector <size_t>> polylines;
@@ -363,10 +369,10 @@ IndexedLineSet::build ()
 				{
 					const auto i     = polyline [p];
 					const auto index = coordIndex () [i];
-	
+
 					for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
 						attribNodes [a] -> addValue (attribArrays [a], index);
-	
+
 					if (fogCoordNode)
 						fogCoordNode -> addDepth (getFogDepths (), index);
 
@@ -374,11 +380,11 @@ IndexedLineSet::build ()
 					{
 						if (colorPerVertex ())
 							colorNode -> addColor (getColors (), getColorIndex (i, true));
-	
+
 						else
 							colorNode -> addColor (getColors (), getColorIndex (face));
 					}
-	
+
 					coordNode -> addVertex (getVertices (), index);
 				}
 			}

@@ -78,12 +78,16 @@ const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
 const std::string IndexedFaceSet::containerField = "geometry";
 
 IndexedFaceSet::Fields::Fields () :
-	       convex (new SFBool (true)),
-	  creaseAngle (new SFFloat ()),
-	texCoordIndex (new MFInt32 ()),
-	   colorIndex (new MFInt32 ()),
-	  normalIndex (new MFInt32 ()),
-	   coordIndex (new MFInt32 ())
+	   set_colorIndex (new MFInt32 ()),
+	set_texCoordIndex (new MFInt32 ()),
+	  set_normalIndex (new MFInt32 ()),
+	   set_coordIndex (new MFInt32 ()),
+	           convex (new SFBool (true)),
+	      creaseAngle (new SFFloat ()),
+	       colorIndex (new MFInt32 ()),
+	    texCoordIndex (new MFInt32 ()),
+	      normalIndex (new MFInt32 ()),
+	       coordIndex (new MFInt32 ())
 { }
 
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
@@ -95,6 +99,11 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",          metadata ());
 
+	addField (inputOnly,      "set_colorIndex",    set_colorIndex ());
+	addField (inputOnly,      "set_texCoordIndex", set_texCoordIndex ());
+	addField (inputOnly,      "set_normalIndex",   set_normalIndex ());
+	addField (inputOnly,      "set_coordIndex",    set_coordIndex ());
+
 	addField (initializeOnly, "solid",             solid ());
 	addField (initializeOnly, "ccw",               ccw ());
 	addField (initializeOnly, "convex",            convex ());
@@ -102,10 +111,10 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "colorPerVertex",    colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex",   normalPerVertex ());
 
-	addField (inputOutput,    "colorIndex",        colorIndex ());
-	addField (inputOutput,    "texCoordIndex",     texCoordIndex ());
-	addField (inputOutput,    "normalIndex",       normalIndex ());
-	addField (inputOutput,    "coordIndex",        coordIndex ());
+	addField (initializeOnly, "colorIndex",        colorIndex ());
+	addField (initializeOnly, "texCoordIndex",     texCoordIndex ());
+	addField (initializeOnly, "normalIndex",       normalIndex ());
+	addField (initializeOnly, "coordIndex",        coordIndex ());
 
 	addField (inputOutput,    "attrib",            attrib ());
 	addField (inputOutput,    "fogCoord",          fogCoord ());
@@ -121,6 +130,17 @@ X3DBaseNode*
 IndexedFaceSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedFaceSet (executionContext);
+}
+
+void
+IndexedFaceSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+
+	set_colorIndex ()    .addInterest (colorIndex ());
+	set_texCoordIndex () .addInterest (texCoordIndex ());
+	set_normalIndex ()   .addInterest (normalIndex ());
+	set_coordIndex ()    .addInterest (coordIndex ());
 }
 
 size_t
@@ -806,7 +826,7 @@ IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
 	double area = 0;
 
 	// Get distances of face to hitPoint.
-	
+
 	if (vertices .size () < 3)
 		return 0;
 
@@ -830,16 +850,16 @@ IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
 	else
 	{
 		math::tessellator <double, size_t> tessellator;
-	
+
 		tessellator .begin_polygon ();
 		tessellator .begin_contour ();
-	
+
 		for (const auto & vertex : vertices)
 			tessellator .add_vertex (getCoord () -> get1Point (coordIndex () [vertex]), vertex);
-	
+
 		tessellator .end_contour ();
 		tessellator .end_polygon ();
-	
+
 		const auto triangles = tessellator .triangles ();
 
 		for (size_t v = 0, size = triangles .size (); v < size; )
@@ -1001,7 +1021,7 @@ IndexedFaceSet::rebuildColor ()
 	   pair .second = i ++;
 
 	// Rebuild index
-	   
+
 	for (MFInt32::reference index : colorIndex ())
 	{
 		if (index < 0)
@@ -1011,7 +1031,7 @@ IndexedFaceSet::rebuildColor ()
 	}
 
 	// Rebuild node
-	   
+
 	std::vector <Color4f> colors;
 
 	for (const auto & pair : map)
@@ -1049,7 +1069,7 @@ IndexedFaceSet::rebuildTexCoord ()
 	   pair .second = i ++;
 
 	// Rebuild index
-	   
+
 	for (MFInt32::reference index : texCoordIndex ())
 	{
 		if (index < 0)
@@ -1059,7 +1079,7 @@ IndexedFaceSet::rebuildTexCoord ()
 	}
 
 	// Rebuild node
-	   
+
 	switch (texCoordNode -> getType () .back ())
 	{
 	   case X3DConstants::MultiTextureCoordinate:
@@ -1160,7 +1180,7 @@ IndexedFaceSet::rebuildNormal ()
 	   pair .second = i ++;
 
 	// Rebuild index
-	   
+
 	for (MFInt32::reference index : normalIndex ())
 	{
 		if (index < 0)
@@ -1170,7 +1190,7 @@ IndexedFaceSet::rebuildNormal ()
 	}
 
 	// Rebuild node
-	   
+
 	std::vector <Vector3f> normals;
 
 	for (const auto & pair : map)
@@ -1208,7 +1228,7 @@ IndexedFaceSet::rebuildCoord ()
 	   pair .second = i ++;
 
 	// Rebuild coordIndex.
-	   
+
 	for (MFInt32::reference index : coordIndex ())
 	{
 		if (index < 0)
@@ -1260,7 +1280,7 @@ IndexedFaceSet::mergePoints (const double distance)
 
 	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
 	   map .emplace (coordNode -> get1Point (i), std::pair (i, map .size ()));
-	
+
 	// Rewrite coordIndex.
 
 	for (MFInt32::reference index : coordIndex ())
@@ -1323,7 +1343,7 @@ IndexedFaceSet::toPrimitive () const
 		int32_t last           = -1;
 		size_t  first          = 0;
 		size_t  face           = 0;
-	   
+
 		for (size_t i = 1, size = coordIndex () .size (); i < size; ++ i)
 		{
 		   const auto    p        = i - 1;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,6 +68,45 @@ public:
 	ExtrusionTool (X3DBaseNode* const node);
 
 	///  @name Fields
+
+	virtual
+	MFVec2f &
+	set_crossSection () final override
+	{ return getNode <Extrusion> () -> set_crossSection (); }
+
+	virtual
+	const MFVec2f &
+	set_crossSection () const final override
+	{ return getNode <Extrusion> () -> set_crossSection (); }
+
+	virtual
+	MFRotation &
+	set_orientation () final override
+	{ return getNode <Extrusion> () -> set_orientation (); }
+
+	virtual
+	const MFRotation &
+	set_orientation () const final override
+	{ return getNode <Extrusion> () -> set_orientation (); }
+
+	MFVec2f &
+	set_scale () final override
+	{ return getNode <Extrusion> () -> set_scale (); }
+
+	virtual
+	const MFVec2f &
+	set_scale () const final override
+	{ return getNode <Extrusion> () -> set_scale (); }
+
+	virtual
+	MFVec3f &
+	set_spine () final override
+	{ return getNode <Extrusion> () -> set_spine (); }
+
+	virtual
+	const MFVec3f &
+	set_spine () const final override
+	{ return getNode <Extrusion> () -> set_spine (); }
 
 	virtual
 	SFBool &

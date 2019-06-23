@@ -89,6 +89,26 @@ public:
 	///  @name Fields
 
 	virtual
+	MFInt32 &
+	set_colorIndex ()
+	{ return *fields .set_colorIndex; }
+
+	virtual
+	const MFInt32 &
+	set_colorIndex () const
+	{ return *fields .set_colorIndex; }
+
+	virtual
+	MFInt32 &
+	set_coordIndex ()
+	{ return *fields .set_coordIndex; }
+
+	virtual
+	const MFInt32 &
+	set_coordIndex () const
+	{ return *fields .set_coordIndex; }
+
+	virtual
 	SFBool &
 	colorPerVertex ()
 	{ return *fields .colorPerVertex; }
@@ -256,7 +276,7 @@ private:
 	size_t
 	getColorIndex (const size_t) const;
 
-	std::vector <std::vector <size_t>> 
+	std::vector <std::vector <size_t>>
 	getPolylineIndices () const;
 
 	virtual
@@ -279,6 +299,8 @@ private:
 	{
 		Fields ();
 
+		MFInt32* const set_colorIndex;
+		MFInt32* const set_coordIndex;
 		SFBool* const colorPerVertex;
 		MFInt32* const colorIndex;
 		MFInt32* const coordIndex;

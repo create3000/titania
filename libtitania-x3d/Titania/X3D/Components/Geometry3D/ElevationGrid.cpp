@@ -69,6 +69,7 @@ const std::string ElevationGrid::typeName       = "ElevationGrid";
 const std::string ElevationGrid::containerField = "geometry";
 
 ElevationGrid::Fields::Fields () :
+	     set_height (new MFFloat ()),
 	     xDimension (new SFInt32 ()),
 	     zDimension (new SFInt32 ()),
 	       xSpacing (new SFFloat (1)),
@@ -102,6 +103,8 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",        metadata ());
 
+	addField (inputOnly,      "set_height",      set_height ());
+
 	addField (initializeOnly, "xDimension",      xDimension ());
 	addField (initializeOnly, "zDimension",      zDimension ());
 	addField (initializeOnly, "xSpacing",        xSpacing ());
@@ -118,7 +121,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "height",          height ());
+	addField (initializeOnly, "height",          height ());
 
 	xSpacing ()    .setUnit (UnitCategory::LENGTH);
 	zSpacing ()    .setUnit (UnitCategory::LENGTH);
@@ -145,11 +148,12 @@ ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	attrib ()   .addInterest (&ElevationGrid::set_attrib,   this);
-	fogCoord () .addInterest (&ElevationGrid::set_fogCoord, this);
-	color ()    .addInterest (&ElevationGrid::set_color,    this);
-	texCoord () .addInterest (&ElevationGrid::set_texCoord, this);
-	normal ()   .addInterest (&ElevationGrid::set_normal,   this);
+	set_height () .addInterest (height ());
+	attrib ()     .addInterest (&ElevationGrid::set_attrib,   this);
+	fogCoord ()   .addInterest (&ElevationGrid::set_fogCoord, this);
+	color ()      .addInterest (&ElevationGrid::set_color,    this);
+	texCoord ()   .addInterest (&ElevationGrid::set_texCoord, this);
+	normal ()     .addInterest (&ElevationGrid::set_normal,   this);
 
 	set_attrib ();
 	set_fogCoord ();

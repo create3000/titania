@@ -100,6 +100,46 @@ public:
 	///  @name Fields
 
 	virtual
+	MFInt32 &
+	set_colorIndex ()
+	{ return *fields .set_colorIndex; }
+
+	virtual
+	const MFInt32 &
+	set_colorIndex () const
+	{ return *fields .set_colorIndex; }
+
+	virtual
+	MFInt32 &
+	set_texCoordIndex ()
+	{ return *fields .set_texCoordIndex; }
+
+	virtual
+	const MFInt32 &
+	set_texCoordIndex () const
+	{ return *fields .set_texCoordIndex; }
+
+	virtual
+	MFInt32 &
+	set_normalIndex ()
+	{ return *fields .set_normalIndex; }
+
+	virtual
+	const MFInt32 &
+	set_normalIndex () const
+	{ return *fields .set_normalIndex; }
+
+	virtual
+	MFInt32 &
+	set_coordIndex ()
+	{ return *fields .set_coordIndex; }
+
+	virtual
+	const MFInt32 &
+	set_coordIndex () const
+	{ return *fields .set_coordIndex; }
+
+	virtual
 	SFBool &
 	convex ()
 	{ return *fields .convex; }
@@ -121,16 +161,6 @@ public:
 
 	virtual
 	MFInt32 &
-	texCoordIndex ()
-	{ return *fields .texCoordIndex; }
-
-	virtual
-	const MFInt32 &
-	texCoordIndex () const
-	{ return *fields .texCoordIndex; }
-
-	virtual
-	MFInt32 &
 	colorIndex ()
 	{ return *fields .colorIndex; }
 
@@ -138,6 +168,16 @@ public:
 	const MFInt32 &
 	colorIndex () const
 	{ return *fields .colorIndex; }
+
+	virtual
+	MFInt32 &
+	texCoordIndex ()
+	{ return *fields .texCoordIndex; }
+
+	virtual
+	const MFInt32 &
+	texCoordIndex () const
+	{ return *fields .texCoordIndex; }
 
 	virtual
 	MFInt32 &
@@ -197,11 +237,11 @@ public:
 	virtual
 	void
 	addColorIndex ();
-	
+
 	virtual
 	void
 	addTexCoordIndex ();
-	
+
 	virtual
 	void
 	addNormalIndex ();
@@ -260,6 +300,12 @@ protected:
 	///  @name Member types
 
 	using Vertices = std::vector <size_t>;
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
 
 	///  @name Operations
 
@@ -332,10 +378,14 @@ private:
 	{
 		Fields ();
 
+		MFInt32* const set_colorIndex;
+		MFInt32* const set_texCoordIndex;
+		MFInt32* const set_normalIndex;
+		MFInt32* const set_coordIndex;
 		SFBool* const convex;
 		SFFloat* const creaseAngle;
-		MFInt32* const texCoordIndex;
 		MFInt32* const colorIndex;
+		MFInt32* const texCoordIndex;
 		MFInt32* const normalIndex;
 		MFInt32* const coordIndex;
 	};

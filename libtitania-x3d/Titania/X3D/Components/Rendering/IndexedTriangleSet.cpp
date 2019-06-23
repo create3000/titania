@@ -62,7 +62,8 @@ const std::string IndexedTriangleSet::typeName       = "IndexedTriangleSet";
 const std::string IndexedTriangleSet::containerField = "geometry";
 
 IndexedTriangleSet::Fields::Fields () :
-	index (new MFInt32 ())
+	set_index (new MFInt32 ()),
+	    index (new MFInt32 ())
 { }
 
 IndexedTriangleSet::IndexedTriangleSet (X3DExecutionContext* const executionContext) :
@@ -74,12 +75,14 @@ IndexedTriangleSet::IndexedTriangleSet (X3DExecutionContext* const executionCont
 
 	addField (inputOutput,    "metadata",        metadata ());
 
+	addField (inputOnly,      "set_index",       set_index ());
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
-	addField (inputOutput,    "index",           index ());
+	addField (initializeOnly, "index",           index ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
@@ -93,6 +96,14 @@ X3DBaseNode*
 IndexedTriangleSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedTriangleSet (executionContext);
+}
+
+void
+IndexedTriangleSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+
+	set_index () .addInterest (index ());
 }
 
 void

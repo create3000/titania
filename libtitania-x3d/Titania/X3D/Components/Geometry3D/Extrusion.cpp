@@ -67,16 +67,20 @@ const std::string Extrusion::typeName       = "Extrusion";
 const std::string Extrusion::containerField = "geometry";
 
 Extrusion::Fields::Fields () :
-	    beginCap (new SFBool (true)),
-	      endCap (new SFBool (true)),
-	       solid (new SFBool (true)),
-	         ccw (new SFBool (true)),
-	      convex (new SFBool (true)),
-	 creaseAngle (new SFFloat ()),
-	crossSection (new MFVec2f ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) })),
-	 orientation (new MFRotation ({ SFRotation () })),
-	       scale (new MFVec2f ({ SFVec2f (1, 1) })),
-	       spine (new MFVec3f ({ SFVec3f (0, 0, 0), SFVec3f (0, 1, 0) }))
+	set_crossSection (new MFVec2f ()),
+	 set_orientation (new MFRotation ()),
+	       set_scale (new MFVec2f ()),
+	       set_spine (new MFVec3f ()),
+	        beginCap (new SFBool (true)),
+	          endCap (new SFBool (true)),
+	           solid (new SFBool (true)),
+	             ccw (new SFBool (true)),
+	          convex (new SFBool (true)),
+	     creaseAngle (new SFFloat ()),
+	    crossSection (new MFVec2f ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) })),
+	     orientation (new MFRotation ({ SFRotation () })),
+	           scale (new MFVec2f ({ SFVec2f (1, 1) })),
+	           spine (new MFVec3f ({ SFVec3f (0, 0, 0), SFVec3f (0, 1, 0) }))
 { }
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
@@ -88,6 +92,11 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",         metadata ());
 
+	addField (inputOnly,      "set_crossSection", set_crossSection ());
+	addField (inputOnly,      "set_orientation",  set_orientation ());
+	addField (inputOnly,      "set_scale",        set_scale ());
+	addField (inputOnly,      "set_spine",        set_spine ());
+
 	addField (initializeOnly, "beginCap",         beginCap ());
 	addField (initializeOnly, "endCap",           endCap ());
 	addField (initializeOnly, "solid",            solid ());
@@ -95,10 +104,10 @@ Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "convex",           convex ());
 	addField (initializeOnly, "creaseAngle",      creaseAngle ());
 
-	addField (inputOutput,    "crossSection",     crossSection ());
-	addField (inputOutput,    "orientation",      orientation ());
-	addField (inputOutput,    "scale",            scale ());
-	addField (inputOutput,    "spine",            spine ());
+	addField (initializeOnly, "crossSection",     crossSection ());
+	addField (initializeOnly, "orientation",      orientation ());
+	addField (initializeOnly, "scale",            scale ());
+	addField (initializeOnly, "spine",            spine ());
 
 	creaseAngle ()  .setUnit (UnitCategory::ANGLE);
 	crossSection () .setUnit (UnitCategory::LENGTH);
@@ -115,6 +124,11 @@ void
 Extrusion::initialize ()
 {
 	X3DGeometryNode::initialize ();
+
+	set_crossSection () .addInterest (crossSection ());
+	set_orientation ()  .addInterest (orientation ());
+	set_scale ()        .addInterest (scale ());
+	set_spine ()        .addInterest (spine ());
 }
 
 bool
@@ -454,13 +468,13 @@ Extrusion::build ()
 				coordIndex .emplace_back (p1);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal1);
-	
+
 				// p2
 				getTexCoords () .emplace_back (texCoord2 .x (), texCoord2 .y (), 0, 1);
 				coordIndex .emplace_back (p2);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal1);
-	
+
 				// p3
 				getTexCoords () .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
 				coordIndex .emplace_back (p3);
@@ -475,7 +489,7 @@ Extrusion::build ()
 				coordIndex .emplace_back (p1);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal2);
-	
+
 				// p3
 				if (length1)
 					getTexCoords () .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
@@ -490,7 +504,7 @@ Extrusion::build ()
 				coordIndex .emplace_back (p3);
 				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 				getNormals () .emplace_back (normal2);
-	
+
 				// p4
 				getTexCoords () .emplace_back (texCoord4 .x (), texCoord4 .y (), 0, 1);
 				coordIndex .emplace_back (p4);
@@ -861,11 +875,11 @@ Extrusion::toPrimitive () const
 				// p1
 				geometry -> texCoordIndex () .emplace_back (t1);
 				geometry -> coordIndex ()    .emplace_back (p1);
-	
+
 				// p2
 				geometry -> texCoordIndex () .emplace_back (t2);
 				geometry -> coordIndex ()    .emplace_back (p2);
-	
+
 				// p3
 				geometry -> texCoordIndex () .emplace_back (t3);
 				geometry -> coordIndex ()    .emplace_back (p3);
@@ -884,7 +898,7 @@ Extrusion::toPrimitive () const
 				// p3
 				geometry -> texCoordIndex () .emplace_back (length1 ? t3 : t2);
 				geometry -> coordIndex ()    .emplace_back (p3);
-	
+
 				// p4
 				geometry -> texCoordIndex () .emplace_back (t4);
 				geometry -> coordIndex ()    .emplace_back (p4);
@@ -899,18 +913,18 @@ Extrusion::toPrimitive () const
 	// Add TextureCoordinate points for the top cross section.
 	{
 		const auto n = spine () .size () - 2;
-	
+
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
 		{
 			const auto texCoord3 = Vector2f ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1);
 			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
-	
+
 			// Add a Texture coordinate point for p4.
-	
+
 			texCoord -> point () .emplace_back (texCoord4);
-	
+
 			// Add another Texture coordinate point for p3 if we are on the right side.
-	
+
 			if (k == crossSection () .size () - 2)
 				texCoord -> point () .emplace_back (texCoord3);
 		}

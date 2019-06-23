@@ -61,7 +61,8 @@ const std::string IndexedQuadSet::typeName       = "IndexedQuadSet";
 const std::string IndexedQuadSet::containerField = "geometry";
 
 IndexedQuadSet::Fields::Fields () :
-	index (new MFInt32 ())
+	set_index (new MFInt32 ()),
+	    index (new MFInt32 ())
 { }
 
 IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
@@ -73,12 +74,14 @@ IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",        metadata ());
 
+	addField (inputOnly,      "set_index",       set_index ());
+
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
-	addField (inputOutput,    "index",           index ());
+	addField (initializeOnly, "index",           index ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
@@ -92,6 +95,14 @@ X3DBaseNode*
 IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedQuadSet (executionContext);
+}
+
+void
+IndexedQuadSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+
+	set_index () .addInterest (index ());
 }
 
 void
