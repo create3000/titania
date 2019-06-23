@@ -125,6 +125,7 @@ void
 MovieTexture::setExecutionContext (X3DExecutionContext* const executionContext)
 {
 	X3DUrlObject::setExecutionContext (executionContext);
+	X3DSoundSourceNode::setExecutionContext (executionContext);
 	X3DTexture2DNode::setExecutionContext (executionContext);
 }
 

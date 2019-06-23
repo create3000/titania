@@ -349,6 +349,10 @@ IconFactory::createMaterialIcon (const std::string & stockId, const int32_t widt
 	// Create Icon.
 
 	createIcon (stockId, materialPreview -> getSnapshot (width, height, true, false, 8));
+
+	// Clear Material.
+
+	appearance -> material () = nullptr;
 }
 
 void
@@ -365,6 +369,10 @@ IconFactory::createTextureIcon (const std::string & stockId, const int32_t width
 	// Create Icon.
 
 	createIcon (stockId, texturePreview -> getSnapshot (width, height, true, false, 8));
+
+	// Clear texture.
+
+	appearance -> texture () = nullptr;
 }
 
 void
