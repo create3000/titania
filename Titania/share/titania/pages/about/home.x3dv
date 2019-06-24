@@ -30,7 +30,7 @@ EXTERNPROTO Yellow [
 PROTO Word [
   inputOutput SFTime   cycleInterval 1
   inputOutput MFString string [ ]
-  inputOutput SFFloat  size 1
+  initializeOnly SFFloat  size 1
   inputOutput SFVec3f  minPosition 0 0 0
   inputOutput SFVec3f  maxPosition 0 0 0
 ]
