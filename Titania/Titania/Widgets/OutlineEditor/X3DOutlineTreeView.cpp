@@ -795,9 +795,6 @@ X3DOutlineTreeView::select_node (const Gtk::TreeIter & iter, const Gtk::TreePath
 bool
 X3DOutlineTreeView::on_test_expand_row (const Gtk::TreeIter & iter, const Gtk::TreePath & path)
 {
-	__LOG__ << expandLevel << std::endl;
-	__LOG__ << getBrowserWindow () -> getKeys () .shift () << std::endl;
-
 	collapse_clone (iter);
 
 	model_expand_row (iter); // (model expand_row)
