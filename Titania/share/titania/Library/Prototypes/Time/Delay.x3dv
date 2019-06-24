@@ -9,10 +9,10 @@ EXTERNPROTO Delay [
   outputOnly  SFTime exitTime
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Time/Delay.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Time/Delay.x3d",
-  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Time/Delay.x3d",
-  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Time/Delay.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Time/Delay.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Time/Delay.x3d",
+  "https://rawgit.com/create3000/Library/1.0.13/Prototypes/Time/Delay.x3d",
+  "http://rawgit.com/create3000/Library/1.0.13/Prototypes/Time/Delay.x3d"
 ]
 
 Delay { }

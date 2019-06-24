@@ -3,19 +3,19 @@
 EXTERNPROTO TrackingViewpoint [
   inputOnly   SFBool   set_bind
   inputOutput SFString description
-  inputOutput SFVec3f  trackPoint 
-  inputOutput SFVec3f  position 
-  inputOutput SFVec3f  centerOfRotation 
-  inputOutput SFFloat  fieldOfView 
-  inputOutput SFBool   retainUserOffsets 
+  inputOutput SFVec3f  trackPoint
+  inputOutput SFVec3f  position
+  inputOutput SFVec3f  centerOfRotation
+  inputOutput SFFloat  fieldOfView
+  inputOutput SFBool   retainUserOffsets
   outputOnly  SFBool   isBound
   outputOnly  SFTime   bindTime
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Navigation/TrackingViewpoint.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Navigation/TrackingViewpoint.x3d",
-  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Navigation/TrackingViewpoint.x3d",
-  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Navigation/TrackingViewpoint.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Navigation/TrackingViewpoint.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Navigation/TrackingViewpoint.x3d",
+  "https://rawgit.com/create3000/Library/1.0.13/Prototypes/Navigation/TrackingViewpoint.x3d",
+  "http://rawgit.com/create3000/Library/1.0.13/Prototypes/Navigation/TrackingViewpoint.x3d"
 ]
 
 TrackingViewpoint { }

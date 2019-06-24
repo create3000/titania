@@ -66,8 +66,8 @@ function eventsProcessed ()
 	for (var i = 0; i < cornerDimension; ++ i)
 		points [points .length] = rotation .multVec (corner [i]) .add (translation);
 
-	geometry .coord .point = points;	
-	geometry .coordIndex   = coordIndex;
+	geometry .coord .point   = points;	
+	geometry .set_coordIndex = coordIndex;
 }
 "
     directOutput TRUE

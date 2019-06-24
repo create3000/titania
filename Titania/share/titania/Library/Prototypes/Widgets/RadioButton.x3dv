@@ -15,10 +15,10 @@ EXTERNPROTO Button [
   inputOutput    MFNode   children
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d",
-  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d",
-  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/Button.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/Button.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/Button.x3d",
+  "https://rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/Button.x3d",
+  "http://rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/Button.x3d"
 ]
 
 EXTERNPROTO CheckButton [
@@ -33,10 +33,10 @@ EXTERNPROTO CheckButton [
   inputOutput    MFNode  children
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d",
-  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d",
-  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/CheckButton.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/CheckButton.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/CheckButton.x3d",
+  "https://rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/CheckButton.x3d",
+  "http://rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/CheckButton.x3d"
 ]
 
 EXTERNPROTO RadioButton [
@@ -48,10 +48,10 @@ EXTERNPROTO RadioButton [
   inputOutput    MFNode  children
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d",
-  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d",
-  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Widgets/RadioButton.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/RadioButton.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/RadioButton.x3d",
+  "https://rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/RadioButton.x3d",
+  "http://rawgit.com/create3000/Library/1.0.13/Prototypes/Widgets/RadioButton.x3d"
 ]
 
 RadioButton {

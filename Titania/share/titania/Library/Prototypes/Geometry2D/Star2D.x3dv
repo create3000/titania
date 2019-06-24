@@ -7,10 +7,10 @@ EXTERNPROTO Star2D [
   initializeOnly SFBool  solid
 ]
 [
-  "https://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Geometry2D/Star2D.x3d",
-  "http://cdn.rawgit.com/create3000/Library/1.0.12/Prototypes/Geometry2D/Star2D.x3d",
-  "https://rawgit.com/create3000/Library/1.0.12/Prototypes/Geometry2D/Star2D.x3d",
-  "http://rawgit.com/create3000/Library/1.0.12/Prototypes/Geometry2D/Star2D.x3d"
+  "https://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Geometry2D/Star2D.x3d",
+  "http://cdn.rawgit.com/create3000/Library/1.0.13/Prototypes/Geometry2D/Star2D.x3d",
+  "https://rawgit.com/create3000/Library/1.0.13/Prototypes/Geometry2D/Star2D.x3d",
+  "http://rawgit.com/create3000/Library/1.0.13/Prototypes/Geometry2D/Star2D.x3d"
 ]
 
 DEF Star2D Transform {
