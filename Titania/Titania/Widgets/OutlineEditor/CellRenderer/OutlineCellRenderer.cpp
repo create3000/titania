@@ -126,12 +126,12 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::BrowserPtr & browser, X3DOu
 	{
 		try
 		{
-			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field .second -> getTypeName () + ".png"));
+			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/16x12/" + field .second -> getTypeName () + ".png"));
 		}
 		catch (const std::exception &)
 		{
 			// TODO: make image.
-			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/Unkown.png"));
+			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/16x12/Unkown.png"));
 		}
 	}
 
