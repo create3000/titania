@@ -517,6 +517,7 @@ OutlineEditor::on_add_node_clicked ()
 
 		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
+		getBrowserWindow () -> getKeys () .clear ();
 
 		getAddNodePopover () .popdown ();
 	}
