@@ -126,6 +126,9 @@ OutlineEditor::initialize ()
 	{
 		const auto row = getAddNodeListStore () -> append ();
 
+		if (node -> getComponent () .first == "Titania")
+			continue;
+
 		row -> set_value (AddNode::TYPE_NAME, node -> getTypeName ());
 	}
 
