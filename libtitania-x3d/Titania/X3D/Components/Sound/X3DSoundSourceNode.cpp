@@ -196,6 +196,10 @@ X3DSoundSourceNode::set_start ()
 			mediaStream -> play ();
 		}
 	}
+	else
+	{
+		stop ();
+	}
 }
 
 void
