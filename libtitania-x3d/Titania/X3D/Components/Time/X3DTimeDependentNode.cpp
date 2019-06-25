@@ -292,20 +292,17 @@ X3DTimeDependentNode::do_start ()
 
 		set_start ();
 
-		if (isActive ())
+		if (getLive ())
 		{
-			if (getLive ())
-			{
-				getBrowser () -> timeEvents () .addInterest (&X3DTimeDependentNode::set_time, this);
-			}
-			else
-			{
-				disabled = true;
-				real_pause ();
-			}
-
-			elapsedTime () = 0;
+			getBrowser () -> timeEvents () .addInterest (&X3DTimeDependentNode::set_time, this);
 		}
+		else
+		{
+			disabled = true;
+			real_pause ();
+		}
+
+		elapsedTime () = 0;
 	}
 }
 
@@ -384,7 +381,8 @@ X3DTimeDependentNode::stop ()
 
 		isActive () = false;
 
-		getBrowser () -> timeEvents () .removeInterest (&X3DTimeDependentNode::set_time, this);
+		if (getLive ())
+			getBrowser () -> timeEvents () .removeInterest (&X3DTimeDependentNode::set_time, this);
 	}
 }
 
