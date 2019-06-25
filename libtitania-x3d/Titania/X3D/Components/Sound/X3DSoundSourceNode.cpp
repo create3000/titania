@@ -133,26 +133,7 @@ X3DSoundSourceNode::setMedia (const bool value)
 	media = value;
 
 	if (media)
-	{
-		if (isActive ())
-		{
-			if (isPaused ())
-			{
-				set_pause ();
-			}
-			else
-			{
-				if (getLive ())
-					set_start ();
-				else
-					set_pause ();
-			}
-		}
-		else
-		{
-			set_stop ();
-		}
-	}
+		set_loop ();
 }
 
 void
