@@ -166,9 +166,6 @@ protected:
 
 	X3DTimeDependentNode ();
 
-	time_type
-	getElapsedTime () const;
-
 	virtual
 	void
 	initialize () override;
@@ -177,6 +174,12 @@ protected:
 
 	bool
 	getLive () const;
+
+	time_type
+	getElapsedTime () const;
+
+	void
+	resetElapsedTime ();
 
 	///  @name Event handling
 

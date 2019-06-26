@@ -136,6 +136,8 @@ X3DSoundSourceNode::setMedia (const bool value)
 	{
 		if (isActive ())
 		{
+			resetElapsedTime ();
+
 			if (isPaused ())
 			{
 				set_pause ();
@@ -262,7 +264,8 @@ X3DSoundSourceNode::on_duration_changed ()
 void
 X3DSoundSourceNode::set_time ()
 {
-	elapsedTime () = getElapsedTime ();
+	if (media)
+		elapsedTime () = getElapsedTime ();
 }
 
 void

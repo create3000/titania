@@ -166,7 +166,6 @@ MovieTexture::load ()
 {
 	if (urlStack .empty ())
 	{
-		stop ();
 		duration_changed () = -1;
 		components ()       = 0;
 

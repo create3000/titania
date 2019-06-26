@@ -135,16 +135,24 @@ X3DTimeDependentNode::setExecutionContext (X3DExecutionContext* const executionC
 	}
 }
 
+bool
+X3DTimeDependentNode::getLive () const
+{
+	return (getExecutionContext () -> isLive () or isEvenLive ()) and isLive ();
+}
+
 time_type
 X3DTimeDependentNode::getElapsedTime () const
 {
 	return getCurrentTime () - start - pauseInterval;
 }
 
-bool
-X3DTimeDependentNode::getLive () const
+void
+X3DTimeDependentNode::resetElapsedTime ()
 {
-	return (getExecutionContext () -> isLive () or isEvenLive ()) and isLive ();
+	start         = getCurrentTime ();
+	pause         = getCurrentTime ();
+	pauseInterval = 0;
 }
 
 // Event callbacks
@@ -283,8 +291,7 @@ X3DTimeDependentNode::do_start ()
 {
 	if (not isActive ())
 	{
-		start         = getCurrentTime ();
-		pauseInterval = 0;
+		resetElapsedTime ();
 
 		// The event order below is very important.
 

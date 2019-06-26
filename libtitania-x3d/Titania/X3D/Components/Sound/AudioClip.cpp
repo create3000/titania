@@ -151,7 +151,6 @@ AudioClip::load ()
 {
 	if (urlStack .empty ())
 	{
-		stop ();
 		duration_changed () = -1;
 
 		setLoadState (FAILED_STATE);
