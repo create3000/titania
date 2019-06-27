@@ -1,0 +1,445 @@
+#X3D V3.3 utf8 Titania V4.3.9
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Fri, 05 Sep 2014 01:58:48 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.3.9, http://titania.create3000.de"
+META "icon" "../../ui/icons/icon-bw.svg"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/info.x3dv"
+META "modified" "Wed, 16 Jan 2019 13:30:11 GMT"
+META "title" "about:info"
+
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
+]
+"library/Rotor.x3dv"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF VersionNumberScript Script {
+              initializeOnly SFNode text DEF VersionNumberText Text {
+                string "4.3.9"
+                maxExtent 0.65
+                fontStyle FontStyle {
+                  family [
+                    "../../fonts/pt-sans/PTN77F.ttf",
+                    "sans"
+                  ]
+                  style "BOLD"
+                  size 0.34
+                }
+              }
+
+              url "ecmascript:
+
+function initialize ()
+{
+	text .string = new MFString (Browser .version);
+}
+"
+              directOutput TRUE
+            }
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+        ]
+      }
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
+        reference "http://titania.create3000.de"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
+          reference "http://titania.create3000.de"
+          value -1
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Page_1 MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+    ]
+  }
+  title "info"
+}
+
+NavigationInfo {
+  type "NONE"
+}
+
+DEF about:info LayerSet {
+  order 1
+  layers LayoutLayer {
+    layout Layout { }
+    children [
+      DEF Background Transform {
+        translation 0 0 -1
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+          }
+        }
+      }
+      DEF SupportBox LayoutGroup {
+        layout Layout {
+          align [
+            "CENTER",
+            "TOP"
+          ]
+          offset [
+            0,
+            -0.32
+          ]
+          size [
+            1,
+            0.19
+          ]
+          scaleMode "FRACTION"
+        }
+        children DEF HorizontalGrey Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.760784 0.760784 0.760784
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+          }
+        }
+      }
+      DEF Page LayoutGroup {
+        layout Layout {
+          scaleMode [
+            "STRETCH",
+            "NONE"
+          ]
+        }
+        children Transform {
+          scale 1.01 1 1
+          children [
+            DEF Image Switch {
+              whichChoice 1
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                    url "info/info.png"
+                    repeatS FALSE
+                    repeatT FALSE
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+            }
+            DEF VerticalGrey Transform {
+              translation 0.34 0.245 0
+              scale 0.2 0.51 1
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.247059 0.247059 0.247059
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+            }
+            DEF VerticalYellow Transform {
+              translation 0.34 -0.255 0
+              scale 0.2 0.49 1
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 1 0.890196 0.176471
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+            }
+            DEF Content LayoutGroup {
+              layout Layout {
+                size [
+                  0.1,
+                  1
+                ]
+                scaleMode [
+                  "STRETCH",
+                  "STRETCH"
+                ]
+              }
+              children [
+                DEF RotatingLogo Transform {
+                  translation -0.480889 0.469111 1
+                  scale 0.022 0.022 0.022
+                  children [
+                    DEF LogoRotor Rotor {
+                      cycleInterval 10
+                      axis 0 0 -1
+                      loop TRUE
+                    }
+                    DEF Logo Transform {
+                      rotation 0 0 -1 3.64090340004657
+                      center 5.6 -5.9 0
+                      children Inline {
+                        url "library/logo.x3dv"
+                      }
+                    }
+                  ]
+                }
+                DEF Titania_2 Transform {
+                  translation -0.219 0.3611 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry Text {
+                      string "Titania"
+                      fontStyle FontStyle {
+                        family [
+                          "../../fonts/pt-sans/PTN77F.ttf",
+                          "sans"
+                        ]
+                        style "BOLD"
+                        size 0.12
+                      }
+                    }
+                  }
+                }
+                DEF X3D-Browser Transform {
+                  translation -0.216884 0.26855 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry Text {
+                      string "X3D Browser"
+                      fontStyle FontStyle {
+                        family [
+                          "../../fonts/pt-sans/PTN57F.ttf",
+                          "sans"
+                        ]
+                        style "BOLD"
+                        size 0.08
+                      }
+                    }
+                  }
+                }
+                DEF StayInteractive Transform {
+                  translation 0.197 0.219 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry Text {
+                      string "Future to the Fantasy!"
+                      fontStyle FontStyle {
+                        family [
+                          "../../fonts/pt-sans/PTN57F.ttf",
+                          "sans"
+                        ]
+                        style "BOLD"
+                        size 0.03
+                        justify "END"
+                      }
+                    }
+                  }
+                }
+                Anchor {
+                  description "http://titania.create3000.de"
+                  children DEF Support Transform {
+                    translation -0.421689 0.1 1
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry Text {
+                        string [
+                          "For additional support please visit",
+                          "titania.create3000.de."
+                        ]
+                        fontStyle FontStyle {
+                          family [
+                            "../../fonts/pt-sans/PTN57F.ttf",
+                            "sans"
+                          ]
+                          style "NORMAL"
+                          size 0.04
+                          spacing 1.2
+                        }
+                      }
+                    }
+                  }
+                }
+                DEF License Transform {
+                  translation 0.262 0.267 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry Text {
+                      string "GNU GPL v3"
+                      fontStyle FontStyle {
+                        family [
+                          "../../fonts/pt-sans/PTN77F.ttf",
+                          "sans"
+                        ]
+                        style "BOLD"
+                        size 0.03
+                      }
+                    }
+                  }
+                }
+                DEF Copyright Transform {
+                  translation 0.262 0.217 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry Text {
+                      string "© 2010 - 2017"
+                      fontStyle FontStyle {
+                        family [
+                          "../../fonts/pt-sans/PTN77F.ttf",
+                          "sans"
+                        ]
+                        style "BOLD"
+                        size 0.03
+                      }
+                    }
+                  }
+                }
+                DEF VersionNumber Transform {
+                  translation -0.438782 -0.385263 1
+                  children [
+                    Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 1 1 1
+                        }
+                      }
+                      geometry USE VersionNumberText
+                    }
+                    USE VersionNumberScript
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+DEF EnterWorld Script {
+  url "ecmascript:
+
+function initialize ()
+{
+	Browser .setBrowserOption ('Dashboard', false);
+}
+"
+}
+
+ROUTE LogoRotor.rotation_changed TO Logo.set_rotation
