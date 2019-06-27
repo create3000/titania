@@ -107,12 +107,12 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 	for (MFString::reference value : transformed)
 	{
 		std::smatch match;
-	
+
 		if (std::regex_search (value .get () .raw (), match, ECMAScript))
 			continue;
 
 		const basic::uri URL (value .get ());
-	
+
 		if (URL .scheme () == "data")
 			continue;
 
@@ -120,7 +120,7 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 		{
 			const auto transformed = oldWorldURL .transform (URL);
 
-			value .set (newWorldURL .relative_path (transformed) .str ());
+			value .set (newWorldURL .relative_path (transformed) .escape () .str ());
 		}
 	}
 
@@ -167,7 +167,7 @@ X3DUrlObject::monitorFile (const basic::uri & URL)
 			return;
 
 		fileMonitor = Gio::File::create_for_path (URL .path ()) -> monitor_file ();
-	
+
 		fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &X3DUrlObject::on_file_changed));
 	}
 	catch (const Glib::Error & error)
@@ -185,12 +185,12 @@ X3DUrlObject::on_file_changed (const Glib::RefPtr <Gio::File> & file,
 	{
 		if (event not_eq Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
 			return;
-	
+
 		if (checkLoadState () not_eq COMPLETE_STATE)
 			return;
-	
+
 		const auto fileInfo = file -> query_info ();
-	
+
 		fileChangedOutput = fileInfo -> modification_time () .as_double ();
 	}
 	catch (const Glib::Error & error)
