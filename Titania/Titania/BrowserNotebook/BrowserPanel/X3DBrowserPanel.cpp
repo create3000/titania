@@ -217,9 +217,9 @@ X3DBrowserPanel::setBrowserPanelType (const size_t id, const BrowserPanelType br
 	if (browserPanelTypeArray [id] not_eq browserPanelTypes .at (browserPanelType))
 	{
 		browserPanelTypeArray [id] = browserPanelTypes .at (browserPanelType);
-	
+
 		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/type", browserPanelTypeArray);
-	
+
 		getPage () -> setModified (true);
 	}
 }
@@ -313,28 +313,28 @@ X3DBrowserPanel::set_type ()
 	switch (type)
 	{
 		case BrowserPanelType::MAIN_VIEW:
-			getCameraMenuItem () .set_label (_ ("Main View"));  
+			getCameraMenuItem () .set_label (_ ("Main View"));
 			break;
 		case BrowserPanelType::PERSPECTIVE_VIEW:
-			getCameraMenuItem () .set_label (_ ("Perspective View"));  
+			getCameraMenuItem () .set_label (_ ("Perspective View"));
 			break;
 		case BrowserPanelType::TOP_VIEW:
-			getCameraMenuItem () .set_label (_ ("Top View"));  
+			getCameraMenuItem () .set_label (_ ("Top View"));
 			break;
 		case BrowserPanelType::BOTTOM_VIEW:
-			getCameraMenuItem () .set_label (_ ("Bottom View"));  
+			getCameraMenuItem () .set_label (_ ("Bottom View"));
 			break;
 		case BrowserPanelType::LEFT_VIEW:
-			getCameraMenuItem () .set_label(_ ("Left View"));  
+			getCameraMenuItem () .set_label(_ ("Left View"));
 			break;
 		case BrowserPanelType::RIGHT_VIEW:
-			getCameraMenuItem () .set_label(_ ("Right View"));  
+			getCameraMenuItem () .set_label(_ ("Right View"));
 			break;
 		case BrowserPanelType::FRONT_VIEW:
-			getCameraMenuItem () .set_label (_ ("Front View"));  
+			getCameraMenuItem () .set_label (_ ("Front View"));
 			break;
 		case BrowserPanelType::BACK_VIEW:
-			getCameraMenuItem () .set_label (_ ("Back View"));  
+			getCameraMenuItem () .set_label (_ ("Back View"));
 			break;
 	}
 
@@ -414,7 +414,7 @@ X3DBrowserPanel::setLayer (const int32_t layerNumber)
 			const X3D::X3DPtr <X3D::X3DLayerNode> layerNode (layerSet -> layers () .at (layerNumber - 1));
 
 			if (layerNode)
-				setLayer (layerNode);	
+				setLayer (layerNode);
 			else
 				setLayer (getPage () -> getMainBrowser () -> getActiveLayer ());
 		}
@@ -506,9 +506,9 @@ X3DBrowserPanel::setShading (const size_t id, const std::string & shading)
 	if (shadingArray [id] not_eq shading)
 	{
 		shadingArray [id] = shading;
-	
+
 		createWorldInfo (getPage () -> getScene ()) -> setMetaData ("/Titania/BrowserPanel/shading", shadingArray);
-	
+
 		getPage () -> setModified (true);
 	}
 }
@@ -544,7 +544,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		// Setup dependent browser.
 
 		const auto & mainBrowser = getPage () -> getMainBrowser ();
-	
+
 		mainBrowser -> getViewer () .addInterest (&X3DBrowserPanel::set_viewer, this);
 
 		// Setup dependent browser.
@@ -604,6 +604,7 @@ X3DBrowserPanel::set_dependent_browser ()
 		set_background_texture ();
 		set_background_texture_transparency ();
 		set_execution_context ();
+		set_grid ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -691,17 +692,17 @@ X3DBrowserPanel::set_navigationInfoStack ()
 	{
 		if (type == BrowserPanelType::MAIN_VIEW)
 			return;
-	
+
 		const auto & executionContext = browser -> getExecutionContext ();
 		const auto   layer            = executionContext -> getNamedNode <X3D::X3DLayerNode> ("Layer");
 
 		if (navigationInfoNode)
 			navigationInfoNode -> headlight () .removeInterest (layer -> getNavigationInfo () -> headlight ());
-	
+
 		if (layerNode)
 		{
 			navigationInfoNode = layerNode -> getNavigationInfoStack () -> getTop ();
-	
+
 			if (navigationInfoNode)
 			{
 				navigationInfoNode -> headlight () .addInterest (layer -> getNavigationInfo () -> headlight ());
@@ -747,7 +748,7 @@ X3DBrowserPanel::connectViewpoint ()
 	{
 		viewpoint -> removeInterest (&X3DBrowserPanel::connectViewpoint, this);
 		viewpoint -> addInterest (&X3DBrowserPanel::set_viewpoint, this);
-	
+
 		browser -> getExecutionContext () -> getNamedNode <X3D::NavigationInfo> ("Viewer") -> transitionType () = { "ANIMATE" };
 	}
 	catch (const X3D::X3DError & error)
@@ -786,10 +787,10 @@ X3DBrowserPanel::set_grid ()
 			std::pair (std::pair (2, BrowserPanelType::LEFT_VIEW),   X3D::Vector2i (1, 2)),
 			std::pair (std::pair (2, BrowserPanelType::BACK_VIEW),   X3D::Vector2i (0, 2)),
 		};
-	
+
 		if (getPage () -> getMainBrowser () not_eq getCurrentBrowser ())
 			return;
-	
+
 		const auto & executionContext = browser -> getExecutionContext ();
 		const auto   gridSwitch       = executionContext -> getNamedNode <X3D::Switch> ("GridSwitch");
 		const bool   perspective      = type == BrowserPanelType::PERSPECTIVE_VIEW;
@@ -803,7 +804,7 @@ X3DBrowserPanel::set_grid ()
 		if (getBrowserWindow () -> getGridTool () -> getEnabled ())
 		{
 			const auto plane = getBrowserWindow () -> getGridTool () -> getPlane ();
-	
+
 			if (perspective or plane == getPlane ())
 			{
 				gridSwitch -> whichChoice () = 1;
@@ -819,14 +820,14 @@ X3DBrowserPanel::set_grid ()
 				gridTool -> translation () = tool -> translation () * one;
 				gridTool -> scale ()       = tool -> scale ();
 				gridTool -> dimension ()   = { tool -> dimension () .at (mapping .x ()), 0, tool -> dimension () .at (mapping .y ()) };
-	
+
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
 				{
 					gridTool -> majorLineEvery () .set1Value (i + 0, tool -> majorLineEvery () .at (i + mapping .x ()));
 					gridTool -> majorLineEvery () .set1Value (i + 1, 0);
 					gridTool -> majorLineEvery () .set1Value (i + 2, tool -> majorLineEvery () .at (i + mapping .y ()));
 				}
-	
+
 				for (size_t i = 0; i < tool -> majorLineOffset () .size (); i += 3)
 				{
 					gridTool -> majorLineOffset () .set1Value (i + 0, tool -> majorLineOffset () .at (i + mapping .x ()));
@@ -853,25 +854,25 @@ X3DBrowserPanel::set_grid ()
 				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes .at (type), -axes .at (type)));
 
 				gridSwitch -> whichChoice () = 0;
-	
+
 				gridTool -> translation () = tool -> translation () * one;
 				gridTool -> scale ()       = tool -> scale ();
 				gridTool -> dimension ()   = { tool -> dimension () .at (2), 0, tool -> dimension () .at (2) };
-	
+
 				for (size_t i = 0; i < tool -> majorLineEvery () .size (); i += 3)
 				{
 					gridTool -> majorLineEvery () .set1Value (i + 0, 0);
 					gridTool -> majorLineEvery () .set1Value (i + 1, 0);
 					gridTool -> majorLineEvery () .set1Value (i + 2, tool -> majorLineEvery () .at (i + 2));
 				}
-	
+
 				for (size_t i = 0; i < tool -> majorLineOffset () .size (); i += 3)
 				{
 					gridTool -> majorLineOffset () .set1Value (i + 0, 0);
 					gridTool -> majorLineOffset () .set1Value (i + 1, 0);
 					gridTool -> majorLineOffset () .set1Value (i + 2, tool -> majorLineOffset () .at (i + 2));
 				}
-	
+
 				gridTool -> color ()          = tool -> color ();
 				gridTool -> lineColor ()      = tool -> lineColor ();
 				gridTool -> majorLineColor () = tool -> majorLineColor ();
@@ -891,25 +892,25 @@ X3DBrowserPanel::set_grid ()
 				const auto   one  = X3D::Vector3f (1, 1, 1) - X3D::Vector3f (max (axes .at (type), -axes .at (type)));
 
 				gridSwitch -> whichChoice () = 0;
-	
+
 				gridTool -> translation () = tool -> translation () * one;
 				gridTool -> scale ()       = tool -> scale ();
 				gridTool -> dimension ()   = { tool -> dimension () .at (1), 0, tool -> dimension () .at (1) };
-	
+
 				for (size_t i = 0; i < tool -> majorLineEvery () .size () / 4; ++ i)
 				{
 					gridTool -> majorLineEvery () .set1Value (i * 3 + 0, 0);
 					gridTool -> majorLineEvery () .set1Value (i * 3 + 1, 0);
 					gridTool -> majorLineEvery () .set1Value (i * 3 + 2, tool -> majorLineEvery () .at (i * 4 + 3));
 				}
-	
+
 				for (size_t i = 0; i < tool -> majorLineOffset () .size () / 4; ++ i)
 				{
 					gridTool -> majorLineOffset () .set1Value (i * 3 + 0, 0);
 					gridTool -> majorLineOffset () .set1Value (i * 3 + 1, 0);
 					gridTool -> majorLineOffset () .set1Value (i * 3 + 2, tool -> majorLineOffset () .at (i * 4 + 3));
 				}
-	
+
 				gridTool -> color ()          = tool -> color ();
 				gridTool -> lineColor ()      = tool -> lineColor ();
 				gridTool -> majorLineColor () = tool -> majorLineColor ();
