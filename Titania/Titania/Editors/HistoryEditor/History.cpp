@@ -102,6 +102,7 @@ History::History () :
 			setItem ("SlidingPuzzle",                "http://media.create3000.de/components/X3D/SlidingPuzzle/SlidingPuzzle.x3d");
 			setItem ("SecretLabyrinth",              "http://media.create3000.de/components/X3D/SecretLabyrinth/SecretLabyrinth.x3d");
 			setItem ("Pong",                         "http://media.create3000.de/components/X3D/Pong/Pong.x3d");
+			setItem ("NYC",                          "http://media.create3000.de/components/X3D/NYC/NYC.x3d");
 			setItem ("MilkywayAndBeyond",            "http://media.create3000.de/components/X3D/MilkywayAndBeyond/MilkywayAndBeyond.x3d");
 			setItem ("MagicMushrooms",               "http://media.create3000.de/components/X3D/MagicMushrooms/MagicMushrooms.x3d");
 			setItem ("LustForLife",                  "http://media.create3000.de/components/X3D/LustForLife/LustForLife.x3d");
