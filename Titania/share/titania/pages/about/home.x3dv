@@ -9,7 +9,7 @@ META "created" "Fri, 28 Jun 2019 15:15:55 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Fri, 28 Jun 2019 16:26:53 GMT"
+META "modified" "Fri, 28 Jun 2019 16:39:07 GMT"
 
 PROTO Beams [
   inputOutput SFInt32 beams 10
@@ -344,7 +344,7 @@ WorldInfo {
 
 DEF Beams Transform {
   translation 0 0 -1
-  rotation 5.17539896253679e-14 3.673205175272e-06 -0.999999999993254 3.92067878588932
+  rotation -1.20022111307403e-13 -3.67320524850561e-06 0.999999999993255 0.584797240953334
   scale 2 2 2
   scaleOrientation 2.84336192633954e-06 9.71335339268243e-07 -0.999999999995486 1.57079626719477
   children [
@@ -476,6 +476,7 @@ Words {
     "X3D",
     "Node",
     "Prototype",
+    "Scripting",
     "Animation",
     "Interpolation",
     "Events",
