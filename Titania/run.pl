@@ -34,6 +34,7 @@ $ENV {PATH}            = "$SOLUTION_DIR/Titania:$ENV{PATH}";
 $ENV {LD_LIBRARY_PATH} = "/usr/local/lib";
 $ENV {XDG_DATA_DIRS}   = "$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 $ENV {GDK_SYNCHRONIZE} = "1";
+#$ENV {GTK_DEBUG}      = "interactive";
 
 delete $ENV {GDK_PIXBUF_MODULE_FILE};
 delete $ENV {GDK_PIXBUF_MODULEDIR};
