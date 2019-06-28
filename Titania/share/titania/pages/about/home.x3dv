@@ -9,7 +9,7 @@ META "created" "Fri, 28 Jun 2019 15:15:55 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Fri, 28 Jun 2019 16:39:07 GMT"
+META "modified" "Fri, 28 Jun 2019 17:18:18 GMT"
 
 PROTO Beams [
   inputOutput SFInt32 beams 10
@@ -21,7 +21,7 @@ PROTO Beams [
     coord Coordinate { }
   }
 
-  DEF NewScript Script {
+  DEF BeamsScript Script {
     inputOutput    SFInt32 beams IS beams
     initializeOnly SFNode  geometry USE _1
 
@@ -195,19 +195,19 @@ WorldInfo {
                     name "position"
                     reference "http://titania.create3000.de"
                     value [
-                      5.87788534164429,
-                      6.46984958648682,
-                      13.8524446487427
+                      7.65191534142302,
+                      7.24304596683458,
+                      12.5413392122923
                     ]
                   }
                   DEF orientation_9 MetadataDouble {
                     name "orientation"
                     reference "http://titania.create3000.de"
                     value [
-                      -0.704047462871212,
-                      0.695566762376517,
-                      0.143192350010952,
-                      0.568941727555854
+                      -0.634784850902455,
+                      0.755790209276031,
+                      0.160715128806346,
+                      0.708337909595356
                     ]
                   }
                   DEF centerOfRotation_10 MetadataDouble {
@@ -335,7 +335,7 @@ WorldInfo {
         value DEF path MetadataString {
           name "path"
           reference "http://titania.create3000.de"
-          value "Words"
+          value "Objects"
         }
       }
     ]
@@ -344,7 +344,7 @@ WorldInfo {
 
 DEF Beams Transform {
   translation 0 0 -1
-  rotation -1.20022111307403e-13 -3.67320524850561e-06 0.999999999993255 0.584797240953334
+  rotation -1.20022111307403e-13 -3.67320524850561e-06 0.999999999993254 0.75632708402546
   scale 2 2 2
   scaleOrientation 2.84336192633954e-06 9.71335339268243e-07 -0.999999999995486 1.57079626719477
   children [
