@@ -119,7 +119,7 @@ const io::sequence Grammar::WhiteSpacesNoCommaSequence ("\r\n \t");
 bool
 Grammar::Header (const std::string & header, std::string & encoding, std::string & specificationVersion, std::string & characterEncoding, std::string & comment)
 {
-	static const std::regex Header (R"/((VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?)/");
+	static const std::regex Header (R"/((VRML|X3D) V(.*?) (utf8)(?:\s+(.*?)[\r\n]*)?)/");
 
 	std::smatch match;
 
@@ -132,7 +132,7 @@ Grammar::Header (const std::string & header, std::string & encoding, std::string
 
 		return true;
 	}
-	
+
 	return false;
 }
 
