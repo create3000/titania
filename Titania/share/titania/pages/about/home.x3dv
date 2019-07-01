@@ -9,7 +9,7 @@ META "created" "Fri, 28 Jun 2019 15:15:55 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Mon, 01 Jul 2019 09:14:34 GMT"
+META "modified" "Mon, 01 Jul 2019 09:16:58 GMT"
 
 PROTO Beams [
   inputOutput SFInt32 beams 10
@@ -342,9 +342,17 @@ WorldInfo {
   }
 }
 
+NavigationInfo {
+  type "NONE"
+}
+
+Viewpoint {
+  position 0 0 1
+}
+
 DEF Beams Transform {
   translation 0 0 -1
-  rotation -1.51004074887706e-18 3.67320512848233e-06 -0.999999999993254 1.4039079430867
+  rotation -1.51004074887706e-18 3.67320512848233e-06 -0.999999999993254 1.3434974315007
   scale 2 2 2
   scaleOrientation 2.84336192633954e-06 9.71335339268243e-07 -0.999999999995486 1.57079626719477
   children [
@@ -466,35 +474,13 @@ DEF Beams Transform {
   ]
 }
 
-Viewpoint {
-  position 0 0 1
-}
-
-Words {
-  words [
-    "Titania",
-    "X3D",
-    "Node",
-    "Prototype",
-    "Scripting",
-    "Animation",
-    "Interpolation",
-    "Events",
-    "Routing",
-    "WebGL",
-    "X_ITE",
-    "Join",
-    "Us"
-  ]
-}
-
 DEF Logo Transform {
   translation 0 0 -0.5
   scale 0.07 0.07 0.07
   children [
     DEF Red Transform {
       translation -2.88382e-07 0 0
-      rotation -1.20025648663125e-13 -3.67320524850624e-06 0.999999999993251 0.254037957739821
+      rotation 3.75584094572797e-15 3.67320512472668e-06 -0.999999999993254 2.923126403934
       scaleOrientation 2.84333236776173e-06 9.71365011532888e-07 -0.999999999995486 1.57079626719477
       children [
         DEF RedAnimation Group {
@@ -2991,7 +2977,7 @@ DEF Logo Transform {
       ]
     }
     DEF Orange Transform {
-      rotation 8.7617714704549e-14 3.67320521373885e-06 -0.999999999993254 4.38985446760861
+      rotation 1.17682020568039e-13 3.67320524599224e-06 -0.999999999993254 4.69195132245664
       scaleOrientation 2.84333782472994e-06 9.7135944087784e-07 -0.999999999995486 1.57079626719477
       children [
         DEF OrangeAnimation Group {
@@ -3097,7 +3083,7 @@ DEF Logo Transform {
       ]
     }
     DEF Yellow Transform {
-      rotation -1.20024225575215e-13 -3.6732052485044e-06 0.999999999993254 1.5683766934721
+      rotation -5.67677262624878e-18 3.67320512848233e-06 -0.999999999993254 1.22192121490614
       scaleOrientation 2.84334419119285e-06 9.71353074414927e-07 -0.999999999995486 1.57079626719477
       children [
         DEF YellowAnimation Group {
@@ -3204,6 +3190,24 @@ DEF Logo Transform {
         USE _29
       ]
     }
+  ]
+}
+
+Words {
+  words [
+    "Titania",
+    "X3D",
+    "Node",
+    "Prototype",
+    "Scripting",
+    "Animation",
+    "Interpolation",
+    "Events",
+    "Routing",
+    "WebGL",
+    "X_ITE",
+    "Join",
+    "Us"
   ]
 }
 
