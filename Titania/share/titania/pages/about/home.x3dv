@@ -9,7 +9,7 @@ META "created" "Fri, 28 Jun 2019 15:15:55 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Mon, 01 Jul 2019 09:16:58 GMT"
+META "modified" "Mon, 01 Jul 2019 09:31:47 GMT"
 
 PROTO Beams [
   inputOutput SFInt32 beams 10
@@ -66,7 +66,7 @@ PROTO Words [
 ]
 {
   DEF _2 Transform {
-    scale 0.136733 0.136733 0.136733
+    scale 0.210681 0.210681 0.210681
     children Shape {
       geometry DEF _3 Text {
         string "3D Text"
@@ -352,7 +352,7 @@ Viewpoint {
 
 DEF Beams Transform {
   translation 0 0 -1
-  rotation -1.51004074887706e-18 3.67320512848233e-06 -0.999999999993254 1.3434974315007
+  rotation 1.1885286902078e-13 3.67320524725132e-06 -0.999999999993254 4.70224165246345
   scale 2 2 2
   scaleOrientation 2.84336192633954e-06 9.71335339268243e-07 -0.999999999995486 1.57079626719477
   children [
@@ -480,7 +480,7 @@ DEF Logo Transform {
   children [
     DEF Red Transform {
       translation -2.88382e-07 0 0
-      rotation 3.75584094572797e-15 3.67320512472668e-06 -0.999999999993254 2.923126403934
+      rotation 2.58115659134547e-14 3.67320514743012e-06 -0.999999999993254 3.5102764371051
       scaleOrientation 2.84333236776173e-06 9.71365011532888e-07 -0.999999999995486 1.57079626719477
       children [
         DEF RedAnimation Group {
@@ -2977,7 +2977,7 @@ DEF Logo Transform {
       ]
     }
     DEF Orange Transform {
-      rotation 1.17682020568039e-13 3.67320524599224e-06 -0.999999999993254 4.69195132245664
+      rotation 5.30441309540493e-14 3.67320517664785e-06 -0.999999999993254 3.93960403114834
       scaleOrientation 2.84333782472994e-06 9.7135944087784e-07 -0.999999999995486 1.57079626719477
       children [
         DEF OrangeAnimation Group {
@@ -3083,7 +3083,7 @@ DEF Logo Transform {
       ]
     }
     DEF Yellow Transform {
-      rotation -5.67677262624878e-18 3.67320512848233e-06 -0.999999999993254 1.22192121490614
+      rotation 1.49039729134115e-14 3.67320513573341e-06 -0.999999999993254 3.32566088494494
       scaleOrientation 2.84334419119285e-06 9.71353074414927e-07 -0.999999999995486 1.57079626719477
       children [
         DEF YellowAnimation Group {
@@ -3209,6 +3209,39 @@ Words {
     "Join",
     "Us"
   ]
+}
+
+DEF Border Transform {
+  scale 0.691359 0.386724 0.28
+  children Shape {
+    appearance Appearance {
+      lineProperties LineProperties {
+        linetype 2
+        linewidthScaleFactor 2
+      }
+      material Material {
+        diffuseColor 0 0 0
+        emissiveColor 1 1 1
+      }
+    }
+    geometry IndexedLineSet {
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        0
+      ]
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
+    }
+  }
 }
 
 ROUTE BeamsAnimationTimer.fraction_changed TO BeamsRotationInterpolator.set_fraction
