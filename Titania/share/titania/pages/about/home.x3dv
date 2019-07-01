@@ -9,7 +9,7 @@ META "created" "Fri, 28 Jun 2019 15:15:55 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.5.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
-META "modified" "Mon, 01 Jul 2019 09:31:47 GMT"
+META "modified" "Mon, 01 Jul 2019 09:40:04 GMT"
 
 PROTO Beams [
   inputOutput SFInt32 beams 10
@@ -352,7 +352,7 @@ Viewpoint {
 
 DEF Beams Transform {
   translation 0 0 -1
-  rotation 1.1885286902078e-13 3.67320524725132e-06 -0.999999999993254 4.70224165246345
+  rotation -1.51004074887706e-18 3.67320512848234e-06 -0.999999999993256 0.635059760216655
   scale 2 2 2
   scaleOrientation 2.84336192633954e-06 9.71335339268243e-07 -0.999999999995486 1.57079626719477
   children [
@@ -480,7 +480,7 @@ DEF Logo Transform {
   children [
     DEF Red Transform {
       translation -2.88382e-07 0 0
-      rotation 2.58115659134547e-14 3.67320514743012e-06 -0.999999999993254 3.5102764371051
+      rotation 2.21202648854382e-14 3.67320514346997e-06 -0.999999999993254 3.4483332765623
       scaleOrientation 2.84333236776173e-06 9.71365011532888e-07 -0.999999999995486 1.57079626719477
       children [
         DEF RedAnimation Group {
@@ -2977,7 +2977,7 @@ DEF Logo Transform {
       ]
     }
     DEF Orange Transform {
-      rotation 5.30441309540493e-14 3.67320517664785e-06 -0.999999999993254 3.93960403114834
+      rotation -1.20024998211328e-13 -3.67320524850582e-06 0.999999999993254 1.24994447633525
       scaleOrientation 2.84333782472994e-06 9.7135944087784e-07 -0.999999999995486 1.57079626719477
       children [
         DEF OrangeAnimation Group {
@@ -3083,7 +3083,7 @@ DEF Logo Transform {
       ]
     }
     DEF Yellow Transform {
-      rotation 1.49039729134115e-14 3.67320513573341e-06 -0.999999999993254 3.32566088494494
+      rotation -1.20024225575215e-13 -3.6732052485044e-06 0.999999999993254 1.52109130847468
       scaleOrientation 2.84334419119285e-06 9.71353074414927e-07 -0.999999999995486 1.57079626719477
       children [
         DEF YellowAnimation Group {
@@ -3216,7 +3216,7 @@ DEF Border Transform {
   children Shape {
     appearance Appearance {
       lineProperties LineProperties {
-        linetype 2
+        linetype 4
         linewidthScaleFactor 2
       }
       material Material {
