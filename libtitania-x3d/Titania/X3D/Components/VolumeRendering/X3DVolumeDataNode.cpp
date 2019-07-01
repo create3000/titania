@@ -133,6 +133,27 @@ X3DVolumeDataNode::initialize ()
 	proximitySensorNode   -> setup ();
 }
 
+void
+X3DVolumeDataNode::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> getBrowserOptions () -> getTextureQuality () .removeInterest (&X3DVolumeDataNode::set_dimensions, this);
+
+	X3DChildNode::setExecutionContext (executionContext);
+	X3DBoundedObject::setExecutionContext (executionContext);
+
+	proximitySensorNode   -> setExecutionContext (executionContext);
+	transformNode         -> setExecutionContext (executionContext);
+	shapeNode             -> setExecutionContext (executionContext);
+	appearanceNode        -> setExecutionContext (executionContext);
+	textureTransformNode  -> setExecutionContext (executionContext);
+	geometryNode          -> setExecutionContext (executionContext);
+	textureCoordinateNode -> setExecutionContext (executionContext);
+	coordinateNode        -> setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getBrowserOptions () -> getTextureQuality () .addInterest (&X3DVolumeDataNode::set_dimensions, this);
+}
+
 Box3d
 X3DVolumeDataNode::getBBox () const
 {

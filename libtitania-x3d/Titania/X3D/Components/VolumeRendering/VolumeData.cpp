@@ -113,6 +113,17 @@ VolumeData::initialize ()
 }
 
 void
+VolumeData::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	X3DVolumeDataNode::setExecutionContext (executionContext);
+
+	blendModeNode -> setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_renderStyle ();
+}
+
+void
 VolumeData::set_renderStyle ()
 {
 	renderStyleNode = x3d_cast <X3DVolumeRenderStyleNode*> (renderStyle ());

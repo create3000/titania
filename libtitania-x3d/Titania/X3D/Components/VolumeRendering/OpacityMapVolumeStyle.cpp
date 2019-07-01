@@ -104,6 +104,17 @@ OpacityMapVolumeStyle::initialize ()
 }
 
 void
+OpacityMapVolumeStyle::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	X3DComposableVolumeRenderStyleNode::setExecutionContext (executionContext);
+
+	shaderNode -> setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_transferFunction ();
+}
+
+void
 OpacityMapVolumeStyle::set_transferFunction ()
 {
 	X3DPtr <X3DTextureNode> transferFunctionNode;

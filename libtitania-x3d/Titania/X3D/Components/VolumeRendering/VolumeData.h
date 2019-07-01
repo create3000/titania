@@ -86,6 +86,10 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
+
 	///  @name Fields
 
 	virtual

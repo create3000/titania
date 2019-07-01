@@ -63,6 +63,12 @@ class X3DVolumeDataNode :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) override;
+
 	///  @name Fields
 
 	virtual
