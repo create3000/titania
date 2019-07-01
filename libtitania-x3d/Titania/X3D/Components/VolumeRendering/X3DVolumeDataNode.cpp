@@ -151,7 +151,11 @@ X3DVolumeDataNode::setExecutionContext (X3DExecutionContext* const executionCont
 	coordinateNode        -> setExecutionContext (executionContext);
 
 	if (isInitialized ())
+	{
 		getBrowser () -> getBrowserOptions () -> getTextureQuality () .addInterest (&X3DVolumeDataNode::set_dimensions, this);
+
+		set_dimensions ();
+	}
 }
 
 Box3d
