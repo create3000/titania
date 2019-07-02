@@ -236,6 +236,14 @@ public:
 	///  @name Prototype operations
 
 	static
+	void
+	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & protos);
+
+	static
+	void
+	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos);
+
+	static
 	bool
 	isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent);
 
@@ -246,8 +254,8 @@ public:
 	static
 	void
 	findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
-	                      std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
-	                      std::map <ProtoDeclarationPtr, size_t> & prototypes);
+	                      std::set <ExternProtoDeclarationPtr> & externProtos,
+	                      std::set <ProtoDeclarationPtr> & prototypes);
 
 	static
 	void
@@ -571,14 +579,6 @@ private:
 	static
 	void
 	removeNamedNodes (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr & undoStep);
-
-	static
-	void
-	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos);
-
-	static
-	void
-	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & protos);
 
 	static
 	void

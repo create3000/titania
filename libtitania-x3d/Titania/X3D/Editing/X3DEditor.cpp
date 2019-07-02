@@ -1755,22 +1755,20 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 {
 	undoStep -> addObjects (executionContext);
 
-	std::map <ExternProtoDeclarationPtr, size_t> externProtos;
-	std::map <ProtoDeclarationPtr, size_t>       prototypes;
+	std::set <ExternProtoDeclarationPtr> externProtos;
+	std::set <ProtoDeclarationPtr>       prototypes;
 
 	// Find proto declaration not used in prototypes or scene.
 
 	findUnusedPrototypes (executionContext, externProtos, prototypes);
 
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
+
 	// Remove ExternProtos.
 
-	const auto externProtoIndex = basic::reverse (externProtos);
-
-	for (const auto & pair : basic::make_reverse_range (externProtoIndex))
+	for (const auto & externProto : externProtos)
 	{
-		const auto & externProto = pair .second;
-
-		undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
 		undoStep -> addRedoFunction (&X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
 
 		executionContext -> removeExternProtoDeclaration (externProto -> getName ());
@@ -1778,13 +1776,8 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 
 	// Remove Prototypes.
 
-	const auto prototypeIndex = basic::reverse (prototypes);
-
-	for (const auto & pair : basic::make_reverse_range (prototypeIndex))
+	for (const auto & prototype : prototypes)
 	{
-		const auto & prototype = pair .second;
-
-		undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
 		undoStep -> addRedoFunction (&X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
 
 		executionContext -> removeProtoDeclaration (prototype -> getName ());
@@ -1797,16 +1790,16 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 
 void
 X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
-                                 std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
-                                 std::map <ProtoDeclarationPtr, size_t> & prototypes)
+                                 std::set <ExternProtoDeclarationPtr> & externProtos,
+                                 std::set <ProtoDeclarationPtr> & prototypes)
 {
 	// Get ExternProtos and Prototypes
 
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProtos .emplace (externProto, externProtos .size ());
+		externProtos .emplace (externProto);
 
 	for (const auto & prototype : executionContext -> getProtoDeclarations ())
-		prototypes .emplace (prototype, prototypes .size ());
+		prototypes .emplace (prototype);
 
 	// Find proto declaration not used in prototypes or scene.
 

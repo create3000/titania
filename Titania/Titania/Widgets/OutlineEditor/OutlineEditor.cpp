@@ -762,7 +762,7 @@ OutlineEditor::on_remove_activate ()
 
 			undoStep -> addObjects (executionContext, externProto);
 
-			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+			undoStep -> addUndoFunction (&X3D::X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
 
 			executionContext -> removeExternProtoDeclaration (externProto -> getName ());
@@ -778,6 +778,8 @@ OutlineEditor::on_remove_activate ()
 			const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
 
 			undoStep -> addObjects (executionContext, prototype);
+
+			undoStep -> addUndoFunction (&X3D::X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
 
 			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
 			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
@@ -1681,8 +1683,8 @@ OutlineEditor::selectNode (const double x, const double y)
 				const auto   externProto      = X3D::ExternProtoDeclarationPtr (sfnode);
 				const auto   executionContext = X3D::X3DExecutionContextPtr (externProto -> getExecutionContext ());
 
-				std::map <X3D::ExternProtoDeclarationPtr, size_t> externProtos;
-				std::map <X3D::ProtoDeclarationPtr, size_t>       prototypes;
+				std::set <X3D::ExternProtoDeclarationPtr> externProtos;
+				std::set <X3D::ProtoDeclarationPtr>       prototypes;
 
 				X3D::X3DEditor::findUnusedPrototypes (executionContext, externProtos, prototypes);
 
@@ -1700,8 +1702,8 @@ OutlineEditor::selectNode (const double x, const double y)
 				const auto   prototype        = X3D::ProtoDeclarationPtr (sfnode);
 				const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
 
-				std::map <X3D::ExternProtoDeclarationPtr, size_t> externProtos;
-				std::map <X3D::ProtoDeclarationPtr, size_t>       prototypes;
+				std::set <X3D::ExternProtoDeclarationPtr> externProtos;
+				std::set <X3D::ProtoDeclarationPtr>       prototypes;
 
 				X3D::X3DEditor::findUnusedPrototypes (executionContext, externProtos, prototypes);
 
