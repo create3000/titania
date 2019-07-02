@@ -245,16 +245,22 @@ public:
 
 	static
 	void
+	findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
+	                      std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
+	                      std::map <ProtoDeclarationPtr, size_t> & prototypes);
+
+	static
+	void
 	requestUpdateInstances (const ExternProtoDeclarationPtr & externProto, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	requestUpdateInstances (const ProtoDeclarationPtr & prototype, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	requestUpdateInstances (const X3DProtoDeclarationNodePtr & protoNode, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
@@ -266,7 +272,7 @@ public:
 	static
 	void
 	addReference (const SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	removeReference (const SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
@@ -294,11 +300,11 @@ public:
 	static
 	void
 	replaceUserDefinedField (const SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	removeUserDefinedField (const SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr & undoStep);
@@ -464,11 +470,11 @@ public:
 	mergePoints (const X3DPtr <IndexedFaceSet> &, const double, const UndoStepPtr & undoStep);
 
 	///  @name X3DComposedGeometryNode
-	
+
 	static
 	void
 	undoSetFogCoord (const X3DPtr <FogCoordinate> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	undoSetColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
@@ -476,31 +482,31 @@ public:
 	static
 	void
 	undoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	undoSetNormal (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	undoSetCoord (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	redoSetFogCoord (const X3DPtr <FogCoordinate> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	redoSetColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	redoSetTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	redoSetNormal (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	redoSetCoord (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
@@ -547,14 +553,6 @@ private:
 	static
 	std::vector <Route*>
 	getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes);
-
-	///  @name Prototype handling
-
-	static
-	void
-	removeUsedPrototypes (const X3DExecutionContextPtr & executionContext,
-	                      std::map <ExternProtoDeclarationPtr, size_t> &,
-	                      std::map <ProtoDeclarationPtr, size_t> &);
 
 	///  @name Remove operations
 
@@ -610,19 +608,19 @@ private:
 	static
 	void
 	removeRoutes (X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	replaceReferences (const ProtoDeclarationPtr &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
 	static
 	bool
 	replaceReferencesCallback (SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	removeReferences (const ProtoDeclarationPtr &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	
+
 	static
 	bool
 	removeReferencesCallback (SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
@@ -676,11 +674,11 @@ private:
 	transformToZero (const X3DPtr <X3DCoordinateNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr & undoStep);
 
 	///  @name X3DComposedGeometryNode
-	
+
 	static
 	void
 	undoSetTexCoordImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
-	
+
 	static
 	void
 	redoSetTexCoordImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
@@ -708,7 +706,7 @@ X3DEditor::getNodes (const MFNode & selection, const std::set <X3DConstants::Nod
 				return true;
 			}
 		}
-		
+
 		return true;
 	},
 	TRAVERSE_ROOT_NODES | TRAVERSE_VISIBLE_NODES);

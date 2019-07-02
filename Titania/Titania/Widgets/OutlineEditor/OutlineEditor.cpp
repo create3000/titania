@@ -746,11 +746,60 @@ OutlineEditor::on_remove_reference_activate (const X3D::SFNode & node, const X3D
 void
 OutlineEditor::on_remove_activate ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node"));
+	if (nodePath .empty ())
+		return;
 
-	remove (undoStep);
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+		{
+			const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove ExternProto"));
+			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   externProto      = X3D::ExternProtoDeclarationPtr (sfnode .getValue ());
+			const auto   executionContext = X3D::X3DExecutionContextPtr (externProto -> getExecutionContext ());
+
+			undoStep -> addObjects (executionContext, externProto);
+
+			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
+
+			executionContext -> removeExternProtoDeclaration (externProto -> getName ());
+
+			getBrowserWindow () -> addUndoStep (undoStep);
+			return;
+		}
+		case OutlineIterType::ProtoDeclaration:
+		{
+			const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Prototype"));
+			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   prototype        = X3D::ProtoDeclarationPtr (sfnode .getValue ());
+			const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
+
+			undoStep -> addObjects (executionContext, prototype);
+
+			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
+			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
+
+			executionContext -> removeProtoDeclaration (prototype -> getName ());
+
+			getBrowserWindow () -> addUndoStep (undoStep);
+			return;
+		}
+		case OutlineIterType::NULL_:
+		case OutlineIterType::X3DBaseNode:
+		{
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node"));
+
+			remove (undoStep);
+
+			getBrowserWindow () -> addUndoStep (undoStep);
+			return;
+		}
+		default:
+			return;
+	}
 }
 
 void
@@ -1583,7 +1632,9 @@ OutlineEditor::selectNode (const double x, const double y)
 	bool isBaseNode          = false;
 	bool isExternProto       = false;
 	bool isCompletelyLoaded  = false;
+	bool isUnusedExternProto = false;
 	bool isPrototype         = false;
+	bool isUnusedPrototype   = false;
 	bool isPrototypeInstance = false;
 	bool isInlineNode        = false;
 	bool isUrlObject         = false;
@@ -1605,9 +1656,10 @@ OutlineEditor::selectNode (const double x, const double y)
 			}
 			case OutlineIterType::X3DBaseNode:
 			{
-				const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-				const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
-				const auto   urlObject  = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
+				const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   inlineNode       = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+				const auto   urlObject        = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
+				const auto   executionContext = sfnode -> getExecutionContext ();
 
 				if (not sfnode)
 					break;
@@ -1618,38 +1670,54 @@ OutlineEditor::selectNode (const double x, const double y)
 				isInlineNode        = inlineNode;
 				isUrlObject         = urlObject;
 				isCompletelyLoaded  = urlObject and urlObject -> checkLoadState () == X3D::COMPLETE_STATE;
-				isLocalNode         = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
+				isLocalNode         = executionContext == treeView -> get_execution_context ();
 				inScene             = getInScene (sfnode);
-				isProtoNode         = sfnode -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }) and inScene;
+				isProtoNode         = executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }) and inScene;
 				break;
 			}
 			case OutlineIterType::ExternProtoDeclaration:
 			{
-				const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-				const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
+				const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   externProto      = X3D::ExternProtoDeclarationPtr (sfnode);
+				const auto   executionContext = X3D::X3DExecutionContextPtr (externProto -> getExecutionContext ());
 
-				isExternProto      = true;
-				isUrlObject        = true;
-				isCompletelyLoaded = externProto -> checkLoadState () == X3D::COMPLETE_STATE;
-				isLocalNode        = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
-				inScene            = getInScene (sfnode);
+				std::map <X3D::ExternProtoDeclarationPtr, size_t> externProtos;
+				std::map <X3D::ProtoDeclarationPtr, size_t>       prototypes;
+
+				X3D::X3DEditor::findUnusedPrototypes (executionContext, externProtos, prototypes);
+
+				isExternProto       = true;
+				isUrlObject         = true;
+				isCompletelyLoaded  = externProto -> checkLoadState () == X3D::COMPLETE_STATE;
+				isUnusedExternProto = externProtos .count (externProto);
+				isLocalNode         = executionContext == treeView -> get_execution_context ();
+				inScene             = getInScene (sfnode);
 				break;
 			}
 			case OutlineIterType::ProtoDeclaration:
 			{
-				const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   prototype        = X3D::ProtoDeclarationPtr (sfnode);
+				const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
 
-				isPrototype        = true;
-				isLocalNode        = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
-				inScene            = getInScene (sfnode);
-				isExecutionContext = true;
+				std::map <X3D::ExternProtoDeclarationPtr, size_t> externProtos;
+				std::map <X3D::ProtoDeclarationPtr, size_t>       prototypes;
+
+				X3D::X3DEditor::findUnusedPrototypes (executionContext, externProtos, prototypes);
+
+				isPrototype         = true;
+				isUnusedPrototype   = prototypes .count (prototype);
+				isLocalNode         = executionContext == treeView -> get_execution_context ();
+				inScene             = getInScene (sfnode);
+				isExecutionContext  = true;
 				break;
 			}
 			case OutlineIterType::ExportedNode:
 			{
-				const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   executionContext = sfnode -> getExecutionContext ();
 
-				isLocalNode = sfnode -> getExecutionContext () == treeView -> get_execution_context ();
+				isLocalNode = executionContext == treeView -> get_execution_context ();
 				inScene     = getInScene (sfnode);
 				break;
 			}
@@ -1700,12 +1768,13 @@ OutlineEditor::selectNode (const double x, const double y)
 
 	// Node Edit
 
-	getRemoveMenuItem ()            .set_visible (isNode or isNull);
-	getCreateCloneMenuItem ()       .set_visible (isNode);
-	getUnlinkCloneMenuItem ()       .set_visible (isNode and isCloned);
-	getDetachFromGroupMenuItem ()   .set_visible (isNode);
-	getCreateParentGroupMenuItem () .set_visible (isNode); // XXX: and is X3DChildNode
-	getRemoveParentMenuItem ()      .set_visible (isNode and nodePath .size () > 1);
+	getRemoveMenuItem ()            .set_visible   (isNode or isNull or isExternProto or isPrototype);
+	getRemoveMenuItem ()            .set_sensitive (isNode or isNull or isUnusedExternProto or isUnusedPrototype);
+	getCreateCloneMenuItem ()       .set_visible   (isNode);
+	getUnlinkCloneMenuItem ()       .set_visible   (isNode and isCloned);
+	getDetachFromGroupMenuItem ()   .set_visible   (isNode);
+	getCreateParentGroupMenuItem () .set_visible   (isNode); // XXX: and is X3DChildNode
+	getRemoveParentMenuItem ()      .set_visible   (isNode and nodePath .size () > 1);
 
 	getEditSeparator () .set_visible (getCreateCloneMenuItem ()       .get_visible () or
                                      getUnlinkCloneMenuItem ()       .get_visible () or

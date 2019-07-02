@@ -267,7 +267,7 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const X
 			{
 				const auto existing  = executionContext -> getProtoDeclaration (prototype -> getName ());
 				const auto instances = existing -> getInstances ();
-	
+
 				for (const auto & node : instances)
 				{
 					const auto instance = X3DPtr <X3DPrototypeInstance> (node);
@@ -470,16 +470,16 @@ X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, c
 	traverse (const_cast <MFNode &> (nodes), [&] (SFNode & node)
 	{
 		const X3DPrototypeInstancePtr protoInstance (node);
-		
+
 		if (protoInstance)
 		{
 			traverse (node, [&] (SFNode & subNode)
 			{
 				if (subNode == protoInstance)
 					return true;
-				
+
 				const X3DPrototypeInstancePtr child (subNode);
-				
+
 				if (child)
 				{
 					try
@@ -490,14 +490,14 @@ X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, c
 					catch (const X3DError &)
 					{ }
 				}
-				
+
 				return true;
 			},
 			TRAVERSE_PROTOTYPE_INSTANCES);
 
 			protoIndex .emplace (protoInstance -> getProtoDeclarationNode (), protoIndex .size ());
 		}
-		
+
 		return true;
 	},
 	TRAVERSE_PROTO_DECLARATIONS |
@@ -566,7 +566,7 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
 			{
 				if (route -> getExecutionContext () not_eq executionContext)
 					continue;
-				
+
 				try
 				{
 					if (nodeIndex .count (route -> getDestinationNode ()))
@@ -576,7 +576,7 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
 				{ }
 			}
 		}
-		
+
 		return true;
 	});
 
@@ -644,16 +644,16 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
 				case X3DConstants::SFNode:
 				{
 					const auto sfnode = static_cast <SFNode*> (field);
-					
+
 					if (*sfnode == node)
 						replaceNode (executionContext, parent, *sfnode, newValue, undoStep);
-					
+
 					break;
 				}
 				case X3DConstants::MFNode:
 				{
 					const auto mfnode = static_cast <MFNode*> (field);
-					
+
 					replaceNodes (executionContext, parent, *mfnode, node, newValue, undoStep);
 					break;
 				}
@@ -661,7 +661,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
 					break;
 			}
 		}
-		
+
 		return true;
 	});
 
@@ -821,7 +821,7 @@ X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SF
 		removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { oldValue }, undoStep);
 
 		// Prototype support
-	
+
 		requestUpdateInstances (executionContext, undoStep);
 	}
 }
@@ -974,33 +974,33 @@ X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNo
 				case X3DConstants::SFNode:
 				{
 					const auto sfnode = static_cast <SFNode*> (field);
-					
+
 					if (nodes .count (*sfnode))
 					{
 						undoStep -> addObjects (parent);
-						
+
 						undoStep -> addUndoFunction (&SFNode::setValue, sfnode, *sfnode);
 						undoStep -> addRedoFunction (&SFNode::setValue, sfnode, nullptr);
-						
+
 						sfnode -> setValue (nullptr);
 					}
-					
+
 					break;
 				}
 				case X3DConstants::MFNode:
 				{
 					const auto mfnode = static_cast <MFNode*> (field);
-					
+
 					for (const auto & node: nodes)
 						removeNode (parent, *mfnode, node, undoStep);
-					
+
 					break;
 				}
 				default:
 					break;
 			}
 		}
-		
+
 		return true;
 	},
 	TRAVERSE_PROTOTYPE_INSTANCES);
@@ -1087,7 +1087,7 @@ X3DEditor::updateImportedNode (const X3DExecutionContextPtr & executionContext,
 	else
 	{
 		const auto & importedNode = iter -> second;
-	
+
 		if (importedNode -> getInlineNode () not_eq inlineNode or importedNode -> getExportedName () not_eq exportedName)
 		{
 			removeImportedNode (executionContext, importedName, undoStep);
@@ -1109,7 +1109,7 @@ X3DEditor::updateImportedNode (const X3DExecutionContextPtr & executionContext,
 		                             inlineNode,
 		                             exportedName,
 		                             importedName);
-	
+
 		executionContext -> updateImportedNode (inlineNode, exportedName, importedName);
 	}
 	catch (...)
@@ -1145,9 +1145,9 @@ X3DEditor::removeImportedNode (const X3DExecutionContextPtr & executionContext, 
 	try
 	{
 		// Remove nodes imported from node
-	
+
 		const auto iter = executionContext -> getImportedNodes () .find (importedName);
-	
+
 		if (iter == executionContext -> getImportedNodes () .end ())
 			return;
 
@@ -1210,7 +1210,7 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 		executionContext -> updateNamedNode (uniqueName, node);
 
 		// Prototype support
-	
+
 		requestUpdateInstances (executionContext, undoStep);
 	}
 	catch (const X3DError & error)
@@ -1234,7 +1234,7 @@ X3DEditor::removeNamedNode (const X3DExecutionContextPtr & executionContext, con
 		executionContext -> removeNamedNode (node -> getName ());
 
 		// Prototype support
-	
+
 		requestUpdateInstances (executionContext, undoStep);
 	}
 	catch (const X3DError & error)
@@ -1663,7 +1663,7 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 	requestUpdateInstances (executionContext, undoStep);
 }
 
-std::vector <std::tuple <SFNode, std::string, SFNode, std::string>> 
+std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>
 X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, const X3DScenePtr & scene)
 {
 	std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>  routes;
@@ -1755,21 +1755,12 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 {
 	undoStep -> addObjects (executionContext);
 
-	// Get ExternProtos and Prototypes
-
 	std::map <ExternProtoDeclarationPtr, size_t> externProtos;
-
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProtos .emplace (externProto, externProtos .size ());
-
-	std::map <ProtoDeclarationPtr, size_t> prototypes;
-
-	for (const auto & prototype : executionContext -> getProtoDeclarations ())
-		prototypes .emplace (prototype, prototypes .size ());
+	std::map <ProtoDeclarationPtr, size_t>       prototypes;
 
 	// Find proto declaration not used in prototypes or scene.
 
-	removeUsedPrototypes (executionContext, externProtos, prototypes);
+	findUnusedPrototypes (executionContext, externProtos, prototypes);
 
 	// Remove ExternProtos.
 
@@ -1805,10 +1796,20 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 }
 
 void
-X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext,
+X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
                                  std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
                                  std::map <ProtoDeclarationPtr, size_t> & prototypes)
 {
+	// Get ExternProtos and Prototypes
+
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		externProtos .emplace (externProto, externProtos .size ());
+
+	for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		prototypes .emplace (prototype, prototypes .size ());
+
+	// Find proto declaration not used in prototypes or scene.
+
 	traverse (executionContext -> getRootNodes (), [&] (SFNode & node)
 	{
 		for (const auto & type: basic::make_reverse_range (node -> getType ()))
@@ -1818,22 +1819,22 @@ X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext
 				case X3DConstants::X3DPrototypeInstance:
 				{
 					const X3DPrototypeInstancePtr instance (node);
-					
+
 					switch (instance -> getProtoDeclarationNode () -> getType () .back ())
 					{
 						case  X3DConstants::ExternProtoDeclaration:
 						{
 							const ExternProtoDeclarationPtr externProto (instance -> getProtoDeclarationNode ());
-							
+
 							externProtos .erase (externProto);
 							break;
 						}
 						case  X3DConstants::ProtoDeclaration:
 						{
 							const ProtoDeclarationPtr prototype (instance -> getProtoDeclarationNode ());
-							
+
 							prototypes .erase (prototype);
-							
+
 							// This is not neccessary:
 							// removeUsedPrototypes (prototype, externProtos, prototypes);
 							break;
@@ -1841,14 +1842,14 @@ X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext
 						default:
 							break;
 					}
-					
+
 					break;
 				}
 				default:
 					break;
 			}
 		}
-		
+
 		return true;
 	},
 	TRAVERSE_PROTOTYPE_INSTANCES |
@@ -1975,7 +1976,7 @@ X3DEditor::setValue (const SFNode & node, X3DFieldDefinition & field, const X3DF
 		return;
 
 	undoStep -> addObjects (node, FieldPtr (&field));
-	
+
 	undoStep -> addUndoFunction (&X3DFieldDefinition::addEvent, &field);
 	undoStep -> addUndoFunction (&X3DFieldDefinition::set, &field, std::bind (&X3DEditor::getField, FieldPtr (field .copy (FLAT_COPY))));
 
@@ -2079,23 +2080,23 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 				const SFNode instanceNode (instance);
 
 				// Create addRoutes functions for input and output routes.
-	
+
 				const auto instanceField = instance -> getField (field -> getName ());
-	
+
 				// Collect IS reference to the new field.
 
 				const auto references = instanceField -> getReferences ();
-	
+
 				undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 				referencesIndex .emplace (instance, references);
 
 				undoStep -> addUndoFunction (&X3DEditor::addReferences, instanceNode, field -> getName (), references);
-	
+
 				// Create addRoutes functions for input and output routes.
-	
+
 				getAddRouteFunctions (instanceNode, accessType, name, instanceField, undoStep, addRouteFunctions);
-	
+
 				removeRoutes (instanceField, undoStep);
 
 				requestUpdateInstances (instanceNode, undoStep);
@@ -2119,7 +2120,7 @@ X3DEditor::updateUserDefinedField (const SFNode & node, const AccessType accessT
 	{
 		// Immediately update instance to add possible routes now.
 		undoStep -> addRedoFunction (&ProtoDeclaration::updateInstances, proto);
-		proto -> updateInstances (); 
+		proto -> updateInstances ();
 
 		for (const auto instance : proto -> getInstances ())
 		{
@@ -2190,7 +2191,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 		// Reassign IS reference to the new field.
 
 		const auto references = oldField -> getReferences ();
-	
+
 		undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 		for (const auto & reference : references)
@@ -2231,17 +2232,17 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 				const SFNode instanceNode (instance);
 
 				const auto instanceField = instance -> getField (oldField -> getName ());
-	
+
 				// Collect IS reference to the new field.
 
 				const auto references = instanceField -> getReferences ();
-	
+
 				undoStep -> addObjects (FieldArray (references .cbegin (), references .cend ()));
 
 				referencesIndex .emplace (instance, references);
 
 				undoStep -> addUndoFunction (&X3DEditor::addReferences, instanceNode, oldField -> getName (), references);
-	
+
 				// Create addRoutes functions for input and output routes.
 
 				if (newField -> getType () == oldField -> getType ())
@@ -2313,7 +2314,7 @@ X3DEditor::addReferences (const SFNode & node, const std::string & fieldName, co
 	try
 	{
 		const auto field = node -> getField (fieldName);
-	
+
 		for (const auto & reference : references)
 		{
 			field -> removeReference (reference);
@@ -2466,7 +2467,7 @@ void
 X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
-	
+
 	undoStep -> addObjects (proto);
 
 	if (proto)
@@ -2496,7 +2497,7 @@ void
 X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
-	
+
 	undoStep -> addObjects (proto);
 
 	if (proto)
@@ -2621,7 +2622,7 @@ X3DEditor::assignNode (const SFNode & node, const SFNode & other, const UndoStep
 					{
 						const auto lhsSFNode = static_cast <SFNode*> (lhs);
 						const auto rhsSFNode = static_cast <SFNode*> (rhs);
-		
+
 						if (assignNode (*lhsSFNode, *rhsSFNode, undoStep))
 							continue;
 
@@ -2682,7 +2683,7 @@ X3DEditor::assignNode (const SFNode & node, const SFNode & other, const UndoStep
 			catch (const X3DError & error)
 			{ }
 		}
-	
+
 		return true;
 	}
 
@@ -2709,16 +2710,16 @@ X3DEditor::createClone (const X3DExecutionContextPtr & executionContext,
 					case X3DConstants::SFNode:
 					{
 						const auto sfnode = static_cast <SFNode*> (field);
-						
+
 						if (*sfnode == node)
 							replaceNode (executionContext, parent, *sfnode, clone, undoStep);
-						
+
 						break;
 					}
 					case X3DConstants::MFNode:
 					{
 						const auto mfnode = static_cast <MFNode*> (field);
-						
+
 						replaceNodes (executionContext, parent, *mfnode, node, clone, undoStep);
 						break;
 					}
@@ -2726,7 +2727,7 @@ X3DEditor::createClone (const X3DExecutionContextPtr & executionContext,
 						break;
 				}
 			}
-			
+
 			return true;
 		},
 		TRAVERSE_PROTOTYPE_INSTANCES);
@@ -2763,39 +2764,39 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext,
 						try
 						{
 							const auto sfnode = static_cast <SFNode*> (field);
-							
+
 							if (*sfnode == clone)
 							{
 								if (not first)
 								{
 									const SFNode copy ((*sfnode) -> copy (FLAT_COPY));
-									
+
 									replaceNode (executionContext, parent, *sfnode, copy, undoStep);
-									
+
 									nodes .emplace_back (copy);
 								}
-								
+
 								first = false;
 							}
 						}
 						catch (const Error <NOT_SUPPORTED> &)
 						{ }
-						
+
 						break;
 					}
 					case X3DConstants::MFNode:
 					{
 						const auto mfnode = static_cast <MFNode*> (field);
-						
+
 						unlinkClone (executionContext, parent, *mfnode, clone, nodes, first, undoStep);
-						
+
 						break;
 					}
 					default:
 					break;
 				}
 			}
-			
+
 			return true;
 		},
 		TRAVERSE_PROTOTYPE_INSTANCES);
@@ -3122,9 +3123,9 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 	if (not children .empty ())
 	{
 		undoStep -> addObjects (group);
-	
+
 		const auto & leader = children .back ();
-	
+
 		traverse (executionContext -> getRootNodes (), [&] (SFNode & parent)
 		{
 			for (auto & field: parent -> getFieldDefinitions ())
@@ -3134,41 +3135,41 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 					case X3DConstants::SFNode:
 					{
 						const auto sfnode = static_cast <SFNode*> (field);
-						
+
 						if (*sfnode == leader)
 						{
 							// Replace node with Transform
-							
+
 							undoStep -> addObjects (parent);
-							
+
 							undoStep -> addUndoFunction (&SFNode::setValue, sfnode, leader);
 							undoStep -> addRedoFunction (&SFNode::setValue, sfnode, group);
-							
+
 							sfnode -> setValue (group);
 						}
-						
+
 						break;
 					}
 					case X3DConstants::MFNode:
 					{
 						const auto mfnode = static_cast <MFNode*> (field);
-						
+
 						createParentGroup (executionContext, group, *mfnode, leader, parent, undoStep);
-						
+
 						break;
 					}
 					default:
 						break;
 				}
 			}
-			
+
 			return true;
 		});
-	
+
 		createParentGroup (executionContext, group, executionContext -> getRootNodes (), leader, executionContext, undoStep);
-	
+
 		MFNode tail (children .cbegin (), children .cend () - 1);
-	
+
 		addToGroup (executionContext, group, tail, undoStep);
 		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), leader, undoStep);
 	}
@@ -3290,7 +3291,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto location    = lightNode -> getMetaData <Vector3f> ("/DirectionalLight/location");
 					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (location));
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3299,25 +3300,25 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto extrusionNode = X3DPtr <Extrusion> (node);
 					const auto modelMatrix   = getModelMatrix (executionContext, node);
 					const auto subBBox       = extrusionNode -> getBBox ();
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
 				case X3DConstants::IndexedFaceSetTool:
 				{
 					const auto tool = X3DPtr <IndexedFaceSetTool> (node);
-					
+
 					if (tool -> getSelectedPoints () .empty ())
 						continue; // Proceed with X3DComposedGeometryNode.
-	
+
 					auto points = std::vector <Vector3d> ();
-	
+
 					for (const auto & pair : tool -> getSelectedPoints ())
 						points .emplace_back (pair .second);
-	
+
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto subBBox     = Box3d (points .begin (), points .end (), iterator_type ());
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3326,7 +3327,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto lightNode   = X3DPtr <PointLight> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (lightNode -> location () .getValue ()) );
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3335,7 +3336,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto lightNode   = X3DPtr <SpotLight> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (lightNode -> location () .getValue ()) );
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3344,7 +3345,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto soundNode   = X3DPtr <Sound> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto subBBox     = Box3d (Vector3d (1, 1, 1), Vector3d (soundNode -> location () .getValue ()) );
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3353,7 +3354,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto boundedObject = X3DPtr <X3DBoundedObject> (node);
 					const auto modelMatrix   = getModelMatrix (executionContext, node);
 					const auto subBBox       = boundedObject -> getBBox ();
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3362,7 +3363,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto sensorNode  = X3DPtr <X3DEnvironmentalSensorNode> (node);
 					const auto modelMatrix = getModelMatrix (executionContext, node);
 					const auto subBBox     = Box3d (sensorNode -> size () .getValue (), sensorNode -> center () .getValue ());
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3371,7 +3372,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto geometryNode = X3DPtr <X3DGeometryNode> (node);
 					const auto modelMatrix  = getModelMatrix (executionContext, node);
 					const auto subBBox      = geometryNode -> getBBox ();
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3380,7 +3381,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					const auto viewpointNode = X3DPtr <X3DViewpointNode> (node);
 					const auto modelMatrix   = getModelMatrix (executionContext, node);
 					const auto subBBox       = Box3d (Vector3d (1, 1, 1), viewpointNode -> getPosition ());
-	
+
 					bbox += subBBox * modelMatrix;
 					break;
 				}
@@ -3389,7 +3390,7 @@ X3DEditor::getBoundingBox (const X3DExecutionContextPtr & executionContext,
 					continue;
 				}
 			}
-	
+
 			break;
 		}
 	}
@@ -3425,7 +3426,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 		const auto max     = extents .second;
 		const auto center  = bbox .center ();
 		auto       centers = std::vector <Vector3d> ();
-		
+
 		centers .emplace_back (center .x (), min .y (), center .z ()); // bottom
 		centers .emplace_back (center .x (), max .y (), center .z ()); // top
 		centers .emplace_back (min .x (), center .y (), center .z ()); // left
@@ -3500,7 +3501,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 					case X3DConstants::IndexedFaceSetTool:
 					{
 						const auto tool = X3DPtr <IndexedFaceSetTool> (node);
-						
+
 						if (tool -> getSelectedPoints () .empty ())
 							continue; // Proceed with X3DComposedGeometryNode.
 
@@ -3630,7 +3631,7 @@ X3DEditor::moveNodesCenterToTarget (const X3DExecutionContextPtr & executionCont
 						continue;
 					}
 				}
-	
+
 				break;
 			}
 		}
