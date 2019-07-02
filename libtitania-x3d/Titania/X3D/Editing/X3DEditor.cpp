@@ -1803,7 +1803,7 @@ X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext
 
 	// Find proto declaration not used in prototypes or scene.
 
-	traverse (executionContext -> getRootNodes (), [&] (SFNode & node)
+	traverse (executionContext, [&] (SFNode & node)
 	{
 		for (const auto & type: basic::make_reverse_range (node -> getType ()))
 		{
@@ -1845,6 +1845,9 @@ X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext
 
 		return true;
 	},
+	TRAVERSE_PROTO_DECLARATIONS |
+	TRAVERSE_PROTO_DECLARATION_BODY |
+	TRAVERSE_ROOT_NODES |
 	TRAVERSE_PROTOTYPE_INSTANCES |
 	TRAVERSE_META_DATA);
 }
