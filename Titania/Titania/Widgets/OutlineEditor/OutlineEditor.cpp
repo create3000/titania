@@ -755,10 +755,10 @@ OutlineEditor::on_remove_activate ()
 	{
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove ExternProto"));
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   externProto      = X3D::ExternProtoDeclarationPtr (sfnode .getValue ());
 			const auto   executionContext = X3D::X3DExecutionContextPtr (externProto -> getExecutionContext ());
+			const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Extern Proto »%s«"), externProto -> getName () .c_str ()));
 
 			undoStep -> addObjects (executionContext, externProto);
 
@@ -772,10 +772,10 @@ OutlineEditor::on_remove_activate ()
 		}
 		case OutlineIterType::ProtoDeclaration:
 		{
-			const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Prototype"));
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   prototype        = X3D::ProtoDeclarationPtr (sfnode .getValue ());
 			const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
+			const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Prototype »%s«"), prototype -> getName () .c_str ()));
 
 			undoStep -> addObjects (executionContext, prototype);
 
