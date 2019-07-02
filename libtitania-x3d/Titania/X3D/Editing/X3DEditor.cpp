@@ -1791,7 +1791,7 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 	requestUpdateInstances (executionContext, undoStep);
 }
 
-/// Finds all unused prototypes. Set aggressive to true if you want to remove all unused prototypes.
+/// Finds all unused prototypes. Set aggressive to true if you want to remove all unused prototypes found.
 void
 X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
                                  std::set <ExternProtoDeclarationPtr> & externProtos,
