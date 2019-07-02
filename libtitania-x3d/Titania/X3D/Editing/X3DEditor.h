@@ -255,7 +255,8 @@ public:
 	void
 	findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
 	                      std::set <ExternProtoDeclarationPtr> & externProtos,
-	                      std::set <ProtoDeclarationPtr> & prototypes);
+	                      std::set <ProtoDeclarationPtr> & prototypes,
+								 const bool aggressive = false);
 
 	static
 	void

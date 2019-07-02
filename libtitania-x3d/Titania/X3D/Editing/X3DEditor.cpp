@@ -1727,6 +1727,7 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
  *
  */
 
+///  Returns true if @a child proto is used in @a parent proto, otherwise false.
 bool
 X3DEditor::isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent)
 {
@@ -1745,11 +1746,13 @@ X3DEditor::isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* 
 	TRAVERSE_PROTO_DECLARATIONS |
 	TRAVERSE_PROTO_DECLARATION_BODY |
 	TRAVERSE_ROOT_NODES |
-	TRAVERSE_PROTOTYPE_INSTANCES);
+	TRAVERSE_PROTOTYPE_INSTANCES |
+	TRAVERSE_META_DATA);
 
 	return not traversed;
 }
 
+/// Removes all unused prototypes.
 void
 X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
 {
@@ -1760,7 +1763,7 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 
 	// Find proto declaration not used in prototypes or scene.
 
-	findUnusedPrototypes (executionContext, externProtos, prototypes);
+	findUnusedPrototypes (executionContext, externProtos, prototypes, true);
 
 	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
@@ -1788,10 +1791,12 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 	requestUpdateInstances (executionContext, undoStep);
 }
 
+/// Finds all unused prototypes. Set aggressive to true if you want to remove all unused prototypes.
 void
 X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
                                  std::set <ExternProtoDeclarationPtr> & externProtos,
-                                 std::set <ProtoDeclarationPtr> & prototypes)
+                                 std::set <ProtoDeclarationPtr> & prototypes,
+                                 const bool aggressive)
 {
 	// Get ExternProtos and Prototypes
 
@@ -1801,7 +1806,7 @@ X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext
 	for (const auto & prototype : executionContext -> getProtoDeclarations ())
 		prototypes .emplace (prototype);
 
-	// Find proto declaration not used in prototypes or scene.
+	// Remove all prototypes used in proto instances or scene graph. The rest are the unused prototypes.
 
 	traverse (executionContext, [&] (SFNode & node)
 	{
@@ -1845,8 +1850,7 @@ X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext
 
 		return true;
 	},
-	TRAVERSE_PROTO_DECLARATIONS |
-	TRAVERSE_PROTO_DECLARATION_BODY |
+	(aggressive ? 0 : TRAVERSE_PROTO_DECLARATIONS | TRAVERSE_PROTO_DECLARATION_BODY) |
 	TRAVERSE_ROOT_NODES |
 	TRAVERSE_PROTOTYPE_INSTANCES |
 	TRAVERSE_META_DATA);
