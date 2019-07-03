@@ -1226,10 +1226,9 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	glUniform1i (x3d_ColorMaterial, context -> getColorMaterial ());
 
-	if (context -> getGeometryType () < 2)
-		linePropertiesNode -> setShaderUniforms (this);
-	else
-		fillPropertiesNode -> setShaderUniforms (this);
+	// Alway set both, because shading can change.
+	linePropertiesNode -> setShaderUniforms (this);
+	fillPropertiesNode -> setShaderUniforms (this);
 
 	if (materialNode)
 	{
