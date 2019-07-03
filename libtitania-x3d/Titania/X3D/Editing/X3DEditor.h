@@ -186,28 +186,6 @@ public:
 	void
 	removeNamedNode (const X3DExecutionContextPtr & executionContext, const SFNode & node, const UndoStepPtr & undoStep);
 
-	static
-	void
-	updateProtoDeclaration (const X3DExecutionContextPtr & executionContext,
-	                        const std::string & name,
-	                        const ProtoDeclarationPtr & prototype,
-	                        const UndoStepPtr & undoStep);
-
-	static
-	void
-	convertProtoToExternProto (const ProtoDeclarationPtr & prototype, const MFString & url, const UndoStepPtr & undoStep);
-
-	static
-	void
-	updateExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
-	                              const std::string & name,
-	                              const ExternProtoDeclarationPtr & externproto,
-	                              const UndoStepPtr & undoStep);
-
-	static
-	void
-	foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & externproto, const UndoStepPtr & undoStep);
-
 	///  @name Route handling
 
 	///  throws Error <INVALID_NODE>, Error <INVALID_FIELD>, Error <INVALID_OPERATION_TIMING>, Error <DISPOSED>
@@ -237,26 +215,53 @@ public:
 
 	static
 	void
-	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & protos);
+	updateProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+	                        const std::string & name,
+	                        const ProtoDeclarationPtr & prototype,
+	                        const UndoStepPtr & undoStep);
 
 	static
 	void
-	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos);
+	removeProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+									const std::string & name,
+									const UndoStepPtr & undoStep);
+
+	static
+	void
+	convertProtoToExternProto (const ProtoDeclarationPtr & prototype, const MFString & url, const UndoStepPtr & undoStep);
+
+	static
+	void
+	updateExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+	                              const std::string & name,
+	                              const ExternProtoDeclarationPtr & externproto,
+	                              const UndoStepPtr & undoStep);
+
+	static
+	void
+	removeExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+											const std::string & name,
+											const UndoStepPtr & undoStep);
+
+	static
+	void
+	foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & externproto, const UndoStepPtr & undoStep);
 
 	static
 	bool
 	isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* const parent);
 
 	static
-	void
-	removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
+	bool
+	isUnusedExternProto (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationPtr & externProto);
+
+	static
+	bool
+	isUnusedPrototype (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationPtr & prototype);
 
 	static
 	void
-	findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
-	                      std::set <ExternProtoDeclarationPtr> & externProtos,
-	                      std::set <ProtoDeclarationPtr> & prototypes,
-								 const bool aggressive = false);
+	removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
 
 	static
 	void
@@ -585,6 +590,21 @@ private:
 	void
 	deleteRoutes (const X3DExecutionContextPtr & executionContext, const SFNode &, const UndoStepPtr & undoStep);
 
+	///  @name Prototype operations
+
+	static
+	void
+	restoreExternProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationArray & protos);
+
+	static
+	void
+	restoreProtoDeclarations (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationArray & protos);
+
+
+	static
+	std::pair <std::set <ExternProtoDeclarationPtr>, std::set <ProtoDeclarationPtr>>
+	findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
+								 const bool aggressive = false);
 	///  @name Fields operations
 
 	static

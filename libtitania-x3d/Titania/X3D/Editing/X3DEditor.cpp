@@ -1279,6 +1279,20 @@ X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionConte
 	requestUpdateInstances (executionContext, undoStep);
 }
 
+
+void
+X3DEditor::removeProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+                                   const std::string & name,
+                                   const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (executionContext);
+
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
+	undoStep -> addRedoFunction (&X3DExecutionContext::removeProtoDeclaration, executionContext, name);
+
+	executionContext -> removeProtoDeclaration (name);
+}
+
 void
 X3DEditor::convertProtoToExternProto (const ProtoDeclarationPtr & prototype, const MFString & url, const UndoStepPtr & undoStep)
 {
@@ -1380,6 +1394,19 @@ X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executio
 	// Prototype support
 
 	requestUpdateInstances (executionContext, undoStep);
+}
+
+void
+X3DEditor::removeExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+                                         const std::string & name,
+                                         const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (executionContext);
+
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
+	undoStep -> addRedoFunction (&X3DExecutionContext::removeExternProtoDeclaration, executionContext, name);
+
+	executionContext -> removeExternProtoDeclaration (name);
 }
 
 void
@@ -1752,18 +1779,31 @@ X3DEditor::isProtoUsedInProto (ProtoDeclaration* const child, ProtoDeclaration* 
 	return not traversed;
 }
 
+bool
+X3DEditor::isUnusedExternProto (const X3DExecutionContextPtr & executionContext, const ExternProtoDeclarationPtr & externProto)
+{
+	const auto [externProtos, prototypes] = findUnusedPrototypes (executionContext);
+
+	return externProtos .count (externProto);
+}
+
+bool
+X3DEditor::isUnusedPrototype (const X3DExecutionContextPtr & executionContext, const ProtoDeclarationPtr & prototype)
+{
+	const auto [externProtos, prototypes] = findUnusedPrototypes (executionContext);
+
+	return prototypes .count (prototype);
+}
+
 /// Removes all unused prototypes.
 void
 X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (executionContext);
 
-	std::set <ExternProtoDeclarationPtr> externProtos;
-	std::set <ProtoDeclarationPtr>       prototypes;
-
 	// Find proto declaration not used in prototypes or scene.
 
-	findUnusedPrototypes (executionContext, externProtos, prototypes, true);
+	const auto [externProtos, prototypes] = findUnusedPrototypes (executionContext, true);
 
 	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations,       executionContext, executionContext -> getProtoDeclarations ());
@@ -1792,13 +1832,14 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 }
 
 /// Finds all unused prototypes. Set aggressive to true if you want to remove all unused prototypes found.
-void
+std::pair <std::set <ExternProtoDeclarationPtr>, std::set <ProtoDeclarationPtr>>
 X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext,
-                                 std::set <ExternProtoDeclarationPtr> & externProtos,
-                                 std::set <ProtoDeclarationPtr> & prototypes,
                                  const bool aggressive)
 {
 	// Get ExternProtos and Prototypes
+
+   std::set <ExternProtoDeclarationPtr> externProtos;
+   std::set <ProtoDeclarationPtr>       prototypes;
 
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProtos .emplace (externProto);
@@ -1854,6 +1895,8 @@ X3DEditor::findUnusedPrototypes (const X3DExecutionContextPtr & executionContext
 	TRAVERSE_ROOT_NODES |
 	TRAVERSE_PROTOTYPE_INSTANCES |
 	TRAVERSE_META_DATA);
+
+	return std::pair (externProtos, prototypes);
 }
 
 void

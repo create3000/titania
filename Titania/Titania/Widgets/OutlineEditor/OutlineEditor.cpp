@@ -758,14 +758,10 @@ OutlineEditor::on_remove_activate ()
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   externProto      = X3D::ExternProtoDeclarationPtr (sfnode .getValue ());
 			const auto   executionContext = X3D::X3DExecutionContextPtr (externProto -> getExecutionContext ());
-			const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Extern Proto »%s«"), externProto -> getName () .c_str ()));
+			const auto & name             = externProto -> getName ();
+			const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Extern Proto »%s«"), name .c_str ()));
 
-			undoStep -> addObjects (executionContext, externProto);
-
-			undoStep -> addUndoFunction (&X3D::X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
-			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeExternProtoDeclaration, executionContext, externProto -> getName ());
-
-			executionContext -> removeExternProtoDeclaration (externProto -> getName ());
+			X3D::X3DEditor::removeExternProtoDeclaration (executionContext, name, undoStep);
 
 			getBrowserWindow () -> addUndoStep (undoStep);
 			return;
@@ -775,16 +771,10 @@ OutlineEditor::on_remove_activate ()
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   prototype        = X3D::ProtoDeclarationPtr (sfnode .getValue ());
 			const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
-			const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Prototype »%s«"), prototype -> getName () .c_str ()));
+			const auto & name             = prototype -> getName ();
+			const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Prototype »%s«"), name .c_str ()));
 
-			undoStep -> addObjects (executionContext, prototype);
-
-			undoStep -> addUndoFunction (&X3D::X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
-
-			undoStep -> addUndoFunction (&X3D::X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
-			undoStep -> addRedoFunction (&X3D::X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
-
-			executionContext -> removeProtoDeclaration (prototype -> getName ());
+			X3D::X3DEditor::removeProtoDeclaration (executionContext, name, undoStep);
 
 			getBrowserWindow () -> addUndoStep (undoStep);
 			return;
@@ -1683,15 +1673,10 @@ OutlineEditor::selectNode (const double x, const double y)
 				const auto   externProto      = X3D::ExternProtoDeclarationPtr (sfnode);
 				const auto   executionContext = X3D::X3DExecutionContextPtr (externProto -> getExecutionContext ());
 
-				std::set <X3D::ExternProtoDeclarationPtr> externProtos;
-				std::set <X3D::ProtoDeclarationPtr>       prototypes;
-
-				X3D::X3DEditor::findUnusedPrototypes (executionContext, externProtos, prototypes);
-
 				isExternProto       = true;
 				isUrlObject         = true;
 				isCompletelyLoaded  = externProto -> checkLoadState () == X3D::COMPLETE_STATE;
-				isUnusedExternProto = externProtos .count (externProto);
+				isUnusedExternProto = X3D::X3DEditor::isUnusedExternProto (executionContext, externProto);
 				isLocalNode         = executionContext == treeView -> get_execution_context ();
 				inScene             = getInScene (sfnode);
 				break;
@@ -1702,13 +1687,8 @@ OutlineEditor::selectNode (const double x, const double y)
 				const auto   prototype        = X3D::ProtoDeclarationPtr (sfnode);
 				const auto   executionContext = X3D::X3DExecutionContextPtr (prototype -> getExecutionContext ());
 
-				std::set <X3D::ExternProtoDeclarationPtr> externProtos;
-				std::set <X3D::ProtoDeclarationPtr>       prototypes;
-
-				X3D::X3DEditor::findUnusedPrototypes (executionContext, externProtos, prototypes);
-
 				isPrototype         = true;
-				isUnusedPrototype   = prototypes .count (prototype);
+				isUnusedPrototype   = X3D::X3DEditor::isUnusedPrototype (executionContext, prototype);
 				isLocalNode         = executionContext == treeView -> get_execution_context ();
 				inScene             = getInScene (sfnode);
 				isExecutionContext  = true;
