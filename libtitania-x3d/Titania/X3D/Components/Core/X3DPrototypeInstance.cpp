@@ -239,6 +239,8 @@ X3DPrototypeInstance::construct ()
 			X3DNode::initialize ();
 			X3DExecutionContext::initialize ();
 			X3DChildObject::addEvent ();
+
+			const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 		}
 	}
 	catch (const X3DError & error)
@@ -706,7 +708,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	FieldDefinitionArray fields   = getChangedFields ();
+	FieldDefinitionArray fields = getChangedFields ();
 
 	if (fields .empty ())
 	{
