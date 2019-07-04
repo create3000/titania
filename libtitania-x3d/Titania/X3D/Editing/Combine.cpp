@@ -119,29 +119,29 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 				default:
 				{
 					math::tessellator <double, size_t> tessellator;
-	
+
 					tessellator .begin_polygon ();
 					tessellator .begin_contour ();
-				
+
 					for (const auto & index : coordIndices)
 					{
 						const auto point = coordNode -> get1Point (index) * matrix;
-			
+
 						tessellator .add_vertex (point, index);
 					}
-				
+
 					tessellator .end_contour ();
 					tessellator .end_polygon ();
-				
+
 					const auto triangles = tessellator .triangles ();
-			
+
 					for (size_t v = 0, size = triangles .size (); v < size; )
 					{
 						indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
 						indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
 						indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
 					}
-					
+
 					break;
 				}
 			}
@@ -215,29 +215,29 @@ Combine::geometryBoolean (const BooleanOperation & booleanOperation,
 		static constexpr double MERGE_DISTANCE = 1e-6;
 
 		// Choose target.
-	
+
 		const auto & masterShape    = front ? shapes .front () : shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
 		const auto   targetMatrix   = inverse (X3DEditor::getModelMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
-	
+
 		targetGeometry -> coord () = targetCoord;
-	
+
 		// Filter geometry nodes.
-	
+
 		const X3DPtrArray <IndexedFaceSet> geometryNodes = getIndexedFaceSets (shapes);
-	
+
 		if (not geometryNodes .empty ())
 			targetGeometry -> creaseAngle () = front ? geometryNodes .front () -> creaseAngle () : geometryNodes .back () -> creaseAngle ();
-	
+
 		// Combine Coordinates.
-	
+
 		std::vector <mesh3 <double>> meshes;
-	
+
 		for (const auto & geometryNode : geometryNodes)
 		{
 			const auto & coordNode = geometryNode -> getCoord ();
-	
+
 			if (not coordNode)
 				continue;
 
@@ -248,10 +248,10 @@ Combine::geometryBoolean (const BooleanOperation & booleanOperation,
 			// Generate mesh.
 
 			const auto matrix = X3DEditor::getModelMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode) * targetMatrix;
-		
+
 			meshes .emplace_back (toMesh (geometryNode, coordNode, matrix));
 		}
-	
+
 		// Test if there is something to do.
 
 		if (meshes .size () < 2)
@@ -263,7 +263,7 @@ Combine::geometryBoolean (const BooleanOperation & booleanOperation,
 
 		for (const auto & mesh : std::pair (meshes .cbegin () + 1, meshes .cend ()))
 			result = booleanOperation (result, mesh);
-	
+
 		// Store result in target geometry.
 
 		for (size_t i = 0, size = result .indices () .size (); i < size; )
@@ -394,10 +394,10 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	{
 		if (geometryNode -> getFogCoord ())
 			addFogCoord = true;
-	
+
 		if (geometryNode -> getColor ())
 			addColors = true;
-	
+
 		if (geometryNode -> getTexCoord ())
 			addTexCoords = true;
 
@@ -757,7 +757,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 			for (size_t i = 0, size = targetColor -> getSize (); i < size; ++ i)
 				colorNode -> set1Color (i, targetColor -> get1Color (i));
-		
+
 			targetGeometry -> color () = colorNode;
 		}
 	}
@@ -798,7 +798,7 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 	nodes .assign (shapes .cbegin (), shapes .cend ());
 	nodes .remove (masterShape);
 
-	X3DEditor::removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .cbegin (), nodes .cend ()), undoStep);
+	X3DEditor::removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .cbegin (), nodes .cend ()), { }, undoStep);
 
 	for (const auto & node : nodes)
 		X3DEditor::removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { node }, undoStep);

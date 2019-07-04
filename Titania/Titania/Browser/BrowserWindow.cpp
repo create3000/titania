@@ -1016,7 +1016,7 @@ BrowserWindow::on_detach_from_group_activated ()
 	getSelection () -> undoRestoreNodes (undoStep);
 	getSelection () -> redoRestoreNodes (undoStep);
 
-	X3D::X3DEditor::detachFromGroup (executionContext, selection, getKeys () .shift (), undoStep);
+	X3D::X3DEditor::detachFromGroup (executionContext, selection, false, getKeys () .shift (), undoStep);
 
 	addUndoStep (undoStep);
 }

@@ -154,11 +154,11 @@ public:
 
 	static
 	void
-	removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep);
+	removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const MFNode & exclude, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep);
+	removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const MFNode & exclude, const UndoStepPtr & undoStep);
 
 	static
 	void
@@ -391,6 +391,7 @@ public:
 	void
 	detachFromGroup (const X3DExecutionContextPtr & executionContext,
 	                 const MFNode & children_,
+						  const bool excludeChildren,
 	                 const bool detachToLayer0,
 	                 const UndoStepPtr & undoStep);
 

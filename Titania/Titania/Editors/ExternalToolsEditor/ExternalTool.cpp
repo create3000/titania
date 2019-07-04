@@ -363,7 +363,7 @@ ExternalTool::processOutput (const std::string & stdout)
 
 			if (not nodes .empty ())
 			{
-				X3D::X3DEditor::detachFromGroup (browserWindow -> getCurrentContext (), nodes, true, undoStep);
+				X3D::X3DEditor::detachFromGroup (browserWindow -> getCurrentContext (), nodes, true, true, undoStep);
 
 				browserWindow -> getSelection () -> setNodes (nodes, undoStep);
 				browserWindow -> addUndoStep (undoStep);

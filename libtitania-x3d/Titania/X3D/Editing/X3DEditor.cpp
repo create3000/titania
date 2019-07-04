@@ -336,7 +336,7 @@ X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNo
 {
 	// Detach from group
 
-	detachFromGroup (executionContext, nodes, true, undoStep);
+	detachFromGroup (executionContext, nodes, true, true, undoStep);
 
 	// Set clipboard text
 
@@ -356,7 +356,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 
 	const auto undoDetachFromGroup = std::make_shared <UndoStep> ();
 
-	detachFromGroup (executionContext, nodes, true, undoDetachFromGroup);
+	detachFromGroup (executionContext, nodes, true, true, undoDetachFromGroup);
 
 	// Set clipboard text
 
@@ -927,7 +927,7 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 	// If it is previously known that the node isn't in the scene graph anymore, it must not removed.
 
 	if (removeFromSceneGraph)
-		removeNodesFromSceneGraph (executionContext, nodes, undoStep);
+		removeNodesFromSceneGraph (executionContext, nodes, { }, undoStep);
 
 	// Hide node
 
@@ -948,14 +948,14 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 }
 
 void
-X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const MFNode & exclude, const UndoStepPtr & undoStep)
 {
 	const SFNode executionContextNode (executionContext);
 
 	for (const auto & node : nodes)
 		removeNode (executionContextNode, executionContext -> getRootNodes (), node, undoStep);
 
-	removeNodesFromSceneGraph (executionContext -> getRootNodes (), nodes, undoStep);
+	removeNodesFromSceneGraph (executionContext -> getRootNodes (), nodes, exclude, undoStep);
 
 	// Prototype support
 
@@ -963,10 +963,22 @@ X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionCo
 }
 
 void
-X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep)
+X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const MFNode & exclude, const UndoStepPtr & undoStep)
 {
+	std::set <SFNode> excludes;
+
+	traverse (const_cast <MFNode &> (exclude), [&] (SFNode & node)
+	{
+		excludes .emplace (node);
+		return true;
+	},
+	TRAVERSE_PROTOTYPE_INSTANCES);
+
 	traverse (const_cast <MFNode &> (array), [&] (SFNode & parent)
 	{
+		if (excludes .count (parent))
+			return true;
+
 		for (auto & field: parent -> getFieldDefinitions ())
 		{
 			switch (field -> getType ())
@@ -2923,7 +2935,7 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 
 		// Remove child from scene graph
 
-		removeNodesFromSceneGraph (executionContext, { child }, undoStep);
+		removeNodesFromSceneGraph (executionContext, { child }, { }, undoStep);
 
 		// Add to group
 
@@ -3070,7 +3082,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 
 			// Remove child from scene graph
 
-			removeNodesFromSceneGraph (executionContext, { child }, undoStep);
+			removeNodesFromSceneGraph (executionContext, { child }, { }, undoStep);
 
 			// Add child to group
 
@@ -3110,10 +3122,11 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 void
 X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
                             const MFNode & children_,
+									 const bool excludeChildren,
                             const bool detachToLayer0,
                             const UndoStepPtr & undoStep)
 {
-	MFNode children = children_;
+	const MFNode children = children_;
 
 	for (const auto & child : children)
 	{
@@ -3136,7 +3149,7 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 
 		// Remove child from scene graph
 
-		removeNodesFromSceneGraph (executionContext, { child }, undoStep);
+		removeNodesFromSceneGraph (executionContext, { child }, excludeChildren ? children : MFNode (), undoStep);
 
 		// Add to layers
 
