@@ -153,7 +153,7 @@ public:
 	bool
 	getCCW () const
 	{ return frontFace == GL_CCW; }
-	
+
 	virtual
 	const std::vector <Color4f> &
 	getPolygonColors () const
@@ -178,7 +178,7 @@ public:
 	const std::vector <Vector3d> &
 	getPolygonVertices () const
 	{ return vertices; }
-	
+
 	virtual
 	const std::vector <Element> &
 	getElements () const
@@ -299,7 +299,7 @@ protected:
 	std::vector <float> &
 	getFogDepths ()
 	{ return fogDepths; }
-	
+
 	const std::vector <float> &
 	getFogDepths () const
 	{ return fogDepths; }
@@ -307,7 +307,7 @@ protected:
 	std::vector <Color4f> &
 	getColors ()
 	{ return colors; }
-	
+
 	const std::vector <Color4f> &
 	getColors () const
 	{ return colors; }
@@ -454,6 +454,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_live ();
+
+	void
 	set_shading (const ShadingType & value);
 
 	///  @name Build
@@ -482,7 +485,7 @@ private:
 	size_t                               geometryType;
 	bool                                 solid;
 	GLenum                               frontFace;
-	bool                                 flatShading;
+	int32_t                              flatShading;
 	std::vector <Element>                elements;
 	X3DPtr <CollidableShape>             pickShape;
 

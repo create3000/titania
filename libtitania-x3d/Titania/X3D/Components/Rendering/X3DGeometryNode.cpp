@@ -86,7 +86,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	          geometryType (3),
 	                 solid (true),
 	             frontFace (GL_CCW),
-	           flatShading (false),
+	           flatShading (0),
 	              elements (),
 	             pickShape (),
 	       attribBufferIds (),
@@ -124,6 +124,9 @@ X3DGeometryNode::initialize ()
 {
 	X3DNode::initialize ();
 
+	getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
+	isLive () .addInterest (&X3DGeometryNode::set_live, this);
+
 	addInterest (&X3DGeometryNode::requestRebuild, this);
 	rebuildOutput .addInterest (&X3DGeometryNode::rebuild, this);
 
@@ -133,6 +136,8 @@ X3DGeometryNode::initialize ()
 	glGenBuffers (1, &colorBufferId);
 	glGenBuffers (1, &normalBufferId);
 	glGenBuffers (1, &vertexBufferId);
+
+	set_live ();
 }
 
 void
@@ -140,11 +145,21 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 {
 	if (isInitialized ())
 	{
+		getBrowser () -> getBrowserOptions () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
+		getExecutionContext () -> isLive () .removeInterest (&X3DGeometryNode::set_live, this);
+
 		if (textureCoordinateNode == getBrowser () -> getDefaultTexCoord ())
 			textureCoordinateNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
 	}
 
 	X3DNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (&X3DGeometryNode::set_live, this);
+
+		set_live ();
+	}
 }
 
 void
@@ -832,6 +847,15 @@ X3DGeometryNode::cut (X3DRenderObject* const renderObject, const Line2d & cutLin
 }
 
 void
+X3DGeometryNode::set_live ()
+{
+	if (isLive () and getExecutionContext () -> isLive ())
+		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
+	else
+		getBrowser () -> getBrowserOptions () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
+}
+
+void
 X3DGeometryNode::set_shading (const ShadingType & shading)
 {
 	if (geometryType < 2)
@@ -839,10 +863,10 @@ X3DGeometryNode::set_shading (const ShadingType & shading)
 
 	const bool flatShading = shading == ShadingType::FLAT;
 
-	if (flatShading == this -> flatShading and faceNormals .size ())
+	if (flatShading and this -> flatShading == 1)
 		return;
 
-   this -> flatShading = flatShading;
+   this -> flatShading = flatShading ? 1 : 2;
 
 	if (flatShading)
 	{
@@ -959,6 +983,10 @@ X3DGeometryNode::rebuild ()
 		multiTexCoords .resize (getBrowser () -> getMaxTextures (), multiTexCoords .back ());
 	}
 
+	// Upload normals or flat normals.
+
+	set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
+
 	// Upload arrays.
 
 	transfer ();
@@ -976,6 +1004,8 @@ X3DGeometryNode::clear ()
 		attribNodes     .clear ();
 		attribBufferIds .clear ();
 	}
+
+	flatShading = 0;
 
 	fogDepths      .clear ();
 	colors         .clear ();
@@ -1047,14 +1077,10 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 {
 	try
 	{
-		const auto browser    = context -> getBrowser ();
 		const auto shaderNode = context -> getShader ();
 
 		if (not shaderNode -> isValid ())
 			return;
-
-		// Upload normals or flat normals.
-		set_shading (browser -> getBrowserOptions () -> getShading ());
 
 		context -> setGeometryType (geometryType);
 		context -> setFogCoord (not fogDepths .empty ());
@@ -1156,14 +1182,10 @@ X3DGeometryNode::drawParticles (ShapeContainer* const context, const std::vector
 
 	try
 	{
-		const auto browser    = context -> getBrowser ();
 		const auto shaderNode = context -> getShader ();
 
 		if (not shaderNode -> isValid ())
 			return;
-
-		// Upload normals or flat normals.
-		set_shading (browser -> getBrowserOptions () -> getShading ());
 
 		context -> setGeometryType (geometryType);
 		context -> setFogCoord (not fogDepths .empty ());
