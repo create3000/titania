@@ -149,16 +149,22 @@ X3DPrototypeInstance::construct ()
 {
 	try
 	{
-		if (protoNode -> checkLoadState () == FAILED_STATE)
+		switch (protoNode -> checkLoadState ())
 		{
-			if (isInitialized ())
-				getBrowser () -> removeLoadCount (this);
+			case NOT_STARTED_STATE:
+				return;
+			case IN_PROGRESS_STATE:
+				return;
+			case COMPLETE_STATE:
+				break;
+			case FAILED_STATE:
+			{
+				if (isInitialized ())
+					getBrowser () -> removeLoadCount (this);
 
-			return;
+				return;
+			}
 		}
-
-		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
-			return;
 
 		if (protoNode -> isExternproto ())
 		{
@@ -505,6 +511,9 @@ X3DPrototypeInstance::getTypeName () const
 void
 X3DPrototypeInstance::setProtoDeclarationNode (const X3DProtoDeclarationNodePtr & value)
 {
+	if (protoNode -> isExternproto ())
+		protoNode -> checkLoadState () .removeInterest (&X3DPrototypeInstance::update, this);
+
 	protoNode -> removeInstance (this);
 	protoNode -> name_changed () .removeInterest (typeNameOutput);
 
@@ -512,6 +521,9 @@ X3DPrototypeInstance::setProtoDeclarationNode (const X3DProtoDeclarationNodePtr 
 
 	protoNode -> addInstance (this);
 	protoNode -> name_changed () .addInterest (typeNameOutput);
+
+	if (protoNode -> isExternproto ())
+		protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::update, this);
 
 	update ();
 
