@@ -1438,9 +1438,12 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 	// Push imported prototypes to front.
 
 	auto importedPrototypes = executionContext -> getProtoDeclarations ();
+	auto endIter            = importedPrototypes .end ();
 
 	for (const auto & prototype : prototypes)
-		importedPrototypes .erase (std::remove (importedPrototypes .begin (), importedPrototypes .end (), prototype), importedPrototypes .end ());
+		endIter = std::remove (importedPrototypes .begin (), endIter, prototype);
+
+	importedPrototypes .erase (endIter, importedPrototypes .end ());
 
 	for (const auto & prototype : basic::make_reverse_range (importedPrototypes))
 		prototypes .emplace_front (prototype);
