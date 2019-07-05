@@ -1433,9 +1433,7 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 
 	// Remove extern proto
 
-	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externproto -> getName (), externproto);
-	undoStep -> addRedoFunction (&X3DExecutionContext::removeExternProtoDeclaration, executionContext, externproto -> getName ());
-	executionContext -> removeExternProtoDeclaration (externproto -> getName ());
+	removeExternProtoDeclaration (executionContext, externproto -> getName (), undoStep);
 
 	// Import proto and all what is needed.
 
