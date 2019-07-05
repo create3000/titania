@@ -1437,6 +1437,8 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 
 	// Import proto and all what is needed.
 
+	auto prototypes = executionContext -> getProtoDeclarations ();
+
 	basic::ifilestream ifstream (exportNodes (internalScene, { prototype }, "XML", false));
 
 	const auto scene         = browser -> createX3DFromStream (internalScene -> getWorldURL (), ifstream);
@@ -1444,6 +1446,20 @@ X3DEditor::foldExternProtoBackIntoScene (const ExternProtoDeclarationPtr & exter
 
 	for (const auto & node : importedNodes)
 		pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
+
+	// Push imported prototypes to front.
+
+	auto importedPrototypes = executionContext -> getProtoDeclarations ();
+
+	for (const auto & prototype : prototypes)
+		importedPrototypes .erase (std::remove (importedPrototypes .begin (), importedPrototypes .end (), prototype), importedPrototypes .end ());
+
+	for (const auto & prototype : basic::make_reverse_range (importedPrototypes))
+		prototypes .emplace_front (prototype);
+
+	undoStep -> addUndoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, executionContext -> getProtoDeclarations ());
+	undoStep -> addRedoFunction (&X3DEditor::restoreProtoDeclarations, executionContext, prototypes);
+	restoreProtoDeclarations (executionContext, prototypes);
 
 	// Update instances
 
