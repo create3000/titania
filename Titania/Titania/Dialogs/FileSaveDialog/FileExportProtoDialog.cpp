@@ -83,11 +83,7 @@ FileExportProtoDialog::run (const X3D::ProtoDeclarationPtr & prototype, const X3
 		return false;
 
 	const auto worldURL = getUrl () + "#" + prototype -> getName ();
-
-	X3D::MFString url;
-
-	url .emplace_back (prototype -> getExecutionContext () -> getWorldURL () .relative_path (worldURL));
-	url .emplace_back (worldURL);
+	const auto url      = X3D::MFString ({ prototype -> getExecutionContext () -> getWorldURL () .relative_path (worldURL) .escape () .str () });
 
 	X3D::X3DEditor::convertProtoToExternProto (prototype, url, undoStep);
 
