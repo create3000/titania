@@ -1317,25 +1317,13 @@ X3DEditor::convertProtoToExternProto (const ProtoDeclarationPtr & prototype, con
 
 	// Update extern proto
 
-	try
-	{
-		const auto currentExternproto = executionContext -> getExternProtoDeclaration (prototype -> getName ());
-
-		undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, prototype -> getName (), currentExternproto);
-	}
-	catch (const X3DError &)
-	{
-		undoStep -> addUndoFunction (&X3DExecutionContext::removeExternProtoDeclaration, executionContext, prototype -> getName ());
-	}
-
+	undoStep -> addUndoFunction (&X3DEditor::restoreExternProtoDeclarations, executionContext, executionContext -> getExternProtoDeclarations ());
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, prototype -> getName (), externproto);
 	executionContext -> updateExternProtoDeclaration (prototype -> getName (), externproto);
 
 	// Remove prototype
 
-	undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
-	undoStep -> addRedoFunction (&X3DExecutionContext::removeProtoDeclaration, executionContext, prototype -> getName ());
-	executionContext -> removeProtoDeclaration (prototype -> getName ());
+	removeProtoDeclaration (executionContext, prototype -> getName (), undoStep);
 
 	// Update instances
 
