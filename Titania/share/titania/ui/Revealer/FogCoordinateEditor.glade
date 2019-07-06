@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.0 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.20"/>
   <object class="GtkAdjustment" id="FogDepthAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0,01000000000000000021</property>
@@ -106,6 +106,7 @@
                             <property name="adjustment">FogDepthAdjustment</property>
                             <property name="climb_rate">0,01000000000000000021</property>
                             <property name="digits">3</property>
+                            <property name="numeric">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -119,7 +120,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="adjustment">FogDepthAdjustment</property>
-                            <property name="round_digits">2</property>
+                            <property name="round_digits">3</property>
                             <property name="draw_value">False</property>
                           </object>
                           <packing>

@@ -70,6 +70,9 @@ FogCoordinateEditor::FogCoordinateEditor (X3DBrowserWindow* const browserWindow)
 {
 	addChildObjects (indexedFaceSetNodes);
 
+	getFogDepthAdjustment () -> set_step_increment (0.01);
+	getFogDepthAdjustment () -> set_page_increment (0.1);
+
 	setup ();
 }
 
