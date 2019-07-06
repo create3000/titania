@@ -303,15 +303,15 @@ X3DScene::getComponents (const ProfileInfoPtr & profileInfo, const std::map <std
 		try
 		{
 			const auto profile = profileComponents .find (componentName);
-	
+
 			if (profile not_eq profileComponents .end () and profile -> second >= level)
 				continue;
-	
+
 			components .emplace_back (getBrowser () -> getComponent (componentName, level));
 		}
 		catch (const X3DError & error)
 		{
-			__LOG__ << error .what () << std::endl;	
+			__LOG__ << error .what () << std::endl;
 		}
 	}
 
@@ -371,14 +371,14 @@ X3DScene::fromUnit (const UnitCategory unit, const long double value) const
 	{
 	   case UnitCategory::NONE:
 			return value;
-	   
+
 		// Base units
 	   case UnitCategory::ANGLE:
 	   case UnitCategory::FORCE:
 	   case UnitCategory::LENGTH:
 	   case UnitCategory::MASS:
 			return value * getUnit (unit) .getConversionFactor ();
-	
+
 		// Derived units
 		case UnitCategory::ACCELERATION:
 			return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
@@ -403,14 +403,14 @@ X3DScene::toUnit (const UnitCategory unit, const long double value) const
 	{
 	   case UnitCategory::NONE:
 			return value;
-	   
+
 		// Base units
 	   case UnitCategory::ANGLE:
 	   case UnitCategory::FORCE:
 	   case UnitCategory::LENGTH:
 	   case UnitCategory::MASS:
 			return value / getUnit (unit) .getConversionFactor ();
-	
+
 		// Derived units
 		case UnitCategory::ACCELERATION:
 			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
@@ -528,7 +528,7 @@ X3DScene::updateExportedNode (const std::string & exportedName, const SFNode & n
 		throw Error <INVALID_NODE> ("Couldn't update exported node: node is NULL.");
 
 	// We do not throw Error <IMPORTED_NODE> as imported nodes can be exported too.
-	
+
 	// Remove exported node.
 
 	removeExportedNode (exportedName);
@@ -581,7 +581,7 @@ X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string ex
 		return exportedName;
 
 	exportedName = RemoveTrailingNumber (exportedName);
- 	
+
 	auto   uniqueName = exportedName;
 	size_t i          = 0;
 
@@ -596,7 +596,7 @@ X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string ex
 		uniqueName += '_';
 		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
-	
+
 	return uniqueName;
 }
 
@@ -648,9 +648,9 @@ X3DScene::updateExportedNodes (X3DScene* const scene) const
 		{
 			const auto & exportedNode       = pair .second;
 			const auto   uniqueExportedName = getVeryUniqueExportedName (scene, exportedNode -> getExportedName ());
-	
+
 			scene -> updateExportedNode (uniqueExportedName, exportedNode -> getLocalNode ());
-	
+
 			if (uniqueExportedName not_eq exportedNode -> getExportedName ())
 				scene -> removeExportedNode (exportedNode -> getExportedName ());
 		}
@@ -1111,7 +1111,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 	if (not getMetaDatas () .empty () or not getComponents () .empty () or outputUnits)
 	{
 		bool headLastProperty = false;
-	
+
 		ostream
 			<< Generator::Indent
 			<< '"'
@@ -1134,9 +1134,9 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< ','
 					<< Generator::TidyBreak;
 			}
-	
+
 			// Meta data begin
-		
+
 			ostream
 				<< Generator::Indent
 				<< '"'
@@ -1147,10 +1147,10 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 				<< '['
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
-		
-		
+
+
 			// Meta data
-		
+
 			for (const auto & metaData : getMetaDatas ())
 			{
 				ostream
@@ -1158,7 +1158,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< '{'
 					<< Generator::TidyBreak
 					<< Generator::IncIndent;
-		
+
 				ostream
 					<< Generator::Indent
 					<< '"'
@@ -1169,7 +1169,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< JSONEncode (SFString (metaData .first))
 					<< ','
 					<< Generator::TidyBreak;
-		
+
 				ostream
 					<< Generator::Indent
 					<< '"'
@@ -1179,21 +1179,21 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< Generator::TidySpace
 					<< JSONEncode (SFString (metaData .second))
 					<< Generator::TidyBreak;
-		
+
 				ostream
 					<< Generator::DecIndent
 					<< Generator::Indent
 					<< '}';
-		
+
 				if (&metaData not_eq &*--getMetaDatas () .end ())
 					ostream << ',';
-		
+
 				ostream << Generator::TidyBreak;
 			}
-		
-		
+
+
 			// Meta data end
-		
+
 			ostream
 				<< Generator::DecIndent
 				<< Generator::Indent
@@ -1216,7 +1216,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 
 			// Components begin
-				
+
 			ostream
 				<< Generator::Indent
 				<< '"'
@@ -1239,13 +1239,13 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 				if (component not_eq getComponents () .back ())
 					ostream << ',';
-		
+
 				ostream << Generator::TidyBreak;
 			}
 
 
 			// Components end
-		
+
 			ostream
 				<< Generator::DecIndent
 				<< Generator::Indent
@@ -1265,10 +1265,10 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< ','
 					<< Generator::TidyBreak;
 			}
-	
+
 
 			// Units begin
-				
+
 			ostream
 				<< Generator::Indent
 				<< '"'
@@ -1299,24 +1299,24 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 				if (&unit not_eq &units .back ())
 					ostream << ',';
-		
+
 				ostream << Generator::TidyBreak;
 			}
 
 
 			// Unit end
-		
+
 			ostream
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< ']';
 
 			headLastProperty = true;
-		}	
-	
-	
+		}
+
+
 		// Head end
-	
+
 		ostream
 			<< Generator::TidyBreak
 			<< Generator::DecIndent
@@ -1369,9 +1369,9 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			try
 			{
 				std::ostringstream osstream;
-	
+
 				osstream << SetGenerator (ostream) << JSONEncode (exportedNode .second);
-	
+
 				exportedNodes .emplace_back (osstream .str ());
 			}
 			catch (const X3DError &)
@@ -1386,13 +1386,13 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< ','
 					<< Generator::TidyBreak;
 			}
-	
+
 			for (const auto & exportedNode : exportedNodes)
 			{
 				ostream
 					<< Generator::Indent
 					<< exportedNode;
-		
+
 				if (&exportedNode not_eq &exportedNodes .back ())
 				{
 					ostream
@@ -1400,7 +1400,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 						<< Generator::TidyBreak;
 				}
 			}
-	
+
 			lastProperty = true;
 		}
 	}
@@ -1449,7 +1449,7 @@ X3DScene::dispose ()
 
 	removeChildObjects (getRootNodes ());
 }
- 
+
 X3DScene::~X3DScene ()
 {
 	__LOG__ << getWorldURL () << std::endl;
