@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkAdjustment" id="FogDepthAdjustment">
-    <property name="upper">1000000000</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0,01000000000000000021</property>
+    <property name="page_increment">0,10000000000000000555</property>
     <signal name="value-changed" handler="on_fog_depth_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
     <child>
       <object class="GtkRevealer" id="Widget">
         <property name="name">FogCoordinateEditor</property>
@@ -99,14 +96,16 @@
                     <child>
                       <object class="GtkBox" id="FogDepthBox">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="spacing">16</property>
+                        <property name="spacing">2</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkSpinButton" id="FogDepthSpinButton">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Fog Depth:</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">FogDepthAdjustment</property>
+                            <property name="climb_rate">0,01000000000000000021</property>
+                            <property name="digits">3</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -115,13 +114,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="FogDepthSpinButton">
+                          <object class="GtkScale">
+                            <property name="width_request">200</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">FogDepthAdjustment</property>
-                            <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="round_digits">2</property>
+                            <property name="draw_value">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -147,6 +146,9 @@
           </object>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </object>
 </interface>
