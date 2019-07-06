@@ -402,7 +402,7 @@ X3DBrowserPanelMenuBar::on_shaders_toggled ()
 void
 X3DBrowserPanelMenuBar::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools)
 {
-	changing = tools .empty ();
+	changing = true;
 
 	getLightsMenuItem () .set_active (tools .size ());
 
@@ -412,7 +412,7 @@ X3DBrowserPanelMenuBar::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLigh
 void
 X3DBrowserPanelMenuBar::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools)
 {
-	changing = tools .empty ();
+	changing = true;
 
 	getProximitySensorsMenuItem () .set_active (tools .size ());
 
@@ -422,7 +422,7 @@ X3DBrowserPanelMenuBar::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3
 void
 X3DBrowserPanelMenuBar::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools)
 {
-	changing = tools .empty ();
+	changing = true;
 
 	getSoundsMenuItem () .set_active (tools .size ());
 
@@ -432,7 +432,7 @@ X3DBrowserPanelMenuBar::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTo
 void
 X3DBrowserPanelMenuBar::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools)
 {
-	changing = tools .empty ();
+	changing = true;
 
 	getTransformSensorsMenuItem () .set_active (tools .size ());
 
@@ -442,7 +442,7 @@ X3DBrowserPanelMenuBar::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3
 void
 X3DBrowserPanelMenuBar::set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools)
 {
-	changing = tools .empty ();
+	changing = true;
 
 	getVisibilitySensorsMenuItem () .set_active (tools .size ());
 
@@ -452,7 +452,7 @@ X3DBrowserPanelMenuBar::set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X
 void
 X3DBrowserPanelMenuBar::set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools)
 {
-	changing = tools .empty ();
+	changing = true;
 
 	getViewpointsMenuItem () .set_active (tools .size ());
 
@@ -469,13 +469,14 @@ X3DBrowserPanelMenuBar::on_backgrounds_toggled ()
 
 	const bool hidden = not getBackgroundsMenuItem () .get_active ();
 
-	X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+	X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+	[&] (X3D::SFNode & node)
 	{
 		const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
-		
+
 		if (background)
 			background -> isHidden (hidden);
-		
+
 		return true;
 	});
 }
@@ -488,13 +489,14 @@ X3DBrowserPanelMenuBar::on_fogs_toggled ()
 
 	const bool hidden = not getFogsMenuItem () .get_active ();
 
-	X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
+	X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+	[&] (X3D::SFNode & node)
 	{
 		const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
-		
+
 		if (fog)
 			fog -> isHidden (hidden);
-		
+
 		return true;
 	});
 }
@@ -509,21 +511,23 @@ X3DBrowserPanelMenuBar::on_lights_toggled ()
 
 	if (getLightsMenuItem () .get_active ())
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
 				node -> addTool ();
-			
+
 			return true;
 		});
 	}
 	else
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
 				node -> removeTool (true);
-			
+
 			return true;
 		});
 	}
@@ -543,21 +547,23 @@ X3DBrowserPanelMenuBar::on_proximity_sensors_toggled ()
 
 	if (getProximitySensorsMenuItem () .get_active ())
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
 		{
 			if (node -> isType (proximitySensors))
 				node -> addTool ();
-			
+
 			return true;
 		});
 	}
 	else
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
 		{
 			if (node -> isType (proximitySensors))
 				node -> removeTool (true);
-			
+
 			return true;
 		});
 	}
@@ -571,21 +577,23 @@ X3DBrowserPanelMenuBar::on_sounds_toggled ()
 
 	if (getSoundsMenuItem () .get_active ())
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::Sound*> (node .getValue ()))
 				node -> addTool ();
-			
+
 			return true;
 		});
 	}
 	else
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::Sound*> (node .getValue ()))
 				node -> removeTool (true);
-			
+
 			return true;
 		});
 	}
@@ -599,21 +607,23 @@ X3DBrowserPanelMenuBar::on_transform_sensors_toggled ()
 
 	if (getTransformSensorsMenuItem () .get_active ())
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
 				node -> addTool ();
-			
+
 			return true;
 		});
 	}
 	else
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
 				node -> removeTool (true);
-			
+
 			return true;
 		});
 	}
@@ -627,21 +637,23 @@ X3DBrowserPanelMenuBar::on_visibility_sensors_toggled ()
 
 	if (getVisibilitySensorsMenuItem () .get_active ())
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
 				node -> addTool ();
-			
+
 			return true;
 		});
 	}
 	else
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
 				node -> removeTool (true);
-			
+
 			return true;
 		});
 	}
@@ -655,21 +667,23 @@ X3DBrowserPanelMenuBar::on_viewpoints_toggled ()
 
 	if (getViewpointsMenuItem () .get_active ())
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
 				node -> addTool ();
-			
+
 			return true;
 		});
 	}
 	else
 	{
-		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
 		{
 			if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
 				node -> removeTool (true);
-			
+
 			return true;
 		});
 	}
@@ -708,7 +722,7 @@ X3DBrowserPanelMenuBar::on_layers_activate ()
 
 	for (auto & widget : getLayersMenu () .get_children ())
 	   getLayersMenu () .remove (*widget);
-	
+
 	// Rebuild menu.
 
 	const auto & layerSet = getPage () -> getMainBrowser () -> getWorld () -> getLayerSet ();
