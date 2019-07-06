@@ -102,6 +102,14 @@ public:
 	{ return m_ActivateSnapTargetAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getAngleLayoutToolAction () const
+	{ return m_AngleLayoutToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getAxonometricLayoutToolAction () const
+	{ return m_AxonometricLayoutToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getEditFogCoordinatesAction () const
 	{ return m_EditFogCoordinatesAction; }
 
@@ -112,6 +120,10 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getFooterAction () const
 	{ return m_FooterAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
+	getGridLayoutToolAction () const
+	{ return m_GridLayoutToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getLogarithmicDepthBufferAction () const
@@ -582,8 +594,8 @@ public:
 	{ return *m_BrowserAngleLayoutToolMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getBrowserAxonometricGridLayoutToolMenuItem () const
-	{ return *m_BrowserAxonometricGridLayoutToolMenuItem; }
+	getBrowserAxonometricLayoutToolMenuItem () const
+	{ return *m_BrowserAxonometricLayoutToolMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserGridPropertiesMenuItem () const
@@ -1050,8 +1062,8 @@ public:
 	{ return *m_AngleLayoutToolMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getAxonometricGridLayoutToolMenuItem () const
-	{ return *m_AxonometricGridLayoutToolMenuItem; }
+	getAxonometricLayoutToolMenuItem () const
+	{ return *m_AxonometricLayoutToolMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getGridPropertiesMenuItem () const
@@ -1361,6 +1373,14 @@ public:
 
 	virtual
 	void
+	on_angle_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_axonometric_layout_tool_toggled () = 0;
+
+	virtual
+	void
 	on_fog_coordinate_editor_toggled () = 0;
 
 	virtual
@@ -1370,6 +1390,10 @@ public:
 	virtual
 	void
 	on_footer_toggled () = 0;
+
+	virtual
+	void
+	on_grid_layout_tool_toggled () = 0;
 
 	virtual
 	void
@@ -1701,18 +1725,6 @@ public:
 
 	virtual
 	void
-	on_grid_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_angle_layout_tool_toggled () = 0;
-
-	virtual
-	void
-	on_axonometric_layout_tool_toggled () = 0;
-
-	virtual
-	void
 	on_grid_properties_activated () = 0;
 
 	virtual
@@ -1942,9 +1954,12 @@ private:
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapSourceAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ActivateSnapTargetAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_AxonometricLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_EditFogCoordinatesAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FollowPrimarySelectionAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FooterAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_GridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_LogarithmicDepthBufferAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_MenubarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_PrimitiveQualityHighAction;
@@ -2062,7 +2077,7 @@ private:
 	Gtk::ImageMenuItem* m_BrowserBackgroundImageMenuItem;
 	Gtk::CheckMenuItem* m_BrowserGridLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_BrowserAngleLayoutToolMenuItem;
-	Gtk::CheckMenuItem* m_BrowserAxonometricGridLayoutToolMenuItem;
+	Gtk::CheckMenuItem* m_BrowserAxonometricLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_BrowserGridPropertiesMenuItem;
 	Gtk::SeparatorMenuItem* m_BrowserSeparatorMenuItem18;
 	Gtk::CheckMenuItem* m_BrowserActivateSnapTargetMenuItem;
@@ -2179,7 +2194,7 @@ private:
 	Gtk::ImageMenuItem* m_BackgroundImageMenuItem;
 	Gtk::CheckMenuItem* m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem* m_AngleLayoutToolMenuItem;
-	Gtk::CheckMenuItem* m_AxonometricGridLayoutToolMenuItem;
+	Gtk::CheckMenuItem* m_AxonometricLayoutToolMenuItem;
 	Gtk::ImageMenuItem* m_GridPropertiesMenuItem;
 	Gtk::SeparatorMenuItem* m_SeparatorMenuItem38;
 	Gtk::CheckMenuItem* m_ActivateSnapTargetMenuItem;

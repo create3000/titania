@@ -9,6 +9,12 @@
   <object class="GtkToggleAction" id="ActivateSnapTargetAction">
     <signal name="toggled" handler="on_activate_snap_target_toggled" swapped="no"/>
   </object>
+  <object class="GtkToggleAction" id="AngleLayoutToolAction">
+    <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
+  </object>
+  <object class="GtkToggleAction" id="AxonometricLayoutToolAction">
+    <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
+  </object>
   <object class="GtkToggleAction" id="EditFogCoordinatesAction">
     <signal name="toggled" handler="on_fog_coordinate_editor_toggled" swapped="no"/>
   </object>
@@ -32,6 +38,9 @@
     <property name="label" translatable="yes">Footer</property>
     <property name="active">True</property>
     <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
+  </object>
+  <object class="GtkToggleAction" id="GridLayoutToolAction">
+    <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
   </object>
   <object class="GtkMenu" id="HistoryMenu">
     <property name="visible">True</property>
@@ -1530,34 +1539,34 @@
             </child>
             <child>
               <object class="GtkCheckMenuItem" id="BrowserGridLayoutToolMenuItem">
+                <property name="related_action">GridLayoutToolAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_path">&lt;Titania&gt;/Layout/Grid Layout Tool</property>
                 <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
                 <accelerator key="numbersign" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
               <object class="GtkCheckMenuItem" id="BrowserAngleLayoutToolMenuItem">
+                <property name="related_action">AngleLayoutToolAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_path">&lt;Titania&gt;/Layout/Angle Layout Tool</property>
                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
                 <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
-              <object class="GtkCheckMenuItem" id="BrowserAxonometricGridLayoutToolMenuItem">
+              <object class="GtkCheckMenuItem" id="BrowserAxonometricLayoutToolMenuItem">
+                <property name="related_action">AxonometricLayoutToolAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_path">&lt;Titania&gt;/Layout/Axonometric Layout Tool</property>
                 <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
               </object>
             </child>
             <child>
@@ -3032,32 +3041,32 @@
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="GridLayoutToolMenuItem">
+                                <property name="related_action">GridLayoutToolAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="accel_path">&lt;Titania&gt;/Layout/Grid Layout Tool</property>
                                 <property name="label" translatable="yes">Activate _Grid Layout Tool</property>
                                 <property name="use_underline">True</property>
-                                <signal name="toggled" handler="on_grid_layout_tool_toggled" swapped="no"/>
                               </object>
                             </child>
                             <child>
                               <object class="GtkCheckMenuItem" id="AngleLayoutToolMenuItem">
+                                <property name="related_action">AngleLayoutToolAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="accel_path">&lt;Titania&gt;/Layout/Angle Layout Tool</property>
                                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                                 <property name="use_underline">True</property>
-                                <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkCheckMenuItem" id="AxonometricGridLayoutToolMenuItem">
+                              <object class="GtkCheckMenuItem" id="AxonometricLayoutToolMenuItem">
+                                <property name="related_action">AxonometricLayoutToolAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="accel_path">&lt;Titania&gt;/Layout/Axonometric Layout Tool</property>
                                 <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
                                 <property name="use_underline">True</property>
-                                <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
                               </object>
                             </child>
                             <child>

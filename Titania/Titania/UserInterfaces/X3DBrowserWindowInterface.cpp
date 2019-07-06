@@ -81,9 +81,12 @@ X3DBrowserWindowInterface::create ()
 	m_AccelGroup                   = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("AccelGroup"));
 	m_ActivateSnapSourceAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ActivateSnapSourceAction"));
 	m_ActivateSnapTargetAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ActivateSnapTargetAction"));
+	m_AngleLayoutToolAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
+	m_AxonometricLayoutToolAction  = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AxonometricLayoutToolAction"));
 	m_EditFogCoordinatesAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditFogCoordinatesAction"));
 	m_FollowPrimarySelectionAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FollowPrimarySelectionAction"));
 	m_FooterAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FooterAction"));
+	m_GridLayoutToolAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("GridLayoutToolAction"));
 	m_LogarithmicDepthBufferAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("LogarithmicDepthBufferAction"));
 	m_MenubarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("MenubarAction"));
 	m_PrimitiveQualityHighAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("PrimitiveQualityHighAction"));
@@ -203,7 +206,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BrowserBackgroundImageMenuItem", m_BrowserBackgroundImageMenuItem);
 	m_builder -> get_widget ("BrowserGridLayoutToolMenuItem", m_BrowserGridLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserAngleLayoutToolMenuItem", m_BrowserAngleLayoutToolMenuItem);
-	m_builder -> get_widget ("BrowserAxonometricGridLayoutToolMenuItem", m_BrowserAxonometricGridLayoutToolMenuItem);
+	m_builder -> get_widget ("BrowserAxonometricLayoutToolMenuItem", m_BrowserAxonometricLayoutToolMenuItem);
 	m_builder -> get_widget ("BrowserGridPropertiesMenuItem", m_BrowserGridPropertiesMenuItem);
 	m_builder -> get_widget ("BrowserSeparatorMenuItem18", m_BrowserSeparatorMenuItem18);
 	m_builder -> get_widget ("BrowserActivateSnapTargetMenuItem", m_BrowserActivateSnapTargetMenuItem);
@@ -320,7 +323,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("BackgroundImageMenuItem", m_BackgroundImageMenuItem);
 	m_builder -> get_widget ("GridLayoutToolMenuItem", m_GridLayoutToolMenuItem);
 	m_builder -> get_widget ("AngleLayoutToolMenuItem", m_AngleLayoutToolMenuItem);
-	m_builder -> get_widget ("AxonometricGridLayoutToolMenuItem", m_AxonometricGridLayoutToolMenuItem);
+	m_builder -> get_widget ("AxonometricLayoutToolMenuItem", m_AxonometricLayoutToolMenuItem);
 	m_builder -> get_widget ("GridPropertiesMenuItem", m_GridPropertiesMenuItem);
 	m_builder -> get_widget ("SeparatorMenuItem38", m_SeparatorMenuItem38);
 	m_builder -> get_widget ("ActivateSnapTargetMenuItem", m_ActivateSnapTargetMenuItem);
@@ -399,9 +402,12 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::ToggleAction with id 'ActivateSnapSourceAction'.
 	m_ActivateSnapSourceAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_activate_snap_source_toggled));
 	m_ActivateSnapTargetAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_activate_snap_target_toggled));
+	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
+	m_AxonometricLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
 	m_EditFogCoordinatesAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fog_coordinate_editor_toggled));
 	m_FollowPrimarySelectionAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_FooterAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_footer_toggled));
+	m_GridLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
 	m_LogarithmicDepthBufferAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_logarithmic_depth_buffer_toggled));
 	m_MenubarAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_menubar_toggled));
 	m_PrimitiveQualityHighAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_primitive_quality_high_toggled));
@@ -502,13 +508,6 @@ X3DBrowserWindowInterface::create ()
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_BrowserBrowserSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_size_activate));
 	m_BrowserBackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
-
-	// Connect object Gtk::CheckMenuItem with id 'BrowserGridLayoutToolMenuItem'.
-	m_BrowserGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
-	m_BrowserAngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
-	m_BrowserAxonometricGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
-
-	// Connect object Gtk::ImageMenuItem with id 'BrowserGridPropertiesMenuItem'.
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'BrowserCenterSnapTargetInSelectionMenuItem'.
@@ -620,13 +619,6 @@ X3DBrowserWindowInterface::create ()
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_BrowserSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_size_activate));
 	m_BackgroundImageMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_background_image_activate));
-
-	// Connect object Gtk::CheckMenuItem with id 'GridLayoutToolMenuItem'.
-	m_GridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_layout_tool_toggled));
-	m_AngleLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
-	m_AxonometricGridLayoutToolMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_axonometric_layout_tool_toggled));
-
-	// Connect object Gtk::ImageMenuItem with id 'GridPropertiesMenuItem'.
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'CenterSnapTargetInSelectionMenuItem'.
