@@ -4,8 +4,8 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkAdjustment" id="FogDepthAdjustment">
     <property name="upper">1</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="step_increment">0.01000000000000000021</property>
+    <property name="page_increment">0.10000000000000000021</property>
     <signal name="value-changed" handler="on_fog_depth_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Window">
