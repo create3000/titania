@@ -191,6 +191,7 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 	try
 	{
 		getConfig () -> setItem ("currentPage", page);
+
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
 		const auto items        = getBrowserWindow () -> getHistory () -> getItems ((page + 1) * 9, ITEMS);

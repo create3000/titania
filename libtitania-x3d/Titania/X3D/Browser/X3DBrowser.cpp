@@ -400,10 +400,6 @@ X3DBrowser::set_loadCount ()
 
 	prepareEvents () .addInterest (&X3DBrowser::set_initialized, this);
 	addEvent ();
-
-	#ifdef TITANIA_DEBUG
-	std::clog << "Replacing world done." << std::endl;
-	#endif
 }
 
 void

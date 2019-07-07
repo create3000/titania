@@ -402,7 +402,7 @@ X3DBrowserPanelMenuBar::on_shaders_toggled ()
 void
 X3DBrowserPanelMenuBar::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools)
 {
-	changing = true;
+	changing = tools .empty ();
 
 	getLightsMenuItem () .set_active (tools .size ());
 
@@ -412,7 +412,7 @@ X3DBrowserPanelMenuBar::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLigh
 void
 X3DBrowserPanelMenuBar::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools)
 {
-	changing = true;
+	changing = tools .empty ();
 
 	getProximitySensorsMenuItem () .set_active (tools .size ());
 
@@ -422,7 +422,7 @@ X3DBrowserPanelMenuBar::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3
 void
 X3DBrowserPanelMenuBar::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools)
 {
-	changing = true;
+	changing = tools .empty ();
 
 	getSoundsMenuItem () .set_active (tools .size ());
 
@@ -432,7 +432,7 @@ X3DBrowserPanelMenuBar::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTo
 void
 X3DBrowserPanelMenuBar::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools)
 {
-	changing = true;
+	changing = tools .empty ();
 
 	getTransformSensorsMenuItem () .set_active (tools .size ());
 
@@ -442,7 +442,7 @@ X3DBrowserPanelMenuBar::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3
 void
 X3DBrowserPanelMenuBar::set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools)
 {
-	changing = true;
+	changing = tools .empty ();
 
 	getVisibilitySensorsMenuItem () .set_active (tools .size ());
 
@@ -452,7 +452,7 @@ X3DBrowserPanelMenuBar::set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X
 void
 X3DBrowserPanelMenuBar::set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools)
 {
-	changing = true;
+	changing = tools .empty ();
 
 	getViewpointsMenuItem () .set_active (tools .size ());
 

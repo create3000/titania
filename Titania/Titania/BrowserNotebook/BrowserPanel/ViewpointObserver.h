@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -84,14 +84,17 @@ private:
 	/// @name Viewpoint handling
 
 	void
+	set_executionContext ();
+
+	void
 	set_viewer (const X3D::X3DPtr <X3D::X3DViewer> &);
 
 	void
 	set_navigationInfo ();
-	
+
 	void
 	set_transitionStart (const bool value);
-	
+
 	void
 	set_transitionComplete (const bool value);
 
