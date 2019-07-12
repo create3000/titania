@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra„1¤7e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½1ï¿½7e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -109,7 +109,7 @@ private:
 
 	void
 	set_camera (const X3D::SFNode & node);
-	
+
 	void
 	set_camera (double width, double height);
 
@@ -175,6 +175,9 @@ private:
 
 	void
 	clear_routes ();
+
+	X3D::X3DScene*
+	get_scene (X3D::X3DExecutionContext* executionContext);
 
 	///  @name Members
 

@@ -588,7 +588,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 
 			const auto context = get_context (parentIter);
 
-			if (context -> getScene () not_eq get_execution_context () -> getScene ())
+			if (get_scene (context) not_eq get_scene (get_execution_context ()))
 				return false;
 
 			if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
@@ -645,7 +645,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 
 			const auto context = get_context (parentIter);
 
-			if (context -> getScene () not_eq get_execution_context () -> getScene ())
+			if (get_scene (context) not_eq get_scene (get_execution_context ()))
 				return false;
 
 			if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
@@ -1116,7 +1116,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 						if (not destinationNode)
 							return false;
 
-						if (context -> getScene () not_eq get_execution_context () -> getScene ())
+						if (get_scene (context) not_eq get_scene (get_execution_context ()))
 							return false;
 
 						if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
@@ -1197,7 +1197,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 						if (not sourceNode)
 							return false;
 
-						if (context -> getScene () not_eq get_execution_context () -> getScene ())
+						if (get_scene (context) not_eq get_scene (get_execution_context ()))
 							return false;
 
 						if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
@@ -1571,6 +1571,15 @@ OutlineTreeViewEditor::clear_routes ()
 	const OutlineRoutes routes = get_cellrenderer () -> get_routes ();
 	get_cellrenderer () -> clear_routes ();
 	get_route_graph () -> update (routes);
+}
+
+X3D::X3DScene*
+OutlineTreeViewEditor::get_scene (X3D::X3DExecutionContext* executionContext)
+{
+	if (executionContext -> isType ({ X3D::X3DConstants::X3DScene }))
+		return dynamic_cast <X3D::X3DScene*> (executionContext);
+
+	return executionContext -> getScene ();
 }
 
 OutlineTreeViewEditor::~OutlineTreeViewEditor ()
