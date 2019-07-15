@@ -148,28 +148,37 @@ template <class Type>
 std::tuple <vector3 <Type>, vector3 <Type>, bool>
 sphere3 <Type>::intersects (const line3 <Type> & line) const
 {
-	const auto L   = center () - line .point ();
-	const auto tca = dot (L, line .direction ());
+	// https://github.com/Alexpux/Coin3D/blob/master/src/base/SbSphere.cpp
+	const auto linepos = line .point ();
+	const auto linedir = line .direction ();
 
-	if (tca < 0)
-		// there is no intersection
+	const auto scenter = center ();
+	const auto r       = radius ();
+
+	const auto b = 2 * (dot (linepos, linedir) - dot (scenter, linedir));
+	const auto c = (linepos [0] * linepos [0] + linepos [1] * linepos [1] + linepos [2] * linepos [2]) +
+	               (scenter [0] * scenter [0] + scenter [1] * scenter [1] + scenter [2] * scenter [2]) -
+	               2 * dot (linepos, scenter) - r * r;
+
+	const auto core = b * b - 4 * c;
+
+	if (core >= 0)
+	{
+		auto t1 = (-b + std::sqrt (core)) / 2;
+		auto t2 = (-b - std::sqrt (core)) / 2;
+
+		if (t1 > t2)
+			std::swap (t1, t2);
+
+		const auto enter = linepos + t1 * linedir;
+		const auto exit  = linepos + t2 * linedir;
+
+		return std::tuple (enter, exit, true);
+	}
+	else
+	{
 		return std::tuple (vector3 <Type> (), vector3 <Type> (), false);
-
-	const auto d2 = dot (L, L) - std::pow (tca, 2);
-	const auto r2 = std::pow (radius (), 2);
-
-	if (d2 > r2)
-		return std::tuple (vector3 <Type> (), vector3 <Type> (), false);
-
-	const Type thc = std::sqrt (r2 - d2);
-
-	const auto t1 = tca - thc;
-	const auto t2 = tca + thc;
-
-	const auto enter = line .point () + line .direction () * t1;
-	const auto exit  = line .point () + line .direction () * t2;
-
-	return std::tuple (enter, exit, true);
+	}
 }
 
 // http://realtimecollisiondetection.net/blog/?p=103
