@@ -247,8 +247,6 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 				const auto volume    = intensity * d;
 
 				sourceNode -> setVolume (volume);
-
-				__LOG__ << volume << std::endl;
 			}
 		}
 		else
