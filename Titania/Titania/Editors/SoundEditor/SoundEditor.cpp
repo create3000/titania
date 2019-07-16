@@ -162,6 +162,30 @@ SoundEditor::on_index_clicked ()
 }
 
 void
+SoundEditor::on_sound_min_front_changed ()
+{
+	getSoundMaxFrontAdjustment () -> set_lower (getSoundMinFrontAdjustment () -> get_value ());
+}
+
+void
+SoundEditor::on_sound_min_back_changed ()
+{
+	getSoundMaxBackAdjustment () -> set_lower (getSoundMinBackAdjustment () -> get_value ());
+}
+
+void
+SoundEditor::on_sound_max_front_changed ()
+{
+	getSoundMinFrontAdjustment () -> set_upper (getSoundMaxFrontAdjustment () -> get_value ());
+}
+
+void
+SoundEditor::on_sound_max_back_changed ()
+{
+	getSoundMinBackAdjustment () -> set_upper (getSoundMaxBackAdjustment () -> get_value ());
+}
+
+void
 SoundEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getSoundNotebook () .get_current_page ());

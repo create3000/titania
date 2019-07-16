@@ -107,6 +107,22 @@ private:
 
 	virtual
 	void
+	on_sound_min_front_changed () final override;
+
+	virtual
+	void
+	on_sound_min_back_changed () final override;
+
+	virtual
+	void
+	on_sound_max_front_changed () final override;
+
+	virtual
+	void
+	on_sound_max_back_changed () final override;
+
+	virtual
+	void
 	store () final override;
 
 	///  @name Members
@@ -116,7 +132,7 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> spatialize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> location;
 	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	NormalTool                         directionTool;	
+	NormalTool                         directionTool;
 	X3DFieldAdjustment <X3D::SFFloat>  minBack;
 	X3DFieldAdjustment <X3D::SFFloat>  minFront;
 	X3DFieldAdjustment <X3D::SFFloat>  maxBack;

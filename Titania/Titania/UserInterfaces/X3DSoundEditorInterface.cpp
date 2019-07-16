@@ -156,6 +156,12 @@ X3DSoundEditorInterface::create ()
 	m_builder -> get_widget ("SoundSourceElapsedTimeLabel", m_SoundSourceElapsedTimeLabel);
 	m_builder -> get_widget ("SoundSourceDurationLabel", m_SoundSourceDurationLabel);
 
+	// Connect object Gtk::Adjustment with id 'SoundMaxBackAdjustment'.
+	m_SoundMaxBackAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_max_back_changed));
+	m_SoundMaxFrontAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_max_front_changed));
+	m_SoundMinBackAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_min_back_changed));
+	m_SoundMinFrontAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_min_front_changed));
+
 	// Connect object Gtk::Button with id 'NewSoundButton'.
 	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_new_sound_clicked));
 	m_RemoveSoundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_remove_sound_clicked));

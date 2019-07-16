@@ -393,6 +393,22 @@ public:
 
 	virtual
 	void
+	on_sound_max_back_changed () = 0;
+
+	virtual
+	void
+	on_sound_max_front_changed () = 0;
+
+	virtual
+	void
+	on_sound_min_back_changed () = 0;
+
+	virtual
+	void
+	on_sound_min_front_changed () = 0;
+
+	virtual
+	void
 	on_new_sound_clicked () = 0;
 
 	virtual
