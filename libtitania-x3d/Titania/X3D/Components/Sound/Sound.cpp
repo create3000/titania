@@ -247,6 +247,8 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 				const auto volume    = intensity * d;
 
 				sourceNode -> setVolume (volume);
+
+				__LOG__ << volume << std::endl;
 			}
 		}
 		else
@@ -275,6 +277,13 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 void
 Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const double front, double & distance, Vector3d & intersection)
 {
+	if (back == 0 or front == 0)
+	{
+		intersection = Vector3d (this -> location () .getValue ()) * sphereMatrix;
+		distance     = 1;
+		return;
+	}
+
 	static constexpr auto sphere = Sphere3d (1, Vector3d ());
 
 	const auto a = (back + front) / 2;
