@@ -246,8 +246,6 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 				const auto intensity = std::clamp <double> (this -> intensity (), 0, 1);
 				const auto volume    = intensity * d;
 
-				//__LOG__ << d << std::endl;
-
 				sourceNode -> setVolume (volume);
 			}
 		}
@@ -297,17 +295,11 @@ Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const do
 	location .negate ();
 	location /= scale;
 
-	const auto normal                                      = normalize (viewer - location);
-	const auto line                                        = Line3d (viewer, normal);
-	const auto [intersection1, intersection2, intersected] = sphere .intersects (line);
-	const auto locationPlane                               = Plane3d (location, normal);
+	const auto line                                 = Line3d (viewer, normalize (location - viewer));
+	const auto [enterPoint, exitPoint, intersected] = sphere .intersects (line);
 
-	if (locationPlane .distance (intersection1) > 0)
-		intersection = intersection1 * sphereMatrix;
-	else
-		intersection = intersection2 * sphereMatrix;
-
-	distance = abs (viewer); // Distance to sphere center
+	intersection = enterPoint * sphereMatrix;
+	distance     = abs (viewer); // Distance to sphere center
 }
 
 Sound::~Sound ()
