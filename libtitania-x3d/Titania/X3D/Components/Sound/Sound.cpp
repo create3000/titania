@@ -283,7 +283,6 @@ Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const do
 
 	auto       location = Vector3d (0, 0, e);
 	const auto scale    = Vector3d (b, b, a);
-
 	const auto rotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (this -> direction () .getValue ()));
 
 	sphereMatrix .translate (this -> location () .getValue ());
@@ -295,7 +294,8 @@ Sound::getEllipsoidParameter (Matrix4d sphereMatrix, const double back, const do
 	location .negate ();
 	location /= scale;
 
-	const auto line                                 = Line3d (viewer, normalize (location - viewer));
+	const auto normal                               = normalize (location - viewer);
+	const auto line                                 = Line3d (viewer, normal);
 	const auto [enterPoint, exitPoint, intersected] = sphere .intersects (line);
 
 	intersection = enterPoint * sphereMatrix;
