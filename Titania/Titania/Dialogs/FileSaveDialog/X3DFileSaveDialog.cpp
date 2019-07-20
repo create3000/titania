@@ -51,6 +51,7 @@
 #include "X3DFileSaveDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
@@ -94,7 +95,8 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 bool
 X3DFileSaveDialog::save (const bool copy)
 {
-	const auto success = run (getCurrentScene () -> getWorldURL ());
+	const auto & currentScene = getBrowserWindow () -> getCurrentPage () -> getScene ();
+	const auto   success      = run (currentScene -> getWorldURL ());
 
 	if (success)
 		getBrowserWindow () -> save (getUrl (), getOutputStyleButton () .get_active_text (), copy);
@@ -240,44 +242,44 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 	try
 	{
 		using namespace std::placeholders;
-	
+
 		// Temporarily change url's in protos
-	
+
 		const auto protoUndoStep = std::make_shared <X3D::UndoStep> ("Traverse");
-	
+
 		X3D::traverse (getCurrentContext (),
 		               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), worldURL, protoUndoStep, _1),
 		               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 		               X3D::TRAVERSE_PROTO_DECLARATIONS |
 		               X3D::TRAVERSE_PROTO_DECLARATION_BODY);
-	
+
 		// Change url's in nodes
-	
+
 		X3D::traverse (const_cast <X3D::MFNode &> (nodes),
 		               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
 		               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 		               X3D::TRAVERSE_PROTO_DECLARATIONS |
 		               X3D::TRAVERSE_PROTO_DECLARATION_BODY |
 		               X3D::TRAVERSE_ROOT_NODES);
-	
+
 		// Export nodes to string
-	
+
 		const auto string = X3D::X3DEditor::exportNodes (getCurrentContext (), nodes, "XML", false);
-	
+
 		// Undo url change in protos
-	
+
 		protoUndoStep -> undo ();
-	
+
 		// Save scene
-	
+
 		const auto browser = X3D::createBrowser ();
-	
+
 		browser -> setLoadUrlObjects (false);
-	
+
 		const auto scene = browser -> createX3DFromString (string);
-	
+
 		scene -> setWorldURL (worldURL);
-	
+
 		return getBrowserWindow () -> save (scene, worldURL, outputStyle, false);
 	}
 	catch (const X3D::X3DError & error)

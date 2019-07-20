@@ -724,7 +724,8 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 void
 BrowserWindow::on_save_activated ()
 {
-	const auto & worldURL = getCurrentScene () -> getWorldURL ();
+	const auto & currentScene = getCurrentPage () -> getScene ();
+	const auto & worldURL     = currentScene -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network () or not X3D::FileGenerator::getKnownFileTypes () .count (worldURL .extension ()))
 	{
@@ -732,7 +733,7 @@ BrowserWindow::on_save_activated ()
 	}
 	else
 	{
-		save (worldURL, getOutputStyle (getCurrentScene ()), false);
+		save (worldURL, getOutputStyle (currentScene), false);
 	}
 }
 

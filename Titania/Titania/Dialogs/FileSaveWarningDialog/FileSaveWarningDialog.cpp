@@ -51,6 +51,7 @@
 #include "FileSaveWarningDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
+#include "../../BrowserNotebook/NotebookPage/NotebookPage.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/String/sprintf.h>
@@ -70,7 +71,8 @@ FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWin
 int
 FileSaveWarningDialog::run ()
 {
-	const auto worlURL = getCurrentScene () -> getWorldURL ();
+	const auto & currentScene = getBrowserWindow () -> getCurrentPage () -> getScene ();
+	const auto & worlURL      = currentScene -> getWorldURL ();
 
 	getMessage () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
 	                                         worlURL .empty ()

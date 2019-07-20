@@ -398,6 +398,7 @@ X3DBrowser::set_loadCount ()
 	if (getLoadCount ())
 		return;
 
+	getLoadCount () .removeInterest (&X3DBrowser::set_loadCount, this);
 	prepareEvents () .addInterest (&X3DBrowser::set_initialized, this);
 	addEvent ();
 }

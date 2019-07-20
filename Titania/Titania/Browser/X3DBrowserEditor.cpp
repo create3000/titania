@@ -386,7 +386,9 @@ bool
 X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
 	// Save world
-	const bool saved = X3DBrowserNotebook::save (getCurrentScene (), worldURL, outputStyle, copy);
+
+	const auto & currentScene = getCurrentPage () -> getScene ();
+	const bool   saved        = X3DBrowserNotebook::save (currentScene, worldURL, outputStyle, copy);
 
 	if (saved)
 	{
