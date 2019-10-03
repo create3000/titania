@@ -79,7 +79,7 @@ public:
 	const std::vector <vector3 <float>> &
 	vertices () const
 	{ return m_vertices; }
-	
+
 
 private:
 
@@ -105,6 +105,30 @@ public:
 
 	///  @name Member access
 
+	void
+	only_triangles (const bool value)
+	{ m_only_triangles = value; }
+
+	bool
+	only_triangles () const
+	{ return m_only_triangles; }
+
+	void
+	auto_weight (const size_t value)
+	{ m_auto_weight = value; }
+
+	size_t
+	auto_weight () const
+	{ return m_auto_weight; }
+
+	void
+	weight (const size_t index)
+	{ m_weight = index; }
+
+	size_t
+	weight () const
+	{ return m_weight; }
+
 	const std::vector <vector3 <float>> &
 	lines () const
 	{ return m_lines; }
@@ -120,31 +144,23 @@ public:
 	///  @name Operations
 
 	void
-	only_triangles (const bool value)
-	{ m_only_triangles = value; }
-
-	bool
-	only_triangles () const
-	{ return m_only_triangles; }
-
-	void
 	property (const GLenum property, const float value);
 
 	void
 	begin_surface ();
-	
+
 	void
 	end_surface ();
 
 	void
 	begin_curve ();
-	
+
 	void
 	end_curve ();
 
 	void
 	begin_trim ();
-	
+
 	void
 	end_trim ();
 
@@ -184,23 +200,23 @@ private:
 	static
 	void
 	tess_begin_data (const GLenum type, nurbs_tessellator* const self);
-	
+
 	static
 	void
 	tess_tex_coord_data (float* const texCoord, nurbs_tessellator* const self);
-	
+
 	static
 	void
 	tess_normal_data (float* const normal, nurbs_tessellator* const self);
-	
+
 	static
 	void
 	tess_vertex_data (float* const vertex, nurbs_tessellator* const self);
-	
+
 	static
 	void
 	tess_end_data (nurbs_tessellator* const self);
-	
+
 	static
 	void
 	tess_error (const GLenum errorCode);
@@ -209,6 +225,8 @@ private:
 
 	GLUnurbs* const m_tess;
 	bool            m_only_triangles;
+	bool            m_auto_weight;
+	size_t          m_weight;
 
 	GLenum                        m_type;
 	std::vector <vector4 <float>> m_tex_coords;

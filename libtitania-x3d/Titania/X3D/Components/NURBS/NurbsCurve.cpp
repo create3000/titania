@@ -114,7 +114,7 @@ NurbsCurve::initialize ()
 	X3DParametricGeometryNode::initialize ();
 
 	controlPoint () .addInterest (&NurbsCurve::set_controlPoint, this);
-	
+
 	set_controlPoint ();
 }
 
@@ -224,6 +224,7 @@ NurbsCurve::build ()
 
 	nurbs_tessellator tessellator;
 
+   tessellator .weight (3);
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	tessellator .property (GLU_U_STEP, getTessellation (controlPoints .size ()) / scale);
 

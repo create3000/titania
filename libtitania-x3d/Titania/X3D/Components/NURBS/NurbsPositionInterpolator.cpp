@@ -201,6 +201,7 @@ NurbsPositionInterpolator::build ()
 
 	nurbs_tessellator tessellator;
 
+   tessellator .weight (3);
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	tessellator .property (GLU_U_STEP, TESSELLATION * controlPointNode -> getSize () / scale);
 

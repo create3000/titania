@@ -153,6 +153,7 @@ NurbsCurve2D::tessellate () const
 
 	nurbs_tessellator tessellator;
 
+   tessellator .weight (2);
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	tessellator .property (GLU_U_STEP, getTessellation (knots .size () - order ()) / scale);
 
@@ -182,13 +183,13 @@ NurbsCurve2D::tessellate () const
 	if (closed)
 	{
 		const auto & vertex = lines .front ();
-	
+
 		curve .emplace_back (vertex .x (), vertex .y ());
 	}
 	else
 	{
 		const auto & vertex = lines .back ();
-	
+
 		curve .emplace_back (vertex .x (), vertex .y ());
 	}
 

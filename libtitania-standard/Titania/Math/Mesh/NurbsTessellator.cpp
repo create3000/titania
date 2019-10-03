@@ -59,6 +59,8 @@ namespace math {
 nurbs_tessellator::nurbs_tessellator (const bool debug) :
 	          m_tess (gluNewNurbsRenderer ()),
 	m_only_triangles (true),
+	   m_auto_weight (false),
+	        m_weight (3),
 	          m_type (0),
 	    m_tex_coords (),
 	       m_normals (),
@@ -81,7 +83,7 @@ nurbs_tessellator::nurbs_tessellator (const bool debug) :
 	gluNurbsCallback (m_tess, GLU_ERROR,                    _GLUfuncptr (&nurbs_tessellator::tess_error));
 
 	// Options
-	
+
 	glEnable (GL_AUTO_NORMAL);
 }
 
@@ -207,7 +209,16 @@ nurbs_tessellator::tess_normal_data (float* const normal, nurbs_tessellator* con
 void
 nurbs_tessellator::tess_vertex_data (float* const vertex, nurbs_tessellator* const self)
 {
-	self -> m_vertices .emplace_back (vertex [0], vertex [1], vertex [2]);
+	if (self -> m_auto_weight)
+	{
+		self -> m_vertices .emplace_back (vertex [0], vertex [1], vertex [2]);
+	}
+	else
+	{
+		const auto w = vertex [self -> m_weight];
+
+		self -> m_vertices .emplace_back (vertex [0] / w, vertex [1] / w, vertex [2] / w);
+	}
 }
 
 void
@@ -298,7 +309,7 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 			for (size_t i = 0, size = m_vertices .size () - 2; i < size; ++ i)
 			{
 				size_t i1, i2, i3;
-				
+
 				if (is_odd (i))
 				{
 					i1 = i;
@@ -335,15 +346,15 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 			auto & m_triangles_normals   = self -> m_triangles .m_normals;
 			auto & m_triangles_vertices  = self -> m_triangles .m_vertices;
 
-			m_triangles_tex_coord .insert (m_triangles_tex_coord .end (), 
+			m_triangles_tex_coord .insert (m_triangles_tex_coord .end (),
 			                               m_tex_coords .cbegin (),
 			                               m_tex_coords .cend ());
 
-			m_triangles_normals .insert (m_triangles_normals .end (), 
+			m_triangles_normals .insert (m_triangles_normals .end (),
 			                             m_normals .cbegin (),
 			                             m_normals .cend ());
 
-			m_triangles_vertices .insert (m_triangles_vertices .end (), 
+			m_triangles_vertices .insert (m_triangles_vertices .end (),
 			                              m_vertices .cbegin (),
 			                              m_vertices .cend ());
 
@@ -400,24 +411,24 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 				auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
 				auto & m_quads_normals   = self -> m_quads .m_normals;
 				auto & m_quads_vertices  = self -> m_quads .m_vertices;
-	
+
 				for (size_t i = 0, size = m_vertices .size () - 2; i < size; i += 2)
 				{
 					const size_t i1 = i;
 					const size_t i2 = i + 1;
 					const size_t i3 = i + 3;
 					const size_t i4 = i + 2;
-	
+
 					m_quads_tex_coord .emplace_back (m_tex_coords [i1]);
 					m_quads_tex_coord .emplace_back (m_tex_coords [i2]);
 					m_quads_tex_coord .emplace_back (m_tex_coords [i3]);
 					m_quads_tex_coord .emplace_back (m_tex_coords [i4]);
-	
+
 					m_quads_normals .emplace_back (m_normals [i1]);
 					m_quads_normals .emplace_back (m_normals [i2]);
 					m_quads_normals .emplace_back (m_normals [i3]);
 					m_quads_normals .emplace_back (m_normals [i4]);
-	
+
 					m_quads_vertices .emplace_back (m_vertices [i1]);
 					m_quads_vertices .emplace_back (m_vertices [i2]);
 					m_quads_vertices .emplace_back (m_vertices [i3]);
@@ -478,16 +489,16 @@ nurbs_tessellator::tess_end_data (nurbs_tessellator* const self)
 				auto & m_quads_tex_coord = self -> m_quads .m_tex_coords;
 				auto & m_quads_normals   = self -> m_quads .m_normals;
 				auto & m_quads_vertices  = self -> m_quads .m_vertices;
-	
-				m_quads_tex_coord .insert (m_quads_tex_coord .end (), 
+
+				m_quads_tex_coord .insert (m_quads_tex_coord .end (),
 				                           m_tex_coords .cbegin (),
 				                           m_tex_coords .cend ());
-	
-				m_quads_normals .insert (m_quads_normals .end (), 
+
+				m_quads_normals .insert (m_quads_normals .end (),
 				                         m_normals .cbegin (),
 				                         m_normals .cend ());
-	
-				m_quads_vertices .insert (m_quads_vertices .end (), 
+
+				m_quads_vertices .insert (m_quads_vertices .end (),
 				                          m_vertices .cbegin (),
 				                          m_vertices .cend ());
 			}
