@@ -114,18 +114,10 @@ public:
 	{ return m_only_triangles; }
 
 	void
-	auto_weight (const size_t value)
-	{ m_auto_weight = value; }
-
-	size_t
-	auto_weight () const
-	{ return m_auto_weight; }
-
-	void
-	weight (const size_t index)
+	weight (const int32_t index)
 	{ m_weight = index; }
 
-	size_t
+	int32_t
 	weight () const
 	{ return m_weight; }
 
@@ -225,8 +217,7 @@ private:
 
 	GLUnurbs* const m_tess;
 	bool            m_only_triangles;
-	bool            m_auto_weight;
-	size_t          m_weight;
+	int32_t         m_weight;
 
 	GLenum                        m_type;
 	std::vector <vector4 <float>> m_tex_coords;

@@ -59,8 +59,7 @@ namespace math {
 nurbs_tessellator::nurbs_tessellator (const bool debug) :
 	          m_tess (gluNewNurbsRenderer ()),
 	m_only_triangles (true),
-	   m_auto_weight (false),
-	        m_weight (3),
+	        m_weight (-1),
 	          m_type (0),
 	    m_tex_coords (),
 	       m_normals (),
@@ -209,7 +208,7 @@ nurbs_tessellator::tess_normal_data (float* const normal, nurbs_tessellator* con
 void
 nurbs_tessellator::tess_vertex_data (float* const vertex, nurbs_tessellator* const self)
 {
-	if (self -> m_auto_weight)
+	if (self -> m_weight < 0)
 	{
 		self -> m_vertices .emplace_back (vertex [0], vertex [1], vertex [2]);
 	}

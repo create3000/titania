@@ -322,7 +322,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	nurbs_tessellator tessellator;
 
-   tessellator .auto_weight (true);
+   tessellator .weight (-1);
 	tessellator .property (GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	tessellator .property (GLU_U_STEP, getUTessellation (uKnots .size () - uOrder ()) / uScale);
 	tessellator .property (GLU_V_STEP, getVTessellation (vKnots .size () - vOrder ()) / vScale);
