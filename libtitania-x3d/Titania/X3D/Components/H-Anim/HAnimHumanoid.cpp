@@ -267,6 +267,8 @@ HAnimHumanoid::set_skinCoord ()
 void
 HAnimHumanoid::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
+	renderObject -> getJoints () .resize (0);
+
 	transformNode -> traverse (type, renderObject);
 
 	skinning (type, renderObject);
@@ -296,7 +298,12 @@ HAnimHumanoid::skinning (const TraverseType type, X3DRenderObject* const renderO
 
 		// Apply joint transformations.
 
-		for (const auto & jointNode : jointNodes)
+		std::vector <HAnimJoint*> jointNodes;
+
+		for (const auto & jointNode : this -> jointNodes)
+			jointNodes .emplace_back (jointNode);
+
+		for (const auto & jointNode : jointNodes .size () ? jointNodes : renderObject -> getJoints ())
 		{
 			const auto & skinCoordIndex = jointNode -> skinCoordIndex ();
 

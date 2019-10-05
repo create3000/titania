@@ -97,6 +97,7 @@ X3DRenderObject::X3DRenderObject () :
 	                  lights (),
 	              lightIndex (0),
 	                  shadow ({ false }),
+	                  joints (),
 	                 layouts (),
 	generatedCubeMapTextures (),
 	                 shaders (),
@@ -142,7 +143,7 @@ X3DRenderObject::setGlobalFog (Fog* const fog)
 
 ///  Contrains @a translation to a possible value the avatar can move.  If the avatar reaches and intersects with an
 ///  and obstacle and @a stepBack is true a translation in the opposite directiion is returned.  Future implementation will
-///  will then return a value where the avatar slides along the wall. 
+///  will then return a value where the avatar slides along the wall.
 Vector3d
 X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack) const
 {
@@ -158,7 +159,7 @@ X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool 
 		// Move.
 
 		const auto length = abs (translation);
-		
+
 		if (length > distance)
 		{
 			// Collision, the avatar would intersect with the obstacle.
@@ -204,7 +205,7 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 
 		const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
 		auto       rotation         = Rotation4d (zAxis, -direction) * localOrientation;
-	
+
 		// The viewer is alway a straight box depending on the upVector.
 		rotation *= viewpoint -> straightenHorizon (rotation);
 
@@ -494,7 +495,7 @@ X3DRenderObject::gravite ()
 		// Reshape viewpoint for gravite.
 
 		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, nearValue, std::max (collisionRadius * 2, avatarHeight * 2));
-					
+
 		// Transform viewpoint to look down the up vector
 
 		const auto upVector = viewpoint -> getUpVector ();
@@ -611,12 +612,12 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	if (isIndependent ())
 	{
 		// Render shadow maps.
-	
+
 		for (const auto & object : getLights ())
 			object -> renderShadowMap (this);
-	
+
 		// Render generated cube map textures.
-	
+
 		for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
 			generatedCubeMapTexture -> renderTexture (this, traverse);
 	}
@@ -681,7 +682,7 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	// POST DRAW
 
 	// Disable global lights
-	
+
 	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
 		object -> disable ();
 

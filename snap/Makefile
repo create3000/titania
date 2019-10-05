@@ -24,5 +24,5 @@ remove:
 	sudo snap remove titania
 
 publish:
-	snapcraft login
-	snapcraft push --release=stable titania_*.snap
+	${SNAPCRAFT} login
+	${SNAPCRAFT} push --release=stable titania_*.snap
