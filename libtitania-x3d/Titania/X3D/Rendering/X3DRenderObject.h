@@ -223,10 +223,6 @@ public:
 	getShadow () const
 	{ return shadow .top (); }
 
-	std::vector <HAnimJoint*> &
-	getJoints ()
-	{ return joints; }
-
 	LayoutStack &
 	getLayouts ()
 	{ return layouts; }
@@ -350,7 +346,6 @@ private:
 	LightContainerArray        lights;
 	size_t                     lightIndex;
 	ShadowStack                shadow;
-	std::vector <HAnimJoint*>  joints;
 	LayoutStack                layouts;
 	GeneratedCubeMapTextureSet generatedCubeMapTextures;
 	ShaderSet                  shaders;

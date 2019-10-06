@@ -97,7 +97,6 @@ X3DRenderObject::X3DRenderObject () :
 	                  lights (),
 	              lightIndex (0),
 	                  shadow ({ false }),
-	                  joints (),
 	                 layouts (),
 	generatedCubeMapTextures (),
 	                 shaders (),
