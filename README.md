@@ -28,7 +28,8 @@ Installation
 
 Titania is now listed in the [Snap Store](https://snapcraft.io/titania) and can be installed from there for all major Linux distributions, just paste the following lines into a terminal to install Titania:
 
-```sudo snap install titania
+```
+sudo snap install titania
 ```
 
 ### Install from Source
