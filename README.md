@@ -4,11 +4,11 @@
 Introduction
 --------------------------------------
 
-Titania is a free, open source, specification conform X3D Graphics authoring tool and browser for Ubuntu. The goal is a 
-full standard compliant X3D browser for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds 
+Titania is a free, open source, specification conform X3D Graphics authoring tool and browser for Ubuntu. The goal is a
+full standard compliant X3D browser for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds
 specification for VRML 2.0 and already most parts of the X3D specification.
 
-It can be used as a simple 3D viewer for .x3dv/.x3d files, as high quality 3D animation rendering engine, for advanced 
+It can be used as a simple 3D viewer for .x3dv/.x3d files, as high quality 3D animation rendering engine, for advanced
 science simulations, live data visualization, or as easy to use gaming engine.
 
 Furthermore Titania can also be used as an easy to use X3D/VRML beautifier and converter.
@@ -18,58 +18,18 @@ For more information and documentation please visit our website at [http://titan
 Installation
 --------------------------------------
 
-### Install Titania via FlatPak
+### Install Titania via Flathub
 
-[FlatPak](http://flatpak.org/) is a new straightforward packaging format for Linux, which allows the same applications
-to run in a sandboxed environment, across any modern distribution.
+[Flathub](https://flathub.org/apps/details/de.create3000.titania) is the home of hundreds of apps which can be easily installed on any Linux distribution. Titania is also now hosted on Flathub and can be installed easily from there..
 
-We are offering a stable release of Titania as a FlatPak bundle, which runs out of the box.
+[Install Titania via Flathub](https://flathub.org/apps/details/de.create3000.titania)
 
-If not already included within your distribution, first, [install FlatPak for your distribution](http://flatpak.org/getting.html) – make
-sure you have version 0.8.0 or higher.
+### Install Titania via Snap Store
 
-Then [click here to install](http://code.create3000.de/repos/titania.flatpakref), or paste the following line into a terminal to install Titania:
+Titania is now listed in the [Snap Store](https://snapcraft.io/titania) and can be installed from there for all major Linux distributions, just paste the following lines into a terminal to install Titania:
 
-```bash
-flatpak install --user --from http://code.create3000.de/repos/titania.flatpakref
+```sudo snap install titania
 ```
-
-or update your existing FlatPak installation with:
-
-```bash
-flatpak update --user de.create3000.titania
-```
-
-Don't forget to reboot your system after installation has been completed. You can than run newly installed Titania from terminal using:
-
-```bash
-flatpak run de.create3000.titania
-```
-
-#### Known Issues
-
-If Titania does not run and quits with the error message »locale::facet::_S_create_c_locale name not valid« run:
-
-```bash
-flatpak install --user gnome org.gnome.Platform.Locale//3.26
-```
-
-### Arch Linux User Repository
-
-Since it is sometimes a bit tricky to compile titania successfully on other Linux systems than Ubuntu, there is a
-package of the latest version of Titania available for AUR, the Arch Linux User Repository which should simplify the
-process for you:
-
-[https://aur.archlinux.org/packages/titania-git/](https://aur.archlinux.org/packages/titania-git/)
-
-They are specific for the [Arch Linux](https://www.archlinux.org/) distribution. AUR Packages are not precompiled, they
-are more or less simply a script that downloads the source code, installs all dependencies and executes the commands to
-compile and install the software.
-
-More information how to install an AUR package can be found at:
-
-[https://wiki.archlinux.org/index.php/Arch_User_Repository](https://wiki.archlinux.org/index.php/Arch_User_Repository)
-
 
 ### Install from Source
 
@@ -84,7 +44,7 @@ make -j4
 make run
 ```
 
-**Note:** `make -j4` compiles the project with four jobs at the same time, ie. it uses four processors. Adjust this 
+**Note:** `make -j4` compiles the project with four jobs at the same time, ie. it uses four processors. Adjust this
 value depending on the number of processors of your computer.  It can take 20 up to 45 minutes or longer to compile the
 whole project.
 
@@ -102,7 +62,7 @@ All authors contributed to this project can be found in the [list of authors](AU
 Acknowledgments
 --------------------------------------
 
-Titania wouldn't be possible without parts of source code or inspiration from other software packages. We would like to 
+Titania wouldn't be possible without parts of source code or inspiration from other software packages. We would like to
 say thank to everyone for their great work and help.
 
 * [H3D](http://www.h3dapi.org/)
