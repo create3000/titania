@@ -364,14 +364,17 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 
 		// Replace world.
 
-		setDescription ("");
-		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
-		getBrowserOptions () -> assign (browserOptions, true);
+		executionContext = value ? value : createScene (false);
 
 		resetLoadCount ();
 		prepareEvents () .removeInterest (&X3DBrowser::set_initialized, this);
 
-		executionContext = value ? value : createScene (false);
+		setDescription ("");
+		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
+		getBrowserOptions () -> assign (browserOptions, true);
+
+		if (executionContext -> getSpecificationVersion () == VRML_V2_0)
+			getBrowserOptions () -> EnableInlineViewpoints () = false;
 
 		getConsole () -> log ("\n*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n\n");
 		isLive () .addInterest (executionContext -> isLive ());

@@ -115,7 +115,7 @@ public:
 	{
 	   if (list .size () > 1)
 	   {
-			const bool enableInlineBindables = false;
+			const bool enableInlineBindables = getBrowser () -> getBrowserOptions () -> EnableInlineViewpoints ();
 			const auto masterScene           = getMasterScene ();
 
 			if (not name .empty ())
@@ -142,14 +142,14 @@ public:
 				if (node -> isBound ())
 					return node;
 			}
-	
+
 			// Return first viewpoint in scene.
-	
+
 			for (const auto & node : std::pair (list .cbegin () + 1, list .cend ()))
 			{
 				if (not enableInlineBindables and node -> getScene () != masterScene)
 					continue;
-	
+
 				return node;
 			}
 		}
@@ -224,7 +224,7 @@ private:
 			addEvent ();
 		}
 	}
-	
+
 	void
 	replace (const list_type &)
 	{ }
