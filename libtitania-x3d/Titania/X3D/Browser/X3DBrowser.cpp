@@ -384,7 +384,9 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
-		getWorld () -> bind ();
+
+		if (not getBrowserOptions () -> EnableInlineViewpoints ())
+			getWorld () -> bind ();
 
 		if (initialized ())
 		{
@@ -410,6 +412,9 @@ void
 X3DBrowser::set_initialized ()
 {
 	prepareEvents () .removeInterest (&X3DBrowser::set_initialized, this);
+
+	if (getBrowserOptions () -> EnableInlineViewpoints ())
+		getWorld () -> bind ();
 
 	get_style_context () -> remove_class ("titania-private-invisible");
 	initialized () = true;
