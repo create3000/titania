@@ -115,7 +115,7 @@ public:
 	{
 	   if (list .size () > 1)
 	   {
-			const bool enableInlineBindables = getBrowser () -> getBrowserOptions () -> EnableInlineViewpoints ();
+			const bool enableInlineBindables = false;
 			const auto masterScene           = getMasterScene ();
 
 			if (not name .empty ())

@@ -373,9 +373,6 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
 		getBrowserOptions () -> assign (browserOptions, true);
 
-		if (executionContext -> getSpecificationVersion () == VRML_V2_0)
-			getBrowserOptions () -> EnableInlineViewpoints () = false;
-
 		getConsole () -> log ("\n*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n\n");
 		isLive () .addInterest (executionContext -> isLive ());
 		executionContext -> isLive () = isLive ();
@@ -384,9 +381,7 @@ X3DBrowser::replaceWorld (const X3DExecutionContextPtr & value)
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();
-
-		if (not getBrowserOptions () -> EnableInlineViewpoints ())
-			getWorld () -> bind ();
+		getWorld () -> bind ();
 
 		if (initialized ())
 		{
@@ -412,9 +407,6 @@ void
 X3DBrowser::set_initialized ()
 {
 	prepareEvents () .removeInterest (&X3DBrowser::set_initialized, this);
-
-	if (getBrowserOptions () -> EnableInlineViewpoints ())
-		getWorld () -> bind ();
 
 	get_style_context () -> remove_class ("titania-private-invisible");
 	initialized () = true;
