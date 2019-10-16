@@ -106,7 +106,91 @@ void
 main ()
 {
 	vec4 pos = x3d_ModelViewMatrix * x3d_Vertex;
- 
+
+	position = vec3 (pos .xyz) / pos .w;
+
+	#ifdef HAS_NORMALS
+		#ifdef HAS_TANGENTS
+			vec3 normalW    = normalize (x3d_NormalMatrix * x3d_Normal);
+			vec3 tangentW   = normalize (x3d_NormalMatrix * tangent .xyz);
+			vec3 bitangentW = cross (normalW, tangentW) * tangent .w;
+
+			TBN = mat3 (tangentW, bitangentW, normalW);
+		#else // HAS_TANGENTS
+			normal = normalize (x3d_NormalMatrix * x3d_Normal);
+		#endif
+	#endif
+
+	#ifdef HAS_TEXCOORDS
+		texCoord = vec2 (x3d_TexCoord0 .s, 1.0 - x3d_TexCoord0 .t);
+	#else
+		texCoord = vec2 (0.0, 0.0);
+	#endif
+
+	#ifdef HAS_COLORS
+		color = x3d_Color;;
+	#endif
+
+	gl_Position = x3d_ProjectionMatrix * pos;
+
+	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
+	depth = 1.0 + gl_Position .w;
+	#endif
+}
+]]>
+<![CDATA[data:x-shader/x-vertex,
+
+// -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+
+// BEGIN DEFINES
+// END DEFINES
+
+precision highp float;
+precision highp int;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat3 x3d_NormalMatrix;
+
+attribute vec4 x3d_Vertex;
+
+#ifdef HAS_NORMALS
+	attribute vec3 x3d_Normal;
+#endif
+
+#ifdef HAS_TEXCOORDS
+	attribute vec4 x3d_TexCoord0;
+#endif
+
+#ifdef HAS_TANGENTS
+	attribute vec4 tangent;
+#endif
+
+varying vec3 position;
+varying vec2 texCoord;
+
+#ifdef HAS_COLORS
+	attribute vec4 x3d_Color;
+	varying vec4 color;
+#endif
+
+#ifdef HAS_NORMALS
+	#ifdef HAS_TANGENTS
+		varying mat3 TBN;
+	#else
+		varying vec3 normal;
+	#endif
+#endif
+
+#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
+varying float depth;
+#endif
+
+void
+main ()
+{
+	vec4 pos = x3d_ModelViewMatrix * x3d_Vertex;
+
 	position = vec3 (pos .xyz) / pos .w;
 
 	#ifdef HAS_NORMALS
@@ -288,7 +372,7 @@ getNormal ()
 		#endif
 
 		t = normalize (t - ng * dot (ng, t));
-		
+
 		vec3 b   = normalize (cross (ng, t));
 		mat3 tbn = mat3 (t, b, ng);
 	#else // HAS_TANGENTS
@@ -297,7 +381,7 @@ getNormal ()
 
 	#ifdef HAS_NORMAL_MAP
 		vec3 n = texture (normalTexture, texCoord) .rgb;
-		
+
 		n = normalize (tbn * ((n * 2.0 - 1.0) * vec3 (normalScale, normalScale, 1.0)));
 	#else
 		vec3 n = tbn [2] .xyz;
@@ -363,7 +447,7 @@ geometricOcclusion (PBRInfo pbrInputs)
 
 	float attenuationL = 2.0 * NdotL / (NdotL + sqrt (r * r + (1.0 - r * r) * (NdotL * NdotL)));
 	float attenuationV = 2.0 * NdotV / (NdotV + sqrt (r * r + (1.0 - r * r) * (NdotV * NdotV)));
-	
+
 	return attenuationL * attenuationV;
 }
 
@@ -375,7 +459,7 @@ microfacetDistribution (PBRInfo pbrInputs)
 {
 	float roughnessSq = pbrInputs .alphaRoughness * pbrInputs .alphaRoughness;
 	float f           = (pbrInputs .NdotH * roughnessSq - pbrInputs .NdotH) * pbrInputs .NdotH + 1.0;
-	
+
 	return roughnessSq / (M_PI * f * f);
 }
 
@@ -388,19 +472,19 @@ main ()
 		// or from a metallic-roughness map
 		float perceptualRoughness = metallicRoughnessValues .y;
 		float metallic            = metallicRoughnessValues .x;
-		
+
 		#ifdef HAS_METAL_ROUGHNESS_MAP
 			// Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
 			// This layout intentionally reserves the 'r' channel for (optional) occlusion map data
 			vec4 mrSample = texture (metallicRoughnessTexture, texCoord);
-			
+
 			perceptualRoughness = mrSample .g * perceptualRoughness;
 			metallic            = mrSample .b * metallic;
 		#endif
 
 		perceptualRoughness = clamp (perceptualRoughness, c_MinRoughness, 1.0);
 		metallic            = clamp (metallic, 0.0, 1.0);
-		
+
 		// Roughness is authored as perceptual roughness; as is convention,
 		// convert to material roughness by squaring the perceptual roughness [2].
 		float alphaRoughness = perceptualRoughness * perceptualRoughness;
@@ -411,7 +495,7 @@ main ()
 		#else
 			vec4 baseColor = baseColorFactor;
 		#endif
-		
+
 		// If a primitive specifies a vertex color using the attribute semantic property COLOR_0,
 		// then this value acts as an additional linear multiplier to baseColor.
 		#ifdef HAS_COLORS
@@ -419,10 +503,10 @@ main ()
 		#endif
 
 		vec3 f0 = vec3 (0.04);
-		
+
 		vec3 diffuseColor = baseColor .rgb * (vec3 (1.0) - f0);
 		diffuseColor *= 1.0 - metallic;
-		
+
 		vec3 specularColor = mix (f0, baseColor .rgb, metallic);
 
 		// Compute reflectance.
@@ -439,7 +523,7 @@ main ()
 		#endif
 
 		float metallic = 1.0;
-	
+
 		perceptualRoughness = clamp (perceptualRoughness, c_MinRoughness, 1.0);
 
 		// Roughness is authored as perceptual roughness; as is convention,
@@ -452,13 +536,13 @@ main ()
 		#else
 			vec4 baseColor = diffuseFactor;
 		#endif
-		
+
 		// If a primitive specifies a vertex color using the attribute semantic property COLOR_0,
 		// then this value acts as an additional linear multiplier to baseColor.
 		#ifdef HAS_COLORS
 			baseColor *= color;
 		#endif
-		
+
 		specularColor = vec3 (0.0); // XXX
 
 		// Compute reflectance.
@@ -546,124 +630,6 @@ main ()
 	#endif
 }
 ]]>
-            </ShaderPart>
-          </ComposedShader>
-          <ComposedShader DEF='pbrShader1'
-              language='GLSL'>
-            <field accessType='inputOutput' type='SFVec4f' name='baseColorFactor' value='1 1 1 1'/>
-            <field accessType='inputOutput' type='SFVec2f' name='metallicRoughnessValues' value='1 1'/>
-            <field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/>
-            <field accessType='inputOutput' type='SFFloat' name='occlusionStrength'/>
-            <field accessType='inputOutput' type='SFFloat' name='normalScale'/>
-            <field accessType='inputOutput' type='SFNode' name='baseColorTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='metallicRoughnessTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='diffuseEnvironmentTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='specularEnvironmentTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='brdfLUT'/>
-            <field accessType='inputOutput' type='SFVec4f' name='diffuseFactor' value='1 1 1 1'/>
-            <field accessType='inputOutput' type='SFVec3f' name='specularFactor' value='1 1 1'/>
-            <field accessType='inputOutput' type='SFFloat' name='glossinessFactor' value='1'/>
-            <field accessType='inputOutput' type='SFNode' name='diffuseTexture'/>
-            <field accessType='inputOutput' type='SFNode' name='specularGlossinessTexture'/>
-            <IS>
-              <connect nodeField='emissiveFactor' protoField='emissiveFactor'/>
-              <connect nodeField='occlusionStrength' protoField='occlusionStrength'/>
-              <connect nodeField='normalScale' protoField='normalScale'/>
-              <connect nodeField='emissiveTexture' protoField='emissiveTexture'/>
-              <connect nodeField='occlusionTexture' protoField='occlusionTexture'/>
-              <connect nodeField='normalTexture' protoField='normalTexture'/>
-            </IS>
-            <ShaderPart DEF='pbrVertexShader1'>
-<![CDATA[data:x-shader/x-vertex,
-
-// -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
-
-// BEGIN DEFINES
-// END DEFINES
-
-precision highp float;
-precision highp int;
-
-uniform mat4 x3d_ProjectionMatrix;
-uniform mat4 x3d_ModelViewMatrix;
-uniform mat3 x3d_NormalMatrix;
-
-attribute vec4 x3d_Vertex;
-
-#ifdef HAS_NORMALS
-	attribute vec3 x3d_Normal;
-#endif
-
-#ifdef HAS_TEXCOORDS
-	attribute vec4 x3d_TexCoord0;
-#endif
-
-#ifdef HAS_TANGENTS
-	attribute vec4 tangent;
-#endif
-
-varying vec3 position;
-varying vec2 texCoord;
-
-#ifdef HAS_COLORS
-	attribute vec4 x3d_Color;
-	varying vec4 color;
-#endif
-
-#ifdef HAS_NORMALS
-	#ifdef HAS_TANGENTS
-		varying mat3 TBN;
-	#else
-		varying vec3 normal;
-	#endif
-#endif
-
-#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
-varying float depth;
-#endif
-
-void
-main ()
-{
-	vec4 pos = x3d_ModelViewMatrix * x3d_Vertex;
- 
-	position = vec3 (pos .xyz) / pos .w;
-
-	#ifdef HAS_NORMALS
-		#ifdef HAS_TANGENTS
-			vec3 normalW    = normalize (x3d_NormalMatrix * x3d_Normal);
-			vec3 tangentW   = normalize (x3d_NormalMatrix * tangent .xyz);
-			vec3 bitangentW = cross (normalW, tangentW) * tangent .w;
-
-			TBN = mat3 (tangentW, bitangentW, normalW);
-		#else // HAS_TANGENTS
-			normal = normalize (x3d_NormalMatrix * x3d_Normal);
-		#endif
-	#endif
-
-	#ifdef HAS_TEXCOORDS
-		texCoord = vec2 (x3d_TexCoord0 .s, 1.0 - x3d_TexCoord0 .t);
-	#else
-		texCoord = vec2 (0.0, 0.0);
-	#endif
-
-	#ifdef HAS_COLORS
-		color = x3d_Color;;
-	#endif
-
-	gl_Position = x3d_ProjectionMatrix * pos;
-
-	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
-	depth = 1.0 + gl_Position .w;
-	#endif
-}
-]]>
-            </ShaderPart>
-            <ShaderPart DEF='pbrFragmentShader1'
-                type='FRAGMENT'>
 <![CDATA[data:x-shader/x-fragment,
 
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
@@ -811,7 +777,7 @@ getNormal ()
 		#endif
 
 		t = normalize (t - ng * dot (ng, t));
-		
+
 		vec3 b   = normalize (cross (ng, t));
 		mat3 tbn = mat3 (t, b, ng);
 	#else // HAS_TANGENTS
@@ -820,7 +786,7 @@ getNormal ()
 
 	#ifdef HAS_NORMAL_MAP
 		vec3 n = texture2D (normalTexture, texCoord) .rgb;
-		
+
 		n = normalize (tbn * ((n * 2.0 - 1.0) * vec3 (normalScale, normalScale, 1.0)));
 	#else
 		vec3 n = tbn [2] .xyz;
@@ -886,7 +852,7 @@ geometricOcclusion (PBRInfo pbrInputs)
 
 	float attenuationL = 2.0 * NdotL / (NdotL + sqrt (r * r + (1.0 - r * r) * (NdotL * NdotL)));
 	float attenuationV = 2.0 * NdotV / (NdotV + sqrt (r * r + (1.0 - r * r) * (NdotV * NdotV)));
-	
+
 	return attenuationL * attenuationV;
 }
 
@@ -898,7 +864,7 @@ microfacetDistribution (PBRInfo pbrInputs)
 {
 	float roughnessSq = pbrInputs .alphaRoughness * pbrInputs .alphaRoughness;
 	float f           = (pbrInputs .NdotH * roughnessSq - pbrInputs .NdotH) * pbrInputs .NdotH + 1.0;
-	
+
 	return roughnessSq / (M_PI * f * f);
 }
 
@@ -911,19 +877,19 @@ main ()
 		// or from a metallic-roughness map
 		float perceptualRoughness = metallicRoughnessValues .y;
 		float metallic            = metallicRoughnessValues .x;
-		
+
 		#ifdef HAS_METAL_ROUGHNESS_MAP
 			// Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
 			// This layout intentionally reserves the 'r' channel for (optional) occlusion map data
 			vec4 mrSample = texture2D (metallicRoughnessTexture, texCoord);
-			
+
 			perceptualRoughness = mrSample .g * perceptualRoughness;
 			metallic            = mrSample .b * metallic;
 		#endif
 
 		perceptualRoughness = clamp (perceptualRoughness, c_MinRoughness, 1.0);
 		metallic            = clamp (metallic, 0.0, 1.0);
-		
+
 		// Roughness is authored as perceptual roughness; as is convention,
 		// convert to material roughness by squaring the perceptual roughness [2].
 		float alphaRoughness = perceptualRoughness * perceptualRoughness;
@@ -934,7 +900,7 @@ main ()
 		#else
 			vec4 baseColor = baseColorFactor;
 		#endif
-		
+
 		// If a primitive specifies a vertex color using the attribute semantic property COLOR_0,
 		// then this value acts as an additional linear multiplier to baseColor.
 		#ifdef HAS_COLORS
@@ -942,10 +908,10 @@ main ()
 		#endif
 
 		vec3 f0 = vec3 (0.04);
-		
+
 		vec3 diffuseColor = baseColor .rgb * (vec3 (1.0) - f0);
 		diffuseColor *= 1.0 - metallic;
-		
+
 		vec3 specularColor = mix (f0, baseColor .rgb, metallic);
 
 		// Compute reflectance.
@@ -962,7 +928,7 @@ main ()
 		#endif
 
 		float metallic = 1.0;
-	
+
 		perceptualRoughness = clamp (perceptualRoughness, c_MinRoughness, 1.0);
 
 		// Roughness is authored as perceptual roughness; as is convention,
@@ -975,13 +941,13 @@ main ()
 		#else
 			vec4 baseColor = diffuseFactor;
 		#endif
-		
+
 		// If a primitive specifies a vertex color using the attribute semantic property COLOR_0,
 		// then this value acts as an additional linear multiplier to baseColor.
 		#ifdef HAS_COLORS
 			baseColor *= color;
 		#endif
-		
+
 		specularColor = vec3 (0.0); // XXX
 
 		// Compute reflectance.
@@ -1088,9 +1054,8 @@ main ()
             <Material
                 transparency='1'/>
           </field>
-          <field accessType='initializeOnly' type='MFNode' name='shaders'>
-            <ComposedShader USE='pbrShader1' containerField='shaders'/>
-            <ComposedShader USE='pbrShader2' containerField='shaders'/>
+          <field accessType='initializeOnly' type='SFNode' name='shader'>
+            <ComposedShader USE='pbrShader2' containerField='shader'/>
           </field>
           <field accessType='initializeOnly' type='SFNode' name='self'>
             <Script USE='pbrAppearanceScript' containerField='self'/>
@@ -1121,7 +1086,7 @@ function set_defines (value, time)
 	var DEFINES = new RegExp ("// BEGIN DEFINES\\n[\\s\\S]*?// END DEFINES\\n");
 
 	var text = "";
-	
+
 	text += "// BEGIN DEFINES\n";
 
 	for (var i = 0; i < defines .length; ++ i)
@@ -1131,18 +1096,12 @@ function set_defines (value, time)
 
 	text += "// END DEFINES\n";
 
-	for (var s = 0; s < shaders .length; ++ s)
+	for (var s = 0; s < shader .parts .length; ++ s)
 	{
-		var shader = shaders [s];
-			
-		for (var i = 0; i < shader .parts .length; ++ i)
-		{
-			var
-				part = shader .parts [i],
-				url  = part .url [0];
+		var part = shader .parts [s];
 
-			part .url [0] = url .replace (DEFINES, text);
-		}
+		for (var u = 0; u < part .url .length; ++ u)
+			part .url [u] = part .url [u] .replace (DEFINES, text);
 	}
 }
 
@@ -1178,13 +1137,8 @@ function set_roughnessFactor ()
 
 function set_metallicRoughnessValues ()
 {
-	for (var s = 0; s < shaders .length; ++ s)
-	{
-		var shader = shaders [s];
-		
-		shader .metallicRoughnessValues .x = metallicFactor
-		shader .metallicRoughnessValues .y = roughnessFactor;
-	}
+	shader .metallicRoughnessValues .x = metallicFactor
+	shader .metallicRoughnessValues .y = roughnessFactor;
 }
 
 function set_metallicRoughness (value, time)
@@ -1202,37 +1156,27 @@ function set_metallicRoughness (value, time)
 
 	if (metallicRoughness)
 	{
-		for (var s = 0; s < shaders .length; ++ s)
-		{
-			var shader = shaders [s];
-			
-			shader .baseColorFactor          = metallicRoughness .baseColorFactor;
-			shader .baseColorTexture         = metallicRoughness .baseColorTexture;
-			shader .metallicRoughnessTexture = metallicRoughness .metallicRoughnessTexture;
-		
-			metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorFactor",          shader, "baseColorFactor"));
-			metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorTexture",         shader, "baseColorTexture"));
-			metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "metallicRoughnessTexture", shader, "metallicRoughnessTexture"));
-		}
+		shader .baseColorFactor          = metallicRoughness .baseColorFactor;
+		shader .baseColorTexture         = metallicRoughness .baseColorTexture;
+		shader .metallicRoughnessTexture = metallicRoughness .metallicRoughnessTexture;
+
+		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorFactor",          shader, "baseColorFactor"));
+		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorTexture",         shader, "baseColorTexture"));
+		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "metallicRoughnessTexture", shader, "metallicRoughnessTexture"));
 
 		self .metallicFactor   = metallicRoughness .metallicFactor;
 		self .roughnessFactor  = metallicRoughness .roughnessFactor;
 		self .baseColorTexture = metallicRoughness .baseColorTexture;
-		
+
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "metallicFactor",   self, "metallicFactor"));
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "roughnessFactor",  self, "roughnessFactor"));
 		metallicRoughnessRoutes .push (currentScene .addRoute (metallicRoughness, "baseColorTexture", self, "baseColorTexture"));
 	}
 	else
 	{
-		for (var s = 0; s < shaders .length; ++ s)
-		{
-			var shader = shaders [s];
-			
-			shader .baseColorFactor            = new SFVec4f (1, 1, 1, 1);
-			shader .baseColorTexture           = null;
-			shader .metallicRoughnessTexture   = null;
-		}
+		shader .baseColorFactor            = new SFVec4f (1, 1, 1, 1);
+		shader .baseColorTexture           = null;
+		shader .metallicRoughnessTexture   = null;
 
 		self .metallicFactor   = 1;
 		self .roughnessFactor  = 1;
@@ -1243,14 +1187,14 @@ function set_metallicRoughness (value, time)
 function set_extensions (value, time)
 {
 	var specularGlossiness = null;
-	
+
 	for (var i = 0; i < extensions .length; ++ i)
 	{
 		var extension = extensions [i];
-		
+
 		if (!extension)
 			continue;
-	
+
 		switch (extension .toString ())
 		{
 			case "pbrSpecularGlossiness { }":
@@ -1273,35 +1217,25 @@ function set_extensions (value, time)
 
 	if (specularGlossiness)
 	{
-		for (var s = 0; s < shaders .length; ++ s)
-		{
-			var shader = shaders [s];
-			
-			shader .diffuseFactor             = specularGlossiness .diffuseFactor;
-			shader .diffuseTexture            = specularGlossiness .diffuseTexture;
-			shader .specularFactor            = specularGlossiness .specularFactor;
-			shader .glossinessFactor          = specularGlossiness .glossinessFactor;
-			shader .specularGlossinessTexture = specularGlossiness .specularGlossinessTexture;
+		shader .diffuseFactor             = specularGlossiness .diffuseFactor;
+		shader .diffuseTexture            = specularGlossiness .diffuseTexture;
+		shader .specularFactor            = specularGlossiness .specularFactor;
+		shader .glossinessFactor          = specularGlossiness .glossinessFactor;
+		shader .specularGlossinessTexture = specularGlossiness .specularGlossinessTexture;
 
-			specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseFactor",             shader, "diffuseFactor"));
-			specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseTexture",            shader, "diffuseTexture"));
-			specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "specularFactor",            shader, "specularFactor"));
-			specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "glossinessFactor",          shader, "glossinessFactor"));
-			specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "specularGlossinessTexture", shader, "specularGlossinessTexture"));
-		}
+		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseFactor",             shader, "diffuseFactor"));
+		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "diffuseTexture",            shader, "diffuseTexture"));
+		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "specularFactor",            shader, "specularFactor"));
+		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "glossinessFactor",          shader, "glossinessFactor"));
+		specularGlossinessRoutes .push (currentScene .addRoute (specularGlossiness, "specularGlossinessTexture", shader, "specularGlossinessTexture"));
 	}
 	else
 	{
-		for (var s = 0; s < shaders .length; ++ s)
-		{
-			var shader = shaders [s];
-			
-			shader .diffuseFactor             = new SFVec4f (1, 1, 1, 1);
-			shader .diffuseTexture            = null;
-			shader .specularFactor            = new SFVec3f (1, 1, 1);
-			shader .glossinessFactor          = 1;
-			shader .specularGlossinessTexture = null;
-		}
+		shader .diffuseFactor             = new SFVec4f (1, 1, 1, 1);
+		shader .diffuseTexture            = null;
+		shader .specularFactor            = new SFVec3f (1, 1, 1);
+		shader .glossinessFactor          = 1;
+		shader .specularGlossinessTexture = null;
 	}
 }
 ]]>
