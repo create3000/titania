@@ -65,6 +65,9 @@ public:
 	const X3DPtr <OpacityMapVolumeStyle> &
 	getDefaultVolumeStyle () const;
 
+	const X3DPtr <OpacityMapVolumeStyle> &
+	getDefaultBlendedVolumeStyle () const;
+
 	const X3DPtr <PixelTexture> &
 	getDefaultTransferFunction () const;
 
@@ -95,6 +98,7 @@ private:
 	///  @name Members
 
 	mutable X3DPtr <OpacityMapVolumeStyle> defaultVolumeStyleNode;
+	mutable X3DPtr <OpacityMapVolumeStyle> defaultBlendedVolumeStyleNode;
 	mutable X3DPtr <PixelTexture>          defaultTransferFunction;
 
 };

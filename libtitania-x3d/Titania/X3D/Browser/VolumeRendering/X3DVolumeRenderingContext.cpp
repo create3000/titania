@@ -60,11 +60,13 @@ namespace titania {
 namespace X3D {
 
 X3DVolumeRenderingContext::X3DVolumeRenderingContext () :
-	            X3DBaseNode (),
-	 defaultVolumeStyleNode (),
-	defaultTransferFunction ()
+	                   X3DBaseNode (),
+	        defaultVolumeStyleNode (),
+	 defaultBlendedVolumeStyleNode (),
+	       defaultTransferFunction ()
 {
 	addChildObjects (defaultVolumeStyleNode,
+	                 defaultBlendedVolumeStyleNode,
 	                 defaultTransferFunction);
 }
 
@@ -83,6 +85,19 @@ X3DVolumeRenderingContext::getDefaultVolumeStyle () const
 	defaultVolumeStyleNode -> setup ();
 
 	return defaultVolumeStyleNode;
+}
+
+const X3DPtr <OpacityMapVolumeStyle> &
+X3DVolumeRenderingContext::getDefaultBlendedVolumeStyle () const
+{
+	if (defaultBlendedVolumeStyleNode)
+		return defaultBlendedVolumeStyleNode;
+
+	defaultBlendedVolumeStyleNode = MakePtr <OpacityMapVolumeStyle> (getExecutionContext ());
+
+	defaultBlendedVolumeStyleNode -> setup ();
+
+	return defaultBlendedVolumeStyleNode;
 }
 
 const X3DPtr <PixelTexture> &

@@ -168,7 +168,19 @@ public:
 	voxels () const
 	{ return *fields .voxels; }
 
-	///  @name Member access
+	///  @name Operations
+
+	virtual
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
+
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
@@ -187,11 +199,46 @@ protected:
 
 private:
 
+	enum class WeightFunctionsType
+	{
+		CONSTANT,
+		ALPHA0,
+		ALPHA1,
+		ONE_MINUS_ALPHA0,
+		ONE_MINUS_ALPHA1,
+		TABLE
+	};
+
+	///  @name Event handlers
+
+	void
+	set_weightFunction1 ();
+
+	void
+	set_weightFunction2 ();
+
+	void
+	set_weightTransferFunction1 ();
+
+	void
+	set_weightTransferFunction2 ();
+
+	void
+	set_renderStyle ();
+
+	void
+	set_voxels ();
+
+	void
+	set_textureSize ();
+
 	///  @name Static members
 
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	static const std::map <std::string, WeightFunctionsType> weightFunctions;
 
 	///  @name Fields
 
@@ -210,6 +257,15 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	WeightFunctionsType                         weightFunction1Type;
+	WeightFunctionsType                         weightFunction2Type;
+	X3DPtr <X3DTexture2DNode>                   weightTransferFunction1Node;
+	X3DPtr <X3DTexture2DNode>                   weightTransferFunction2Node;
+	X3DPtr <X3DComposableVolumeRenderStyleNode> renderStyleNode;
+	X3DPtr <X3DTexture3DNode>                   voxelsNode;
 
 };
 

@@ -50,9 +50,16 @@
 
 #include "BlendedVolumeStyle.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Texturing/X3DTexture2DNode.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
+#include "../VolumeRendering/OpacityMapVolumeStyle.h"
+#include "../VolumeRendering/X3DVolumeDataNode.h"
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -60,6 +67,15 @@ namespace X3D {
 const Component   BlendedVolumeStyle::component      = Component ("VolumeRendering", 3);
 const std::string BlendedVolumeStyle::typeName       = "BlendedVolumeStyle";
 const std::string BlendedVolumeStyle::containerField = "renderStyle";
+
+const std::map <std::string, BlendedVolumeStyle::WeightFunctionsType> BlendedVolumeStyle::weightFunctions = {
+	std::pair ("CONSTANT",         WeightFunctionsType::CONSTANT),
+	std::pair ("ALPHA0",           WeightFunctionsType::ALPHA0),
+	std::pair ("ALPHA1",           WeightFunctionsType::ALPHA1),
+	std::pair ("ONE_MINUS_ALPHA0", WeightFunctionsType::ONE_MINUS_ALPHA0),
+	std::pair ("ONE_MINUS_ALPHA1", WeightFunctionsType::ONE_MINUS_ALPHA1),
+	std::pair ("TABLE",            WeightFunctionsType::TABLE),
+};
 
 BlendedVolumeStyle::Fields::Fields () :
 	        weightConstant1 (new SFFloat (0.5)),
@@ -75,7 +91,13 @@ BlendedVolumeStyle::Fields::Fields () :
 BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	               weightFunction1Type (WeightFunctionsType::CONSTANT),
+	               weightFunction2Type (WeightFunctionsType::CONSTANT),
+	       weightTransferFunction1Node (),
+	       weightTransferFunction2Node (),
+	                   renderStyleNode (),
+	                        voxelsNode ()
 {
 	addType (X3DConstants::BlendedVolumeStyle);
 
@@ -89,6 +111,11 @@ BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionCont
 	addField (inputOutput, "weightTransferFunction2", weightTransferFunction2 ());
 	addField (inputOutput, "renderStyle",             renderStyle ());
 	addField (inputOutput, "voxels",                  voxels ());
+
+	addChildObjects (weightTransferFunction1Node,
+	                 weightTransferFunction2Node,
+	                 renderStyleNode,
+	                 voxelsNode);
 }
 
 X3DBaseNode*
@@ -101,6 +128,317 @@ void
 BlendedVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
+
+	weightFunction1 ()         .addInterest (&BlendedVolumeStyle::set_weightFunction1,         this);
+	weightFunction2 ()         .addInterest (&BlendedVolumeStyle::set_weightFunction2,         this);
+	weightTransferFunction1 () .addInterest (&BlendedVolumeStyle::set_weightTransferFunction1, this);
+	weightTransferFunction2 () .addInterest (&BlendedVolumeStyle::set_weightTransferFunction2, this);
+	renderStyle ()             .addInterest (&BlendedVolumeStyle::set_renderStyle,             this);
+	voxels ()                  .addInterest (&BlendedVolumeStyle::set_voxels,                  this);
+
+	set_weightFunction1 ();
+	set_weightFunction2 ();
+	set_weightTransferFunction1 ();
+	set_weightTransferFunction2 ();
+	set_renderStyle ();
+	set_voxels ();
+}
+
+void
+BlendedVolumeStyle::set_weightFunction1 ()
+{
+	try
+	{
+		weightFunction1Type = weightFunctions .at (weightFunction1 ());
+	}
+	catch(const std::out_of_range & error)
+	{
+		weightFunction1Type = WeightFunctionsType::CONSTANT;
+	}
+}
+
+void
+BlendedVolumeStyle::set_weightFunction2 ()
+{
+	try
+	{
+		weightFunction2Type = weightFunctions .at (weightFunction2 ());
+	}
+	catch(const std::out_of_range & error)
+	{
+		weightFunction2Type = WeightFunctionsType::CONSTANT;
+	}
+}
+
+void
+BlendedVolumeStyle::set_weightTransferFunction1 ()
+{
+	weightTransferFunction1Node = x3d_cast <X3DTexture2DNode*> (weightTransferFunction1 ());
+}
+
+void
+BlendedVolumeStyle::set_weightTransferFunction2 ()
+{
+	weightTransferFunction2Node = x3d_cast <X3DTexture2DNode*> (weightTransferFunction2 ());
+}
+
+void
+BlendedVolumeStyle::set_renderStyle ()
+{
+	if (renderStyleNode)
+	{
+		renderStyleNode -> removeInterest (&BlendedVolumeStyle::addEvent, this);
+
+		for (const auto & volumeDataNode : getVolumeData ())
+			renderStyleNode -> removeVolumeData (volumeDataNode);
+	}
+
+	renderStyleNode = x3d_cast <X3DComposableVolumeRenderStyleNode*> (renderStyle ());
+
+	if (renderStyleNode)
+	{
+		renderStyleNode -> addInterest (&BlendedVolumeStyle::addEvent, this);
+
+		for (const auto & volumeDataNode : getVolumeData ())
+			renderStyleNode -> addVolumeData (volumeDataNode);
+	}
+}
+
+void
+BlendedVolumeStyle::set_voxels ()
+{
+	if (voxelsNode)
+		voxelsNode -> removeInterest (&BlendedVolumeStyle::set_textureSize, this);
+
+	voxelsNode = x3d_cast <X3DTexture3DNode*> (voxels ());
+
+	if (voxelsNode)
+	{
+		voxelsNode -> addInterest (&BlendedVolumeStyle::set_textureSize, this);
+
+		set_textureSize ();
+	}
+}
+
+void
+BlendedVolumeStyle::set_textureSize ()
+{
+	for (const auto & volumeDataNode : getVolumeData ())
+	{
+		try
+		{
+			const auto textureSize = Vector3f (voxelsNode -> getWidth (),
+			                                   voxelsNode -> getHeight (),
+			                                   voxelsNode -> getDepth ());
+
+			volumeDataNode -> getShader () -> setField <SFVec3f> ("textureSize_" + getStyleId (), textureSize);
+		}
+		catch (const X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+}
+
+void
+BlendedVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "weightConstant1_" + getStyleId (), weightConstant1 () .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "weightConstant2_" + getStyleId (), weightConstant2 () .copy (CopyType::FLAT_COPY));
+
+	if (weightTransferFunction1Node)
+		shaderNode -> addUserDefinedField (inputOutput, "weightTransferFunction1_" + getStyleId (), new SFNode (weightTransferFunction1Node));
+
+	if (weightTransferFunction2Node)
+		shaderNode -> addUserDefinedField (inputOutput, "weightTransferFunction2_" + getStyleId (), new SFNode (weightTransferFunction2Node));
+
+	if (voxelsNode)
+	{
+		const auto textureSize = new SFVec3f (voxelsNode -> getWidth (), voxelsNode -> getHeight (), voxelsNode -> getDepth ());
+
+		shaderNode -> addUserDefinedField (inputOutput, "voxels_"      + getStyleId (), new SFNode (voxelsNode));
+		shaderNode -> addUserDefinedField (inputOutput, "textureSize_" + getStyleId (), textureSize);
+	}
+	else
+	{
+		shaderNode -> addUserDefinedField (inputOutput, "textureSize_" + getStyleId (), new SFVec3f ());
+	}
+
+	getBrowser () -> getDefaultBlendedVolumeStyle () -> addShaderFields (shaderNode);
+
+	if (renderStyleNode)
+		renderStyleNode -> addShaderFields (shaderNode);
+}
+
+std::string
+BlendedVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	if (not voxelsNode)
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// BlendedVolumeStyle\n";
+	string += "\n";
+	string += "uniform float     weightConstant1_" + getStyleId () + ";\n";
+	string += "uniform float     weightConstant2_" + getStyleId () + ";\n";
+
+	if (weightTransferFunction1Node)
+		string += "uniform sampler2D weightTransferFunction1_" + getStyleId () + ";\n";
+
+	if (weightTransferFunction2Node)
+		string += "uniform sampler2D weightTransferFunction2_" + getStyleId () + ";\n";
+
+	string += "uniform sampler3D voxels_"      + getStyleId () + ";\n";
+	string += "uniform vec3      textureSize_" + getStyleId () + ";\n";
+
+	auto uniformsText = getBrowser () -> getDefaultBlendedVolumeStyle () -> getUniformsText ();
+
+	if (renderStyleNode)
+		uniformsText += renderStyleNode -> getUniformsText ();
+
+	static const std::regex x3d_Texture3D   (R"/(x3d_Texture3D \[0\])/");
+	static const std::regex x3d_TextureSize (R"/(x3d_TextureSize)/");
+
+	uniformsText = std::regex_replace (uniformsText, x3d_Texture3D,   "voxels_"      + getStyleId ());
+	uniformsText = std::regex_replace (uniformsText, x3d_TextureSize, "textureSize_" + getStyleId ());
+
+	string += "\n";
+	string += uniformsText;
+
+	return string;
+}
+
+std::string
+BlendedVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	if (not voxelsNode)
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// BlendedVolumeStyle\n";
+	string += "\n";
+
+	string += "	vec4 blendColor_" + getStyleId () + " = texture (voxels_" + getStyleId () + ", texCoord);";
+
+	auto functionsText = getBrowser () -> getDefaultBlendedVolumeStyle () -> getFunctionsText ();
+
+	if (renderStyleNode)
+		functionsText += renderStyleNode -> getFunctionsText ();
+
+	static const std::regex textureColor (R"/(textureColor)/");
+
+	functionsText = std::regex_replace (functionsText, textureColor, "blendColor_" + getStyleId ());
+
+	string += "\n";
+	string += functionsText;
+
+	string += "\n";
+	string += "	// BlendedVolumeStyle\n";
+	string += "\n";
+
+	switch (weightFunction1Type)
+	{
+		default: // CONSTANT
+		{
+			string += "	float w1_" + getStyleId () + " = weightConstant1_" + getStyleId () + ";\n";
+			break;
+		}
+		case WeightFunctionsType::ALPHA0:
+		{
+			string += "	float w1_" + getStyleId () + " = textureColor .a;\n";
+			break;
+		}
+		case WeightFunctionsType::ALPHA1:
+		{
+			string += "	float w1_" + getStyleId () + " = blendColor_ " + getStyleId () + " .a;\n";
+			break;
+		}
+		case WeightFunctionsType::ONE_MINUS_ALPHA0:
+		{
+			string += "	float w1_" + getStyleId () + " = 1.0 - textureColor .a;\n";
+			break;
+		}
+		case WeightFunctionsType::ONE_MINUS_ALPHA1:
+		{
+			string += "	float w1_" + getStyleId () + " = 1.0 - blendColor_ " + getStyleId () + " .a;\n";
+			break;
+		}
+		case WeightFunctionsType::TABLE:
+		{
+			if (weightTransferFunction1Node)
+			{
+				string += "	float w1_" + getStyleId () + " = texture (weightTransferFunction1_" + getStyleId () + ", vec2 (textureColor .a, blendColor_" + getStyleId () + " .a)) .r;\n";
+			}
+			else
+			{
+				// Use default CONSTANT value.
+				string += "	float w1_" + getStyleId () + " = weightConstant1_" + getStyleId () + ";\n";
+			}
+
+			break;
+		}
+	}
+
+	switch (weightFunction2Type)
+	{
+		default: // CONSTANT
+		{
+			string += "	float w2_" + getStyleId () + " = weightConstant2_" + getStyleId () + ";\n";
+			break;
+		}
+		case WeightFunctionsType::ALPHA0:
+		{
+			string += "	float w2_" + getStyleId () + " = textureColor .a;\n";
+			break;
+		}
+		case WeightFunctionsType::ALPHA1:
+		{
+			string += "	float w2_" + getStyleId () + " = blendColor_ " + getStyleId () + " .a;\n";
+			break;
+		}
+		case WeightFunctionsType::ONE_MINUS_ALPHA0:
+		{
+			string += "	float w2_" + getStyleId () + " = 1.0 - textureColor .a;\n";
+			break;
+		}
+		case WeightFunctionsType::ONE_MINUS_ALPHA1:
+		{
+			string += "	float w2_" + getStyleId () + " = 1.0 - blendColor_ " + getStyleId () + " .a;\n";
+			break;
+		}
+		case WeightFunctionsType::TABLE:
+		{
+			if (weightTransferFunction2Node)
+			{
+				string += "	float w2_" + getStyleId () + " = texture (weightTransferFunction2_" + getStyleId () + ", vec2 (textureColor .a, blendColor_" + getStyleId () + " .a)) .r;\n";
+			}
+			else
+			{
+				// Use default CONSTANT value.
+				string += "	float w2_" + getStyleId () + " = weightConstant2_" + getStyleId () + ";\n";
+			}
+
+			break;
+		}
+	}
+
+	string += "\n";
+	string += "	textureColor = clamp (textureColor * w1_" + getStyleId () + " + blendColor_" + getStyleId () + " * w2_" + getStyleId () + ", 0.0, 1.0);\n";
+
+	return string;
 }
 
 BlendedVolumeStyle::~BlendedVolumeStyle ()
