@@ -75,9 +75,11 @@ public:
 
 	///  @name Member access
 
+	virtual
 	void
 	addVolumeData (X3DVolumeDataNode* const volumeDataNode);
 
+	virtual
 	void
 	removeVolumeData (X3DVolumeDataNode* const volumeDataNode);
 
@@ -118,6 +120,9 @@ protected:
 
 	std::string
 	getStyleId () const;
+
+	std::string
+	getNormalText () const;
 
 
 private:

@@ -76,6 +76,14 @@ X3DVolumeRenderStyleNode::getStyleId () const
 	return basic::to_string (getId (), std::locale::classic ());
 }
 
+std::string
+X3DVolumeRenderStyleNode::getNormalText () const
+{
+	std::string string;
+
+	return string;
+}
+
 void
 X3DVolumeRenderStyleNode::addVolumeData (X3DVolumeDataNode* const volumeDataNode)
 {
