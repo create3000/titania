@@ -122,7 +122,7 @@ protected:
 	getStyleId () const;
 
 	std::string
-	getNormalText () const;
+	getNormalText (const bool surfaceNormalsNode) const;
 
 
 private:
