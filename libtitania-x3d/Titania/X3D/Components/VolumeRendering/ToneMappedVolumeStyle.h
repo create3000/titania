@@ -99,16 +99,6 @@ public:
 	{ return *fields .coolColor; }
 
 	virtual
-	SFNode &
-	surfaceNormals ()
-	{ return *fields .surfaceNormals; }
-
-	virtual
-	const SFNode &
-	surfaceNormals () const
-	{ return *fields .surfaceNormals; }
-
-	virtual
 	SFColorRGBA &
 	warmColor ()
 	{ return *fields .warmColor; }
@@ -118,7 +108,29 @@ public:
 	warmColor () const
 	{ return *fields .warmColor; }
 
-	///  @name Member access
+	virtual
+	SFNode &
+	surfaceNormals ()
+	{ return *fields .surfaceNormals; }
+
+	virtual
+	const SFNode &
+	surfaceNormals () const
+	{ return *fields .surfaceNormals; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
+
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
@@ -137,6 +149,11 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_surfaceNormals ();
+
 	///  @name Static members
 
 	static const Component   component;
@@ -150,13 +167,15 @@ private:
 		Fields ();
 
 		SFColorRGBA* const coolColor;
-		SFNode* const surfaceNormals;
 		SFColorRGBA* const warmColor;
+		SFNode* const surfaceNormals;
 	};
 
 	Fields fields;
 
 	///  @name Members
+
+	X3DPtr <X3DTexture3DNode> surfaceNormalsNode;
 
 };
 

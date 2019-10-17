@@ -199,6 +199,12 @@ VolumeData::createShader () const
 	std::string  volumeStyleUniforms   = opacityMapVolumeStyle -> getUniformsText ();
 	std::string  volumeStyleFunctions  = opacityMapVolumeStyle -> getFunctionsText ();
 
+	if (renderStyleNode)
+	{
+		volumeStyleUniforms  += renderStyleNode -> getUniformsText (),
+		volumeStyleFunctions += renderStyleNode -> getFunctionsText ();
+	}
+
 	static const std::regex CLIP_PLANES             (R"/(#pragma X3D include "include/ClipPlanes.glsl"\n)/");
 	static const std::regex FOG                     (R"/(#pragma X3D include "include/Fog.glsl"\n)/");
 	static const std::regex VOLUME_STYLES_UNIFORMS  (R"/(// VOLUME_STYLES_UNIFORMS\n)/");
@@ -242,6 +248,9 @@ VolumeData::createShader () const
 	}
 
 	opacityMapVolumeStyle -> addShaderFields (shaderNode);
+
+	if (renderStyleNode)
+		renderStyleNode -> addShaderFields (shaderNode);
 
 	__LOG__ << std::endl << fs << std::endl;
 

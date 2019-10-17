@@ -50,9 +50,11 @@
 
 #include "ToneMappedVolumeStyle.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -63,22 +65,25 @@ const std::string ToneMappedVolumeStyle::containerField = "renderStyle";
 
 ToneMappedVolumeStyle::Fields::Fields () :
 	     coolColor (new SFColorRGBA (0, 0, 1, 0)),
-	surfaceNormals (new SFNode ()),
-	     warmColor (new SFColorRGBA (1, 1, 0, 0))
+	     warmColor (new SFColorRGBA (1, 1, 0, 0)),
+	surfaceNormals (new SFNode ())
 { }
 
 ToneMappedVolumeStyle::ToneMappedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                surfaceNormalsNode ()
 {
 	addType (X3DConstants::ToneMappedVolumeStyle);
 
-	addField (inputOutput, "coolColor", coolColor ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "metadata",       metadata ());
+	addField (inputOutput, "enabled",        enabled ());
+	addField (inputOutput, "coolColor",      coolColor ());
+	addField (inputOutput, "warmColor",      warmColor ());
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
-	addField (inputOutput, "warmColor", warmColor ());
+
+	addChildObjects (surfaceNormalsNode);
 }
 
 X3DBaseNode*
@@ -91,6 +96,127 @@ void
 ToneMappedVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
+
+	surfaceNormals () .addInterest (&ToneMappedVolumeStyle::set_surfaceNormals, this);
+
+	set_surfaceNormals ();
+}
+
+void
+ToneMappedVolumeStyle::set_surfaceNormals ()
+{
+	surfaceNormalsNode = x3d_cast <X3DTexture3DNode*> (surfaceNormals ());
+}
+
+void
+ToneMappedVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "coolColor_" + getStyleId (), coolColor () .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "warmColor_" + getStyleId (), warmColor () .copy (CopyType::FLAT_COPY));
+
+	if (surfaceNormalsNode)
+		shaderNode -> addUserDefinedField (inputOutput, "surfaceNormals_" + getStyleId (), new SFNode (surfaceNormalsNode));
+}
+
+std::string
+ToneMappedVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// ToneMappedVolumeStyle\n";
+	string += "\n";
+	string += "uniform vec4 coolColor_" + getStyleId () + ";\n";
+	string += "uniform vec4 warmColor_" + getStyleId () + ";\n";
+
+	if (surfaceNormalsNode)
+	{
+		string += "uniform sampler3D surfaceNormals_" + getStyleId () + ";\n";
+
+		string += "\n";
+		string += "vec4\n";
+		string += "getNormal_" + getStyleId () + " (in vec3 texCoord)\n";
+		string += "{\n";
+		string += "	vec4 n = texture (surfaceNormals_" + getStyleId () + ", texCoord) * 2.0 - 1.0\n";
+		string += "\n";
+		string += "	return vec4 (normalize (x3d_TextureNormalMatrix * n .xyz), length (n .xyz));\n";
+		string += "}\n";
+	}
+	else
+	{
+		string += "\n";
+		string += "vec4\n";
+		string += "getNormal_" + getStyleId () + " (in vec3 texCoord)\n";
+		string += "{\n";
+		string += "	vec4  offset = vec4 (1.0 / x3d_TextureSize .x, 1.0 / x3d_TextureSize .y, 1.0 / x3d_TextureSize .z, 0.0);\n";
+		string += "	float i0     = texture (x3d_Texture3D [0], texCoord + offset .xww) .r;\n";
+		string += "	float i1     = texture (x3d_Texture3D [0], texCoord - offset .xww) .r;\n";
+		string += "	float i2     = texture (x3d_Texture3D [0], texCoord + offset .wyw) .r;\n";
+		string += "	float i3     = texture (x3d_Texture3D [0], texCoord - offset .wyw) .r;\n";
+		string += "	float i4     = texture (x3d_Texture3D [0], texCoord + offset .wwz) .r;\n";
+		string += "	float i5     = texture (x3d_Texture3D [0], texCoord - offset .wwz) .r;\n";
+		string += "	vec3  n      = vec3 (i1 - i0, i3 - i2, i5 - i4);\n";
+		string += "\n";
+		string += "	return vec4 (normalize (x3d_TextureNormalMatrix * n), length (n));\n";
+		string += "}\n";
+	}
+
+	string += "\n";
+	string += "vec3\n";
+	string += "getToneMappedStyle_" + getStyleId () + " (in vec4 coolColor, in vec4 warmColor, in vec4 surfaceNormal, in vec3 lightDir)\n";
+	string += "{\n";
+	string += "	float colorFactor = (1.0 + dot (lightDir, surfaceNormal .xyz)) * 0.5;\n";
+	string += "	return mix (warmColor .rgb, coolColor .rgb, colorFactor);\n";
+	string += "}\n";
+
+	return string;
+}
+
+std::string
+ToneMappedVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// ToneMappedVolumeStyle\n";
+	string += "\n";
+	string += "	{\n";
+
+	string += "		vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
+	string += "		vec3 toneColor     = vec3 (0.0);\n";
+	string += "\n";
+	string += "		if (surfaceNormal .w < 0.1)\n";
+	string += "		{\n";
+	string += "			textureColor = vec4 (0.0);\n";
+	string += "		}\n";
+	string += "		else\n";
+	string += "		{\n";
+	string += "			for (int i = 0; i < x3d_MaxLights; ++ i)\n";
+	string += "			{\n";
+	string += "				if (i == x3d_NumLights)\n";
+	string += "					break;\n";
+	string += "\n";
+	string += "				x3d_LightSourceParameters light = x3d_LightSource [i];\n";
+	string += "				vec3 L = light .type == x3d_DirectionalLight ? -light .direction : normalize (light .location - vertex);\n";
+	string += "\n";
+	string += "				toneColor += getToneMappedStyle_" + getStyleId () + " (coolColor_" + getStyleId () + ", warmColor_" + getStyleId () + ", surfaceNormal, L);\n";
+	string += "			}\n";
+	string += "\n";
+	string += "			textureColor .rgb = toneColor;\n";
+	string += "		}\n";
+
+	string += "	}\n";
+
+	return string;
 }
 
 ToneMappedVolumeStyle::~ToneMappedVolumeStyle ()
