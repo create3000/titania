@@ -111,9 +111,6 @@ X3DVolumeDataNode::initialize ()
 
 	appearanceNode -> setPrivate (true);
 
-	proximitySensorNode -> orientation_changed () .addInterest (transformNode -> rotation ());
-	proximitySensorNode -> orientation_changed () .addInterest (textureTransformNode -> rotation ());
-
 	proximitySensorNode -> size ()         = Vector3f (-1, -1, -1);
 	transformNode -> children ()           = { shapeNode };
 	shapeNode -> appearance ()             = appearanceNode;
@@ -132,6 +129,11 @@ X3DVolumeDataNode::initialize ()
 	shapeNode             -> setup ();
 	transformNode         -> setup ();
 	proximitySensorNode   -> setup ();
+
+	proximitySensorNode -> orientation_changed () .addInterest (transformNode -> rotation ());
+	proximitySensorNode -> orientation_changed () .addInterest (textureTransformNode -> rotation ());
+
+	textureTransformNode -> addInterest (&X3DVolumeDataNode::set_textureTransform, this);
 }
 
 void
@@ -178,6 +180,10 @@ void
 X3DVolumeDataNode::setShader (const X3DPtr <ComposedShader> & shaderNode)
 {
 	appearanceNode -> shaders () = { shaderNode };
+
+	shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureNormalMatrix" , new SFMatrix3f ());
+
+	set_textureTransform ();
 }
 
 size_t
@@ -225,6 +231,22 @@ X3DVolumeDataNode::set_dimensions ()
 	textureCoordinateNode -> point () = coordinateNode -> point ();
 
 	textureTransformNode -> scale () = Vector3f (1, 1, 1) / dimensions () .getValue ();
+}
+
+void
+X3DVolumeDataNode::set_textureTransform ()
+{
+	const auto & shaderNode = getShader ();
+
+	if (shaderNode)
+	{
+		auto textureNormalMatrix = textureTransformNode -> getMatrix () .submatrix ();
+
+		textureNormalMatrix .inverse ();
+		textureNormalMatrix .transpose ();
+
+		shaderNode -> setField <SFMatrix3f> ("x3d_TextureNormalMatrix", textureNormalMatrix);
+	}
 }
 
 void

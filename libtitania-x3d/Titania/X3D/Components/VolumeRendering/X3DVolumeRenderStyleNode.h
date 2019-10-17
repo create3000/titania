@@ -73,6 +73,18 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	///  @name Member access
+
+	void
+	addVolumeData (X3DVolumeDataNode* const volumeDataNode);
+
+	void
+	removeVolumeData (X3DVolumeDataNode* const volumeDataNode);
+
+	const std::set <X3DVolumeDataNode*> &
+	getVolumeData () const
+	{ return volumeDataNodes; }
+
 	///  @name Operations
 
 	virtual
@@ -120,6 +132,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	std::set <X3DVolumeDataNode*> volumeDataNodes;
 
 };
 

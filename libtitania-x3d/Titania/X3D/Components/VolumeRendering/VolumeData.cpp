@@ -139,7 +139,7 @@ VolumeData::set_renderStyle ()
 	if (renderStyleNode)
 	{
 		renderStyleNode -> removeInterest (&VolumeData::update, this);
-		//renderStyleNode -> removeVolumeData (this);
+		renderStyleNode -> removeVolumeData (this);
 	}
 
 	renderStyleNode = x3d_cast <X3DVolumeRenderStyleNode*> (renderStyle ());
@@ -147,7 +147,7 @@ VolumeData::set_renderStyle ()
 	if (renderStyleNode)
 	{
 		renderStyleNode -> addInterest (&VolumeData::update, this);
-		//renderStyleNode -> addVolumeData (this);
+		renderStyleNode -> addVolumeData (this);
 	}
 
 	update ();
@@ -172,7 +172,18 @@ VolumeData::set_voxels ()
 void
 VolumeData::set_textureSize ()
 {
+	try
+	{
+		const auto textureSize = Vector3f (voxelsNode -> getWidth (),
+		                                   voxelsNode -> getHeight (),
+		                                   voxelsNode -> getDepth ());
 
+		getShader () -> setField <SFVec3f> ("x3d_TextureSize", textureSize);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -219,12 +230,31 @@ VolumeData::createShader () const
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
 
+	if (voxelsNode)
+	{
+		auto textureSize = new SFVec3f (voxelsNode -> getWidth (), voxelsNode -> getHeight (), voxelsNode -> getDepth ());
+
+		shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureSize", textureSize);
+	}
+	else
+	{
+		shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureSize", new SFVec3f ());
+	}
+
 	opacityMapVolumeStyle -> addShaderFields (shaderNode);
 
 	__LOG__ << std::endl << fs << std::endl;
 
 	return shaderNode;
+}
 
+void
+VolumeData::shutdown ()
+{
+	X3DVolumeDataNode::shutdown ();
+
+	if (renderStyleNode)
+		renderStyleNode -> removeVolumeData (this);
 }
 
 VolumeData::~VolumeData ()

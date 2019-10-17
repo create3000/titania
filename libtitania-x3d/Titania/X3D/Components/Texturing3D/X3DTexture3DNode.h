@@ -148,6 +148,10 @@ public:
 	getHeight () const
 	{ return textureHeight; }
 
+	size_t
+	getDepth () const
+	{ return textureDepth; }
+
 	///  @name Operations
 
 	virtual

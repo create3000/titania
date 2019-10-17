@@ -138,6 +138,9 @@ private:
 	void
 	set_dimensions ();
 
+	void
+	set_textureTransform ();
+
 	///  @name Fields
 
 	struct Fields

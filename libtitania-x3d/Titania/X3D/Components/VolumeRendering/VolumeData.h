@@ -120,9 +120,17 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	shutdown () final override;
 
 
 private:

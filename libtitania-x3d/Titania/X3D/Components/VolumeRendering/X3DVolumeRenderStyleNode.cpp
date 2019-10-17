@@ -60,8 +60,9 @@ X3DVolumeRenderStyleNode::Fields::Fields () :
 { }
 
 X3DVolumeRenderStyleNode::X3DVolumeRenderStyleNode () :
-	X3DNode (),
-	 fields ()
+	         X3DNode (),
+	          fields (),
+	 volumeDataNodes ()
 {
 	addType (X3DConstants::X3DVolumeRenderStyleNode);
 }
@@ -73,6 +74,18 @@ std::string
 X3DVolumeRenderStyleNode::getStyleId () const
 {
 	return basic::to_string (getId (), std::locale::classic ());
+}
+
+void
+X3DVolumeRenderStyleNode::addVolumeData (X3DVolumeDataNode* const volumeDataNode)
+{
+	volumeDataNodes .emplace (volumeDataNode);
+}
+
+void
+X3DVolumeRenderStyleNode::removeVolumeData (X3DVolumeDataNode* const volumeDataNode)
+{
+	volumeDataNodes .erase (volumeDataNode);
 }
 
 } // X3D
