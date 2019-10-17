@@ -74,7 +74,7 @@ OpacityMapVolumeStyle::OpacityMapVolumeStyle (X3DExecutionContext* const executi
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
 	                            fields (),
-	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
+	              transferFunctionNode ()
 {
 	addType (X3DConstants::OpacityMapVolumeStyle);
 
@@ -82,7 +82,7 @@ OpacityMapVolumeStyle::OpacityMapVolumeStyle (X3DExecutionContext* const executi
 	addField (inputOutput, "enabled",          enabled ());
 	addField (inputOutput, "transferFunction", transferFunction ());
 
-	addChildObjects (shaderNode);
+	addChildObjects (transferFunctionNode);
 }
 
 X3DBaseNode*
@@ -98,8 +98,6 @@ OpacityMapVolumeStyle::initialize ()
 
 	transferFunction () .addInterest (&OpacityMapVolumeStyle::set_transferFunction, this);
 
-	shaderNode -> addUserDefinedField (inputOutput, "transferFunction", new SFNode ());
-
 	set_transferFunction ();
 }
 
@@ -108,8 +106,6 @@ OpacityMapVolumeStyle::setExecutionContext (X3DExecutionContext* const execution
 {
 	X3DComposableVolumeRenderStyleNode::setExecutionContext (executionContext);
 
-	shaderNode -> setExecutionContext (executionContext);
-
 	if (isInitialized ())
 		set_transferFunction ();
 }
@@ -117,8 +113,6 @@ OpacityMapVolumeStyle::setExecutionContext (X3DExecutionContext* const execution
 void
 OpacityMapVolumeStyle::set_transferFunction ()
 {
-	X3DPtr <X3DTextureNode> transferFunctionNode;
-
 	transferFunctionNode = x3d_cast <X3DTexture2DNode*> (transferFunction ());
 
 	//if (not transferFunctionNode)
@@ -126,8 +120,56 @@ OpacityMapVolumeStyle::set_transferFunction ()
 
 	if (not transferFunctionNode)
 		transferFunctionNode = getBrowser () -> getDefaultTransferFunction ();
+}
 
-	shaderNode -> setField <SFNode> ("transferFunction", transferFunctionNode);
+void
+OpacityMapVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "transferFunction_" + getStyleId (), new SFNode (transferFunctionNode));
+}
+
+std::string
+OpacityMapVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// OpacityMapVolumeStyle\n";
+	string += "\n";
+
+	string += "uniform sampler2D transferFunction_" + getStyleId () + ";\n";
+
+	string += "\n";
+	string += "vec4\n";
+	string += "getOpacityMapStyle_" + getStyleId () + " (in vec4 originalColor)\n";
+	string += "{\n";
+	string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .ra);\n";
+	string += "}\n";
+
+	return string;
+}
+
+std::string
+OpacityMapVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// OpacityMapVolumeStyle\n";
+	string += "\n";
+
+	string += "	textureColor = getOpacityMapStyle_" + getStyleId () + " (textureColor);\n";
+
+	return string;
 }
 
 OpacityMapVolumeStyle::~OpacityMapVolumeStyle ()

@@ -75,8 +75,7 @@ BlendedVolumeStyle::Fields::Fields () :
 BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields (),
-	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
+	                            fields ()
 {
 	addType (X3DConstants::BlendedVolumeStyle);
 
@@ -90,8 +89,6 @@ BlendedVolumeStyle::BlendedVolumeStyle (X3DExecutionContext* const executionCont
 	addField (inputOutput, "weightTransferFunction2", weightTransferFunction2 ());
 	addField (inputOutput, "renderStyle",             renderStyle ());
 	addField (inputOutput, "voxels",                  voxels ());
-
-	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*

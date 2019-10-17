@@ -70,8 +70,7 @@ ToneMappedVolumeStyle::Fields::Fields () :
 ToneMappedVolumeStyle::ToneMappedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields (),
-	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
+	                            fields ()
 {
 	addType (X3DConstants::ToneMappedVolumeStyle);
 
@@ -80,8 +79,6 @@ ToneMappedVolumeStyle::ToneMappedVolumeStyle (X3DExecutionContext* const executi
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "surfaceNormals", surfaceNormals ());
 	addField (inputOutput, "warmColor", warmColor ());
-
-	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*

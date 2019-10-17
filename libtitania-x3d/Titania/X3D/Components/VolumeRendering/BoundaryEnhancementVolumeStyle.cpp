@@ -70,8 +70,7 @@ BoundaryEnhancementVolumeStyle::Fields::Fields () :
 BoundaryEnhancementVolumeStyle::BoundaryEnhancementVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields (),
-	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
+	                            fields ()
 {
 	addType (X3DConstants::BoundaryEnhancementVolumeStyle);
 
@@ -80,8 +79,6 @@ BoundaryEnhancementVolumeStyle::BoundaryEnhancementVolumeStyle (X3DExecutionCont
 	addField (inputOutput, "boundaryOpacity", boundaryOpacity ());
 	addField (inputOutput, "opacityFactor",   opacityFactor ());
 	addField (inputOutput, "retainedOpacity", retainedOpacity ());
-
-	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*

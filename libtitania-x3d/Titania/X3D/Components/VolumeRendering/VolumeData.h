@@ -132,6 +132,20 @@ private:
 	void
 	set_renderStyle ();
 
+	void
+	set_voxels ();
+
+	void
+	set_textureSize ();
+
+	///  @name Operations
+
+	void
+	update ();
+
+	X3DPtr <ComposedShader>
+	createShader () const;
+
 	///  @name Static members
 
 	static const Component   component;
@@ -153,6 +167,7 @@ private:
 	///  @name Members
 
 	X3DPtr <X3DVolumeRenderStyleNode> renderStyleNode;
+	X3DPtr <X3DTexture3DNode>         voxelsNode;
 	X3DPtr <BlendMode>                blendModeNode;
 
 };

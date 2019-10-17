@@ -50,13 +50,20 @@
 
 #include "VolumeData.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Shaders/ShaderPart.h"
 #include "../Shape/Appearance.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
 #include "../VolumeRendering/OpacityMapVolumeStyle.h"
 #include "../VolumeRendering/X3DVolumeRenderStyleNode.h"
 #include "../X_ITE/BlendMode.h"
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -75,6 +82,7 @@ VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 	X3DVolumeDataNode (),
 	           fields (),
 	  renderStyleNode (),
+	       voxelsNode (),
 	    blendModeNode (new BlendMode (executionContext))
 {
 	addType (X3DConstants::VolumeData);
@@ -87,6 +95,7 @@ VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 
 	addChildObjects (renderStyleNode,
+	                 voxelsNode,
 	                 blendModeNode);
 }
 
@@ -102,6 +111,7 @@ VolumeData::initialize ()
 	X3DVolumeDataNode::initialize ();
 
 	renderStyle () .addInterest (&VolumeData::set_renderStyle, this);
+	voxels ()      .addInterest (&VolumeData::set_voxels,      this);
 	voxels ()      .addInterest (getAppearance () -> texture ());
 
 	blendModeNode -> setup ();
@@ -126,12 +136,95 @@ VolumeData::setExecutionContext (X3DExecutionContext* const executionContext)
 void
 VolumeData::set_renderStyle ()
 {
+	if (renderStyleNode)
+	{
+		renderStyleNode -> removeInterest (&VolumeData::update, this);
+		//renderStyleNode -> removeVolumeData (this);
+	}
+
 	renderStyleNode = x3d_cast <X3DVolumeRenderStyleNode*> (renderStyle ());
 
-	if (not renderStyleNode)
-		renderStyleNode = getBrowser () -> getDefaultVolumeStyle ();
+	if (renderStyleNode)
+	{
+		renderStyleNode -> addInterest (&VolumeData::update, this);
+		//renderStyleNode -> addVolumeData (this);
+	}
 
-	getAppearance () -> shaders () = { renderStyleNode -> getShader () };
+	update ();
+}
+
+void
+VolumeData::set_voxels ()
+{
+	if (voxelsNode)
+		voxelsNode -> removeInterest (&VolumeData::set_textureSize, this);
+
+	voxelsNode = x3d_cast <X3DTexture3DNode*> (voxels ());
+
+	if (voxelsNode)
+	{
+		voxelsNode -> addInterest (&VolumeData::set_textureSize, this);
+
+		set_textureSize ();
+	}
+}
+
+void
+VolumeData::set_textureSize ()
+{
+
+}
+
+void
+VolumeData::update ()
+{
+	setShader (createShader ());
+}
+
+X3DPtr <ComposedShader>
+VolumeData::createShader () const
+{
+	const auto & opacityMapVolumeStyle = getBrowser () -> getDefaultVolumeStyle ();
+	std::string  volumeStyleUniforms   = opacityMapVolumeStyle -> getUniformsText ();
+	std::string  volumeStyleFunctions  = opacityMapVolumeStyle -> getFunctionsText ();
+
+	static const std::regex CLIP_PLANES             (R"/(#pragma X3D include "include/ClipPlanes.glsl"\n)/");
+	static const std::regex FOG                     (R"/(#pragma X3D include "include/Fog.glsl"\n)/");
+	static const std::regex VOLUME_STYLES_UNIFORMS  (R"/(// VOLUME_STYLES_UNIFORMS\n)/");
+	static const std::regex VOLUME_STYLES_FUNCTIONS (R"/(// VOLUME_STYLES_FUNCTIONS\n)/");
+
+	auto fl   = FileLoader (getExecutionContext ());
+	auto clip = fl .loadDocument (get_shader ("Shaders/include/ClipPlanes.glsl"));
+	auto fog  = fl .loadDocument (get_shader ("Shaders/include/Fog.glsl"));
+	auto vs   = fl .loadDocument (get_shader ("VolumeRendering/VolumeStyle.vs"));
+	auto fs   = fl .loadDocument (get_shader ("VolumeRendering/VolumeStyle.fs"));
+
+	fs = std::regex_replace (fs, CLIP_PLANES,             clip);
+	fs = std::regex_replace (fs, FOG,                     fog);
+	fs = std::regex_replace (fs, VOLUME_STYLES_UNIFORMS,  volumeStyleUniforms);
+	fs = std::regex_replace (fs, VOLUME_STYLES_FUNCTIONS, volumeStyleFunctions);
+
+	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
+	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
+	const auto shaderNode   = getExecutionContext () -> createNode <ComposedShader> ();
+
+	fragmentPart -> setName ("VolumeDataFragmentShaderPart");
+	vertexPart   -> setName ("VolumeDataVertexShaderPart");
+	shaderNode   -> setName ("VolumeDataComposedShader");
+
+	fragmentPart -> type () = "FRAGMENT";
+	vertexPart   -> url ()  = { "data:x-shader/x-vertex," + vs };
+	fragmentPart -> url ()  = { "data:x-shader/x-fragment," + fs };
+
+	shaderNode -> parts () .emplace_back (vertexPart);
+	shaderNode -> parts () .emplace_back (fragmentPart);
+
+	opacityMapVolumeStyle -> addShaderFields (shaderNode);
+
+	__LOG__ << std::endl << fs << std::endl;
+
+	return shaderNode;
+
 }
 
 VolumeData::~VolumeData ()

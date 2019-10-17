@@ -50,7 +50,6 @@
 
 #include "X3DVolumeRenderingContext.h"
 
-#include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Shaders/ComposedShader.h"
 #include "../../Components/Texturing/PixelTexture.h"
@@ -113,14 +112,6 @@ X3DVolumeRenderingContext::getDefaultTransferFunction () const
 	defaultTransferFunction -> setup ();
 
 	return defaultTransferFunction;
-}
-
-X3DPtr <ComposedShader>
-X3DVolumeRenderingContext::createOpacityMapVolumeStyleShader (X3DExecutionContext* const executionContext) const
-{
-	return getBrowser () -> createShader (executionContext, "OpacityMapVolumeStyle",
-	                                      { get_shader ("VolumeRendering/OpacityMapVolumeStyle.vs")  .str () },
-	                                      { get_shader ("VolumeRendering/OpacityMapVolumeStyle.fs")  .str () });
 }
 
 X3DVolumeRenderingContext::~X3DVolumeRenderingContext ()

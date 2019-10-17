@@ -140,11 +140,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	const X3DPtr <ComposedShader> &
-	getShader () const final override
-	{ return shaderNode; }
-
 	///  @name Destruction
 
 	virtual
@@ -184,8 +179,6 @@ private:
 	Fields fields;
 
 	///  @name Members
-
-	X3DPtr <ComposedShader> shaderNode;
 
 };
 

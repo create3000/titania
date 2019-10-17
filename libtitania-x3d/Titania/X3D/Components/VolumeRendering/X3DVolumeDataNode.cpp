@@ -57,6 +57,7 @@
 #include "../EnvironmentalSensor/ProximitySensor.h"
 #include "../Grouping/Transform.h"
 #include "../Rendering/Coordinate.h"
+#include "../Shaders/ComposedShader.h"
 #include "../Shape/Appearance.h"
 #include "../Shape/Shape.h"
 #include "../Texturing3D/TextureCoordinate3D.h"
@@ -165,6 +166,18 @@ X3DVolumeDataNode::getBBox () const
 		return Box3d (dimensions () .getValue (), Vector3d ());
 
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
+}
+
+const SFNode &
+X3DVolumeDataNode::getShader () const
+{
+	return appearanceNode -> shaders () [0];
+}
+
+void
+X3DVolumeDataNode::setShader (const X3DPtr <ComposedShader> & shaderNode)
+{
+	appearanceNode -> shaders () = { shaderNode };
 }
 
 size_t

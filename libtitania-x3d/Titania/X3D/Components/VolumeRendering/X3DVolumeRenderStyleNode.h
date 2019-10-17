@@ -73,11 +73,22 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
-	///  @name Member access
+	///  @name Operations
 
 	virtual
-	const X3DPtr <ComposedShader> &
-	getShader () const = 0;
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+	{ }
+
+	virtual
+	std::string
+	getUniformsText () const
+	{ return ""; }
+
+	virtual
+	std::string
+	getFunctionsText () const
+	{ return ""; }
 
 	///  @name Destruction
 
@@ -90,6 +101,11 @@ protected:
 	///  @name Construction
 
 	X3DVolumeRenderStyleNode ();
+
+	///  @name Member access
+
+	std::string
+	getStyleId () const;
 
 
 private:

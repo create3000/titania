@@ -68,16 +68,13 @@ ProjectionVolumeStyle::Fields::Fields () :
 ProjectionVolumeStyle::ProjectionVolumeStyle (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DVolumeRenderStyleNode (),
-	                  fields (),
-	              shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
+	                  fields ()
 {
 	addType (X3DConstants::ProjectionVolumeStyle);
 
 	addField (inputOutput, "enabled", enabled ());
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "intensityThreshold", intensityThreshold ());
-
-	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*

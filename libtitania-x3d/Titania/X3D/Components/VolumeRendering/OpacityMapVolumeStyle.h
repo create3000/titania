@@ -102,12 +102,19 @@ public:
 	transferFunction () const
 	{ return *fields .transferFunction; }
 
-	///  @name Member access
+	///  @name Operations
 
 	virtual
-	const X3DPtr <ComposedShader> &
-	getShader () const final override
-	{ return shaderNode; }
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const;
+
+	virtual
+	std::string
+	getUniformsText () const;
+
+	virtual
+	std::string
+	getFunctionsText () const;
 
 	///  @name Destruction
 
@@ -150,7 +157,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <ComposedShader> shaderNode;
+	X3DPtr <X3DTextureNode> transferFunctionNode;
 
 };
 

@@ -69,5 +69,11 @@ X3DVolumeRenderStyleNode::X3DVolumeRenderStyleNode () :
 X3DVolumeRenderStyleNode::~X3DVolumeRenderStyleNode ()
 { }
 
+std::string
+X3DVolumeRenderStyleNode::getStyleId () const
+{
+	return basic::to_string (getId (), std::locale::classic ());
+}
+
 } // X3D
 } // titania

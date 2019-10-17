@@ -87,6 +87,9 @@ public:
 	Box3d
 	getBBox () const final override;
 
+	const SFNode &
+	getShader () const;
+
 	///  @name Operations
 
 	virtual
@@ -118,6 +121,9 @@ protected:
 	const X3DPtr <Appearance> &
 	getAppearance () const
 	{ return appearanceNode; }
+
+	void
+	setShader (const X3DPtr <ComposedShader> & shaderNode);
 
 
 private:

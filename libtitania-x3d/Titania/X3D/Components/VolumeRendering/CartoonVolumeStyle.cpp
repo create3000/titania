@@ -71,8 +71,7 @@ CartoonVolumeStyle::Fields::Fields () :
 CartoonVolumeStyle::CartoonVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields (),
-	                        shaderNode (getBrowser () -> createOpacityMapVolumeStyleShader (executionContext))
+	                            fields ()
 {
 	addType (X3DConstants::CartoonVolumeStyle);
 
@@ -82,8 +81,6 @@ CartoonVolumeStyle::CartoonVolumeStyle (X3DExecutionContext* const executionCont
 	addField (inputOutput, "orthogonalColor", orthogonalColor ());
 	addField (inputOutput, "parallelColor",   parallelColor ());
 	addField (inputOutput, "surfaceNormals",  surfaceNormals ());
-
-	addChildObjects (shaderNode);
 }
 
 X3DBaseNode*

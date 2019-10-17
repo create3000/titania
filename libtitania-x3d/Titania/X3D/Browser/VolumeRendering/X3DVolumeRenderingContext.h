@@ -68,9 +68,6 @@ public:
 	const X3DPtr <PixelTexture> &
 	getDefaultTransferFunction () const;
 
-	X3DPtr <ComposedShader>
-	createOpacityMapVolumeStyleShader (X3DExecutionContext* const executionContext) const;
-
 	///  @name Destruction
 
 	virtual
