@@ -173,6 +173,9 @@ X3DVolumeDataNode::getBBox () const
 const SFNode &
 X3DVolumeDataNode::getShader () const
 {
+	if (appearanceNode -> shaders () .empty ())
+		throw Error <DISPOSED> ("X3DVolumeDataNode::getShader ");
+
 	return appearanceNode -> shaders () [0];
 }
 

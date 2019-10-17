@@ -119,6 +119,7 @@ VolumeData::initialize ()
 	getAppearance () -> texture ()   = voxels ();
 	getAppearance () -> blendMode () = blendModeNode;
 
+	set_voxels ();
 	set_renderStyle ();
 }
 
