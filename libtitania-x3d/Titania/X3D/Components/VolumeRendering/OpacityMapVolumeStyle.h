@@ -106,15 +106,15 @@ public:
 
 	virtual
 	void
-	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const;
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
 
 	virtual
 	std::string
-	getUniformsText () const;
+	getUniformsText () const final override;
 
 	virtual
 	std::string
-	getFunctionsText () const;
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
