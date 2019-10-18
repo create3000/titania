@@ -306,7 +306,6 @@ CartoonVolumeStyle::getFunctionsText () const
 
 	string += "	}\n";
 
-
 	return string;
 }
 

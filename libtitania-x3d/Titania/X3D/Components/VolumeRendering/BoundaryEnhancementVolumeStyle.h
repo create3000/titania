@@ -90,6 +90,16 @@ public:
 
 	virtual
 	SFFloat &
+	retainedOpacity ()
+	{ return *fields .retainedOpacity; }
+
+	virtual
+	const SFFloat &
+	retainedOpacity () const
+	{ return *fields .retainedOpacity; }
+
+	virtual
+	SFFloat &
 	boundaryOpacity ()
 	{ return *fields .boundaryOpacity; }
 
@@ -108,17 +118,19 @@ public:
 	opacityFactor () const
 	{ return *fields .opacityFactor; }
 
-	virtual
-	SFFloat &
-	retainedOpacity ()
-	{ return *fields .retainedOpacity; }
+	///  @name Operations
 
 	virtual
-	const SFFloat &
-	retainedOpacity () const
-	{ return *fields .retainedOpacity; }
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
 
-	///  @name Member access
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
@@ -149,14 +161,12 @@ private:
 	{
 		Fields ();
 
+		SFFloat* const retainedOpacity;
 		SFFloat* const boundaryOpacity;
 		SFFloat* const opacityFactor;
-		SFFloat* const retainedOpacity;
 	};
 
 	Fields fields;
-
-	///  @name Members
 
 };
 

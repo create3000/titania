@@ -62,9 +62,9 @@ const std::string BoundaryEnhancementVolumeStyle::typeName       = "BoundaryEnha
 const std::string BoundaryEnhancementVolumeStyle::containerField = "renderStyle";
 
 BoundaryEnhancementVolumeStyle::Fields::Fields () :
+	retainedOpacity (new SFFloat (0.2)),
 	boundaryOpacity (new SFFloat (0.9)),
-	  opacityFactor (new SFFloat (2)),
-	retainedOpacity (new SFFloat (0.2))
+	  opacityFactor (new SFFloat (2))
 { }
 
 BoundaryEnhancementVolumeStyle::BoundaryEnhancementVolumeStyle (X3DExecutionContext* const executionContext) :
@@ -76,9 +76,9 @@ BoundaryEnhancementVolumeStyle::BoundaryEnhancementVolumeStyle (X3DExecutionCont
 
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "retainedOpacity", retainedOpacity ());
 	addField (inputOutput, "boundaryOpacity", boundaryOpacity ());
 	addField (inputOutput, "opacityFactor",   opacityFactor ());
-	addField (inputOutput, "retainedOpacity", retainedOpacity ());
 }
 
 X3DBaseNode*
@@ -91,6 +91,66 @@ void
 BoundaryEnhancementVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
+}
+
+void
+BoundaryEnhancementVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "retainedOpacity_" + getStyleId (), retainedOpacity () .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "boundaryOpacity_" + getStyleId (), boundaryOpacity () .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "opacityFactor_"   + getStyleId (), opacityFactor ()   .copy (CopyType::FLAT_COPY));
+}
+
+std::string
+BoundaryEnhancementVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// BoundaryEnhancementVolumeStyle\n";
+	string += "\n";
+	string += "uniform float retainedOpacity_" + getStyleId () + ";\n";
+	string += "uniform float boundaryOpacity_" + getStyleId () + ";\n";
+	string += "uniform float opacityFactor_" + getStyleId () + ";\n";
+
+	string += "\n";
+	string += "float\n";
+	string += "getBoundaryEnhancementStyle_" + getStyleId () + " (in float originalAlpha, in vec3 texCoord)\n";
+	string += "{\n";
+	string += "	float f0 = texture (x3d_Texture3D [0], texCoord) .r;\n";
+	string += "	float f1 = texture (x3d_Texture3D [0], texCoord + vec3 (0.0, 0.0, 1.0 / x3d_TextureSize .z)) .r;\n";
+	string += "	float f  = abs (f0 - f1);\n";
+	string += "\n";
+	string += "	float retainedOpacity = retainedOpacity_" + getStyleId () + ";\n";
+	string += "	float boundaryOpacity = boundaryOpacity_" + getStyleId () + ";\n";
+	string += "	float opacityFactor   = opacityFactor_" + getStyleId () + ";\n";
+	string += "\n";
+	string += "	return originalAlpha * (retainedOpacity + pow (boundaryOpacity * f, opacityFactor));\n";
+	string += "}\n";
+
+	return string;
+}
+
+std::string
+BoundaryEnhancementVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// BoundaryEnhancementVolumeStyle\n";
+	string += "\n";
+	string += "	textureColor .a = getBoundaryEnhancementStyle_" + getStyleId () + " (textureColor .a, texCoord);\n";
+
+	return string;
 }
 
 BoundaryEnhancementVolumeStyle::~BoundaryEnhancementVolumeStyle ()
