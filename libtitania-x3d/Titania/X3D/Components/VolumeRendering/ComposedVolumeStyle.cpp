@@ -50,6 +50,7 @@
 
 #include "ComposedVolumeStyle.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ComposedShader.h"
@@ -68,13 +69,16 @@ ComposedVolumeStyle::Fields::Fields () :
 ComposedVolumeStyle::ComposedVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                  renderStyleNodes ()
 {
 	addType (X3DConstants::ComposedVolumeStyle);
 
 	addField (inputOutput, "enabled", enabled ());
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "renderStyle", renderStyle ());
+
+	addChildObjects (renderStyleNodes);
 }
 
 X3DBaseNode*
@@ -87,6 +91,108 @@ void
 ComposedVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
+
+	renderStyle () .addInterest (&ComposedVolumeStyle::set_renderStyle, this);
+
+	set_renderStyle ();
+}
+
+void
+ComposedVolumeStyle::set_renderStyle ()
+{
+	for (const auto & renderStyleNode : renderStyleNodes)
+	{
+		renderStyleNode -> removeInterest (&ComposedVolumeStyle::addEvent, this);
+
+		for (const auto & volumeData : getVolumeData ())
+			renderStyleNode -> removeVolumeData (volumeData);
+	}
+
+	renderStyleNodes .clear ();
+
+	for (const auto & node : renderStyle ())
+	{
+		const auto renderStyleNode = x3d_cast <X3DComposableVolumeRenderStyleNode*> (node);
+
+		if (renderStyleNode)
+			renderStyleNodes .emplace_back (renderStyleNode);
+	}
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+	{
+		renderStyleNode -> addInterest (&ComposedVolumeStyle::addEvent, this);
+
+		for (const auto & volumeData : getVolumeData ())
+			renderStyleNode -> addVolumeData (volumeData);
+	}
+}
+
+void
+ComposedVolumeStyle::addVolumeData (X3DVolumeDataNode* const volumeDataNode)
+{
+	X3DComposableVolumeRenderStyleNode::addVolumeData (volumeDataNode);
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+		renderStyleNode -> addVolumeData (volumeDataNode);
+}
+
+void
+ComposedVolumeStyle::removeVolumeData (X3DVolumeDataNode* const volumeDataNode)
+{
+	X3DComposableVolumeRenderStyleNode::removeVolumeData (volumeDataNode);
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+		renderStyleNode -> removeVolumeData (volumeDataNode);
+}
+
+void
+ComposedVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+		renderStyleNode -> addShaderFields (shaderNode);
+}
+
+std::string
+ComposedVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+		string += renderStyleNode -> getUniformsText ();
+
+	return string;
+}
+
+std::string
+ComposedVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+		string += renderStyleNode -> getFunctionsText ();
+
+	return string;
+}
+
+void
+ComposedVolumeStyle::shutdown ()
+{
+	for (const auto & renderStyleNode : renderStyleNodes)
+	{
+		for (const auto & volumeData : getVolumeData ())
+			renderStyleNode -> removeVolumeData (volumeData);
+	}
+
+	X3DComposableVolumeRenderStyleNode::shutdown ();
 }
 
 ComposedVolumeStyle::~ComposedVolumeStyle ()

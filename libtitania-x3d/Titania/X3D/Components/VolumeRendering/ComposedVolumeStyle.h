@@ -100,6 +100,28 @@ public:
 
 	///  @name Member access
 
+	virtual
+	void
+	addVolumeData (X3DVolumeDataNode* const volumeDataNode);
+
+	virtual
+	void
+	removeVolumeData (X3DVolumeDataNode* const volumeDataNode);
+
+	///  @name Operations
+
+	virtual
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
+
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
+
 	///  @name Destruction
 
 	virtual
@@ -114,8 +136,17 @@ protected:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	shutdown () final override;
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_renderStyle ();
 
 	///  @name Static members
 
@@ -135,6 +166,8 @@ private:
 	Fields fields;
 
 	///  @name Members
+
+	X3DPtrArray <X3DComposableVolumeRenderStyleNode> renderStyleNodes;
 
 };
 

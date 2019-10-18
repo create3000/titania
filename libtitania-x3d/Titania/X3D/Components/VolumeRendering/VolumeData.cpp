@@ -261,10 +261,10 @@ VolumeData::createShader () const
 void
 VolumeData::shutdown ()
 {
-	X3DVolumeDataNode::shutdown ();
-
 	if (renderStyleNode)
 		renderStyleNode -> removeVolumeData (this);
+
+	X3DVolumeDataNode::shutdown ();
 }
 
 VolumeData::~VolumeData ()
