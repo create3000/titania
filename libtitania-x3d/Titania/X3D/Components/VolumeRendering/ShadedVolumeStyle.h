@@ -99,16 +99,6 @@ public:
 	{ return *fields .lighting; }
 
 	virtual
-	SFNode &
-	material ()
-	{ return *fields .material; }
-
-	virtual
-	const SFNode &
-	material () const
-	{ return *fields .material; }
-
-	virtual
 	SFBool &
 	shadows ()
 	{ return *fields .shadows; }
@@ -117,16 +107,6 @@ public:
 	const SFBool &
 	shadows () const
 	{ return *fields .shadows; }
-
-	virtual
-	SFNode &
-	surfaceNormals ()
-	{ return *fields .surfaceNormals; }
-
-	virtual
-	const SFNode &
-	surfaceNormals () const
-	{ return *fields .surfaceNormals; }
 
 	virtual
 	SFString &
@@ -138,7 +118,39 @@ public:
 	phaseFunction () const
 	{ return *fields .phaseFunction; }
 
-	///  @name Member access
+	virtual
+	SFNode &
+	material ()
+	{ return *fields .material; }
+
+	virtual
+	const SFNode &
+	material () const
+	{ return *fields .material; }
+
+	virtual
+	SFNode &
+	surfaceNormals ()
+	{ return *fields .surfaceNormals; }
+
+	virtual
+	const SFNode &
+	surfaceNormals () const
+	{ return *fields .surfaceNormals; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
+
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
@@ -157,6 +169,14 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_material ();
+
+	void
+	set_surfaceNormals ();
+
 	///  @name Static members
 
 	static const Component   component;
@@ -170,15 +190,18 @@ private:
 		Fields ();
 
 		SFBool* const lighting;
-		SFNode* const material;
 		SFBool* const shadows;
-		SFNode* const surfaceNormals;
 		SFString* const phaseFunction;
+		SFNode* const material;
+		SFNode* const surfaceNormals;
 	};
 
 	Fields fields;
 
 	///  @name Members
+
+	X3DPtr <X3DMaterialNode>  materialNode;
+	X3DPtr <X3DTexture3DNode> surfaceNormalsNode;
 
 };
 
