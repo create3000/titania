@@ -62,18 +62,21 @@ const std::string ProjectionVolumeStyle::typeName       = "ProjectionVolumeStyle
 const std::string ProjectionVolumeStyle::containerField = "renderStyle";
 
 ProjectionVolumeStyle::Fields::Fields () :
+	              type (new SFString ("MAX")),
 	intensityThreshold (new SFFloat (0))
 { }
 
 ProjectionVolumeStyle::ProjectionVolumeStyle (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DVolumeRenderStyleNode (),
-	                  fields ()
+	                  fields (),
+	                typeType (TypeType::MAX)
 {
 	addType (X3DConstants::ProjectionVolumeStyle);
 
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "metadata",           metadata ());
+	addField (inputOutput, "enabled",            enabled ());
+	addField (inputOutput, "type",               type ());
 	addField (inputOutput, "intensityThreshold", intensityThreshold ());
 }
 
@@ -87,6 +90,163 @@ void
 ProjectionVolumeStyle::initialize ()
 {
 	X3DVolumeRenderStyleNode::initialize ();
+
+	type () .addInterest (&ProjectionVolumeStyle::set_type, this);
+
+	set_type ();
+}
+
+void
+ProjectionVolumeStyle::set_type ()
+{
+	try
+	{
+		static const std::map <std::string, TypeType> typeTypes = {
+			std::pair ("MAX",     TypeType::MAX),
+			std::pair ("MIN",     TypeType::MIN),
+			std::pair ("AVERAGE", TypeType::AVERAGE),
+		};
+
+		typeType = typeTypes .at (type ());
+	}
+	catch(const std::out_of_range & error)
+	{
+		typeType = TypeType::MAX;
+	}
+}
+
+void
+ProjectionVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "intensityThreshold_" + getStyleId (), intensityThreshold () .copy (CopyType::FLAT_COPY));
+}
+
+std::string
+ProjectionVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// ProjectionVolumeStyle\n";
+	string += "\n";
+	string += "uniform float intensityThreshold_" + getStyleId () + ";\n";
+
+	return string;
+}
+
+std::string
+ProjectionVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// ProjectionVolumeStyle\n";
+	string += "\n";
+	string += "	{\n";
+
+	switch (typeType)
+	{
+		default:
+		case TypeType::MAX:
+		{
+			string += "		float projectionColor = 0.0;\n";
+			break;
+		}
+		case TypeType::MIN:
+		{
+			string += "		float projectionColor = 1.0;\n";
+			break;
+		}
+		case TypeType::AVERAGE:
+		{
+			string += "		float projectionColor = 0.0;\n";
+			break;
+		}
+	}
+
+	string += "		const int samples     = 32;\n";
+	string += "		vec3  step            = normalize (x3d_TextureNormalMatrix * vec3 (0.0, 0.0, 1.0)) / float (samples);\n";
+	string += "		vec3  ray             = texCoord - step * float (samples) * 0.5;\n";
+	string += "		bool  first           = false;\n";
+	string += "\n";
+	string += "		for (int i = 0; i < samples; ++ i, ray += step)\n";
+	string += "		{\n";
+	string += "			if (ray .s < 0.0 || ray .s > 1.0)\n";
+	string += "				continue;\n";
+	string += "\n";
+	string += "			if (ray .t < 0.0 || ray .t > 1.0)\n";
+	string += "				continue;\n";
+	string += "\n";
+	string += "			if (ray .p < 0.0 || ray .p > 1.0)\n";
+	string += "				continue;\n";
+	string += "\n";
+	string += "			float intensity = texture (x3d_Texture3D [0], ray) .r;\n";
+	string += "\n";
+
+	switch (typeType)
+	{
+		default:
+		case TypeType::MAX:
+		{
+			string += "			if (intensity < intensityThreshold_" + getStyleId () + ")\n";
+			string += "				continue;\n";
+			string += "\n";
+			string += "			if (intensityThreshold_" + getStyleId () + " > 0.0 && first)\n";
+			string += "				break;\n";
+			string += "\n";
+			string += "			if (intensity <= projectionColor)\n";
+			string += "			{\n";
+			string += "				first = true;\n";
+			string += "				continue;\n";
+			string += "			}\n";
+			string += "\n";
+			string += "			projectionColor = intensity;\n";
+			break;
+		}
+		case TypeType::MIN:
+		{
+			string += "			if (intensity < intensityThreshold_" + getStyleId () + ")\n";
+			string += "				continue;\n";
+			string += "\n";
+			string += "			if (intensityThreshold_" + getStyleId () + " > 0.0 && first)\n";
+			string += "				break;\n";
+			string += "\n";
+			string += "			if (intensity >= projectionColor)\n";
+			string += "			{\n";
+			string += "				first = true;\n";
+			string += "				continue;\n";
+			string += "			}\n";
+			string += "\n";
+			string += "			projectionColor = intensity;\n";
+			break;
+		}
+		case TypeType::AVERAGE:
+		{
+			string += "			projectionColor += intensity;\n";
+			break;
+		}
+	}
+
+	string += "		}\n";
+	string += "\n";
+
+	if (typeType == TypeType::AVERAGE)
+		string += "		projectionColor /= float (samples);\n";
+
+	string += "		textureColor .rgb = vec3 (projectionColor);\n";
+
+	string += "	}\n";
+
+	return string;
 }
 
 ProjectionVolumeStyle::~ProjectionVolumeStyle ()

@@ -89,6 +89,16 @@ public:
 	///  @name Fields
 
 	virtual
+	SFString &
+	type ()
+	{ return *fields .type; }
+
+	virtual
+	const SFString &
+	type () const
+	{ return *fields .type; }
+
+	virtual
 	SFFloat &
 	intensityThreshold ()
 	{ return *fields .intensityThreshold; }
@@ -98,7 +108,19 @@ public:
 	intensityThreshold () const
 	{ return *fields .intensityThreshold; }
 
-	///  @name Member access
+	///  @name Operations
+
+	virtual
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
+
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
@@ -117,6 +139,20 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class TypeType
+	{
+		MAX,
+		MIN,
+		AVERAGE
+	};
+
+	///  @name Event handlers
+
+	void
+	set_type ();
+
 	///  @name Static members
 
 	static const Component   component;
@@ -129,12 +165,15 @@ private:
 	{
 		Fields ();
 
+		SFString* const type;
 		SFFloat* const intensityThreshold;
 	};
 
 	Fields fields;
 
 	///  @name Members
+
+	TypeType typeType;
 
 };
 
