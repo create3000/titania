@@ -50,9 +50,11 @@
 
 #include "EdgeEnhancementVolumeStyle.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -70,15 +72,18 @@ EdgeEnhancementVolumeStyle::Fields::Fields () :
 EdgeEnhancementVolumeStyle::EdgeEnhancementVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                surfaceNormalsNode ()
 {
 	addType (X3DConstants::EdgeEnhancementVolumeStyle);
 
-	addField (inputOutput, "edgeColor", edgeColor ());
-	addField (inputOutput, "enabled", enabled ());
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOutput, "enabled",           enabled ());
+	addField (inputOutput, "edgeColor",         edgeColor ());
 	addField (inputOutput, "gradientThreshold", gradientThreshold ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "surfaceNormals", surfaceNormals ());
+	addField (inputOutput, "surfaceNormals",    surfaceNormals ());
+
+	addChildObjects (surfaceNormalsNode);
 }
 
 X3DBaseNode*
@@ -91,6 +96,86 @@ void
 EdgeEnhancementVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
+
+	surfaceNormals () .addInterest (&EdgeEnhancementVolumeStyle::set_surfaceNormals, this);
+
+	set_surfaceNormals ();
+}
+
+void
+EdgeEnhancementVolumeStyle::set_surfaceNormals ()
+{
+	surfaceNormalsNode = x3d_cast <X3DTexture3DNode*> (surfaceNormals ());
+}
+
+void
+EdgeEnhancementVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "edgeColor_"         + getStyleId (), edgeColor ()         .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "gradientThreshold_" + getStyleId (), gradientThreshold () .copy (CopyType::FLAT_COPY));
+
+	if (surfaceNormalsNode)
+		shaderNode -> addUserDefinedField (inputOutput, "surfaceNormals_" + getStyleId (), new SFNode (surfaceNormalsNode));
+}
+
+std::string
+EdgeEnhancementVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// EdgeEnhancementVolumeStyle\n";
+	string += "\n";
+	string += "uniform vec4  edgeColor_" + getStyleId () + ";\n";
+	string += "uniform float gradientThreshold_" + getStyleId () + ";\n";
+
+	string += getNormalText (surfaceNormalsNode);
+
+	string += "\n";
+	string += "vec4\n";
+	string += "getEdgeEnhacementStyle_" + getStyleId () + " (in vec4 originalColor, in vec4 edgeColor, in float gradientThreshold, in vec4 surfaceNormal, in vec3 vertex)\n";
+	string += "{\n";
+	string += "	if (surfaceNormal .w < 0.1)\n";
+	string += "		return originalColor;\n";
+	string += "\n";
+	string += "	float angle = abs (dot (surfaceNormal .xyz, normalize (vertex)));\n";
+	string += "\n";
+	string += "	if (angle >= cos (gradientThreshold))\n";
+	string += "		return originalColor;\n";
+	string += "	else\n";
+	string += "		return vec4 (mix (edgeColor .rgb, originalColor.rgb, angle), originalColor .a);\n";
+	string += "}\n";
+
+	return string;
+}
+
+std::string
+EdgeEnhancementVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// EdgeEnhancementVolumeStyle\n";
+	string += "\n";
+	string += "	{\n";
+
+	string += "		vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
+	string += "		vec4 edgeColor     = getEdgeEnhacementStyle_" + getStyleId () + " (textureColor, edgeColor_" + getStyleId () + ", gradientThreshold_" + getStyleId () + ", surfaceNormal, vertex);\n";
+	string += "\n";
+	string += "		textureColor = edgeColor;\n";
+
+	string += "	}\n";
+
+	return string;
 }
 
 EdgeEnhancementVolumeStyle::~EdgeEnhancementVolumeStyle ()

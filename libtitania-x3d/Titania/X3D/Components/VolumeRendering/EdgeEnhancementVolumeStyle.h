@@ -118,7 +118,19 @@ public:
 	surfaceNormals () const
 	{ return *fields .surfaceNormals; }
 
-	///  @name Member access
+	///  @name Operations
+
+	virtual
+	void
+	addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const final override;
+
+	virtual
+	std::string
+	getUniformsText () const final override;
+
+	virtual
+	std::string
+	getFunctionsText () const final override;
 
 	///  @name Destruction
 
@@ -136,6 +148,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_surfaceNormals ();
 
 	///  @name Static members
 
@@ -157,6 +174,8 @@ private:
 	Fields fields;
 
 	///  @name Members
+
+	X3DPtr <X3DTexture3DNode> surfaceNormalsNode;
 
 };
 
