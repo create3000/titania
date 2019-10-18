@@ -50,9 +50,11 @@
 
 #include "SilhouetteEnhancementVolumeStyle.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -62,8 +64,8 @@ const std::string SilhouetteEnhancementVolumeStyle::typeName       = "Silhouette
 const std::string SilhouetteEnhancementVolumeStyle::containerField = "renderStyle";
 
 SilhouetteEnhancementVolumeStyle::Fields::Fields () :
-	silhouetteBoundaryOpacity (new SFFloat (0)),
 	silhouetteRetainedOpacity (new SFFloat (1)),
+	silhouetteBoundaryOpacity (new SFFloat (0)),
 	      silhouetteSharpness (new SFFloat (0.5)),
 	           surfaceNormals (new SFNode ())
 { }
@@ -71,16 +73,19 @@ SilhouetteEnhancementVolumeStyle::Fields::Fields () :
 SilhouetteEnhancementVolumeStyle::SilhouetteEnhancementVolumeStyle (X3DExecutionContext* const executionContext) :
 	                       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposableVolumeRenderStyleNode (),
-	                            fields ()
+	                            fields (),
+	                surfaceNormalsNode ()
 {
 	addType (X3DConstants::SilhouetteEnhancementVolumeStyle);
 
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "silhouetteBoundaryOpacity", silhouetteBoundaryOpacity ());
+	addField (inputOutput, "metadata",                  metadata ());
+	addField (inputOutput, "enabled",                   enabled ());
 	addField (inputOutput, "silhouetteRetainedOpacity", silhouetteRetainedOpacity ());
-	addField (inputOutput, "silhouetteSharpness", silhouetteSharpness ());
-	addField (inputOutput, "surfaceNormals", surfaceNormals ());
+	addField (inputOutput, "silhouetteBoundaryOpacity", silhouetteBoundaryOpacity ());
+	addField (inputOutput, "silhouetteSharpness",       silhouetteSharpness ());
+	addField (inputOutput, "surfaceNormals",            surfaceNormals ());
+
+	addChildObjects (surfaceNormalsNode);
 }
 
 X3DBaseNode*
@@ -93,6 +98,86 @@ void
 SilhouetteEnhancementVolumeStyle::initialize ()
 {
 	X3DComposableVolumeRenderStyleNode::initialize ();
+
+	surfaceNormals () .addInterest (&SilhouetteEnhancementVolumeStyle::set_surfaceNormals, this);
+
+	set_surfaceNormals ();
+}
+
+void
+SilhouetteEnhancementVolumeStyle::set_surfaceNormals ()
+{
+	surfaceNormalsNode = x3d_cast <X3DTexture3DNode*> (surfaceNormals ());
+}
+
+void
+SilhouetteEnhancementVolumeStyle::addShaderFields (const X3DPtr <ComposedShader> & shaderNode) const
+{
+	if (not enabled ())
+		return;
+
+	shaderNode -> addUserDefinedField (inputOutput, "silhouetteRetainedOpacity_" + getStyleId (), silhouetteRetainedOpacity () .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "silhouetteBoundaryOpacity_" + getStyleId (), silhouetteBoundaryOpacity () .copy (CopyType::FLAT_COPY));
+	shaderNode -> addUserDefinedField (inputOutput, "silhouetteSharpness_"       + getStyleId (), silhouetteSharpness ()       .copy (CopyType::FLAT_COPY));
+
+	if (surfaceNormalsNode)
+		shaderNode -> addUserDefinedField (inputOutput, "surfaceNormals_" + getStyleId (), new SFNode (surfaceNormalsNode));
+}
+
+std::string
+SilhouetteEnhancementVolumeStyle::getUniformsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "// SilhouetteEnhancementVolumeStyle\n";
+	string += "\n";
+	string += "uniform float silhouetteRetainedOpacity_" + getStyleId () + ";\n";
+	string += "uniform float silhouetteBoundaryOpacity_" + getStyleId () + ";\n";
+	string += "uniform float silhouetteSharpness_" + getStyleId () + ";\n";
+
+	string += getNormalText (surfaceNormalsNode);
+
+	string += "\n";
+	string += "float\n";
+	string += "getSilhouetteEnhancementStyle_" + getStyleId () + " (in float originalAlpha, in vec3 texCoord)\n";
+	string += "{\n";
+	string += "	vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
+	string += "\n";
+	string += "	if (surfaceNormal .w < 0.1)\n";
+	string += "	{\n";
+	string += "		return 0.0;\n";
+	string += "	}\n";
+	string += "	else\n";
+	string += "	{\n";
+	string += "		float silhouetteRetainedOpacity = silhouetteRetainedOpacity_" + getStyleId () + ";\n";
+	string += "		float silhouetteBoundaryOpacity = silhouetteBoundaryOpacity_" + getStyleId () + ";\n";
+	string += "		float silhouetteSharpness       = silhouetteSharpness_" + getStyleId () + ";\n";
+	string += "\n";
+	string += "		return originalAlpha * silhouetteRetainedOpacity + pow (silhouetteBoundaryOpacity * (1.0 - dot (surfaceNormal .xyz, normalize (vertex))), silhouetteSharpness);\n";
+	string += "	}\n";
+	string += "}\n";
+
+	return string;
+}
+
+std::string
+SilhouetteEnhancementVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// SilhouetteEnhancementVolumeStyle\n";
+	string += "\n";
+	string += "	textureColor .a = getSilhouetteEnhancementStyle_" + getStyleId () + " (textureColor .a, texCoord);\n";
+
+	return string;
 }
 
 SilhouetteEnhancementVolumeStyle::~SilhouetteEnhancementVolumeStyle ()

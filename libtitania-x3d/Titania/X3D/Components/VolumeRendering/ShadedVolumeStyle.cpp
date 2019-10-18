@@ -88,7 +88,8 @@ ShadedVolumeStyle::ShadedVolumeStyle (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "material",       material ());
 	addField (inputOutput,    "surfaceNormals", surfaceNormals ());
 
-	addChildObjects (surfaceNormalsNode);
+	addChildObjects (materialNode,
+	                 surfaceNormalsNode);
 }
 
 X3DBaseNode*
