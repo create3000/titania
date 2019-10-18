@@ -1,31 +1,28 @@
-#X3D V3.0 utf8 Titania V3.0.3
+#X3D V3.0 utf8 Titania V4.5.17
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT CubeMapTexturing : 1
+COMPONENT Shaders : 1
+COMPONENT Time : 2
 
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.3, http://titania.create3000.de"
+META "generator" "Titania V4.5.17, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water2.x3dv"
-META "modified" "Fri, 28 Apr 2017 07:09:49 GMT"
-META "outputStyle" "nicest"
+META "modified" "Fri, 18 Oct 2019 14:32:11 GMT"
 META "title" "Water Shader 2"
+
+WorldInfo {
+  title "Water2"
+}
 
 DEF Water2 Transform {
   children [
     DEF Timer TimeSensor {
       cycleInterval 31104000
       loop TRUE
-    }
-    DEF ElapsedTime ScalarInterpolator {
-      key [
-        0,
-        1
-      ]
-      keyValue [
-        0,
-        3.1104e+07
-      ]
     }
     DEF _1 ProximitySensor {
       size 1000 1000 1000
@@ -89,8 +86,8 @@ DEF Water2 Transform {
           }
         }
         shaders DEF WaterShader ComposedShader {
-          inputOnly   SFFloat set_time
-          inputOutput SFVec3f position 105.389 48.4969 74.604
+          inputOnly   SFTime  set_time
+          inputOutput SFVec3f position 0 0 10
           inputOutput MFFloat amplitude [
             0.0279177,
             0.0224437,
@@ -267,6 +264,5 @@ main ()
   ]
 }
 
-ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
 ROUTE _1.position_changed TO WaterShader.set_position
-ROUTE ElapsedTime.value_changed TO WaterShader.set_time
+ROUTE Timer.elapsedTime TO WaterShader.set_time

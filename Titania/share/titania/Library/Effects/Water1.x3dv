@@ -1,15 +1,21 @@
-#X3D V3.3 utf8 Titania V3.0.3
+#X3D V3.3 utf8 Titania V4.5.17
 
-PROFILE Full
+PROFILE Interactive
+
+COMPONENT Shaders : 1
+COMPONENT Time : 2
 
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:16:44 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.3, http://titania.create3000.de"
+META "generator" "Titania V4.5.17, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water1.x3dv"
-META "modified" "Fri, 28 Apr 2017 07:09:28 GMT"
-META "outputStyle" "nicest"
+META "modified" "Fri, 18 Oct 2019 14:31:20 GMT"
 META "title" "Water Shader 1"
+
+WorldInfo {
+  title "Water1"
+}
 
 DEF Water1 Transform {
   children [
@@ -17,20 +23,10 @@ DEF Water1 Transform {
       cycleInterval 31104000
       loop TRUE
     }
-    DEF ElapsedTime ScalarInterpolator {
-      key [
-        0,
-        1
-      ]
-      keyValue [
-        0,
-        3.1104e+07
-      ]
-    }
     Shape {
       appearance Appearance {
         shaders DEF WaterShader1 ComposedShader {
-          inputOnly   SFFloat set_time
+          inputOnly   SFTime  set_time
           inputOutput SFInt32 waves 5
           inputOutput MFFloat amplitude [
             0.1,
@@ -122,7 +118,7 @@ main ()
 }
 "
             }
-            DEF _1 ShaderPart {
+            ShaderPart {
               type "FRAGMENT"
               url "data:x-shader/x-fragment,
 
@@ -168,5 +164,4 @@ main ()
   ]
 }
 
-ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
-ROUTE ElapsedTime.value_changed TO WaterShader1.set_time
+ROUTE Timer.elapsedTime TO WaterShader1.set_time

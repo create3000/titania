@@ -1,15 +1,18 @@
-#X3D V3.0 utf8 Titania V4.0.4
+#X3D V3.0 utf8 Titania V4.5.17
 
-PROFILE Full
+PROFILE Immersive
+
+COMPONENT Shaders : 1
+COMPONENT Time : 2
 
 UNIT angle degree 0.0174532925199432958
 
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V4.0.4, http://titania.create3000.de"
+META "generator" "Titania V4.5.17, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water3.x3dv"
-META "modified" "Wed, 03 Jan 2018 23:56:45 GMT"
+META "modified" "Fri, 18 Oct 2019 14:32:56 GMT"
 
 PROTO Water3 [
   inputOutput SFFloat amplitude 0.25
@@ -22,7 +25,7 @@ PROTO Water3 [
 ]
 {
   DEF WaterShader ComposedShader {
-    inputOnly   SFFloat set_time
+    inputOnly   SFTime  set_time
     inputOutput SFFloat amplitude IS amplitude
     inputOutput SFFloat frequency IS frequency
     inputOutput SFVec2f velocity IS velocity
@@ -415,19 +418,11 @@ main ()
     loop TRUE
   }
 
-  DEF ElapsedTime ScalarInterpolator {
-    key [
-      0,
-      1
-    ]
-    keyValue [
-      0,
-      3.1104e+07
-    ]
-  }
+  ROUTE Timer.elapsedTime TO WaterShader.set_time
+}
 
-  ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
-  ROUTE ElapsedTime.value_changed TO WaterShader.set_time
+WorldInfo {
+  title "Water3"
 }
 
 DEF Water3 Transform {
