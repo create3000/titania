@@ -116,21 +116,25 @@ SegmentedVolumeData::initialize ()
 {
 	X3DVolumeDataNode::initialize ();
 
-	segmentEnabled ()     .addInterest (&SegmentedVolumeData::update,                 this);
-	segmentIdentifiers () .addInterest (&SegmentedVolumeData::update,                 this);
 	segmentIdentifiers () .addInterest (&SegmentedVolumeData::set_segmentIdentifiers, this);
 	renderStyle ()        .addInterest (&SegmentedVolumeData::set_renderStyle,        this);
 	voxels ()             .addInterest (&SegmentedVolumeData::set_voxels,             this);
 	voxels ()             .addInterest (getAppearance () -> texture ());
+
+	segmentEnabled ()     .addInterest (&SegmentedVolumeData::update,                 this);
+	segmentIdentifiers () .addInterest (&SegmentedVolumeData::update,                 this);
+	renderStyle ()        .addInterest (&SegmentedVolumeData::update,                 this);
 
 	blendModeNode -> setup ();
 
 	getAppearance () -> texture ()   = voxels ();
 	getAppearance () -> blendMode () = blendModeNode;
 
-	set_voxels ();
 	set_segmentIdentifiers ();
 	set_renderStyle ();
+	set_voxels ();
+
+	update ();
 }
 
 void
@@ -171,8 +175,6 @@ SegmentedVolumeData::set_renderStyle ()
 		renderStyleNode -> addInterest (&SegmentedVolumeData::update, this);
 		renderStyleNode -> addVolumeData (this);
 	}
-
-	update ();
 }
 
 void

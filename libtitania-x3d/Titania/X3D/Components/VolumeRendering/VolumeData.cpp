@@ -114,13 +114,17 @@ VolumeData::initialize ()
 	voxels ()      .addInterest (&VolumeData::set_voxels,      this);
 	voxels ()      .addInterest (getAppearance () -> texture ());
 
+	renderStyle () .addInterest (&VolumeData::update,          this);
+
 	blendModeNode -> setup ();
 
 	getAppearance () -> texture ()   = voxels ();
 	getAppearance () -> blendMode () = blendModeNode;
 
-	set_voxels ();
 	set_renderStyle ();
+	set_voxels ();
+
+	update ();
 }
 
 void
@@ -150,8 +154,6 @@ VolumeData::set_renderStyle ()
 		renderStyleNode -> addInterest (&VolumeData::update, this);
 		renderStyleNode -> addVolumeData (this);
 	}
-
-	update ();
 }
 
 void
@@ -197,13 +199,13 @@ X3DPtr <ComposedShader>
 VolumeData::createShader () const
 {
 	const auto & opacityMapVolumeStyle = getBrowser () -> getDefaultVolumeStyle ();
-	std::string  volumeStyleUniforms   = opacityMapVolumeStyle -> getUniformsText ();
-	std::string  volumeStyleFunctions  = opacityMapVolumeStyle -> getFunctionsText ();
+	std::string  styleUniforms         = opacityMapVolumeStyle -> getUniformsText ();
+	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
 
 	if (renderStyleNode)
 	{
-		volumeStyleUniforms  += renderStyleNode -> getUniformsText (),
-		volumeStyleFunctions += renderStyleNode -> getFunctionsText ();
+		styleUniforms  += renderStyleNode -> getUniformsText (),
+		styleFunctions += renderStyleNode -> getFunctionsText ();
 	}
 
 	static const std::regex CLIP_PLANES             (R"/(#pragma X3D include "include/ClipPlanes.glsl"\n)/");
@@ -219,8 +221,8 @@ VolumeData::createShader () const
 
 	fs = std::regex_replace (fs, CLIP_PLANES,             clip);
 	fs = std::regex_replace (fs, FOG,                     fog);
-	fs = std::regex_replace (fs, VOLUME_STYLES_UNIFORMS,  volumeStyleUniforms);
-	fs = std::regex_replace (fs, VOLUME_STYLES_FUNCTIONS, volumeStyleFunctions);
+	fs = std::regex_replace (fs, VOLUME_STYLES_UNIFORMS,  styleUniforms);
+	fs = std::regex_replace (fs, VOLUME_STYLES_FUNCTIONS, styleFunctions);
 
 	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
