@@ -143,7 +143,7 @@ ImageTexture::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();
+	buffer = url ();
 }
 
 void
@@ -168,7 +168,7 @@ ImageTexture::set_buffer ()
 	using namespace std::placeholders;
 
 	future .setValue (new TextureFuture (getExecutionContext (),
-	                                     url (),
+	                                     buffer,
 	                                     resize ? getBrowser () -> getMinTextureSize () : 0,
 	                                     resize ? getBrowser () -> getMaxTextureSize () : 0,
 	                                     std::bind (&ImageTexture::setTexture, this, _1, _2)));

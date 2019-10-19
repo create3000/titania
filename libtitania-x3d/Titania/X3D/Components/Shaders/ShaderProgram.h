@@ -103,7 +103,7 @@ public:
 	const SFString &
 	type () const
 	{ return *fields .type; }
-	
+
 	///  @name Member access
 
 	bool
@@ -200,9 +200,9 @@ private:
 
 	///  @name Members
 
-	SFTime buffer;
-	GLuint programId;
-	GLint  valid;
+	MFString buffer;
+	GLuint   programId;
+	GLint    valid;
 
 };
 

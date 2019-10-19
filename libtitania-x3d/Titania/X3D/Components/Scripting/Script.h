@@ -182,7 +182,7 @@ private:
 
 	///  @name Members
 
-	SFTime                        buffer;
+	MFString                      buffer;
 	X3DPtr <X3DJavaScriptContext> javaScript;
 
 };

@@ -123,7 +123,7 @@ ShaderPart::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();	
+	buffer = url ();
 }
 
 void
@@ -131,7 +131,7 @@ ShaderPart::set_url ()
 {
 	setLoadState (NOT_STARTED_STATE);
 
-	buffer .addEvent ();
+	requestImmediateLoad ();
 }
 
 void
@@ -139,7 +139,7 @@ ShaderPart::set_buffer ()
 {
 	valid = false;
 
-	for (const auto & URL : basic::make_const_range (url ()))
+	for (const auto & URL : basic::make_const_range (url ())) // TODO: use buffer instead of url ()
 	{
 		try
 		{

@@ -182,11 +182,11 @@ private:
 
 	///  @name Members
 
-	SFTime buffer;
-	GLuint shaderId;
-	GLint  valid;
-	bool   openGLES;
-	bool   shadow;
+	MFString buffer;
+	GLuint   shaderId;
+	GLint    valid;
+	bool     openGLES;
+	bool     shadow;
 
 };
 

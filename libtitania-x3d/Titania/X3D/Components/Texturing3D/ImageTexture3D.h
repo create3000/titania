@@ -93,14 +93,14 @@ public:
 	setExecutionContext (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Member access
-	
+
 	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const final override
 	{ return X3DUrlObject::checkLoadState (); }
 
 	///  @name Operations
-	
+
 	virtual
 	void
 	requestImmediateLoad () final override;
@@ -109,7 +109,7 @@ public:
 	requestAsyncLoad ();
 
 	///  @name Destruction
-	
+
 	virtual
 	void
 	dispose () final override;
@@ -127,16 +127,19 @@ private:
 	initialize () final override;
 
 	///  @name Operations
-	
-	void
-	setTexture (const basic::uri URL, const Texture3DPtr & texture);
 
 	void
-	set_url ();
+	setTexture (const basic::uri URL, const Texture3DPtr & texture);
 
 	virtual
 	void
 	update () final override;
+
+	void
+	set_url ();
+
+	void
+	set_buffer ();
 
 	///  @name Static members
 
@@ -145,8 +148,8 @@ private:
 	static const std::string containerField;
 
 	///  @name Members
-	
-	SFTime                   buffer;
+
+	MFString                 buffer;
 	X3DPtr <Texture3DFuture> future;
 
 

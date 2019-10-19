@@ -188,7 +188,7 @@ private:
 
 	///  @name Members
 
-	SFTime   buffer;
+	MFString buffer;
 	MFString urlStack;
 	SFString URL;
 

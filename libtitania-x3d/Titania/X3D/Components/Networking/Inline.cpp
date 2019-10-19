@@ -250,7 +250,7 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();
+	buffer = url ();
 }
 
 void
@@ -354,7 +354,7 @@ Inline::set_buffer ()
 	using namespace std::placeholders;
 
 	future .setValue (new SceneFuture (getExecutionContext (),
-	                                   url (),
+	                                   buffer,
 	                                   false,
 	                                   std::bind (&Inline::setSceneAsync, this, _1)));
 }

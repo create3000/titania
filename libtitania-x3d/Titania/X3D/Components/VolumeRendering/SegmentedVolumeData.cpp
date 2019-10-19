@@ -302,9 +302,9 @@ SegmentedVolumeData::createShader () const
 	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto shaderNode   = getExecutionContext () -> createNode <ComposedShader> ();
 
-	fragmentPart -> setName ("VolumeDataFragmentShaderPart");
-	vertexPart   -> setName ("VolumeDataVertexShaderPart");
-	shaderNode   -> setName ("VolumeDataComposedShader");
+	fragmentPart -> setName ("SegmentedVolumeDataFragmentShaderPart");
+	vertexPart   -> setName ("SegmentedVolumeDataVertexShaderPart");
+	shaderNode   -> setName ("SegmentedVolumeDataComposedShader");
 
 	fragmentPart -> type () = "FRAGMENT";
 	vertexPart   -> url ()  = { "data:x-shader/x-vertex," + vs };

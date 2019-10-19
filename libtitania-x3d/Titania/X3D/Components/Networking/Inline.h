@@ -174,7 +174,7 @@ protected:
 	virtual
 	void
 	initialize () override;
-	
+
 
 private:
 
@@ -223,7 +223,7 @@ private:
 
 	///  @name Members
 
-	SFTime               buffer;
+	MFString             buffer;
 	X3DScenePtr          scene;
 	X3DPtr <Group>       group;
 	X3DPtr <SceneFuture> future;

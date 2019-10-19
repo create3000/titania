@@ -117,8 +117,7 @@ MovieTexture::initialize ()
 	getStream () -> signal_error ()          .connect (sigc::mem_fun (this, &MovieTexture::on_error));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));
 
-	url () .addInterest (&MovieTexture::set_url, this);
-
+	url () .addInterest (&MovieTexture::set_url,    this);
 	buffer .addInterest (&MovieTexture::set_buffer, this);
 
 	set_url ();
@@ -149,13 +148,13 @@ MovieTexture::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();
+	buffer = url ();
 }
 
 void
 MovieTexture::set_buffer ()
 {
-	urlStack = url ();
+	urlStack = buffer;
 
 	setMedia (false);
 	load ();

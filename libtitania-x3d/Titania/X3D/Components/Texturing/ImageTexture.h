@@ -172,7 +172,7 @@ private:
 
 	///  @name Members
 
-	SFTime                 buffer;
+	MFString               buffer;
 	bool                   resize;
 	X3DPtr <TextureFuture> future;
 

@@ -120,7 +120,7 @@ void
 Script::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 {
 	X3DScriptNode::addUserDefinedField (accessType, name, field);
-	
+
 	if (isInitialized ())
 	{
 		setLoadState (NOT_STARTED_STATE);
@@ -181,7 +181,7 @@ Script::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();	
+	buffer = url ();
 }
 
 void
@@ -207,7 +207,7 @@ Script::set_buffer ()
 
 	// Find first working script.
 
-	for (const auto & URL : url ())
+	for (const auto & URL : buffer)
 	{
 		std::string scheme;
 		std::string ecmascript;
@@ -217,7 +217,7 @@ Script::set_buffer ()
 			try
 			{
 				auto javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL ());
-				
+
 				// Initialize.
 
 				javaScript -> setup ();

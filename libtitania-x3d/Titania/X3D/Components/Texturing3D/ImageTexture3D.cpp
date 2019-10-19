@@ -91,9 +91,8 @@ ImageTexture3D::initialize ()
 	X3DTexture3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (&ImageTexture3D::set_url, this);
-
-	buffer .addInterest (&ImageTexture3D::update, this);
+	url () .addInterest (&ImageTexture3D::set_url,    this);
+	buffer .addInterest (&ImageTexture3D::set_buffer, this);
 
 	set_url ();
 }
@@ -144,17 +143,7 @@ ImageTexture3D::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .setValue (new Texture3DFuture (getExecutionContext (),
-	                                       url (),
-	                                       getBrowser () -> getMinTextureSize (),
-	                                       getBrowser () -> getMaxTextureSize (),
-	                                       std::bind (&ImageTexture3D::setTexture, this, _1, _2)));
-}
-
-void
-ImageTexture3D::set_url ()
-{
-	buffer .addEvent ();
+	buffer = url ();
 }
 
 void
@@ -163,6 +152,26 @@ ImageTexture3D::update ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestAsyncLoad ();
+}
+
+void
+ImageTexture3D::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestAsyncLoad ();
+}
+
+void
+ImageTexture3D::set_buffer ()
+{
+	using namespace std::placeholders;
+
+	future .setValue (new Texture3DFuture (getExecutionContext (),
+	                                       buffer,
+	                                       getBrowser () -> getMinTextureSize (),
+	                                       getBrowser () -> getMaxTextureSize (),
+	                                       std::bind (&ImageTexture3D::setTexture, this, _1, _2)));
 }
 
 void

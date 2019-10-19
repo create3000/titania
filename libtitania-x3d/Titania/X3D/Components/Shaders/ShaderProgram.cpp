@@ -157,7 +157,7 @@ ShaderProgram::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();	
+	buffer = url ();
 }
 
 void
@@ -173,7 +173,7 @@ ShaderProgram::set_buffer ()
 {
 	valid = false;
 
-	for (const auto & URL : basic::make_const_range (url ()))
+	for (const auto & URL : basic::make_const_range (buffer))
 	{
 		try
 		{
@@ -195,9 +195,9 @@ ShaderProgram::set_buffer ()
 			if (programId)
 			{
 				// Attach shader
-	
+
 				const auto shaderId = glCreateShader (Shader::getShaderType (type ()));
-	
+
 				if (shaderId)
 				{
 					glShaderSource  (shaderId, 1, &string, nullptr);
@@ -209,33 +209,33 @@ ShaderProgram::set_buffer ()
 					if (valid)
 					{
 						glAttachShader (programId, shaderId);
-			
+
 						// x3d_FragColor
-	
+
 						if (Shader::getShaderType (type ()) == GL_FRAGMENT_SHADER)
 							glBindFragDataLocation (programId, 0, "x3d_FragColor");
-			
+
 						// Link program
-				
+
 						glProgramParameteri (programId, GL_PROGRAM_SEPARABLE, true);
 						glLinkProgram  (programId);
 						glDetachShader (programId, shaderId);
-		
+
 						// Check for link status
-				
+
 						glGetProgramiv (programId, GL_LINK_STATUS, &valid);
 					}
-		
+
 					// Print info log
-		
+
 					Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId, source .uris);
-		
+
 					// Initialize uniform variables
 					glUseProgram (programId);
 					getDefaultUniforms ();
 					addShaderFields ();
 					glUseProgram (0);
-	
+
 					glDeleteShader (shaderId);
 
 					if (valid)

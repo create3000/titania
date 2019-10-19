@@ -134,13 +134,13 @@ AudioClip::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	buffer .addEvent ();
+	buffer = url ();
 }
 
 void
 AudioClip::set_buffer ()
 {
-	urlStack = url ();
+	urlStack = buffer;
 
 	setMedia (false);
 	load ();
