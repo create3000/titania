@@ -232,9 +232,6 @@ SegmentedVolumeData::createShader () const
 	std::string  styleUniforms         = opacityMapVolumeStyle -> getUniformsText ();
 	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
 
-	styleUniforms  += "\n";
-	styleUniforms  += "uniform float surfaceTolerance;\n";
-
 	if (segmentIdentifiersNode)
 	{
 		styleUniforms  += "\n";
