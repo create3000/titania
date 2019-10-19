@@ -261,12 +261,12 @@ IsoSurfaceVolumeData::createShader () const
 		styleUniforms += "uniform sampler3D gradients;\n";
 
 		styleFunctions += "	if (length (texture (gradients, texCoord) .xyz * 2.0 - 1.0) < surfaceTolerance)\n";
-		styleFunctions += "		return vec4 (0.0);\n";
+		styleFunctions += "		discard;\n";
 	}
 	else
 	{
 		styleFunctions += "	if (getNormal (texCoord) .w < surfaceTolerance)\n";
-		styleFunctions += "		return vec4 (0.0);\n";
+		styleFunctions += "		discard;\n";
 	}
 
 	styleFunctions += "\n";
