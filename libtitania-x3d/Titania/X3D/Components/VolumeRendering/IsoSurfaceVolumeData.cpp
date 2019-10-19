@@ -275,7 +275,7 @@ IsoSurfaceVolumeData::createShader () const
 
 	if (surfaceValues () .size () == 1)
 	{
-		const float contourStepSizeAbs = std::abs <float> (contourStepSize ());
+		const float contourStepSizeAbs = std::abs (contourStepSize ());
 
 		if (contourStepSizeAbs == 0.0f)
 		{
