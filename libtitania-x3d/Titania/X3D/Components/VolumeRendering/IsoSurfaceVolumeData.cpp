@@ -275,7 +275,9 @@ IsoSurfaceVolumeData::createShader () const
 
 	if (surfaceValues () .size () == 1)
 	{
-		if (contourStepSize () == 0.0f)
+		const float contourStepSizeAbs = std::abs <float> (contourStepSize ());
+
+		if (contourStepSizeAbs == 0.0f)
 		{
 			styleFunctions += "	if (intensity > surfaceValues [0])\n";
 			styleFunctions += "	{\n";
@@ -297,12 +299,12 @@ IsoSurfaceVolumeData::createShader () const
 		{
 			std::deque <float> calcSurfaceValues;
 
-			for (float v = surfaceValues () [0] - contourStepSize (); v > 0; v -= contourStepSize ())
+			for (float v = surfaceValues () [0] - contourStepSizeAbs; v > 0; v -= contourStepSizeAbs)
 				calcSurfaceValues .emplace_front (v);
 
 			calcSurfaceValues .emplace_back (surfaceValues () [0]);
 
-			for (float v = surfaceValues () [0] + contourStepSize (); v < 1; v += contourStepSize ())
+			for (float v = surfaceValues () [0] + contourStepSizeAbs; v < 1; v += contourStepSizeAbs)
 				calcSurfaceValues .emplace_back (v);
 
 			styleFunctions += "	if (false)\n";
