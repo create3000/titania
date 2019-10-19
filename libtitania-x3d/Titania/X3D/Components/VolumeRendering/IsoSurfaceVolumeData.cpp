@@ -297,43 +297,40 @@ IsoSurfaceVolumeData::createShader () const
 		}
 		else
 		{
-			if (contourStepSizeAbs)
+			std::deque <float> calcSurfaceValues;
+
+			for (float v = surfaceValues () [0] - contourStepSizeAbs; v > 0; v -= contourStepSizeAbs)
+				calcSurfaceValues .emplace_front (v);
+
+			calcSurfaceValues .emplace_back (surfaceValues () [0]);
+
+			for (float v = surfaceValues () [0] + contourStepSizeAbs; v < 1; v += contourStepSizeAbs)
+				calcSurfaceValues .emplace_back (v);
+
+			styleFunctions += "	if (false)\n";
+			styleFunctions += "	{ }\n";
+
+			for (size_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
 			{
-				std::deque <float> calcSurfaceValues;
+				const auto surfaceValue = calcSurfaceValues [i];
 
-				for (float v = surfaceValues () [0] - contourStepSizeAbs; v > 0; v -= contourStepSizeAbs)
-					calcSurfaceValues .emplace_front (v);
+				styleFunctions += "	else if (intensity > " + basic::to_string (surfaceValue, std::locale::classic ()) + ")\n";
+				styleFunctions += "	{\n";
+				styleFunctions += "		textureColor = vec4 (vec3 (" + basic::to_string (surfaceValue, std::locale::classic ()) + "), 1.0);\n";
 
-				calcSurfaceValues .emplace_back (surfaceValues () [0]);
-
-				for (float v = surfaceValues () [0] + contourStepSizeAbs; v < 1; v += contourStepSizeAbs)
-					calcSurfaceValues .emplace_back (v);
-
-				styleFunctions += "	if (false)\n";
-				styleFunctions += "	{ }\n";
-
-				for (size_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
+				if (renderStyleNodes .size ())
 				{
-					const auto surfaceValue = calcSurfaceValues [i];
-
-					styleFunctions += "	else if (intensity > " + basic::to_string (surfaceValue, std::locale::classic ()) + ")\n";
-					styleFunctions += "	{\n";
-					styleFunctions += "		textureColor = vec4 (vec3 (" + basic::to_string (surfaceValue, std::locale::classic ()) + "), 1.0);\n";
-
-					if (renderStyleNodes .size ())
-					{
-						styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
-					}
-
-					styleFunctions += "	}\n";
+					styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
 				}
 
-				styleFunctions += "	else\n";
-				styleFunctions += "	{\n";
-				styleFunctions += "		discard;\n";
 				styleFunctions += "	}\n";
-				styleFunctions += "\n";
 			}
+
+			styleFunctions += "	else\n";
+			styleFunctions += "	{\n";
+			styleFunctions += "		discard;\n";
+			styleFunctions += "	}\n";
+			styleFunctions += "\n";
 		}
 	}
 	else
