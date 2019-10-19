@@ -297,40 +297,43 @@ IsoSurfaceVolumeData::createShader () const
 		}
 		else
 		{
-			std::deque <float> calcSurfaceValues;
-
-			for (float v = surfaceValues () [0] - contourStepSizeAbs; v > 0; v -= contourStepSizeAbs)
-				calcSurfaceValues .emplace_front (v);
-
-			calcSurfaceValues .emplace_back (surfaceValues () [0]);
-
-			for (float v = surfaceValues () [0] + contourStepSizeAbs; v < 1; v += contourStepSizeAbs)
-				calcSurfaceValues .emplace_back (v);
-
-			styleFunctions += "	if (false)\n";
-			styleFunctions += "	{ }\n";
-
-			for (size_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
+			if (contourStepSizeAbs)
 			{
-				const auto surfaceValue = calcSurfaceValues [i];
+				std::deque <float> calcSurfaceValues;
 
-				styleFunctions += "	else if (intensity > " + basic::to_string (surfaceValue, std::locale::classic ()) + ")\n";
-				styleFunctions += "	{\n";
-				styleFunctions += "		textureColor = vec4 (vec3 (" + basic::to_string (surfaceValue, std::locale::classic ()) + "), 1.0);\n";
+				for (float v = surfaceValues () [0] - contourStepSizeAbs; v > 0; v -= contourStepSizeAbs)
+					calcSurfaceValues .emplace_front (v);
 
-				if (renderStyleNodes .size ())
+				calcSurfaceValues .emplace_back (surfaceValues () [0]);
+
+				for (float v = surfaceValues () [0] + contourStepSizeAbs; v < 1; v += contourStepSizeAbs)
+					calcSurfaceValues .emplace_back (v);
+
+				styleFunctions += "	if (false)\n";
+				styleFunctions += "	{ }\n";
+
+				for (size_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
 				{
-					styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
+					const auto surfaceValue = calcSurfaceValues [i];
+
+					styleFunctions += "	else if (intensity > " + basic::to_string (surfaceValue, std::locale::classic ()) + ")\n";
+					styleFunctions += "	{\n";
+					styleFunctions += "		textureColor = vec4 (vec3 (" + basic::to_string (surfaceValue, std::locale::classic ()) + "), 1.0);\n";
+
+					if (renderStyleNodes .size ())
+					{
+						styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
+					}
+
+					styleFunctions += "	}\n";
 				}
 
+				styleFunctions += "	else\n";
+				styleFunctions += "	{\n";
+				styleFunctions += "		textureColor = vec4 (0.0);\n";
 				styleFunctions += "	}\n";
+				styleFunctions += "\n";
 			}
-
-			styleFunctions += "	else\n";
-			styleFunctions += "	{\n";
-			styleFunctions += "		textureColor = vec4 (0.0);\n";
-			styleFunctions += "	}\n";
-			styleFunctions += "\n";
 		}
 	}
 	else
