@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,20 @@
 
 #include "SegmentedVolumeData.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/FileLoader.h"
+#include "../Shaders/ComposedShader.h"
+#include "../Shaders/ShaderPart.h"
+#include "../Shape/Appearance.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
+#include "../VolumeRendering/OpacityMapVolumeStyle.h"
+#include "../VolumeRendering/X3DVolumeRenderStyleNode.h"
+#include "../X_ITE/BlendMode.h"
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -60,33 +73,276 @@ const std::string SegmentedVolumeData::typeName       = "SegmentedVolumeData";
 const std::string SegmentedVolumeData::containerField = "children";
 
 SegmentedVolumeData::Fields::Fields () :
-	       renderStyle (new MFNode ()),
 	    segmentEnabled (new MFBool ()),
 	segmentIdentifiers (new SFNode ()),
+	       renderStyle (new MFNode ()),
 	            voxels (new SFNode ())
 { }
 
 SegmentedVolumeData::SegmentedVolumeData (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DVolumeDataNode (),
-	           fields ()
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DVolumeDataNode (),
+	                 fields (),
+	 segmentIdentifiersNode (),
+	       renderStyleNodes (),
+	             voxelsNode (),
+	          blendModeNode (new BlendMode (executionContext))
 {
 	addType (X3DConstants::SegmentedVolumeData);
 
-	addField (inputOutput, "dimensions", dimensions ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "renderStyle", renderStyle ());
-	addField (inputOutput, "segmentEnabled", segmentEnabled ());
-	addField (inputOutput, "segmentIdentifiers", segmentIdentifiers ());
-	addField (inputOutput, "voxels", voxels ());
-	addField (initializeOnly, "bboxCenter", bboxCenter ());
-	addField (initializeOnly, "bboxSize", bboxSize ());
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOutput,    "dimensions",         dimensions ());
+	addField (inputOutput,    "segmentEnabled",     segmentEnabled ());
+	addField (inputOutput,    "segmentIdentifiers", segmentIdentifiers ());
+	addField (inputOutput,    "renderStyle",        renderStyle ());
+	addField (inputOutput,    "voxels",             voxels ());
+	addField (initializeOnly, "bboxCenter",         bboxCenter ());
+	addField (initializeOnly, "bboxSize",           bboxSize ());
+
+	addChildObjects (segmentIdentifiersNode,
+	                 renderStyleNodes,
+	                 voxelsNode,
+	                 blendModeNode);
 }
 
 X3DBaseNode*
 SegmentedVolumeData::create (X3DExecutionContext* const executionContext) const
 {
 	return new SegmentedVolumeData (executionContext);
+}
+
+void
+SegmentedVolumeData::initialize ()
+{
+	X3DVolumeDataNode::initialize ();
+
+	segmentEnabled ()     .addInterest (&SegmentedVolumeData::update,                 this);
+	segmentIdentifiers () .addInterest (&SegmentedVolumeData::update,                 this);
+	segmentIdentifiers () .addInterest (&SegmentedVolumeData::set_segmentIdentifiers, this);
+	renderStyle ()        .addInterest (&SegmentedVolumeData::set_renderStyle,        this);
+	voxels ()             .addInterest (&SegmentedVolumeData::set_voxels,             this);
+	voxels ()             .addInterest (getAppearance () -> texture ());
+
+	blendModeNode -> setup ();
+
+	getAppearance () -> texture ()   = voxels ();
+	getAppearance () -> blendMode () = blendModeNode;
+
+	set_voxels ();
+	set_segmentIdentifiers ();
+	set_renderStyle ();
+}
+
+void
+SegmentedVolumeData::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	X3DVolumeDataNode::setExecutionContext (executionContext);
+
+	blendModeNode -> setExecutionContext (executionContext);
+}
+
+bool
+SegmentedVolumeData::getSegmentEnabled (const size_t index) const
+{
+	return index < segmentEnabled () .size () ? segmentEnabled () [index] : true;
+}
+
+void
+SegmentedVolumeData::set_renderStyle ()
+{
+	for (const auto & renderStyleNode : renderStyleNodes)
+	{
+		renderStyleNode -> removeInterest (&SegmentedVolumeData::update, this);
+		renderStyleNode -> removeVolumeData (this);
+	}
+
+	renderStyleNodes .clear ();
+
+	for (const auto & node : renderStyle ())
+	{
+		const auto renderStyleNode = x3d_cast <X3DVolumeRenderStyleNode*> (node);
+
+		if (renderStyleNode)
+			renderStyleNodes .emplace_back (renderStyleNode);
+	}
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+	{
+		renderStyleNode -> addInterest (&SegmentedVolumeData::update, this);
+		renderStyleNode -> addVolumeData (this);
+	}
+
+	update ();
+}
+
+void
+SegmentedVolumeData::set_segmentIdentifiers ()
+{
+	segmentIdentifiersNode = x3d_cast <X3DTexture3DNode*> (segmentIdentifiers ());
+}
+
+void
+SegmentedVolumeData::set_voxels ()
+{
+	if (voxelsNode)
+		voxelsNode -> removeInterest (&SegmentedVolumeData::set_textureSize, this);
+
+	voxelsNode = x3d_cast <X3DTexture3DNode*> (voxels ());
+
+	if (voxelsNode)
+	{
+		voxelsNode -> addInterest (&SegmentedVolumeData::set_textureSize, this);
+
+		set_textureSize ();
+	}
+}
+
+void
+SegmentedVolumeData::set_textureSize ()
+{
+	try
+	{
+		const auto textureSize = Vector3f (voxelsNode -> getWidth (),
+		                                   voxelsNode -> getHeight (),
+		                                   voxelsNode -> getDepth ());
+
+		getShader () -> setField <SFVec3f> ("x3d_TextureSize", textureSize);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+SegmentedVolumeData::update ()
+{
+	setShader (createShader ());
+}
+
+X3DPtr <ComposedShader>
+SegmentedVolumeData::createShader () const
+{
+	const bool segmentEnabled0 = getSegmentEnabled (0);
+	const bool segmentEnabled1 = getSegmentEnabled (1);
+
+	const auto & opacityMapVolumeStyle = getBrowser () -> getDefaultVolumeStyle ();
+	std::string  styleUniforms         = opacityMapVolumeStyle -> getUniformsText ();
+	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
+
+	if (segmentEnabled1 && segmentIdentifiersNode)
+	{
+		styleUniforms  += "\n";
+		styleUniforms  += "uniform sampler3D segmentIdentifiers;\n";
+		styleFunctions += "\n";
+
+		styleFunctions += "\n";
+		styleFunctions += "	float segment = texture (segmentIdentifiers, texCoord) .r;\n";
+	}
+	else
+	{
+		styleFunctions += "	float segment = 0.0;\n";
+	}
+
+	styleFunctions += "\n";
+	styleFunctions += "	if (segment == 0.0)\n";
+	styleFunctions += "	{\n";
+
+	if (segmentEnabled0)
+	{
+		if (renderStyleNodes .size () > 0)
+		{
+			styleUniforms  += renderStyleNodes [0] -> getUniformsText (),
+			styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
+		}
+	}
+
+	styleFunctions += "	}\n";
+	styleFunctions += "	else\n";
+	styleFunctions += "	{\n";
+
+	if (segmentEnabled1)
+	{
+		if (renderStyleNodes .size () > 1)
+		{
+			styleUniforms  += renderStyleNodes [1] -> getUniformsText (),
+			styleFunctions += renderStyleNodes [1] -> getFunctionsText ();
+		}
+	}
+
+	styleFunctions += "	}\n";
+
+	static const std::regex CLIP_PLANES             (R"/(#pragma X3D include "include/ClipPlanes.glsl"\n)/");
+	static const std::regex FOG                     (R"/(#pragma X3D include "include/Fog.glsl"\n)/");
+	static const std::regex VOLUME_STYLES_UNIFORMS  (R"/(// VOLUME_STYLES_UNIFORMS\n)/");
+	static const std::regex VOLUME_STYLES_FUNCTIONS (R"/(// VOLUME_STYLES_FUNCTIONS\n)/");
+
+	auto fl   = FileLoader (getExecutionContext ());
+	auto clip = fl .loadDocument (get_shader ("Shaders/include/ClipPlanes.glsl"));
+	auto fog  = fl .loadDocument (get_shader ("Shaders/include/Fog.glsl"));
+	auto vs   = fl .loadDocument (get_shader ("VolumeRendering/VolumeStyle.vs"));
+	auto fs   = fl .loadDocument (get_shader ("VolumeRendering/VolumeStyle.fs"));
+
+	fs = std::regex_replace (fs, CLIP_PLANES,             clip);
+	fs = std::regex_replace (fs, FOG,                     fog);
+	fs = std::regex_replace (fs, VOLUME_STYLES_UNIFORMS,  styleUniforms);
+	fs = std::regex_replace (fs, VOLUME_STYLES_FUNCTIONS, styleFunctions);
+
+	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
+	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
+	const auto shaderNode   = getExecutionContext () -> createNode <ComposedShader> ();
+
+	fragmentPart -> setName ("VolumeDataFragmentShaderPart");
+	vertexPart   -> setName ("VolumeDataVertexShaderPart");
+	shaderNode   -> setName ("VolumeDataComposedShader");
+
+	fragmentPart -> type () = "FRAGMENT";
+	vertexPart   -> url ()  = { "data:x-shader/x-vertex," + vs };
+	fragmentPart -> url ()  = { "data:x-shader/x-fragment," + fs };
+
+	shaderNode -> parts () .emplace_back (vertexPart);
+	shaderNode -> parts () .emplace_back (fragmentPart);
+
+	if (voxelsNode)
+	{
+		auto textureSize = new SFVec3f (voxelsNode -> getWidth (), voxelsNode -> getHeight (), voxelsNode -> getDepth ());
+
+		shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureSize", textureSize);
+	}
+	else
+	{
+		shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureSize", new SFVec3f ());
+	}
+
+	opacityMapVolumeStyle -> addShaderFields (shaderNode);
+
+	if (segmentEnabled0)
+	{
+		if (renderStyleNodes .size () > 0)
+			renderStyleNodes [0] -> addShaderFields (shaderNode);
+	}
+
+	if (segmentEnabled1)
+	{
+		if (segmentIdentifiersNode)
+			shaderNode -> addUserDefinedField (inputOutput, "segmentIdentifiers", new SFNode (segmentIdentifiersNode));
+
+		if (renderStyleNodes .size () > 1)
+			renderStyleNodes [1] -> addShaderFields (shaderNode);
+	}
+
+	__LOG__ << std::endl << fs << std::endl;
+
+	return shaderNode;
+}
+
+void
+SegmentedVolumeData::shutdown ()
+{
+	for (const auto & renderStyleNode : renderStyleNodes)
+		renderStyleNode -> removeVolumeData (this);
+
+	X3DVolumeDataNode::shutdown ();
 }
 
 SegmentedVolumeData::~SegmentedVolumeData ()

@@ -86,17 +86,11 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
+
 	///  @name Fields
-
-	virtual
-	MFNode &
-	renderStyle ()
-	{ return *fields .renderStyle; }
-
-	virtual
-	const MFNode &
-	renderStyle () const
-	{ return *fields .renderStyle; }
 
 	virtual
 	MFBool &
@@ -119,6 +113,16 @@ public:
 	{ return *fields .segmentIdentifiers; }
 
 	virtual
+	MFNode &
+	renderStyle ()
+	{ return *fields .renderStyle; }
+
+	virtual
+	const MFNode &
+	renderStyle () const
+	{ return *fields .renderStyle; }
+
+	virtual
 	SFNode &
 	voxels ()
 	{ return *fields .voxels; }
@@ -134,7 +138,49 @@ public:
 	~SegmentedVolumeData () final override;
 
 
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	shutdown () final override;
+
+
 private:
+
+	///  @name Member access
+
+	bool
+	getSegmentEnabled (const size_t index) const;
+
+	///  @name Event handlers
+
+	void
+	set_renderStyle ();
+
+	void
+	set_segmentIdentifiers ();
+
+	void
+	set_voxels ();
+
+	void
+	set_textureSize ();
+
+	///  @name Operations
+
+	void
+	update ();
+
+	X3DPtr <ComposedShader>
+	createShader () const;
 
 	///  @name Static members
 
@@ -148,13 +194,20 @@ private:
 	{
 		Fields ();
 
-		MFNode* const renderStyle;
 		MFBool* const segmentEnabled;
 		SFNode* const segmentIdentifiers;
+		MFNode* const renderStyle;
 		SFNode* const voxels;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DTexture3DNode>              segmentIdentifiersNode;
+	X3DPtrArray <X3DVolumeRenderStyleNode> renderStyleNodes;
+	X3DPtr <X3DTexture3DNode>              voxelsNode;
+	X3DPtr <BlendMode>                     blendModeNode;
 
 };
 
