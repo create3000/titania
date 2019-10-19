@@ -178,6 +178,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_gradients ();
+
+	void
 	set_renderStyle ();
 
 	void
@@ -218,6 +221,7 @@ private:
 
 	///  @name Members
 
+	X3DPtr <X3DTexture3DNode>              gradientsNode;
 	X3DPtrArray <X3DVolumeRenderStyleNode> renderStyleNodes;
 	X3DPtr <X3DTexture3DNode>              voxelsNode;
 	X3DPtr <BlendMode>                     blendModeNode;

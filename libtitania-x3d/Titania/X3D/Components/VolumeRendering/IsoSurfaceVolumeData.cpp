@@ -85,6 +85,7 @@ IsoSurfaceVolumeData::IsoSurfaceVolumeData (X3DExecutionContext* const execution
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DVolumeDataNode (),
 	           fields (),
+	    gradientsNode (),
 	 renderStyleNodes (),
 	       voxelsNode (),
 	    blendModeNode (new BlendMode (executionContext))
@@ -102,7 +103,8 @@ IsoSurfaceVolumeData::IsoSurfaceVolumeData (X3DExecutionContext* const execution
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 
-	addChildObjects (renderStyleNodes,
+	addChildObjects (gradientsNode,
+	                 renderStyleNodes,
 	                 voxelsNode,
 	                 blendModeNode);
 }
@@ -118,6 +120,7 @@ IsoSurfaceVolumeData::initialize ()
 {
 	X3DVolumeDataNode::initialize ();
 
+	gradients ()   .addInterest (&IsoSurfaceVolumeData::set_gradients,   this);
 	renderStyle () .addInterest (&IsoSurfaceVolumeData::set_renderStyle, this);
 	voxels ()      .addInterest (&IsoSurfaceVolumeData::set_voxels,      this);
 	voxels ()      .addInterest (getAppearance () -> texture ());
@@ -132,6 +135,7 @@ IsoSurfaceVolumeData::initialize ()
 	getAppearance () -> texture ()   = voxels ();
 	getAppearance () -> blendMode () = blendModeNode;
 
+	set_gradients ();
 	set_renderStyle ();
 	set_voxels ();
 
@@ -144,6 +148,12 @@ IsoSurfaceVolumeData::setExecutionContext (X3DExecutionContext* const executionC
 	X3DVolumeDataNode::setExecutionContext (executionContext);
 
 	blendModeNode -> setExecutionContext (executionContext);
+}
+
+void
+IsoSurfaceVolumeData::set_gradients ()
+{
+	gradientsNode = x3d_cast <X3DTexture3DNode*> (gradients ());
 }
 
 void
@@ -227,6 +237,17 @@ IsoSurfaceVolumeData::createShader () const
 
 	styleFunctions += "\n";
 	styleFunctions += "	// IsoSurfaceVolumeData\n";
+	styleFunctions += "\n";
+
+	if (gradientsNode)
+	{
+		styleUniforms += "\n";
+		styleUniforms += "uniform sampler3D gradients;\n";
+
+		styleFunctions += "	if (length (texture (gradients, texCoord) .rgb) < 0.1)\n";
+		styleFunctions += "		return vec4 (0.0);";
+	}
+
 	styleFunctions += "\n";
 	styleFunctions += "	float intensity = textureColor .r;\n";
 	styleFunctions += "\n";
@@ -348,6 +369,9 @@ IsoSurfaceVolumeData::createShader () const
 
 	shaderNode -> addUserDefinedField (inputOutput, "surfaceValues",    surfaceValues ()    .copy (CopyType::FLAT_COPY));
 	shaderNode -> addUserDefinedField (inputOutput, "surfaceTolerance", surfaceTolerance () .copy (CopyType::FLAT_COPY));
+
+	if (gradientsNode)
+		shaderNode -> addUserDefinedField (inputOutput, "grandients", new SFNode (gradientsNode));
 
 	if (voxelsNode)
 	{

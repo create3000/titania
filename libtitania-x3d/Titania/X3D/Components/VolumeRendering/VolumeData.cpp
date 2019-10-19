@@ -239,8 +239,6 @@ VolumeData::createShader () const
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
 
-	shaderNode -> addUserDefinedField (inputOutput, "surfaceTolerance", new SFFloat (0.1));
-
 	if (voxelsNode)
 	{
 		auto textureSize = new SFVec3f (voxelsNode -> getWidth (), voxelsNode -> getHeight (), voxelsNode -> getDepth ());
