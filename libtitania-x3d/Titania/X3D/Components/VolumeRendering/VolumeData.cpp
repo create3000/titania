@@ -200,7 +200,7 @@ VolumeData::createShader () const
 	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
 
 	styleUniforms  += "\n";
-	styleUniforms  += "uniform float surfaceTolerance;\n";
+	styleUniforms  += "uniform float normalTolerance;\n";
 
 	if (renderStyleNode)
 	{
@@ -238,6 +238,8 @@ VolumeData::createShader () const
 
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
+
+	shaderNode -> addUserDefinedField (inputOutput, "normalTolerance", new SFFloat (0.1));
 
 	if (voxelsNode)
 	{

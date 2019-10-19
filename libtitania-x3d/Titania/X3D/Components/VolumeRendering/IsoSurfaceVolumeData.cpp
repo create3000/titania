@@ -229,6 +229,7 @@ IsoSurfaceVolumeData::createShader () const
 	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
 
 	styleUniforms  += "\n";
+	styleUniforms  += "uniform float normalTolerance;\n";
 	styleUniforms  += "uniform float surfaceValues [" + basic::to_string (surfaceValues () .size (), std::locale::classic ()) + "];\n";
 	styleUniforms  += "uniform float surfaceTolerance;\n";
 
@@ -392,6 +393,7 @@ IsoSurfaceVolumeData::createShader () const
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
 
+	shaderNode -> addUserDefinedField (inputOutput, "normalTolerance", new SFFloat (0.1));
 	shaderNode -> addUserDefinedField (inputOutput, "surfaceValues",    surfaceValues ()    .copy (CopyType::FLAT_COPY));
 	shaderNode -> addUserDefinedField (inputOutput, "surfaceTolerance", surfaceTolerance () .copy (CopyType::FLAT_COPY));
 
