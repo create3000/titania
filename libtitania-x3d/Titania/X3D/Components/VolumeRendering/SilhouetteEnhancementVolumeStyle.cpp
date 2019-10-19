@@ -147,7 +147,7 @@ SilhouetteEnhancementVolumeStyle::getUniformsText () const
 	string += "{\n";
 	string += "	vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
 	string += "\n";
-	string += "	if (surfaceNormal .w < 0.1)\n";
+	string += "	if (surfaceNormal .w < surfaceTolerance)\n";
 	string += "	{\n";
 	string += "		return 0.0;\n";
 	string += "	}\n";
