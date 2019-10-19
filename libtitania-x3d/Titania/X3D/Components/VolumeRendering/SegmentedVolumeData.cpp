@@ -232,7 +232,7 @@ SegmentedVolumeData::createShader () const
 	std::string  styleUniforms         = opacityMapVolumeStyle -> getUniformsText ();
 	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
 
-	if (segmentEnabled1 && segmentIdentifiersNode)
+	if (segmentIdentifiersNode)
 	{
 		styleUniforms  += "\n";
 		styleUniforms  += "uniform sampler3D segmentIdentifiers;\n";
@@ -258,6 +258,10 @@ SegmentedVolumeData::createShader () const
 			styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
 		}
 	}
+	else
+	{
+		styleFunctions += "	return vec4 (0.0);\n";
+	}
 
 	styleFunctions += "	}\n";
 	styleFunctions += "	else\n";
@@ -270,6 +274,10 @@ SegmentedVolumeData::createShader () const
 			styleUniforms  += renderStyleNodes [1] -> getUniformsText (),
 			styleFunctions += renderStyleNodes [1] -> getFunctionsText ();
 		}
+	}
+	else
+	{
+		styleFunctions += "	return vec4 (0.0);\n";
 	}
 
 	styleFunctions += "	}\n";
@@ -316,6 +324,9 @@ SegmentedVolumeData::createShader () const
 		shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureSize", new SFVec3f ());
 	}
 
+	if (segmentIdentifiersNode)
+		shaderNode -> addUserDefinedField (inputOutput, "segmentIdentifiers", new SFNode (segmentIdentifiersNode));
+
 	opacityMapVolumeStyle -> addShaderFields (shaderNode);
 
 	if (segmentEnabled0)
@@ -326,9 +337,6 @@ SegmentedVolumeData::createShader () const
 
 	if (segmentEnabled1)
 	{
-		if (segmentIdentifiersNode)
-			shaderNode -> addUserDefinedField (inputOutput, "segmentIdentifiers", new SFNode (segmentIdentifiersNode));
-
 		if (renderStyleNodes .size () > 1)
 			renderStyleNodes [1] -> addShaderFields (shaderNode);
 	}
