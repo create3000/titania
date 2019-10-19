@@ -139,7 +139,7 @@ ShaderPart::set_buffer ()
 {
 	valid = false;
 
-	for (const auto & URL : basic::make_const_range (url ())) // TODO: use buffer instead of url ()
+	for (const auto & URL : basic::make_const_range (buffer))
 	{
 		try
 		{
