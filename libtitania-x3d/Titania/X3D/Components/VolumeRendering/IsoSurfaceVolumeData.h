@@ -93,16 +93,6 @@ public:
 	///  @name Fields
 
 	virtual
-	MFFloat &
-	surfaceValues ()
-	{ return *fields .surfaceValues; }
-
-	virtual
-	const MFFloat &
-	surfaceValues () const
-	{ return *fields .surfaceValues; }
-
-	virtual
 	SFFloat &
 	contourStepSize ()
 	{ return *fields .contourStepSize; }
@@ -111,6 +101,16 @@ public:
 	const SFFloat &
 	contourStepSize () const
 	{ return *fields .contourStepSize; }
+
+	virtual
+	MFFloat &
+	surfaceValues ()
+	{ return *fields .surfaceValues; }
+
+	virtual
+	const MFFloat &
+	surfaceValues () const
+	{ return *fields .surfaceValues; }
 
 	virtual
 	SFFloat &
@@ -209,8 +209,8 @@ private:
 	{
 		Fields ();
 
-		MFFloat* const surfaceValues;
 		SFFloat* const contourStepSize;
+		MFFloat* const surfaceValues;
 		SFFloat* const surfaceTolerance;
 		SFNode* const gradients;
 		MFNode* const renderStyle;

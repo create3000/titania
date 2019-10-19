@@ -73,8 +73,8 @@ const std::string IsoSurfaceVolumeData::typeName       = "IsoSurfaceVolumeData";
 const std::string IsoSurfaceVolumeData::containerField = "children";
 
 IsoSurfaceVolumeData::Fields::Fields () :
-	   surfaceValues (new MFFloat ()),
 	 contourStepSize (new SFFloat (0)),
+	   surfaceValues (new MFFloat ()),
 	surfaceTolerance (new SFFloat (0)),
 	       gradients (new SFNode ()),
 	     renderStyle (new MFNode ()),
@@ -94,8 +94,8 @@ IsoSurfaceVolumeData::IsoSurfaceVolumeData (X3DExecutionContext* const execution
 
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "dimensions",       dimensions ());
-	addField (inputOutput,    "surfaceValues",    surfaceValues ());
 	addField (inputOutput,    "contourStepSize",  contourStepSize ());
+	addField (inputOutput,    "surfaceValues",    surfaceValues ());
 	addField (inputOutput,    "surfaceTolerance", surfaceTolerance ());
 	addField (inputOutput,    "gradients",        gradients ());
 	addField (inputOutput,    "renderStyle",      renderStyle ());
@@ -125,8 +125,8 @@ IsoSurfaceVolumeData::initialize ()
 	voxels ()      .addInterest (&IsoSurfaceVolumeData::set_voxels,      this);
 	voxels ()      .addInterest (getAppearance () -> texture ());
 
-	surfaceValues ()    .addInterest (&IsoSurfaceVolumeData::update, this);
 	contourStepSize ()  .addInterest (&IsoSurfaceVolumeData::update, this);
+	surfaceValues ()    .addInterest (&IsoSurfaceVolumeData::update, this);
 	surfaceTolerance () .addInterest (&IsoSurfaceVolumeData::update, this);
 	renderStyle ()      .addInterest (&IsoSurfaceVolumeData::update, this);
 
