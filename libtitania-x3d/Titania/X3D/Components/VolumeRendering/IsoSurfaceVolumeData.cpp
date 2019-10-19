@@ -281,14 +281,16 @@ IsoSurfaceVolumeData::createShader () const
 
 			calcSurfaceValues .emplace_back (surfaceValues () [0]);
 
-			for (float v = surfaceValues () [0] + contourStepSize (); v <= 1; v += contourStepSize ())
+			for (float v = surfaceValues () [0] + contourStepSize (); v < 1; v += contourStepSize ())
 				calcSurfaceValues .emplace_back (v);
 
 			styleFunctions += "	if (false)\n";
 			styleFunctions += "	{ }\n";
 
-			for (const auto & surfaceValue : calcSurfaceValues)
+			for (size_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
 			{
+				const auto surfaceValue = calcSurfaceValues [i];
+
 				styleFunctions += "	else if (intensity > " + basic::to_string (surfaceValue, std::locale::classic ()) + ")\n";
 				styleFunctions += "	{\n";
 				styleFunctions += "		textureColor = vec4 (vec3 (" + basic::to_string (surfaceValue, std::locale::classic ()) + "), 1.0);\n";
@@ -313,7 +315,7 @@ IsoSurfaceVolumeData::createShader () const
 		styleFunctions += "	if (false)\n";
 		styleFunctions += "	{ }\n";
 
-		for (size_t i = 0, size = surfaceValues () .size (); i < size; ++ i)
+		for (size_t i = surfaceValues () .size () - 1; i >= 0; -- i)
 		{
 			styleFunctions += "	else if (intensity > surfaceValues [" + basic::to_string (i, std::locale::classic ()) + "])\n";
 			styleFunctions += "	{\n";
