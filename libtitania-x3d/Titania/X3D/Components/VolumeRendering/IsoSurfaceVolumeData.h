@@ -86,7 +86,21 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
+
 	///  @name Fields
+
+	virtual
+	MFFloat &
+	surfaceValues ()
+	{ return *fields .surfaceValues; }
+
+	virtual
+	const MFFloat &
+	surfaceValues () const
+	{ return *fields .surfaceValues; }
 
 	virtual
 	SFFloat &
@@ -97,6 +111,16 @@ public:
 	const SFFloat &
 	contourStepSize () const
 	{ return *fields .contourStepSize; }
+
+	virtual
+	SFFloat &
+	surfaceTolerance ()
+	{ return *fields .surfaceTolerance; }
+
+	virtual
+	const SFFloat &
+	surfaceTolerance () const
+	{ return *fields .surfaceTolerance; }
 
 	virtual
 	SFNode &
@@ -119,26 +143,6 @@ public:
 	{ return *fields .renderStyle; }
 
 	virtual
-	SFFloat &
-	surfaceTolerance ()
-	{ return *fields .surfaceTolerance; }
-
-	virtual
-	const SFFloat &
-	surfaceTolerance () const
-	{ return *fields .surfaceTolerance; }
-
-	virtual
-	MFFloat &
-	surfaceValues ()
-	{ return *fields .surfaceValues; }
-
-	virtual
-	const MFFloat &
-	surfaceValues () const
-	{ return *fields .surfaceValues; }
-
-	virtual
 	SFNode &
 	voxels ()
 	{ return *fields .voxels; }
@@ -154,7 +158,41 @@ public:
 	~IsoSurfaceVolumeData () final override;
 
 
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	shutdown () final override;
+
+
 private:
+
+	///  @name Event handlers
+
+	void
+	set_renderStyle ();
+
+	void
+	set_voxels ();
+
+	void
+	set_textureSize ();
+
+	///  @name Operations
+
+	void
+	update ();
+
+	X3DPtr <ComposedShader>
+	createShader () const;
 
 	///  @name Static members
 
@@ -168,15 +206,21 @@ private:
 	{
 		Fields ();
 
+		MFFloat* const surfaceValues;
 		SFFloat* const contourStepSize;
+		SFFloat* const surfaceTolerance;
 		SFNode* const gradients;
 		MFNode* const renderStyle;
-		SFFloat* const surfaceTolerance;
-		MFFloat* const surfaceValues;
 		SFNode* const voxels;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtrArray <X3DVolumeRenderStyleNode> renderStyleNodes;
+	X3DPtr <X3DTexture3DNode>              voxelsNode;
+	X3DPtr <BlendMode>                     blendModeNode;
 
 };
 

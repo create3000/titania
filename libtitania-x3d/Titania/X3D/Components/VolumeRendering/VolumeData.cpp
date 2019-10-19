@@ -133,9 +133,6 @@ VolumeData::setExecutionContext (X3DExecutionContext* const executionContext)
 	X3DVolumeDataNode::setExecutionContext (executionContext);
 
 	blendModeNode -> setExecutionContext (executionContext);
-
-	if (isInitialized ())
-		set_renderStyle ();
 }
 
 void
