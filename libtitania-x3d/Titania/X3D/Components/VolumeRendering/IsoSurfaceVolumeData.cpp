@@ -393,7 +393,7 @@ IsoSurfaceVolumeData::createShader () const
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
 
-	shaderNode -> addUserDefinedField (inputOutput, "normalTolerance", new SFFloat (0.1));
+	shaderNode -> addUserDefinedField (inputOutput, "normalTolerance", new SFFloat (0.001));
 	shaderNode -> addUserDefinedField (inputOutput, "surfaceValues",    surfaceValues ()    .copy (CopyType::FLAT_COPY));
 	shaderNode -> addUserDefinedField (inputOutput, "surfaceTolerance", surfaceTolerance () .copy (CopyType::FLAT_COPY));
 
