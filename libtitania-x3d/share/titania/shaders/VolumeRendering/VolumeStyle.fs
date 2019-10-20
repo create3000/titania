@@ -19,12 +19,13 @@ in float fogDepth;
 in vec3  vertex;
 in vec4  texCoord;
 
+#pragma X3D include "include/Fog.glsl"
+
 // VOLUME_STYLES_UNIFORMS
 
 out vec4 x3d_FragColor;
 
 #pragma X3D include "include/ClipPlanes.glsl"
-#pragma X3D include "include/Fog.glsl"
 
 vec4
 getTextureColor (in vec3 texCoord)
