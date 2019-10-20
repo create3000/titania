@@ -232,9 +232,6 @@ SegmentedVolumeData::createShader () const
 	std::string  styleUniforms         = opacityMapVolumeStyle -> getUniformsText ();
 	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
 
-	styleUniforms  += "\n";
-	styleUniforms  += "uniform float normalTolerance;\n";
-
 	if (segmentIdentifiersNode)
 	{
 		styleUniforms  += "\n";
@@ -315,8 +312,6 @@ SegmentedVolumeData::createShader () const
 
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
-
-	shaderNode -> addUserDefinedField (inputOutput, "normalTolerance", new SFFloat (0.001));
 
 	if (voxelsNode)
 	{

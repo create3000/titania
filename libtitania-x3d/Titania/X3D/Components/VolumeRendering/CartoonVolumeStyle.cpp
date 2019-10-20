@@ -268,7 +268,7 @@ CartoonVolumeStyle::getUniformsText () const
 	string += "{\n";
 	string += "	vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
 	string += "\n";
-	string += "	if (surfaceNormal .w < normalTolerance)\n";
+	string += "	if (surfaceNormal .w == 0.0)\n";
 	string += "		return vec4 (0.0);\n";
 	string += "\n";
 	string += "	vec4 orthogonalColor = orthogonalColor_" + getStyleId () + ";\n";
