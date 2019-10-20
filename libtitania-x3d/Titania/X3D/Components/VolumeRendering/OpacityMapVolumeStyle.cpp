@@ -166,7 +166,6 @@ OpacityMapVolumeStyle::getFunctionsText () const
 	string += "\n";
 	string += "	// OpacityMapVolumeStyle\n";
 	string += "\n";
-
 	string += "	textureColor = getOpacityMapStyle_" + getStyleId () + " (textureColor);\n";
 
 	return string;
