@@ -264,10 +264,16 @@ CartoonVolumeStyle::getUniformsText () const
 
 	string += "\n";
 	string += "vec4\n";
-	string += "getCartoonStyle_" + getStyleId () + " (in vec4 originalColor, in vec4 orthogonalColor, in vec4 parallelColor, in int colorSteps, in vec4 surfaceNormal, vec3 vertex)\n";
+	string += "getCartoonStyle_" + getStyleId () + " (in vec4 originalColor, in vec3 texCoord)\n";
 	string += "{\n";
+	string += "	vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
+	string += "\n";
 	string += "	if (surfaceNormal .w < normalTolerance)\n";
 	string += "		return vec4 (0.0);\n";
+	string += "\n";
+	string += "	vec4 orthogonalColor = orthogonalColor_" + getStyleId () + ";\n";
+	string += "	vec4 parallelColor   = parallelColor_" + getStyleId () + ";\n";
+	string += "	int  colorSteps      = colorSteps_" + getStyleId () + ";\n";
 	string += "\n";
 	string += "	float steps    = clamp (float (colorSteps), 1.0, 64.0);\n";
 	string += "	float step     = M_PI / 2.0 / steps;\n";
@@ -297,14 +303,7 @@ CartoonVolumeStyle::getFunctionsText () const
 	string += "\n";
 	string += "	// CartoonVolumeStyle\n";
 	string += "\n";
-	string += "	{\n";
-
-	string += "		vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
-	string += "		vec4 cartoonColor  = getCartoonStyle_" + getStyleId () + " (textureColor, orthogonalColor_" + getStyleId () + ", parallelColor_" + getStyleId () + ", colorSteps_" + getStyleId () + ", surfaceNormal, vertex);\n";
-	string += "\n";
-	string += "		textureColor = cartoonColor;\n";
-
-	string += "	}\n";
+	string += "	textureColor = getCartoonStyle_" + getStyleId () + " (textureColor, texCoord);\n";
 
 	return string;
 }
