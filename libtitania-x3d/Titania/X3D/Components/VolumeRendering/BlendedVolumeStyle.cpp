@@ -313,24 +313,10 @@ BlendedVolumeStyle::getUniformsText () const
 	string += "\n";
 	string += uniformsText;
 
-	return string;
-}
-
-std::string
-BlendedVolumeStyle::getFunctionsText () const
-{
-	if (not enabled ())
-		return "";
-
-	if (not voxelsNode)
-		return "";
-
-	std::string string;
-
 	string += "\n";
-	string += "	// BlendedVolumeStyle\n";
-	string += "\n";
-
+	string += "vec4\n";
+	string += "getBlendedStyle_" + getStyleId () + " (in vec4 originalColor, in vec3 texCoord)\n";
+	string += "{\n";
 	string += "	vec4 blendColor_" + getStyleId () + " = texture (voxels_" + getStyleId () + ", texCoord);";
 
 	auto functionsText = getBrowser () -> getDefaultBlendedVolumeStyle () -> getFunctionsText ();
@@ -358,7 +344,7 @@ BlendedVolumeStyle::getFunctionsText () const
 		}
 		case WeightFunctionsType::ALPHA0:
 		{
-			string += "	float w1_" + getStyleId () + " = textureColor .a;\n";
+			string += "	float w1_" + getStyleId () + " = originalColor .a;\n";
 			break;
 		}
 		case WeightFunctionsType::ALPHA1:
@@ -368,7 +354,7 @@ BlendedVolumeStyle::getFunctionsText () const
 		}
 		case WeightFunctionsType::ONE_MINUS_ALPHA0:
 		{
-			string += "	float w1_" + getStyleId () + " = 1.0 - textureColor .a;\n";
+			string += "	float w1_" + getStyleId () + " = 1.0 - originalColor .a;\n";
 			break;
 		}
 		case WeightFunctionsType::ONE_MINUS_ALPHA1:
@@ -380,7 +366,7 @@ BlendedVolumeStyle::getFunctionsText () const
 		{
 			if (weightTransferFunction1Node)
 			{
-				string += "	float w1_" + getStyleId () + " = texture (weightTransferFunction1_" + getStyleId () + ", vec2 (textureColor .a, blendColor_" + getStyleId () + " .a)) .r;\n";
+				string += "	float w1_" + getStyleId () + " = texture (weightTransferFunction1_" + getStyleId () + ", vec2 (originalColor .a, blendColor_" + getStyleId () + " .a)) .r;\n";
 			}
 			else
 			{
@@ -401,7 +387,7 @@ BlendedVolumeStyle::getFunctionsText () const
 		}
 		case WeightFunctionsType::ALPHA0:
 		{
-			string += "	float w2_" + getStyleId () + " = textureColor .a;\n";
+			string += "	float w2_" + getStyleId () + " = originalColor .a;\n";
 			break;
 		}
 		case WeightFunctionsType::ALPHA1:
@@ -411,7 +397,7 @@ BlendedVolumeStyle::getFunctionsText () const
 		}
 		case WeightFunctionsType::ONE_MINUS_ALPHA0:
 		{
-			string += "	float w2_" + getStyleId () + " = 1.0 - textureColor .a;\n";
+			string += "	float w2_" + getStyleId () + " = 1.0 - originalColor .a;\n";
 			break;
 		}
 		case WeightFunctionsType::ONE_MINUS_ALPHA1:
@@ -423,7 +409,7 @@ BlendedVolumeStyle::getFunctionsText () const
 		{
 			if (weightTransferFunction2Node)
 			{
-				string += "	float w2_" + getStyleId () + " = texture (weightTransferFunction2_" + getStyleId () + ", vec2 (textureColor .a, blendColor_" + getStyleId () + " .a)) .r;\n";
+				string += "	float w2_" + getStyleId () + " = texture (weightTransferFunction2_" + getStyleId () + ", vec2 (originalColor .a, blendColor_" + getStyleId () + " .a)) .r;\n";
 			}
 			else
 			{
@@ -436,7 +422,27 @@ BlendedVolumeStyle::getFunctionsText () const
 	}
 
 	string += "\n";
-	string += "	textureColor = clamp (textureColor * w1_" + getStyleId () + " + blendColor_" + getStyleId () + " * w2_" + getStyleId () + ", 0.0, 1.0);\n";
+	string += "	return clamp (originalColor * w1_" + getStyleId () + " + blendColor_" + getStyleId () + " * w2_" + getStyleId () + ", 0.0, 1.0);\n";
+	string += "}\n";
+
+	return string;
+}
+
+std::string
+BlendedVolumeStyle::getFunctionsText () const
+{
+	if (not enabled ())
+		return "";
+
+	if (not voxelsNode)
+		return "";
+
+	std::string string;
+
+	string += "\n";
+	string += "	// BlendedVolumeStyle\n";
+	string += "\n";
+	string += "	textureColor = getBlendedStyle_" + getStyleId () + " (textureColor, texCoord);\n";
 
 	return string;
 }
