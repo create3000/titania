@@ -139,10 +139,15 @@ EdgeEnhancementVolumeStyle::getUniformsText () const
 
 	string += "\n";
 	string += "vec4\n";
-	string += "getEdgeEnhacementStyle_" + getStyleId () + " (in vec4 originalColor, in vec4 edgeColor, in float gradientThreshold, in vec4 surfaceNormal, in vec3 vertex)\n";
+	string += "getEdgeEnhacementStyle_" + getStyleId () + " (in vec4 originalColor, in vec3 texCoord)\n";
 	string += "{\n";
+	string += "	vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
+	string += "\n";
 	string += "	if (surfaceNormal .w < normalTolerance)\n";
-	string += "		return originalColor;\n";
+	string += "		return vec4 (0.0);\n";
+	string += "\n";
+	string += "	vec4  edgeColor         = edgeColor_" + getStyleId () + ";\n";
+	string += "	float gradientThreshold = gradientThreshold_" + getStyleId () + ";\n";
 	string += "\n";
 	string += "	float angle = abs (dot (surfaceNormal .xyz, normalize (vertex)));\n";
 	string += "\n";
@@ -166,14 +171,7 @@ EdgeEnhancementVolumeStyle::getFunctionsText () const
 	string += "\n";
 	string += "	// EdgeEnhancementVolumeStyle\n";
 	string += "\n";
-	string += "	{\n";
-
-	string += "		vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
-	string += "		vec4 edgeColor     = getEdgeEnhacementStyle_" + getStyleId () + " (textureColor, edgeColor_" + getStyleId () + ", gradientThreshold_" + getStyleId () + ", surfaceNormal, vertex);\n";
-	string += "\n";
-	string += "		textureColor = edgeColor;\n";
-
-	string += "	}\n";
+	string += "	textureColor = getEdgeEnhacementStyle_" + getStyleId () + " (textureColor, texCoord);\n";
 
 	return string;
 }
