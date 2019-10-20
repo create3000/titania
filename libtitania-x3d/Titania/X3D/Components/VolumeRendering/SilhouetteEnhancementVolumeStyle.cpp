@@ -148,17 +148,13 @@ SilhouetteEnhancementVolumeStyle::getUniformsText () const
 	string += "	vec4 surfaceNormal = getNormal_" + getStyleId () + " (texCoord);\n";
 	string += "\n";
 	string += "	if (surfaceNormal .w < normalTolerance)\n";
-	string += "	{\n";
 	string += "		return 0.0;\n";
-	string += "	}\n";
-	string += "	else\n";
-	string += "	{\n";
-	string += "		float silhouetteRetainedOpacity = silhouetteRetainedOpacity_" + getStyleId () + ";\n";
-	string += "		float silhouetteBoundaryOpacity = silhouetteBoundaryOpacity_" + getStyleId () + ";\n";
-	string += "		float silhouetteSharpness       = silhouetteSharpness_" + getStyleId () + ";\n";
 	string += "\n";
-	string += "		return originalAlpha * silhouetteRetainedOpacity + pow (silhouetteBoundaryOpacity * (1.0 - dot (surfaceNormal .xyz, normalize (vertex))), silhouetteSharpness);\n";
-	string += "	}\n";
+	string += "	float silhouetteRetainedOpacity = silhouetteRetainedOpacity_" + getStyleId () + ";\n";
+	string += "	float silhouetteBoundaryOpacity = silhouetteBoundaryOpacity_" + getStyleId () + ";\n";
+	string += "	float silhouetteSharpness       = silhouetteSharpness_" + getStyleId () + ";\n";
+	string += "\n";
+	string += "	return originalAlpha * silhouetteRetainedOpacity + pow (silhouetteBoundaryOpacity * (1.0 - dot (surfaceNormal .xyz, normalize (vertex))), silhouetteSharpness);\n";
 	string += "}\n";
 
 	return string;
