@@ -166,6 +166,18 @@ ComposedVolumeStyle::getUniformsText () const
 	for (const auto & renderStyleNode : renderStyleNodes)
 		string += renderStyleNode -> getUniformsText ();
 
+	string += "\n";
+	string += "vec4\n";
+	string += "getComposedStyle_" + getStyleId () + " (in vec4 textureColor, in vec3 texCoord)\n";
+	string += "{\n";
+
+	for (const auto & renderStyleNode : renderStyleNodes)
+		string += renderStyleNode -> getFunctionsText ();
+
+	string += "\n";
+	string += "	return textureColor;\n";
+	string += "}\n";
+
 	return string;
 }
 
@@ -177,8 +189,10 @@ ComposedVolumeStyle::getFunctionsText () const
 
 	std::string string;
 
-	for (const auto & renderStyleNode : renderStyleNodes)
-		string += renderStyleNode -> getFunctionsText ();
+	string += "\n";
+	string += "	// ComposedVolumeStyle\n";
+	string += "\n";
+	string += "	textureColor = getComposedStyle_" + getStyleId () + " (textureColor, texCoord);\n";
 
 	return string;
 }
