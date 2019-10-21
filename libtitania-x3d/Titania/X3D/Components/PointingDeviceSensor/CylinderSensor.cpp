@@ -203,7 +203,7 @@ CylinderSensor::set_active (const bool active,
 
 			// For min/max angle.
 
-			angle       = getAngle (startOffset);
+			angle       = offset ();
 			startVector = Vector3d (0, 0, 1) * axisRotation () * rotation_changed ();
 		}
 		else
