@@ -202,6 +202,8 @@ private:
 	bool       behind;
 	Vector3d   fromVector;
 	Rotation4d startOffset;
+	double     angle;
+	Vector3d   startVector;
 	Matrix4d   inverseModelViewMatrix;
 
 };

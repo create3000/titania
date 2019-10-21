@@ -79,6 +79,8 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	                behind (1),
 	            fromVector (),
 	           startOffset (),
+	                 angle (0),
+	           startVector (),
 	inverseModelViewMatrix ()
 {
 	addType (X3DConstants::CylinderSensor);
@@ -198,6 +200,11 @@ CylinderSensor::set_active (const bool active,
 
 			trackPoint_changed () .setValue (trackPoint);
 			rotation_changed ()   .setValue (startOffset);
+
+			// For min/max angle.
+
+			angle       = getAngle (startOffset);
+			startVector = Vector3d (0, 0, 1) * axisRotation () * rotation_changed ();
 		}
 		else
 		{
@@ -253,19 +260,29 @@ CylinderSensor::set_motion (const HitPtr & hit,
 		rotation = startOffset * rotation;
 
 		if (minAngle () > maxAngle ())
+		{
 			rotation_changed () = rotation;
-
+		}
 		else
 		{
-			const auto angle = interval <double> (getAngle (rotation), -pi <double>, pi <double>);
-			const auto min   = interval <double> (minAngle (), -pi <double>, pi <double>);
-			const auto max   = interval <double> (maxAngle (), -pi <double>, pi <double>);
+			const auto   endVector     = Vector3d (0, 0, 1) * Rotation4d (axisRotation ()) * rotation;
+			const auto   deltaRotation = Rotation4d (startVector, endVector);
+			const auto   axis          = Vector3d (0, 1, 0) * Rotation4d (axisRotation ());
+			const auto   sign          = dot (axis, deltaRotation .axis ()) > 0 ? 1 : -1;
+			const double min           = minAngle ();
+			const double max           = maxAngle ();
+
+			angle += sign * deltaRotation .angle ();
+
+			startVector = endVector;
 
 			if (angle < min)
 				rotation = Rotation4d (cylinder .axis () .direction (), min);
 			else if (angle > max)
 				rotation = Rotation4d (cylinder .axis () .direction (), max);
-	
+			else
+				rotation = Rotation4d (cylinder .axis () .direction (), angle);
+
 			if (rotation_changed () != rotation)
 				rotation_changed () = rotation;
 		}
