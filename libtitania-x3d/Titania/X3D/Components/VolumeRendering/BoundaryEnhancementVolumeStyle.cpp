@@ -120,8 +120,8 @@ BoundaryEnhancementVolumeStyle::getUniformsText () const
 	string += "uniform float opacityFactor_" + getStyleId () + ";\n";
 
 	string += "\n";
-	string += "float\n";
-	string += "getBoundaryEnhancementStyle_" + getStyleId () + " (in float originalAlpha, in vec3 texCoord)\n";
+	string += "vec4\n";
+	string += "getBoundaryEnhancementStyle_" + getStyleId () + " (in vec4 originalColor, in vec3 texCoord)\n";
 	string += "{\n";
 	string += "	float f0 = texture (x3d_Texture3D [0], texCoord) .r;\n";
 	string += "	float f1 = texture (x3d_Texture3D [0], texCoord + vec3 (0.0, 0.0, 1.0 / x3d_TextureSize .z)) .r;\n";
@@ -131,7 +131,7 @@ BoundaryEnhancementVolumeStyle::getUniformsText () const
 	string += "	float boundaryOpacity = boundaryOpacity_" + getStyleId () + ";\n";
 	string += "	float opacityFactor   = opacityFactor_" + getStyleId () + ";\n";
 	string += "\n";
-	string += "	return originalAlpha * (retainedOpacity + pow (boundaryOpacity * f, opacityFactor));\n";
+	string += "	return vec4 (originalColor .rgb, originalColor .a * (retainedOpacity + boundaryOpacity * pow (f, opacityFactor)));\n";
 	string += "}\n";
 
 	return string;
@@ -148,7 +148,7 @@ BoundaryEnhancementVolumeStyle::getFunctionsText () const
 	string += "\n";
 	string += "	// BoundaryEnhancementVolumeStyle\n";
 	string += "\n";
-	string += "	textureColor .a = getBoundaryEnhancementStyle_" + getStyleId () + " (textureColor .a, texCoord);\n";
+	string += "	textureColor = getBoundaryEnhancementStyle_" + getStyleId () + " (textureColor, texCoord);\n";
 
 	return string;
 }
