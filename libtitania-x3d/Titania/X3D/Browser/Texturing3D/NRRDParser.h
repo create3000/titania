@@ -91,7 +91,9 @@ private:
 	{
 		BYTE,
 		SHORT,
-		INT
+		INT,
+		FLOAT,
+		DOUBLE
 	};
 
 	class Grammar;

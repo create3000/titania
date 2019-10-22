@@ -178,6 +178,8 @@ NRRDParser::type (const std::string & value)
 		std::pair ("unsigned int",       std::pair (ByteType::INT, 4)),
 		std::pair ("uint32",             std::pair (ByteType::INT, 4)),
 		std::pair ("uint32_t",           std::pair (ByteType::INT, 4)),
+		std::pair ("float",              std::pair (ByteType::FLOAT, 4)),
+		std::pair ("double",             std::pair (ByteType::DOUBLE, 8)),
 	};
 
 	const auto iter = types .find (value);
@@ -279,6 +281,56 @@ NRRDParser::pixels ()
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
 					nrrd .pixels .push_back ((pixels [i] << 24 | pixels [i + 1] << 16 | pixels [i + 2] << 8 | pixels [i + 3]) / 16'777'216);
+
+				return;
+			}
+			case ByteType::FLOAT:
+			{
+				union Value
+				{
+					uint8_t bytes [4];
+					float number;
+				};
+
+				const auto pixels = data .substr (data .size () - size);
+				Value value;
+
+				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
+				{
+					value .bytes [0] = pixels [i];
+					value .bytes [1] = pixels [i + 1];
+					value .bytes [2] = pixels [i + 2];
+					value .bytes [3] = pixels [i + 3];
+
+					nrrd .pixels .push_back (value .number * 255);
+				}
+
+				return;
+			}
+			case ByteType::DOUBLE:
+			{
+				union Value
+				{
+					uint8_t bytes [8];
+					double number;
+				};
+
+				const auto pixels = data .substr (data .size () - size);
+				Value value;
+
+				for (size_t i = 0, size = pixels .size (); i < size; i += 8)
+				{
+					value .bytes [0] = pixels [i];
+					value .bytes [1] = pixels [i + 1];
+					value .bytes [2] = pixels [i + 2];
+					value .bytes [3] = pixels [i + 3];
+					value .bytes [4] = pixels [i + 4];
+					value .bytes [5] = pixels [i + 5];
+					value .bytes [6] = pixels [i + 6];
+					value .bytes [7] = pixels [i + 7];
+
+					nrrd .pixels .push_back (value .number * 255);
+				}
 
 				return;
 			}
