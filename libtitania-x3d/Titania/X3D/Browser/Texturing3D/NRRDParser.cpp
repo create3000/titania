@@ -75,9 +75,11 @@ const io::string NRRDParser::Grammar::NRRD ("NRRD");
 const io::inverse_string NRRDParser::Grammar::line ("\n");
 
 NRRDParser::NRRDParser (const std::string & data) :
-	   data (data),
-	istream (data),
-	   nrrd ({ false, true, "", 0, "", 0, 0, 0, 0, 0, "" })
+	     data (data),
+	  istream (data),
+	     nrrd ({ false, true, "", 0, 0, 0, 0, 0, 0, "" }),
+	bytesType (ByteType::BYTE),
+	    bytes ()
 { }
 
 NRRDImage
@@ -105,7 +107,8 @@ NRRDParser::NRRD ()
 		return;
 	}
 
-	nrrd .nrrd = false;
+	nrrd .nrrd  = false;
+	nrrd .error = "Invalid NRRD file.";
 }
 
 void
@@ -148,21 +151,41 @@ NRRDParser::fields ()
 void
 NRRDParser::type (const std::string & value)
 {
-	std::map <std::string, std::string> types = {
-		std::pair ("signed char",   "signed char"),
-		std::pair ("int8",          "signed char"),
-		std::pair ("int8_t",        "signed char"),
-		std::pair ("uchar",         "unsigned char"),
-		std::pair ("unsigned char", "unsigned char"),
-		std::pair ("uint8",         "unsigned char"),
-		std::pair ("uint8_t",       "unsigned char"),
+	std::map <std::string, std::pair <ByteType, size_t>> types = {
+		std::pair ("signed char",        std::pair (ByteType::BYTE, 1)),
+		std::pair ("int8",               std::pair (ByteType::BYTE, 1)),
+		std::pair ("int8_t",             std::pair (ByteType::BYTE, 1)),
+		std::pair ("uchar",              std::pair (ByteType::BYTE, 1)),
+		std::pair ("unsigned char",      std::pair (ByteType::BYTE, 1)),
+		std::pair ("uint8",              std::pair (ByteType::BYTE, 1)),
+		std::pair ("uint8_t",            std::pair (ByteType::BYTE, 1)),
+		std::pair ("short",              std::pair (ByteType::SHORT, 2)),
+		std::pair ("short int",          std::pair (ByteType::SHORT, 2)),
+		std::pair ("signed short",       std::pair (ByteType::SHORT, 2)),
+		std::pair ("signed short int",   std::pair (ByteType::SHORT, 2)),
+		std::pair ("int16",              std::pair (ByteType::SHORT, 2)),
+		std::pair ("int16_t",            std::pair (ByteType::SHORT, 2)),
+		std::pair ("ushort",             std::pair (ByteType::SHORT, 2)),
+		std::pair ("unsigned short",     std::pair (ByteType::SHORT, 2)),
+		std::pair ("unsigned short int", std::pair (ByteType::SHORT, 2)),
+		std::pair ("uint16",             std::pair (ByteType::SHORT, 2)),
+		std::pair ("uint16_t",           std::pair (ByteType::SHORT, 2)),
+		std::pair ("int",                std::pair (ByteType::INT, 4)),
+		std::pair ("signed int",         std::pair (ByteType::INT, 4)),
+		std::pair ("int32",              std::pair (ByteType::INT, 4)),
+		std::pair ("int32_t",            std::pair (ByteType::INT, 4)),
+		std::pair ("uint",               std::pair (ByteType::INT, 4)),
+		std::pair ("unsigned int",       std::pair (ByteType::INT, 4)),
+		std::pair ("uint32",             std::pair (ByteType::INT, 4)),
+		std::pair ("uint32_t",           std::pair (ByteType::INT, 4)),
 	};
 
 	const auto iter = types .find (value);
 
 	if (iter not_eq types .end ())
 	{
-		nrrd .type = iter -> second;
+		bytesType = iter -> second .first;
+		bytes     = iter -> second .second;
 		return;
 	}
 
@@ -230,12 +253,36 @@ NRRDParser::sizes (const std::string & value)
 void
 NRRDParser::pixels ()
 {
-	const auto size = nrrd .components * nrrd .width * nrrd .height * nrrd .depth;
+	const auto size = nrrd .components * nrrd .width * nrrd .height * nrrd .depth * bytes;
 
 	if (size > 0)
 	{
-		nrrd .pixels = data .substr (data .size () - size);
-		return;
+		switch (bytesType)
+		{
+			case ByteType::BYTE:
+			{
+				nrrd .pixels = data .substr (data .size () - size);
+				return;
+			}
+			case ByteType::SHORT:
+			{
+				const auto pixels = data .substr (data .size () - size);
+
+				for (size_t i = 0, size = pixels .size (); i < size; i += 2)
+					nrrd .pixels .push_back ((pixels [i] << 8 | pixels [i + 1]) / 256);
+
+				return;
+			}
+			case ByteType::INT:
+			{
+				const auto pixels = data .substr (data .size () - size);
+
+				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
+					nrrd .pixels .push_back ((pixels [i] << 24 | pixels [i + 1] << 16 | pixels [i + 2] << 8 | pixels [i + 3]) / 16'777'216);
+
+				return;
+			}
+		}
 	}
 
 	nrrd .valid = false;

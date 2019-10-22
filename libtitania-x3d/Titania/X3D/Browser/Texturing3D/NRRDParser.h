@@ -64,7 +64,6 @@ struct NRRDImage
 	bool        valid;
 	std::string error;
 	size_t      version;
-	std::string type;
 	size_t      dimension;
 	size_t      components;
 	size_t      width;
@@ -87,6 +86,13 @@ public:
 
 
 private:
+
+	enum class ByteType
+	{
+		BYTE,
+		SHORT,
+		INT
+	};
 
 	class Grammar;
 
@@ -114,6 +120,8 @@ private:
 	const std::string & data;
 	std::istringstream  istream;
 	NRRDImage           nrrd;
+	ByteType            bytesType;
+	size_t              bytes;
 
 };
 
