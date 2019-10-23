@@ -141,13 +141,13 @@ X3DShadersContext::createShader (X3DExecutionContext* const executionContext,
                                  const MFString & fragmentUrl,
                                  const bool shadow)
 {
-	const auto vertexPart   = executionContext -> createNode <ShaderPart> ();
-	const auto fragmentPart = executionContext -> createNode <ShaderPart> ();
-	const auto shader       = executionContext -> createNode <ComposedShader> ();
+	const auto vertexPart   = MakePtr <ShaderPart> (executionContext);
+	const auto fragmentPart = MakePtr <ShaderPart> (executionContext);
+	const auto shaderNode   = MakePtr <ComposedShader> (executionContext);
 
 	fragmentPart -> setName (name + "FragmentShaderPart");
 	vertexPart   -> setName (name + "VertexShaderPart");
-	shader       -> setName (name + "ComposedShader");
+	shaderNode   -> setName (name + "ComposedShader");
 
 	vertexPart   -> setShadow (shadow);
 	fragmentPart -> setShadow (shadow);
@@ -156,10 +156,14 @@ X3DShadersContext::createShader (X3DExecutionContext* const executionContext,
 	vertexPart   -> url ()  = vertexUrl;
 	fragmentPart -> url ()  = fragmentUrl;
 
-	shader -> parts () .emplace_back (vertexPart);
-	shader -> parts () .emplace_back (fragmentPart);
+	shaderNode -> parts () .emplace_back (vertexPart);
+	shaderNode -> parts () .emplace_back (fragmentPart);
 
-	return shader;
+	vertexPart   -> setup ();
+	fragmentPart -> setup ();
+	shaderNode   -> setup ();
+
+	return shaderNode;
 }
 
 void

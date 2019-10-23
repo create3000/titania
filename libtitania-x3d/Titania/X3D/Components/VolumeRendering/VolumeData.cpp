@@ -221,9 +221,9 @@ VolumeData::createShader () const
 	fs = std::regex_replace (fs, VOLUME_STYLES_UNIFORMS,  styleUniforms);
 	fs = std::regex_replace (fs, VOLUME_STYLES_FUNCTIONS, styleFunctions);
 
-	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
-	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
-	const auto shaderNode   = getExecutionContext () -> createNode <ComposedShader> ();
+	const auto vertexPart   = MakePtr <ShaderPart> (getExecutionContext ());
+	const auto fragmentPart = MakePtr <ShaderPart> (getExecutionContext ());
+	const auto shaderNode   = MakePtr <ComposedShader> (getExecutionContext ());
 
 	fragmentPart -> setName ("VolumeDataFragmentShaderPart");
 	vertexPart   -> setName ("VolumeDataVertexShaderPart");
@@ -251,6 +251,10 @@ VolumeData::createShader () const
 
 	if (renderStyleNode)
 		renderStyleNode -> addShaderFields (shaderNode);
+
+	vertexPart   -> setup ();
+	fragmentPart -> setup ();
+	shaderNode   -> setup ();
 
 	__LOG__ << std::endl << fs << std::endl;
 
