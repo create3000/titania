@@ -123,16 +123,6 @@ public:
 	{ return *fields .surfaceTolerance; }
 
 	virtual
-	SFNode &
-	gradients ()
-	{ return *fields .gradients; }
-
-	virtual
-	const SFNode &
-	gradients () const
-	{ return *fields .gradients; }
-
-	virtual
 	MFNode &
 	renderStyle ()
 	{ return *fields .renderStyle; }
@@ -141,6 +131,16 @@ public:
 	const MFNode &
 	renderStyle () const
 	{ return *fields .renderStyle; }
+
+	virtual
+	SFNode &
+	gradients ()
+	{ return *fields .gradients; }
+
+	virtual
+	const SFNode &
+	gradients () const
+	{ return *fields .gradients; }
 
 	virtual
 	SFNode &
@@ -178,10 +178,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_gradients ();
+	set_renderStyle ();
 
 	void
-	set_renderStyle ();
+	set_gradients ();
 
 	void
 	set_voxels ();
@@ -212,8 +212,8 @@ private:
 		SFFloat* const contourStepSize;
 		MFFloat* const surfaceValues;
 		SFFloat* const surfaceTolerance;
-		SFNode* const gradients;
 		MFNode* const renderStyle;
+		SFNode* const gradients;
 		SFNode* const voxels;
 	};
 
@@ -221,8 +221,8 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DTexture3DNode>              gradientsNode;
 	X3DPtrArray <X3DVolumeRenderStyleNode> renderStyleNodes;
+	X3DPtr <X3DTexture3DNode>              gradientsNode;
 	X3DPtr <X3DTexture3DNode>              voxelsNode;
 	X3DPtr <BlendMode>                     blendModeNode;
 

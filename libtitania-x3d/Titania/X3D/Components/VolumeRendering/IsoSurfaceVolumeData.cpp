@@ -76,8 +76,8 @@ IsoSurfaceVolumeData::Fields::Fields () :
 	 contourStepSize (new SFFloat (0)),
 	   surfaceValues (new MFFloat ()),
 	surfaceTolerance (new SFFloat (0)),
-	       gradients (new SFNode ()),
 	     renderStyle (new MFNode ()),
+	       gradients (new SFNode ()),
 	          voxels (new SFNode ())
 { }
 
@@ -85,8 +85,8 @@ IsoSurfaceVolumeData::IsoSurfaceVolumeData (X3DExecutionContext* const execution
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DVolumeDataNode (),
 	           fields (),
-	    gradientsNode (),
 	 renderStyleNodes (),
+	    gradientsNode (),
 	       voxelsNode (),
 	    blendModeNode (new BlendMode (executionContext))
 {
@@ -97,14 +97,14 @@ IsoSurfaceVolumeData::IsoSurfaceVolumeData (X3DExecutionContext* const execution
 	addField (inputOutput,    "contourStepSize",  contourStepSize ());
 	addField (inputOutput,    "surfaceValues",    surfaceValues ());
 	addField (inputOutput,    "surfaceTolerance", surfaceTolerance ());
-	addField (inputOutput,    "gradients",        gradients ());
-	addField (inputOutput,    "renderStyle",      renderStyle ());
-	addField (inputOutput,    "voxels",           voxels ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
+	addField (inputOutput,    "renderStyle",      renderStyle ());
+	addField (inputOutput,    "gradients",        gradients ());
+	addField (inputOutput,    "voxels",           voxels ());
 
-	addChildObjects (gradientsNode,
-	                 renderStyleNodes,
+	addChildObjects (renderStyleNodes,
+	                 gradientsNode,
 	                 voxelsNode,
 	                 blendModeNode);
 }
@@ -151,12 +151,6 @@ IsoSurfaceVolumeData::setExecutionContext (X3DExecutionContext* const executionC
 }
 
 void
-IsoSurfaceVolumeData::set_gradients ()
-{
-	gradientsNode = x3d_cast <X3DTexture3DNode*> (gradients ());
-}
-
-void
 IsoSurfaceVolumeData::set_renderStyle ()
 {
 	for (const auto & renderStyleNode : renderStyleNodes)
@@ -180,6 +174,12 @@ IsoSurfaceVolumeData::set_renderStyle ()
 		renderStyleNode -> addInterest (&IsoSurfaceVolumeData::update, this);
 		renderStyleNode -> addVolumeData (this);
 	}
+}
+
+void
+IsoSurfaceVolumeData::set_gradients ()
+{
+	gradientsNode = x3d_cast <X3DTexture3DNode*> (gradients ());
 }
 
 void

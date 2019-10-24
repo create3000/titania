@@ -89,10 +89,10 @@ VolumeData::VolumeData (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "dimensions",  dimensions ());
-	addField (inputOutput,    "renderStyle", renderStyle ());
-	addField (inputOutput,    "voxels",      voxels ());
 	addField (initializeOnly, "bboxSize",    bboxSize ());
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
+	addField (inputOutput,    "renderStyle", renderStyle ());
+	addField (inputOutput,    "voxels",      voxels ());
 
 	addChildObjects (renderStyleNode,
 	                 voxelsNode,

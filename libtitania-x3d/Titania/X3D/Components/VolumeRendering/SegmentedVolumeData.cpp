@@ -93,11 +93,11 @@ SegmentedVolumeData::SegmentedVolumeData (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOutput,    "dimensions",         dimensions ());
 	addField (inputOutput,    "segmentEnabled",     segmentEnabled ());
+	addField (initializeOnly, "bboxCenter",         bboxCenter ());
+	addField (initializeOnly, "bboxSize",           bboxSize ());
 	addField (inputOutput,    "segmentIdentifiers", segmentIdentifiers ());
 	addField (inputOutput,    "renderStyle",        renderStyle ());
 	addField (inputOutput,    "voxels",             voxels ());
-	addField (initializeOnly, "bboxCenter",         bboxCenter ());
-	addField (initializeOnly, "bboxSize",           bboxSize ());
 
 	addChildObjects (segmentIdentifiersNode,
 	                 renderStyleNodes,
