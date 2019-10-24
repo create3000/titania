@@ -172,6 +172,9 @@ ProximitySensor::update ()
 {
 	try
 	{
+		if (not viewpointNode)
+			return;
+
 		if (inside and getTraversed ())
 		{
 			Matrix4d centerOfRotationMatrix = viewpointNode -> getModelMatrix ();
@@ -218,6 +221,8 @@ ProximitySensor::update ()
 				exitTime () = getCurrentTime ();
 			}
 		}
+
+		viewpointNode = nullptr;
 	}
 	catch (const std::domain_error &)
 	{ }
