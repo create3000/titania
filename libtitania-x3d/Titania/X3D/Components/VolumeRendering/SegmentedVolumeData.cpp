@@ -236,15 +236,15 @@ SegmentedVolumeData::createShader () const
 		styleFunctions += "\n";
 
 		styleFunctions += "\n";
-		styleFunctions += "	float segment = texture (segmentIdentifiers, texCoord) .r;\n";
+		styleFunctions += "	int segment = int (texture (segmentIdentifiers, texCoord) .r * 255.0);\n";
 	}
 	else
 	{
-		styleFunctions += "	float segment = 0.0;\n";
+		styleFunctions += "	int segment = 0;\n";
 	}
 
 	styleFunctions += "\n";
-	styleFunctions += "	if (segment == 0.0)\n";
+	styleFunctions += "	if (segment == 0)\n";
 	styleFunctions += "	{\n";
 
 	if (getSegmentEnabled (0))
@@ -264,7 +264,7 @@ SegmentedVolumeData::createShader () const
 
 	for (size_t i = 1, size = renderStyleNodes .size (); i < size; ++ i)
 	{
-		styleFunctions += "	else if (segment == " + basic::to_string (i, std::locale::classic ()) + ".0 / 255.0)\n";
+		styleFunctions += "	else if (segment == " + basic::to_string (i, std::locale::classic ()) + ")\n";
 		styleFunctions += "	{\n";
 
 		if (getSegmentEnabled (i))
