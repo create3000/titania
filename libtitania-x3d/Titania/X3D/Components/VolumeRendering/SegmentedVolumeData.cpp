@@ -244,41 +244,29 @@ SegmentedVolumeData::createShader () const
 	}
 
 	styleFunctions += "\n";
-	styleFunctions += "	if (segment == 0)\n";
+	styleFunctions += "	switch (segment)\n";
 	styleFunctions += "	{\n";
-
-	if (getSegmentEnabled (0))
-	{
-		if (renderStyleNodes .size () > 0)
-		{
-			styleUniforms  += renderStyleNodes [0] -> getUniformsText (),
-			styleFunctions += renderStyleNodes [0] -> getFunctionsText ();
-		}
-	}
-	else
-	{
-		styleFunctions += "	return vec4 (0.0);\n";
-	}
-
-	styleFunctions += "	}\n";
 
 	for (size_t i = 1, size = renderStyleNodes .size (); i < size; ++ i)
 	{
-		styleFunctions += "	else if (segment == " + basic::to_string (i, std::locale::classic ()) + ")\n";
-		styleFunctions += "	{\n";
+		styleFunctions += "		case " + basic::to_string (i, std::locale::classic ()) + ":\n";
+		styleFunctions += "		{\n";
 
 		if (getSegmentEnabled (i))
 		{
 			styleUniforms  += renderStyleNodes [i] -> getUniformsText (),
 			styleFunctions += renderStyleNodes [i] -> getFunctionsText ();
+			styleFunctions += "			break;\n";
 		}
 		else
 		{
-			styleFunctions += "	return vec4 (0.0);\n";
+			styleFunctions += "			return vec4 (0.0);\n";
 		}
 
-		styleFunctions += "	}\n";
+		styleFunctions += "		}\n";
 	}
+
+	styleFunctions += "	}\n";
 
 	static const std::regex CLIP_PLANES             (R"/(#pragma X3D include "include/ClipPlanes.glsl"\n)/");
 	static const std::regex FOG                     (R"/(#pragma X3D include "include/Fog.glsl"\n)/");
