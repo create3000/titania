@@ -225,9 +225,6 @@ SegmentedVolumeData::update ()
 X3DPtr <ComposedShader>
 SegmentedVolumeData::createShader () const
 {
-	const bool segmentEnabled0 = getSegmentEnabled (0);
-	const bool segmentEnabled1 = getSegmentEnabled (1);
-
 	const auto & opacityMapVolumeStyle = getBrowser () -> getDefaultVolumeStyle ();
 	std::string  styleUniforms         = opacityMapVolumeStyle -> getUniformsText ();
 	std::string  styleFunctions        = opacityMapVolumeStyle -> getFunctionsText ();
@@ -250,7 +247,7 @@ SegmentedVolumeData::createShader () const
 	styleFunctions += "	if (segment == 0.0)\n";
 	styleFunctions += "	{\n";
 
-	if (segmentEnabled0)
+	if (getSegmentEnabled (0))
 	{
 		if (renderStyleNodes .size () > 0)
 		{
@@ -264,23 +261,24 @@ SegmentedVolumeData::createShader () const
 	}
 
 	styleFunctions += "	}\n";
-	styleFunctions += "	else\n";
-	styleFunctions += "	{\n";
 
-	if (segmentEnabled1)
+	for (size_t i = 1, size = renderStyleNodes .size (); i < size; ++ i)
 	{
-		if (renderStyleNodes .size () > 1)
+		styleFunctions += "	else if (segment == " + basic::to_string (i, std::locale::classic ()) + ".0 / 255.0)\n";
+		styleFunctions += "	{\n";
+
+		if (getSegmentEnabled (i))
 		{
-			styleUniforms  += renderStyleNodes [1] -> getUniformsText (),
-			styleFunctions += renderStyleNodes [1] -> getFunctionsText ();
+			styleUniforms  += renderStyleNodes [i] -> getUniformsText (),
+			styleFunctions += renderStyleNodes [i] -> getFunctionsText ();
 		}
-	}
-	else
-	{
-		styleFunctions += "	return vec4 (0.0);\n";
-	}
+		else
+		{
+			styleFunctions += "	return vec4 (0.0);\n";
+		}
 
-	styleFunctions += "	}\n";
+		styleFunctions += "	}\n";
+	}
 
 	static const std::regex CLIP_PLANES             (R"/(#pragma X3D include "include/ClipPlanes.glsl"\n)/");
 	static const std::regex FOG                     (R"/(#pragma X3D include "include/Fog.glsl"\n)/");
@@ -329,16 +327,12 @@ SegmentedVolumeData::createShader () const
 
 	opacityMapVolumeStyle -> addShaderFields (shaderNode);
 
-	if (segmentEnabled0)
+	for (size_t i = 0, size = renderStyleNodes .size (); i < size; ++ i)
 	{
-		if (renderStyleNodes .size () > 0)
-			renderStyleNodes [0] -> addShaderFields (shaderNode);
-	}
-
-	if (segmentEnabled1)
-	{
-		if (renderStyleNodes .size () > 1)
-			renderStyleNodes [1] -> addShaderFields (shaderNode);
+		if (getSegmentEnabled (i))
+		{
+			renderStyleNodes [i] -> addShaderFields (shaderNode);
+		}
 	}
 
 	vertexPart   -> setup ();
