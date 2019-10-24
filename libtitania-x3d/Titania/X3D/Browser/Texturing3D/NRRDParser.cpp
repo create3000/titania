@@ -229,11 +229,20 @@ NRRDParser::dimension (const std::string & value)
 
 	istream >> m_nrrd .dimension;
 
-	if (istream and (m_nrrd .dimension == 3 or m_nrrd .dimension == 4))
-		return;
+	if (istream)
+	{
+		switch (m_nrrd .dimension)
+		{
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				return;
+		}
+	}
 
 	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD dimension, must be 3";
+	m_nrrd .error = "Unsupported NRRD dimension, must be 1, 2, 3, or 4";
 }
 
 void
