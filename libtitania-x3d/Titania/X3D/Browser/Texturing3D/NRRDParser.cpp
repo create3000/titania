@@ -137,7 +137,7 @@ NRRDParser::fields ()
 		if (field .size () == 2)
 		{
 			const auto key   = basic::tolower (field [0], std::locale::classic ());
-			const auto value = basic::trim (field [1]);
+			const auto value = basic::tolower (basic::trim (field [1]), std::locale::classic ());
 			const auto iter  = fieldFunctions .find (key);
 
 			if (iter not_eq fieldFunctions .end ())
