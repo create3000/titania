@@ -262,7 +262,7 @@ SegmentedVolumeData::createShader () const
 			}
 			else
 			{
-				styleFunctions += "			return vec4 (0.0);\n";
+				styleFunctions += "			discard;\n";
 			}
 
 			styleFunctions += "		}\n";
