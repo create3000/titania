@@ -91,6 +91,7 @@ private:
 	{
 		ASCII,
 		RAW,
+		HEX,
 		GZIP
 	};
 
@@ -131,6 +132,12 @@ private:
 
 	void
 	raw (const std::string & p_data);
+
+	void
+	hex ();
+
+	uint8_t
+	hexChar (const char c);
 
 	void
 	gzip ();

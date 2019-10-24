@@ -205,6 +205,7 @@ NRRDParser::encoding (const std::string & value)
 		std::pair ("txt",   EncodingType::ASCII),
 		std::pair ("text",  EncodingType::ASCII),
 		std::pair ("raw",   EncodingType::RAW),
+		std::pair ("hex",   EncodingType::HEX),
 		std::pair ("gz",    EncodingType::GZIP),
 		std::pair ("gzip",  EncodingType::GZIP),
 	};
@@ -276,6 +277,9 @@ NRRDParser::data ()
 			break;
 		case EncodingType::RAW:
 			raw (m_data);
+			break;
+		case EncodingType::HEX:
+			hex ();
 			break;
 		case EncodingType::GZIP:
 			gzip ();
@@ -443,6 +447,58 @@ NRRDParser::raw (const std::string & p_data)
 
 	m_nrrd .valid = false;
 	m_nrrd .error = "Invalid NRRD sizes";
+}
+
+void
+NRRDParser::hex ()
+{
+	std::string string;
+
+	while (m_istream)
+	{
+		char c1, c2;
+
+		if (m_istream >> c1)
+		{
+			if (m_istream >> c2)
+			{
+				string .push_back (hexChar (c1) << 4 | hexChar (c2));
+			}
+		}
+	}
+
+	raw (string);
+}
+
+uint8_t
+NRRDParser::hexChar (const char c)
+{
+	switch (c)
+	{
+		case '0': return 0;
+		case '1': return 1;
+		case '2': return 2;
+		case '3': return 3;
+		case '4': return 4;
+		case '5': return 5;
+		case '6': return 6;
+		case '7': return 7;
+		case '8': return 8;
+		case '9': return 9;
+		case 'a': return 0xa;
+		case 'b': return 0xb;
+		case 'c': return 0xc;
+		case 'd': return 0xd;
+		case 'e': return 0xe;
+		case 'f': return 0xf;
+		case 'A': return 0xa;
+		case 'B': return 0xb;
+		case 'C': return 0xc;
+		case 'D': return 0xd;
+		case 'E': return 0xe;
+		case 'F': return 0xf;
+		default: return 0;
+	}
 }
 
 void
