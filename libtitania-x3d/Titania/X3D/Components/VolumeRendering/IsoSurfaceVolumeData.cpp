@@ -310,7 +310,7 @@ IsoSurfaceVolumeData::createShader () const
 			styleFunctions += "	if (false)\n";
 			styleFunctions += "	{ }\n";
 
-			for (size_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
+			for (ssize_t i = calcSurfaceValues .size () - 1; i >= 0; -- i)
 			{
 				const auto surfaceValue = calcSurfaceValues [i];
 
