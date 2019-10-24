@@ -75,11 +75,12 @@ const io::string NRRDParser::Grammar::NRRD ("NRRD");
 const io::inverse_string NRRDParser::Grammar::line ("\n");
 
 NRRDParser::NRRDParser (const std::string & data) :
-	     data (data),
-	  istream (data),
-	     nrrd ({ false, true, "", 0, 0, 0, 0, 0, 0, "" }),
-	bytesType (ByteType::BYTE),
-	    bytes ()
+	     m_data (data),
+	  m_istream (data),
+	     m_nrrd ({ false, true, "", 0, 0, 0, 0, 0, 0, "" }),
+	 m_encoding (EncodingType::ASCII),
+	m_bytesType (ByteType::BYTE),
+	    m_bytes ()
 { }
 
 NRRDImage
@@ -87,28 +88,28 @@ NRRDParser::parse ()
 {
 	NRRD ();
 
-	if (nrrd .nrrd)
+	if (m_nrrd .nrrd)
 	{
 		fields ();
-		pixels ();
+		data ();
 	}
 
-	return nrrd;
+	return m_nrrd;
 }
 
 void
 NRRDParser::NRRD ()
 {
-	if (Grammar::NRRD (istream))
+	if (Grammar::NRRD (m_istream))
 	{
-		nrrd .nrrd = true;
-		istream >> nrrd .version;
-		std::istream::sentry se (istream);
+		m_nrrd .nrrd = true;
+		m_istream >> m_nrrd .version;
+		std::istream::sentry se (m_istream);
 		return;
 	}
 
-	nrrd .nrrd  = false;
-	nrrd .error = "Invalid NRRD file.";
+	m_nrrd .nrrd  = false;
+	m_nrrd .error = "Invalid NRRD file.";
 }
 
 void
@@ -125,7 +126,7 @@ NRRDParser::fields ()
 
 	std::string line;
 
-	while (Grammar::line (istream, line))
+	while (Grammar::line (m_istream, line))
 	{
 		if (line .empty ())
 			break;
@@ -186,13 +187,13 @@ NRRDParser::type (const std::string & value)
 
 	if (iter not_eq types .end ())
 	{
-		bytesType = iter -> second .first;
-		bytes     = iter -> second .second;
+		m_bytesType = iter -> second .first;
+		m_bytes     = iter -> second .second;
 		return;
 	}
 
-	nrrd .valid = false;
-	nrrd .error = "Unsupported NRRD type";
+	m_nrrd .valid = false;
+	m_nrrd .error = "Unsupported NRRD type";
 }
 
 void
@@ -200,11 +201,18 @@ NRRDParser::encoding (const std::string & value)
 {
 	if (value == "raw")
 	{
+		m_encoding = EncodingType::RAW;
 		return;
 	}
 
-	nrrd .valid = false;
-	nrrd .error = "Unsupported NRRD encoding";
+	if (value == "ascii")
+	{
+		m_encoding = EncodingType::ASCII;
+		return;
+	}
+
+	m_nrrd .valid = false;
+	m_nrrd .error = "Unsupported NRRD encoding";
 }
 
 void
@@ -212,13 +220,13 @@ NRRDParser::dimension (const std::string & value)
 {
 	std::istringstream istream (value);
 
-	istream >> nrrd .dimension;
+	istream >> m_nrrd .dimension;
 
-	if (istream and (nrrd .dimension == 3 or nrrd .dimension == 4))
+	if (istream and (m_nrrd .dimension == 3 or m_nrrd .dimension == 4))
 		return;
 
-	nrrd .valid = false;
-	nrrd .error = "Unsupported NRRD dimension, must be 3";
+	m_nrrd .valid = false;
+	m_nrrd .error = "Unsupported NRRD dimension, must be 3";
 }
 
 void
@@ -235,54 +243,138 @@ NRRDParser::sizes (const std::string & value)
 	{
 		case 3:
 		{
-			nrrd .components = 1;
-			nrrd .width      = sizes [0];
-			nrrd .height     = sizes [1];
-			nrrd .depth      = sizes [2];
+			m_nrrd .components = 1;
+			m_nrrd .width      = sizes [0];
+			m_nrrd .height     = sizes [1];
+			m_nrrd .depth      = sizes [2];
 			return;
 		}
 		case 4:
 		{
-			nrrd .components = sizes [0];
-			nrrd .width      = sizes [1];
-			nrrd .height     = sizes [2];
-			nrrd .depth      = sizes [3];
+			m_nrrd .components = sizes [0];
+			m_nrrd .width      = sizes [1];
+			m_nrrd .height     = sizes [2];
+			m_nrrd .depth      = sizes [3];
 			return;
 		}
 	}
 }
 
 void
-NRRDParser::pixels ()
+NRRDParser::data ()
 {
-	const auto size = nrrd .components * nrrd .width * nrrd .height * nrrd .depth * bytes;
+	switch (m_encoding)
+	{
+		case EncodingType::ASCII:
+			ascii ();
+			break;
+		case EncodingType::RAW:
+			raw ();
+			break;
+	}
+}
+
+void
+NRRDParser::ascii ()
+{
+	const auto dataSize = m_nrrd .components * m_nrrd .width * m_nrrd .height * m_nrrd .depth;
+	auto &     data     = m_nrrd .data;
+
+	switch (m_bytesType)
+	{
+		case ByteType::BYTE:
+		{
+			ssize_t number;
+
+			while (m_istream >> number)
+			{
+				data .push_back (number);
+			}
+
+			break;
+		}
+		case ByteType::SHORT:
+		{
+			ssize_t number;
+
+			while (m_istream >> number)
+			{
+				data .push_back (number / 256);
+			}
+
+			break;
+		}
+		case ByteType::INT:
+		{
+			ssize_t number;
+
+			while (m_istream >> number)
+			{
+				data .push_back (number / 16'777'216);
+			}
+
+			break;
+		}
+		case ByteType::FLOAT:
+		{
+			float number;
+
+			while (m_istream >> number)
+			{
+				data .push_back (number * 255);
+			}
+
+			break;
+		}
+		case ByteType::DOUBLE:
+		{
+			double number;
+
+			while (m_istream >> number)
+			{
+				data .push_back (number * 255);
+			}
+
+			break;
+		}
+	}
+
+	data .resize (dataSize);
+}
+
+void
+NRRDParser::raw ()
+{
+	const auto dataSize = m_nrrd .components * m_nrrd .width * m_nrrd .height * m_nrrd .depth;
+	const auto size     = dataSize * m_bytes;
+	auto &     data     = m_nrrd .data;
 
 	if (size > 0)
 	{
-		switch (bytesType)
+		switch (m_bytesType)
 		{
 			case ByteType::BYTE:
 			{
-				nrrd .pixels = data .substr (data .size () - size);
-				return;
+				data = m_data .substr (m_data .size () - size);
+				break;
 			}
 			case ByteType::SHORT:
 			{
-				const auto pixels = data .substr (data .size () - size);
+				const auto pixels = m_data .substr (m_data .size () - size);
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 2)
-					nrrd .pixels .push_back ((pixels [i] << 8 | pixels [i + 1]) / 256);
+					data .push_back ((pixels [i] << 8 | pixels [i + 1]) / 256);
 
-				return;
+				break;
 			}
 			case ByteType::INT:
 			{
-				const auto pixels = data .substr (data .size () - size);
+				const auto pixels = m_data .substr (m_data .size () - size);
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
-					nrrd .pixels .push_back ((pixels [i] << 24 | pixels [i + 1] << 16 | pixels [i + 2] << 8 | pixels [i + 3]) / 16'777'216);
+					data .push_back ((pixels [i] << 24 | pixels [i + 1] << 16 | pixels [i + 2] << 8 | pixels [i + 3]) / 16'777'216);
 
-				return;
+				break;
 			}
 			case ByteType::FLOAT:
 			{
@@ -292,7 +384,7 @@ NRRDParser::pixels ()
 					float number;
 				};
 
-				const auto pixels = data .substr (data .size () - size);
+				const auto pixels = m_data .substr (m_data .size () - size);
 				Value value;
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
@@ -302,10 +394,10 @@ NRRDParser::pixels ()
 					value .bytes [2] = pixels [i + 2];
 					value .bytes [3] = pixels [i + 3];
 
-					nrrd .pixels .push_back (value .number * 255);
+					data .push_back (value .number * 255);
 				}
 
-				return;
+				break;
 			}
 			case ByteType::DOUBLE:
 			{
@@ -315,7 +407,7 @@ NRRDParser::pixels ()
 					double number;
 				};
 
-				const auto pixels = data .substr (data .size () - size);
+				const auto pixels = m_data .substr (m_data .size () - size);
 				Value value;
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 8)
@@ -329,16 +421,19 @@ NRRDParser::pixels ()
 					value .bytes [6] = pixels [i + 6];
 					value .bytes [7] = pixels [i + 7];
 
-					nrrd .pixels .push_back (value .number * 255);
+					data .push_back (value .number * 255);
 				}
 
-				return;
+				break;
 			}
 		}
+
+		data .resize (dataSize);
+		return;
 	}
 
-	nrrd .valid = false;
-	nrrd .error = "Invalid NRRD sizes";
+	m_nrrd .valid = false;
+	m_nrrd .error = "Invalid NRRD sizes";
 }
 
 NRRDParser::~NRRDParser ()

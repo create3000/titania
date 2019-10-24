@@ -88,7 +88,7 @@ Texture3D::readNRRD (const std::string & document)
 		height     = nrrd .height;
 		depth      = nrrd .depth;
 
-		data .assign (nrrd .pixels .begin (), nrrd .pixels .end ());
+		data .assign (nrrd .data .begin (), nrrd .data .end ());
 
 		switch (components)
 		{

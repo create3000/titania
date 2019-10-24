@@ -69,7 +69,7 @@ struct NRRDImage
 	size_t      width;
 	size_t      height;
 	size_t      depth;
-	std::string pixels;
+	std::string data;
 };
 
 class NRRDParser
@@ -86,6 +86,12 @@ public:
 
 
 private:
+
+	enum class EncodingType
+	{
+		ASCII,
+		RAW
+	};
 
 	enum class ByteType
 	{
@@ -117,13 +123,20 @@ private:
 	sizes (const std::string & value);
 
 	void
-	pixels ();
+	data ();
 
-	const std::string & data;
-	std::istringstream  istream;
-	NRRDImage           nrrd;
-	ByteType            bytesType;
-	size_t              bytes;
+	void
+	ascii ();
+
+	void
+	raw ();
+
+	const std::string & m_data;
+	std::istringstream  m_istream;
+	NRRDImage           m_nrrd;
+	EncodingType        m_encoding;
+	ByteType            m_bytesType;
+	size_t              m_bytes;
 
 };
 
