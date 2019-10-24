@@ -90,7 +90,8 @@ private:
 	enum class EncodingType
 	{
 		ASCII,
-		RAW
+		RAW,
+		GZIP
 	};
 
 	enum class ByteType
@@ -129,7 +130,10 @@ private:
 	ascii ();
 
 	void
-	raw ();
+	raw (const std::string & p_data);
+
+	void
+	gzip ();
 
 	const std::string & m_data;
 	std::istringstream  m_istream;

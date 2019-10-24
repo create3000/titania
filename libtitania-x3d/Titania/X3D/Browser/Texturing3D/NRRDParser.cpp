@@ -54,6 +54,7 @@
 #include <Titania/String/tolower.h>
 #include <Titania/String/split.h>
 #include <Titania/String/trim.h>
+#include <Titania/Stream/GZFilterBuf.h>
 
 #include <functional>
 #include <map>
@@ -199,15 +200,20 @@ NRRDParser::type (const std::string & value)
 void
 NRRDParser::encoding (const std::string & value)
 {
-	if (value == "raw")
-	{
-		m_encoding = EncodingType::RAW;
-		return;
-	}
+	std::map <std::string, EncodingType> encodings = {
+		std::pair ("ascii", EncodingType::ASCII),
+		std::pair ("txt",   EncodingType::ASCII),
+		std::pair ("text",  EncodingType::ASCII),
+		std::pair ("raw",   EncodingType::RAW),
+		std::pair ("gz",    EncodingType::GZIP),
+		std::pair ("gzip",  EncodingType::GZIP),
+	};
 
-	if (value == "ascii")
+	const auto iter = encodings .find (value);
+
+	if (iter not_eq encodings .end ())
 	{
-		m_encoding = EncodingType::ASCII;
+		m_encoding = iter -> second;
 		return;
 	}
 
@@ -269,7 +275,10 @@ NRRDParser::data ()
 			ascii ();
 			break;
 		case EncodingType::RAW:
-			raw ();
+			raw (m_data);
+			break;
+		case EncodingType::GZIP:
+			gzip ();
 			break;
 	}
 }
@@ -343,7 +352,7 @@ NRRDParser::ascii ()
 }
 
 void
-NRRDParser::raw ()
+NRRDParser::raw (const std::string & p_data)
 {
 	const auto dataSize = m_nrrd .components * m_nrrd .width * m_nrrd .height * m_nrrd .depth;
 	const auto size     = dataSize * m_bytes;
@@ -355,12 +364,12 @@ NRRDParser::raw ()
 		{
 			case ByteType::BYTE:
 			{
-				data = m_data .substr (m_data .size () - size);
+				data = p_data .substr (p_data .size () - size);
 				break;
 			}
 			case ByteType::SHORT:
 			{
-				const auto pixels = m_data .substr (m_data .size () - size);
+				const auto pixels = p_data .substr (p_data .size () - size);
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 2)
 					data .push_back ((pixels [i] << 8 | pixels [i + 1]) / 256);
@@ -369,7 +378,7 @@ NRRDParser::raw ()
 			}
 			case ByteType::INT:
 			{
-				const auto pixels = m_data .substr (m_data .size () - size);
+				const auto pixels = p_data .substr (p_data .size () - size);
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
 					data .push_back ((pixels [i] << 24 | pixels [i + 1] << 16 | pixels [i + 2] << 8 | pixels [i + 3]) / 16'777'216);
@@ -384,7 +393,7 @@ NRRDParser::raw ()
 					float number;
 				};
 
-				const auto pixels = m_data .substr (m_data .size () - size);
+				const auto pixels = p_data .substr (p_data .size () - size);
 				Value value;
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
@@ -407,7 +416,7 @@ NRRDParser::raw ()
 					double number;
 				};
 
-				const auto pixels = m_data .substr (m_data .size () - size);
+				const auto pixels = p_data .substr (p_data .size () - size);
 				Value value;
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 8)
@@ -434,6 +443,18 @@ NRRDParser::raw ()
 
 	m_nrrd .valid = false;
 	m_nrrd .error = "Invalid NRRD sizes";
+}
+
+void
+NRRDParser::gzip ()
+{
+	basic::gzfilterbuf gzip (m_istream .rdbuf ());
+
+	std::ostringstream osstream;
+
+	osstream << &gzip;
+
+	raw (osstream .str ());
 }
 
 NRRDParser::~NRRDParser ()
