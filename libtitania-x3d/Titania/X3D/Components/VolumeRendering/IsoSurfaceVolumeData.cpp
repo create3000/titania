@@ -338,7 +338,7 @@ IsoSurfaceVolumeData::createShader () const
 		styleFunctions += "	if (false)\n";
 		styleFunctions += "	{ }\n";
 
-		for (size_t i = surfaceValues () .size () - 1; i >= 0; -- i)
+		for (ssize_t i = surfaceValues () .size () - 1; i >= 0; -- i)
 		{
 			styleFunctions += "	else if (intensity > surfaceValues [" + basic::to_string (i, std::locale::classic ()) + "])\n";
 			styleFunctions += "	{\n";
@@ -346,7 +346,7 @@ IsoSurfaceVolumeData::createShader () const
 
 			if (renderStyleNodes .size ())
 			{
-				const size_t r = std::min (i, renderStyleNodes .size () - 1);
+				const auto r = std::min <size_t> (i, renderStyleNodes .size () - 1);
 
 				styleFunctions += renderStyleNodes [r] -> getFunctionsText ();
 			}
