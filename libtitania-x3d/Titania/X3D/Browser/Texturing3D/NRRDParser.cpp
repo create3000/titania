@@ -248,6 +248,22 @@ NRRDParser::sizes (const std::string & value)
 
 	switch (sizes .size ())
 	{
+		case 1:
+		{
+			m_nrrd .components = 1;
+			m_nrrd .width      = sizes [0];
+			m_nrrd .height     = 1;
+			m_nrrd .depth      = 1;
+			return;
+		}
+		case 2:
+		{
+			m_nrrd .components = 1;
+			m_nrrd .width      = sizes [0];
+			m_nrrd .height     = sizes [1];
+			m_nrrd .depth      = 1;
+			return;
+		}
 		case 3:
 		{
 			m_nrrd .components = 1;
