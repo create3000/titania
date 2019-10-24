@@ -172,45 +172,45 @@ ProximitySensor::update ()
 {
 	try
 	{
-		if (not viewpointNode)
-			return;
-
 		if (inside and getTraversed ())
 		{
-			Matrix4d centerOfRotationMatrix = viewpointNode -> getModelMatrix ();
-			centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
-			centerOfRotationMatrix *= inverse (modelMatrix);
-
-			modelMatrix *= viewpointNode -> getInverseCameraSpaceMatrix ();
-
-			Vector3d   translation, scale;
-			Rotation4d rotation;
-			modelMatrix .get (translation, rotation, scale);
-
-			position = inverse (modelMatrix) .origin ();
-
-			const Rotation4d orientation      = ~rotation;
-			const Vector3d   centerOfRotation = centerOfRotationMatrix .origin ();
-
-			if (isActive ())
+			if (viewpointNode)
 			{
-				if (position_changed () not_eq position)
-					position_changed () = position;
+				Matrix4d centerOfRotationMatrix = viewpointNode -> getModelMatrix ();
+				centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
+				centerOfRotationMatrix *= inverse (modelMatrix);
 
-				if (orientation_changed () not_eq orientation)
-					orientation_changed () = orientation;
+				modelMatrix *= viewpointNode -> getInverseCameraSpaceMatrix ();
 
-				if (centerOfRotation_changed () not_eq centerOfRotation)
+				Vector3d   translation, scale;
+				Rotation4d rotation;
+				modelMatrix .get (translation, rotation, scale);
+
+				position = inverse (modelMatrix) .origin ();
+
+				const Rotation4d orientation      = ~rotation;
+				const Vector3d   centerOfRotation = centerOfRotationMatrix .origin ();
+
+				if (isActive ())
+				{
+					if (position_changed () not_eq position)
+						position_changed () = position;
+
+					if (orientation_changed () not_eq orientation)
+						orientation_changed () = orientation;
+
+					if (centerOfRotation_changed () not_eq centerOfRotation)
+						centerOfRotation_changed () = centerOfRotation;
+				}
+				else
+				{
+					isActive ()  = true;
+					enterTime () = getCurrentTime ();
+
+					position_changed ()         = position;
+					orientation_changed ()      = orientation;
 					centerOfRotation_changed () = centerOfRotation;
-			}
-			else
-			{
-				isActive ()  = true;
-				enterTime () = getCurrentTime ();
-
-				position_changed ()         = position;
-				orientation_changed ()      = orientation;
-				centerOfRotation_changed () = centerOfRotation;
+				}
 			}
 		}
 		else
@@ -221,13 +221,12 @@ ProximitySensor::update ()
 				exitTime () = getCurrentTime ();
 			}
 		}
-
-		viewpointNode = nullptr;
 	}
 	catch (const std::domain_error &)
 	{ }
 
-	inside = false;
+	inside        = false;
+	viewpointNode = nullptr;
 
 	setTraversed (false);
 }
