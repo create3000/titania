@@ -104,6 +104,12 @@ private:
 		DOUBLE
 	};
 
+	enum class EndianType
+	{
+		LITTLE,
+		BIG
+	};
+
 	class Grammar;
 
 	void
@@ -125,6 +131,9 @@ private:
 	sizes (const std::string & value);
 
 	void
+	endian (const std::string & value);
+
+	void
 	data ();
 
 	void
@@ -137,10 +146,13 @@ private:
 	hex ();
 
 	uint8_t
-	hexChar (const char c);
+	hexChar (const char c) const;
 
 	void
 	gzip ();
+
+	EndianType
+	endianess () const;
 
 	const std::string & m_data;
 	std::istringstream  m_istream;
@@ -148,6 +160,7 @@ private:
 	EncodingType        m_encoding;
 	ByteType            m_bytesType;
 	size_t              m_bytes;
+	EndianType          m_endian;
 
 };
 

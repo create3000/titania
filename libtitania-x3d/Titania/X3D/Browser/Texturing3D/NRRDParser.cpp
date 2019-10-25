@@ -81,7 +81,8 @@ NRRDParser::NRRDParser (const std::string & data) :
 	     m_nrrd ({ false, true, "", 0, 0, 0, 0, 0, 0, "" }),
 	 m_encoding (EncodingType::ASCII),
 	m_bytesType (ByteType::BYTE),
-	    m_bytes ()
+	    m_bytes (),
+	   m_endian (endianess ())
 { }
 
 NRRDImage
@@ -123,6 +124,7 @@ NRRDParser::fields ()
 		std::pair ("encoding",  std::mem_fn (&NRRDParser::encoding)),
 		std::pair ("dimension", std::mem_fn (&NRRDParser::dimension)),
 		std::pair ("sizes",     std::mem_fn (&NRRDParser::sizes)),
+		std::pair ("endian",    std::mem_fn (&NRRDParser::endian)),
 	};
 
 	std::string line;
@@ -293,6 +295,25 @@ NRRDParser::sizes (const std::string & value)
 }
 
 void
+NRRDParser::endian (const std::string & value)
+{
+	if (value == "little")
+	{
+		m_endian = EndianType::LITTLE;
+		return;
+	}
+
+	if (value == "big")
+	{
+		m_endian = EndianType::BIG;
+		return;
+	}
+
+	m_nrrd .valid = false;
+	m_nrrd .error = "Unsupported NRRD endian, must be 'little' or 'big'";
+}
+
+void
 NRRDParser::data ()
 {
 	switch (m_encoding)
@@ -315,8 +336,8 @@ NRRDParser::data ()
 void
 NRRDParser::ascii ()
 {
-	const auto dataSize = m_nrrd .components * m_nrrd .width * m_nrrd .height * m_nrrd .depth;
-	auto &     data     = m_nrrd .data;
+	const auto dataSize  = m_nrrd .components * m_nrrd .width * m_nrrd .height * m_nrrd .depth;
+	auto &     data      = m_nrrd .data;
 
 	switch (m_bytesType)
 	{
@@ -387,6 +408,8 @@ NRRDParser::raw (const std::string & p_data)
 	const auto size     = dataSize * m_bytes;
 	auto &     data     = m_nrrd .data;
 
+	size_t e0, e1, e2, e3, e4, e5, e6, e7;
+
 	if (size > 0)
 	{
 		switch (m_bytesType)
@@ -400,8 +423,17 @@ NRRDParser::raw (const std::string & p_data)
 			{
 				const auto pixels = p_data .substr (p_data .size () - size);
 
+				if (endianess () == m_endian)
+				{
+					e0 = 0; e1 = 1;
+				}
+				else
+				{
+					e0 = 1; e1 = 0;
+				}
+
 				for (size_t i = 0, size = pixels .size (); i < size; i += 2)
-					data .push_back ((pixels [i] << 8 | pixels [i + 1]) / 256);
+					data .push_back ((pixels [i + e0] << 8 | pixels [i + e1]) / 256);
 
 				break;
 			}
@@ -409,8 +441,17 @@ NRRDParser::raw (const std::string & p_data)
 			{
 				const auto pixels = p_data .substr (p_data .size () - size);
 
+				if (endianess () == m_endian)
+				{
+					e0 = 0; e1 = 1; e2 = 2; e3 = 3;
+				}
+				else
+				{
+					e0 = 4; e1 = 2; e2 = 1; e3 = 0;
+				}
+
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
-					data .push_back ((pixels [i] << 24 | pixels [i + 1] << 16 | pixels [i + 2] << 8 | pixels [i + 3]) / 16'777'216);
+					data .push_back ((pixels [i + e0] << 24 | pixels [i + e1] << 16 | pixels [i + e2] << 8 | pixels [i + e3]) / 16'777'216);
 
 				break;
 			}
@@ -425,12 +466,21 @@ NRRDParser::raw (const std::string & p_data)
 				const auto pixels = p_data .substr (p_data .size () - size);
 				Value value;
 
+				if (endianess () == m_endian)
+				{
+					e0 = 0; e1 = 1; e2 = 2; e3 = 3;
+				}
+				else
+				{
+					e0 = 4; e1 = 2; e2 = 1; e3 = 0;
+				}
+
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
 				{
-					value .bytes [0] = pixels [i];
-					value .bytes [1] = pixels [i + 1];
-					value .bytes [2] = pixels [i + 2];
-					value .bytes [3] = pixels [i + 3];
+					value .bytes [0] = pixels [i + e0];
+					value .bytes [1] = pixels [i + e1];
+					value .bytes [2] = pixels [i + e2];
+					value .bytes [3] = pixels [i + e3];
 
 					data .push_back (value .number / 256);
 				}
@@ -448,16 +498,25 @@ NRRDParser::raw (const std::string & p_data)
 				const auto pixels = p_data .substr (p_data .size () - size);
 				Value value;
 
+				if (endianess () == m_endian)
+				{
+					e0 = 0; e1 = 1; e2 = 2; e3 = 3; e4 = 4; e5 = 5; e6 = 6; e7 = 7;
+				}
+				else
+				{
+					e0 = 7; e1 = 6; e2 = 5; e3 = 4; e4 = 3; e5 = 2; e6 = 1; e7 = 0;
+				}
+
 				for (size_t i = 0, size = pixels .size (); i < size; i += 8)
 				{
-					value .bytes [0] = pixels [i];
-					value .bytes [1] = pixels [i + 1];
-					value .bytes [2] = pixels [i + 2];
-					value .bytes [3] = pixels [i + 3];
-					value .bytes [4] = pixels [i + 4];
-					value .bytes [5] = pixels [i + 5];
-					value .bytes [6] = pixels [i + 6];
-					value .bytes [7] = pixels [i + 7];
+					value .bytes [0] = pixels [i + e0];
+					value .bytes [1] = pixels [i + e1];
+					value .bytes [2] = pixels [i + e2];
+					value .bytes [3] = pixels [i + e3];
+					value .bytes [4] = pixels [i + e4];
+					value .bytes [5] = pixels [i + e5];
+					value .bytes [6] = pixels [i + e6];
+					value .bytes [7] = pixels [i + e7];
 
 					data .push_back (value .number / 16'777'216);
 				}
@@ -496,7 +555,7 @@ NRRDParser::hex ()
 }
 
 uint8_t
-NRRDParser::hexChar (const char c)
+NRRDParser::hexChar (const char c) const
 {
 	switch (c)
 	{
@@ -536,6 +595,27 @@ NRRDParser::gzip ()
 	osstream << &gzip;
 
 	raw (osstream .str ());
+}
+
+NRRDParser::EndianType
+NRRDParser::endianess () const
+{
+	union Endian {
+		int32_t m_int;
+		uint8_t m_bytes [4];
+	};
+
+	Endian number;
+
+	number .m_int = 0x01020304;
+
+	if (number .m_bytes [0] == 1 and number .m_bytes [1] == 2 and number .m_bytes [2] == 3 and number .m_bytes [3] == 4)
+		return EndianType::BIG;
+
+	if (number .m_bytes [0] == 4 and number .m_bytes [1] == 3 and number .m_bytes [2] == 2 and number .m_bytes [3] == 1)
+		return EndianType::LITTLE;
+
+	return m_endian;
 }
 
 NRRDParser::~NRRDParser ()
