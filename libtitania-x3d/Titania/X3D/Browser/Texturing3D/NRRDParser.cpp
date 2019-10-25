@@ -380,7 +380,7 @@ NRRDParser::ascii ()
 
 			while (m_istream >> number)
 			{
-				data .push_back (number * 255);
+				data .push_back (number / 256);
 			}
 
 			break;
@@ -391,7 +391,7 @@ NRRDParser::ascii ()
 
 			while (m_istream >> number)
 			{
-				data .push_back (number * 255);
+				data .push_back (number / 16'777'216);
 			}
 
 			break;
