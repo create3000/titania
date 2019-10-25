@@ -432,7 +432,7 @@ NRRDParser::raw (const std::string & p_data)
 					value .bytes [2] = pixels [i + 2];
 					value .bytes [3] = pixels [i + 3];
 
-					data .push_back (value .number * 255);
+					data .push_back (value .number / 256);
 				}
 
 				break;
@@ -459,7 +459,7 @@ NRRDParser::raw (const std::string & p_data)
 					value .bytes [6] = pixels [i + 6];
 					value .bytes [7] = pixels [i + 7];
 
-					data .push_back (value .number * 255);
+					data .push_back (value .number / 16'777'216);
 				}
 
 				break;
