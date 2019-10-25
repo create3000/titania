@@ -421,7 +421,14 @@ NRRDParser::raw (const std::string & p_data)
 			}
 			case ByteType::SHORT:
 			{
+				union Value
+				{
+					uint8_t bytes [4];
+					uint16_t number;
+				};
+
 				const auto pixels = p_data .substr (p_data .size () - size);
+				Value value;
 
 				if (endianess () == m_endian)
 				{
@@ -433,13 +440,25 @@ NRRDParser::raw (const std::string & p_data)
 				}
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 2)
-					data .push_back ((pixels [i + e0] << 8 | pixels [i + e1]) / 256);
+				{
+					value .bytes [0] = pixels [i + e0];
+					value .bytes [1] = pixels [i + e1];
+
+					data .push_back (value .number / 256);
+				}
 
 				break;
 			}
 			case ByteType::INT:
 			{
+				union Value
+				{
+					uint8_t bytes [4];
+					uint32_t number;
+				};
+
 				const auto pixels = p_data .substr (p_data .size () - size);
+				Value value;
 
 				if (endianess () == m_endian)
 				{
@@ -451,7 +470,14 @@ NRRDParser::raw (const std::string & p_data)
 				}
 
 				for (size_t i = 0, size = pixels .size (); i < size; i += 4)
-					data .push_back ((pixels [i + e0] << 24 | pixels [i + e1] << 16 | pixels [i + e2] << 8 | pixels [i + e3]) / 16'777'216);
+				{
+					value .bytes [0] = pixels [i + e0];
+					value .bytes [1] = pixels [i + e1];
+					value .bytes [2] = pixels [i + e2];
+					value .bytes [3] = pixels [i + e3];
+
+					data .push_back (value .number / 16'777'216);
+				}
 
 				break;
 			}
