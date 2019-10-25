@@ -196,7 +196,7 @@ NRRDParser::type (const std::string & value)
 	}
 
 	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD type";
+	m_nrrd .error = "Unsupported NRRD type.";
 }
 
 void
@@ -221,7 +221,7 @@ NRRDParser::encoding (const std::string & value)
 	}
 
 	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD encoding";
+	m_nrrd .error = "Unsupported NRRD encoding.";
 }
 
 void
@@ -244,7 +244,7 @@ NRRDParser::dimension (const std::string & value)
 	}
 
 	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD dimension, must be 1, 2, 3, or 4";
+	m_nrrd .error = "Unsupported NRRD dimension, must be 1, 2, 3, or 4.";
 }
 
 void
@@ -310,7 +310,7 @@ NRRDParser::endian (const std::string & value)
 	}
 
 	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD endian, must be 'little' or 'big'";
+	m_nrrd .error = "Unsupported NRRD endian, must be 'little' or 'big'.";
 }
 
 void
