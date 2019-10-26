@@ -78,7 +78,7 @@ const io::inverse_string NRRDParser::Grammar::line ("\n");
 NRRDParser::NRRDParser (const std::string & data) :
 	     m_data (data),
 	  m_istream (data),
-	     m_nrrd ({ false, true, "", 0, 0, 0, 0, 0, 0, "" }),
+	     m_nrrd ({ true, 0, 0, 0, 0, 0, 0, "" }),
 	 m_encoding (EncodingType::ASCII),
 	m_bytesType (ByteType::BYTE),
 	    m_bytes (),
@@ -111,7 +111,6 @@ NRRDParser::NRRD ()
 	}
 
 	m_nrrd .nrrd  = false;
-	m_nrrd .error = "Invalid NRRD file.";
 }
 
 void
@@ -195,8 +194,7 @@ NRRDParser::type (const std::string & value)
 		return;
 	}
 
-	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD type.";
+	throw std::invalid_argument ("Unsupported NRRD type.");
 }
 
 void
@@ -220,8 +218,7 @@ NRRDParser::encoding (const std::string & value)
 		return;
 	}
 
-	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD encoding.";
+	throw std::invalid_argument ("Unsupported NRRD encoding.");
 }
 
 void
@@ -243,8 +240,7 @@ NRRDParser::dimension (const std::string & value)
 		}
 	}
 
-	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD dimension, must be 1, 2, 3, or 4.";
+	throw std::invalid_argument ("Unsupported NRRD dimension, must be 1, 2, 3, or 4.");
 }
 
 void
@@ -309,8 +305,7 @@ NRRDParser::endian (const std::string & value)
 		return;
 	}
 
-	m_nrrd .valid = false;
-	m_nrrd .error = "Unsupported NRRD endian, must be 'little' or 'big'.";
+	throw std::invalid_argument ("Unsupported NRRD endian, must be 'little' or 'big'.");
 }
 
 void
@@ -555,8 +550,7 @@ NRRDParser::raw (const std::string & p_data)
 		return;
 	}
 
-	m_nrrd .valid = false;
-	m_nrrd .error = "Invalid NRRD sizes";
+	throw std::invalid_argument ("Invalid NRRD sizes");
 }
 
 void
@@ -641,7 +635,7 @@ NRRDParser::endianess () const
 	if (number .m_bytes [0] == 4 and number .m_bytes [1] == 3 and number .m_bytes [2] == 2 and number .m_bytes [3] == 1)
 		return EndianType::LITTLE;
 
-	return m_endian;
+	throw std::invalid_argument ("NRRD: unkown system endianess,");
 }
 
 NRRDParser::~NRRDParser ()

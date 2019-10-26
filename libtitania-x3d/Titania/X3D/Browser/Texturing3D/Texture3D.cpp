@@ -80,9 +80,6 @@ Texture3D::readNRRD (const std::string & document)
 
 	if (nrrd .nrrd)
 	{
-		if (not nrrd .valid)
-			throw std::invalid_argument (nrrd .error);
-
 		components = nrrd .components;
 		width      = nrrd .width;
 		height     = nrrd .height;
