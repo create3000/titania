@@ -232,8 +232,8 @@ ShadedVolumeStyle::getUniformsText () const
 		string += "			vec3 L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.\n";
 		string += "			vec3 H = normalize (L + V);             // Specular term\n";
 		string += "\n";
-		string += "			float lightAngle     = dot (N, L);      // Angle between normal and light ray.\n";
-		string += "			vec3  diffuseTerm    = diffuseFactor * clamp (lightAngle, 0.0, 1.0);\n";
+		string += "			float lightAngle     = max (dot (N, L), 0.0);      // Angle between normal and light ray.\n";
+		string += "			vec3  diffuseTerm    = diffuseFactor * lightAngle;\n";
 		string += "			float specularFactor = shininess_" + getStyleId () + " > 0.0 ? pow (max (dot (N, H), 0.0), shininess_" + getStyleId () + " * 128.0) : 1.0;\n";
 		string += "			vec3  specularTerm   = light .intensity * specularColor_" + getStyleId () + " * specularFactor;\n";
 		string += "\n";
@@ -241,9 +241,9 @@ ShadedVolumeStyle::getUniformsText () const
 		string += "			float spotFactor            = light .type == x3d_SpotLight ? getSpotFactor_" + getStyleId () + " (light .cutOffAngle, light .beamWidth, L, d) : 1.0;\n";
 		string += "			float attenuationSpotFactor = attenuationFactor * spotFactor;\n";
 		string += "			vec3  ambientColor          = light .ambientIntensity * ambientTerm;\n";
-		string += "			vec3  diffuseColor          = light .intensity * diffuseTerm * max (dot (N, L), 0.0);\n";
+		string += "			vec3  diffuseSpecularColor  = light .intensity * (diffuseTerm + specularTerm);\n";
 		string += "\n";
-		string += "			shadedColor .rgb += attenuationSpotFactor * light .color * (ambientColor + diffuseColor + specularTerm);\n";
+		string += "			shadedColor .rgb += attenuationSpotFactor * light .color * (ambientColor + diffuseSpecularColor);\n";
 		string += "		}\n";
 		string += "\n";
 		string += "		shadedColor .rgb += emissiveColor_" + getStyleId () + ";\n";
