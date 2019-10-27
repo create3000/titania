@@ -71,6 +71,8 @@ Texture3D::Texture3D (const std::string & document) :
 {
 	if (readNRRD (document))
 		return;
+
+	throw std::invalid_argument ("Texture3D: no appropriate file type handler found.");
 }
 
 bool
@@ -111,7 +113,7 @@ Texture3D::readNRRD (const std::string & document)
 			}
 			default:
 			{
-				throw std::invalid_argument ("Unsupported NRRD channel size");
+				throw std::invalid_argument ("Unsupported NRRD channel size.");
 			}
 		}
 
