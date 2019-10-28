@@ -82,7 +82,7 @@ NRRDParser::NRRDParser (const std::string & data) :
 	 m_encoding (EncodingType::ASCII),
 	m_bytesType (ByteType::BYTE),
 	    m_bytes (),
-	   m_endian (endianess ())
+	   m_endian (EndianType::LITTLE)
 { }
 
 NRRDImage
@@ -105,7 +105,10 @@ NRRDParser::NRRD ()
 	if (Grammar::NRRD (m_istream))
 	{
 		m_nrrd .nrrd = true;
+		m_endian     = endianess ();
+
 		m_istream >> m_nrrd .version;
+
 		std::istream::sentry se (m_istream);
 		return;
 	}
