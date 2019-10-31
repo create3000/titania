@@ -151,7 +151,7 @@ OpacityMapVolumeStyle::getUniformsText () const
 		string += "vec4\n";
 		string += "getOpacityMapStyle_" + getStyleId () + " (in vec4 originalColor)\n";
 		string += "{\n";
-		string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .rg / originalColor .a);\n";
+		string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .rg);\n";
 		string += "}\n";
 	}
 	else
@@ -162,7 +162,7 @@ OpacityMapVolumeStyle::getUniformsText () const
 		string += "vec4\n";
 		string += "getOpacityMapStyle_" + getStyleId () + " (in vec4 originalColor)\n";
 		string += "{\n";
-		string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .rgb / originalColor .a);\n";
+		string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .rgb);\n";
 		string += "}\n";
 	}
 
