@@ -115,8 +115,8 @@ OpacityMapVolumeStyle::set_transferFunction ()
 {
 	transferFunctionNode = x3d_cast <X3DTexture2DNode*> (transferFunction ());
 
-	//if (not transferFunctionNode)
-	//	transferFunctionNode = x3d_cast <X3DTexture3DNode*> (transferFunction ());
+	if (not transferFunctionNode)
+		transferFunctionNode = x3d_cast <X3DTexture3DNode*> (transferFunction ());
 
 	if (not transferFunctionNode)
 		transferFunctionNode = getBrowser () -> getDefaultTransferFunction ();
@@ -143,14 +143,28 @@ OpacityMapVolumeStyle::getUniformsText () const
 	string += "// OpacityMapVolumeStyle\n";
 	string += "\n";
 
-	string += "uniform sampler2D transferFunction_" + getStyleId () + ";\n";
+	if (transferFunctionNode -> isType ({ X3DConstants::X3DTexture2DNode }))
+	{
+		string += "uniform sampler2D transferFunction_" + getStyleId () + ";\n";
 
-	string += "\n";
-	string += "vec4\n";
-	string += "getOpacityMapStyle_" + getStyleId () + " (in vec4 originalColor)\n";
-	string += "{\n";
-	string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .ra);\n";
-	string += "}\n";
+		string += "\n";
+		string += "vec4\n";
+		string += "getOpacityMapStyle_" + getStyleId () + " (in vec4 originalColor)\n";
+		string += "{\n";
+		string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .rg / originalColor .a);\n";
+		string += "}\n";
+	}
+	else
+	{
+		string += "uniform sampler3D transferFunction_" + getStyleId () + ";\n";
+
+		string += "\n";
+		string += "vec4\n";
+		string += "getOpacityMapStyle_" + getStyleId () + " (in vec4 originalColor)\n";
+		string += "{\n";
+		string += "	return texture (transferFunction_" + getStyleId () + ", originalColor .rgb / originalColor .a);\n";
+		string += "}\n";
+	}
 
 	return string;
 }
