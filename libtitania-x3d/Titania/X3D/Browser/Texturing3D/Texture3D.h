@@ -106,6 +106,9 @@ private:
 	bool
 	readNRRD (const std::string & document);
 
+	bool
+	readDICOM (const std::string & document);
+
 	///  @name Members
 
 	size_t                components;

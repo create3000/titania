@@ -48,9 +48,18 @@
  *
  ******************************************************************************/
 
+#include <dcmtk/dcmimage/diregist.h>
+#include <dcmtk/dcmimgle/dcmimage.h>
+#include <dcmtk/dcmdata/dcrledrg.h>
+#include <dcmtk/dcmjpeg/djdecode.h>
+#include <dcmtk/dcmjpls/djdecode.h>
+
 #include "Texture3D.h"
 
 #include "NRRDParser.h"
+
+#include <glibmm.h>
+#include <memory>
 
 #include <Titania/LOG.h>
 
@@ -70,6 +79,9 @@ Texture3D::Texture3D (const std::string & document) :
 	Texture3D (0, 0, 0, 0, GL_RGB, std::vector <uint8_t> ())
 {
 	if (readNRRD (document))
+		return;
+
+	if (readDICOM (document))
 		return;
 
 	throw std::invalid_argument ("Texture3D: no appropriate file type handler found.");
@@ -115,6 +127,57 @@ Texture3D::readNRRD (const std::string & document)
 			{
 				throw std::invalid_argument ("Unsupported NRRD channel size.");
 			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Texture3D::readDICOM (const std::string & document)
+{
+	// https://support.dcmtk.org/docs/mod_dcmimage.html
+	// https://support.dcmtk.org/docs/classDicomImage.html
+
+	std::string tmpFilename = "/tmp/titania-XXXXXX";
+
+	::close (Glib::mkstemp (tmpFilename));
+
+	std::ofstream ofstream (tmpFilename);
+
+	ofstream << document;
+
+	DcmRLEDecoderRegistration::registerCodecs ();
+	//DJDecoderRegistration::registerCodecs ();
+	DJLSDecoderRegistration::registerCodecs ();
+
+	const auto image = std::shared_ptr <DicomImage> (new DicomImage (tmpFilename .c_str ()));
+
+	unlink (tmpFilename .c_str ());
+
+	if (image -> getStatus() == EIS_Normal)
+	{
+		format     = image -> isMonochrome () ? GL_LUMINANCE : GL_RGBA;
+		components = image -> isMonochrome () ? 1 : 3;
+		width      = image -> getWidth ();
+		height     = image -> getHeight ();
+		depth      = image -> getFrameCount ();
+
+		image -> setMinMaxWindow ();
+
+		for (size_t i = 0; i < depth; ++ i)
+		{
+			const auto pixelData = static_cast <const uint8_t*> (image -> getOutputData (8, i));
+
+			if (not pixelData)
+				throw std::invalid_argument ("DICOM: not enough pixel data.");
+
+			if (image -> getOutputDataSize (8) != width * height * components)
+				throw std::invalid_argument ("DICOM: not enough pixel data.");
+
+			data .insert (data .end (), pixelData, pixelData + (width * height * components));
 		}
 
 		return true;
