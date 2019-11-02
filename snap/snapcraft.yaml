@@ -115,6 +115,7 @@ parts:
       - libxml++2.6-dev
       - mesa-common-dev
       - zlib1g-dev
+      - libdcmtk-dev
     stage-packages:
       - ffmpeg
       - gettext
@@ -167,6 +168,7 @@ parts:
       - ibus-gtk3
       - libibus-1.0-5
       - fcitx-frontend-gtk3
+      - libdcmtk14
     override-build: |
       set -eux
       snapcraftctl build

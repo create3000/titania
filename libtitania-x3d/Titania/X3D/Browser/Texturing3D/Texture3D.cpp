@@ -150,14 +150,14 @@ Texture3D::readDICOM (const std::string & document)
 	ofstream << document;
 
 	DcmRLEDecoderRegistration::registerCodecs ();
-	//DJDecoderRegistration::registerCodecs ();
+	DJDecoderRegistration::registerCodecs ();
 	DJLSDecoderRegistration::registerCodecs ();
 
 	const auto image = std::shared_ptr <DicomImage> (new DicomImage (tmpFilename .c_str ()));
 
 	unlink (tmpFilename .c_str ());
 
-	if (image -> getStatus() == EIS_Normal)
+	if (image -> getStatus () == EIS_Normal)
 	{
 		format     = image -> isMonochrome () ? GL_LUMINANCE : GL_RGBA;
 		components = image -> isMonochrome () ? 1 : 3;

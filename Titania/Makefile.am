@@ -345,7 +345,7 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
 
-AM_LDFLAGS="-lX11"
+AM_LDFLAGS = -lX11
 
 install-exec-hook:
 	mkdir -m 755 -p $(DESTDIR)$(datadir)

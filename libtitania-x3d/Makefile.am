@@ -711,7 +711,7 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream
 
-AM_LDFLAGS = -ldcmjpeg -ldcmjpls -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -lijg8 -lijg12 -lijg16 -lofstd
+AM_LDFLAGS = -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -ldcmjpeg -ldcmjpls -lijg8 -lijg12 -lijg16 -lofstd
 
 install-exec-hook:
 	mkdir -m 755 -p $(DESTDIR)$(datadir)
