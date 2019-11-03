@@ -178,7 +178,7 @@ Texture3D::readDICOM (const std::string & document)
 				throw std::invalid_argument ("DICOM: not enough pixel data.");
 
 			if (image -> getOutputDataSize (8) != width * height * components)
-				throw std::invalid_argument ("DICOM: not enough pixel data.");
+				throw std::invalid_argument ("DICOM: invalid pixel data.");
 
 			data .insert (data .end (), pixelData, pixelData + (width * height * components));
 		}
