@@ -162,7 +162,7 @@ Texture3D::readDICOM (const std::string & document)
 
 	if (image -> getStatus () == EIS_Normal)
 	{
-		format     = image -> isMonochrome () ? GL_LUMINANCE : GL_RGBA;
+		format     = image -> isMonochrome () ? GL_LUMINANCE : GL_RGB;
 		components = image -> isMonochrome () ? 1 : 3;
 		width      = image -> getWidth ();
 		height     = image -> getHeight ();
