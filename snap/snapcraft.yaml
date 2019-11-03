@@ -95,6 +95,7 @@ parts:
       - libbullet-dev
       - libcgal-dev
       - libcurl4-gnutls-dev
+      - libdcmtk-dev
       - libfontconfig1-dev
       - libgl1-mesa-dev
       - libglew-dev
@@ -115,10 +116,13 @@ parts:
       - libxml++2.6-dev
       - mesa-common-dev
       - zlib1g-dev
-      - libdcmtk-dev
     stage-packages:
+      - adwaita-icon-theme
+      - dmz-cursor-theme
+      - fcitx-frontend-gtk3
       - ffmpeg
       - gettext
+      - gnome-themes-standard
       - gstreamer1.0-alsa
       - gstreamer1.0-libav
       - gstreamer1.0-plugins-bad
@@ -127,48 +131,44 @@ parts:
       - gstreamer1.0-plugins-ugly
       - gstreamer1.0-pulseaudio
       - gstreamer1.0-x
+      - ibus-gtk3
+      - libappindicator3-1
       - libbullet2.87
+      - libc-bin
+      - libc6
       - libcgal13
       - libcurl4
+      - libdcmtk14
       - libfontconfig1
+      - libgdk-pixbuf2.0-0
       - libgl1-mesa-glx
       - libglew2.1
+      - libglib2.0-bin
       - libglu1-mesa
       - libgmp10
       - libgstreamermm-1.0-1
+      - libgtk-3-0
+      - libgtk-3-bin
       - libgtkmm-3.0-1v5
       - libgtksourceviewmm-3.0-0v5
       - libgtop-2.0-11
+      - libibus-1.0-5
       - libjson-c3
       - libmozjs-60-0
       - libmpfr6
       - libsqlite3-0
+      - libstdc++6 # extra
       - libx264-155
+      - libxkbcommon0  # XKB_CONFIG_ROOT
       - libxml++2.6-2v5
       - libxvidcore4
-      - zlib1g
-      - libstdc++6 # extra
-      - libc6
-      - libc-bin
-      - libxkbcommon0  # XKB_CONFIG_ROOT
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
       - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
-      - shared-mime-info
-      - libgtk-3-0
-      - libgdk-pixbuf2.0-0
-      - libglib2.0-bin
-      - libgtk-3-bin
-      - unity-gtk3-module
-      - libappindicator3-1
       - locales-all
+      - shared-mime-info
+      - ttf-ubuntu-font-family
+      - unity-gtk3-module
       - xdg-user-dirs
-      - ibus-gtk3
-      - libibus-1.0-5
-      - fcitx-frontend-gtk3
-      - libdcmtk14
+      - zlib1g
     override-build: |
       set -eux
       snapcraftctl build
