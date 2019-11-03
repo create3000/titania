@@ -141,21 +141,24 @@ Texture3D::readDICOM (const std::string & document)
 	// https://support.dcmtk.org/docs/mod_dcmimage.html
 	// https://support.dcmtk.org/docs/classDicomImage.html
 
+	// Create temp file.
+
 	std::string tmpFilename = "/tmp/titania-XXXXXX";
-
 	::close (Glib::mkstemp (tmpFilename));
-
 	std::ofstream ofstream (tmpFilename);
-
 	ofstream << document;
+
+	// Register codecs.
 
 	DcmRLEDecoderRegistration::registerCodecs ();
 	DJDecoderRegistration::registerCodecs ();
 	DJLSDecoderRegistration::registerCodecs ();
 
+	// Parse image.
+
 	const auto image = std::shared_ptr <DicomImage> (new DicomImage (tmpFilename .c_str ()));
 
-	unlink (tmpFilename .c_str ());
+	::unlink (tmpFilename .c_str ());
 
 	if (image -> getStatus () == EIS_Normal)
 	{
