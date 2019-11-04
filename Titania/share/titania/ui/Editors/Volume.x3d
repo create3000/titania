@@ -106,8 +106,8 @@ getTextureColor (in vec3 texCoord)
 	if (texCoord .p < 0.0 || texCoord .p > 1.0)
 		discard;
 
-	vec4 voxelColor   = texture (x3d_Texture3D [0], texCoord);
-	
+	vec4 voxelColor = texture (x3d_Texture3D [0], vec3 (texCoord .s, texCoord .t, 1.0 - texCoord .p));
+
 	return voxelColor;
 }
 
@@ -155,7 +155,7 @@ function set_dimension ()
 		size1_2  = size / 2,
 		coord    = geometry .coord,
 		texCoord = geometry .texCoord;
-	
+
 	coord .point .length = 0;
 
 	for (var i = 0; i < NUM_PLANES; ++ i)
@@ -169,7 +169,7 @@ function set_dimension ()
 	}
 
 	texCoord .point = coord .point;
-	
+
 	textureTransform .scale = new SFVec3f (1 / dimensions .x, 1 / dimensions .y, 1 / dimensions .z);
 }
 ]]>
