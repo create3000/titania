@@ -147,7 +147,7 @@ ComposedTexture3D::update ()
 
 		std::vector <uint8_t> image;
 
-		for (const auto & textureNode : basic::make_reverse_range (textureNodes))
+		for (const auto & textureNode : textureNodes)
 		{
 			// Get texture 2d data
 
