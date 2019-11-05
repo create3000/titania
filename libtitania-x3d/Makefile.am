@@ -212,6 +212,7 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimJoint.cpp \
+	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimMotion.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimSegment.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimSite.cpp \
 	$(current_dir)/Titania/X3D/Components/Interpolation/ColorInterpolator.cpp \
@@ -358,6 +359,7 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Components/Shape/FillProperties.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/LineProperties.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/Material.cpp \
+	$(current_dir)/Titania/X3D/Components/Shape/PointProperties.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/Shape.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/TwoSidedMaterial.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/X3DAppearanceChildNode.cpp \

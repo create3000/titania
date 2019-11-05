@@ -54,6 +54,7 @@
 #include "H-Anim/HAnimDisplacer.h"
 #include "H-Anim/HAnimHumanoid.h"
 #include "H-Anim/HAnimJoint.h"
+#include "H-Anim/HAnimMotion.h"
 #include "H-Anim/HAnimSegment.h"
 #include "H-Anim/HAnimSite.h"
 

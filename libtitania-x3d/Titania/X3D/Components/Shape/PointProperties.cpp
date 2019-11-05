@@ -48,19 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHAPE_H__
-#define __TITANIA_X3D_COMPONENTS_SHAPE_H__
+#include "PointProperties.h"
 
-#include "Shape/Appearance.h"
-#include "Shape/FillProperties.h"
-#include "Shape/LineProperties.h"
-#include "Shape/Material.h"
-#include "Shape/PointProperties.h"
-#include "Shape/Shape.h"
-#include "Shape/TwoSidedMaterial.h"
-#include "Shape/X3DAppearanceChildNode.h"
-#include "Shape/X3DAppearanceNode.h"
-#include "Shape/X3DMaterialNode.h"
-#include "Shape/X3DShapeNode.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
-#endif
+namespace titania {
+namespace X3D {
+
+const Component   PointProperties::component      = Component ("Shape", 5);
+const std::string PointProperties::typeName       = "PointProperties";
+const std::string PointProperties::containerField = "lineProperties";
+
+PointProperties::Fields::Fields () :
+	pointSizeScaleFactor (new SFFloat (1)),
+	   pointSizeMinValue (new SFFloat (1)),
+	   pointSizeMaxValue (new SFFloat (1)),
+	pointSizeAttenuation (new MFFloat ({ 1, 0, 0 })),
+	           colorMode (new SFString ("TEXTURE_AND_POINT_COLOR"))
+{ }
+
+PointProperties::PointProperties (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DAppearanceChildNode (),
+	                fields ()
+{
+	addType (X3DConstants::PointProperties);
+
+	addField (inputOutput, "metadata",             metadata ());
+	addField (inputOutput, "pointSizeScaleFactor", pointSizeScaleFactor ());
+	addField (inputOutput, "pointSizeMinValue",    pointSizeMinValue ());
+	addField (inputOutput, "pointSizeMaxValue",    pointSizeMaxValue ());
+	addField (inputOutput, "pointSizeAttenuation", pointSizeAttenuation ());
+	addField (inputOutput, "colorMode",            colorMode ());
+}
+
+X3DBaseNode*
+PointProperties::create (X3DExecutionContext* const executionContext) const
+{
+	return new PointProperties (executionContext);
+}
+
+void
+PointProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+}
+
+PointProperties::~PointProperties ()
+{ }
+
+} // X3D
+} // titania

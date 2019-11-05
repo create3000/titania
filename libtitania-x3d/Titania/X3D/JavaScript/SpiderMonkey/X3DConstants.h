@@ -261,6 +261,7 @@ private:
 	static bool HAnimDisplacer                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimHumanoid                    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimJoint                       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool HAnimMotion                      (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimSegment                     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimSite                        (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool ImageCubeMapTexture              (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -330,6 +331,7 @@ private:
 	static bool PointEmitter                     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool PointLight                       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool PointPickSensor                  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool PointProperties                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool PointSet                         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Polyline2D                       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool PolylineEmitter                  (JSContext* cx, unsigned argc, JS::Value* vp);

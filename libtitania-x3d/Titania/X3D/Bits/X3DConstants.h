@@ -253,6 +253,7 @@ enum NodeType : uint16_t
 	HAnimDisplacer,
 	HAnimHumanoid,
 	HAnimJoint,
+	HAnimMotion,
 	HAnimSegment,
 	HAnimSite,
 	ImageCubeMapTexture,
@@ -322,6 +323,7 @@ enum NodeType : uint16_t
 	PointEmitter,
 	PointLight,
 	PointPickSensor,
+	PointProperties,
 	PointSet,
 	Polyline2D,
 	PolylineEmitter,
@@ -497,7 +499,7 @@ enum NodeType : uint16_t
 	Circle2DOptions,
 	Disk2DOptions,
 	Rectangle2DOptions,
-	
+
 	BoxOptions,
 	ConeOptions,
 	CylinderOptions,

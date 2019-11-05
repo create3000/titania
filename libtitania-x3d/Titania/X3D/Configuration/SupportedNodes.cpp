@@ -59,13 +59,13 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	nodes ()
 {
 	//std::clog << "Creating node index:" << std::endl;
-	
+
 	// Specification version 3.2
-	
+
 	addNode ("MetadataBool",                     new MetadataBoolean                  (executionContext));
 
 	// Specification version 3.3
-	
+
 	addNode ("Anchor",                           new Anchor                           (executionContext));
 	addNode ("Appearance",                       new Appearance                       (executionContext));
 	addNode ("Arc2D",                            new Arc2D                            (executionContext));
@@ -150,6 +150,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("HAnimDisplacer",                   new HAnimDisplacer                   (executionContext));
 	addNode ("HAnimHumanoid",                    new HAnimHumanoid                    (executionContext));
 	addNode ("HAnimJoint",                       new HAnimJoint                       (executionContext));
+	addNode ("HAnimMotion",                      new HAnimMotion                      (executionContext));
 	addNode ("HAnimSegment",                     new HAnimSegment                     (executionContext));
 	addNode ("HAnimSite",                        new HAnimSite                        (executionContext));
 	addNode ("ImageCubeMapTexture",              new ImageCubeMapTexture              (executionContext));
@@ -219,6 +220,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("PointEmitter",                     new PointEmitter                     (executionContext));
 	addNode ("PointLight",                       new PointLight                       (executionContext));
 	addNode ("PointPickSensor",                  new PointPickSensor                  (executionContext));
+	addNode ("PointProperties",                  new PointProperties                  (executionContext));
 	addNode ("PointSet",                         new PointSet                         (executionContext));
 	addNode ("Polyline2D",                       new Polyline2D                       (executionContext));
 	addNode ("PolylineEmitter",                  new PolylineEmitter                  (executionContext));

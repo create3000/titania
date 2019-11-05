@@ -1716,6 +1716,14 @@ X3DConstants::HAnimJoint (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 bool
+X3DConstants::HAnimMotion (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::HAnimMotion));
+	return true;
+}
+
+bool
 X3DConstants::HAnimSegment (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
@@ -2264,6 +2272,14 @@ X3DConstants::PointPickSensor (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
 	args .rval () .setNumber (uint32_t (X3D::X3DConstants::PointPickSensor));
+	return true;
+}
+
+bool
+X3DConstants::PointProperties (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::PointProperties));
 	return true;
 }
 

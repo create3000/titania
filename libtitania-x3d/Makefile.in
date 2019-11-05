@@ -341,6 +341,7 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimDisplacer.lo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimHumanoid.lo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimJoint.lo \
+	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimMotion.lo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimSegment.lo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimSite.lo \
 	$(current_dir)/Titania/X3D/Components/Interpolation/ColorInterpolator.lo \
@@ -487,6 +488,7 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Components/Shape/FillProperties.lo \
 	$(current_dir)/Titania/X3D/Components/Shape/LineProperties.lo \
 	$(current_dir)/Titania/X3D/Components/Shape/Material.lo \
+	$(current_dir)/Titania/X3D/Components/Shape/PointProperties.lo \
 	$(current_dir)/Titania/X3D/Components/Shape/Shape.lo \
 	$(current_dir)/Titania/X3D/Components/Shape/TwoSidedMaterial.lo \
 	$(current_dir)/Titania/X3D/Components/Shape/X3DAppearanceChildNode.lo \
@@ -1049,6 +1051,7 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimHumanoid.Plo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimJoint.Plo \
+	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimMotion.Plo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSegment.Plo \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSite.Plo \
 	$(current_dir)/Titania/X3D/Components/Interpolation/$(DEPDIR)/ColorInterpolator.Plo \
@@ -1195,6 +1198,7 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/FillProperties.Plo \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/LineProperties.Plo \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Material.Plo \
+	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/PointProperties.Plo \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Shape.Plo \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/TwoSidedMaterial.Plo \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/X3DAppearanceChildNode.Plo \
@@ -1977,6 +1981,7 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimJoint.cpp \
+	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimMotion.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimSegment.cpp \
 	$(current_dir)/Titania/X3D/Components/H-Anim/HAnimSite.cpp \
 	$(current_dir)/Titania/X3D/Components/Interpolation/ColorInterpolator.cpp \
@@ -2123,6 +2128,7 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Components/Shape/FillProperties.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/LineProperties.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/Material.cpp \
+	$(current_dir)/Titania/X3D/Components/Shape/PointProperties.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/Shape.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/TwoSidedMaterial.cpp \
 	$(current_dir)/Titania/X3D/Components/Shape/X3DAppearanceChildNode.cpp \
@@ -3328,6 +3334,9 @@ $(current_dir)/Titania/X3D/Components/H-Anim/HAnimHumanoid.lo:  \
 $(current_dir)/Titania/X3D/Components/H-Anim/HAnimJoint.lo:  \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/H-Anim/HAnimMotion.lo:  \
+	$(current_dir)/Titania/X3D/Components/H-Anim/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Components/H-Anim/HAnimSegment.lo:  \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/$(am__dirstamp)
@@ -3761,6 +3770,9 @@ $(current_dir)/Titania/X3D/Components/Shape/LineProperties.lo:  \
 	$(current_dir)/Titania/X3D/Components/Shape/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Components/Shape/Material.lo:  \
+	$(current_dir)/Titania/X3D/Components/Shape/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Shape/PointProperties.lo:  \
 	$(current_dir)/Titania/X3D/Components/Shape/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Components/Shape/Shape.lo:  \
@@ -5451,6 +5463,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimHumanoid.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimJoint.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimMotion.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSegment.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSite.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Interpolation/$(DEPDIR)/ColorInterpolator.Plo@am__quote@ # am--include-marker
@@ -5597,6 +5610,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/FillProperties.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/LineProperties.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Material.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/PointProperties.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Shape.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/TwoSidedMaterial.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/X3DAppearanceChildNode.Plo@am__quote@ # am--include-marker
@@ -6679,6 +6693,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimHumanoid.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimJoint.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimMotion.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSegment.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSite.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Interpolation/$(DEPDIR)/ColorInterpolator.Plo
@@ -6825,6 +6840,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/FillProperties.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/LineProperties.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Material.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/PointProperties.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Shape.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/TwoSidedMaterial.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/X3DAppearanceChildNode.Plo
@@ -7413,6 +7429,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimHumanoid.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimJoint.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimMotion.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSegment.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimSite.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Interpolation/$(DEPDIR)/ColorInterpolator.Plo
@@ -7559,6 +7576,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/FillProperties.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/LineProperties.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Material.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/PointProperties.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/Shape.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/TwoSidedMaterial.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Shape/$(DEPDIR)/X3DAppearanceChildNode.Plo

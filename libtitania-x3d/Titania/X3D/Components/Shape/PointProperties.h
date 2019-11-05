@@ -48,19 +48,123 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHAPE_H__
-#define __TITANIA_X3D_COMPONENTS_SHAPE_H__
+#ifndef __TITANIA_X3D_COMPONENTS_SHAPE_POINT_PROPERTIES_H__
+#define __TITANIA_X3D_COMPONENTS_SHAPE_POINT_PROPERTIES_H__
 
-#include "Shape/Appearance.h"
-#include "Shape/FillProperties.h"
-#include "Shape/LineProperties.h"
-#include "Shape/Material.h"
-#include "Shape/PointProperties.h"
-#include "Shape/Shape.h"
-#include "Shape/TwoSidedMaterial.h"
-#include "Shape/X3DAppearanceChildNode.h"
-#include "Shape/X3DAppearanceNode.h"
-#include "Shape/X3DMaterialNode.h"
-#include "Shape/X3DShapeNode.h"
+#include "../Shape/X3DAppearanceChildNode.h"
+
+namespace titania {
+namespace X3D {
+
+class PointProperties :
+	public X3DAppearanceChildNode
+{
+public:
+
+	PointProperties (X3DExecutionContext* const executionContext);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Common members
+
+	virtual
+	const Component &
+	getComponent () const final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFFloat &
+	pointSizeScaleFactor ()
+	{ return *fields .pointSizeScaleFactor; }
+
+	const SFFloat &
+	pointSizeScaleFactor () const
+	{ return *fields .pointSizeScaleFactor; }
+
+	SFFloat &
+	pointSizeMinValue ()
+	{ return *fields .pointSizeMinValue; }
+
+	const SFFloat &
+	pointSizeMinValue () const
+	{ return *fields .pointSizeMinValue; }
+
+	SFFloat &
+	pointSizeMaxValue ()
+	{ return *fields .pointSizeMaxValue; }
+
+	const SFFloat &
+	pointSizeMaxValue () const
+	{ return *fields .pointSizeMaxValue; }
+
+	MFFloat &
+	pointSizeAttenuation ()
+	{ return *fields .pointSizeAttenuation; }
+
+	const MFFloat &
+	pointSizeAttenuation () const
+	{ return *fields .pointSizeAttenuation; }
+
+	SFString &
+	colorMode ()
+	{ return *fields .colorMode; }
+
+	const SFString &
+	colorMode () const
+	{ return *fields .colorMode; }
+
+	///  @name Operations
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const) const;
+
+	///  @name Destruction
+
+	virtual
+	~PointProperties () final override;
+
+
+private:
+
+
+	///  @name Static members
+
+	static const Component   component;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const pointSizeScaleFactor;
+		SFFloat* const pointSizeMinValue;
+		SFFloat* const pointSizeMaxValue;
+		MFFloat* const pointSizeAttenuation;
+		SFString* const colorMode;
+	};
+
+	Fields fields;
+
+};
+
+} // X3D
+} // titania
 
 #endif
