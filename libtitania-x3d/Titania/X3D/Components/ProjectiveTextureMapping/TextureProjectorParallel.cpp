@@ -60,7 +60,7 @@ const std::string TextureProjectorParallel::typeName       = "TextureProjectorPa
 const std::string TextureProjectorParallel::containerField = "children";
 
 TextureProjectorParallel::Fields::Fields () :
-	fieldOfView (new MFFloat (-1, -1, 1, 1))
+	fieldOfView (new MFFloat ({ -1, -1, 1, 1 }))
 { }
 
 TextureProjectorParallel::TextureProjectorParallel (X3DExecutionContext* const executionContext) :
