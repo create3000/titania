@@ -1,0 +1,19 @@
+HAnimMotion : X3DChildNode {
+  SFString [in,out] channels         []
+  MFBool   [in,out] channelsEnabled  []
+  SFTime   [out]    cycleTime
+  SFString [in,out] description      ""
+  SFTime   [out]    elapsedTime      (0,∞)
+  SFBool   [in,out] enabled          TRUE
+  SFInt32  [out]    frameCount                           [0,∞)
+  SFTime   [in,out] frameDuration    0.1                 (0,∞)
+  SFInt32  [in,out] frameIncrement   1                   (-∞,∞)
+  SFInt32  [in,out] frameIndex       0                   (0,∞)
+  MFString [in,out] joints           []
+  SFInt32  [in,out] loa              -1                  [-1,4]
+  SFBool   [in,out] loop             false
+  SFNode   [in,out] metadata         NULL                [X3DMetadataObject]
+  SFBool   [in]     next
+  SFBool   [in]     previous
+  MFFloat  [in,out] values           []                  (-∞,∞)
+}

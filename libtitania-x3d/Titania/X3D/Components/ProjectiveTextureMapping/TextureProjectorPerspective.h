@@ -96,6 +96,14 @@ public:
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
 
+	SFVec3f &
+	upVector ()
+	{ return *fields .upVector; }
+
+	const SFVec3f &
+	upVector () const
+	{ return *fields .upVector; }
+
 	///  @name Destruction
 
 	virtual
@@ -126,6 +134,7 @@ private:
 		Fields ();
 
 		SFFloat* const fieldOfView;
+		SFVec3f* const upVector;
 	};
 
 	Fields fields;

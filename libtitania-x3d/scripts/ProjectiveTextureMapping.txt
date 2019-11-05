@@ -1,0 +1,41 @@
+X3DTextureProjectorNode : X3DChildNode{
+	SFNode		[in,out]	metadata	NULL	[X3DMetadataObject]
+	SFString	[in,out]	description 	""
+	SFVec3f		[in,out]	location	0 0 0 (-∞,∞)
+	SFVec3f		[in,out]	direction	0 0 1 (-∞,∞)
+	SFFloat		[out]		aspectRatio
+	SFFloat		[in,out]	nearDistance    1
+     	SFFloat		[in,out] 	farDistance     10
+	SFBool      	[in,out]	global		true
+     	SFBool     	[in,out]	on		true
+	SFNode 		[in,out] 	texture 	NULL [X3DTexture2DNode]
+}
+
+TextureProjectorPerspective : X3DTextureProjectorNode {
+	SFNode	 [in,out]	metadata	NULL 	[X3DMetadataObject]
+	SFString [in,out]	description 	""
+	SFVec3f	 [in,out]	location	0 0 1
+	SFvec3f	 [in,out]	direction	0 0 1
+	SFFloat	 [in,out]	fieldOfView 	π/4 (0,π)
+	SFFloat	 [out]		aspectRatio
+	SFVec3f	 [in,out]	upVector	0 0 1
+	SFFloat	 [in,out]	nearDistance    1
+        SFFloat	 [in,out] 	farDistance     10
+	SFBool	 [in,out] 	global		true
+        SFBool	 [in,out] 	on		true
+ 	SFNode 	 [in,out] 	texture 	NULL [X3DTexture2DNode]
+}
+
+TextureProjectorParallel : X3DTextureProjectorNode{
+	SFNode	 [in,out]	metadata	NULL [X3DMetadataObject]
+	SFString [in,out]	description 	""
+	SFVec3f	 [in,out]	location	0 0 1
+	SFVec3f	 [in,out]	direction 	0 0 1
+	SFFloat	 [out]		aspectRatio
+	MFFloat	 [in,out]  	fieldOfView	-1 -1 1 1 (-∞,∞)
+       	SFFloat	 [in,out] 	nearDistance    1
+       	SFFloat	 [in,out] 	farDistance     10
+       	SFBool	 [in,out] 	global		true
+       	SFBool	 [in,out] 	on		true
+       	SFNode 	 [in,out] 	texture 	NULL [X3DTexture2DNode]
+}

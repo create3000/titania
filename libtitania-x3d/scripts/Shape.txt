@@ -1,0 +1,8 @@
+PointProperties : X3DAppearanceChildNode {
+  SFFloat  [in,out] pointSizeScaleFactor  1 [1,∞)
+  SFFloat  [in,out] pointSizeMinValue     1 [0,∞)
+  SFFloat  [in,out] pointSizeMaxValue     1 [0,∞)
+  MFFloat  [in,out] pointSizeAttenuation  1 0 0 [0,∞)
+  SFString [in,out] colorMode             "TEXTURE_AND_POINT_COLOR" ["POINT_COLOR" | "TEXTURE_COLOR" | "TEXTURE_AND_POINT_COLOR"]
+  SFNode   [in,out] metadata              NULL [X3DMetadataObject]
+}

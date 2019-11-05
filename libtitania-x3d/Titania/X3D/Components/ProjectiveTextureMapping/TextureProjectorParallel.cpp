@@ -59,9 +59,14 @@ const Component   TextureProjectorParallel::component      = Component ("Project
 const std::string TextureProjectorParallel::typeName       = "TextureProjectorParallel";
 const std::string TextureProjectorParallel::containerField = "children";
 
+TextureProjectorParallel::Fields::Fields () :
+	fieldOfView (new MFFloat (-1, -1, 1, 1))
+{ }
+
 TextureProjectorParallel::TextureProjectorParallel (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTextureProjectorNode ()
+	X3DTextureProjectorNode (),
+	fields ()
 {
 	addType (X3DConstants::TextureProjectorParallel);
 
@@ -70,6 +75,7 @@ TextureProjectorParallel::TextureProjectorParallel (X3DExecutionContext* const e
 	addField (inputOutput, "location", location ());
 	addField (inputOutput, "direction", direction ());
 	addField (outputOnly, "aspectRatio", aspectRatio ());
+	addField (outputOnly, "fieldOfView", fieldOfView ());
 	addField (inputOutput, "nearDistance", nearDistance ());
 	addField (inputOutput, "farDistance", farDistance ());
 	addField (inputOutput, "global", global ());

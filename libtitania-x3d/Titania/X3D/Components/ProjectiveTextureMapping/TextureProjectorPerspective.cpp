@@ -60,7 +60,8 @@ const std::string TextureProjectorPerspective::typeName       = "TextureProjecto
 const std::string TextureProjectorPerspective::containerField = "children";
 
 TextureProjectorPerspective::Fields::Fields () :
-	fieldOfView (new SFFloat (0.7854))
+	fieldOfView (new SFFloat (0.7854)),
+	   upVector (new SFVec3f (0, 0, 1))
 { }
 
 TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* const executionContext) :
@@ -76,6 +77,7 @@ TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* c
 	addField (inputOutput, "direction", direction ());
 	addField (inputOutput, "fieldOfView", fieldOfView ());
 	addField (outputOnly, "aspectRatio", aspectRatio ());
+	addField (outputOnly, "upVector", upVector ());
 	addField (inputOutput, "nearDistance", nearDistance ());
 	addField (inputOutput, "farDistance", farDistance ());
 	addField (inputOutput, "global", global ());

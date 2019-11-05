@@ -86,6 +86,16 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Fields
+
+	MFFloat &
+	fieldOfView ()
+	{ return *fields .fieldOfView; }
+
+	const MFFloat &
+	fieldOfView () const
+	{ return *fields .fieldOfView; }
+
 	///  @name Destruction
 
 	virtual
@@ -108,6 +118,17 @@ private:
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		MFFloat* const fieldOfView;
+	};
+
+	Fields fields;
 
 };
 

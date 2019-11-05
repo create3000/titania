@@ -99,7 +99,7 @@ HAnimMotion::HAnimMotion (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "joints",          joints ());
 	addField (inputOutput, "loa",             loa ());
 	addField (inputOutput, "loop",            loop ());
-	addField (inputOnly, "next",            next ());
+	addField (inputOnly,   "next",            next ());
 	addField (inputOnly,   "previous",        previous ());
 	addField (inputOutput, "values",          values ());
 }
