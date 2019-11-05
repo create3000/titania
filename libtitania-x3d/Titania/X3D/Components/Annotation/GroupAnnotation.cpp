@@ -48,47 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#include "GroupAnnotation.h"
 
-#include "Components/Annotation.h"
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/ProjectiveTextureMapping.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
 
-#endif
+const Component   GroupAnnotation::component      = Component ("Annotation", 2);
+const std::string GroupAnnotation::typeName       = "GroupAnnotation";
+const std::string GroupAnnotation::containerField = "children";
+
+GroupAnnotation::GroupAnnotation (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	X3DAnnotationNode ()
+{
+	addType (X3DConstants::GroupAnnotation);
+
+	addField (inputOnly, "addChildren", addChildren ());
+	addField (inputOnly, "removeChildren", removeChildren ());
+	addField (inputOutput, "annotationGroupID", annotationGroupID ());
+	addField (inputOutput, "children", children ());
+	addField (inputOutput, "displayPolicy", displayPolicy ());
+	addField (inputOutput, "enabled", enabled ());
+	addField (inputOutput, "metadata", metadata ());
+	addField (initializeOnly, "bboxCenter", bboxCenter ());
+	addField (initializeOnly, "bboxSize", bboxSize ());
+}
+
+X3DBaseNode*
+GroupAnnotation::create (X3DExecutionContext* const executionContext) const
+{
+	return new GroupAnnotation (executionContext);
+}
+
+void
+GroupAnnotation::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	//X3DAnnotationNode::initialize ();
+}
+
+void
+GroupAnnotation::dispose ()
+{
+	//X3DAnnotationNode::dispose ();
+	X3DGroupingNode::dispose ();
+}
+
+GroupAnnotation::~GroupAnnotation ()
+{ }
+
+} // X3D
+} // titania

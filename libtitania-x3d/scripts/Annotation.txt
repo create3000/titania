@@ -1,0 +1,61 @@
+X3DAnnotationNode : X3DChildNode {
+  SFString [in,out] annotationGroupID ""
+  SFString [in,out] displayPolicy     "NEVER" ["POINTER_OVER", "POINTER_ACTIVATE", "ALWAYS", "WHEN_VISIBLE", "NEVER"]
+  SFBool   [in,out] enabled           TRUE
+  SFNode   [in,out] metadata          NULL    [X3DMetadataObject]
+}  
+
+AnnotationLayer : X3DLayerNode {
+  SFBool   [in,out] isPickable   TRUE
+  MFString [in,out] layoutPolicy ""   ["circular", "edges", ...]
+  SFNode   [in,out] metadata     NULL [X3DMetadataObject]
+  MFString [in,out] shownGroupID []
+  SFNode   [in,out] viewport     NULL [X3DViewportNode]
+}
+
+AnnotationTarget : X3DChildNode {
+  MFNode  [in,out] annotations    []      [X3DAnnotationNode]
+  SFNode  [in,out] leadLineStyle  NULL    [X3DLinePropertiesNode]
+  SFNode  [in,out] marker         NULL    [X3DShapeNode]
+  SFNode  [in,out] metadata       NULL    [X3DMetadataObject]
+  SFVec3f [in,out] referencePoint 0, 0, 0 (-∞,∞)
+}
+
+GroupAnnotation : X3DAnnotationNode {
+  MFNode   [in]     addChildren                [X3DChildNode]
+  MFNode   [in]     removeChildren             [X3DChildNode]
+  SFString [in,out] annotationGroupID ""
+  MFNode   [in,out] children          []       [X3DChildNode]  
+  SFString [in,out] displayPolicy     "NEVER"  ["POINTER_OVER", "POINTER_ACTIVATE","ALWAYS", "WHEN_VISIBLE", "NEVER"]
+  SFBool   [in,out] enabled           TRUE
+  SFNode   [in,out] metadata          NULL     [X3DMetadataObject]
+  SFVec3f  []       bboxCenter        0 0 0    (-∞,∞)
+  SFVec3f  []       bboxSize          -1 -1 -1 [0,∞) or −1 −1 −1
+}
+
+IconAnnotation : X3DAnnotationNode {
+  SFString [in,out] annotationGroupID ""
+  SFString [in,out] displayPolicy     "NEVER" ["POINTER_OVER", "POINTER_ACTIVATE", "ALWAYS", "WHEN_VISIBLE", "NEVER"]
+  SFBool   [in,out] enabled           TRUE
+  SFNode   [in,out] metadata          NULL    [X3DMetadataObject]
+  MFString [in,out] url               []
+}
+
+TextAnnotation : X3DAnnotationNode {
+  SFString [in,out] annotationGroupID ""
+  SFString [in,out] contentType       "text/plain"
+  SFString [in,out] displayPolicy     "NEVER"      ["POINTER_OVER", "POINTER_ACTIVATE","ALWAYS", "WHEN_VISIBLE", "NEVER"]
+  SFBool   [in,out] enabled           TRUE
+  SFNode   [in,out] metadata          NULL         [X3DMetadataObject]
+  SFString [in,out] text              ""
+}
+
+URLAnnotation : X3DAnnotationNode {
+  SFString [in,out] annotationGroupID ""
+  SFString [in,out] displayPolicy     "NEVER" ["POINTER_OVER", "POINTER_ACTIVATE", "ALWAYS", "WHEN_VISIBLE", "NEVER"]
+  SFBool   [in,out] enabled           TRUE
+  SFNode   [in,out] metadata          NULL    [X3DMetadataObject]
+  MFString [in,out] url               []
+}
+
+

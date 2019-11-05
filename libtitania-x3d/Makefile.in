@@ -235,6 +235,13 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.lo \
 	$(current_dir)/Titania/X3D/Browser/X3DBrowser.lo \
 	$(current_dir)/Titania/X3D/Browser/X3DBrowserContext.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/AnnotationLayer.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/AnnotationTarget.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/GroupAnnotation.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/IconAnnotation.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/TextAnnotation.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/URLAnnotation.lo \
+	$(current_dir)/Titania/X3D/Components/Annotation/X3DAnnotationNode.lo \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADAssembly.lo \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADFace.lo \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADLayer.lo \
@@ -433,6 +440,9 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.lo \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.lo \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.lo \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorParallel.lo \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorPerspective.lo \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/X3DTextureProjectorNode.lo \
 	$(current_dir)/Titania/X3D/Components/Rendering/ClipPlane.lo \
 	$(current_dir)/Titania/X3D/Components/Rendering/Color.lo \
 	$(current_dir)/Titania/X3D/Components/Rendering/ColorRGBA.lo \
@@ -945,6 +955,13 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo \
 	$(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo \
 	$(current_dir)/Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationLayer.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationTarget.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/GroupAnnotation.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/IconAnnotation.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/TextAnnotation.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/URLAnnotation.Plo \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/X3DAnnotationNode.Plo \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo \
@@ -1143,6 +1160,9 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DDragSensorNode.Plo \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorNode.Plo \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DTouchSensorNode.Plo \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallel.Plo \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspective.Plo \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNode.Plo \
 	$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ClipPlane.Plo \
 	$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/Color.Plo \
 	$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ColorRGBA.Plo \
@@ -1875,6 +1895,13 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.cpp \
 	$(current_dir)/Titania/X3D/Browser/X3DBrowser.cpp \
 	$(current_dir)/Titania/X3D/Browser/X3DBrowserContext.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/AnnotationLayer.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/AnnotationTarget.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/GroupAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/IconAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/TextAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/URLAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/X3DAnnotationNode.cpp \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADFace.cpp \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADLayer.cpp \
@@ -2073,6 +2100,9 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.cpp \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.cpp \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorParallel.cpp \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorPerspective.cpp \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/X3DTextureProjectorNode.cpp \
 	$(current_dir)/Titania/X3D/Components/Rendering/ClipPlane.cpp \
 	$(current_dir)/Titania/X3D/Components/Rendering/Color.cpp \
 	$(current_dir)/Titania/X3D/Components/Rendering/ColorRGBA.cpp \
@@ -3021,6 +3051,26 @@ $(current_dir)/Titania/X3D/Browser/X3DBrowser.lo:  \
 $(current_dir)/Titania/X3D/Browser/X3DBrowserContext.lo:  \
 	$(current_dir)/Titania/X3D/Browser/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Components/Annotation
+	@: > $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)
+	@: > $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/AnnotationLayer.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/AnnotationTarget.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/GroupAnnotation.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/IconAnnotation.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/TextAnnotation.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/URLAnnotation.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/Annotation/X3DAnnotationNode.lo: $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Components/CADGeometry/$(am__dirstamp):
 	@$(MKDIR_P) $(current_dir)/Titania/X3D/Components/CADGeometry
 	@: > $(current_dir)/Titania/X3D/Components/CADGeometry/$(am__dirstamp)
@@ -3617,6 +3667,18 @@ $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSens
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.lo: $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping
+	@: > $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)
+	@: > $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorParallel.lo: $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorPerspective.lo: $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/X3DTextureProjectorNode.lo: $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Components/Rendering/$(am__dirstamp):
 	@$(MKDIR_P) $(current_dir)/Titania/X3D/Components/Rendering
 	@: > $(current_dir)/Titania/X3D/Components/Rendering/$(am__dirstamp)
@@ -5081,6 +5143,8 @@ mostlyclean-compile:
 	-rm -f $(current_dir)/Titania/X3D/Browser/Tools/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Browser/VolumeRendering/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Browser/VolumeRendering/*.lo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Components/Core/*.$(OBJEXT)
@@ -5129,6 +5193,8 @@ mostlyclean-compile:
 	-rm -f $(current_dir)/Titania/X3D/Components/Picking/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/*.lo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Components/RigidBodyPhysics/*.$(OBJEXT)
@@ -5357,6 +5423,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationLayer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationTarget.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/GroupAnnotation.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/IconAnnotation.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/TextAnnotation.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/URLAnnotation.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/X3DAnnotationNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo@am__quote@ # am--include-marker
@@ -5555,6 +5628,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DDragSensorNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DTouchSensorNode.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallel.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspective.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ClipPlane.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/Color.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ColorRGBA.Plo@am__quote@ # am--include-marker
@@ -6037,6 +6113,7 @@ clean-libtool:
 	-rm -rf $(current_dir)/Titania/X3D/Browser/Texturing3D/.libs $(current_dir)/Titania/X3D/Browser/Texturing3D/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/Tools/.libs $(current_dir)/Titania/X3D/Browser/Tools/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/VolumeRendering/.libs $(current_dir)/Titania/X3D/Browser/VolumeRendering/_libs
+	-rm -rf $(current_dir)/Titania/X3D/Components/Annotation/.libs $(current_dir)/Titania/X3D/Components/Annotation/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/CADGeometry/.libs $(current_dir)/Titania/X3D/Components/CADGeometry/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/Core/.libs $(current_dir)/Titania/X3D/Components/Core/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/CubeMapTexturing/.libs $(current_dir)/Titania/X3D/Components/CubeMapTexturing/_libs
@@ -6061,6 +6138,7 @@ clean-libtool:
 	-rm -rf $(current_dir)/Titania/X3D/Components/ParticleSystems/.libs $(current_dir)/Titania/X3D/Components/ParticleSystems/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/Picking/.libs $(current_dir)/Titania/X3D/Components/Picking/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/.libs $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/_libs
+	-rm -rf $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/.libs $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/Rendering/.libs $(current_dir)/Titania/X3D/Components/Rendering/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/RigidBodyPhysics/.libs $(current_dir)/Titania/X3D/Components/RigidBodyPhysics/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Components/Scripting/.libs $(current_dir)/Titania/X3D/Components/Scripting/_libs
@@ -6305,6 +6383,8 @@ distclean-generic:
 	-test -z "$(current_dir)/Titania/X3D/Browser/Tools/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/Tools/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/VolumeRendering/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/VolumeRendering/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/CADGeometry/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/Core/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/Core/$(DEPDIR)/$(am__dirstamp)
@@ -6353,6 +6433,8 @@ distclean-generic:
 	-test -z "$(current_dir)/Titania/X3D/Components/Picking/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/Picking/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/Rendering/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR)/$(am__dirstamp)
@@ -6587,6 +6669,13 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationLayer.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationTarget.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/GroupAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/IconAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/TextAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/URLAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/X3DAnnotationNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo
@@ -6785,6 +6874,9 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DDragSensorNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DTouchSensorNode.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallel.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspective.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ClipPlane.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/Color.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ColorRGBA.Plo
@@ -7323,6 +7415,13 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/VolumeRendering/$(DEPDIR)/X3DVolumeRenderingContext.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationLayer.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/AnnotationTarget.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/GroupAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/IconAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/TextAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/URLAnnotation.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/Annotation/$(DEPDIR)/X3DAnnotationNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADLayer.Plo
@@ -7521,6 +7620,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DDragSensorNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR)/X3DTouchSensorNode.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallel.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspective.Plo
+	-rm -f $(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ClipPlane.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/Color.Plo
 	-rm -f $(current_dir)/Titania/X3D/Components/Rendering/$(DEPDIR)/ColorRGBA.Plo

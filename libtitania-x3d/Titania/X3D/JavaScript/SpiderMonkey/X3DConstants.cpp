@@ -172,6 +172,8 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	// Basic node types
 
 	JS_PSGS ("Anchor",                           Anchor,                           nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("AnnotationLayer",                  AnnotationLayer,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("AnnotationTarget",                 AnnotationTarget,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Appearance",                       Appearance,                       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Arc2D",                            Arc2D,                            nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("ArcClose2D",                       ArcClose2D,                       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -252,11 +254,14 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	JS_PSGS ("GeoTransform",                     GeoTransform,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("GeoViewpoint",                     GeoViewpoint,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Group",                            Group,                            nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("GroupAnnotation",                  GroupAnnotation,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("HAnimDisplacer",                   HAnimDisplacer,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("HAnimHumanoid",                    HAnimHumanoid,                    nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("HAnimJoint",                       HAnimJoint,                       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("HAnimMotion",                      HAnimMotion,                      nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("HAnimSegment",                     HAnimSegment,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("HAnimSite",                        HAnimSite,                        nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("IconAnnotation",                   IconAnnotation,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("ImageCubeMapTexture",              ImageCubeMapTexture,              nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("ImageTexture",                     ImageTexture,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("ImageTexture3D",                   ImageTexture3D,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -324,6 +329,7 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	JS_PSGS ("PointEmitter",                     PointEmitter,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("PointLight",                       PointLight,                       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("PointPickSensor",                  PointPickSensor,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("PointProperties",                  PointProperties,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("PointSet",                         PointSet,                         nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Polyline2D",                       Polyline2D,                       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("PolylineEmitter",                  PolylineEmitter,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -373,11 +379,14 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	JS_PSGS ("TexCoordChaser2D",                 TexCoordChaser2D,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TexCoordDamper2D",                 TexCoordDamper2D,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Text",                             Text,                             nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("TextAnnotation",                   TextAnnotation,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureBackground",                TextureBackground,                nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureCoordinate",                TextureCoordinate,                nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureCoordinate3D",              TextureCoordinate3D,              nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureCoordinate4D",              TextureCoordinate4D,              nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureCoordinateGenerator",       TextureCoordinateGenerator,       nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("TextureProjectorParallel",         TextureProjectorParallel,         nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("TextureProjectorPerspective",      TextureProjectorPerspective,      nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureProperties",                TextureProperties,                nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureTransform",                 TextureTransform,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TextureTransform3D",               TextureTransform3D,               nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -397,6 +406,7 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	JS_PSGS ("TriangleStripSet",                 TriangleStripSet,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("TwoSidedMaterial",                 TwoSidedMaterial,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("UniversalJoint",                   UniversalJoint,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("URLAnnotation",                    URLAnnotation,                    nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Viewpoint",                        Viewpoint,                        nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("ViewpointGroup",                   ViewpointGroup,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("Viewport",                         Viewport,                         nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -409,6 +419,7 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 
 	// Abstract node types
 
+	JS_PSGS ("X3DAnnotationNode",                  X3DAnnotationNode,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DAppearanceChildNode",             X3DAppearanceChildNode,             nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DAppearanceNode",                  X3DAppearanceNode,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DBackgroundNode",                  X3DBackgroundNode,                  nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -467,6 +478,7 @@ const JSPropertySpec X3DConstants::properties [ ] = {
 	JS_PSGS ("X3DTexture3DNode",                   X3DTexture3DNode,                   nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTextureCoordinateNode",           X3DTextureCoordinateNode,           nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTextureNode",                     X3DTextureNode,                     nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+	JS_PSGS ("X3DTextureProjectorNode",            X3DTextureProjectorNode,            nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTextureTransformNode",            X3DTextureTransformNode,            nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTimeDependentNode",               X3DTimeDependentNode,               nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 	JS_PSGS ("X3DTouchSensorNode",                 X3DTouchSensorNode,                 nullptr, JSPROP_PERMANENT | JSPROP_ENUMERATE),
@@ -1048,6 +1060,22 @@ X3DConstants::Anchor (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
 	args .rval () .setNumber (uint32_t (X3D::X3DConstants::Anchor));
+	return true;
+}
+
+bool
+X3DConstants::AnnotationLayer (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::AnnotationLayer));
+	return true;
+}
+
+bool
+X3DConstants::AnnotationTarget (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::AnnotationTarget));
 	return true;
 }
 
@@ -1692,6 +1720,14 @@ X3DConstants::Group (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 bool
+X3DConstants::GroupAnnotation (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::GroupAnnotation));
+	return true;
+}
+
+bool
 X3DConstants::HAnimDisplacer (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
@@ -1736,6 +1772,14 @@ X3DConstants::HAnimSite (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
 	args .rval () .setNumber (uint32_t (X3D::X3DConstants::HAnimSite));
+	return true;
+}
+
+bool
+X3DConstants::IconAnnotation (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::IconAnnotation));
 	return true;
 }
 
@@ -2676,6 +2720,14 @@ X3DConstants::Text (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 bool
+X3DConstants::TextAnnotation (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::TextAnnotation));
+	return true;
+}
+
+bool
 X3DConstants::TextureBackground (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
@@ -2712,6 +2764,22 @@ X3DConstants::TextureCoordinateGenerator (JSContext* cx, unsigned argc, JS::Valu
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
 	args .rval () .setNumber (uint32_t (X3D::X3DConstants::TextureCoordinateGenerator));
+	return true;
+}
+
+bool
+X3DConstants::TextureProjectorParallel (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::TextureProjectorParallel));
+	return true;
+}
+
+bool
+X3DConstants::TextureProjectorPerspective (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::TextureProjectorPerspective));
 	return true;
 }
 
@@ -2868,6 +2936,14 @@ X3DConstants::UniversalJoint (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 bool
+X3DConstants::URLAnnotation (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::URLAnnotation));
+	return true;
+}
+
+bool
 X3DConstants::Viewpoint (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
@@ -2940,6 +3016,14 @@ X3DConstants::WorldInfo (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 // Abstract node types
+
+bool
+X3DConstants::X3DAnnotationNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::X3DAnnotationNode));
+	return true;
+}
 
 bool
 X3DConstants::X3DAppearanceChildNode (JSContext* cx, unsigned argc, JS::Value* vp)
@@ -3402,6 +3486,14 @@ X3DConstants::X3DTextureNode (JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	const auto args = JS::CallArgsFromVp (argc, vp);
 	args .rval () .setNumber (uint32_t (X3D::X3DConstants::X3DTextureNode));
+	return true;
+}
+
+bool
+X3DConstants::X3DTextureProjectorNode (JSContext* cx, unsigned argc, JS::Value* vp)
+{
+	const auto args = JS::CallArgsFromVp (argc, vp);
+	args .rval () .setNumber (uint32_t (X3D::X3DConstants::X3DTextureProjectorNode));
 	return true;
 }
 

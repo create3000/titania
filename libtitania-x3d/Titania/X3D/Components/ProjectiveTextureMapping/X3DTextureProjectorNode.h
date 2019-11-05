@@ -48,47 +48,134 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_X3DTEXTURE_PROJECTOR_NODE_H__
+#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_X3DTEXTURE_PROJECTOR_NODE_H__
 
-#include "Components/Annotation.h"
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/ProjectiveTextureMapping.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../Core/X3DChildNode.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
+
+class X3DTextureProjectorNode :
+	virtual public X3DChildNode
+{
+public:
+
+	///  @name Fields
+
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+	SFVec3f &
+	location ()
+	{ return *fields .location; }
+
+	const SFVec3f &
+	location () const
+	{ return *fields .location; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	SFFloat &
+	aspectRatio ()
+	{ return *fields .aspectRatio; }
+
+	const SFFloat &
+	aspectRatio () const
+	{ return *fields .aspectRatio; }
+
+	SFFloat &
+	nearDistance ()
+	{ return *fields .nearDistance; }
+
+	const SFFloat &
+	nearDistance () const
+	{ return *fields .nearDistance; }
+
+	SFFloat &
+	farDistance ()
+	{ return *fields .farDistance; }
+
+	const SFFloat &
+	farDistance () const
+	{ return *fields .farDistance; }
+
+	SFBool &
+	global ()
+	{ return *fields .global; }
+
+	const SFBool &
+	global () const
+	{ return *fields .global; }
+
+	SFBool &
+	on ()
+	{ return *fields .on; }
+
+	const SFBool &
+	on () const
+	{ return *fields .on; }
+
+	SFNode &
+	texture ()
+	{ return *fields .texture; }
+
+	const SFNode &
+	texture () const
+	{ return *fields .texture; }
+
+	///  @name Destruction
+
+	virtual
+	~X3DTextureProjectorNode () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTextureProjectorNode ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFString* const description;
+		SFVec3f* const location;
+		SFVec3f* const direction;
+		SFFloat* const aspectRatio;
+		SFFloat* const nearDistance;
+		SFFloat* const farDistance;
+		SFBool* const global;
+		SFBool* const on;
+		SFNode* const texture;
+	};
+
+	Fields fields;
+
+};
+
+} // X3D
+} // titania
 
 #endif

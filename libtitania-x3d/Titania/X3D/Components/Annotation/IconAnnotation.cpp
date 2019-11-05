@@ -48,47 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#include "IconAnnotation.h"
 
-#include "Components/Annotation.h"
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/ProjectiveTextureMapping.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
 
-#endif
+const Component   IconAnnotation::component      = Component ("Annotation", 1);
+const std::string IconAnnotation::typeName       = "IconAnnotation";
+const std::string IconAnnotation::containerField = "children";
+
+IconAnnotation::Fields::Fields () :
+	url (new MFString ())
+{ }
+
+IconAnnotation::IconAnnotation (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DAnnotationNode (),
+	X3DUrlObject (),
+	fields ()
+{
+	addType (X3DConstants::IconAnnotation);
+
+	addField (inputOutput, "annotationGroupID", annotationGroupID ());
+	addField (inputOutput, "displayPolicy", displayPolicy ());
+	addField (inputOutput, "enabled", enabled ());
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "url", url ());
+}
+
+X3DBaseNode*
+IconAnnotation::create (X3DExecutionContext* const executionContext) const
+{
+	return new IconAnnotation (executionContext);
+}
+
+void
+IconAnnotation::initialize ()
+{
+	X3DAnnotationNode::initialize ();
+	X3DUrlObject::initialize ();
+}
+
+void
+IconAnnotation::dispose ()
+{
+	X3DUrlObject::dispose ();
+	X3DAnnotationNode::dispose ();
+}
+
+IconAnnotation::~IconAnnotation ()
+{ }
+
+} // X3D
+} // titania

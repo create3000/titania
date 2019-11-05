@@ -48,47 +48,76 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_ANNOTATION_GROUP_ANNOTATION_H__
+#define __TITANIA_X3D_COMPONENTS_ANNOTATION_GROUP_ANNOTATION_H__
 
-#include "Components/Annotation.h"
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/ProjectiveTextureMapping.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../Annotation/X3DAnnotationNode.h"
+#include "../Grouping/X3DGroupingNode.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
+
+class GroupAnnotation :
+	virtual public X3DGroupingNode,
+	virtual public X3DAnnotationNode
+{
+public:
+
+	///  @name Construction
+
+	GroupAnnotation (X3DExecutionContext* const executionContext);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Common members
+
+	virtual
+	const Component &
+	getComponent () const final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final override
+	{ return containerField; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~GroupAnnotation () override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Static members
+
+	static const Component   component;
+	static const std::string typeName;
+	static const std::string containerField;
+
+};
+
+} // X3D
+} // titania
 
 #endif

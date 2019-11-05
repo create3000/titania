@@ -178,6 +178,8 @@ private:
 	// Basic node types
 
 	static bool Anchor                           (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool AnnotationLayer                  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool AnnotationTarget                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Appearance                       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Arc2D                            (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool ArcClose2D                       (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -228,9 +230,9 @@ private:
 	static bool CoordinateInterpolator2D         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Cylinder                         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool CylinderSensor                   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool DirectionalLight                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool DISEntityManager                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool DISEntityTypeMapping             (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool DirectionalLight                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Disk2D                           (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool DoubleAxisHingeJoint             (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool EaseInEaseOut                    (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -248,8 +250,8 @@ private:
 	static bool GeneratedCubeMapTexture          (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoCoordinate                    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoElevationGrid                 (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool GeoLOD                           (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoLocation                      (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool GeoLOD                           (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoMetadata                      (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoOrigin                        (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoPositionInterpolator          (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -258,12 +260,14 @@ private:
 	static bool GeoTransform                     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool GeoViewpoint                     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Group                            (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool GroupAnnotation                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimDisplacer                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimHumanoid                    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimJoint                       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimMotion                      (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimSegment                     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool HAnimSite                        (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool IconAnnotation                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool ImageCubeMapTexture              (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool ImageTexture                     (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool ImageTexture3D                   (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -278,7 +282,6 @@ private:
 	static bool IntegerTrigger                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool IsoSurfaceVolumeData             (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool KeySensor                        (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool LOD                              (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Layer                            (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool LayerSet                         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Layout                           (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -289,6 +292,7 @@ private:
 	static bool LineSet                          (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool LoadSensor                       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool LocalFog                         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool LOD                              (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Material                         (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Matrix3VertexAttribute           (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Matrix4VertexAttribute           (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -381,11 +385,14 @@ private:
 	static bool TexCoordChaser2D                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TexCoordDamper2D                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Text                             (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool TextAnnotation                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureBackground                (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureCoordinate                (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureCoordinate3D              (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureCoordinate4D              (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureCoordinateGenerator       (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool TextureProjectorParallel         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool TextureProjectorPerspective      (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureProperties                (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureTransform                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TextureTransform3D               (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -405,6 +412,7 @@ private:
 	static bool TriangleStripSet                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool TwoSidedMaterial                 (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool UniversalJoint                   (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool URLAnnotation                    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Viewpoint                        (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool ViewpointGroup                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool Viewport                         (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -417,6 +425,7 @@ private:
 
 	// Abstract node types
 
+	static bool X3DAnnotationNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DAppearanceChildNode             (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DAppearanceNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DBackgroundNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -430,8 +439,8 @@ private:
 	static bool X3DCoordinateNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DDamperNode                      (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DDragSensorNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool X3DEnvironmentTextureNode          (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DEnvironmentalSensorNode         (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool X3DEnvironmentTextureNode          (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DFogObject                       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DFollowerNode                    (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DFontStyleNode                   (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -457,8 +466,8 @@ private:
 	static bool X3DParametricGeometryNode          (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DParticleEmitterNode             (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DParticlePhysicsModelNode        (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool X3DPickSensorNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DPickableObject                  (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool X3DPickSensorNode                  (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DPointingDeviceSensorNode        (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DProductStructureChildNode       (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DProgrammableShaderObject        (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -475,6 +484,7 @@ private:
 	static bool X3DTexture3DNode                   (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTextureCoordinateNode           (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTextureNode                     (JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool X3DTextureProjectorNode            (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTextureTransformNode            (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTimeDependentNode               (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool X3DTouchSensorNode                 (JSContext* cx, unsigned argc, JS::Value* vp);

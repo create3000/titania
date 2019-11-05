@@ -106,6 +106,13 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Browser/VolumeRendering/X3DVolumeRenderingContext.cpp \
 	$(current_dir)/Titania/X3D/Browser/X3DBrowser.cpp \
 	$(current_dir)/Titania/X3D/Browser/X3DBrowserContext.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/AnnotationLayer.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/AnnotationTarget.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/GroupAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/IconAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/TextAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/URLAnnotation.cpp \
+	$(current_dir)/Titania/X3D/Components/Annotation/X3DAnnotationNode.cpp \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADFace.cpp \
 	$(current_dir)/Titania/X3D/Components/CADGeometry/CADLayer.cpp \
@@ -304,6 +311,9 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DDragSensorNode.cpp \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp \
 	$(current_dir)/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.cpp \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorParallel.cpp \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/TextureProjectorPerspective.cpp \
+	$(current_dir)/Titania/X3D/Components/ProjectiveTextureMapping/X3DTextureProjectorNode.cpp \
 	$(current_dir)/Titania/X3D/Components/Rendering/ClipPlane.cpp \
 	$(current_dir)/Titania/X3D/Components/Rendering/Color.cpp \
 	$(current_dir)/Titania/X3D/Components/Rendering/ColorRGBA.cpp \

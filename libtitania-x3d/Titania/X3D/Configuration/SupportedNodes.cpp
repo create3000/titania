@@ -67,6 +67,8 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	// Specification version 3.3
 
 	addNode ("Anchor",                           new Anchor                           (executionContext));
+	addNode ("AnnotationLayer",                  new AnnotationLayer                  (executionContext));
+	addNode ("AnnotationTarget",                 new AnnotationTarget                 (executionContext));
 	addNode ("Appearance",                       new Appearance                       (executionContext));
 	addNode ("Arc2D",                            new Arc2D                            (executionContext));
 	addNode ("ArcClose2D",                       new ArcClose2D                       (executionContext));
@@ -117,9 +119,9 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("CoordinateInterpolator2D",         new CoordinateInterpolator2D         (executionContext));
 	addNode ("Cylinder",                         new Cylinder                         (executionContext));
 	addNode ("CylinderSensor",                   new CylinderSensor                   (executionContext));
+	addNode ("DirectionalLight",                 new DirectionalLight                 (executionContext));
 	addNode ("DISEntityManager",                 new DISEntityManager                 (executionContext));
 	addNode ("DISEntityTypeMapping",             new DISEntityTypeMapping             (executionContext));
-	addNode ("DirectionalLight",                 new DirectionalLight                 (executionContext));
 	addNode ("Disk2D",                           new Disk2D                           (executionContext));
 	addNode ("DoubleAxisHingeJoint",             new DoubleAxisHingeJoint             (executionContext));
 	addNode ("EaseInEaseOut",                    new EaseInEaseOut                    (executionContext));
@@ -133,11 +135,12 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("Fog",                              new Fog                              (executionContext));
 	addNode ("FogCoordinate",                    new FogCoordinate                    (executionContext));
 	addNode ("FontStyle",                        new FontStyle                        (executionContext));
+	addNode ("ForcePhysicsModel",                new ForcePhysicsModel                (executionContext));
 	addNode ("GeneratedCubeMapTexture",          new GeneratedCubeMapTexture          (executionContext));
 	addNode ("GeoCoordinate",                    new GeoCoordinate                    (executionContext));
 	addNode ("GeoElevationGrid",                 new GeoElevationGrid                 (executionContext));
-	addNode ("GeoLOD",                           new GeoLOD                           (executionContext));
 	addNode ("GeoLocation",                      new GeoLocation                      (executionContext));
+	addNode ("GeoLOD",                           new GeoLOD                           (executionContext));
 	addNode ("GeoMetadata",                      new GeoMetadata                      (executionContext));
 	addNode ("GeoOrigin",                        new GeoOrigin                        (executionContext)); // GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
 	addNode ("GeoPositionInterpolator",          new GeoPositionInterpolator          (executionContext));
@@ -145,14 +148,15 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("GeoTouchSensor",                   new GeoTouchSensor                   (executionContext));
 	addNode ("GeoTransform",                     new GeoTransform                     (executionContext));
 	addNode ("GeoViewpoint",                     new GeoViewpoint                     (executionContext));
-	addNode ("ForcePhysicsModel",                new ForcePhysicsModel                (executionContext));
 	addNode ("Group",                            new Group                            (executionContext));
+	addNode ("GroupAnnotation",                  new GroupAnnotation                  (executionContext));
 	addNode ("HAnimDisplacer",                   new HAnimDisplacer                   (executionContext));
 	addNode ("HAnimHumanoid",                    new HAnimHumanoid                    (executionContext));
 	addNode ("HAnimJoint",                       new HAnimJoint                       (executionContext));
 	addNode ("HAnimMotion",                      new HAnimMotion                      (executionContext));
 	addNode ("HAnimSegment",                     new HAnimSegment                     (executionContext));
 	addNode ("HAnimSite",                        new HAnimSite                        (executionContext));
+	addNode ("IconAnnotation",                   new IconAnnotation                   (executionContext));
 	addNode ("ImageCubeMapTexture",              new ImageCubeMapTexture              (executionContext));
 	addNode ("ImageTexture",                     new ImageTexture                     (executionContext));
 	addNode ("ImageTexture3D",                   new ImageTexture3D                   (executionContext));
@@ -167,7 +171,6 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("IntegerTrigger",                   new IntegerTrigger                   (executionContext));
 	addNode ("IsoSurfaceVolumeData",             new IsoSurfaceVolumeData             (executionContext));
 	addNode ("KeySensor",                        new KeySensor                        (executionContext));
-	addNode ("LOD",                              new LOD                              (executionContext));
 	addNode ("Layer",                            new Layer                            (executionContext));
 	addNode ("LayerSet",                         new LayerSet                         (executionContext));
 	addNode ("Layout",                           new Layout                           (executionContext));
@@ -178,6 +181,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("LineSet",                          new LineSet                          (executionContext));
 	addNode ("LoadSensor",                       new LoadSensor                       (executionContext));
 	addNode ("LocalFog",                         new LocalFog                         (executionContext));
+	addNode ("LOD",                              new LOD                              (executionContext));
 	addNode ("Material",                         new Material                         (executionContext));
 	addNode ("Matrix3VertexAttribute",           new Matrix3VertexAttribute           (executionContext));
 	addNode ("Matrix4VertexAttribute",           new Matrix4VertexAttribute           (executionContext));
@@ -270,11 +274,14 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("TexCoordChaser2D",                 new TexCoordChaser2D                 (executionContext));
 	addNode ("TexCoordDamper2D",                 new TexCoordDamper2D                 (executionContext));
 	addNode ("Text",                             new Text                             (executionContext));
+	addNode ("TextAnnotation",                   new TextAnnotation                   (executionContext));
 	addNode ("TextureBackground",                new TextureBackground                (executionContext));
 	addNode ("TextureCoordinate",                new TextureCoordinate                (executionContext));
 	addNode ("TextureCoordinate3D",              new TextureCoordinate3D              (executionContext));
 	addNode ("TextureCoordinate4D",              new TextureCoordinate4D              (executionContext));
 	addNode ("TextureCoordinateGenerator",       new TextureCoordinateGenerator       (executionContext));
+	addNode ("TextureProjectorParallel",         new TextureProjectorParallel         (executionContext));
+	addNode ("TextureProjectorPerspective",      new TextureProjectorPerspective      (executionContext));
 	addNode ("TextureProperties",                new TextureProperties                (executionContext));
 	addNode ("TextureTransform",                 new TextureTransform                 (executionContext));
 	addNode ("TextureTransform3D",               new TextureTransform3D               (executionContext));
@@ -292,6 +299,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	addNode ("TriangleStripSet",                 new TriangleStripSet                 (executionContext));
 	addNode ("TwoSidedMaterial",                 new TwoSidedMaterial                 (executionContext));
 	addNode ("UniversalJoint",                   new UniversalJoint                   (executionContext));
+	addNode ("URLAnnotation",                    new URLAnnotation                    (executionContext));
 	addNode ("Viewpoint",                        new Viewpoint                        (executionContext));
 	addNode ("ViewpointGroup",                   new ViewpointGroup                   (executionContext));
 	addNode ("Viewport",                         new Viewport                         (executionContext));

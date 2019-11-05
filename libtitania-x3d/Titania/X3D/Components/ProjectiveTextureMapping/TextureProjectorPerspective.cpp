@@ -48,47 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_H__
-#define __TITANIA_X3D_COMPONENTS_H__
+#include "TextureProjectorPerspective.h"
 
-#include "Components/Annotation.h"
-#include "Components/CADGeometry.h"
-#include "Components/Core.h"
-#include "Components/CubeMapTexturing.h"
-#include "Components/DIS.h"
-#include "Components/EnvironmentalEffects.h"
-#include "Components/EnvironmentalSensor.h"
-#include "Components/EventUtilities.h"
-#include "Components/Followers.h"
-#include "Components/Geometry2D.h"
-#include "Components/Geometry3D.h"
-#include "Components/Geospatial.h"
-#include "Components/Grouping.h"
-#include "Components/H-Anim.h"
-#include "Components/Interpolation.h"
-#include "Components/KeyDeviceSensor.h"
-#include "Components/Layering.h"
-#include "Components/Layout.h"
-#include "Components/Lighting.h"
-#include "Components/NURBS.h"
-#include "Components/Navigation.h"
-#include "Components/Networking.h"
-#include "Components/ParticleSystems.h"
-#include "Components/Picking.h"
-#include "Components/PointingDeviceSensor.h"
-#include "Components/ProjectiveTextureMapping.h"
-#include "Components/Rendering.h"
-#include "Components/RigidBodyPhysics.h"
-#include "Components/Scripting.h"
-#include "Components/Shaders.h"
-#include "Components/Shape.h"
-#include "Components/Sound.h"
-#include "Components/Text.h"
-#include "Components/Texturing.h"
-#include "Components/Texturing3D.h"
-#include "Components/Time.h"
-#include "Components/VolumeRendering.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#include "Components/X_ITE.h"
+namespace titania {
+namespace X3D {
 
-#endif
+const Component   TextureProjectorPerspective::component      = Component ("ProjectiveTextureMapping", 1);
+const std::string TextureProjectorPerspective::typeName       = "TextureProjectorPerspective";
+const std::string TextureProjectorPerspective::containerField = "children";
+
+TextureProjectorPerspective::Fields::Fields () :
+	fieldOfView (new SFFloat (0.7854))
+{ }
+
+TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTextureProjectorNode (),
+	fields ()
+{
+	addType (X3DConstants::TextureProjectorPerspective);
+
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "description", description ());
+	addField (inputOutput, "location", location ());
+	addField (inputOutput, "direction", direction ());
+	addField (inputOutput, "fieldOfView", fieldOfView ());
+	addField (outputOnly, "aspectRatio", aspectRatio ());
+	addField (inputOutput, "nearDistance", nearDistance ());
+	addField (inputOutput, "farDistance", farDistance ());
+	addField (inputOutput, "global", global ());
+	addField (inputOutput, "on", on ());
+	addField (inputOutput, "texture", texture ());
+}
+
+X3DBaseNode*
+TextureProjectorPerspective::create (X3DExecutionContext* const executionContext) const
+{
+	return new TextureProjectorPerspective (executionContext);
+}
+
+void
+TextureProjectorPerspective::initialize ()
+{
+	X3DTextureProjectorNode::initialize ();
+}
+
+TextureProjectorPerspective::~TextureProjectorPerspective ()
+{ }
+
+} // X3D
+} // titania
