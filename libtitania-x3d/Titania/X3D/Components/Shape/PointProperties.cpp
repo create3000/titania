@@ -59,7 +59,7 @@ namespace X3D {
 
 const Component   PointProperties::component      = Component ("Shape", 5);
 const std::string PointProperties::typeName       = "PointProperties";
-const std::string PointProperties::containerField = "lineProperties";
+const std::string PointProperties::containerField = "pointProperties";
 
 PointProperties::Fields::Fields () :
 	pointSizeScaleFactor (new SFFloat (1)),
