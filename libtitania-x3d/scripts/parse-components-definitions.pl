@@ -6,7 +6,7 @@ use warnings;
 use v5.10.0;
 use open qw/:std :utf8/;
 
-my $component = "Shape";
+my $component = "Annotation";
 my $file      = `cat $component.txt`;
 my $nodes     = [ ];
 
@@ -84,9 +84,9 @@ sub parse_field
 			{
 				$field -> {name} = $1;
 
-				if ($file =~ /\G\s*(.*?)\s*?(?:\(.*?\n|\[.*?\n|\n)/gc)
+				if ($file =~ /\G\s*?(?:\n|\s*(.*?)\s*?(?:\(.*?\n|\[.*?\n|\n))/gc)
 				{
-					$field -> {value} = $1;
+					$field -> {value} = $1 // "";
 
 					push @{$node -> {fields}}, $field;
 					return 1;
@@ -578,6 +578,14 @@ EOT
 	}
 
 	$node->{typeName} .prototype = Object .assign (Object .create ($node->{bases}[0] .prototype),
+EOT
+
+	for (1 ... scalar (@{$node->{bases}}) - 1)
+	{
+		print FILE "		$node->{bases}->[$_] .prototype,\n";
+	}
+
+	print FILE <<EOT;
 	{
 		constructor: $node->{typeName},
 EOT
