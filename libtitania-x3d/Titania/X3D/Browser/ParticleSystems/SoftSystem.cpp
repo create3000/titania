@@ -264,7 +264,7 @@ SoftSystem::set_enabled ()
 			if (particleSystem -> getExecutionContext () -> isLive () and particleSystem -> isLive ())
 			{
 				particleSystem -> getBrowser () -> sensorEvents () .addInterest (&SoftSystem::animateParticles, this);
-	
+
 				pauseTime = 0;
 			}
 			else
@@ -657,7 +657,7 @@ SoftSystem::animateParticles ()
 			numParticles    = maxParticles;
 			createParticles = particleSystem -> createParticles ();
 
-			deltaTime = std::numeric_limits <time_type>::infinity (); 
+			deltaTime = std::numeric_limits <time_type>::infinity ();
 		}
 		else
 			createParticles = false;
@@ -848,7 +848,7 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 //				var particle = particles [i];
 //				particle .distance = modelViewMatrix .getDepth (particle .position);
 //			}
-//			
+//
 //			// Expensisive function!!!
 //			this .particleSorter .sort (0, numParticles);
 //		}
@@ -892,13 +892,13 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 				const size_t size         = texCoordKeys .size ();
 				size_t       index0       = 0;
 				size_t       i            = 0;
-		
+
 				for (const auto & particle : particles)
 				{
 					// Determine index0.
-		
+
 					const float fraction = particle .elapsedTime / particle .lifetime;
-	
+
 					if (size == 1 || fraction <= texCoordKeys [0])
 					{
 						index0 = 0;
@@ -918,7 +918,7 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 					}
 
 					// Set texCoord.
-		
+
 					index0 *= texCoordCount;
 
 					const auto & texCoord1 = texCoordRamp [index0 + 0];
@@ -933,7 +933,7 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 					// | /       |
 					// p1 ------ p2
 
-					
+
 					texCoordArray [i ++] = texCoord1; // p1
 					texCoordArray [i ++] = texCoord2; // p2
 					texCoordArray [i ++] = texCoord3; // p3
@@ -983,21 +983,21 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 					const auto p2 = position + s2;
 					const auto p3 = position + s3;
 					const auto p4 = position + s4;
-	
+
 					// p4 ------ p3
 					// |       / |
 					// |     /   |
 					// |   /     |
 					// | /       |
 					// p1 ------ p2
-				
+
 					for (size_t n = 0; n < 6; ++ n)
 					{
 						positionArray [i + n]    = position;
 						elapsedTimeArray [i + n] = elapsedTime;
 						lifeArray [i + n]        = life;
 					}
-	
+
 					vertexArray [i + 0] = p1; // p1
 					vertexArray [i + 1] = p2; // p2
 					vertexArray [i + 2] = p3; // p3
@@ -1042,7 +1042,7 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 					const auto p2 = position + s2;
 					const auto p3 = position + s3;
 					const auto p4 = position + s4;
-	
+
 					// p4 ------ p3
 					// |       / |
 					// |     /   |
@@ -1056,7 +1056,7 @@ SoftSystem::updateQuad (const Matrix4d & modelViewMatrix, const bool state)
 						elapsedTimeArray [i + n] = elapsedTime;
 						lifeArray [i + n]        = life;
 					}
-	
+
 					vertexArray [i + 0] = p1; // p1
 					vertexArray [i + 1] = p2; // p2
 					vertexArray [i + 2] = p3; // p3
@@ -1103,7 +1103,7 @@ SoftSystem::display (ShapeContainer* const context)
 
 		// Traverse appearance before everything.
 
-		particleSystem -> getAppearance () -> enable (context);
+		particleSystem -> getAppearance () -> enable (context, shaderGeometryType);
 
 		// Update geometry if SPRITE.
 
@@ -1186,7 +1186,7 @@ SoftSystem::display (ShapeContainer* const context)
 //			else
 			{
 				const auto positiveScale = context -> getModelViewMatrix () .submatrix () .determinant () > 0;
-	
+
 				glFrontFace (positiveScale ? GL_CCW : GL_CW);
 				glEnable (GL_CULL_FACE);
 				glCullFace (GL_BACK);

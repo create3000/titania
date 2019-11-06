@@ -1185,8 +1185,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto   browser               = context -> getBrowser ();
 	const auto   renderObject          = context -> getRenderer ();
 	const auto & clipPlanes            = context -> getClipPlanes ();
-	const auto   linePropertiesNode    = context -> getLineProperties ();
-	const auto   fillPropertiesNode    = context -> getFillProperties ();
+	const auto   stylePropertiesNode   = context -> getStyleProperties ();
 	const auto   materialNode          = context -> getMaterial ();
 	const auto   textureNode           = context -> getTexture ();
 	const auto   textureTransformNode  = context -> getTextureTransform ();
@@ -1226,9 +1225,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	glUniform1i (x3d_ColorMaterial, context -> getColorMaterial ());
 
-	// Alway set both, because shading can change.
-	linePropertiesNode -> setShaderUniforms (this);
-	fillPropertiesNode -> setShaderUniforms (this);
+	stylePropertiesNode -> setShaderUniforms (this);
 
 	if (materialNode)
 	{

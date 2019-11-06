@@ -75,7 +75,7 @@ public:
 
 	virtual
 	void
-	enable (ShapeContainer* const context) = 0;
+	enable (ShapeContainer* const context, const size_t geometryType) = 0;
 
 	virtual
 	void

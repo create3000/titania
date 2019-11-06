@@ -161,7 +161,7 @@ public:
 
 	virtual
 	void
-	enable (ShapeContainer* const context) final override;
+	enable (ShapeContainer* const context, const size_t geometryType) final override;
 
 	virtual
 	void

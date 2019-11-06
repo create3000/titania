@@ -150,7 +150,7 @@ Selection::setSelectGeometry (const bool value)
 			return;
 
 		selectGeometry = value;
-	
+
 		ContextLock lock (getBrowser ());
 
 		if (selectGeometry)
@@ -226,7 +226,7 @@ Selection::addNodes (const MFNode & value)
 		{
 			if (selectGeometry)
 				geometryNodes = getGeometries (nodes);
-	
+
 			for (const auto & node : selectGeometry ? geometryNodes : nodes)
 				node -> addTool ();
 		}
@@ -276,7 +276,7 @@ Selection::removeNodes (const MFNode & value)
 				geometryNodes = getGeometries (nodes);
 				removedNodes  = set_difference (getGeometries (removedNodes), geometryNodes);
 			}
-	
+
 			for (const auto & node : removedNodes)
 				node -> removeTool ();
 		}
@@ -359,7 +359,7 @@ Selection::setNodes (const MFNode & value)
 	}
 
 	removeNodes (set_difference (nodes, value));
-	
+
 	// Add
 
 	addNodes (set_difference (value, nodes));
@@ -448,7 +448,7 @@ Selection::selectNode (X3DBrowser* const browser)
 
 			else
 				setHierarchy (nullptr, { });
-	
+
 			return false;
 		}
 		else
@@ -606,7 +606,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 	if (selectLowest)
 	{
 		// Find lowest Transform.
-	
+
 		for (const auto & lowest : basic::make_reverse_range (hierarchy))
 		{
 			if (not lowest)
@@ -628,7 +628,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 
 			if (lowest -> isType (lowestTypes))
 				return lowest;
-			
+
 			if (not node)
 				node = lowest;
 		}
@@ -668,7 +668,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 			{
 				if (not highest)
 					continue;
-	
+
 				if (x3d_cast <X3DChildNode*> (highest))
 					return highest;
 			}
@@ -698,13 +698,8 @@ Selection::findNode (const SFNode & parent, const SFNode & node) const
 		          TRAVERSE_TOOL_OBJECTS);
 }
 
-void
-Selection::shutdown ()
-{
-	getBrowser () -> getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
-
-	X3DBaseNode::shutdown ();
-}
+Selection::~Selection ()
+{ }
 
 } // X3D
 } // titania

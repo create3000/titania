@@ -117,23 +117,15 @@ public:
 	{ shadow = value; }
 
 	void
-	setLineProperties (LineProperties* const value) 
-	{ lineProperties = value; }
+	setStyleProperties (X3DAppearanceChildNode* const value)
+	{ styleProperties = value; }
 
-	LineProperties*
-	getLineProperties () const
-	{ return lineProperties; }
-
-	void
-	setFillProperties (FillProperties* const value) 
-	{ fillProperties = value; }
-
-	FillProperties*
-	getFillProperties () const
-	{ return fillProperties; }
+	X3DAppearanceChildNode*
+	getStyleProperties () const
+	{ return styleProperties; }
 
 	void
-	setMaterial (X3DMaterialNode* const value) 
+	setMaterial (X3DMaterialNode* const value)
 	{ material = value; }
 
 	X3DMaterialNode*
@@ -219,8 +211,7 @@ private:
 	FogContainerPtr           fog;
 	LightContainerArray       localLights;
 	bool                      shadow;
-	LineProperties*           lineProperties;
-	FillProperties*           fillProperties;
+	X3DAppearanceChildNode*   styleProperties;
 	X3DMaterialNode*          material;
 	X3DTextureNode*           texture;
 	X3DTextureTransformNode*  textureTransform;

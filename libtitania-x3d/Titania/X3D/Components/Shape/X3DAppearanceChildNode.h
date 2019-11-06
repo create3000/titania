@@ -63,6 +63,11 @@ class X3DAppearanceChildNode :
 {
 public:
 
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const) const
+	{ }
+
 
 protected:
 

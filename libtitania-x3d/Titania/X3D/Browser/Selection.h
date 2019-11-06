@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -148,9 +148,14 @@ public:
 
 	MFNode
 	getParents ();
-	
+
 	MFNode
 	getChildren ();
+
+	///  @name Destruction
+
+	virtual
+	~Selection () final override;
 
 
 protected:
@@ -177,7 +182,7 @@ private:
 
 	void
 	set_initialized ();
-	
+
 	void
 	set_sceneGraph ();
 
@@ -200,12 +205,6 @@ private:
 
 	Hierarchies
 	findNode (const SFNode & parent, const SFNode & node) const;
-	
-	///  @name Destruction
-
-	virtual
-	void
-	shutdown () final override;
 
 	///  @name Static members
 

@@ -232,7 +232,7 @@ Shape::touch (X3DRenderObject* const renderObject)
 		// Transform hitPoints to absolute space.
 		for (auto & intersection : intersections)
 			intersection -> setPoint (intersection -> point * modelViewMatrix);
-	
+
 		// Sort desc
 		std::sort (intersections .begin (), intersections .end (),
 		[ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs)
@@ -316,7 +316,7 @@ Shape::depth (const X3DShapeContainer* const context)
 void
 Shape::display (ShapeContainer* const context)
 {
-	getAppearance () -> enable  (context);
+	getAppearance () -> enable  (context, getGeometry () -> getGeometryType ());
 	getGeometry ()   -> draw    (context);
 	getAppearance () -> disable (context);
 }

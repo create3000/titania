@@ -63,7 +63,7 @@ class X3DTextureNode :
 public:
 
 	///  @name Construction
-	
+
 	virtual
 	void
 	setup () final override;
@@ -90,7 +90,7 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const;
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const override;
 
 	virtual
 	void
@@ -124,10 +124,10 @@ protected:
 	updateTextureProperties (const GLenum target,
 	                         const bool haveTextureProperties,
 	                         const X3DPtr <TextureProperties> & textureProperties,
-	                         const size_t width, 
-	                         const size_t height, 
-	                         const bool repeatS, 
-	                         const bool repeatT, 
+	                         const size_t width,
+	                         const size_t height,
+	                         const bool repeatS,
+	                         const bool repeatT,
 	                         const bool repeatR);
 
 

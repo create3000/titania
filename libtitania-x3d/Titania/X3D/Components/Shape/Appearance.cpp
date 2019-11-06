@@ -298,13 +298,24 @@ Appearance::traverse (const TraverseType type, X3DRenderObject* const renderObje
 }
 
 void
-Appearance::enable (ShapeContainer* const context)
+Appearance::enable (ShapeContainer* const context, const size_t geometryType)
 {
 	const auto renderObject = context -> getRenderer ();
 	const auto browser      = renderObject -> getBrowser ();
 
-	context -> setLineProperties (linePropertiesNode);
-	context -> setFillProperties (fillPropertiesNode);
+	switch (geometryType)
+	{
+		case 0:
+			context -> setStyleProperties (linePropertiesNode); // pointPropertiesNode
+			break;
+		case 1:
+			context -> setStyleProperties (linePropertiesNode);
+			break;
+		default:
+			context -> setStyleProperties (fillPropertiesNode);
+			break;
+	}
+
 	context -> setMaterial (materialNode);
 	context -> setTexture (browser -> getTexturing () ? textureNode : nullptr);
 	context -> setTextureTransform (textureTransformNode);

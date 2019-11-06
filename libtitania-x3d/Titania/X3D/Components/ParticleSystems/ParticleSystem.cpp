@@ -102,7 +102,7 @@ struct ParticleSystem::Particle
 		elapsedTime (0),
 		   distance (0)
 	{ }
-	
+
 	///  @name Members
 
 	int32_t seed;
@@ -431,7 +431,7 @@ ParticleSystem::initialize ()
 	glGenBuffers  (1, &boundedVolumeBufferId);
 
 	// Setup
-	
+
 	getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
 	isLive () .addInterest (&ParticleSystem::set_live, this);
 
@@ -762,7 +762,7 @@ ParticleSystem::set_vertices ()
 		geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
 		geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
 		geometryShader -> setField <MFVec4f> ("texCoord",     texCoord);
-	
+
 	}
 	catch (const X3DError & error)
 	{
@@ -1124,15 +1124,15 @@ ParticleSystem::set_particle_buffers ()
 	const size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
 
 	// Particle buffers
-	
+
 	std::vector <Particle> particleArray;
-	
+
 	if (numParticles)
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-	
+
 		const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
-	
+
 		if (particles)
 			particleArray .assign (particles, particles + numParticles);
 
@@ -1148,7 +1148,7 @@ ParticleSystem::set_particle_buffers ()
 	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
-	
+
 	numParticles = std::min <size_t> (numParticles, maxParticles);
 
 	// Vertex buffer
@@ -1332,7 +1332,7 @@ ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const render
 {
 	if (isHidden ())
 		return;
-		
+
 	if (not isActive ())
 		return;
 
@@ -1386,7 +1386,7 @@ ParticleSystem::animateParticles ()
 		if (emitterNode -> isExplosive ())
 		{
 			const auto now = SFTime::now ();
-			
+
 			if (numParticles == 0 or now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
 			{
 				creationTime = now;
@@ -1492,10 +1492,10 @@ ParticleSystem::updateGeometry (const Matrix4d & modelViewMatrix)
 				if (getExecutionContext () -> isLive () and isLive ())
 				{
 					geometryShader -> enable ();
-	
+
 					const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
 					const auto rotation         = getScreenAlignedRotation (modelViewMatrix);
-	
+
 					glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .front () .data ());
 				}
 			}
@@ -1668,10 +1668,10 @@ ParticleSystem::display (ShapeContainer* const context)
 
 		// Traverse appearance before everything.
 
-		getAppearance () -> enable (context);
+		getAppearance () -> enable (context, getGeometryType ());
 
 		// Geometry shader.
-	
+
 		if (geometryTypeId == GeometryType::SPRITE)
 			updateGeometry (context -> getModelViewMatrix ());
 
@@ -1696,15 +1696,15 @@ ParticleSystem::display (ShapeContainer* const context)
 			case GeometryType::POINT:
 			{
 				// Enable shader.
-			
+
 				shaderNode -> enable ();
 				shaderNode -> setLocalUniforms (context);
 
 				// Enable vertex attribute nodes.
-		
+
 				if (numColors)
 					shaderNode -> enableColorAttrib (particleBufferId [readBuffer], GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
-			
+
 				shaderNode -> enableVertexAttrib (particleBufferId [readBuffer], GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
 
 				// Draw.
@@ -1712,7 +1712,7 @@ ParticleSystem::display (ShapeContainer* const context)
 				glDrawArrays (GL_POINTS, 0, numParticles);
 
 				// Disable shader.
-				
+
 				shaderNode -> disableColorAttrib ();
 				shaderNode -> disableVertexAttrib ();
 				shaderNode -> disable ();
@@ -1738,24 +1738,24 @@ ParticleSystem::display (ShapeContainer* const context)
 			case GeometryType::QUAD:
 			{
 				// Enable shader.
-			
+
 				shaderNode -> enable ();
 				shaderNode -> setLocalUniforms (context);
-		
+
 				// Enable vertex attribute nodes
-		
+
 				if (numColors)
 					shaderNode -> enableColorAttrib (vertexBufferId, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
-			
+
 				shaderNode -> enableTexCoordAttrib ({ vertexBufferId }, GL_FLOAT, { sizeof (Vertex) }, { (void*) offsetof (Vertex, texCoord) });
 				shaderNode -> enableVertexAttrib (vertexBufferId, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
 
 				// Draw.
-			
+
 				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 
 				// Disable shader.
-			
+
 				shaderNode -> disableColorAttrib ();
 				shaderNode -> disableTexCoordAttrib ();
 				shaderNode -> disableVertexAttrib ();

@@ -67,12 +67,6 @@ public:
 	isTransparent () const
 	{ return transparent; }
 
-	///  @name Operations
-
-	virtual
-	void
-	setShaderUniforms (X3DProgrammableShaderObject* const) const = 0;
-
 
 protected:
 

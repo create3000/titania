@@ -114,7 +114,7 @@ public:
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const) const;
+	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
 
 	///  @name Destruction
 
