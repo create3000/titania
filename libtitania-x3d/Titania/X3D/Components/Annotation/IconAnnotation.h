@@ -58,8 +58,8 @@ namespace titania {
 namespace X3D {
 
 class IconAnnotation :
-	virtual public X3DAnnotationNode,
-	virtual public X3DUrlObject
+	public X3DAnnotationNode,
+	public X3DUrlObject
 {
 public:
 

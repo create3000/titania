@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class URLAnnotation :
-	virtual public X3DAnnotationNode
+	public X3DAnnotationNode
 {
 public:
 

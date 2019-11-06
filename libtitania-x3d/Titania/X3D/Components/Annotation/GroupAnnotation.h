@@ -58,8 +58,8 @@ namespace titania {
 namespace X3D {
 
 class GroupAnnotation :
-	virtual public X3DGroupingNode,
-	virtual public X3DAnnotationNode
+	public X3DGroupingNode,
+	public X3DAnnotationNode
 {
 public:
 

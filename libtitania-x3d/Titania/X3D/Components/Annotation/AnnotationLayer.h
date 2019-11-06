@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class AnnotationLayer :
-	virtual public X3DLayerNode
+	public X3DLayerNode
 {
 public:
 

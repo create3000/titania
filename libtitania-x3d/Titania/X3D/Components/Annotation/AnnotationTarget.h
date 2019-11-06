@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class AnnotationTarget :
-	virtual public X3DChildNode
+	public X3DChildNode
 {
 public:
 

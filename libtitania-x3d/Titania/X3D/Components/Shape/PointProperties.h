@@ -138,6 +138,13 @@ public:
 	~PointProperties () final override;
 
 
+protected:
+
+	virtual
+	void
+	initialize () override;
+
+
 private:
 
 

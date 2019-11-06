@@ -91,6 +91,12 @@ PointProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+PointProperties::initialize ()
+{
+	X3DAppearanceChildNode::initialize ();
+}
+
+void
 PointProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
 }
