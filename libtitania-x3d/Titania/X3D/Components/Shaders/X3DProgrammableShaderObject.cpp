@@ -86,6 +86,11 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                 x3d_FogVisibilityRange (-1),
 	                          x3d_FogMatrix (-1),
 	                           x3d_FogCoord (-1),
+	x3d_PointPropertiesPointSizeScaleFactor (-1),
+	   x3d_PointPropertiesPointSizeMinValue (-1),
+	   x3d_PointPropertiesPointSizeMaxValue (-1),
+	x3d_PointPropertiesPointSizeAttenuation (-1),
+	           x3d_PointPropertiesColorMode (-1),
 	              x3d_LinePropertiesApplied (-1),
 	 x3d_LinePropertiesLinewidthScaleFactor (-1),
 	             x3d_LinePropertiesLinetype (-1),
@@ -244,6 +249,12 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_FogVisibilityRange = getUniformLocation (program, "x3d_Fog.visibilityRange", "x3d_FogVisibilityRange");
 	x3d_FogMatrix          = getUniformLocation (program, "x3d_Fog.matrix",          "x3d_FogMatrix");
 	x3d_FogCoord           = getUniformLocation (program, "x3d_Fog.fogCoord",        "x3d_FogCoord");
+
+	x3d_PointPropertiesPointSizeScaleFactor = glGetUniformLocation (program, "x3d_PointProperties.pointSizeScaleFactor");
+	x3d_PointPropertiesPointSizeMinValue    = glGetUniformLocation (program, "x3d_PointProperties.pointSizeMinValue");
+	x3d_PointPropertiesPointSizeMaxValue    = glGetUniformLocation (program, "x3d_PointProperties.pointSizeMaxValue");
+	x3d_PointPropertiesPointSizeAttenuation = glGetUniformLocation (program, "x3d_PointProperties.pointSizeAttenuation");
+	x3d_PointPropertiesColorMode            = glGetUniformLocation (program, "x3d_PointProperties.colorMode");
 
 	x3d_LinePropertiesApplied              = glGetUniformLocation (program, "x3d_LineProperties.applied");
 	x3d_LinePropertiesLinewidthScaleFactor = getUniformLocation (program, "x3d_LineProperties.linewidthScaleFactor", "x3d_LinewidthScaleFactor");

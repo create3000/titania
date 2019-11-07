@@ -32,6 +32,17 @@ struct x3d_LightSourceParameters {
 
 //uniform x3d_LightSourceParameters x3d_LightSource [x3d_MaxLights];
 
+struct x3d_PointPropertiesParameters
+{
+	float pointSizeScaleFactor;
+	float pointSizeMinValue;
+	float pointSizeMaxValue;
+	vec3  pointSizeAttenuation;
+	int   colorMode;
+};
+
+//uniform x3d_PointPropertiesParameters x3d_PointProperties;
+
 struct x3d_LinePropertiesParameters
 {
 	bool          applied;

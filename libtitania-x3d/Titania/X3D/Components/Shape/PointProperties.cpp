@@ -70,9 +70,11 @@ PointProperties::Fields::Fields () :
 { }
 
 PointProperties::PointProperties (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceChildNode (),
-	                fields ()
+	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DAppearanceChildNode (),
+	                   fields (),
+	pointSizeAttenuationValue (),
+	            colorModeType ()
 {
 	addType (X3DConstants::PointProperties);
 
@@ -94,11 +96,49 @@ void
 PointProperties::initialize ()
 {
 	X3DAppearanceChildNode::initialize ();
+
+	pointSizeAttenuation () .addInterest (&PointProperties::set_pointSizeAttenuation, this);
+	colorMode ()            .addInterest (&PointProperties::set_colorMode,            this);
+
+	set_pointSizeAttenuation ();
+	set_colorMode ();
+}
+
+void
+PointProperties::set_pointSizeAttenuation ()
+{
+	pointSizeAttenuationValue [0] = pointSizeAttenuation () .size () > 0 ? std::max <float> (0, pointSizeAttenuation () [0]) : 1.0f;
+	pointSizeAttenuationValue [1] = pointSizeAttenuation () .size () > 1 ? std::max <float> (0, pointSizeAttenuation () [1]) : 0.0f;
+	pointSizeAttenuationValue [2] = pointSizeAttenuation () .size () > 2 ? std::max <float> (0, pointSizeAttenuation () [2]) : 0.0f;
+}
+
+void
+PointProperties::set_colorMode ()
+{
+	try
+	{
+		static const std::map <std::string, ColorModeType> colorModes ({
+			std::pair ("POINT_COLOR",             ColorModeType::POINT_COLOR),
+			std::pair ("TEXTURE_COLOR",           ColorModeType::TEXTURE_COLOR),
+			std::pair ("TEXTURE_AND_POINT_COLOR", ColorModeType::TEXTURE_AND_POINT_COLOR),
+		});
+
+		colorModeType = colorModes .at (colorMode ());
+	}
+	catch(const std::out_of_range & error)
+	{
+		colorModeType = ColorModeType::TEXTURE_AND_POINT_COLOR;
+	}
 }
 
 void
 PointProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
+	glUniform1f  (shaderObject -> getPointPropertiesPointSizeScaleFactorUniformLocation (), std::max <float> (1, pointSizeScaleFactor ()));
+	glUniform1f  (shaderObject -> getPointPropertiesPointSizeMinValueUniformLocation (),    std::max <float> (0, pointSizeMinValue ()));
+	glUniform1f  (shaderObject -> getPointPropertiesPointSizeMaxValueUniformLocation (),    std::max <float> (0, pointSizeMaxValue ()));
+	glUniform3fv (shaderObject -> getPointPropertiesPointSizeAttenuationUniformLocation (), 1, pointSizeAttenuationValue .data ());
+	glUniform1i  (shaderObject -> getPointPropertiesColorModeUniformLocation (),            int32_t (colorModeType));
 }
 
 PointProperties::~PointProperties ()

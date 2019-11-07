@@ -147,6 +147,22 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class ColorModeType
+	{
+		POINT_COLOR,
+		TEXTURE_COLOR,
+		TEXTURE_AND_POINT_COLOR
+	};
+
+	///  @name Event handlers
+
+	void
+	set_pointSizeAttenuation ();
+
+	void
+	set_colorMode ();
 
 	///  @name Static members
 
@@ -154,7 +170,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -168,6 +184,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	Vector3f      pointSizeAttenuationValue;
+	ColorModeType colorModeType;
 
 };
 

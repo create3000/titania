@@ -123,6 +123,28 @@ public:
 	getFogMatrixUniformLocation () const
 	{ return x3d_FogMatrix; }
 
+	///  @name Uniform location access point properties
+
+	GLint
+	getPointPropertiesPointSizeScaleFactorUniformLocation () const
+	{ return x3d_PointPropertiesPointSizeScaleFactor; }
+
+	GLint
+	getPointPropertiesPointSizeMinValueUniformLocation () const
+	{ return x3d_PointPropertiesPointSizeMinValue; }
+
+	GLint
+	getPointPropertiesPointSizeMaxValueUniformLocation () const
+	{ return x3d_PointPropertiesPointSizeMaxValue; }
+
+	GLint
+	getPointPropertiesPointSizeAttenuationUniformLocation () const
+	{ return x3d_PointPropertiesPointSizeAttenuation; }
+
+	GLint
+	getPointPropertiesColorModeUniformLocation () const
+	{ return x3d_PointPropertiesColorMode; }
+
 	///  @name Uniform location access line properties
 
 	GLint
@@ -559,6 +581,12 @@ private:
 	GLint x3d_FogVisibilityRange;
 	GLint x3d_FogMatrix;
 	GLint x3d_FogCoord;
+
+	GLint x3d_PointPropertiesPointSizeScaleFactor;
+	GLint x3d_PointPropertiesPointSizeMinValue;
+	GLint x3d_PointPropertiesPointSizeMaxValue;
+	GLint x3d_PointPropertiesPointSizeAttenuation;
+	GLint x3d_PointPropertiesColorMode;
 
 	GLint x3d_LinePropertiesApplied;
 	GLint x3d_LinePropertiesLinewidthScaleFactor;

@@ -8,7 +8,7 @@ precision mediump float;
 precision mediump int;
 #endif
 
-uniform x3d_LinePropertiesParameters x3d_LineProperties;
+uniform x3d_PointPropertiesParameters x3d_PointProperties;
 
 uniform bool  x3d_ColorMaterial;   // true if a X3DColorNode is attached, otherwise false
 uniform bool  x3d_Lighting;        // true if a X3DMaterialNode is attached, otherwise false
@@ -33,7 +33,7 @@ void
 main ()
 {
 	// If we are points, make the gl_PointSize one pixel larger.
-	gl_PointSize = x3d_LineProperties .linewidthScaleFactor + 1.0;
+	gl_PointSize = x3d_PointProperties .pointSizeScaleFactor + 1.0;
 
 	vec4 position = x3d_ModelViewMatrix * x3d_Vertex;
 
