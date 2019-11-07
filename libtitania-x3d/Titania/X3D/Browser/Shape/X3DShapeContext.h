@@ -68,6 +68,10 @@ public:
 
 	///  @name Member access
 
+	const X3DPtr <PointProperties> &
+	getDefaultPointProperties () const
+	{ return defaultPointProperties; }
+
 	const X3DPtr <LineProperties> &
 	getDefaultLineProperties () const
 	{ return defaultLineProperties; }
@@ -120,6 +124,7 @@ private:
 
 	///  @name Members
 
+	X3DPtr <PointProperties>               defaultPointProperties;
 	X3DPtr <LineProperties>                defaultLineProperties;
 	X3DPtr <FillProperties>                defaultFillProperties;
 	X3DPtr <X3DAppearanceNode>             defaultAppearance;

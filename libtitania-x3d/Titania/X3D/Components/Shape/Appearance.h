@@ -98,6 +98,14 @@ public:
 	///  @name Fields
 
 	SFNode &
+	pointProperties ()
+	{ return *fields .pointProperties; }
+
+	const SFNode &
+	pointProperties () const
+	{ return *fields .pointProperties; }
+
+	SFNode &
 	lineProperties ()
 	{ return *fields .lineProperties; }
 
@@ -184,6 +192,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_pointProperties ();
+
+	void
 	set_lineProperties ();
 
 	void
@@ -222,6 +233,7 @@ private:
 	{
 		Fields ();
 
+		SFNode* const pointProperties;
 		SFNode* const lineProperties;
 		SFNode* const fillProperties;
 		SFNode* const material;
@@ -233,6 +245,7 @@ private:
 
 	Fields fields;
 
+	X3DPtr <PointProperties>         pointPropertiesNode;
 	X3DPtr <LineProperties>          linePropertiesNode;
 	X3DPtr <FillProperties>          fillPropertiesNode;
 	X3DPtr <X3DMaterialNode>         materialNode;

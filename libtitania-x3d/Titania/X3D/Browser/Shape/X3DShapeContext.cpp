@@ -53,6 +53,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Shape/Appearance.h"
+#include "../../Components/Shape/PointProperties.h"
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Texturing/ImageTexture.h"
@@ -63,6 +64,7 @@ namespace X3D {
 
 X3DShapeContext::X3DShapeContext () :
 	                X3DBaseNode (),
+	     defaultPointProperties (new PointProperties (getExecutionContext ())),
 	      defaultLineProperties (new LineProperties (getExecutionContext ())),
 	      defaultFillProperties (new FillProperties (getExecutionContext ())),
 	          defaultAppearance (new Appearance (getExecutionContext ())),
@@ -72,7 +74,8 @@ X3DShapeContext::X3DShapeContext () :
 	               linetypeUnit (0),
 	             hatchStyleUnit (0)
 {
-	addChildObjects (defaultLineProperties,
+	addChildObjects (defaultPointProperties,
+	                 defaultLineProperties,
 	                 defaultFillProperties,
 	                 defaultAppearance,
 	                 lineFillTextureProperties,
@@ -86,6 +89,7 @@ X3DShapeContext::initialize ()
 	defaultLineProperties -> applied () = false;
 	defaultFillProperties -> hatched () = false;
 
+	defaultPointProperties      -> setup ();
 	defaultLineProperties       -> setup ();
 	defaultFillProperties       -> setup ();
 	defaultAppearance           -> setup ();

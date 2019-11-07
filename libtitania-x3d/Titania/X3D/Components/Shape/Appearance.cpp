@@ -56,6 +56,7 @@
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Shape/PointProperties.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DMaterialNode.h"
@@ -71,6 +72,7 @@ const std::string Appearance::typeName       = "Appearance";
 const std::string Appearance::containerField = "appearance";
 
 Appearance::Fields::Fields () :
+	 pointProperties (new SFNode ()),
 	  lineProperties (new SFNode ()),
 	  fillProperties (new SFNode ()),
 	        material (new SFNode ()),
@@ -84,6 +86,7 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	   X3DAppearanceNode (),
 	              fields (),
+	 pointPropertiesNode (),
 	  linePropertiesNode (),
 	  fillPropertiesNode (),
 	        materialNode (),
@@ -96,6 +99,7 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::Appearance);
 
 	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "pointProperties",  pointProperties ());
 	addField (inputOutput, "lineProperties",   lineProperties ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
 	addField (inputOutput, "material",         material ());
@@ -104,7 +108,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "shaders",          shaders ());
 	addField (inputOutput, "blendMode",        blendMode ());
 
-	addChildObjects (linePropertiesNode,
+	addChildObjects (pointPropertiesNode,
+	                 linePropertiesNode,
 	                 fillPropertiesNode,
 	                 materialNode,
 	                 textureNode,
@@ -125,6 +130,7 @@ Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
 
+	pointProperties ()  .addInterest (&Appearance::set_pointProperties,   this);
 	lineProperties ()   .addInterest (&Appearance::set_lineProperties,   this);
 	fillProperties ()   .addInterest (&Appearance::set_fillProperties,   this);
 	material ()         .addInterest (&Appearance::set_material,         this);
@@ -135,6 +141,7 @@ Appearance::initialize ()
 
 	shaderNodes .addInterest (&Appearance::set_shader, this);
 
+	set_pointProperties ();
 	set_lineProperties ();
 	set_fillProperties ();
 	set_material ();
@@ -151,10 +158,22 @@ Appearance::setExecutionContext (X3DExecutionContext* const executionContext)
 
 	if (isInitialized ())
 	{
+		set_pointProperties ();
 		set_lineProperties ();
 		set_fillProperties ();
 		set_textureTransform ();
 	}
+}
+
+void
+Appearance::set_pointProperties ()
+{
+	pointPropertiesNode .set (x3d_cast <PointProperties*> (pointProperties ()));
+
+	if (pointPropertiesNode)
+		return;
+
+	pointPropertiesNode .set (getBrowser () -> getDefaultPointProperties ());
 }
 
 void
@@ -306,7 +325,7 @@ Appearance::enable (ShapeContainer* const context, const size_t geometryType)
 	switch (geometryType)
 	{
 		case 0:
-			context -> setStyleProperties (linePropertiesNode); // pointPropertiesNode
+			context -> setStyleProperties (pointPropertiesNode);
 			break;
 		case 1:
 			context -> setStyleProperties (linePropertiesNode);
