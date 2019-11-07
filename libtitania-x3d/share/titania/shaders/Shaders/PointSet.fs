@@ -36,11 +36,9 @@ out vec4 x3d_FragColor;
 #pragma X3D include "include/ClipPlanes.glsl"
 #pragma X3D include "include/Texture.glsl"
 
-void
-main ()
+vec4
+getPointColor ()
 {
-	clip ();
-
 	vec4 finalColor = color;
 
 	if (x3d_NumTextures > 0)
@@ -74,9 +72,21 @@ main ()
 		finalColor .a = mix (finalColor .a, 0.0, clamp (t, 0.0, 1.0));
 	}
 
+	return finalColor;
+}
+
+void
+main ()
+{
+	clip ();
+
+	vec4 finalColor = getPointColor ();
+
 	finalColor .rgb = getFogColor (finalColor .rgb);
 
 	x3d_FragColor = finalColor;
+
+	// Logarithmic Depth Buffer
 
 	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 	//http://outerra.blogspot.com/2013/07/logarithmic-depth-buffer-optimizations.html
