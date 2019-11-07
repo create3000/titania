@@ -34,10 +34,10 @@ struct x3d_LightSourceParameters {
 
 struct x3d_PointPropertiesParameters
 {
-	float pointSizeScaleFactor;
-	float pointSizeMinValue;
-	float pointSizeMaxValue;
-	vec3  pointSizeAttenuation;
+	mediump float pointSizeScaleFactor;
+	mediump float pointSizeMinValue;
+	mediump float pointSizeMaxValue;
+	mediump vec3  pointSizeAttenuation;
 	int   colorMode;
 };
 

@@ -123,8 +123,6 @@ X3DPointPropertiesEditor::on_pointProperties_toggled ()
 		if (changing)
 			return;
 
-		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
-
 		addUndoFunction <X3D::SFNode> (appearances, "pointProperties", undoStep);
 
 		getPointPropertiesCheckButton () .set_inconsistent (false);
@@ -144,12 +142,10 @@ X3DPointPropertiesEditor::on_pointProperties_toggled ()
 				if (getPointPropertiesCheckButton () .get_active ())
 				{
 					X3D::X3DEditor::replaceNode (executionContext, appearance, field, pointProperties, undoStep);
-					previewAppearance -> pointProperties () = pointProperties;
 				}
 				else
 				{
 					X3D::X3DEditor::replaceNode (executionContext, appearance, field, nullptr, undoStep);
-					previewAppearance -> pointProperties () = nullptr;
 				}
 			}
 			catch (const X3D::X3DError &)
@@ -175,11 +171,6 @@ X3DPointPropertiesEditor::set_node ()
 {
 	try
 	{
-		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
-
-		if (pointProperties)
-			pointProperties -> removeInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
-
 		undoStep .reset ();
 
 		auto          tuple     = getSelection <X3D::PointProperties> (appearances, "pointProperties");
@@ -189,18 +180,11 @@ X3DPointPropertiesEditor::set_node ()
 
 		pointProperties = std::move (std::get <0> (tuple));
 
-		previewAppearance -> pointProperties () = pointProperties;
-
-		if (pointProperties)
-		{
-			pointProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
-		}
-		else
+		if (not pointProperties)
 		{
 			const auto executionContext = getSelectionContext (appearances, true);
 
 			pointProperties = executionContext  -> createNode <X3D::PointProperties> ();
-			pointProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 		}
 
 		changing = true;
