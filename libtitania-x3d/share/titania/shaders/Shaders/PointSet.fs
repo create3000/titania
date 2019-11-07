@@ -66,7 +66,7 @@ getPointColor ()
 	}
 	else
 	{
-		float ps = pointSize / 2.0;
+		float ps = (pointSize + 1.0) / 2.0;
 		float t  = distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * ps - ps + 1.0;
 
 		finalColor .a = mix (finalColor .a, 0.0, clamp (t, 0.0, 1.0));

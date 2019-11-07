@@ -10,9 +10,10 @@ precision mediump int;
 
 uniform x3d_PointPropertiesParameters x3d_PointProperties;
 
-uniform bool  x3d_ColorMaterial;   // true if a X3DColorNode is attached, otherwise false
-uniform bool  x3d_Lighting;        // true if a X3DMaterialNode is attached, otherwise false
+uniform bool x3d_ColorMaterial;   // true if a X3DColorNode is attached, otherwise false
+uniform bool x3d_Lighting;        // true if a X3DMaterialNode is attached, otherwise false
 uniform x3d_MaterialParameters x3d_FrontMaterial;
+uniform int x3d_NumTextures;
 
 uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
@@ -57,7 +58,7 @@ main ()
 	pointSize *= 1.0 / (pointSizeAttenuation [0] + pointSizeAttenuation [1] * dL + pointSizeAttenuation [2] * (dL * dL));
 	pointSize  = clamp (pointSize, pointSizeMinValue, pointSizeMaxValue);
 
-	gl_PointSize = pointSize + 1.0;
+	gl_PointSize = pointSize + (x3d_NumTextures > 0 ? 0.0 : 1.0);
 
 	// Determine color.
 
