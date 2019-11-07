@@ -146,6 +146,30 @@ public:
 	{ return m_LinePropertiesLinewidthScaleFactorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointPropertiesPointSizeAttenuation0Adjustment () const
+	{ return m_PointPropertiesPointSizeAttenuation0Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointPropertiesPointSizeAttenuation1Adjustment () const
+	{ return m_PointPropertiesPointSizeAttenuation1Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointPropertiesPointSizeAttenuation2Adjustment () const
+	{ return m_PointPropertiesPointSizeAttenuation2Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointPropertiesPointSizeMaxValueAdjustment () const
+	{ return m_PointPropertiesPointSizeMaxValueAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointPropertiesPointSizeMinValueAdjustment () const
+	{ return m_PointPropertiesPointSizeMinValueAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getPointPropertiesPointSizeScaleFactorAdjustment () const
+	{ return m_PointPropertiesPointSizeScaleFactorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getShininessAdjustment () const
 	{ return m_ShininessAdjustment; }
 
@@ -366,6 +390,118 @@ public:
 	{ return *m_BackEmissiveColorButton; }
 
 	Gtk::Expander &
+	getPointPropertiesExpander () const
+	{ return *m_PointPropertiesExpander; }
+
+	Gtk::Box &
+	getPointPropertiesMainBox () const
+	{ return *m_PointPropertiesMainBox; }
+
+	Gtk::Box &
+	getPointFillPropertiesBox () const
+	{ return *m_PointFillPropertiesBox; }
+
+	Gtk::CheckButton &
+	getPointPropertiesCheckButton () const
+	{ return *m_PointPropertiesCheckButton; }
+
+	Gtk::Button &
+	getPointPropertiesUnlinkButton () const
+	{ return *m_PointPropertiesUnlinkButton; }
+
+	Gtk::Grid &
+	getPointPropertiesBox () const
+	{ return *m_PointPropertiesBox; }
+
+	Gtk::Box &
+	getPointPropertiesNameBox () const
+	{ return *m_PointPropertiesNameBox; }
+
+	Gtk::Entry &
+	getPointPropertiesNameEntry () const
+	{ return *m_PointPropertiesNameEntry; }
+
+	Gtk::Button &
+	getPointPropertiesRenameButton () const
+	{ return *m_PointPropertiesRenameButton; }
+
+	Gtk::SpinButton &
+	getPointPropertiesPointSizeScaleFactorSpinButton () const
+	{ return *m_PointPropertiesPointSizeScaleFactorSpinButton; }
+
+	Gtk::SpinButton &
+	getPointPropertiesPointSizeMinValueSpinButton () const
+	{ return *m_PointPropertiesPointSizeMinValueSpinButton; }
+
+	Gtk::SpinButton &
+	getPointPropertiesPointSizeMaxValueSpinButton () const
+	{ return *m_PointPropertiesPointSizeMaxValueSpinButton; }
+
+	Gtk::Box &
+	getPointPropertiesPointSizeAttenuationBox () const
+	{ return *m_PointPropertiesPointSizeAttenuationBox; }
+
+	Gtk::SpinButton &
+	getPointPropertiesPointSizeAttenuation0SpinButton () const
+	{ return *m_PointPropertiesPointSizeAttenuation0SpinButton; }
+
+	Gtk::SpinButton &
+	getPointPropertiesPointSizeAttenuation1SpinButton () const
+	{ return *m_PointPropertiesPointSizeAttenuation1SpinButton; }
+
+	Gtk::SpinButton &
+	getPointPropertiesPointSizeAttenuation2SpinButton () const
+	{ return *m_PointPropertiesPointSizeAttenuation2SpinButton; }
+
+	Gtk::ComboBoxText &
+	getPointPropertiesColorModeComboBoxText () const
+	{ return *m_PointPropertiesColorModeComboBoxText; }
+
+	Gtk::Expander &
+	getLinePropertiesExpander () const
+	{ return *m_LinePropertiesExpander; }
+
+	Gtk::Box &
+	getLinePropertiesMainBox () const
+	{ return *m_LinePropertiesMainBox; }
+
+	Gtk::CheckButton &
+	getLinePropertiesCheckButton () const
+	{ return *m_LinePropertiesCheckButton; }
+
+	Gtk::Button &
+	getLinePropertiesUnlinkButton () const
+	{ return *m_LinePropertiesUnlinkButton; }
+
+	Gtk::Grid &
+	getLinePropertiesBox () const
+	{ return *m_LinePropertiesBox; }
+
+	Gtk::CheckButton &
+	getLinePropertiesFilledCheckButton () const
+	{ return *m_LinePropertiesFilledCheckButton; }
+
+	Gtk::SpinButton &
+	getLinePropertiesLinetypeSpinButton () const
+	{ return *m_LinePropertiesLinetypeSpinButton; }
+
+	Gtk::SpinButton &
+	getLinePropertiesLinewidthScaleFactorSpinButton () const
+	{ return *m_LinePropertiesLinewidthScaleFactorSpinButton; }
+
+	Gtk::Box &
+	getLinePropertiesNameBox () const
+	{ return *m_LinePropertiesNameBox; }
+
+	Gtk::Entry &
+	getLinePropertiesNameEntry () const
+	{ return *m_LinePropertiesNameEntry; }
+
+	Gtk::Button &
+	getLinePropertiesRenameButton () const
+	{ return *m_LinePropertiesRenameButton; }
+
+	Gtk::Expander &
 	getFillPropertiesExpander () const
 	{ return *m_FillPropertiesExpander; }
 
@@ -420,50 +556,6 @@ public:
 	Gtk::Button &
 	getFillPropertiesRenameButton () const
 	{ return *m_FillPropertiesRenameButton; }
-
-	Gtk::Expander &
-	getLinePropertiesExpander () const
-	{ return *m_LinePropertiesExpander; }
-
-	Gtk::Box &
-	getLinePropertiesMainBox () const
-	{ return *m_LinePropertiesMainBox; }
-
-	Gtk::CheckButton &
-	getLinePropertiesCheckButton () const
-	{ return *m_LinePropertiesCheckButton; }
-
-	Gtk::Button &
-	getLinePropertiesUnlinkButton () const
-	{ return *m_LinePropertiesUnlinkButton; }
-
-	Gtk::Grid &
-	getLinePropertiesBox () const
-	{ return *m_LinePropertiesBox; }
-
-	Gtk::CheckButton &
-	getLinePropertiesFilledCheckButton () const
-	{ return *m_LinePropertiesFilledCheckButton; }
-
-	Gtk::SpinButton &
-	getLinePropertiesLinetypeSpinButton () const
-	{ return *m_LinePropertiesLinetypeSpinButton; }
-
-	Gtk::SpinButton &
-	getLinePropertiesLinewidthScaleFactorSpinButton () const
-	{ return *m_LinePropertiesLinewidthScaleFactorSpinButton; }
-
-	Gtk::Box &
-	getLinePropertiesNameBox () const
-	{ return *m_LinePropertiesNameBox; }
-
-	Gtk::Entry &
-	getLinePropertiesNameEntry () const
-	{ return *m_LinePropertiesNameEntry; }
-
-	Gtk::Button &
-	getLinePropertiesRenameButton () const
-	{ return *m_LinePropertiesRenameButton; }
 
 	Gtk::Expander &
 	getBlendModeExpander () const
@@ -669,11 +761,11 @@ public:
 
 	virtual
 	void
-	on_fillProperties_toggled () = 0;
+	on_pointProperties_toggled () = 0;
 
 	virtual
 	void
-	on_fillProperties_unlink_clicked () = 0;
+	on_pointProperties_unlink_clicked () = 0;
 
 	virtual
 	void
@@ -682,6 +774,14 @@ public:
 	virtual
 	void
 	on_lineProperties_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_fillProperties_toggled () = 0;
+
+	virtual
+	void
+	on_fillProperties_unlink_clicked () = 0;
 
 	virtual
 	void
@@ -797,6 +897,12 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_FillPropertiesHatchStyleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LinePropertiesLinetypeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LinePropertiesLinewidthScaleFactorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointPropertiesPointSizeAttenuation0Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointPropertiesPointSizeAttenuation1Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointPropertiesPointSizeAttenuation2Adjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointPropertiesPointSizeMaxValueAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointPropertiesPointSizeMinValueAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PointPropertiesPointSizeScaleFactorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShininessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpecularColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
@@ -852,6 +958,34 @@ private:
 	Gtk::Button* m_BackSpecularColorButton;
 	Gtk::Box* m_BackEmissiveColorBox;
 	Gtk::Button* m_BackEmissiveColorButton;
+	Gtk::Expander* m_PointPropertiesExpander;
+	Gtk::Box* m_PointPropertiesMainBox;
+	Gtk::Box* m_PointFillPropertiesBox;
+	Gtk::CheckButton* m_PointPropertiesCheckButton;
+	Gtk::Button* m_PointPropertiesUnlinkButton;
+	Gtk::Grid* m_PointPropertiesBox;
+	Gtk::Box* m_PointPropertiesNameBox;
+	Gtk::Entry* m_PointPropertiesNameEntry;
+	Gtk::Button* m_PointPropertiesRenameButton;
+	Gtk::SpinButton* m_PointPropertiesPointSizeScaleFactorSpinButton;
+	Gtk::SpinButton* m_PointPropertiesPointSizeMinValueSpinButton;
+	Gtk::SpinButton* m_PointPropertiesPointSizeMaxValueSpinButton;
+	Gtk::Box* m_PointPropertiesPointSizeAttenuationBox;
+	Gtk::SpinButton* m_PointPropertiesPointSizeAttenuation0SpinButton;
+	Gtk::SpinButton* m_PointPropertiesPointSizeAttenuation1SpinButton;
+	Gtk::SpinButton* m_PointPropertiesPointSizeAttenuation2SpinButton;
+	Gtk::ComboBoxText* m_PointPropertiesColorModeComboBoxText;
+	Gtk::Expander* m_LinePropertiesExpander;
+	Gtk::Box* m_LinePropertiesMainBox;
+	Gtk::CheckButton* m_LinePropertiesCheckButton;
+	Gtk::Button* m_LinePropertiesUnlinkButton;
+	Gtk::Grid* m_LinePropertiesBox;
+	Gtk::CheckButton* m_LinePropertiesFilledCheckButton;
+	Gtk::SpinButton* m_LinePropertiesLinetypeSpinButton;
+	Gtk::SpinButton* m_LinePropertiesLinewidthScaleFactorSpinButton;
+	Gtk::Box* m_LinePropertiesNameBox;
+	Gtk::Entry* m_LinePropertiesNameEntry;
+	Gtk::Button* m_LinePropertiesRenameButton;
 	Gtk::Expander* m_FillPropertiesExpander;
 	Gtk::Box* m_FillPropertiesMainBox;
 	Gtk::Box* m_SelectFillPropertiesBox;
@@ -866,17 +1000,6 @@ private:
 	Gtk::Box* m_FillPropertiesNameBox;
 	Gtk::Entry* m_FillPropertiesNameEntry;
 	Gtk::Button* m_FillPropertiesRenameButton;
-	Gtk::Expander* m_LinePropertiesExpander;
-	Gtk::Box* m_LinePropertiesMainBox;
-	Gtk::CheckButton* m_LinePropertiesCheckButton;
-	Gtk::Button* m_LinePropertiesUnlinkButton;
-	Gtk::Grid* m_LinePropertiesBox;
-	Gtk::CheckButton* m_LinePropertiesFilledCheckButton;
-	Gtk::SpinButton* m_LinePropertiesLinetypeSpinButton;
-	Gtk::SpinButton* m_LinePropertiesLinewidthScaleFactorSpinButton;
-	Gtk::Box* m_LinePropertiesNameBox;
-	Gtk::Entry* m_LinePropertiesNameEntry;
-	Gtk::Button* m_LinePropertiesRenameButton;
 	Gtk::Expander* m_BlendModeExpander;
 	Gtk::Box* m_BlendModeMainBox;
 	Gtk::Box* m_SelectBlendModeBox;

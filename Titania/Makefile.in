@@ -186,6 +186,7 @@ am_titania_OBJECTS = $(current_dir)/Titania/Applications/BrowserApplication/Brow
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.$(OBJEXT) \
+	$(current_dir)/Titania/Editors/AppearanceEditor/X3DPointPropertiesEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DUsedMaterialsEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/BackgroundEditor/BackgroundEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/BackgroundEditor/X3DBackgroundEditor.$(OBJEXT) \
@@ -527,6 +528,7 @@ am__depfiles_remade = $(current_dir)/Titania/Applications/BrowserApplication/$(D
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DLinePropertiesEditor.Po \
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialEditor.Po \
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialPaletteEditor.Po \
+	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DPointPropertiesEditor.Po \
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DUsedMaterialsEditor.Po \
 	$(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/BackgroundEditor.Po \
 	$(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/X3DBackgroundEditor.Po \
@@ -1058,6 +1060,7 @@ titania_SOURCES = \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
+	$(current_dir)/Titania/Editors/AppearanceEditor/X3DPointPropertiesEditor.cpp \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DUsedMaterialsEditor.cpp \
 	$(current_dir)/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	$(current_dir)/Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
@@ -1732,6 +1735,8 @@ $(current_dir)/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.$(OBJEXT
 $(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialEditor.$(OBJEXT): $(current_dir)/Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.$(OBJEXT): $(current_dir)/Titania/Editors/AppearanceEditor/$(am__dirstamp) \
+	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Editors/AppearanceEditor/X3DPointPropertiesEditor.$(OBJEXT): $(current_dir)/Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/Editors/AppearanceEditor/X3DUsedMaterialsEditor.$(OBJEXT): $(current_dir)/Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
@@ -2798,6 +2803,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DLinePropertiesEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialPaletteEditor.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DPointPropertiesEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DUsedMaterialsEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/BackgroundEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/X3DBackgroundEditor.Po@am__quote@ # am--include-marker
@@ -3412,6 +3418,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DLinePropertiesEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialPaletteEditor.Po
+	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DPointPropertiesEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DUsedMaterialsEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/BackgroundEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/X3DBackgroundEditor.Po
@@ -3770,6 +3777,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DLinePropertiesEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialPaletteEditor.Po
+	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DPointPropertiesEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DUsedMaterialsEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/BackgroundEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/BackgroundEditor/$(DEPDIR)/X3DBackgroundEditor.Po

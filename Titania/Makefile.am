@@ -90,6 +90,7 @@ titania_SOURCES =  \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
+	$(current_dir)/Titania/Editors/AppearanceEditor/X3DPointPropertiesEditor.cpp \
 	$(current_dir)/Titania/Editors/AppearanceEditor/X3DUsedMaterialsEditor.cpp \
 	$(current_dir)/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	$(current_dir)/Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \

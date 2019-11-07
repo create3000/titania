@@ -48,101 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPOINT_PROPERTIES_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPOINT_PROPERTIES_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
-#include "X3DMaterialEditor.h"
-#include "X3DPointPropertiesEditor.h"
-#include "X3DLinePropertiesEditor.h"
-#include "X3DFillPropertiesEditor.h"
-#include "X3DBlendModeEditor.h"
-#include "X3DUsedMaterialsEditor.h"
-#include "X3DMaterialPaletteEditor.h"
+#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
+
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/PointProperties.h>
 
 namespace titania {
 namespace puck {
 
-class AppearanceEditor :
-	virtual public X3DAppearanceEditorInterface,
-	public X3DMaterialEditor,
-	public X3DPointPropertiesEditor,
-	public X3DLinePropertiesEditor,
-	public X3DFillPropertiesEditor,
-	public X3DBlendModeEditor,
-	public X3DUsedMaterialsEditor,
-	public X3DMaterialPaletteEditor
+class X3DPointPropertiesEditor :
+	virtual public X3DAppearanceEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	AppearanceEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
 	virtual
-	~AppearanceEditor () final override;
+	~X3DPointPropertiesEditor () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
+	X3DPointPropertiesEditor ();
 
 	virtual
 	void
-	configure () final override;
+	initialize () override;
 
-	virtual
 	void
-	set_selection (const X3D::MFNode & selection) final override;
+	set_appearance ();
 
 	///  @name Member access
 
 	virtual
 	const X3D::BrowserPtr &
-	getPreview () const final override
-	{ return X3DMaterialEditor::getPreview (); }
+	getPreview () const = 0;
 
-	virtual
-	const X3D::X3DPtr <X3D::X3DMaterialNode> &
-	getMaterial () const
-	{ return X3DMaterialEditor::getMaterial (); }
+
+private:
 
 	///  @name Event handlers
 
 	virtual
 	void
-	on_appearance_unlink_clicked () final override;
+	on_pointProperties_unlink_clicked () final override;
 
 	virtual
 	void
-	on_appearance_toggled () final override;
+	on_pointProperties_toggled () final override;
 
 	void
-	set_appearance ();
+	set_pointProperties ();
 
 	void
 	set_node ();
 
 	void
-	connectAppearance (const X3D::SFNode &);
-
-	virtual
-	void
-	store () final override;
+	connectPointProperties (const X3D::SFNode &);
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::X3DPtr <X3D::X3DAppearanceNode> appearanceNode;
-	X3D::SFTime                          appearanceBuffer;
-	X3D::UndoStepPtr                     undoStep;
-	bool                                 changing;
+	X3D::X3DPtrArray <X3D::Appearance>  appearances;
+	X3D::X3DPtr <X3D::PointProperties>  pointProperties;
+	X3D::SFTime                         pointPropertiesBuffer;
+
+	NameEntry nodeName;
+
+	X3DFieldAdjustment <X3D::SFFloat>  pointSizeScaleFactor;
+	X3DFieldAdjustment <X3D::SFFloat>  pointSizeMinValue;
+	X3DFieldAdjustment <X3D::SFFloat>  pointSizeMaxValue;
+	X3DFieldAdjustment <X3D::MFFloat>  pointSizeAttenuation0;
+	X3DFieldAdjustment <X3D::MFFloat>  pointSizeAttenuation1;
+	X3DFieldAdjustment <X3D::MFFloat>  pointSizeAttenuation2;
+	SFStringComboBoxText               colorMode;
+
+	X3D::UndoStepPtr undoStep;
+	bool             changing;
 
 };
 

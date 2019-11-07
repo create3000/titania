@@ -63,8 +63,9 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
 	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.glade")),
 	           X3DMaterialEditor (),
-	     X3DFillPropertiesEditor (),
+	    X3DPointPropertiesEditor (),
 	     X3DLinePropertiesEditor (),
+	     X3DFillPropertiesEditor (),
 	          X3DBlendModeEditor (),
 	      X3DUsedMaterialsEditor (),
 	    X3DMaterialPaletteEditor (),
@@ -87,8 +88,9 @@ AppearanceEditor::initialize ()
 {
 	X3DAppearanceEditorInterface::initialize ();
 	X3DMaterialEditor::initialize ();
-	X3DFillPropertiesEditor::initialize ();
+	X3DPointPropertiesEditor::initialize ();
 	X3DLinePropertiesEditor::initialize ();
+	X3DFillPropertiesEditor::initialize ();
 	X3DBlendModeEditor::initialize ();
 	X3DUsedMaterialsEditor::initialize ();
 	X3DMaterialPaletteEditor::initialize ();
@@ -177,8 +179,9 @@ AppearanceEditor::set_node ()
 	undoStep .reset ();
 
 	X3DMaterialEditor::set_appearance ();
-	X3DFillPropertiesEditor::set_appearance ();
+	X3DPointPropertiesEditor::set_appearance ();
 	X3DLinePropertiesEditor::set_appearance ();
+	X3DFillPropertiesEditor::set_appearance ();
 	X3DBlendModeEditor::set_appearance ();
 
 	const auto    executionContext = X3D::MakePtr (getSelectionContext (shapeNodes, true));

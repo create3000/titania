@@ -78,23 +78,29 @@ void
 X3DAppearanceEditorInterface::create ()
 {
 	// Get objects.
-	m_AmbientIntensityAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AmbientIntensityAdjustment"));
-	m_BackAmbientIntensityAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackAmbientIntensityAdjustment"));
-	m_BackDiffuseColorAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackDiffuseColorAdjustment"));
-	m_BackEmissiveColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackEmissiveColorAdjustment"));
-	m_BackShininessAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackShininessAdjustment"));
-	m_BackSpecularColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackSpecularColorAdjustment"));
-	m_BackTransparencyAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackTransparencyAdjustment"));
-	m_BlendModeBlendColorAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BlendModeBlendColorAdjustment"));
-	m_DiffuseColorAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DiffuseColorAdjustment"));
-	m_EmissiveColorAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmissiveColorAdjustment"));
-	m_FillPropertiesHatchColorAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FillPropertiesHatchColorAdjustment"));
-	m_FillPropertiesHatchStyleAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FillPropertiesHatchStyleAdjustment"));
-	m_LinePropertiesLinetypeAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LinePropertiesLinetypeAdjustment"));
-	m_LinePropertiesLinewidthScaleFactorAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LinePropertiesLinewidthScaleFactorAdjustment"));
-	m_ShininessAdjustment                          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShininessAdjustment"));
-	m_SpecularColorAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpecularColorAdjustment"));
-	m_TransparencyAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
+	m_AmbientIntensityAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AmbientIntensityAdjustment"));
+	m_BackAmbientIntensityAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackAmbientIntensityAdjustment"));
+	m_BackDiffuseColorAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackDiffuseColorAdjustment"));
+	m_BackEmissiveColorAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackEmissiveColorAdjustment"));
+	m_BackShininessAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackShininessAdjustment"));
+	m_BackSpecularColorAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackSpecularColorAdjustment"));
+	m_BackTransparencyAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackTransparencyAdjustment"));
+	m_BlendModeBlendColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BlendModeBlendColorAdjustment"));
+	m_DiffuseColorAdjustment                         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DiffuseColorAdjustment"));
+	m_EmissiveColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EmissiveColorAdjustment"));
+	m_FillPropertiesHatchColorAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FillPropertiesHatchColorAdjustment"));
+	m_FillPropertiesHatchStyleAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FillPropertiesHatchStyleAdjustment"));
+	m_LinePropertiesLinetypeAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LinePropertiesLinetypeAdjustment"));
+	m_LinePropertiesLinewidthScaleFactorAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LinePropertiesLinewidthScaleFactorAdjustment"));
+	m_PointPropertiesPointSizeAttenuation0Adjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointPropertiesPointSizeAttenuation0Adjustment"));
+	m_PointPropertiesPointSizeAttenuation1Adjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointPropertiesPointSizeAttenuation1Adjustment"));
+	m_PointPropertiesPointSizeAttenuation2Adjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointPropertiesPointSizeAttenuation2Adjustment"));
+	m_PointPropertiesPointSizeMaxValueAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointPropertiesPointSizeMaxValueAdjustment"));
+	m_PointPropertiesPointSizeMinValueAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointPropertiesPointSizeMinValueAdjustment"));
+	m_PointPropertiesPointSizeScaleFactorAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointPropertiesPointSizeScaleFactorAdjustment"));
+	m_ShininessAdjustment                            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShininessAdjustment"));
+	m_SpecularColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpecularColorAdjustment"));
+	m_TransparencyAdjustment                         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -149,6 +155,34 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("BackSpecularColorButton", m_BackSpecularColorButton);
 	m_builder -> get_widget ("BackEmissiveColorBox", m_BackEmissiveColorBox);
 	m_builder -> get_widget ("BackEmissiveColorButton", m_BackEmissiveColorButton);
+	m_builder -> get_widget ("PointPropertiesExpander", m_PointPropertiesExpander);
+	m_builder -> get_widget ("PointPropertiesMainBox", m_PointPropertiesMainBox);
+	m_builder -> get_widget ("PointFillPropertiesBox", m_PointFillPropertiesBox);
+	m_builder -> get_widget ("PointPropertiesCheckButton", m_PointPropertiesCheckButton);
+	m_builder -> get_widget ("PointPropertiesUnlinkButton", m_PointPropertiesUnlinkButton);
+	m_builder -> get_widget ("PointPropertiesBox", m_PointPropertiesBox);
+	m_builder -> get_widget ("PointPropertiesNameBox", m_PointPropertiesNameBox);
+	m_builder -> get_widget ("PointPropertiesNameEntry", m_PointPropertiesNameEntry);
+	m_builder -> get_widget ("PointPropertiesRenameButton", m_PointPropertiesRenameButton);
+	m_builder -> get_widget ("PointPropertiesPointSizeScaleFactorSpinButton", m_PointPropertiesPointSizeScaleFactorSpinButton);
+	m_builder -> get_widget ("PointPropertiesPointSizeMinValueSpinButton", m_PointPropertiesPointSizeMinValueSpinButton);
+	m_builder -> get_widget ("PointPropertiesPointSizeMaxValueSpinButton", m_PointPropertiesPointSizeMaxValueSpinButton);
+	m_builder -> get_widget ("PointPropertiesPointSizeAttenuationBox", m_PointPropertiesPointSizeAttenuationBox);
+	m_builder -> get_widget ("PointPropertiesPointSizeAttenuation0SpinButton", m_PointPropertiesPointSizeAttenuation0SpinButton);
+	m_builder -> get_widget ("PointPropertiesPointSizeAttenuation1SpinButton", m_PointPropertiesPointSizeAttenuation1SpinButton);
+	m_builder -> get_widget ("PointPropertiesPointSizeAttenuation2SpinButton", m_PointPropertiesPointSizeAttenuation2SpinButton);
+	m_builder -> get_widget ("PointPropertiesColorModeComboBoxText", m_PointPropertiesColorModeComboBoxText);
+	m_builder -> get_widget ("LinePropertiesExpander", m_LinePropertiesExpander);
+	m_builder -> get_widget ("LinePropertiesMainBox", m_LinePropertiesMainBox);
+	m_builder -> get_widget ("LinePropertiesCheckButton", m_LinePropertiesCheckButton);
+	m_builder -> get_widget ("LinePropertiesUnlinkButton", m_LinePropertiesUnlinkButton);
+	m_builder -> get_widget ("LinePropertiesBox", m_LinePropertiesBox);
+	m_builder -> get_widget ("LinePropertiesFilledCheckButton", m_LinePropertiesFilledCheckButton);
+	m_builder -> get_widget ("LinePropertiesLinetypeSpinButton", m_LinePropertiesLinetypeSpinButton);
+	m_builder -> get_widget ("LinePropertiesLinewidthScaleFactorSpinButton", m_LinePropertiesLinewidthScaleFactorSpinButton);
+	m_builder -> get_widget ("LinePropertiesNameBox", m_LinePropertiesNameBox);
+	m_builder -> get_widget ("LinePropertiesNameEntry", m_LinePropertiesNameEntry);
+	m_builder -> get_widget ("LinePropertiesRenameButton", m_LinePropertiesRenameButton);
 	m_builder -> get_widget ("FillPropertiesExpander", m_FillPropertiesExpander);
 	m_builder -> get_widget ("FillPropertiesMainBox", m_FillPropertiesMainBox);
 	m_builder -> get_widget ("SelectFillPropertiesBox", m_SelectFillPropertiesBox);
@@ -163,17 +197,6 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("FillPropertiesNameBox", m_FillPropertiesNameBox);
 	m_builder -> get_widget ("FillPropertiesNameEntry", m_FillPropertiesNameEntry);
 	m_builder -> get_widget ("FillPropertiesRenameButton", m_FillPropertiesRenameButton);
-	m_builder -> get_widget ("LinePropertiesExpander", m_LinePropertiesExpander);
-	m_builder -> get_widget ("LinePropertiesMainBox", m_LinePropertiesMainBox);
-	m_builder -> get_widget ("LinePropertiesCheckButton", m_LinePropertiesCheckButton);
-	m_builder -> get_widget ("LinePropertiesUnlinkButton", m_LinePropertiesUnlinkButton);
-	m_builder -> get_widget ("LinePropertiesBox", m_LinePropertiesBox);
-	m_builder -> get_widget ("LinePropertiesFilledCheckButton", m_LinePropertiesFilledCheckButton);
-	m_builder -> get_widget ("LinePropertiesLinetypeSpinButton", m_LinePropertiesLinetypeSpinButton);
-	m_builder -> get_widget ("LinePropertiesLinewidthScaleFactorSpinButton", m_LinePropertiesLinewidthScaleFactorSpinButton);
-	m_builder -> get_widget ("LinePropertiesNameBox", m_LinePropertiesNameBox);
-	m_builder -> get_widget ("LinePropertiesNameEntry", m_LinePropertiesNameEntry);
-	m_builder -> get_widget ("LinePropertiesRenameButton", m_LinePropertiesRenameButton);
 	m_builder -> get_widget ("BlendModeExpander", m_BlendModeExpander);
 	m_builder -> get_widget ("BlendModeMainBox", m_BlendModeMainBox);
 	m_builder -> get_widget ("SelectBlendModeBox", m_SelectBlendModeBox);
@@ -239,17 +262,23 @@ X3DAppearanceEditorInterface::create ()
 	// Connect object Gtk::Button with id 'MaterialUnlinkButton'.
 	m_MaterialUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_material_unlink_clicked));
 
-	// Connect object Gtk::CheckButton with id 'FillPropertiesCheckButton'.
-	m_FillPropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_fillProperties_toggled));
+	// Connect object Gtk::CheckButton with id 'PointPropertiesCheckButton'.
+	m_PointPropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_pointProperties_toggled));
 
-	// Connect object Gtk::Button with id 'FillPropertiesUnlinkButton'.
-	m_FillPropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_fillProperties_unlink_clicked));
+	// Connect object Gtk::Button with id 'PointPropertiesUnlinkButton'.
+	m_PointPropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_pointProperties_unlink_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LinePropertiesCheckButton'.
 	m_LinePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_lineProperties_toggled));
 
 	// Connect object Gtk::Button with id 'LinePropertiesUnlinkButton'.
 	m_LinePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_lineProperties_unlink_clicked));
+
+	// Connect object Gtk::CheckButton with id 'FillPropertiesCheckButton'.
+	m_FillPropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_fillProperties_toggled));
+
+	// Connect object Gtk::Button with id 'FillPropertiesUnlinkButton'.
+	m_FillPropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_fillProperties_unlink_clicked));
 
 	// Connect object Gtk::CheckButton with id 'BlendModeCheckButton'.
 	m_BlendModeCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_blendMode_toggled));
