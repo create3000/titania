@@ -8,12 +8,22 @@ precision mediump float;
 precision mediump int;
 #endif
 
+uniform int x3d_GeometryType;
 uniform x3d_PointPropertiesParameters x3d_PointProperties;
 
 in float pointSize; // point size
 in float fogDepth;  // fog depth
 in vec4  color;     // color
 in vec3  vertex;    // point on geometry
+
+// Text coords, later initialized.
+vec4 texCoord0 = vec4 (0.0);
+vec4 texCoord1 = vec4 (0.0);
+
+// Dummy variables for texture coordinate generator, which is not available.
+vec3 normal      = vec3 (0.0);
+vec3 localNormal = vec3 (0.0);
+vec3 localVertex = vec3 (0.0);
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;
@@ -24,17 +34,49 @@ out vec4 x3d_FragColor;
 
 #pragma X3D include "include/Fog.glsl"
 #pragma X3D include "include/ClipPlanes.glsl"
+#pragma X3D include "include/Texture.glsl"
 
 void
 main ()
 {
 	clip ();
 
-	float ps = pointSize / 2.0;
-	float t  = distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * ps - ps + 1.0;
+	vec4 finalColor = color;
 
-	x3d_FragColor .rgb = getFogColor (color .rgb);
-	x3d_FragColor .a   = mix (color .a, 0.0, clamp (t, 0.0, 1.0));
+	if (x3d_NumTextures > 0)
+	{
+		vec4 texCoord  = vec4 (gl_PointCoord .x, 1.0 - gl_PointCoord .y, 0.0, 1.0);
+
+		texCoord0 = texCoord;
+		texCoord1 = texCoord;
+
+		vec4 textureColor = getTextureColor (vec4 (1.0), vec4 (1.0));
+
+		switch (x3d_PointProperties .colorMode)
+		{
+			case 0:
+				finalColor .a *= textureColor .a;
+				break;
+			case 1:
+				finalColor = textureColor;
+				break;
+			case 2:
+				finalColor .rgb += textureColor .rgb;
+				finalColor .a   *= textureColor .a;
+				break;
+		}
+	}
+	else
+	{
+		float ps = pointSize / 2.0;
+		float t  = distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * ps - ps + 1.0;
+
+		finalColor .a = mix (finalColor .a, 0.0, clamp (t, 0.0, 1.0));
+	}
+
+	finalColor .rgb = getFogColor (finalColor .rgb);
+
+	x3d_FragColor = finalColor;
 
 	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 	//http://outerra.blogspot.com/2013/07/logarithmic-depth-buffer-optimizations.html
