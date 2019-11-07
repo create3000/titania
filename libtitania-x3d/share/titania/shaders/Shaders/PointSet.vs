@@ -21,9 +21,10 @@ in float x3d_FogDepth;
 in vec4  x3d_Color;
 in vec4  x3d_Vertex;
 
-out float fogDepth; // fog depth
-out vec4  color;    // color
-out vec3  vertex;   // point on geometry
+out float pointSize; // point size
+out float fogDepth;  // fog depth
+out vec4  color;     // color
+out vec3  vertex;    // point on geometry
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 out float depth;
@@ -32,8 +33,7 @@ out float depth;
 void
 main ()
 {
-	// If we are points, make the gl_PointSize one pixel larger.
-	gl_PointSize = x3d_PointProperties .pointSizeScaleFactor + 1.0;
+	// Determine varyings.
 
 	vec4 position = x3d_ModelViewMatrix * x3d_Vertex;
 
@@ -45,6 +45,21 @@ main ()
 	#ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 	depth = 1.0 + gl_Position .w;
 	#endif
+
+	// Determine point size.
+
+	float pointSizeMinValue    = x3d_PointProperties .pointSizeMinValue;
+	float pointSizeMaxValue    = x3d_PointProperties .pointSizeMaxValue;
+	vec3  pointSizeAttenuation = x3d_PointProperties .pointSizeAttenuation;
+	float dL                   = length (vertex);
+
+	pointSize  = x3d_PointProperties .pointSizeScaleFactor;
+	pointSize *= 1.0 / max (pointSizeAttenuation [0] + pointSizeAttenuation [1] * dL + pointSizeAttenuation [2] * (dL * dL), 1.0);
+	pointSize  = clamp (pointSize, pointSizeMinValue, pointSizeMaxValue);
+
+	gl_PointSize = pointSize + 1.0;
+
+	// Determine color.
 
 	if (x3d_Lighting)
 	{

@@ -10,9 +10,10 @@ precision mediump int;
 
 uniform x3d_PointPropertiesParameters x3d_PointProperties;
 
-in float fogDepth; // fog depth
-in vec4  color;    // color
-in vec3  vertex;   // point on geometry
+in float pointSize; // point size
+in float fogDepth;  // fog depth
+in vec4  color;     // color
+in vec3  vertex;    // point on geometry
 
 #ifdef X3D_LOGARITHMIC_DEPTH_BUFFER
 uniform float x3d_LogarithmicFarFactor1_2;
@@ -29,7 +30,7 @@ main ()
 {
 	clip ();
 
-	float ps = (x3d_PointProperties .pointSizeScaleFactor + 1.0) / 2.0;
+	float ps = pointSize / 2.0;
 	float t  = distance (vec2 (0.5, 0.5), gl_PointCoord) * 2.0 * ps - ps + 1.0;
 
 	x3d_FragColor .rgb = getFogColor (color .rgb);
