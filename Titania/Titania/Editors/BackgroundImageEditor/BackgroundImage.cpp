@@ -53,7 +53,6 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../BrowserNotebook/NotebookPage/X3DNotebookPage.h"
 
-#include <Titania/X3D/Components/Layering/Layer.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
 #include <Titania/X3D/Components/Texturing/TextureProperties.h>
 

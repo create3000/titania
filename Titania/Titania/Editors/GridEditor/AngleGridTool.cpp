@@ -60,7 +60,6 @@
 #include <Titania/X3D/Components/Core/MetadataInteger.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
-#include <Titania/X3D/Components/Layering/Layer.h>
 
 namespace titania {
 namespace puck {

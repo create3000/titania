@@ -57,7 +57,7 @@
 
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Layering/LayerSet.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Layering/Layer.h>
 #include <Titania/X3D/Execution/World.h>
 
 #include <sigc++/trackable.h>
