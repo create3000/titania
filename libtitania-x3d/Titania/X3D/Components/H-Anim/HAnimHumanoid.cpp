@@ -81,6 +81,7 @@ HAnimHumanoid::Fields::Fields () :
 	           sites (new MFNode ()),
 	          joints (new MFNode ()),
 	        segments (new MFNode ()),
+	         motions (new MFNode ()),
 	        skeleton (new MFNode ()),
 	      skinNormal (new SFNode ()),
 	       skinCoord (new SFNode ()),
@@ -121,6 +122,7 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "sites",            sites ());
 	addField (inputOutput,    "joints",           joints ());
 	addField (inputOutput,    "segments",         segments ());
+	addField (inputOutput,    "motions",          motions ());
 	addField (inputOutput,    "skeleton",         skeleton ());
 	addField (inputOutput,    "skinNormal",       skinNormal ());
 	addField (inputOutput,    "skinCoord",        skinCoord ());

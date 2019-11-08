@@ -212,6 +212,16 @@ public:
 
 	virtual
 	MFNode &
+	motions ()
+	{ return *fields .motions; }
+
+	virtual
+	const MFNode &
+	motions () const
+	{ return *fields .motions; }
+
+	virtual
+	MFNode &
 	skeleton ()
 	{ return *fields .skeleton; }
 
@@ -309,13 +319,13 @@ private:
 
 	void
 	set_joints ();
-	
+
 	void
 	set_skinNormal ();
-	
+
 	void
 	set_skinCoord ();
-	
+
 	///  @name Operations
 
 	void
@@ -345,6 +355,7 @@ private:
 		MFNode* const sites;
 		MFNode* const joints;
 		MFNode* const segments;
+		MFNode* const motions;
 		MFNode* const skeleton;
 		SFNode* const skinNormal;
 		SFNode* const skinCoord;
