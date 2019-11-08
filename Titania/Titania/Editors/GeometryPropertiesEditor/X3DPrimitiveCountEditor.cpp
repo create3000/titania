@@ -130,7 +130,7 @@ X3DPrimitiveCountEditor::connect ()
 		}
 	}
 
-	
+
 
 	update (false);
 }
@@ -217,13 +217,18 @@ X3DPrimitiveCountEditor::update (const bool displayed)
 
 			for (const auto & layer : getCurrentWorld () -> getLayerSet () -> getLayers ())
 			{
-				X3D::traverse (layer -> children (),
-				               [&] (X3D::SFNode &) { ++ nodes; return true; },
-				               X3D::TRAVERSE_ROOT_NODES |
-				               X3D::TRAVERSE_PROTOTYPE_INSTANCES |
-				               X3D::TRAVERSE_INLINE_NODES |
-				               X3D::TRAVERSE_VISIBLE_NODES |
-				               X3D::TRAVERSE_CLONED_NODES);
+				try
+				{
+					X3D::traverse (layer -> getField <X3D::MFNode> ("children"),
+										[&] (X3D::SFNode &) { ++ nodes; return true; },
+										X3D::TRAVERSE_ROOT_NODES |
+										X3D::TRAVERSE_PROTOTYPE_INSTANCES |
+										X3D::TRAVERSE_INLINE_NODES |
+										X3D::TRAVERSE_VISIBLE_NODES |
+										X3D::TRAVERSE_CLONED_NODES);
+				}
+				catch (const X3D::X3DError & error)
+				{ }
 			}
 
 			// Rendered Objects

@@ -96,7 +96,7 @@ public:
 	getActiveLayer () const
 	{ return activeLayer; }
 
-	const X3DPtr <X3DLayerNode> &
+	const X3DPtr <Layer> &
 	getLayer0 () const
 	{ return layer0; }
 
@@ -141,7 +141,7 @@ private:
 
 	X3DPtr <LayerSet>     layerSet;
 	X3DPtr <LayerSet>     defaultLayerSet;
-	X3DPtr <X3DLayerNode> layer0;
+	X3DPtr <Layer>        layer0;
 	X3DPtr <X3DLayerNode> activeLayer;
 
 };

@@ -64,9 +64,16 @@ const Component   Layer::component      = Component ("Layering", 1);
 const std::string Layer::typeName       = "Layer";
 const std::string Layer::containerField = "layers";
 
+Layer::Fields::Fields () :
+	   addChildren (new MFNode ()),
+	removeChildren (new MFNode ()),
+	      children (new MFNode ())
+{ }
+
 Layer::Layer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLayerNode (new Viewpoint (executionContext), new Group (executionContext))
+	X3DLayerNode (new Viewpoint (executionContext), new Group (executionContext)),
+	      fields ()
 {
 	addType (X3DConstants::Layer);
 
@@ -83,6 +90,23 @@ Layer::create (X3DExecutionContext* const executionContext) const
 {
 	return new Layer (executionContext);
 }
+
+void
+Layer::initialize ()
+{
+	X3DLayerNode::initialize ();
+
+	addChildren ()    .addInterest (getGroup () -> addChildren ());
+	removeChildren () .addInterest (getGroup () -> removeChildren ());
+	children ()       .addInterest (getGroup () -> children ());
+
+	getGroup () -> setPrivate (true);
+	getGroup () -> children () = children ();
+	getGroup () -> setup ();
+}
+
+Layer::~Layer ()
+{ }
 
 } // X3D
 } // titania

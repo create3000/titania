@@ -70,10 +70,7 @@ namespace X3D {
 
 X3DLayerNode::Fields::Fields () :
 	    isPickable (new SFBool (true)),
-	      viewport (new SFNode ()),
-	   addChildren (new MFNode ()),
-	removeChildren (new MFNode ()),
-	      children (new MFNode ())
+	      viewport (new SFNode ())
 { }
 
 X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNode* p_layerGroup) :
@@ -145,17 +142,10 @@ X3DLayerNode::initialize ()
 	backgrounds     -> setup ();
 	fogs            -> setup ();
 
-	groupNode -> setPrivate (true);
-	groupNode -> children () = children ();
-	groupNode -> setup ();
-
 	friendsNode -> setPrivate (true);
 	friendsNode -> setup ();
 
-	viewport ()       .addInterest (&X3DLayerNode::set_viewport, this);
-	addChildren ()    .addInterest (groupNode -> addChildren ());
-	removeChildren () .addInterest (groupNode -> removeChildren ());
-	children ()       .addInterest (groupNode -> children ());
+	viewport () .addInterest (&X3DLayerNode::set_viewport, this);
 
 	set_viewport ();
 }

@@ -126,9 +126,9 @@ public:
 	getActiveLayerIndex () const;
 
 	void
-	setLayer0 (const X3DPtr <X3DLayerNode> &);
+	setLayer0 (const X3DPtr <Layer> &);
 
-	const X3DPtr <X3DLayerNode> &
+	const X3DPtr <Layer> &
 	getLayer0 () const
 	{ return layerNode0; }
 
@@ -148,6 +148,8 @@ public:
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -179,7 +181,7 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -193,8 +195,10 @@ private:
 
 	Fields fields;
 
+	///  @name Members
+
 	X3DPtrArray <X3DLayerNode> layerNodes;
-	X3DPtr <X3DLayerNode>      layerNode0;
+	X3DPtr <Layer>             layerNode0;
 	X3DPtr <X3DLayerNode>      activeLayerNode;
 
 };

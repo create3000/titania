@@ -65,7 +65,10 @@ const std::string LayoutLayer::typeName       = "LayoutLayer";
 const std::string LayoutLayer::containerField = "layers";
 
 LayoutLayer::Fields::Fields () :
-	layout (new SFNode ())
+	        layout (new SFNode ()),
+	   addChildren (new MFNode ()),
+	removeChildren (new MFNode ()),
+	      children (new MFNode ())
 { }
 
 LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
@@ -95,14 +98,22 @@ LayoutLayer::initialize ()
 {
 	X3DLayerNode::initialize ();
 
-	LayoutGroup* const groupNode   = dynamic_cast <LayoutGroup*> (getGroup ()   .getValue ());
-	LayoutGroup* const friendsNode = dynamic_cast <LayoutGroup*> (getFriends () .getValue ());
+	const auto groupNode   = dynamic_cast <LayoutGroup*> (getGroup ()   .getValue ());
+	const auto friendsNode = dynamic_cast <LayoutGroup*> (getFriends () .getValue ());
 
 	layout () .addInterest (groupNode   -> layout ());
 	layout () .addInterest (friendsNode -> layout ());
 
+	addChildren ()    .addInterest (groupNode -> addChildren ());
+	removeChildren () .addInterest (groupNode -> removeChildren ());
+	children ()       .addInterest (groupNode -> children ());
+
 	groupNode   -> layout () = layout ();
 	friendsNode -> layout () = layout ();
+
+	groupNode -> setPrivate (true);
+	groupNode -> children () = children ();
+	groupNode -> setup ();
 }
 
 void
@@ -120,6 +131,9 @@ LayoutLayer::removeTool (const bool really)
 
 	group -> removeTool (really);
 }
+
+LayoutLayer::~LayoutLayer ()
+{ }
 
 } // X3D
 } // titania

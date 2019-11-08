@@ -67,7 +67,8 @@
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Layering/Layer.h>
+#include <Titania/X3D/Components/Layout/LayoutLayer.h>
 #include <Titania/X3D/Components/Navigation/Collision.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
@@ -344,10 +345,28 @@ X3DBrowserEditor::import (const X3D::X3DExecutionContextPtr & executionContext, 
 
 			// Add nodes to root nodes or layer children.
 
-			if (executionContext == getCurrentContext () and layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+			const auto & activeLayer = layerSet -> getActiveLayer ();
+
+			if (executionContext == getCurrentContext () and activeLayer and activeLayer not_eq layerSet -> getLayer0 ())
 			{
-				for (const auto & node : importedNodes)
-					X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
+				const auto layerNode       = X3D::X3DPtr <X3D::Layer> (activeLayer);
+				const auto layoutLayerNode = X3D::X3DPtr <X3D::LayoutLayer> (activeLayer);
+
+				if (layerNode)
+				{
+					for (const auto & node : importedNodes)
+						X3D::X3DEditor::pushBackIntoArray (layerNode, layerNode -> children (), node, undoStep);
+				}
+				else if (layoutLayerNode)
+				{
+					for (const auto & node : importedNodes)
+						X3D::X3DEditor::pushBackIntoArray (layoutLayerNode, layoutLayerNode -> children (), node, undoStep);
+				}
+				else
+				{
+					for (const auto & node : importedNodes)
+						X3D::X3DEditor::pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
+				}
 			}
 			else
 			{
@@ -561,13 +580,30 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 
 		const auto   importedNodes = X3D::X3DEditor::importScene (executionContext, scene, undoStep);
 		const auto & layerSet      = getCurrentWorld () -> getLayerSet ();
+		const auto & activeLayer   = layerSet -> getActiveLayer ();
 
 		undoStep -> addObjects (executionContext, layerSet);
 
-		if (executionContext == getCurrentContext () and layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+		if (executionContext == getCurrentContext () and activeLayer and activeLayer not_eq layerSet -> getLayer0 ())
 		{
-			for (const auto & node : importedNodes)
-				X3D::X3DEditor::pushBackIntoArray (layerSet -> getActiveLayer (), layerSet -> getActiveLayer () -> children (), node, undoStep);
+			const auto layerNode       = X3D::X3DPtr <X3D::Layer> (activeLayer);
+			const auto layoutLayerNode = X3D::X3DPtr <X3D::LayoutLayer> (activeLayer);
+
+			if (layerNode)
+			{
+				for (const auto & node : importedNodes)
+					X3D::X3DEditor::pushBackIntoArray (layerNode, layerNode -> children (), node, undoStep);
+			}
+			else if (layoutLayerNode)
+			{
+				for (const auto & node : importedNodes)
+					X3D::X3DEditor::pushBackIntoArray (layoutLayerNode, layoutLayerNode -> children (), node, undoStep);
+			}
+			else
+			{
+				for (const auto & node : importedNodes)
+					X3D::X3DEditor::pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
+			}
 		}
 		else
 		{

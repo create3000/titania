@@ -65,7 +65,9 @@
 #include "../Components/Geometry3D/IndexedFaceSet.h"
 #include "../Components/Geospatial/GeoCoordinate.h"
 #include "../Components/Grouping/X3DTransformNode.h"
+#include "../Components/Layering/Layer.h"
 #include "../Components/Layering/X3DLayerNode.h"
+#include "../Components/Layout/LayoutLayer.h"
 #include "../Components/Lighting/DirectionalLight.h"
 #include "../Components/Lighting/PointLight.h"
 #include "../Components/Lighting/SpotLight.h"
@@ -3275,12 +3277,31 @@ void
 X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	const auto & activeLayer = world -> getActiveLayer ();
-	auto &       children    = activeLayer and activeLayer not_eq world -> getLayer0 ()
-	                           ? activeLayer -> children ()
-										: world -> getExecutionContext () -> getRootNodes ();
 
-	undoStep -> addObjects (world -> getExecutionContext (), activeLayer);
-	children .append (nodes);
+	if (activeLayer and activeLayer not_eq world -> getLayer0 ())
+	{
+		const auto layerNode       = X3DPtr <Layer> (activeLayer);
+		const auto layoutLayerNode = X3DPtr <LayoutLayer> (activeLayer);
+
+		if (layerNode)
+		{
+			undoStep -> addObjects (layerNode);
+			layerNode -> children () .append (nodes);
+		}
+		else if (layoutLayerNode)
+		{
+			undoStep -> addObjects (layoutLayerNode);
+			layoutLayerNode -> children () .append (nodes);
+		}
+		else
+		{
+			world -> getExecutionContext () -> getRootNodes () .append (nodes);
+		}
+	}
+	else
+	{
+		world -> getExecutionContext () -> getRootNodes () .append (nodes);
+	}
 
 	const auto removeUndoStep = std::make_shared <UndoStep> ("");
 
@@ -3302,17 +3323,22 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
 
 	for (const auto & layer : layers)
 	{
-		if (layer -> getExecutionContext () not_eq executionContext)
-		   continue;
+		try
+		{
+			if (layer -> getExecutionContext () not_eq executionContext)
+				continue;
 
-		if (layer -> isLayer0 ())
-		   continue;
+			if (layer -> isLayer0 ())
+				continue;
 
-		added = true;
+			undoStep -> addObjects (layer);
 
-		undoStep -> addObjects (layer);
+			pushBackIntoArray (SFNode (layer), layer -> getField <MFNode> ("children"), node, undoStep);
 
-		pushBackIntoArray (SFNode (layer), layer -> children (), node, undoStep);
+			added = true;
+		}
+		catch (const X3DError & error)
+		{ }
 	}
 
 	if (not added)

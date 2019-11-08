@@ -63,6 +63,8 @@
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
+#include <Titania/X3D/Components/Layering/Layer.h>
+#include <Titania/X3D/Components/Layout/LayoutLayer.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
@@ -1090,10 +1092,29 @@ OutlineEditor::on_detach_from_group_activated ()
 
 	const auto layer     = getLayer (iter -> parent ());
 	const auto rootNode  = layer ? X3D::SFNode (layer) : X3D::SFNode (executionContext);
-	auto &     rootField = layer ? layer -> children () : executionContext -> getRootNodes ();
 
-	// First insert at root nodes end.
-	X3D::X3DEditor::insertIntoArray (rootNode, rootField, rootField .size (), node, undoStep);
+	if (layer)
+	{
+		const auto layerNode       = X3D::X3DPtr <X3D::Layer> (layer);
+		const auto layoutLayerNode = X3D::X3DPtr <X3D::LayoutLayer> (layer);
+
+		if (layerNode)
+		{
+			X3D::X3DEditor::insertIntoArray (rootNode, layerNode -> children (), layerNode -> children () .size (), node, undoStep);
+		}
+		else if (layoutLayerNode)
+		{
+			X3D::X3DEditor::insertIntoArray (rootNode, layoutLayerNode -> children (), layoutLayerNode -> children () .size (), node, undoStep);
+		}
+		else
+		{
+			X3D::X3DEditor::insertIntoArray (rootNode, executionContext -> getRootNodes (), executionContext -> getRootNodes () .size (), node, undoStep);
+		}
+	}
+	else
+	{
+		X3D::X3DEditor::insertIntoArray (rootNode, executionContext -> getRootNodes (), executionContext -> getRootNodes () .size (), node, undoStep);
+	}
 
 	switch (field -> getType ())
 	{

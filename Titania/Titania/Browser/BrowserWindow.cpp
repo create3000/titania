@@ -78,7 +78,8 @@
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Layering/Layer.h>
+#include <Titania/X3D/Components/Layout/LayoutLayer.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
 #include <Titania/X3D/Editing/Combine.h>
@@ -1407,10 +1408,14 @@ BrowserWindow::on_select_all_activated ()
 	if (getGeometryEditor () -> on_select_all ())
 		return;
 
-	const auto & activeLayer = getCurrentBrowser () -> getActiveLayer ();
+	const auto layerNode       = X3D::X3DPtr <X3D::Layer> (getCurrentBrowser () -> getActiveLayer ());
+	const auto layoutLayerNode = X3D::X3DPtr <X3D::LayoutLayer> (getCurrentBrowser () -> getActiveLayer ());
 
-	if (activeLayer)
-		getSelection () -> setNodes (activeLayer -> children ());
+	if (layerNode)
+		getSelection () -> setNodes (layerNode -> children ());
+
+	else if (layoutLayerNode)
+		getSelection () -> setNodes (layoutLayerNode -> children ());
 }
 
 void

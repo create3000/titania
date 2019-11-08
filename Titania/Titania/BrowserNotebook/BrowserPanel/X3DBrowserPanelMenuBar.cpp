@@ -58,6 +58,7 @@
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DFogObject.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h>
+#include <Titania/X3D/Components/Layering/Layer.h>
 #include <Titania/X3D/Components/Lighting/X3DLightNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>

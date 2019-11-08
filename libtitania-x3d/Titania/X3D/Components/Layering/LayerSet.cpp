@@ -122,7 +122,7 @@ LayerSet::getActiveLayerIndex () const
 }
 
 void
-LayerSet::setLayer0 (const X3DPtr <X3DLayerNode> & value)
+LayerSet::setLayer0 (const X3DPtr <Layer> & value)
 {
 	layerNode0 = value;
 

@@ -91,30 +91,6 @@ public:
 	viewport () const
 	{ return *fields .viewport; }
 
-	MFNode &
-	addChildren ()
-	{ return *fields .addChildren; }
-
-	const MFNode &
-	addChildren () const
-	{ return *fields .addChildren; }
-
-	MFNode &
-	removeChildren ()
-	{ return *fields .removeChildren; }
-
-	const MFNode &
-	removeChildren () const
-	{ return *fields .removeChildren; }
-
-	MFNode &
-	children ()
-	{ return *fields .children; }
-
-	const MFNode &
-	children () const
-	{ return *fields .children; }
-
 	///  @name Member access
 
 	void
@@ -233,7 +209,7 @@ protected:
 
 	///  @name Construction
 
-	X3DLayerNode (X3DViewpointNode*, X3DGroupingNode*);
+	X3DLayerNode (X3DViewpointNode* defaultViewpoint, X3DGroupingNode* groupNode);
 
 	virtual
 	void
@@ -279,15 +255,12 @@ private:
 
 		SFBool* const isPickable;
 		SFNode* const viewport;
-		MFNode* const addChildren;
-		MFNode* const removeChildren;
-		MFNode* const children;
 	};
 
 	Fields fields;
 
 	///  @name Members
-	
+
 	bool layer0;
 
 	X3DPtr <NavigationInfo>    defaultNavigationInfo;

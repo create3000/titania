@@ -64,7 +64,7 @@
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Layering/Layer.h>
 #include <Titania/X3D/Components/Navigation/NavigationInfo.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
@@ -407,7 +407,7 @@ X3DBrowserPanel::setLayer (const int32_t layerNumber)
 
 		if (layerNumber == 0)
 		{
-			setLayer (layerSet -> getLayer0 ());
+			setLayer (X3D::X3DPtr <X3D::X3DLayerNode> (layerSet -> getLayer0 ()));
 		}
 		else
 		{
@@ -442,7 +442,13 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 
 			layerNode -> isLive () .removeInterest (&X3DBrowserPanel::set_live, this);
 			layerNode -> getNavigationInfoStack () -> removeInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
-			layerNode -> children () .removeInterest (group -> children ());
+
+			try
+			{
+				layerNode -> getField <X3D::MFNode> ("children") .removeInterest (group -> children ());
+			}
+			catch (const X3D::X3DError & error)
+			{ }
 		}
 	}
 	catch (const X3D::X3DError & error)
@@ -471,8 +477,14 @@ X3DBrowserPanel::setLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 
 			layerNode -> isLive () .addInterest (&X3DBrowserPanel::set_live, this);
 			layerNode -> getNavigationInfoStack () -> addInterest (&X3DBrowserPanel::set_navigationInfoStack, this);
-			layerNode -> children () .addInterest (group -> children ());
-			group -> children () = layerNode -> children ();
+
+			try
+			{
+				layerNode -> getField <X3D::MFNode> ("children") .addInterest (group -> children ());
+				group -> children () = layerNode -> getField <X3D::MFNode> ("children");
+			}
+			catch (const X3D::X3DError & error)
+			{ }
 
 			viewpoint -> removeInterest (&X3DBrowserPanel::set_viewpoint, this);
 			viewpoint -> addInterest (&X3DBrowserPanel::connectViewpoint, this);

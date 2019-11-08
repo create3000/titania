@@ -84,6 +84,44 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Fields
+
+	MFNode &
+	addChildren ()
+	{ return *fields .addChildren; }
+
+	const MFNode &
+	addChildren () const
+	{ return *fields .addChildren; }
+
+	MFNode &
+	removeChildren ()
+	{ return *fields .removeChildren; }
+
+	const MFNode &
+	removeChildren () const
+	{ return *fields .removeChildren; }
+
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
+	///  @name Destruction
+
+	virtual
+	~Layer () final override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () final override;
+
 
 private:
 
@@ -93,6 +131,18 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		MFNode* const addChildren;
+		MFNode* const removeChildren;
+		MFNode* const children;
+	};
+
+	Fields fields;
 
 };
 
