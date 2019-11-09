@@ -275,6 +275,10 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	definitions << "#define x3d_TextureType3D              3\n";
 	definitions << "#define x3d_TextureTypeCubeMapTexture  4\n";
 
+	definitions << "#define x3d_PointColor           0\n";
+	definitions << "#define x3d_TextureColor         1\n";
+	definitions << "#define x3d_TextureAndPointColor 2\n";
+
 	definitions << "#define x3d_Replace                   " << int (MultiTexture::ModeType::REPLACE) << "\n";
 	definitions << "#define x3d_Modulate                  " << int (MultiTexture::ModeType::MODULATE) << "\n";
 	definitions << "#define x3d_Modulate2X                " << int (MultiTexture::ModeType::MODULATE2X) << "\n";
