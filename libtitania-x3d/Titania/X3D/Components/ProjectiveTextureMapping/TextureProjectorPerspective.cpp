@@ -77,11 +77,11 @@ TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* c
 	addField (inputOutput, "global",       global ());
 	addField (inputOutput, "location",     location ());
 	addField (inputOutput, "direction",    direction ());
-	addField (outputOnly,  "aspectRatio",  aspectRatio ());
 	addField (inputOutput, "fieldOfView",  fieldOfView ());
-	addField (outputOnly,  "upVector",     upVector ());
+	addField (inputOutput, "upVector",     upVector ());
 	addField (inputOutput, "nearDistance", nearDistance ());
 	addField (inputOutput, "farDistance",  farDistance ());
+	addField (outputOnly,  "aspectRatio",  aspectRatio ());
 	addField (inputOutput, "texture",      texture ());
 }
 

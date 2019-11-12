@@ -104,14 +104,6 @@ public:
 	{ return *fields .direction; }
 
 	SFFloat &
-	aspectRatio ()
-	{ return *fields .aspectRatio; }
-
-	const SFFloat &
-	aspectRatio () const
-	{ return *fields .aspectRatio; }
-
-	SFFloat &
 	nearDistance ()
 	{ return *fields .nearDistance; }
 
@@ -126,6 +118,14 @@ public:
 	const SFFloat &
 	farDistance () const
 	{ return *fields .farDistance; }
+
+	SFFloat &
+	aspectRatio ()
+	{ return *fields .aspectRatio; }
+
+	const SFFloat &
+	aspectRatio () const
+	{ return *fields .aspectRatio; }
 
 	SFNode &
 	texture ()
@@ -165,9 +165,9 @@ private:
 		SFBool* const global;
 		SFVec3f* const location;
 		SFVec3f* const direction;
-		SFFloat* const aspectRatio;
 		SFFloat* const nearDistance;
 		SFFloat* const farDistance;
+		SFFloat* const aspectRatio;
 		SFNode* const texture;
 	};
 

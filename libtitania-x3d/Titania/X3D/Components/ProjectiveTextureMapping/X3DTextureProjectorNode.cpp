@@ -59,9 +59,9 @@ X3DTextureProjectorNode::Fields::Fields () :
 	      global (new SFBool (true)),
 	    location (new SFVec3f (0, 0, 0)),
 	   direction (new SFVec3f (0, 0, 1)),
-	 aspectRatio (new SFFloat ()),
 	nearDistance (new SFFloat (1)),
 	 farDistance (new SFFloat (10)),
+	 aspectRatio (new SFFloat ()),
 	     texture (new SFNode ())
 { }
 

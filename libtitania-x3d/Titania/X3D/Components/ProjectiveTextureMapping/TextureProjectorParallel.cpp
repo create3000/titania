@@ -76,10 +76,10 @@ TextureProjectorParallel::TextureProjectorParallel (X3DExecutionContext* const e
 	addField (inputOutput, "global",       global ());
 	addField (inputOutput, "location",     location ());
 	addField (inputOutput, "direction",    direction ());
-	addField (outputOnly,  "aspectRatio",  aspectRatio ());
-	addField (outputOnly,  "fieldOfView",  fieldOfView ());
+	addField (inputOutput, "fieldOfView",  fieldOfView ());
 	addField (inputOutput, "nearDistance", nearDistance ());
 	addField (inputOutput, "farDistance",  farDistance ());
+	addField (outputOnly,  "aspectRatio",  aspectRatio ());
 	addField (inputOutput, "texture",      texture ());
 }
 
