@@ -61,22 +61,22 @@ const std::string TextAnnotation::containerField = "children";
 
 TextAnnotation::Fields::Fields () :
 	contentType (new SFString ("text/plain")),
-	text (new SFString ())
+	       text (new SFString ())
 { }
 
 TextAnnotation::TextAnnotation (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAnnotationNode (),
-	fields ()
+	           fields ()
 {
 	addType (X3DConstants::TextAnnotation);
 
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOutput, "enabled",           enabled ());
 	addField (inputOutput, "annotationGroupID", annotationGroupID ());
-	addField (inputOutput, "contentType", contentType ());
-	addField (inputOutput, "displayPolicy", displayPolicy ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "text", text ());
+	addField (inputOutput, "displayPolicy",     displayPolicy ());
+	addField (inputOutput, "contentType",       contentType ());
+	addField (inputOutput, "text",              text ());
 }
 
 X3DBaseNode*

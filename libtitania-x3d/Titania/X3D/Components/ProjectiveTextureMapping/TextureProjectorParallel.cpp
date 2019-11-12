@@ -64,23 +64,23 @@ TextureProjectorParallel::Fields::Fields () :
 { }
 
 TextureProjectorParallel::TextureProjectorParallel (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureProjectorNode (),
-	fields ()
+	                 fields ()
 {
 	addType (X3DConstants::TextureProjectorParallel);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "description", description ());
-	addField (inputOutput, "location", location ());
-	addField (inputOutput, "direction", direction ());
-	addField (outputOnly, "aspectRatio", aspectRatio ());
-	addField (outputOnly, "fieldOfView", fieldOfView ());
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOutput, "description",  description ());
+	addField (inputOutput, "on",           on ());
+	addField (inputOutput, "global",       global ());
+	addField (inputOutput, "location",     location ());
+	addField (inputOutput, "direction",    direction ());
+	addField (outputOnly,  "aspectRatio",  aspectRatio ());
+	addField (outputOnly,  "fieldOfView",  fieldOfView ());
 	addField (inputOutput, "nearDistance", nearDistance ());
-	addField (inputOutput, "farDistance", farDistance ());
-	addField (inputOutput, "global", global ());
-	addField (inputOutput, "on", on ());
-	addField (inputOutput, "texture", texture ());
+	addField (inputOutput, "farDistance",  farDistance ());
+	addField (inputOutput, "texture",      texture ());
 }
 
 X3DBaseNode*

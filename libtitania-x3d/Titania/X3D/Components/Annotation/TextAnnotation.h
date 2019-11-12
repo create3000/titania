@@ -88,22 +88,18 @@ public:
 
 	///  @name Fields
 
-	virtual
 	SFString &
 	contentType ()
 	{ return *fields .contentType; }
 
-	virtual
 	const SFString &
 	contentType () const
 	{ return *fields .contentType; }
 
-	virtual
 	SFString &
 	text ()
 	{ return *fields .text; }
 
-	virtual
 	const SFString &
 	text () const
 	{ return *fields .text; }

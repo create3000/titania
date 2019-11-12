@@ -54,20 +54,20 @@ namespace titania {
 namespace X3D {
 
 X3DTextureProjectorNode::Fields::Fields () :
-	description (new SFString ("")),
-	location (new SFVec3f (0, 0, 0)),
-	direction (new SFVec3f (0, 0, 1)),
-	aspectRatio (new SFFloat ()),
+	 description (new SFString ("")),
+	          on (new SFBool (true)),
+	      global (new SFBool (true)),
+	    location (new SFVec3f (0, 0, 0)),
+	   direction (new SFVec3f (0, 0, 1)),
+	 aspectRatio (new SFFloat ()),
 	nearDistance (new SFFloat (1)),
-	farDistance (new SFFloat (10)),
-	global (new SFBool (true)),
-	on (new SFBool (true)),
-	texture (new SFNode ())
+	 farDistance (new SFFloat (10)),
+	     texture (new SFNode ())
 { }
 
 X3DTextureProjectorNode::X3DTextureProjectorNode () :
 	X3DChildNode (),
-	fields ()
+	      fields ()
 {
 	addType (X3DConstants::X3DTextureProjectorNode);
 }

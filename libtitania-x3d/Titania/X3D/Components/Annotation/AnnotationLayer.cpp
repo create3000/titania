@@ -67,17 +67,17 @@ AnnotationLayer::Fields::Fields () :
 { }
 
 AnnotationLayer::AnnotationLayer (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DLayerNode (new Viewpoint (executionContext), new Group (executionContext)),
-	fields ()
+	      fields ()
 {
 	addType (X3DConstants::AnnotationLayer);
 
-	addField (inputOutput, "isPickable", isPickable ());
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOutput, "isPickable",   isPickable ());
 	addField (inputOutput, "layoutPolicy", layoutPolicy ());
-	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "shownGroupID", shownGroupID ());
-	addField (inputOutput, "viewport", viewport ());
+	addField (inputOutput, "viewport",     viewport ());
 }
 
 X3DBaseNode*

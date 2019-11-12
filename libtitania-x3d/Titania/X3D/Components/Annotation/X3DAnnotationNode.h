@@ -63,35 +63,29 @@ public:
 
 	///  @name Fields
 
-	virtual
-	SFString &
-	annotationGroupID ()
-	{ return *fields .annotationGroupID; }
-
-	virtual
-	const SFString &
-	annotationGroupID () const
-	{ return *fields .annotationGroupID; }
-
-	virtual
-	SFString &
-	displayPolicy ()
-	{ return *fields .displayPolicy; }
-
-	virtual
-	const SFString &
-	displayPolicy () const
-	{ return *fields .displayPolicy; }
-
-	virtual
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
 
-	virtual
 	const SFBool &
 	enabled () const
 	{ return *fields .enabled; }
+
+	SFString &
+	annotationGroupID ()
+	{ return *fields .annotationGroupID; }
+
+	const SFString &
+	annotationGroupID () const
+	{ return *fields .annotationGroupID; }
+
+	SFString &
+	displayPolicy ()
+	{ return *fields .displayPolicy; }
+
+	const SFString &
+	displayPolicy () const
+	{ return *fields .displayPolicy; }
 
 	///  @name Destruction
 
@@ -118,9 +112,9 @@ private:
 	{
 		Fields ();
 
+		SFBool* const enabled;
 		SFString* const annotationGroupID;
 		SFString* const displayPolicy;
-		SFBool* const enabled;
 	};
 
 	Fields fields;

@@ -88,45 +88,37 @@ public:
 
 	///  @name Fields
 
-	virtual
-	MFNode &
-	annotations ()
-	{ return *fields .annotations; }
-
-	virtual
-	const MFNode &
-	annotations () const
-	{ return *fields .annotations; }
-
-	virtual
-	SFNode &
-	leadLineStyle ()
-	{ return *fields .leadLineStyle; }
-
-	virtual
-	const SFNode &
-	leadLineStyle () const
-	{ return *fields .leadLineStyle; }
-
-	virtual
-	SFNode &
-	marker ()
-	{ return *fields .marker; }
-
-	virtual
-	const SFNode &
-	marker () const
-	{ return *fields .marker; }
-
-	virtual
 	SFVec3f &
 	referencePoint ()
 	{ return *fields .referencePoint; }
 
-	virtual
 	const SFVec3f &
 	referencePoint () const
 	{ return *fields .referencePoint; }
+
+	SFNode &
+	leadLineStyle ()
+	{ return *fields .leadLineStyle; }
+
+	const SFNode &
+	leadLineStyle () const
+	{ return *fields .leadLineStyle; }
+
+	SFNode &
+	marker ()
+	{ return *fields .marker; }
+
+	const SFNode &
+	marker () const
+	{ return *fields .marker; }
+
+	MFNode &
+	annotations ()
+	{ return *fields .annotations; }
+
+	const MFNode &
+	annotations () const
+	{ return *fields .annotations; }
 
 	///  @name Destruction
 
@@ -157,10 +149,10 @@ private:
 	{
 		Fields ();
 
-		MFNode* const annotations;
+		SFVec3f* const referencePoint;
 		SFNode* const leadLineStyle;
 		SFNode* const marker;
-		SFVec3f* const referencePoint;
+		MFNode* const annotations;
 	};
 
 	Fields fields;

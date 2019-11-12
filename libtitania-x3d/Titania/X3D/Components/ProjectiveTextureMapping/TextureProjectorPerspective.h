@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class TextureProjectorPerspective :
-	virtual public X3DTextureProjectorNode
+	public X3DTextureProjectorNode
 {
 public:
 

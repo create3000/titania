@@ -60,21 +60,21 @@ const std::string GroupAnnotation::typeName       = "GroupAnnotation";
 const std::string GroupAnnotation::containerField = "children";
 
 GroupAnnotation::GroupAnnotation (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DGroupingNode (),
 	X3DAnnotationNode ()
 {
 	addType (X3DConstants::GroupAnnotation);
 
-	addField (inputOnly, "addChildren", addChildren ());
-	addField (inputOnly, "removeChildren", removeChildren ());
-	addField (inputOutput, "annotationGroupID", annotationGroupID ());
-	addField (inputOutput, "children", children ());
-	addField (inputOutput, "displayPolicy", displayPolicy ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (initializeOnly, "bboxCenter", bboxCenter ());
-	addField (initializeOnly, "bboxSize", bboxSize ());
+	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "enabled",           enabled ());
+	addField (inputOutput,    "annotationGroupID", annotationGroupID ());
+	addField (inputOutput,    "displayPolicy",     displayPolicy ());
+	addField (initializeOnly, "bboxCenter",        bboxCenter ());
+	addField (initializeOnly, "bboxSize",          bboxSize ());
+	addField (inputOnly,      "addChildren",       addChildren ());
+	addField (inputOnly,      "removeChildren",    removeChildren ());
+	addField (inputOutput,    "children",          children ());
 }
 
 X3DBaseNode*

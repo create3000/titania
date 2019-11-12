@@ -88,22 +88,18 @@ public:
 
 	///  @name Fields
 
-	virtual
 	MFString &
 	layoutPolicy ()
 	{ return *fields .layoutPolicy; }
 
-	virtual
 	const MFString &
 	layoutPolicy () const
 	{ return *fields .layoutPolicy; }
 
-	virtual
 	MFString &
 	shownGroupID ()
 	{ return *fields .shownGroupID; }
 
-	virtual
 	const MFString &
 	shownGroupID () const
 	{ return *fields .shownGroupID; }

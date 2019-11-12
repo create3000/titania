@@ -64,18 +64,18 @@ IconAnnotation::Fields::Fields () :
 { }
 
 IconAnnotation::IconAnnotation (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAnnotationNode (),
-	X3DUrlObject (),
-	fields ()
+	     X3DUrlObject (),
+	           fields ()
 {
 	addType (X3DConstants::IconAnnotation);
 
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOutput, "enabled",           enabled ());
 	addField (inputOutput, "annotationGroupID", annotationGroupID ());
-	addField (inputOutput, "displayPolicy", displayPolicy ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "url", url ());
+	addField (inputOutput, "displayPolicy",     displayPolicy ());
+	addField (inputOutput, "url",               url ());
 }
 
 X3DBaseNode*

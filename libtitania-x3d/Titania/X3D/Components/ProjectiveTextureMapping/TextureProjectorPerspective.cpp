@@ -65,24 +65,24 @@ TextureProjectorPerspective::Fields::Fields () :
 { }
 
 TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureProjectorNode (),
-	fields ()
+	                 fields ()
 {
 	addType (X3DConstants::TextureProjectorPerspective);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "description", description ());
-	addField (inputOutput, "location", location ());
-	addField (inputOutput, "direction", direction ());
-	addField (inputOutput, "fieldOfView", fieldOfView ());
-	addField (outputOnly, "aspectRatio", aspectRatio ());
-	addField (outputOnly, "upVector", upVector ());
+	addField (inputOutput, "metadata",     metadata ());
+	addField (inputOutput, "description",  description ());
+	addField (inputOutput, "on",           on ());
+	addField (inputOutput, "global",       global ());
+	addField (inputOutput, "location",     location ());
+	addField (inputOutput, "direction",    direction ());
+	addField (outputOnly,  "aspectRatio",  aspectRatio ());
+	addField (inputOutput, "fieldOfView",  fieldOfView ());
+	addField (outputOnly,  "upVector",     upVector ());
 	addField (inputOutput, "nearDistance", nearDistance ());
-	addField (inputOutput, "farDistance", farDistance ());
-	addField (inputOutput, "global", global ());
-	addField (inputOutput, "on", on ());
-	addField (inputOutput, "texture", texture ());
+	addField (inputOutput, "farDistance",  farDistance ());
+	addField (inputOutput, "texture",      texture ());
 }
 
 X3DBaseNode*

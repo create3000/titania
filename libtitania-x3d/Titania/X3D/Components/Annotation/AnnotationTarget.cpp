@@ -60,24 +60,24 @@ const std::string AnnotationTarget::typeName       = "AnnotationTarget";
 const std::string AnnotationTarget::containerField = "children";
 
 AnnotationTarget::Fields::Fields () :
-	annotations (new MFNode ()),
-	leadLineStyle (new SFNode ()),
-	marker (new SFNode ()),
-	referencePoint (new SFVec3f (0, 0, 0))
+	referencePoint (new SFVec3f (0, 0, 0)),
+	 leadLineStyle (new SFNode ()),
+	        marker (new SFNode ()),
+	   annotations (new MFNode ())
 { }
 
 AnnotationTarget::AnnotationTarget (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChildNode (),
-	fields ()
+	      fields ()
 {
 	addType (X3DConstants::AnnotationTarget);
 
-	addField (inputOutput, "annotations", annotations ());
-	addField (inputOutput, "leadLineStyle", leadLineStyle ());
-	addField (inputOutput, "marker", marker ());
-	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "referencePoint", referencePoint ());
+	addField (inputOutput, "leadLineStyle",  leadLineStyle ());
+	addField (inputOutput, "marker",         marker ());
+	addField (inputOutput, "annotations",    annotations ());
 }
 
 X3DBaseNode*

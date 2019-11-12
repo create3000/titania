@@ -64,17 +64,17 @@ URLAnnotation::Fields::Fields () :
 { }
 
 URLAnnotation::URLAnnotation (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAnnotationNode (),
-	fields ()
+	           fields ()
 {
 	addType (X3DConstants::URLAnnotation);
 
+	addField (inputOutput, "metadata",          metadata ());
+	addField (inputOutput, "enabled",           enabled ());
 	addField (inputOutput, "annotationGroupID", annotationGroupID ());
-	addField (inputOutput, "displayPolicy", displayPolicy ());
-	addField (inputOutput, "enabled", enabled ());
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "url", url ());
+	addField (inputOutput, "displayPolicy",     displayPolicy ());
+	addField (inputOutput, "url",               url ());
 }
 
 X3DBaseNode*

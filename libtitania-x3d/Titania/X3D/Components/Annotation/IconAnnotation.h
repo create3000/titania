@@ -90,12 +90,10 @@ public:
 
 	///  @name Fields
 
-	virtual
 	MFString &
 	url ()
 	{ return *fields .url; }
 
-	virtual
 	const MFString &
 	url () const
 	{ return *fields .url; }

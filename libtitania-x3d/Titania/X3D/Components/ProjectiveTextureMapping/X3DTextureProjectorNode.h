@@ -71,6 +71,22 @@ public:
 	description () const
 	{ return *fields .description; }
 
+	SFBool &
+	on ()
+	{ return *fields .on; }
+
+	const SFBool &
+	on () const
+	{ return *fields .on; }
+
+	SFBool &
+	global ()
+	{ return *fields .global; }
+
+	const SFBool &
+	global () const
+	{ return *fields .global; }
+
 	SFVec3f &
 	location ()
 	{ return *fields .location; }
@@ -111,22 +127,6 @@ public:
 	farDistance () const
 	{ return *fields .farDistance; }
 
-	SFBool &
-	global ()
-	{ return *fields .global; }
-
-	const SFBool &
-	global () const
-	{ return *fields .global; }
-
-	SFBool &
-	on ()
-	{ return *fields .on; }
-
-	const SFBool &
-	on () const
-	{ return *fields .on; }
-
 	SFNode &
 	texture ()
 	{ return *fields .texture; }
@@ -161,13 +161,13 @@ private:
 		Fields ();
 
 		SFString* const description;
+		SFBool* const on;
+		SFBool* const global;
 		SFVec3f* const location;
 		SFVec3f* const direction;
 		SFFloat* const aspectRatio;
 		SFFloat* const nearDistance;
 		SFFloat* const farDistance;
-		SFBool* const global;
-		SFBool* const on;
 		SFNode* const texture;
 	};
 

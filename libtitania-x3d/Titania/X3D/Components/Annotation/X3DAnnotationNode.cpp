@@ -54,14 +54,14 @@ namespace titania {
 namespace X3D {
 
 X3DAnnotationNode::Fields::Fields () :
+	          enabled (new SFBool (true)),
 	annotationGroupID (new SFString ()),
-	displayPolicy (new SFString ("NEVER")),
-	enabled (new SFBool (true))
+	    displayPolicy (new SFString ("NEVER"))
 { }
 
 X3DAnnotationNode::X3DAnnotationNode () :
 	X3DChildNode (),
-	fields ()
+	      fields ()
 {
 	addType (X3DConstants::X3DAnnotationNode);
 }
