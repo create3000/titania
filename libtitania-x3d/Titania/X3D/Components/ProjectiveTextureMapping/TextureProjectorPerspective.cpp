@@ -51,6 +51,11 @@
 #include "TextureProjectorPerspective.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ProjectiveTextureContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
+#include "../Texturing/X3DTexture2DNode.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -60,8 +65,7 @@ const std::string TextureProjectorPerspective::typeName       = "TextureProjecto
 const std::string TextureProjectorPerspective::containerField = "children";
 
 TextureProjectorPerspective::Fields::Fields () :
-	fieldOfView (new SFFloat (0.7854)),
-	   upVector (new SFVec3f (0, 0, 1))
+	fieldOfView (new SFFloat (0.7854))
 { }
 
 TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* const executionContext) :
@@ -77,8 +81,8 @@ TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* c
 	addField (inputOutput, "global",       global ());
 	addField (inputOutput, "location",     location ());
 	addField (inputOutput, "direction",    direction ());
-	addField (inputOutput, "fieldOfView",  fieldOfView ());
 	addField (inputOutput, "upVector",     upVector ());
+	addField (inputOutput, "fieldOfView",  fieldOfView ());
 	addField (inputOutput, "nearDistance", nearDistance ());
 	addField (inputOutput, "farDistance",  farDistance ());
 	addField (outputOnly,  "aspectRatio",  aspectRatio ());
@@ -95,6 +99,39 @@ void
 TextureProjectorPerspective::initialize ()
 {
 	X3DTextureProjectorNode::initialize ();
+}
+
+double
+TextureProjectorPerspective::getFieldOfView () const
+{
+	const double fov = fieldOfView () .getValue ();
+
+	return fov > 0 && fov < pi <double> ? fov : pi <double> / 4;
+}
+
+void
+TextureProjectorPerspective::setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container)
+{
+	try
+	{
+		const auto modelMatrix           = container -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
+		auto       invTextureSpaceMatrix = global () ? modelMatrix : Matrix4d ();
+
+		invTextureSpaceMatrix .translate (location () .getValue ());
+		invTextureSpaceMatrix .rotate (straightenHorizon (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ())))));
+		invTextureSpaceMatrix .inverse ();
+
+		const auto projectionMatrix = camera <double>::perspective (getFieldOfView (), nearDistance (), farDistance (), getTexture () -> getWidth (), getTexture () -> getHeight ());
+
+		if (not global ())
+			invTextureSpaceMatrix .mult_left (inverse (modelMatrix));
+
+		container -> setProjectiveTextureMatrix (renderObject -> getCameraSpaceMatrix () .get () * invTextureSpaceMatrix * projectionMatrix * getBiasMatrix ());
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << std::endl;
+	}
 }
 
 TextureProjectorPerspective::~TextureProjectorPerspective ()

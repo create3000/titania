@@ -98,6 +98,10 @@ X3DRenderObject::X3DRenderObject () :
 	              lightIndex (0),
 	                  shadow ({ false }),
 	                 layouts (),
+	globalProjectiveTextures (),
+	 localProjectiveTextures (),
+	      projectiveTextures (),
+	  projectiveTextureIndex (0),
 	generatedCubeMapTextures (),
 	                 shaders (),
 	              collisions (),
@@ -282,9 +286,10 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 		}
 		case TraverseType::DISPLAY:
 		{
-			lightIndex           = 0;
-			numOpaqueShapes      = 0;
-			numTransparentShapes = 0;
+			lightIndex             = 0;
+			projectiveTextureIndex = 0;
+			numOpaqueShapes        = 0;
+			numTransparentShapes   = 0;
 
 			setGlobalFog (getFog ());
 
@@ -301,6 +306,12 @@ const std::shared_ptr <LightContainer> &
 X3DRenderObject::getLightContainer () const
 {
 	return lights [const_cast <size_t &> (lightIndex) ++];
+}
+
+const std::shared_ptr <ProjectiveTextureContainer> &
+X3DRenderObject::getProjectiveTextureContainer () const
+{
+	return projectiveTextures [const_cast <size_t &> (projectiveTextureIndex) ++];
 }
 
 bool
@@ -402,6 +413,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	context -> setClipPlanes (getClipPlanes ());
 	context -> setLocalLights (getLocalLights ());
 	context -> setShadow (getShadow ());
+	context -> setLocalProjectiveTextures (getLocalProjectiveTextures ());
 	context -> setDistance (center);
 
 	return true;
@@ -615,6 +627,9 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 		for (const auto & object : getLights ())
 			object -> renderShadowMap (this);
 
+		for (const auto & object : getProjectiveTextures ())
+			object -> setGlobalVariables (this);
+
 		// Render generated cube map textures.
 
 		for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
@@ -691,6 +706,8 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	getGeneratedCubeMapTextures () .clear ();
 	getGlobalLights             () .clear ();
 	getLights                   () .clear ();
+	getGlobalProjectiveTextures () .clear ();
+	getProjectiveTextures       () .clear ();
 }
 
 void
@@ -705,10 +722,14 @@ X3DRenderObject::dispose ()
 	localLights              .clear ();
 	lights                   .clear ();
 	layouts                  .clear ();
+	globalProjectiveTextures .clear ();
+	localProjectiveTextures  .clear ();
+	projectiveTextures       .clear ();
 	shaders                  .clear ();
 	collisions               .clear ();
 
-	lightIndex = 0;
+	lightIndex             = 0;
+	projectiveTextureIndex = 0;
 
 	opaqueShapes      .clear ();
 	transparentShapes .clear ();

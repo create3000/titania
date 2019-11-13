@@ -60,6 +60,7 @@
 #include "../EnvironmentalSensor/TransformSensor.h"
 #include "../Lighting/X3DLightNode.h"
 #include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
 #include "../Rendering/ClipPlane.h"
 
 #include <Titania/Utility/Range.h>
@@ -88,6 +89,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	           clipPlaneNodes (),
 	            localFogNodes (),
 	               lightNodes (),
+	    textureProjectorNodes (),
 	               childNodes ()
 {
 	addType (X3DConstants::X3DGroupingNode);
@@ -101,6 +103,7 @@ X3DGroupingNode::X3DGroupingNode () :
 	                 clipPlaneNodes,
 	                 localFogNodes,
 	                 lightNodes,
+	                 textureProjectorNodes,
 	                 childNodes);
 }
 
@@ -119,6 +122,7 @@ X3DGroupingNode::initialize ()
 	clipPlaneNodes            .setTainted (true);
 	localFogNodes             .setTainted (true);
 	lightNodes                .setTainted (true);
+	textureProjectorNodes     .setTainted (true);
 	childNodes                .setTainted (true);
 
 	transformSensors_changed () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
@@ -283,6 +287,11 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 							lightNodes .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
 							break;
 						}
+						case X3DConstants::X3DTextureProjectorNode:
+						{
+							textureProjectorNodes .emplace_back (dynamic_cast <X3DTextureProjectorNode*> (innerNode));
+							break;
+						}
 						case X3DConstants::TransformSensor:
 						case X3DConstants::X3DPickSensorNode:
 						{
@@ -402,6 +411,14 @@ X3DGroupingNode::remove (const MFNode & children)
 							                   lightNodes .end ());
 							break;
 						}
+						case X3DConstants::X3DTextureProjectorNode:
+						{
+							textureProjectorNodes .erase (std::remove (textureProjectorNodes .begin (),
+							                                           textureProjectorNodes .end (),
+							                                           dynamic_cast <X3DTextureProjectorNode*> (innerNode)),
+							                              textureProjectorNodes .end ());
+							break;
+						}
 						case X3DConstants::TransformSensor:
 						case X3DConstants::X3DPickSensorNode:
 						{
@@ -481,6 +498,7 @@ X3DGroupingNode::clear ()
 	clipPlaneNodes            .clear ();
 	localFogNodes             .clear ();
 	lightNodes                .clear ();
+	textureProjectorNodes     .clear ();
 	maybePickableSensorNodes  .clear ();
 	childNodes                .clear ();
 }
@@ -611,8 +629,14 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			for (const auto & lightNode : lightNodes)
 				lightNode -> push (renderObject, this);
 
+			for (const auto & textureProjectorNode : textureProjectorNodes)
+				textureProjectorNode -> push (renderObject);
+
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
+
+			for (const auto & textureProjectorNode : basic::make_reverse_range (textureProjectorNodes))
+				textureProjectorNode -> pop (renderObject);
 
 			for (const auto & lightNode : basic::make_reverse_range (lightNodes))
 				lightNode -> pop (renderObject);

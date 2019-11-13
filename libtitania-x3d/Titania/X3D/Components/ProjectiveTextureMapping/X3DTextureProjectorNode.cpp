@@ -50,6 +50,11 @@
 
 #include "X3DTextureProjectorNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Rendering/ProjectiveTextureContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
+#include "../Texturing/X3DTexture2DNode.h"
+
 namespace titania {
 namespace X3D {
 
@@ -59,6 +64,7 @@ X3DTextureProjectorNode::Fields::Fields () :
 	      global (new SFBool (true)),
 	    location (new SFVec3f (0, 0, 0)),
 	   direction (new SFVec3f (0, 0, 1)),
+	    upVector (new SFVec3f (0, 0, 1)),
 	nearDistance (new SFFloat (1)),
 	 farDistance (new SFFloat (10)),
 	 aspectRatio (new SFFloat ()),
@@ -67,15 +73,128 @@ X3DTextureProjectorNode::Fields::Fields () :
 
 X3DTextureProjectorNode::X3DTextureProjectorNode () :
 	X3DChildNode (),
-	      fields ()
+	      fields (),
+	 textureNode ()
 {
 	addType (X3DConstants::X3DTextureProjectorNode);
+
+	addChildObjects (textureNode);
 }
 
 void
 X3DTextureProjectorNode::initialize ()
 {
 	X3DChildNode::initialize ();
+
+	texture () .addInterest (&X3DTextureProjectorNode::set_texture, this);
+
+	set_texture ();
+}
+
+void
+X3DTextureProjectorNode::set_texture ()
+{
+	if (textureNode)
+		textureNode -> removeInterest (&X3DTextureProjectorNode::set_aspectRatio, this);
+
+	textureNode = x3d_cast <X3DTexture2DNode*> (texture ());
+
+	if (textureNode)
+		textureNode -> addInterest (&X3DTextureProjectorNode::set_aspectRatio, this);
+
+	set_aspectRatio ();
+}
+
+void
+X3DTextureProjectorNode::set_aspectRatio ()
+{
+	if (textureNode)
+		aspectRatio () = double (textureNode -> getWidth ()) / double (textureNode -> getHeight ());
+	else
+		aspectRatio () = 0;
+}
+
+const Matrix4d &
+X3DTextureProjectorNode::getBiasMatrix () const
+{
+	// Transforms normalized coords from range (-1, 1) to (0, 1).
+	static const auto biasMatrix = Matrix4d (0.5, 0.0, 0.0, 0.0,
+	                                         0.0, 0.5, 0.0, 0.0,
+	                                         0.0, 0.0, 0.5, 0.0,
+	                                         0.5, 0.5, 0.5, 1.0);
+
+	return biasMatrix;
+}
+
+Rotation4d
+X3DTextureProjectorNode::straightenHorizon (const Rotation4d & orientation) const
+{
+	const auto localXAxis = Vector3d (-1, 0, 0) * orientation;
+	const auto localZAxis = Vector3d ( 0, 0, 1) * orientation;
+	const auto vector     = cross (localZAxis, Vector3d (upVector () .getValue ()));
+
+	// If viewer looks along the up vector.
+	if (vector == Vector3d ())
+		return orientation;
+
+	const auto rotation = Rotation4d (localXAxis, vector);
+
+	return orientation * rotation;
+}
+
+void
+X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
+{
+	if (textureNode and on ())
+	{
+		if (renderObject -> isIndependent ())
+		{
+			if (global ())
+			{
+				const auto projectiveTextureContainer = std::make_shared <ProjectiveTextureContainer> (renderObject -> getBrowser (),
+				                                                                                       this,
+				                                                                                       renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getGlobalProjectiveTextures () .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures ()       .emplace_back (projectiveTextureContainer);
+			}
+			else
+			{
+				const auto projectiveTextureContainer = std::make_shared <ProjectiveTextureContainer> (renderObject -> getBrowser (),
+				                                                                                       this,
+				                                                                                       renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getLocalProjectiveTextures () .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures ()      .emplace_back (projectiveTextureContainer);
+			}
+		}
+		else
+		{
+			const auto & projectiveTextureContainer = renderObject -> getProjectiveTextureContainer ();
+
+			if (global ())
+			{
+				projectiveTextureContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getGlobalProjectiveTextures () .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures ()       .emplace_back (projectiveTextureContainer);
+			}
+			else
+			{
+				projectiveTextureContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getLocalProjectiveTextures () .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures ()      .emplace_back (projectiveTextureContainer);
+			}
+		}
+	}
+}
+
+void
+X3DTextureProjectorNode::pop (X3DRenderObject* const renderObject)
+{
+	if (textureNode and on () and not global ())
+		renderObject -> getLocalProjectiveTextures () .pop_back ();
 }
 
 X3DTextureProjectorNode::~X3DTextureProjectorNode ()

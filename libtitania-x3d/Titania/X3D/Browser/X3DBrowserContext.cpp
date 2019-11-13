@@ -61,52 +61,53 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
-	           X3DRenderingSurface (other),
-	                      X3DScene (),
-	                X3DCoreContext (),
-	             X3DShadersContext (),
-	          X3DGeometry2DContext (),
-	          X3DGeometry3DContext (),
-	     X3DKeyDeviceSensorContext (),
-	            X3DLayeringContext (),
-	              X3DLayoutContext (),
-	            X3DLightingContext (),
-	          X3DNavigationContext (),
-	          X3DNetworkingContext (),
-	     X3DParticleSystemsContext (),
-	             X3DPickingContext (),
-	X3DPointingDeviceSensorContext (),
-	           X3DRenderingContext (),
-	           X3DScriptingContext (),
-	               X3DSoundContext (),
-	                X3DTextContext (),
-	           X3DTexturingContext (),
-	         X3DTexturing3DContext (),
-	    X3DCubeMapTexturingContext (),
-	               X3DShapeContext (),
-	X3DEnvironmentalEffectsContext (),
-	                X3DTimeContext (),
-	     X3DVolumeRenderingContext (),
-	                X3DToolContext (),
-	             initializedOutput (),
-	                shutdownOutput (),
-	           prepareEventsOutput (),
-	              timeEventsOutput (),
-	            sensorEventsOutput (),
-	               displayedOutput (),
-	                finishedOutput (),
-	                 changedOutput (),
-	                   currentTime (0),
-	                   changedTime (0),
-	                   freezedTime (0),
-	                        router (new Router ()),
-	                 sharedContext (other),
-	              dependentContext (),
-	                         world (new World (getExecutionContext ())),
-	                 headUpDisplay (new World (getExecutionContext ())),
-	                     selection (new Selection (this)),
-	                  notification (new Notification (this)),
-	                       console (new Console (this))
+	               X3DRenderingSurface (other),
+	                          X3DScene (),
+	                    X3DCoreContext (),
+	                 X3DShadersContext (),
+	              X3DGeometry2DContext (),
+	              X3DGeometry3DContext (),
+	         X3DKeyDeviceSensorContext (),
+	                X3DLayeringContext (),
+	                  X3DLayoutContext (),
+	                X3DLightingContext (),
+	              X3DNavigationContext (),
+	              X3DNetworkingContext (),
+	         X3DParticleSystemsContext (),
+	                 X3DPickingContext (),
+	    X3DPointingDeviceSensorContext (),
+	               X3DRenderingContext (),
+	               X3DScriptingContext (),
+	                   X3DSoundContext (),
+	                    X3DTextContext (),
+	               X3DTexturingContext (),
+	             X3DTexturing3DContext (),
+	        X3DCubeMapTexturingContext (),
+	X3DProjectiveTextureMappingContext (),
+	                   X3DShapeContext (),
+	    X3DEnvironmentalEffectsContext (),
+	                    X3DTimeContext (),
+	         X3DVolumeRenderingContext (),
+	                    X3DToolContext (),
+	                 initializedOutput (),
+	                    shutdownOutput (),
+	               prepareEventsOutput (),
+	                  timeEventsOutput (),
+	                sensorEventsOutput (),
+	                   displayedOutput (),
+	                    finishedOutput (),
+	                     changedOutput (),
+	                       currentTime (0),
+	                       changedTime (0),
+	                       freezedTime (0),
+	                            router (new Router ()),
+	                     sharedContext (other),
+	                  dependentContext (),
+	                             world (new World (getExecutionContext ())),
+	                     headUpDisplay (new World (getExecutionContext ())),
+	                         selection (new Selection (this)),
+	                      notification (new Notification (this)),
+	                           console (new Console (this))
 {
 	initialized () .setName ("initialized");
 
@@ -159,6 +160,7 @@ X3DBrowserContext::initialize ()
 	X3DTexturingContext::initialize ();
 	X3DTexturing3DContext::initialize ();
 	X3DCubeMapTexturingContext::initialize ();
+	X3DProjectiveTextureMappingContext::initialize ();
 	X3DShapeContext::initialize ();
 	X3DEnvironmentalEffectsContext::initialize ();
 	X3DTimeContext::initialize ();
@@ -461,6 +463,7 @@ X3DBrowserContext::dispose ()
 	X3DTimeContext::dispose ();
 	X3DEnvironmentalEffectsContext::dispose ();
 	X3DShapeContext::dispose ();
+	X3DProjectiveTextureMappingContext::dispose ();
 	X3DCubeMapTexturingContext::dispose ();
 	X3DTexturing3DContext::dispose ();
 	X3DTexturingContext::dispose ();

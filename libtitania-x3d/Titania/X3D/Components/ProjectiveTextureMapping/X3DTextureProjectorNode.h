@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class ProjectiveTextureContainer;
+
 class X3DTextureProjectorNode :
 	virtual public X3DChildNode
 {
@@ -103,6 +105,14 @@ public:
 	direction () const
 	{ return *fields .direction; }
 
+	SFVec3f &
+	upVector ()
+	{ return *fields .upVector; }
+
+	const SFVec3f &
+	upVector () const
+	{ return *fields .upVector; }
+
 	SFFloat &
 	nearDistance ()
 	{ return *fields .nearDistance; }
@@ -135,6 +145,24 @@ public:
 	texture () const
 	{ return *fields .texture; }
 
+	///  @name Member access
+
+	const X3DPtr <X3DTexture2DNode> &
+	getTexture () const
+	{ return textureNode; }
+
+	///  @name Operations
+
+	void
+	push (X3DRenderObject* const renderObject);
+
+	void
+	pop (X3DRenderObject* const renderObject);
+
+	virtual
+	void
+	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -151,8 +179,24 @@ protected:
 	void
 	initialize () override;
 
+	/// @name Operations
+
+	const Matrix4d &
+	getBiasMatrix () const;
+
+	Rotation4d
+	straightenHorizon (const Rotation4d & orientation) const;
+
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_texture ();
+
+	void
+	set_aspectRatio ();
 
 	///  @name Fields
 
@@ -165,6 +209,7 @@ private:
 		SFBool* const global;
 		SFVec3f* const location;
 		SFVec3f* const direction;
+		SFVec3f* const upVector;
 		SFFloat* const nearDistance;
 		SFFloat* const farDistance;
 		SFFloat* const aspectRatio;
@@ -172,6 +217,10 @@ private:
 	};
 
 	Fields fields;
+
+	/// @name Members
+
+	X3DPtr <X3DTexture2DNode> textureNode;
 
 };
 

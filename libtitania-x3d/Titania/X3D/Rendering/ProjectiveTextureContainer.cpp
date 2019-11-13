@@ -48,102 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_H__
+#include "ProjectiveTextureContainer.h"
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Components/ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../Components/Shaders/X3DProgrammableShaderObject.h"
+#include "../Components/Texturing/X3DTexture2DNode.h"
+#include "../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
 
-class TextureProjectorPerspective :
-	public X3DTextureProjectorNode
+ProjectiveTextureContainer::ProjectiveTextureContainer (X3DBrowser* const browser, X3DTextureProjectorNode* const node, const Matrix4d & modelViewMatrix) :
+	                browser (browser),
+	                   node (node),
+	        modelViewMatrix ({ modelViewMatrix }),
+	projectiveTextureMatrix ()
 {
-public:
+}
 
-	///  @name Construction
+void
+ProjectiveTextureContainer::setGlobalVariables (X3DRenderObject* const renderObject)
+{
+	node -> setGlobalVariables (renderObject, this);
+}
 
-	TextureProjectorPerspective (X3DExecutionContext* const executionContext);
+void
+ProjectiveTextureContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
+{
+	if (shaderObject -> hasProjectiveTexture (i, this))
+		return;
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+	glActiveTexture (GL_TEXTURE0 + browser -> getProjectiveTextureUnits () [i]);
+	glBindTexture (GL_TEXTURE_2D, node -> getTexture () -> getTextureId ());
+	glActiveTexture (GL_TEXTURE0);
 
-	///  @name Common members
+	if (shaderObject -> isExtensionGPUShaderFP64Available ())
+		glUniformMatrix4dv (shaderObject -> getProjectiveTextureMatrixUniformLocation () [i], 1, false, (projectiveTextureMatrix) .front () .data ());
+	else
+		glUniformMatrix4fv (shaderObject -> getProjectiveTextureMatrixUniformLocation () [i], 1, false, Matrix4f (projectiveTextureMatrix) .front () .data ());
+}
 
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	const SFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Operations
-
-	virtual
-	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override;
-
-	///  @name Destruction
-
-	virtual
-	~TextureProjectorPerspective () final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-
-private:
-
-	///  @name Member access
-
-	double
-	getFieldOfView () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const fieldOfView;
-	};
-
-	Fields fields;
-
-};
+ProjectiveTextureContainer::~ProjectiveTextureContainer ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

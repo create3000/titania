@@ -60,22 +60,23 @@ namespace titania {
 namespace X3D {
 
 ShapeContainer::ShapeContainer (X3DRenderObject* const renderObject, const bool transparent) :
-	X3DShapeContainer (),
-	     renderObject (renderObject),
-	      transparent (transparent),
-	              fog (nullptr),
-	      localLights (),
-	           shadow (false),
-	  styleProperties (nullptr),
-	         material (nullptr),
-	          texture (nullptr),
-	 textureTransform (nullptr),
-	       shaderNode (nullptr),
-	     geometryType (3),
-	    colorMaterial (false),
-	         fogCoord (false),
-	textureCoordinate (nullptr),
-	         distance (0)
+	      X3DShapeContainer (),
+	           renderObject (renderObject),
+	            transparent (transparent),
+	                    fog (nullptr),
+	            localLights (),
+	                 shadow (false),
+	        styleProperties (nullptr),
+	               material (nullptr),
+	                texture (nullptr),
+	       textureTransform (nullptr),
+	             shaderNode (nullptr),
+	           geometryType (3),
+	          colorMaterial (false),
+	               fogCoord (false),
+	      textureCoordinate (nullptr),
+	localProjectiveTextures (),
+	               distance (0)
 { }
 
 X3DBrowser*

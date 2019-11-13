@@ -64,6 +64,7 @@ namespace X3D {
 
 class FogContainer;
 class LightContainer;
+class ProjectiveTextureContainer;
 class ShapeContainer;
 class SoftParticle;
 
@@ -321,10 +322,17 @@ public:
 	getNumTexturesUniformLocation () const
 	{ return x3d_NumTextures; }
 
+	GLint
+	getNumProjectiveTexturesUniformLocation () const
+	{ return x3d_NumProjectiveTextures; }
+
 	const std::vector <GLint> &
 	getTextureTypeUniformLocation () const
 	{ return x3d_TextureType; }
 
+	const std::vector <GLint> &
+	getProjectiveTextureMatrixUniformLocation () const
+	{ return x3d_ProjectiveTextureMatrix; }
 
 	GLint
 	getMultiTextureColorUniformLocation () const
@@ -397,6 +405,9 @@ public:
 
 	bool
 	hasLight (const size_t index, LightContainer* const lightContainer);
+
+	bool
+	hasProjectiveTexture (const size_t index, ProjectiveTextureContainer* const projectiveTextureContainer);
 
 	virtual
 	void
@@ -642,6 +653,10 @@ private:
 	std::vector <GLint> x3d_Texture3D;
 	std::vector <GLint> x3d_CubeMapTexture;
 
+	GLint               x3d_NumProjectiveTextures;
+	std::vector <GLint> x3d_ProjectiveTexture;
+	std::vector <GLint> x3d_ProjectiveTextureMatrix;
+
 	GLint               x3d_MultiTextureColor;
 	std::vector <GLint> x3d_MultiTextureMode;
 	std::vector <GLint> x3d_MultiTextureAlphaMode;
@@ -671,8 +686,10 @@ private:
 	bool                                             extensionGPUShaderFP64;
 	std::vector <std::string>                        transformFeedbackVaryings;
 	size_t                                           numGlobalLights;
+	size_t                                           numGlobalProjectiveTextures;
 	FogContainer*                                    fogContainer;
 	std::vector <LightContainer*>                    lightContainers;
+	std::vector <ProjectiveTextureContainer*>        projectiveTextureContainers;
 	std::map <GLint, std::shared_ptr <TextureValue>> textures;
 
 };

@@ -73,6 +73,7 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
+	$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/X3DProjectiveTextureMappingContext.cpp \
 	$(current_dir)/Titania/X3D/Browser/Rendering/L-System.cpp \
 	$(current_dir)/Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	$(current_dir)/Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
@@ -606,6 +607,7 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Rendering/LightContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/PolygonModeContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/PolygonOffsetContainer.cpp \
+	$(current_dir)/Titania/X3D/Rendering/ProjectiveTextureContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/ShapeContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/TextureBuffer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/ViewVolume.cpp \

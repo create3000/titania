@@ -48,98 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_H__
+#ifndef __TITANIA_X3D_BROWSER_X3D_PROJECTIVE_TEXTURE_MAPPING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_X3D_PROJECTIVE_TEXTURE_MAPPING_CONTEXT_H__
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
+
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class TextureProjectorPerspective :
-	public X3DTextureProjectorNode
+class X3DProjectiveTextureMappingContext :
+	virtual public X3DBaseNode
 {
 public:
-
-	///  @name Construction
-
-	TextureProjectorPerspective (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	const SFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Operations
-
-	virtual
-	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override;
 
 	///  @name Destruction
 
 	virtual
-	~TextureProjectorPerspective () final override;
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DProjectiveTextureMappingContext () override;
 
 
 protected:
 
+	///  @name Friends
+
+	friend class ProjectiveTextureContainer;
+	friend class X3DProgrammableShaderObject;
+
 	///  @name Construction
+
+	X3DProjectiveTextureMappingContext ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+	///  @name Member access
+
+	const std::vector <int32_t>
+	getProjectiveTextureUnits () const
+	{ return projectivetextureUnits; }
 
 
 private:
 
-	///  @name Member access
+	///  @name Members
 
-	double
-	getFieldOfView () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const fieldOfView;
-	};
-
-	Fields fields;
+	std::vector <int32_t> projectivetextureUnits;
 
 };
 

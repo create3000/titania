@@ -69,6 +69,7 @@
 #include "../Browser/ParticleSystems/X3DParticleSystemsContext.h"
 #include "../Browser/Picking/X3DPickingContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
+#include "../Browser/ProjectiveTextureMapping/X3DProjectiveTextureMappingContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
 #include "../Browser/Shaders/X3DShadersContext.h"
@@ -109,6 +110,7 @@ class X3DBrowserContext :
 	public X3DTexturingContext,
 	public X3DTexturing3DContext,
 	public X3DCubeMapTexturingContext,
+	public X3DProjectiveTextureMappingContext,
 	public X3DShapeContext,
 	public X3DEnvironmentalEffectsContext,
 	public X3DTimeContext,

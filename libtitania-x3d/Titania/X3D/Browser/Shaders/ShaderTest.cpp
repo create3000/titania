@@ -110,6 +110,7 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 	glUniform1i (shaderNode -> getLightingUniformLocation (),              true);
 	glUniform1i (shaderNode -> getNumLightsUniformLocation (),             0);
 	glUniform1i (shaderNode -> getNumTexturesUniformLocation (),           0);
+	glUniform1i (shaderNode -> getNumProjectiveTexturesUniformLocation (), 0);
 
 	glUniform1i (shaderNode -> getSeparateBackColorUniformLocation (), false);
 	glUniform1f (shaderNode -> getAmbientIntensityUniformLocation (),  0);

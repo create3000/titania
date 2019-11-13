@@ -136,6 +136,9 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                          x3d_Texture2D (getBrowser () -> getMaxTextures (), -1),
 	                          x3d_Texture3D (getBrowser () -> getMaxTextures (), -1),
 	                     x3d_CubeMapTexture (getBrowser () -> getMaxTextures (), -1),
+	              x3d_NumProjectiveTextures (-1),
+	                  x3d_ProjectiveTexture (getBrowser () -> getMaxTextures (), -1),
+	            x3d_ProjectiveTextureMatrix (getBrowser () -> getMaxTextures (), -1),
 	                  x3d_MultiTextureColor (-1),
 	                   x3d_MultiTextureMode (getBrowser () -> getMaxTextures (), -1),
 	              x3d_MultiTextureAlphaMode (getBrowser () -> getMaxTextures (), -1),
@@ -160,8 +163,10 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                 extensionGPUShaderFP64 (false),
 	              transformFeedbackVaryings (),
 	                        numGlobalLights (0),
+	            numGlobalProjectiveTextures (0),
 	                           fogContainer (nullptr),
 	                        lightContainers (getBrowser () -> getMaxLights ()),
+	            projectiveTextureContainers (getBrowser () -> getMaxTextures ()),
 	                               textures ()
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
@@ -225,6 +230,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_Texture2D                           .clear ();
 	x3d_Texture3D                           .clear ();
 	x3d_CubeMapTexture                      .clear ();
+	x3d_ProjectiveTexture                   .clear ();
+	x3d_ProjectiveTextureMatrix             .clear ();
 	x3d_MultiTextureMode                    .clear ();
 	x3d_MultiTextureAlphaMode               .clear ();
 	x3d_MultiTextureSource                  .clear ();
@@ -309,8 +316,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_BackShininess        = getUniformLocation (program, "x3d_BackMaterial.shininess",        "x3d_BackShininess");
 	x3d_BackTransparency     = getUniformLocation (program, "x3d_BackMaterial.transparency",     "x3d_BackTransparency");
 
-	x3d_NumTextures       = glGetUniformLocation (program, "x3d_NumTextures");
-	x3d_MultiTextureColor = glGetUniformLocation (program, "x3d_MultiTextureColor");
+	x3d_NumTextures           = glGetUniformLocation (program, "x3d_NumTextures");
+	x3d_NumProjectiveTextures = glGetUniformLocation (program, "x3d_NumProjectiveTextures");
+	x3d_MultiTextureColor     = glGetUniformLocation (program, "x3d_MultiTextureColor");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
 	{
@@ -331,6 +339,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ()));
 		x3d_TexCoord      .emplace_back (getAttribLocation (program, "x3d_TexCoord" + is, i ? "" : "x3d_TexCoord"));
+
+		x3d_ProjectiveTexture .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ()));
+		x3d_ProjectiveTextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ()));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");
@@ -348,20 +359,22 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_ParticleLife        = glGetUniformLocation (program, "x3d_Particle.life");
 	x3d_ParticleElapsedTime = glGetUniformLocation (program, "x3d_Particle.elapsedTime");
 
-	static const auto   linetype       = getBrowser () -> getLinetypeUnit ();
-	static const auto   hatchStyle     = getBrowser () -> getHatchStyleUnit ();
-	static const auto & texture2D      = getBrowser () -> getTexture2DUnits ();
-	static const auto & texture3D      = getBrowser () -> getTexture3DUnits ();
-	static const auto & cubeMapTexture = getBrowser () -> getCubeMapTextureUnits ();
-	static const auto   shadowMap      = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
+	static const auto   linetype          = getBrowser () -> getLinetypeUnit ();
+	static const auto   hatchStyle        = getBrowser () -> getHatchStyleUnit ();
+	static const auto & texture2D         = getBrowser () -> getTexture2DUnits ();
+	static const auto & texture3D         = getBrowser () -> getTexture3DUnits ();
+	static const auto & cubeMapTexture    = getBrowser () -> getCubeMapTextureUnits ();
+	static const auto & projectiveTexture = getBrowser () -> getProjectiveTextureUnits ();
+	static const auto   shadowMap         = std::vector <int32_t> (getBrowser () -> getMaxLights (), 0);
 
 	glUniform1i  (x3d_LinePropertiesLinetype,   linetype);
 	glUniform1i  (x3d_FillPropertiesHatchStyle, hatchStyle);
 	glUniform1i  (x3d_NumTextures,              0);
-	glUniform1iv (x3d_Texture2D [0],            texture2D      .size (), texture2D      .data ());
-	glUniform1iv (x3d_Texture3D [0],            texture3D      .size (), texture3D      .data ());
-	glUniform1iv (x3d_CubeMapTexture [0],       cubeMapTexture .size (), cubeMapTexture .data ());
-	glUniform1iv (x3d_ShadowMap [0],            shadowMap      .size (), shadowMap      .data ());
+	glUniform1iv (x3d_Texture2D [0],            texture2D         .size (), texture2D         .data ());
+	glUniform1iv (x3d_Texture3D [0],            texture3D         .size (), texture3D         .data ());
+	glUniform1iv (x3d_CubeMapTexture [0],       cubeMapTexture    .size (), cubeMapTexture    .data ());
+	glUniform1iv (x3d_ProjectiveTexture [0],    projectiveTexture .size (), projectiveTexture .data ());
+	glUniform1iv (x3d_ShadowMap [0],            shadowMap         .size (), shadowMap         .data ());
 }
 
 GLint
@@ -1141,13 +1154,32 @@ X3DProgrammableShaderObject::hasLight (const size_t index, LightContainer* const
 	}
 }
 
+bool
+X3DProgrammableShaderObject::hasProjectiveTexture (const size_t index, ProjectiveTextureContainer* const projectiveTextureContainer)
+{
+	if (index < projectiveTextureContainers .size ())
+	{
+		if (projectiveTextureContainers [index] == projectiveTextureContainer)
+			return true;
+
+		projectiveTextureContainers [index] = projectiveTextureContainer;
+
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 void
 X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
-	const auto & browser           = renderObject -> getBrowser ();
-	const auto & cameraSpaceMatrix = renderObject -> getCameraSpaceMatrix () .get ();
-	const auto & projectionMatrix  = renderObject -> getProjectionMatrix () .get ();
-	const auto & globalLights      = renderObject -> getGlobalLights ();
+	const auto & browser                  = renderObject -> getBrowser ();
+	const auto & cameraSpaceMatrix        = renderObject -> getCameraSpaceMatrix () .get ();
+	const auto & projectionMatrix         = renderObject -> getProjectionMatrix () .get ();
+	const auto & globalLights             = renderObject -> getGlobalLights ();
+	const auto & globalProjectiveTextures = renderObject -> getGlobalProjectiveTextures ();
 
 	// Set viewport.
 
@@ -1178,6 +1210,15 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 		globalLights [i] -> setShaderUniforms (renderObject, this, i);
 
 	std::fill (lightContainers .begin (), lightContainers .end (), nullptr);
+
+	// Set global projective textures.
+
+	numGlobalProjectiveTextures = std::min (browser -> getMaxTextures (), globalProjectiveTextures .size ());
+
+	for (size_t i = 0; i < numGlobalProjectiveTextures; ++ i)
+		globalProjectiveTextures [i] -> setShaderUniforms (renderObject, this, i);
+
+	std::fill (projectiveTextureContainers .begin (), projectiveTextureContainers .end (), nullptr);
 
 	// Logarithmic depth buffer support.
 
@@ -1226,6 +1267,16 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	if (numLights < browser -> getMaxLights ())
 		glUniform1i (x3d_LightType [numLights], 0);
+
+	// Projective Textures
+
+	const auto & localProjectiveTextures = context -> getLocalProjectiveTextures ();
+	const auto   numProjectiveTextures   = std::min (browser -> getMaxTextures (), numGlobalProjectiveTextures + localProjectiveTextures .size ());
+
+	for (size_t i = numGlobalProjectiveTextures, l = 0; i < numProjectiveTextures; ++ i, ++ l)
+		localProjectiveTextures [l] -> setShaderUniforms (renderObject, this, i);
+
+	glUniform1i (x3d_NumProjectiveTextures, numProjectiveTextures);
 
 	// Fog
 

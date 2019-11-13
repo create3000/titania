@@ -58,6 +58,7 @@
 #include "../Rendering/CollisionContainer.h"
 #include "../Rendering/FogContainer.h"
 #include "../Rendering/LightContainer.h"
+#include "../Rendering/ProjectiveTextureContainer.h"
 #include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolumeStack.h"
 #include "../Rendering/X3DCollectableObject.h"
@@ -231,6 +232,22 @@ public:
 	getParentLayout ()
 	{ return layouts .empty () ? nullptr : layouts .back (); }
 
+	ProjectiveTextureContainerArray &
+	getGlobalProjectiveTextures ()
+	{ return globalProjectiveTextures; }
+
+	ProjectiveTextureContainerArray &
+	getLocalProjectiveTextures ()
+	{ return localProjectiveTextures; }
+
+	ProjectiveTextureContainerArray &
+	getProjectiveTextures ()
+	{ return projectiveTextures; }
+
+	virtual
+	const std::shared_ptr <ProjectiveTextureContainer> &
+	getProjectiveTextureContainer () const;
+
 	GeneratedCubeMapTextureSet &
 	getGeneratedCubeMapTextures ()
 	{ return generatedCubeMapTextures; }
@@ -337,19 +354,23 @@ private:
 	Matrix4dStack projectionMatrix;
 	Matrix4dStack modelViewMatrix;
 
-	ViewVolumeStack            viewVolumeStack;
-	LightContainerArray        globalLights;
-	CollectableObjectArray     localObjects;
-	ClipPlaneContainerArray    clipPlanes;
-	LocalFogStack              localFogs;
-	LightContainerArray        localLights;
-	LightContainerArray        lights;
-	size_t                     lightIndex;
-	ShadowStack                shadow;
-	LayoutStack                layouts;
-	GeneratedCubeMapTextureSet generatedCubeMapTextures;
-	ShaderSet                  shaders;
-	CollisionArray             collisions;
+	ViewVolumeStack                 viewVolumeStack;
+	LightContainerArray             globalLights;
+	CollectableObjectArray          localObjects;
+	ClipPlaneContainerArray         clipPlanes;
+	LocalFogStack                   localFogs;
+	LightContainerArray             localLights;
+	LightContainerArray             lights;
+	size_t                          lightIndex;
+	ShadowStack                     shadow;
+	LayoutStack                     layouts;
+	ProjectiveTextureContainerArray globalProjectiveTextures;
+	ProjectiveTextureContainerArray localProjectiveTextures;
+	ProjectiveTextureContainerArray projectiveTextures;
+	size_t                          projectiveTextureIndex;
+	GeneratedCubeMapTextureSet      generatedCubeMapTextures;
+	ShaderSet                       shaders;
+	CollisionArray                  collisions;
 
 	ShapeContainerArray      opaqueShapes;
 	ShapeContainerArray      transparentShapes;

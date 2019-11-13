@@ -54,6 +54,7 @@
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/FogContainer.h"
 #include "../Rendering/LightContainer.h"
+#include "../Rendering/ProjectiveTextureContainer.h"
 #include "../Rendering/X3DCollectableObject.h"
 #include "../Rendering/X3DShapeContainer.h"
 
@@ -189,6 +190,14 @@ public:
 	{ return textureCoordinate; }
 
 	void
+	setLocalProjectiveTextures (const ProjectiveTextureContainerArray & value)
+	{ localProjectiveTextures = value; }
+
+	const ProjectiveTextureContainerArray &
+	getLocalProjectiveTextures () const
+	{ return localProjectiveTextures; }
+
+	void
 	setDistance (double value)
 	{ distance = value; }
 
@@ -206,21 +215,22 @@ private:
 
 	///  @name Members
 
-	X3DRenderObject* const    renderObject;
-	bool                      transparent;
-	FogContainerPtr           fog;
-	LightContainerArray       localLights;
-	bool                      shadow;
-	X3DAppearanceChildNode*   styleProperties;
-	X3DMaterialNode*          material;
-	X3DTextureNode*           texture;
-	X3DTextureTransformNode*  textureTransform;
-	X3DShaderNode*            shaderNode;
-	size_t                    geometryType;
-	bool                      colorMaterial;
-	bool                      fogCoord;
-	X3DTextureCoordinateNode* textureCoordinate;
-	double                    distance;
+	X3DRenderObject* const          renderObject;
+	bool                            transparent;
+	FogContainerPtr                 fog;
+	LightContainerArray             localLights;
+	bool                            shadow;
+	X3DAppearanceChildNode*         styleProperties;
+	X3DMaterialNode*                material;
+	X3DTextureNode*                 texture;
+	X3DTextureTransformNode*        textureTransform;
+	X3DShaderNode*                  shaderNode;
+	size_t                          geometryType;
+	bool                            colorMaterial;
+	bool                            fogCoord;
+	X3DTextureCoordinateNode*       textureCoordinate;
+	ProjectiveTextureContainerArray localProjectiveTextures;
+	double                          distance;
 
 };
 

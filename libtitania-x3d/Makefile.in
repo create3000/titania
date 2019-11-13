@@ -202,6 +202,7 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/Hit.lo \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo \
+	$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/X3DProjectiveTextureMappingContext.lo \
 	$(current_dir)/Titania/X3D/Browser/Rendering/L-System.lo \
 	$(current_dir)/Titania/X3D/Browser/Rendering/MotionBlur.lo \
 	$(current_dir)/Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.lo \
@@ -735,6 +736,7 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Rendering/LightContainer.lo \
 	$(current_dir)/Titania/X3D/Rendering/PolygonModeContainer.lo \
 	$(current_dir)/Titania/X3D/Rendering/PolygonOffsetContainer.lo \
+	$(current_dir)/Titania/X3D/Rendering/ProjectiveTextureContainer.lo \
 	$(current_dir)/Titania/X3D/Rendering/ShapeContainer.lo \
 	$(current_dir)/Titania/X3D/Rendering/TextureBuffer.lo \
 	$(current_dir)/Titania/X3D/Rendering/ViewVolume.lo \
@@ -925,6 +927,7 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo \
+	$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/X3DProjectiveTextureMappingContext.Plo \
 	$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/L-System.Plo \
 	$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo \
 	$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DGeometricOptionNode.Plo \
@@ -1455,6 +1458,7 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonOffsetContainer.Plo \
+	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ProjectiveTextureContainer.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ShapeContainer.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/TextureBuffer.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo \
@@ -1862,6 +1866,7 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
+	$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/X3DProjectiveTextureMappingContext.cpp \
 	$(current_dir)/Titania/X3D/Browser/Rendering/L-System.cpp \
 	$(current_dir)/Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	$(current_dir)/Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
@@ -2395,6 +2400,7 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Rendering/LightContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/PolygonModeContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/PolygonOffsetContainer.cpp \
+	$(current_dir)/Titania/X3D/Rendering/ProjectiveTextureContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/ShapeContainer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/TextureBuffer.cpp \
 	$(current_dir)/Titania/X3D/Rendering/ViewVolume.cpp \
@@ -2896,6 +2902,14 @@ $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo: $(cur
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo: $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping
+	@: > $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)
+	@: > $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/X3DProjectiveTextureMappingContext.lo: $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Browser/Rendering/$(am__dirstamp):
 	@$(MKDIR_P) $(current_dir)/Titania/X3D/Browser/Rendering
 	@: > $(current_dir)/Titania/X3D/Browser/Rendering/$(am__dirstamp)
@@ -4622,6 +4636,9 @@ $(current_dir)/Titania/X3D/Rendering/PolygonModeContainer.lo:  \
 $(current_dir)/Titania/X3D/Rendering/PolygonOffsetContainer.lo:  \
 	$(current_dir)/Titania/X3D/Rendering/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Rendering/ProjectiveTextureContainer.lo:  \
+	$(current_dir)/Titania/X3D/Rendering/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Rendering/ShapeContainer.lo:  \
 	$(current_dir)/Titania/X3D/Rendering/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -5123,6 +5140,8 @@ mostlyclean-compile:
 	-rm -f $(current_dir)/Titania/X3D/Browser/Picking/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/*.lo
+	-rm -f $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Scripting/*.$(OBJEXT)
@@ -5393,6 +5412,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/X3DProjectiveTextureMappingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/L-System.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DGeometricOptionNode.Plo@am__quote@ # am--include-marker
@@ -5923,6 +5943,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonOffsetContainer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ProjectiveTextureContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ShapeContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/TextureBuffer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo@am__quote@ # am--include-marker
@@ -6103,6 +6124,7 @@ clean-libtool:
 	-rm -rf $(current_dir)/Titania/X3D/Browser/ParticleSystems/.libs $(current_dir)/Titania/X3D/Browser/ParticleSystems/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/Picking/.libs $(current_dir)/Titania/X3D/Browser/Picking/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/.libs $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/_libs
+	-rm -rf $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/.libs $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/Rendering/.libs $(current_dir)/Titania/X3D/Browser/Rendering/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/Scripting/.libs $(current_dir)/Titania/X3D/Browser/Scripting/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Browser/Shaders/.libs $(current_dir)/Titania/X3D/Browser/Shaders/_libs
@@ -6363,6 +6385,8 @@ distclean-generic:
 	-test -z "$(current_dir)/Titania/X3D/Browser/Picking/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/Picking/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/Rendering/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Browser/Scripting/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Browser/Scripting/$(DEPDIR)/$(am__dirstamp)
@@ -6639,6 +6663,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo
+	-rm -f $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/X3DProjectiveTextureMappingContext.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/L-System.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DGeometricOptionNode.Plo
@@ -7169,6 +7194,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonOffsetContainer.Plo
+	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ProjectiveTextureContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ShapeContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/TextureBuffer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo
@@ -7385,6 +7411,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo
+	-rm -f $(current_dir)/Titania/X3D/Browser/ProjectiveTextureMapping/$(DEPDIR)/X3DProjectiveTextureMappingContext.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/L-System.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo
 	-rm -f $(current_dir)/Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DGeometricOptionNode.Plo
@@ -7915,6 +7942,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/PolygonOffsetContainer.Plo
+	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ProjectiveTextureContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ShapeContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/TextureBuffer.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo

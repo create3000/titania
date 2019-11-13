@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class ProjectiveTextureContainer;
+
 class TextureProjectorParallel :
 	public X3DTextureProjectorNode
 {
@@ -96,6 +98,12 @@ public:
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
 
+	///  @name Operations
+
+	virtual
+	void
+	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -112,6 +120,26 @@ protected:
 
 
 private:
+
+	///  @name Member access
+
+	double
+	getMinimumX () const;
+
+	double
+	getMinimumY () const;
+
+	double
+	getMaximumX () const;
+
+	double
+	getMaximumY () const;
+
+	double
+	getSizeX () const;
+
+	double
+	getSizeY () const;
 
 	///  @name Static members
 

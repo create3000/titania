@@ -48,100 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_H__
+#ifndef __TITANIA_X3D_RENDERING_PROJECTIVE_TEXTURE_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_PROJECTIVE_TEXTURE_CONTAINER_H__
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../Rendering/OpenGL.h"
+#include "../Rendering/X3DCollectableObject.h"
+#include "../Types/MatrixStack.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-class TextureProjectorPerspective :
-	public X3DTextureProjectorNode
+class X3DBrowser;
+class X3DTextureProjectorNode;
+class X3DProgrammableShaderObject;
+class X3DRenderObject;
+
+class ProjectiveTextureContainer
 {
 public:
 
 	///  @name Construction
 
-	TextureProjectorPerspective (X3DExecutionContext* const executionContext);
+	ProjectiveTextureContainer (X3DBrowser* const browser, X3DTextureProjectorNode* const node, const Matrix4d & modelViewMatrix);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+	///  @name Member access
 
-	///  @name Common members
+	Matrix4dStack &
+	getModelViewMatrix ()
+	{ return modelViewMatrix; }
 
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
+	const Matrix4dStack &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
 
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
+	void
+	setProjectiveTextureMatrix (const Matrix4d & value)
+	{ projectiveTextureMatrix = value; }
 
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	const SFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
+	const Matrix4d &
+	getProjectiveTextureMatrix () const
+	{ return projectiveTextureMatrix; }
 
 	///  @name Operations
 
-	virtual
 	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override;
+	setGlobalVariables (X3DRenderObject* const renderObject);
+
+	void
+	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t index);
 
 	///  @name Destruction
 
-	virtual
-	~TextureProjectorPerspective () final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
+	~ProjectiveTextureContainer ();
 
 
 private:
 
-	///  @name Member access
+	///  @name Members
 
-	double
-	getFieldOfView () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const fieldOfView;
-	};
-
-	Fields fields;
+	X3DBrowser* const              browser;
+	X3DTextureProjectorNode* const node;
+	Matrix4dStack                  modelViewMatrix;
+	Matrix4d                       projectiveTextureMatrix;
 
 };
+
+using ProjectiveTextureContainerArray = std::vector <std::shared_ptr <ProjectiveTextureContainer>>;
 
 } // X3D
 } // titania
