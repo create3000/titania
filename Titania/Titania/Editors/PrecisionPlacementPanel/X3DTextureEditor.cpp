@@ -54,6 +54,8 @@
 
 #include <Titania/X3D/Components/ProjectiveTextureMapping/X3DTextureProjectorNode.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
+#include <Titania/X3D/Components/Texturing/PixelTexture.h>
+#include <Titania/X3D/Components/Texturing/MovieTexture.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 
 namespace titania {
@@ -93,24 +95,29 @@ X3DTextureEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
-X3DTextureEditor::on_texture_toggled ()
+X3DTextureEditor::on_texture_changed ()
 {
 	if (changing)
 		return;
 
 	const auto undoStep         = std::make_shared <X3D::UndoStep> ("Toggle Texture Field Of Texture Projector Node");
 	const auto executionContext = X3D::X3DExecutionContextPtr (projectorNode -> getExecutionContext ());
+	auto       texture          = X3D::X3DPtr <X3D::X3DTexture2DNode> ();
 
-	if (getTextureCheckButton () .get_active ())
+	switch (getTextureButton () .get_active_row_number ())
 	{
-		const auto texture = executionContext -> createNode <X3D::ImageTexture> ();
+		case 1:
+			texture = executionContext -> createNode <X3D::ImageTexture> ();
+			break;
+		case 2:
+			texture = executionContext -> createNode <X3D::PixelTexture> ();
+			break;
+		case 3:
+			texture = executionContext -> createNode <X3D::MovieTexture> ();
+			break;
+	}
 
-		X3D::X3DEditor::replaceNode (executionContext, projectorNode, projectorNode -> texture (), texture, undoStep);
-	}
-	else
-	{
-		X3D::X3DEditor::replaceNode (executionContext, projectorNode, projectorNode -> texture (), nullptr, undoStep);
-	}
+	X3D::X3DEditor::replaceNode (executionContext, projectorNode, projectorNode -> texture (), texture, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -122,7 +129,10 @@ X3DTextureEditor::set_texture ()
 
 	const auto texture = X3D::X3DPtr <X3D::X3DTexture2DNode> (projectorNode -> texture ());
 
-	getTextureCheckButton () .set_active (texture);
+	if (texture)
+		getTextureButton () .set_active_text (texture -> getTypeName ());
+	else
+		getTextureButton () .set_active (0);
 
 	preview -> setTexture (texture);
 

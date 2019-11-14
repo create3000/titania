@@ -1785,9 +1785,9 @@ public:
 	getTextureExpander () const
 	{ return *m_TextureExpander; }
 
-	Gtk::CheckButton &
-	getTextureCheckButton () const
-	{ return *m_TextureCheckButton; }
+	Gtk::ComboBoxText &
+	getTextureButton () const
+	{ return *m_TextureButton; }
 
 	Gtk::Label &
 	getTextureFormatLabel () const
@@ -2161,7 +2161,7 @@ public:
 
 	virtual
 	void
-	on_texture_toggled () = 0;
+	on_texture_changed () = 0;
 
 	virtual
 	bool
@@ -2679,7 +2679,7 @@ private:
 	Gtk::Box* m_ForcePhysicsModelBox;
 	Gtk::Box* m_WindPhysicsModelBox;
 	Gtk::Expander* m_TextureExpander;
-	Gtk::CheckButton* m_TextureCheckButton;
+	Gtk::ComboBoxText* m_TextureButton;
 	Gtk::Label* m_TextureFormatLabel;
 	Gtk::Label* m_TextureLoadStateLabel;
 	Gtk::Box* m_TexturePreviewBox;

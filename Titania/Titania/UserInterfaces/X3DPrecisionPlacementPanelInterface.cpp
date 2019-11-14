@@ -504,7 +504,7 @@ X3DPrecisionPlacementPanelInterface::create ()
 	m_builder -> get_widget ("ForcePhysicsModelBox", m_ForcePhysicsModelBox);
 	m_builder -> get_widget ("WindPhysicsModelBox", m_WindPhysicsModelBox);
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
-	m_builder -> get_widget ("TextureCheckButton", m_TextureCheckButton);
+	m_builder -> get_widget ("TextureButton", m_TextureButton);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
 	m_builder -> get_widget ("TextureLoadStateLabel", m_TextureLoadStateLabel);
 	m_builder -> get_widget ("TexturePreviewBox", m_TexturePreviewBox);
@@ -632,8 +632,8 @@ X3DPrecisionPlacementPanelInterface::create ()
 	// Connect object Gtk::Button with id 'ColorRampUnlinkButton'.
 	m_ColorRampUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_color_ramp_unlink_clicked));
 
-	// Connect object Gtk::CheckButton with id 'TextureCheckButton'.
-	m_TextureCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_texture_toggled));
+	// Connect object Gtk::ComboBoxText with id 'TextureButton'.
+	m_TextureButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_texture_changed));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

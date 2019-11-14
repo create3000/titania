@@ -89,7 +89,7 @@ private:
 
 	virtual
 	void
-	on_texture_toggled () final override;
+	on_texture_changed () final override;
 
 	void
 	set_texture ();

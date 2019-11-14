@@ -8323,6 +8323,7 @@
                                   <object class="GtkLabel" id="label120">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Texture:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -8330,14 +8331,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkCheckButton" id="TextureCheckButton">
-                                    <property name="label" translatable="yes">Texture</property>
+                                  <object class="GtkComboBoxText" id="TextureButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="halign">start</property>
-                                    <property name="draw_indicator">True</property>
-                                    <signal name="toggled" handler="on_texture_toggled" swapped="no"/>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <items>
+                                      <item translatable="yes">None</item>
+                                      <item>ImageTexture</item>
+                                      <item>PixelTexture</item>
+                                      <item>MovieTexture</item>
+                                    </items>
+                                    <signal name="changed" handler="on_texture_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
