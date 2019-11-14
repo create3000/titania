@@ -78,6 +78,10 @@ X3DTextureProjectorNode::X3DTextureProjectorNode () :
 {
 	addType (X3DConstants::X3DTextureProjectorNode);
 
+	location ()     .setUnit (UnitCategory::LENGTH);
+	nearDistance () .setUnit (UnitCategory::LENGTH);
+	farDistance ()  .setUnit (UnitCategory::LENGTH);
+
 	addChildObjects (textureNode);
 }
 
