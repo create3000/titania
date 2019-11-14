@@ -273,6 +273,7 @@ am_titania_OBJECTS = $(current_dir)/Titania/Applications/BrowserApplication/Brow
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.$(OBJEXT) \
+	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorParallelEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorPerspectiveEditor.$(OBJEXT) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.$(OBJEXT) \
@@ -606,6 +607,7 @@ am__depfiles_remade = $(current_dir)/Titania/Applications/BrowserApplication/$(D
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleEmitterNodeEditor.Po \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleSystemEditor.Po \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DSwitchEditor.Po \
+	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureEditor.Po \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorParallelEditor.Po \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorPerspectiveEditor.Po \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTransformEditor.Po \
@@ -1151,6 +1153,7 @@ titania_SOURCES = \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.cpp \
+	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorParallelEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorPerspectiveEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
@@ -2118,6 +2121,8 @@ $(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.$
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.$(OBJEXT): $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureEditor.$(OBJEXT): $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
+	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorParallelEditor.$(OBJEXT): $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorPerspectiveEditor.$(OBJEXT): $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
@@ -2889,6 +2894,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleEmitterNodeEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleSystemEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DSwitchEditor.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorParallelEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorPerspectiveEditor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTransformEditor.Po@am__quote@ # am--include-marker
@@ -3506,6 +3512,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleEmitterNodeEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleSystemEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DSwitchEditor.Po
+	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorParallelEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorPerspectiveEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTransformEditor.Po
@@ -3867,6 +3874,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleEmitterNodeEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DParticleSystemEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DSwitchEditor.Po
+	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorParallelEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTextureProjectorPerspectiveEditor.Po
 	-rm -f $(current_dir)/Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DTransformEditor.Po

@@ -177,6 +177,7 @@ titania_SOURCES =  \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleEmitterNodeEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DParticleSystemEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.cpp \
+	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorParallelEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTextureProjectorPerspectiveEditor.cpp \
 	$(current_dir)/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \

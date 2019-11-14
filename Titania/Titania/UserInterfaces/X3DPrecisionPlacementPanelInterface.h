@@ -1782,6 +1782,26 @@ public:
 	{ return *m_WindPhysicsModelBox; }
 
 	Gtk::Expander &
+	getTextureExpander () const
+	{ return *m_TextureExpander; }
+
+	Gtk::CheckButton &
+	getTextureCheckButton () const
+	{ return *m_TextureCheckButton; }
+
+	Gtk::Label &
+	getTextureFormatLabel () const
+	{ return *m_TextureFormatLabel; }
+
+	Gtk::Label &
+	getTextureLoadStateLabel () const
+	{ return *m_TextureLoadStateLabel; }
+
+	Gtk::Box &
+	getTexturePreviewBox () const
+	{ return *m_TexturePreviewBox; }
+
+	Gtk::Expander &
 	getGeometrySelectionExpander () const
 	{ return *m_GeometrySelectionExpander; }
 
@@ -2138,6 +2158,10 @@ public:
 	virtual
 	void
 	on_color_ramp_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_texture_toggled () = 0;
 
 	virtual
 	bool
@@ -2654,6 +2678,11 @@ private:
 	Gtk::Button* m_RemoveColorRampRGBAButton;
 	Gtk::Box* m_ForcePhysicsModelBox;
 	Gtk::Box* m_WindPhysicsModelBox;
+	Gtk::Expander* m_TextureExpander;
+	Gtk::CheckButton* m_TextureCheckButton;
+	Gtk::Label* m_TextureFormatLabel;
+	Gtk::Label* m_TextureLoadStateLabel;
+	Gtk::Box* m_TexturePreviewBox;
 	Gtk::Expander* m_GeometrySelectionExpander;
 	Gtk::Grid* m_GeometrySelectionBox;
 	Gtk::Box* m_GeometrySelectionTranslationBox;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,123 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DTEXTURE_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DTEXTURE_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DBillboardEditor.h"
-#include "X3DCollisionEditor.h"
-#include "X3DEnvironmentalSensorEditor.h"
-#include "X3DGeoLocationEditor.h"
-#include "X3DGeoTransformEditor.h"
-#include "X3DLODEditor.h"
-#include "X3DLayoutEditor.h"
-#include "X3DSwitchEditor.h"
-#include "X3DTextureEditor.h"
-#include "X3DTextureProjectorParallelEditor.h"
-#include "X3DTextureProjectorPerspectiveEditor.h"
-#include "X3DTransformEditor.h"
-#include "X3DViewportEditor.h"
-#include "X3DParticleEmitterNodeEditor.h"
-#include "X3DParticleSystemEditor.h"
-#include "X3DGeometrySelectionEditor.h"
 
 namespace titania {
 namespace puck {
 
-class PrecisionPlacementPanel :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor,
-	public X3DSwitchEditor,
-	public X3DBillboardEditor,
-	public X3DCollisionEditor,
-	public X3DLODEditor,
-	public X3DLayoutEditor,
-	public X3DViewportEditor,
-	public X3DGeoTransformEditor,
-	public X3DGeoLocationEditor,
-	public X3DEnvironmentalSensorEditor,
-	public X3DParticleSystemEditor,
-	public X3DParticleEmitterNodeEditor,
-	public X3DTextureProjectorParallelEditor,
-	public X3DTextureProjectorPerspectiveEditor,
-	public X3DTextureEditor,
-	public X3DGeometrySelectionEditor
+class TexturePreview;
+
+class X3DTextureEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
-
-	///  @name Construction
-
-	PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
 	virtual
-	~PrecisionPlacementPanel () final override;
+	~X3DTextureEditor () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTextureEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode & selection) override;
 
 
 private:
 
-	///  @name Construction
-
 	virtual
 	void
-	configure () final override;
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
+	on_texture_toggled () final override;
 
 	void
-	set_scene ();
-
-	void
-	set_execution_context ();
-
-	virtual
-	void
-	set_selection (const X3D::MFNode & selection) final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_index_clicked () final override;
-
-	virtual
-	void
-	on_bbox_uniform_size_clicked () final override;
-
-	virtual
-	void
-	on_fill_bounding_box_fields_clicked () final override;
-
-	void
-	set_bbox ();
-
-	virtual
-	void
-	store () final override;
+	set_texture ();
 
 	///  @name Members
 
-	NameEntry                          nodeName;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
-
-	X3D::X3DScenePtr                    scene;
-	X3D::X3DExecutionContextPtr         executionContext;
-	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
-	X3D::X3DPtr <X3D::X3DGeometryNode>  geometryNode;
+	std::shared_ptr <TexturePreview>           preview;
+	X3D::X3DPtr <X3D::X3DTextureProjectorNode> projectorNode;
+	bool                                       changing;
 
 };
 
