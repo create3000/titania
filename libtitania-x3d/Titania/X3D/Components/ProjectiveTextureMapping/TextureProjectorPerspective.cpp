@@ -87,6 +87,8 @@ TextureProjectorPerspective::TextureProjectorPerspective (X3DExecutionContext* c
 	addField (inputOutput, "farDistance",  farDistance ());
 	addField (outputOnly,  "aspectRatio",  aspectRatio ());
 	addField (inputOutput, "texture",      texture ());
+
+	fieldOfView () .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*

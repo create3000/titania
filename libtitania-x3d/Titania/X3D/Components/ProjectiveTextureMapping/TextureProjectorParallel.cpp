@@ -87,6 +87,8 @@ TextureProjectorParallel::TextureProjectorParallel (X3DExecutionContext* const e
 	addField (inputOutput, "farDistance",  farDistance ());
 	addField (outputOnly,  "aspectRatio",  aspectRatio ());
 	addField (inputOutput, "texture",      texture ());
+
+	fieldOfView () .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*
