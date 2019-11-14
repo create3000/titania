@@ -58,38 +58,39 @@ namespace titania {
 namespace puck {
 
 PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
-	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.glade")),
-	                 X3DTransformEditor (),
-	                    X3DSwitchEditor (),
-	                 X3DBillboardEditor (),
-	                 X3DCollisionEditor (),
-	                       X3DLODEditor (),
-	                    X3DLayoutEditor (),
-	                  X3DViewportEditor (),
-	              X3DGeoTransformEditor (),
-	               X3DGeoLocationEditor (),
-	       X3DEnvironmentalSensorEditor (),
-	            X3DParticleSystemEditor (),
-	       X3DParticleEmitterNodeEditor (),
-	         X3DGeometrySelectionEditor (),
-	                           nodeName (this, getNameEntry (), getRenameButton ()),
-	                           bboxSize (this,
-	                                     getBBoxSizeXAdjustment (),
-	                                     getBBoxSizeYAdjustment (),
-	                                     getBBoxSizeZAdjustment (),
-	                                     getBBoxSizeBox (),
-	                                     "bboxSize"),
-	                         bboxCenter (this,
-	                                     getBBoxCenterXAdjustment (),
-	                                     getBBoxCenterYAdjustment (),
-	                                     getBBoxCenterZAdjustment (),
-	                                     getBBoxCenterBox (),
-	                                     "bboxCenter"),
-	                              scene (browserWindow -> getCurrentScene ()),
-	                   executionContext (browserWindow -> getCurrentContext ()),
-	                      boundedObject (),
-	                       geometryNode ()
+	                    X3DBaseInterface (browserWindow, browserWindow -> getMasterBrowser ()),
+	 X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.glade")),
+	                  X3DTransformEditor (),
+	                     X3DSwitchEditor (),
+	                  X3DBillboardEditor (),
+	                  X3DCollisionEditor (),
+	                        X3DLODEditor (),
+	                     X3DLayoutEditor (),
+	                   X3DViewportEditor (),
+	               X3DGeoTransformEditor (),
+	                X3DGeoLocationEditor (),
+	        X3DEnvironmentalSensorEditor (),
+	             X3DParticleSystemEditor (),
+	        X3DParticleEmitterNodeEditor (),
+	X3DTextureProjectorPerspectiveEditor (),
+	          X3DGeometrySelectionEditor (),
+	                            nodeName (this, getNameEntry (), getRenameButton ()),
+	                            bboxSize (this,
+	                                      getBBoxSizeXAdjustment (),
+	                                      getBBoxSizeYAdjustment (),
+	                                      getBBoxSizeZAdjustment (),
+	                                      getBBoxSizeBox (),
+	                                      "bboxSize"),
+	                          bboxCenter (this,
+	                                      getBBoxCenterXAdjustment (),
+	                                      getBBoxCenterYAdjustment (),
+	                                      getBBoxCenterZAdjustment (),
+	                                      getBBoxCenterBox (),
+	                                      "bboxCenter"),
+	                               scene (browserWindow -> getCurrentScene ()),
+	                    executionContext (browserWindow -> getCurrentContext ()),
+	                       boundedObject (),
+	                        geometryNode ()
 {
 	addChildObjects (executionContext, boundedObject, geometryNode);
 
@@ -112,6 +113,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DEnvironmentalSensorEditor::initialize ();
 	X3DParticleSystemEditor::initialize ();
 	X3DParticleEmitterNodeEditor::initialize ();
+	X3DTextureProjectorPerspectiveEditor::initialize ();
 	X3DGeometrySelectionEditor::initialize ();
 }
 
@@ -181,6 +183,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DEnvironmentalSensorEditor::set_selection (selection);
 	X3DParticleSystemEditor::set_selection (selection);
 	X3DParticleEmitterNodeEditor::set_selection (selection);
+	X3DTextureProjectorPerspectiveEditor::set_selection (selection);
 
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 	geometryNode  = selection .empty () ? nullptr : selection .back ();
@@ -192,7 +195,9 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	else
 		getHeaderBar () .set_subtitle ("»" + selection .back () -> getTypeName () + "«");
 
-	nodeName   .setNode  (boundedObject);
+	getBoundingBoxExpander () .set_visible (boundedObject);
+
+	nodeName   .setNode  (selection .empty () ? nullptr : selection .back ());
 	bboxSize   .setNodes (boundedObjects);
 	bboxCenter .setNodes (boundedObjects);
 
@@ -239,30 +244,30 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 
 		if (not boundedObject)
 			continue;
-	
+
 		const X3D::Vector3f bboxSize1   = boundedObject -> bboxSize ();
 		const X3D::Vector3f bboxCenter1 = boundedObject -> bboxCenter ();
-	
+
 		// Reset to get calculated bbox.
 		boundedObject -> bboxSize ()   = X3D::Vector3f (-1, -1, -1);
 		boundedObject -> bboxCenter () = X3D::Vector3f ();
-	
+
 		const auto bbox2       = group ? group -> X3DGroupingNode::getBBox () : boundedObject -> getBBox ();
 		const auto bboxSize2   = bbox2 .size ();
 		const auto bboxCenter2 = bbox2 .center ();
-	
+
 		undoStep -> addObjects (boundedObject);
 		undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize1);
 		undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize2);
 		boundedObject -> bboxSize () = bboxSize2;
-	
+
 		undoStep -> addObjects (boundedObject);
 		undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter1);
 		undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter2);
 		boundedObject -> bboxCenter () = bboxCenter2;
 
 		// Proto support
-	
+
 		X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 	}
 

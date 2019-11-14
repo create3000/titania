@@ -506,6 +506,62 @@ public:
 	{ return m_SwitchWhichChoiceAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveAspectRatioAdjustment () const
+	{ return m_TextureProjectorPerspectiveAspectRatioAdjustment; }
+
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getTextureProjectorPerspectiveDescriptionTextBuffer () const
+	{ return m_TextureProjectorPerspectiveDescriptionTextBuffer; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveDirectionXAdjustment () const
+	{ return m_TextureProjectorPerspectiveDirectionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveDirectionYAdjustment () const
+	{ return m_TextureProjectorPerspectiveDirectionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveDirectionZAdjustment () const
+	{ return m_TextureProjectorPerspectiveDirectionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveFarDistanceAdjustment () const
+	{ return m_TextureProjectorPerspectiveFarDistanceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveFieldOfViewAdjustment () const
+	{ return m_TextureProjectorPerspectiveFieldOfViewAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveLocationXAdjustment () const
+	{ return m_TextureProjectorPerspectiveLocationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveLocationYAdjustment () const
+	{ return m_TextureProjectorPerspectiveLocationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveLocationZAdjustment () const
+	{ return m_TextureProjectorPerspectiveLocationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveNearDistanceAdjustment () const
+	{ return m_TextureProjectorPerspectiveNearDistanceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveUpVectorXAdjustment () const
+	{ return m_TextureProjectorPerspectiveUpVectorXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveUpVectorYAdjustment () const
+	{ return m_TextureProjectorPerspectiveUpVectorYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorPerspectiveUpVectorZAdjustment () const
+	{ return m_TextureProjectorPerspectiveUpVectorZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransformCenterXAdjustment () const
 	{ return m_TransformCenterXAdjustment; }
 
@@ -1084,6 +1140,94 @@ public:
 	Gtk::Image &
 	getParticleSystemUniformParticleSizeImage () const
 	{ return *m_ParticleSystemUniformParticleSizeImage; }
+
+	Gtk::Expander &
+	getTextureProjectorPerspectiveExpander () const
+	{ return *m_TextureProjectorPerspectiveExpander; }
+
+	Gtk::CheckButton &
+	getTextureProjectorPerspectiveOnCheckButton () const
+	{ return *m_TextureProjectorPerspectiveOnCheckButton; }
+
+	Gtk::TextView &
+	getTextureProjectorPerspectiveDescriptionTextView () const
+	{ return *m_TextureProjectorPerspectiveDescriptionTextView; }
+
+	Gtk::CheckButton &
+	getTextureProjectorPerspectiveGlobalCheckButton () const
+	{ return *m_TextureProjectorPerspectiveGlobalCheckButton; }
+
+	Gtk::Box &
+	getTextureProjectorPerspectiveLocationBox () const
+	{ return *m_TextureProjectorPerspectiveLocationBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveLocationXSpinButton () const
+	{ return *m_TextureProjectorPerspectiveLocationXSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveLocationYSpinButton () const
+	{ return *m_TextureProjectorPerspectiveLocationYSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveLocationZSpinButton () const
+	{ return *m_TextureProjectorPerspectiveLocationZSpinButton; }
+
+	Gtk::Box &
+	getTextureProjectorPerspectiveDirectionToolBox () const
+	{ return *m_TextureProjectorPerspectiveDirectionToolBox; }
+
+	Gtk::Box &
+	getTextureProjectorPerspectiveDirectionBox () const
+	{ return *m_TextureProjectorPerspectiveDirectionBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveDirectionXSpinButton () const
+	{ return *m_TextureProjectorPerspectiveDirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveDirectionYSpinButton () const
+	{ return *m_TextureProjectorPerspectiveDirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveDirectionZSpinButton () const
+	{ return *m_TextureProjectorPerspectiveDirectionZSpinButton; }
+
+	Gtk::Box &
+	getTextureProjectorPerspectiveUpVectorToolBox () const
+	{ return *m_TextureProjectorPerspectiveUpVectorToolBox; }
+
+	Gtk::Box &
+	getTextureProjectorPerspectiveUpVectorBox () const
+	{ return *m_TextureProjectorPerspectiveUpVectorBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveUpVectorXSpinButton () const
+	{ return *m_TextureProjectorPerspectiveUpVectorXSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveUpVectorYSpinButton () const
+	{ return *m_TextureProjectorPerspectiveUpVectorYSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveUpVectorZSpinButton () const
+	{ return *m_TextureProjectorPerspectiveUpVectorZSpinButton; }
+
+	Gtk::Box &
+	getTextureProjectorPerspectiveFieldOfViewBox () const
+	{ return *m_TextureProjectorPerspectiveFieldOfViewBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveNearDistanceSpinButton () const
+	{ return *m_TextureProjectorPerspectiveNearDistanceSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveFarDistanceSpinButton () const
+	{ return *m_TextureProjectorPerspectiveFarDistanceSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorPerspectiveAspectRatioSpinButton () const
+	{ return *m_TextureProjectorPerspectiveAspectRatioSpinButton; }
 
 	Gtk::Expander &
 	getLayoutExpander () const
@@ -2019,6 +2163,20 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PolylineEmitterDirectionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SwitchWhichChoiceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveAspectRatioAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer> m_TextureProjectorPerspectiveDescriptionTextBuffer;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveDirectionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveFarDistanceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveFieldOfViewAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveLocationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveLocationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveLocationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveNearDistanceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveUpVectorXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveUpVectorYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveUpVectorZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterZAdjustment;
@@ -2164,6 +2322,28 @@ private:
 	Gtk::Box* m_ParticleSystemParticleSizeBox;
 	Gtk::ToggleButton* m_ParticleSystemUniformParticleSizeButton;
 	Gtk::Image* m_ParticleSystemUniformParticleSizeImage;
+	Gtk::Expander* m_TextureProjectorPerspectiveExpander;
+	Gtk::CheckButton* m_TextureProjectorPerspectiveOnCheckButton;
+	Gtk::TextView* m_TextureProjectorPerspectiveDescriptionTextView;
+	Gtk::CheckButton* m_TextureProjectorPerspectiveGlobalCheckButton;
+	Gtk::Box* m_TextureProjectorPerspectiveLocationBox;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveLocationXSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveLocationYSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveLocationZSpinButton;
+	Gtk::Box* m_TextureProjectorPerspectiveDirectionToolBox;
+	Gtk::Box* m_TextureProjectorPerspectiveDirectionBox;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveDirectionXSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveDirectionYSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveDirectionZSpinButton;
+	Gtk::Box* m_TextureProjectorPerspectiveUpVectorToolBox;
+	Gtk::Box* m_TextureProjectorPerspectiveUpVectorBox;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveUpVectorXSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveUpVectorYSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveUpVectorZSpinButton;
+	Gtk::Box* m_TextureProjectorPerspectiveFieldOfViewBox;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveNearDistanceSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveFarDistanceSpinButton;
+	Gtk::SpinButton* m_TextureProjectorPerspectiveAspectRatioSpinButton;
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;
