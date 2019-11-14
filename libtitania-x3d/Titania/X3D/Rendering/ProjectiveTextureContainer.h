@@ -91,6 +91,14 @@ public:
 	getProjectiveTextureMatrix () const
 	{ return projectiveTextureMatrix; }
 
+	void
+	setProjectiveTextureLocation (const Vector3f & value)
+	{ projectiveTextureLocation = value; }
+
+	const Vector3f &
+	getProjectiveTextureLocation () const
+	{ return projectiveTextureLocation; }
+
 	///  @name Operations
 
 	void
@@ -112,6 +120,7 @@ private:
 	X3DTextureProjectorNode* const node;
 	Matrix4dStack                  modelViewMatrix;
 	Matrix4d                       projectiveTextureMatrix;
+	Vector3f                       projectiveTextureLocation;
 
 };
 

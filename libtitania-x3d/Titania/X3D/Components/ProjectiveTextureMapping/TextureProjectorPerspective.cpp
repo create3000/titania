@@ -127,6 +127,7 @@ TextureProjectorPerspective::setGlobalVariables (X3DRenderObject* const renderOb
 			invTextureSpaceMatrix .mult_left (inverse (modelMatrix));
 
 		container -> setProjectiveTextureMatrix (renderObject -> getCameraSpaceMatrix () .get () * invTextureSpaceMatrix * projectionMatrix * getBiasMatrix ());
+		container -> setProjectiveTextureLocation (Vector3d (location () .getValue ()) * container -> getModelViewMatrix () .get ());
 	}
 	catch (const std::exception & error)
 	{

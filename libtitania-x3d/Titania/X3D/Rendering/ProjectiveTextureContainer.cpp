@@ -60,10 +60,11 @@ namespace titania {
 namespace X3D {
 
 ProjectiveTextureContainer::ProjectiveTextureContainer (X3DBrowser* const browser, X3DTextureProjectorNode* const node, const Matrix4d & modelViewMatrix) :
-	                browser (browser),
-	                   node (node),
-	        modelViewMatrix ({ modelViewMatrix }),
-	projectiveTextureMatrix ()
+	                  browser (browser),
+	                     node (node),
+	          modelViewMatrix ({ modelViewMatrix }),
+	  projectiveTextureMatrix (),
+	projectiveTextureLocation ()
 {
 }
 
@@ -87,6 +88,8 @@ ProjectiveTextureContainer::setShaderUniforms (X3DRenderObject* const renderObje
 		glUniformMatrix4dv (shaderObject -> getProjectiveTextureMatrixUniformLocation () [i], 1, false, (projectiveTextureMatrix) .front () .data ());
 	else
 		glUniformMatrix4fv (shaderObject -> getProjectiveTextureMatrixUniformLocation () [i], 1, false, Matrix4f (projectiveTextureMatrix) .front () .data ());
+
+	glUniform3fv (shaderObject -> getProjectiveTextureLocationUniformLocation () [i], 1, projectiveTextureLocation .data ());
 }
 
 ProjectiveTextureContainer::~ProjectiveTextureContainer ()

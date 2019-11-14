@@ -139,6 +139,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              x3d_NumProjectiveTextures (-1),
 	                  x3d_ProjectiveTexture (getBrowser () -> getMaxTextures (), -1),
 	            x3d_ProjectiveTextureMatrix (getBrowser () -> getMaxTextures (), -1),
+	          x3d_ProjectiveTextureLocation (getBrowser () -> getMaxTextures (), -1),
 	                  x3d_MultiTextureColor (-1),
 	                   x3d_MultiTextureMode (getBrowser () -> getMaxTextures (), -1),
 	              x3d_MultiTextureAlphaMode (getBrowser () -> getMaxTextures (), -1),
@@ -232,6 +233,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_CubeMapTexture                      .clear ();
 	x3d_ProjectiveTexture                   .clear ();
 	x3d_ProjectiveTextureMatrix             .clear ();
+	x3d_ProjectiveTextureLocation           .clear ();
 	x3d_MultiTextureMode                    .clear ();
 	x3d_MultiTextureAlphaMode               .clear ();
 	x3d_MultiTextureSource                  .clear ();
@@ -340,8 +342,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ()));
 		x3d_TexCoord      .emplace_back (getAttribLocation (program, "x3d_TexCoord" + is, i ? "" : "x3d_TexCoord"));
 
-		x3d_ProjectiveTexture .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ()));
-		x3d_ProjectiveTextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ()));
+		x3d_ProjectiveTexture         .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ()));
+		x3d_ProjectiveTextureMatrix   .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ()));
+		x3d_ProjectiveTextureLocation .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTextureLocation[" + is + "]") .c_str ()));
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");

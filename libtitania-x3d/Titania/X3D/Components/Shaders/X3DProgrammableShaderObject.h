@@ -334,6 +334,10 @@ public:
 	getProjectiveTextureMatrixUniformLocation () const
 	{ return x3d_ProjectiveTextureMatrix; }
 
+	const std::vector <GLint> &
+	getProjectiveTextureLocationUniformLocation () const
+	{ return x3d_ProjectiveTextureLocation; }
+
 	GLint
 	getMultiTextureColorUniformLocation () const
 	{ return x3d_MultiTextureColor; }
@@ -656,6 +660,7 @@ private:
 	GLint               x3d_NumProjectiveTextures;
 	std::vector <GLint> x3d_ProjectiveTexture;
 	std::vector <GLint> x3d_ProjectiveTextureMatrix;
+	std::vector <GLint> x3d_ProjectiveTextureLocation;
 
 	GLint               x3d_MultiTextureColor;
 	std::vector <GLint> x3d_MultiTextureMode;
