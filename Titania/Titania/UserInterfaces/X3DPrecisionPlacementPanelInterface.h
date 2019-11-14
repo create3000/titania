@@ -506,6 +506,74 @@ public:
 	{ return m_SwitchWhichChoiceAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelAspectRatioAdjustment () const
+	{ return m_TextureProjectorParallelAspectRatioAdjustment; }
+
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getTextureProjectorParallelDescriptionTextBuffer () const
+	{ return m_TextureProjectorParallelDescriptionTextBuffer; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelDirectionXAdjustment () const
+	{ return m_TextureProjectorParallelDirectionXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelDirectionYAdjustment () const
+	{ return m_TextureProjectorParallelDirectionYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelDirectionZAdjustment () const
+	{ return m_TextureProjectorParallelDirectionZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelFarDistanceAdjustment () const
+	{ return m_TextureProjectorParallelFarDistanceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelFieldOfViewMaxXAdjustment () const
+	{ return m_TextureProjectorParallelFieldOfViewMaxXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelFieldOfViewMaxYAdjustment () const
+	{ return m_TextureProjectorParallelFieldOfViewMaxYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelFieldOfViewMinXAdjustment () const
+	{ return m_TextureProjectorParallelFieldOfViewMinXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelFieldOfViewMinYAdjustment () const
+	{ return m_TextureProjectorParallelFieldOfViewMinYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelLocationXAdjustment () const
+	{ return m_TextureProjectorParallelLocationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelLocationYAdjustment () const
+	{ return m_TextureProjectorParallelLocationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelLocationZAdjustment () const
+	{ return m_TextureProjectorParallelLocationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelNearDistanceAdjustment () const
+	{ return m_TextureProjectorParallelNearDistanceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelUpVectorXAdjustment () const
+	{ return m_TextureProjectorParallelUpVectorXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelUpVectorYAdjustment () const
+	{ return m_TextureProjectorParallelUpVectorYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureProjectorParallelUpVectorZAdjustment () const
+	{ return m_TextureProjectorParallelUpVectorZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTextureProjectorPerspectiveAspectRatioAdjustment () const
 	{ return m_TextureProjectorPerspectiveAspectRatioAdjustment; }
 
@@ -1228,6 +1296,110 @@ public:
 	Gtk::SpinButton &
 	getTextureProjectorPerspectiveAspectRatioSpinButton () const
 	{ return *m_TextureProjectorPerspectiveAspectRatioSpinButton; }
+
+	Gtk::Expander &
+	getTextureProjectorParallelExpander () const
+	{ return *m_TextureProjectorParallelExpander; }
+
+	Gtk::CheckButton &
+	getTextureProjectorParallelOnCheckButton () const
+	{ return *m_TextureProjectorParallelOnCheckButton; }
+
+	Gtk::TextView &
+	getTextureProjectorParallelDescriptionTextView () const
+	{ return *m_TextureProjectorParallelDescriptionTextView; }
+
+	Gtk::CheckButton &
+	getTextureProjectorParallelGlobalCheckButton () const
+	{ return *m_TextureProjectorParallelGlobalCheckButton; }
+
+	Gtk::Box &
+	getTextureProjectorParallelLocationBox () const
+	{ return *m_TextureProjectorParallelLocationBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelLocationXSpinButton () const
+	{ return *m_TextureProjectorParallelLocationXSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelLocationYSpinButton () const
+	{ return *m_TextureProjectorParallelLocationYSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelLocationZSpinButton () const
+	{ return *m_TextureProjectorParallelLocationZSpinButton; }
+
+	Gtk::Box &
+	getTextureProjectorParallelDirectionToolBox () const
+	{ return *m_TextureProjectorParallelDirectionToolBox; }
+
+	Gtk::Box &
+	getTextureProjectorParallelDirectionBox () const
+	{ return *m_TextureProjectorParallelDirectionBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelDirectionXSpinButton () const
+	{ return *m_TextureProjectorParallelDirectionXSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelDirectionYSpinButton () const
+	{ return *m_TextureProjectorParallelDirectionYSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelDirectionZSpinButton () const
+	{ return *m_TextureProjectorParallelDirectionZSpinButton; }
+
+	Gtk::Box &
+	getTextureProjectorParallelUpVectorToolBox () const
+	{ return *m_TextureProjectorParallelUpVectorToolBox; }
+
+	Gtk::Box &
+	getTextureProjectorParallelUpVectorBox () const
+	{ return *m_TextureProjectorParallelUpVectorBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelUpVectorXSpinButton () const
+	{ return *m_TextureProjectorParallelUpVectorXSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelUpVectorYSpinButton () const
+	{ return *m_TextureProjectorParallelUpVectorYSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelUpVectorZSpinButton () const
+	{ return *m_TextureProjectorParallelUpVectorZSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelNearDistanceSpinButton () const
+	{ return *m_TextureProjectorParallelNearDistanceSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelFarDistanceSpinButton () const
+	{ return *m_TextureProjectorParallelFarDistanceSpinButton; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelAspectRatioSpinButton () const
+	{ return *m_TextureProjectorParallelAspectRatioSpinButton; }
+
+	Gtk::Grid &
+	getTextureProjectorParallelFieldOfViewBox () const
+	{ return *m_TextureProjectorParallelFieldOfViewBox; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelFieldOfViewSpinButton3 () const
+	{ return *m_TextureProjectorParallelFieldOfViewSpinButton3; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelFieldOfViewSpinButton0 () const
+	{ return *m_TextureProjectorParallelFieldOfViewSpinButton0; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelFieldOfViewSpinButton2 () const
+	{ return *m_TextureProjectorParallelFieldOfViewSpinButton2; }
+
+	Gtk::SpinButton &
+	getTextureProjectorParallelFieldOfViewSpinButton1 () const
+	{ return *m_TextureProjectorParallelFieldOfViewSpinButton1; }
 
 	Gtk::Expander &
 	getLayoutExpander () const
@@ -2163,6 +2335,23 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PolylineEmitterDirectionZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SwitchWhichChoiceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelAspectRatioAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer> m_TextureProjectorParallelDescriptionTextBuffer;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelDirectionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelFarDistanceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelFieldOfViewMaxXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelFieldOfViewMaxYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelFieldOfViewMinXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelFieldOfViewMinYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelLocationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelLocationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelLocationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelNearDistanceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelUpVectorXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelUpVectorYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorParallelUpVectorZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveAspectRatioAdjustment;
 	Glib::RefPtr <Gtk::TextBuffer> m_TextureProjectorPerspectiveDescriptionTextBuffer;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureProjectorPerspectiveDirectionXAdjustment;
@@ -2344,6 +2533,32 @@ private:
 	Gtk::SpinButton* m_TextureProjectorPerspectiveNearDistanceSpinButton;
 	Gtk::SpinButton* m_TextureProjectorPerspectiveFarDistanceSpinButton;
 	Gtk::SpinButton* m_TextureProjectorPerspectiveAspectRatioSpinButton;
+	Gtk::Expander* m_TextureProjectorParallelExpander;
+	Gtk::CheckButton* m_TextureProjectorParallelOnCheckButton;
+	Gtk::TextView* m_TextureProjectorParallelDescriptionTextView;
+	Gtk::CheckButton* m_TextureProjectorParallelGlobalCheckButton;
+	Gtk::Box* m_TextureProjectorParallelLocationBox;
+	Gtk::SpinButton* m_TextureProjectorParallelLocationXSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelLocationYSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelLocationZSpinButton;
+	Gtk::Box* m_TextureProjectorParallelDirectionToolBox;
+	Gtk::Box* m_TextureProjectorParallelDirectionBox;
+	Gtk::SpinButton* m_TextureProjectorParallelDirectionXSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelDirectionYSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelDirectionZSpinButton;
+	Gtk::Box* m_TextureProjectorParallelUpVectorToolBox;
+	Gtk::Box* m_TextureProjectorParallelUpVectorBox;
+	Gtk::SpinButton* m_TextureProjectorParallelUpVectorXSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelUpVectorYSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelUpVectorZSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelNearDistanceSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelFarDistanceSpinButton;
+	Gtk::SpinButton* m_TextureProjectorParallelAspectRatioSpinButton;
+	Gtk::Grid* m_TextureProjectorParallelFieldOfViewBox;
+	Gtk::SpinButton* m_TextureProjectorParallelFieldOfViewSpinButton3;
+	Gtk::SpinButton* m_TextureProjectorParallelFieldOfViewSpinButton0;
+	Gtk::SpinButton* m_TextureProjectorParallelFieldOfViewSpinButton2;
+	Gtk::SpinButton* m_TextureProjectorParallelFieldOfViewSpinButton1;
 	Gtk::Expander* m_LayoutExpander;
 	Gtk::Grid* m_CreateLayoutBox;
 	Gtk::CheckButton* m_LayoutCheckButton;

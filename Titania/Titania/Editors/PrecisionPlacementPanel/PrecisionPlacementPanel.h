@@ -61,6 +61,7 @@
 #include "X3DLODEditor.h"
 #include "X3DLayoutEditor.h"
 #include "X3DSwitchEditor.h"
+#include "X3DTextureProjectorParallelEditor.h"
 #include "X3DTextureProjectorPerspectiveEditor.h"
 #include "X3DTransformEditor.h"
 #include "X3DViewportEditor.h"
@@ -85,6 +86,7 @@ class PrecisionPlacementPanel :
 	public X3DEnvironmentalSensorEditor,
 	public X3DParticleSystemEditor,
 	public X3DParticleEmitterNodeEditor,
+	public X3DTextureProjectorParallelEditor,
 	public X3DTextureProjectorPerspectiveEditor,
 	public X3DGeometrySelectionEditor
 {

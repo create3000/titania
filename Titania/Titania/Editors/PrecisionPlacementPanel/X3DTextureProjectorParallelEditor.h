@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,121 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DTEXTURE_PROJECTOR_PARALLEL_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DTEXTURE_PROJECTOR_PARALLEL_EDITOR_H__
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class ProjectiveTextureContainer;
-
-class TextureProjectorParallel :
-	public X3DTextureProjectorNode
+class X3DTextureProjectorParallelEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
-
-	///  @name Construction
-
-	TextureProjectorParallel (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	const MFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Member access
-
-	double
-	getMinimumX () const;
-
-	double
-	getMinimumY () const;
-
-	double
-	getMaximumX () const;
-
-	double
-	getMaximumY () const;
-
-	///  @name Operations
-
-	virtual
-	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override;
 
 	///  @name Destruction
 
 	virtual
-	~TextureProjectorParallel () final override;
+	~X3DTextureProjectorParallelEditor () override;
 
 
 protected:
 
 	///  @name Construction
 
+	X3DTextureProjectorParallelEditor ();
+
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode & selection) override;
 
 
 private:
 
-	///  @name Member access
+	///  @name Members
 
-	double
-	getSizeX () const;
-
-	double
-	getSizeY () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		MFFloat* const fieldOfView;
-	};
-
-	Fields fields;
+	SFStringTextView                   description;
+	X3DFieldToggleButton <X3D::SFBool> on;
+	X3DFieldToggleButton <X3D::SFBool> global;
+	X3DFieldAdjustment3 <X3D::SFVec3f> location;
+	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
+	NormalTool                         directionTool;
+	X3DFieldAdjustment3 <X3D::SFVec3f> upVector;
+	NormalTool                         upVectorTool;
+	X3DFieldAdjustment <X3D::MFFloat>  fieldOfView0;
+	X3DFieldAdjustment <X3D::MFFloat>  fieldOfView1;
+	X3DFieldAdjustment <X3D::MFFloat>  fieldOfView2;
+	X3DFieldAdjustment <X3D::MFFloat>  fieldOfView3;
+	X3DFieldAdjustment <X3D::SFFloat>  nearDistance;
+	X3DFieldAdjustment <X3D::SFFloat>  farDistance;
+	X3DFieldAdjustment <X3D::SFFloat>  aspectRatio;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif
