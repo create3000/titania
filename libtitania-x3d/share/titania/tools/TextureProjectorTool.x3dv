@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 11:40:41 GMT"
+META "modified" "Fri, 15 Nov 2019 12:15:03 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -314,20 +314,18 @@ function set_perspectiveFarDistance ()
 function set_perspective ()
 {
 	var fov1_2 = textureProjector .fieldOfView / 2;
-	var r1     = new SFRotation (1, 0, 0,  fov1_2) .multiply (new SFRotation (0, 1, 0,  fov1_2))
-	var r2     = new SFRotation (1, 0, 0, -fov1_2) .multiply (new SFRotation (0, 1, 0,  fov1_2))
-	var r3     = new SFRotation (1, 0, 0, -fov1_2) .multiply (new SFRotation (0, 1, 0, -fov1_2))
-	var r4     = new SFRotation (1, 0, 0,  fov1_2) .multiply (new SFRotation (0, 1, 0, -fov1_2))
+	var n      = Math .tan (fov1_2) * textureProjector .nearDistance;
+	var f      = Math .tan (fov1_2) * textureProjector .farDistance;
 
-	frustum .point [0] = r1 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
-	frustum .point [2] = r2 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
-	frustum .point [4] = r3 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
-	frustum .point [6] = r4 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
+	frustum .point [0] = new SFVec3f ( n,  n, textureProjector .nearDistance);
+	frustum .point [2] = new SFVec3f (-n,  n, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (-n, -n, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f ( n, -n, textureProjector .nearDistance);
 
-	frustum .point [1] = r1 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
-	frustum .point [3] = r2 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
-	frustum .point [5] = r3 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
-	frustum .point [7] = r4 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
+	frustum .point [1] = new SFVec3f ( f,  f, textureProjector .farDistance);
+	frustum .point [3] = new SFVec3f (-f,  f, textureProjector .farDistance);
+	frustum .point [5] = new SFVec3f (-f, -f, textureProjector .farDistance);
+	frustum .point [7] = new SFVec3f ( f, -f, textureProjector .farDistance);
 }
 "
               directOutput TRUE
