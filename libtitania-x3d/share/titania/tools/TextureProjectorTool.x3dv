@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 12:15:03 GMT"
+META "modified" "Fri, 15 Nov 2019 12:38:45 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -78,9 +78,11 @@ WorldInfo {
               inputOnly      MFFloat set_parallelFieldOfView
               inputOnly      SFFloat set_parallelNearDistance
               inputOnly      SFFloat set_parallelFarDistance
+              inputOnly      SFFloat set_parallelAspectRatio
               inputOnly      SFFloat set_perspectiveFieldOfView
               inputOnly      SFFloat set_perspectiveNearDistance
               inputOnly      SFFloat set_perspectiveFarDistance
+              inputOnly      SFFloat set_perspectiveAspectRatio
               inputOutput    SFNode  textureProjector NULL
               initializeOnly SFNode  projector DEF Projector Transform {
                 children [
@@ -195,6 +197,7 @@ function set_textureProjector ()
 				routes .push (Browser .currentScene .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_parallelFieldOfView\"));
 				routes .push (Browser .currentScene .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_parallelNearDistance\"));
 				routes .push (Browser .currentScene .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_parallelFarDistance\"));
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"aspectRatio\",          self, \"set_parallelAspectRatio\"));
 				
 				set_parallel ();
 				break;
@@ -204,6 +207,7 @@ function set_textureProjector ()
 				routes .push (Browser .currentScene .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_perspectiveFieldOfView\"));
 				routes .push (Browser .currentScene .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_perspectiveNearDistance\"));
 				routes .push (Browser .currentScene .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_perspectiveFarDistance\"));
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"aspectRatio\",          self, \"set_perspectiveAspectRatio\"));
 				
 				set_perspective ();
 				break;
@@ -277,6 +281,11 @@ function set_parallelFarDistance ()
 	set_parallel ();
 }
 
+function set_parallelAspectRatio ()
+{
+	set_perspective ();
+}
+
 function set_parallel ()
 {
 	var fov  = textureProjector .fieldOfView;
@@ -284,16 +293,23 @@ function set_parallel ()
 	var minY = fov .length > 1 ? fov [1] : -1; 
 	var maxX = fov .length > 2 ? fov [2] :  1; 
 	var maxY = fov .length > 3 ? fov [3] :  1;
+	var w    = 1;
+	var h    = 1;
 
-	frustum .point [0] = new SFVec3f (minX, minY, textureProjector .nearDistance);
-	frustum .point [2] = new SFVec3f (maxX, minY, textureProjector .nearDistance);
-	frustum .point [4] = new SFVec3f (maxX, maxY, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f (minX, maxY, textureProjector .nearDistance);
+	if (textureProjector .aspectRatio > 1)
+		w = textureProjector .aspectRatio;
+	else
+		h = 1 / textureProjector .aspectRatio;
 
-	frustum .point [1] = new SFVec3f (minX, minY, textureProjector .farDistance);
-	frustum .point [3] = new SFVec3f (maxX, minY, textureProjector .farDistance);
-	frustum .point [5] = new SFVec3f (maxX, maxY, textureProjector .farDistance);
-	frustum .point [7] = new SFVec3f (minX, maxY, textureProjector .farDistance);
+	frustum .point [0] = new SFVec3f (minX * w, minY * h, textureProjector .nearDistance);
+	frustum .point [2] = new SFVec3f (maxX * w, minY * h, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (maxX * w, maxY * h, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f (minX * w, maxY * h, textureProjector .nearDistance);
+
+	frustum .point [1] = new SFVec3f (minX * w, minY * h, textureProjector .farDistance);
+	frustum .point [3] = new SFVec3f (maxX * w, minY * h, textureProjector .farDistance);
+	frustum .point [5] = new SFVec3f (maxX * w, maxY * h, textureProjector .farDistance);
+	frustum .point [7] = new SFVec3f (minX * w, maxY * h, textureProjector .farDistance);
 }
 
 function set_perspectiveFieldOfView ()
@@ -311,21 +327,33 @@ function set_perspectiveFarDistance ()
 	set_perspective ();
 }
 
+function set_perspectiveAspectRatio ()
+{
+	set_perspective ();
+}
+
 function set_perspective ()
 {
 	var fov1_2 = textureProjector .fieldOfView / 2;
 	var n      = Math .tan (fov1_2) * textureProjector .nearDistance;
 	var f      = Math .tan (fov1_2) * textureProjector .farDistance;
+	var w      = 1;
+	var h      = 1;
 
-	frustum .point [0] = new SFVec3f ( n,  n, textureProjector .nearDistance);
-	frustum .point [2] = new SFVec3f (-n,  n, textureProjector .nearDistance);
-	frustum .point [4] = new SFVec3f (-n, -n, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f ( n, -n, textureProjector .nearDistance);
+	if (textureProjector .aspectRatio > 1)
+		w = textureProjector .aspectRatio;
+	else
+		h = 1 / textureProjector .aspectRatio;
 
-	frustum .point [1] = new SFVec3f ( f,  f, textureProjector .farDistance);
-	frustum .point [3] = new SFVec3f (-f,  f, textureProjector .farDistance);
-	frustum .point [5] = new SFVec3f (-f, -f, textureProjector .farDistance);
-	frustum .point [7] = new SFVec3f ( f, -f, textureProjector .farDistance);
+	frustum .point [0] = new SFVec3f ( n * w,  n * h, textureProjector .nearDistance);
+	frustum .point [2] = new SFVec3f (-n * w,  n * h, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (-n * w, -n * h, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f ( n * w, -n * h, textureProjector .nearDistance);
+
+	frustum .point [1] = new SFVec3f ( f * w,  f * h, textureProjector .farDistance);
+	frustum .point [3] = new SFVec3f (-f * w,  f * h, textureProjector .farDistance);
+	frustum .point [5] = new SFVec3f (-f * w, -f * h, textureProjector .farDistance);
+	frustum .point [7] = new SFVec3f ( f * w, -f * h, textureProjector .farDistance);
 }
 "
               directOutput TRUE
