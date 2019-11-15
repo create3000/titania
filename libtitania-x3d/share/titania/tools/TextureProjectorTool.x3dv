@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 10:40:25 GMT"
+META "modified" "Fri, 15 Nov 2019 11:40:41 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -69,90 +69,111 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-          }
-          DEF selectGeometry MetadataBoolean {
-            name "selectGeometry"
-            reference "http://titania.create3000.de"
-            value FALSE
-          }
-        ]
-      }
-      DEF Page MetadataSet {
-        name "Page"
-        reference "http://titania.create3000.de"
-        value [
-          DEF activeView MetadataInteger {
-            name "activeView"
-            reference "http://titania.create3000.de"
-            value 1
-          }
-          DEF multiView MetadataInteger {
-            name "multiView"
-            reference "http://titania.create3000.de"
-            value 0
-          }
-        ]
-      }
-      DEF Grid MetadataSet {
-        name "Grid"
-        reference "http://titania.create3000.de"
-        value DEF enabled MetadataBoolean {
-          name "enabled"
-          reference "http://titania.create3000.de"
-          value TRUE
-        }
-      }
-    ]
-  }
-  title "LightTool"
-}
+            value DEF Tool Script {
+              inputOutput    SFBool  enabled FALSE
+              inputOutput    SFBool  selected FALSE
+              inputOnly      SFVec3f set_location
+              inputOnly      SFVec3f set_direction
+              inputOnly      SFVec3f set_upVector
+              inputOnly      MFFloat set_parallelFieldOfView
+              inputOnly      SFFloat set_parallelNearDistance
+              inputOnly      SFFloat set_parallelFarDistance
+              inputOnly      SFFloat set_perspectiveFieldOfView
+              inputOnly      SFFloat set_perspectiveNearDistance
+              inputOnly      SFFloat set_perspectiveFarDistance
+              inputOutput    SFNode  textureProjector NULL
+              initializeOnly SFNode  projector DEF Projector Transform {
+                children [
+                  DEF Beamer ScreenGroup {
+                    children Transform {
+                      translation 0 0 -15
+                      children [
+                        DEF Box_1 Transform {
+                          children Shape {
+                            appearance DEF _2 Appearance {
+                              material Material {
+                                diffuseColor 0.2 0.2 0.2
+                                specularColor 1 1 1
+                              }
+                              shaders DEF _3 ToolShader { }
+                            }
+                            geometry Box {
+                              size 40 20 30
+                            }
+                          }
+                        }
+                        DEF Cylinder Transform {
+                          translation 0 0 15
+                          rotation 0.999999999993254 3.67320512848233e-06 1.19222813476655e-18 1.5707963267949
+                          children Shape {
+                            appearance USE _2
+                            geometry Cylinder {
+                              top FALSE
+                              height 20
+                              radius 12
+                              solid FALSE
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                  DEF Frustum Transform {
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          emissiveColor 1 0.985342 0.807597
+                        }
+                        shaders USE _3
+                      }
+                      geometry IndexedLineSet {
+                        coordIndex [
+                          0,
+                          1,
+                          -1,
+                          2,
+                          3,
+                          -1,
+                          4,
+                          5,
+                          -1,
+                          6,
+                          7,
+                          -1,
+                          0,
+                          2,
+                          4,
+                          6,
+                          0,
+                          -1,
+                          1,
+                          3,
+                          5,
+                          7,
+                          1,
+                          -1
+                        ]
+                        coord DEF _4 Coordinate {
+                          point [
+                            0 0 0,
+                            1 1 1,
+                            0 0 0,
+                            -1 1 1,
+                            0 0 0,
+                            -1 -1 1,
+                            0 0 0,
+                            1 -1 1
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+              initializeOnly SFNode  frustum USE _4
+              initializeOnly SFNode  self USE Tool
 
-DEF Tool Script {
-  inputOutput    SFBool  enabled FALSE
-  inputOutput    SFBool  selected FALSE
-  inputOnly      SFVec3f set_location
-  inputOnly      SFVec3f set_direction
-  inputOnly      SFVec3f set_upVector
-  inputOutput    SFNode  textureProjector NULL
-  initializeOnly SFNode  projector DEF Projector Transform {
-    children ScreenGroup {
-      children Transform {
-        translation 0 0 -15
-        children [
-          DEF Box_1 Transform {
-            children Shape {
-              appearance DEF _2 Appearance {
-                material Material {
-                  diffuseColor 0.2 0.2 0.2
-                  specularColor 1 1 1
-                }
-                shaders ToolShader { }
-              }
-              geometry Box {
-                size 40 20 30
-              }
-            }
-          }
-          DEF Cylinder Transform {
-            translation 0 0 5
-            rotation 0.999999999993254 3.67320512848233e-06 1.19222813476655e-18 1.5707963267949
-            children Shape {
-              appearance USE _2
-              geometry Cylinder {
-                top FALSE
-                height 40
-                radius 10
-                solid FALSE
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
-  initializeOnly SFNode  self USE Tool
-
-  url "ecmascript:
+              url "ecmascript:
 
 var routes = [ ];
 
@@ -171,11 +192,19 @@ function set_textureProjector ()
 		{
 			case X3DConstants .TextureProjectorParallel:
 			{
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_parallelFieldOfView\"));
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_parallelNearDistance\"));
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_parallelFarDistance\"));
+				
 				set_parallel ();
 				break;
 			}
 			case X3DConstants .TextureProjectorPerspective:
 			{
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_perspectiveFieldOfView\"));
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_perspectiveNearDistance\"));
+				routes .push (Browser .currentScene .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_perspectiveFarDistance\"));
+				
 				set_perspective ();
 				break;
 			}
@@ -185,7 +214,9 @@ function set_textureProjector ()
 
 		break;
 	}
-	
+
+	routes .length = 0;
+
 	routes .push (Browser .currentScene .addRoute (textureProjector, \"location_changed\",  self, \"set_location\"));
 	routes .push (Browser .currentScene .addRoute (textureProjector, \"direction_changed\", self, \"set_direction\"));
 	routes .push (Browser .currentScene .addRoute (textureProjector, \"upVector_changed\",  self, \"set_upVector\"));
@@ -231,18 +262,115 @@ function straightenHorizon (orientation)
 	return orientation .multiply (rotation);
 }
 
+function set_parallelFieldOfView ()
+{
+	set_parallel ();
+}
+
+function set_parallelNearDistance ()
+{
+	set_parallel ();
+}
+
+function set_parallelFarDistance ()
+{
+	set_parallel ();
+}
+
 function set_parallel ()
 {
-	print (\"set_parallel\");
+	var fov  = textureProjector .fieldOfView;
+	var minX = fov .length > 0 ? fov [0] : -1; 
+	var minY = fov .length > 1 ? fov [1] : -1; 
+	var maxX = fov .length > 2 ? fov [2] :  1; 
+	var maxY = fov .length > 3 ? fov [3] :  1;
+
+	frustum .point [0] = new SFVec3f (minX, minY, textureProjector .nearDistance);
+	frustum .point [2] = new SFVec3f (maxX, minY, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (maxX, maxY, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f (minX, maxY, textureProjector .nearDistance);
+
+	frustum .point [1] = new SFVec3f (minX, minY, textureProjector .farDistance);
+	frustum .point [3] = new SFVec3f (maxX, minY, textureProjector .farDistance);
+	frustum .point [5] = new SFVec3f (maxX, maxY, textureProjector .farDistance);
+	frustum .point [7] = new SFVec3f (minX, maxY, textureProjector .farDistance);
+}
+
+function set_perspectiveFieldOfView ()
+{
+	set_perspective ();
+}
+
+function set_perspectiveNearDistance ()
+{
+	set_perspective ();
+}
+
+function set_perspectiveFarDistance ()
+{
+	set_perspective ();
 }
 
 function set_perspective ()
 {
-	print (\"set_perspective\");
+	var fov1_2 = textureProjector .fieldOfView / 2;
+	var r1     = new SFRotation (1, 0, 0,  fov1_2) .multiply (new SFRotation (0, 1, 0,  fov1_2))
+	var r2     = new SFRotation (1, 0, 0, -fov1_2) .multiply (new SFRotation (0, 1, 0,  fov1_2))
+	var r3     = new SFRotation (1, 0, 0, -fov1_2) .multiply (new SFRotation (0, 1, 0, -fov1_2))
+	var r4     = new SFRotation (1, 0, 0,  fov1_2) .multiply (new SFRotation (0, 1, 0, -fov1_2))
+
+	frustum .point [0] = r1 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
+	frustum .point [2] = r2 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
+	frustum .point [4] = r3 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
+	frustum .point [6] = r4 .multVec (new SFVec3f (0, 0, textureProjector .nearDistance));
+
+	frustum .point [1] = r1 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
+	frustum .point [3] = r2 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
+	frustum .point [5] = r3 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
+	frustum .point [7] = r4 .multVec (new SFVec3f (0, 0, textureProjector .farDistance));
 }
 "
-  directOutput TRUE
+              directOutput TRUE
+            }
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+    ]
+  }
+  title "LightTool"
 }
+
+USE Tool
 
 Collision {
   enabled FALSE
