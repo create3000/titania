@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 16:33:26 GMT"
+META "modified" "Fri, 15 Nov 2019 16:35:35 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -69,7 +69,59 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value Switch { }
+            value DEF _1 Switch {
+              children DEF Image Transform {
+                children Shape {
+                  appearance DEF _2 Appearance {
+                    material Material {
+                      transparency 0.5
+                    }
+                    shaders DEF _3 ToolShader { }
+                  }
+                  geometry IndexedFaceSet {
+                    solid FALSE
+                    texCoordIndex [
+                      0,
+                      1,
+                      2,
+                      3,
+                      -1
+                    ]
+                    coordIndex [
+                      4,
+                      5,
+                      6,
+                      7,
+                      -1
+                    ]
+                    texCoord TextureCoordinate {
+                      point [
+                        1 1,
+                        0 1,
+                        0 0,
+                        1 0
+                      ]
+                    }
+                    coord DEF _4 Coordinate {
+                      point [
+                        0 0 0,
+                        0 0 0,
+                        0 0 0,
+                        0 0 0,
+                        1 1 1,
+                        -1 1 1,
+                        -1 -1 1,
+                        1 -1 1,
+                        2 2 2,
+                        -2 2 2,
+                        -2 -2 2,
+                        2 -2 2
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -130,14 +182,14 @@ DEF Tool Script {
         children Transform {
           translation 0 0 -15
           children [
-            DEF Box_1 Transform {
+            DEF Box_5 Transform {
               children Shape {
-                appearance DEF _2 Appearance {
+                appearance DEF _6 Appearance {
                   material Material {
                     diffuseColor 0.2 0.2 0.2
                     specularColor 1 1 1
                   }
-                  shaders DEF _3 ToolShader { }
+                  shaders USE _3
                 }
                 geometry Box {
                   size 40 20 30
@@ -148,7 +200,7 @@ DEF Tool Script {
               translation 0 0 15
               rotation 0.999999999993254 3.67320512848233e-06 1.19222813476655e-18 1.5707963267949
               children Shape {
-                appearance USE _2
+                appearance USE _6
                 geometry Cylinder {
                   top FALSE
                   height 20
@@ -213,65 +265,15 @@ DEF Tool Script {
               8,
               -1
             ]
-            coord DEF _4 Coordinate {
-              point [
-                0 0 0,
-                0 0 0,
-                0 0 0,
-                0 0 0,
-                1 1 1,
-                -1 1 1,
-                -1 -1 1,
-                1 -1 1,
-                2 2 2,
-                -2 2 2,
-                -2 -2 2,
-                2 -2 2
-              ]
-            }
-          }
-        }
-      }
-      DEF Image Transform {
-        children Shape {
-          appearance DEF _5 Appearance {
-            material Material {
-              transparency 0.5
-            }
-            shaders USE _3
-          }
-          geometry IndexedFaceSet {
-            solid FALSE
-            texCoordIndex [
-              0,
-              1,
-              2,
-              3,
-              -1
-            ]
-            coordIndex [
-              4,
-              5,
-              6,
-              7,
-              -1
-            ]
-            texCoord TextureCoordinate {
-              point [
-                1 1,
-                0 1,
-                0 0,
-                1 0
-              ]
-            }
             coord USE _4
           }
         }
       }
+      USE _1
     ]
   }
   initializeOnly SFNode  frustum USE _4
-  initializeOnly SFNode  image USE _5
+  initializeOnly SFNode  image USE _2
   initializeOnly SFNode  self USE Tool
 
   url "ecmascript:
