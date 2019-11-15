@@ -82,6 +82,9 @@ X3DTextureProjectorNodeTool::realize ()
 	{
 		const auto & toolNode = getToolNode ();
 
+		toolNode -> setPrivate (true);
+		toolNode -> getField <SFNode> ("image") -> setPrivate (true);
+
 		toolNode -> setField <SFNode> ("textureProjector", getNode <X3DTextureProjectorNode> ());
 	}
 	catch (const X3DError & error)
