@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -118,6 +118,9 @@
 
 #include "../../Tools/Picking/PickableGroupTool.h"
 
+#include "../../Tools/ProjectiveTextureMapping/TextureProjectorParallelTool.h"
+#include "../../Tools/ProjectiveTextureMapping/TextureProjectorPerspectiveTool.h"
+
 #include "../../Tools/Rendering/IndexedLineSetTool.h"
 #include "../../Tools/Rendering/IndexedTriangleFanSetTool.h"
 #include "../../Tools/Rendering/IndexedTriangleSetTool.h"
@@ -145,78 +148,80 @@ namespace X3D {
 SupportedTools::SupportedTools () :
 	functions ()
 {
-	addTool ("Anchor",                  [ ] (X3DBaseNode* const node) { return new AnchorTool                  (node); });
-	addTool ("Arc2D",                   [ ] (X3DBaseNode* const node) { return new Arc2DTool                   (node); });
-	addTool ("ArcClose2D",              [ ] (X3DBaseNode* const node) { return new ArcClose2DTool              (node); });
-	addTool ("Billboard",               [ ] (X3DBaseNode* const node) { return new BillboardTool               (node); });
-	addTool ("Box",                     [ ] (X3DBaseNode* const node) { return new BoxTool                     (node); });
-	addTool ("CADAssembly",             [ ] (X3DBaseNode* const node) { return new CADAssemblyTool             (node); });
-	addTool ("CADFace",                 [ ] (X3DBaseNode* const node) { return new CADFaceTool                 (node); });
-	addTool ("CADLayer",                [ ] (X3DBaseNode* const node) { return new CADLayerTool                (node); });
-	addTool ("CADPart",                 [ ] (X3DBaseNode* const node) { return new CADPartTool                 (node); });
-	addTool ("Circle2D",                [ ] (X3DBaseNode* const node) { return new Circle2DTool                (node); });
-	addTool ("CollidableOffset",        [ ] (X3DBaseNode* const node) { return new CollidableOffsetTool        (node); });
-	addTool ("CollidableShape",         [ ] (X3DBaseNode* const node) { return new CollidableShapeTool         (node); });
-	addTool ("Collision",               [ ] (X3DBaseNode* const node) { return new CollisionTool               (node); });
-	addTool ("Cone",                    [ ] (X3DBaseNode* const node) { return new ConeTool                    (node); });
-	addTool ("Cylinder",                [ ] (X3DBaseNode* const node) { return new CylinderTool                (node); });
-	addTool ("DirectionalLight",        [ ] (X3DBaseNode* const node) { return new DirectionalLightTool        (node); });
-	addTool ("Disk2D",                  [ ] (X3DBaseNode* const node) { return new Disk2DTool                  (node); });
-	addTool ("ElevationGrid",           [ ] (X3DBaseNode* const node) { return new ElevationGridTool           (node); });
-	addTool ("Extrusion",               [ ] (X3DBaseNode* const node) { return new ExtrusionTool               (node); });
-	addTool ("GeoElevationGrid",        [ ] (X3DBaseNode* const node) { return new GeoElevationGridTool        (node); });
-	addTool ("GeoLOD",                  [ ] (X3DBaseNode* const node) { return new GeoLODTool                  (node); });
-	addTool ("GeoLocation",             [ ] (X3DBaseNode* const node) { return new GeoLocationTool             (node); });
-	addTool ("GeoTransform",            [ ] (X3DBaseNode* const node) { return new GeoTransformTool            (node); });
-	addTool ("GeoViewpoint",            [ ] (X3DBaseNode* const node) { return new GeoViewpointTool            (node); });
-	addTool ("Group",                   [ ] (X3DBaseNode* const node) { return new GroupTool                   (node); });
-	addTool ("HAnimHumanoid",           [ ] (X3DBaseNode* const node) { return new HAnimHumanoidTool           (node); });
-	addTool ("HAnimJoint",              [ ] (X3DBaseNode* const node) { return new HAnimJointTool              (node); });
-	addTool ("HAnimSegment",            [ ] (X3DBaseNode* const node) { return new HAnimSegmentTool            (node); });
-	addTool ("HAnimSite",               [ ] (X3DBaseNode* const node) { return new HAnimSiteTool               (node); });
-	addTool ("IndexedFaceSet",          [ ] (X3DBaseNode* const node) { return new IndexedFaceSetTool          (node); });
-	addTool ("IndexedLineSet",          [ ] (X3DBaseNode* const node) { return new IndexedLineSetTool          (node); });
-	addTool ("IndexedQuadSet",          [ ] (X3DBaseNode* const node) { return new IndexedQuadSetTool          (node); });
-	addTool ("IndexedTriangleFanSet",   [ ] (X3DBaseNode* const node) { return new IndexedTriangleFanSetTool   (node); });
-	addTool ("IndexedTriangleSet",      [ ] (X3DBaseNode* const node) { return new IndexedTriangleSetTool      (node); });
-	addTool ("IndexedTriangleStripSet", [ ] (X3DBaseNode* const node) { return new IndexedTriangleStripSetTool (node); });
-	addTool ("Inline",                  [ ] (X3DBaseNode* const node) { return new InlineTool                  (node); });
-	addTool ("LOD",                     [ ] (X3DBaseNode* const node) { return new LODTool                     (node); });
-	addTool ("LayoutGroup",             [ ] (X3DBaseNode* const node) { return new LayoutGroupTool             (node); });
-	addTool ("LineSet",                 [ ] (X3DBaseNode* const node) { return new LineSetTool                 (node); });
-	addTool ("NurbsCurve",              [ ] (X3DBaseNode* const node) { return new NurbsCurveTool              (node); });
-	addTool ("NurbsPatchSurface",       [ ] (X3DBaseNode* const node) { return new NurbsPatchSurfaceTool       (node); });
-	addTool ("NurbsSweptSurface",       [ ] (X3DBaseNode* const node) { return new NurbsSweptSurfaceTool       (node); });
-	addTool ("NurbsSwungSurface",       [ ] (X3DBaseNode* const node) { return new NurbsSwungSurfaceTool       (node); });
-	addTool ("NurbsTrimmedSurface",     [ ] (X3DBaseNode* const node) { return new NurbsTrimmedSurfaceTool     (node); });
-	addTool ("OrthoViewpoint",          [ ] (X3DBaseNode* const node) { return new OrthoViewpointTool          (node); });
-	addTool ("ParticleSystem",          [ ] (X3DBaseNode* const node) { return new ParticleSystemTool          (node); });
-	addTool ("PickableGroup",           [ ] (X3DBaseNode* const node) { return new PickableGroupTool           (node); });
-	addTool ("PointLight",              [ ] (X3DBaseNode* const node) { return new PointLightTool              (node); });
-	addTool ("PointSet",                [ ] (X3DBaseNode* const node) { return new PointSetTool                (node); });
-	addTool ("Polyline2D",              [ ] (X3DBaseNode* const node) { return new Polyline2DTool              (node); });
-	addTool ("Polypoint2D",             [ ] (X3DBaseNode* const node) { return new Polypoint2DTool             (node); });
-	addTool ("ProximitySensor",         [ ] (X3DBaseNode* const node) { return new ProximitySensorTool         (node); });
-	addTool ("QuadSet",                 [ ] (X3DBaseNode* const node) { return new QuadSetTool                 (node); });
-	addTool ("Rectangle2D",             [ ] (X3DBaseNode* const node) { return new Rectangle2DTool             (node); });
-	addTool ("ScreenGroup",             [ ] (X3DBaseNode* const node) { return new ScreenGroupTool             (node); });
-	addTool ("Shape",                   [ ] (X3DBaseNode* const node) { return new ShapeTool                   (node); });
-	addTool ("Sound",                   [ ] (X3DBaseNode* const node) { return new SoundTool                   (node); });
-	addTool ("Sphere",                  [ ] (X3DBaseNode* const node) { return new SphereTool                  (node); });
-	addTool ("SpotLight",               [ ] (X3DBaseNode* const node) { return new SpotLightTool               (node); });
-	addTool ("Switch",                  [ ] (X3DBaseNode* const node) { return new SwitchTool                  (node); });
-	addTool ("Text",                    [ ] (X3DBaseNode* const node) { return new TextTool                    (node); });
-	addTool ("TransformSensor",         [ ] (X3DBaseNode* const node) { return new TransformSensorTool         (node); });
-	addTool ("Transform",               [ ] (X3DBaseNode* const node) { return new TransformTool               (node); });
-	addTool ("TriangleFanSet",          [ ] (X3DBaseNode* const node) { return new TriangleFanSetTool          (node); });
-	addTool ("TriangleSet2D",           [ ] (X3DBaseNode* const node) { return new TriangleSet2DTool           (node); });
-	addTool ("TriangleSet",             [ ] (X3DBaseNode* const node) { return new TriangleSetTool             (node); });
-	addTool ("TriangleStripSet",        [ ] (X3DBaseNode* const node) { return new TriangleStripSetTool        (node); });
-	addTool ("Viewpoint",               [ ] (X3DBaseNode* const node) { return new ViewpointTool               (node); });
-	addTool ("VisibilitySensor",        [ ] (X3DBaseNode* const node) { return new VisibilitySensorTool        (node); });
+	addTool ("Anchor",                      [ ] (X3DBaseNode* const node) { return new AnchorTool                      (node); });
+	addTool ("Arc2D",                       [ ] (X3DBaseNode* const node) { return new Arc2DTool                       (node); });
+	addTool ("ArcClose2D",                  [ ] (X3DBaseNode* const node) { return new ArcClose2DTool                  (node); });
+	addTool ("Billboard",                   [ ] (X3DBaseNode* const node) { return new BillboardTool                   (node); });
+	addTool ("Box",                         [ ] (X3DBaseNode* const node) { return new BoxTool                         (node); });
+	addTool ("CADAssembly",                 [ ] (X3DBaseNode* const node) { return new CADAssemblyTool                 (node); });
+	addTool ("CADFace",                     [ ] (X3DBaseNode* const node) { return new CADFaceTool                     (node); });
+	addTool ("CADLayer",                    [ ] (X3DBaseNode* const node) { return new CADLayerTool                    (node); });
+	addTool ("CADPart",                     [ ] (X3DBaseNode* const node) { return new CADPartTool                     (node); });
+	addTool ("Circle2D",                    [ ] (X3DBaseNode* const node) { return new Circle2DTool                    (node); });
+	addTool ("CollidableOffset",            [ ] (X3DBaseNode* const node) { return new CollidableOffsetTool            (node); });
+	addTool ("CollidableShape",             [ ] (X3DBaseNode* const node) { return new CollidableShapeTool             (node); });
+	addTool ("Collision",                   [ ] (X3DBaseNode* const node) { return new CollisionTool                   (node); });
+	addTool ("Cone",                        [ ] (X3DBaseNode* const node) { return new ConeTool                        (node); });
+	addTool ("Cylinder",                    [ ] (X3DBaseNode* const node) { return new CylinderTool                    (node); });
+	addTool ("DirectionalLight",            [ ] (X3DBaseNode* const node) { return new DirectionalLightTool            (node); });
+	addTool ("Disk2D",                      [ ] (X3DBaseNode* const node) { return new Disk2DTool                      (node); });
+	addTool ("ElevationGrid",               [ ] (X3DBaseNode* const node) { return new ElevationGridTool               (node); });
+	addTool ("Extrusion",                   [ ] (X3DBaseNode* const node) { return new ExtrusionTool                   (node); });
+	addTool ("GeoElevationGrid",            [ ] (X3DBaseNode* const node) { return new GeoElevationGridTool            (node); });
+	addTool ("GeoLocation",                 [ ] (X3DBaseNode* const node) { return new GeoLocationTool                 (node); });
+	addTool ("GeoLOD",                      [ ] (X3DBaseNode* const node) { return new GeoLODTool                      (node); });
+	addTool ("GeoTransform",                [ ] (X3DBaseNode* const node) { return new GeoTransformTool                (node); });
+	addTool ("GeoViewpoint",                [ ] (X3DBaseNode* const node) { return new GeoViewpointTool                (node); });
+	addTool ("Group",                       [ ] (X3DBaseNode* const node) { return new GroupTool                       (node); });
+	addTool ("HAnimHumanoid",               [ ] (X3DBaseNode* const node) { return new HAnimHumanoidTool               (node); });
+	addTool ("HAnimJoint",                  [ ] (X3DBaseNode* const node) { return new HAnimJointTool                  (node); });
+	addTool ("HAnimSegment",                [ ] (X3DBaseNode* const node) { return new HAnimSegmentTool                (node); });
+	addTool ("HAnimSite",                   [ ] (X3DBaseNode* const node) { return new HAnimSiteTool                   (node); });
+	addTool ("IndexedFaceSet",              [ ] (X3DBaseNode* const node) { return new IndexedFaceSetTool              (node); });
+	addTool ("IndexedLineSet",              [ ] (X3DBaseNode* const node) { return new IndexedLineSetTool              (node); });
+	addTool ("IndexedQuadSet",              [ ] (X3DBaseNode* const node) { return new IndexedQuadSetTool              (node); });
+	addTool ("IndexedTriangleFanSet",       [ ] (X3DBaseNode* const node) { return new IndexedTriangleFanSetTool       (node); });
+	addTool ("IndexedTriangleSet",          [ ] (X3DBaseNode* const node) { return new IndexedTriangleSetTool          (node); });
+	addTool ("IndexedTriangleStripSet",     [ ] (X3DBaseNode* const node) { return new IndexedTriangleStripSetTool     (node); });
+	addTool ("Inline",                      [ ] (X3DBaseNode* const node) { return new InlineTool                      (node); });
+	addTool ("LayoutGroup",                 [ ] (X3DBaseNode* const node) { return new LayoutGroupTool                 (node); });
+	addTool ("LineSet",                     [ ] (X3DBaseNode* const node) { return new LineSetTool                     (node); });
+	addTool ("LOD",                         [ ] (X3DBaseNode* const node) { return new LODTool                         (node); });
+	addTool ("NurbsCurve",                  [ ] (X3DBaseNode* const node) { return new NurbsCurveTool                  (node); });
+	addTool ("NurbsPatchSurface",           [ ] (X3DBaseNode* const node) { return new NurbsPatchSurfaceTool           (node); });
+	addTool ("NurbsSweptSurface",           [ ] (X3DBaseNode* const node) { return new NurbsSweptSurfaceTool           (node); });
+	addTool ("NurbsSwungSurface",           [ ] (X3DBaseNode* const node) { return new NurbsSwungSurfaceTool           (node); });
+	addTool ("NurbsTrimmedSurface",         [ ] (X3DBaseNode* const node) { return new NurbsTrimmedSurfaceTool         (node); });
+	addTool ("OrthoViewpoint",              [ ] (X3DBaseNode* const node) { return new OrthoViewpointTool              (node); });
+	addTool ("ParticleSystem",              [ ] (X3DBaseNode* const node) { return new ParticleSystemTool              (node); });
+	addTool ("PickableGroup",               [ ] (X3DBaseNode* const node) { return new PickableGroupTool               (node); });
+	addTool ("PointLight",                  [ ] (X3DBaseNode* const node) { return new PointLightTool                  (node); });
+	addTool ("PointSet",                    [ ] (X3DBaseNode* const node) { return new PointSetTool                    (node); });
+	addTool ("Polyline2D",                  [ ] (X3DBaseNode* const node) { return new Polyline2DTool                  (node); });
+	addTool ("Polypoint2D",                 [ ] (X3DBaseNode* const node) { return new Polypoint2DTool                 (node); });
+	addTool ("ProximitySensor",             [ ] (X3DBaseNode* const node) { return new ProximitySensorTool             (node); });
+	addTool ("QuadSet",                     [ ] (X3DBaseNode* const node) { return new QuadSetTool                     (node); });
+	addTool ("Rectangle2D",                 [ ] (X3DBaseNode* const node) { return new Rectangle2DTool                 (node); });
+	addTool ("ScreenGroup",                 [ ] (X3DBaseNode* const node) { return new ScreenGroupTool                 (node); });
+	addTool ("Shape",                       [ ] (X3DBaseNode* const node) { return new ShapeTool                       (node); });
+	addTool ("Sound",                       [ ] (X3DBaseNode* const node) { return new SoundTool                       (node); });
+	addTool ("Sphere",                      [ ] (X3DBaseNode* const node) { return new SphereTool                      (node); });
+	addTool ("SpotLight",                   [ ] (X3DBaseNode* const node) { return new SpotLightTool                   (node); });
+	addTool ("Switch",                      [ ] (X3DBaseNode* const node) { return new SwitchTool                      (node); });
+	addTool ("Text",                        [ ] (X3DBaseNode* const node) { return new TextTool                        (node); });
+	addTool ("TextureProjectorParallel",    [ ] (X3DBaseNode* const node) { return new TextureProjectorParallelTool    (node); });
+	addTool ("TextureProjectorPerspective", [ ] (X3DBaseNode* const node) { return new TextureProjectorPerspectiveTool (node); });
+	addTool ("Transform",                   [ ] (X3DBaseNode* const node) { return new TransformTool                   (node); });
+	addTool ("TransformSensor",             [ ] (X3DBaseNode* const node) { return new TransformSensorTool             (node); });
+	addTool ("TriangleFanSet",              [ ] (X3DBaseNode* const node) { return new TriangleFanSetTool              (node); });
+	addTool ("TriangleSet",                 [ ] (X3DBaseNode* const node) { return new TriangleSetTool                 (node); });
+	addTool ("TriangleSet2D",               [ ] (X3DBaseNode* const node) { return new TriangleSet2DTool               (node); });
+	addTool ("TriangleStripSet",            [ ] (X3DBaseNode* const node) { return new TriangleStripSetTool            (node); });
+	addTool ("Viewpoint",                   [ ] (X3DBaseNode* const node) { return new ViewpointTool                   (node); });
+	addTool ("VisibilitySensor",            [ ] (X3DBaseNode* const node) { return new VisibilitySensorTool            (node); });
 
 	// Titania
-	addTool ("TouchGroup",              [ ] (X3DBaseNode* const node) { return new TouchGroupTool              (node); });
+	addTool ("TouchGroup",                  [ ] (X3DBaseNode* const node) { return new TouchGroupTool                  (node); });
 }
 
 ///  throws Error <INVALID_NAME>

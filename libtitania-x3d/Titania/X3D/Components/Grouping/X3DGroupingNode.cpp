@@ -280,12 +280,23 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 
 							childNodes .emplace_back (childNode);
 
-							// Procceed with next step.
+							[[fallthrough]];
 						}
 						case X3DConstants::X3DLightNode:
 						{
 							lightNodes .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
 							break;
+						}
+						case X3DConstants::X3DTextureProjectorNodeTool:
+						{
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+							childNode -> isCameraObject ()   .addInterest (&X3DGroupingNode::set_cameraObjects,   this);
+							childNode -> isPickableObject () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
+
+							childNodes .emplace_back (childNode);
+
+							[[fallthrough]];
 						}
 						case X3DConstants::X3DTextureProjectorNode:
 						{
@@ -401,7 +412,7 @@ X3DGroupingNode::remove (const MFNode & children)
 							                                childNode),
 							                   childNodes .end ());
 
-							// Procceed with next step.
+							[[fallthrough]];
 						}
 						case X3DConstants::X3DLightNode:
 						{
@@ -410,6 +421,20 @@ X3DGroupingNode::remove (const MFNode & children)
 							                                dynamic_cast <X3DLightNode*> (innerNode)),
 							                   lightNodes .end ());
 							break;
+						}
+						case X3DConstants::X3DTextureProjectorNodeTool:
+						{
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+							childNode -> isCameraObject ()   .removeInterest (&X3DGroupingNode::set_cameraObjects,   this);
+							childNode -> isPickableObject () .removeInterest (&X3DGroupingNode::set_pickableObjects, this);
+
+							childNodes .erase (std::remove (childNodes .begin (),
+							                                childNodes .end (),
+							                                childNode),
+							                   childNodes .end ());
+
+							[[fallthrough]];
 						}
 						case X3DConstants::X3DTextureProjectorNode:
 						{

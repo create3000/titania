@@ -65,97 +65,120 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFString &
 	description ()
 	{ return *fields .description; }
 
+	virtual
 	const SFString &
 	description () const
 	{ return *fields .description; }
 
+	virtual
 	SFBool &
 	on ()
 	{ return *fields .on; }
 
+	virtual
 	const SFBool &
 	on () const
 	{ return *fields .on; }
 
+	virtual
 	SFBool &
 	global ()
 	{ return *fields .global; }
 
+	virtual
 	const SFBool &
 	global () const
 	{ return *fields .global; }
 
+	virtual
 	SFVec3f &
 	location ()
 	{ return *fields .location; }
 
+	virtual
 	const SFVec3f &
 	location () const
 	{ return *fields .location; }
 
+	virtual
 	SFVec3f &
 	direction ()
 	{ return *fields .direction; }
 
+	virtual
 	const SFVec3f &
 	direction () const
 	{ return *fields .direction; }
 
+	virtual
 	SFVec3f &
 	upVector ()
 	{ return *fields .upVector; }
 
+	virtual
 	const SFVec3f &
 	upVector () const
 	{ return *fields .upVector; }
 
+	virtual
 	SFFloat &
 	nearDistance ()
 	{ return *fields .nearDistance; }
 
+	virtual
 	const SFFloat &
 	nearDistance () const
 	{ return *fields .nearDistance; }
 
+	virtual
 	SFFloat &
 	farDistance ()
 	{ return *fields .farDistance; }
 
+	virtual
 	const SFFloat &
 	farDistance () const
 	{ return *fields .farDistance; }
 
+	virtual
 	SFFloat &
 	aspectRatio ()
 	{ return *fields .aspectRatio; }
 
+	virtual
 	const SFFloat &
 	aspectRatio () const
 	{ return *fields .aspectRatio; }
 
+	virtual
 	SFNode &
 	texture ()
 	{ return *fields .texture; }
 
+	virtual
 	const SFNode &
 	texture () const
 	{ return *fields .texture; }
 
 	///  @name Member access
 
+	virtual
 	const X3DPtr <X3DTexture2DNode> &
 	getTexture () const
 	{ return textureNode; }
 
 	///  @name Operations
 
+	virtual
 	void
 	push (X3DRenderObject* const renderObject);
 
+	virtual
 	void
 	pop (X3DRenderObject* const renderObject);
 

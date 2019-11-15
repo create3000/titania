@@ -684,6 +684,9 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorParallelTool.cpp \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorPerspectiveTool.cpp \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/X3DTextureProjectorNodeTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Rendering/IndexedLineSetTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \

@@ -48,127 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
+#include "X3DTextureProjectorNodeTool.h"
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class ProjectiveTextureContainer;
-
-class TextureProjectorParallel :
-	virtual public X3DTextureProjectorNode
+X3DTextureProjectorNodeTool::X3DTextureProjectorNodeTool () :
+	X3DTextureProjectorNode (),
+	       X3DChildNodeTool (),
+	       X3DBoundedObject ()
 {
-public:
+	addType (X3DConstants::X3DTextureProjectorNodeTool);
 
-	///  @name Construction
+	addChildObjects (bboxSize (), bboxCenter ());
+}
 
-	TextureProjectorParallel (X3DExecutionContext* const executionContext);
+void
+X3DTextureProjectorNodeTool::initialize ()
+{
+	X3DChildNodeTool::initialize ();
+	X3DBoundedObject::initialize ();
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+	requestAsyncLoad ({ get_tool ("TextureProjectorTool.x3dv") .str () });
+}
 
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	MFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	virtual
-	const MFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Member access
-
-	virtual
-	double
-	getMinimumX () const;
-
-	virtual
-	double
-	getMinimumY () const;
-
-	virtual
-	double
-	getMaximumX () const;
-
-	virtual
-	double
-	getMaximumY () const;
-
-	///  @name Operations
-
-	virtual
-	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) override;
-
-	///  @name Destruction
-
-	virtual
-	~TextureProjectorParallel () override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Member access
-
-	double
-	getSizeX () const;
-
-	double
-	getSizeY () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
+void
+X3DTextureProjectorNodeTool::realize ()
+{
+	try
 	{
-		Fields ();
+		const auto & toolNode = getToolNode ();
 
-		MFFloat* const fieldOfView;
-	};
+		toolNode -> setField <SFNode> ("textureProjector", getNode <X3DTextureProjectorNode> ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
-	Fields fields;
+Box3d
+X3DTextureProjectorNodeTool::getBBox () const
+{
+	if (getBrowser () -> getDisplayTools () .top ())
+		return Box3d (Vector3d (1, 1, 1), Vector3d (location () .getValue ()));
 
-};
+	return Box3d ();
+}
+
+void
+X3DTextureProjectorNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	getNode <X3DTextureProjectorNode> () -> traverse (type, renderObject);
+
+	// Tool
+
+	X3DToolObject::traverse (type, renderObject);
+}
+
+void
+X3DTextureProjectorNodeTool::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNodeTool::dispose ();
+
+	removeChildObjects (bboxSize (), bboxCenter ());
+}
+
+X3DTextureProjectorNodeTool::~X3DTextureProjectorNodeTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

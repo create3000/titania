@@ -1,0 +1,252 @@
+#X3D V3.3 utf8 Titania V4.6.7
+
+PROFILE Immersive
+
+COMPONENT Layout : 2
+
+META "comment" "World of Titania"
+META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V4.6.7, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
+META "modified" "Fri, 15 Nov 2019 10:40:25 GMT"
+
+EXTERNPROTO ToolShader [ ]
+"library/ToolShader.x3dv"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              97.1939484516603,
+              89.139521660369,
+              44.4771159543499
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.436518970467265,
+              0.851854448307773,
+              0.289473983840446,
+              1.32294674286397
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              1.55034659798597,
+              9.36342214733164,
+              4.07576429276368
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+    ]
+  }
+  title "LightTool"
+}
+
+DEF Tool Script {
+  inputOutput    SFBool  enabled FALSE
+  inputOutput    SFBool  selected FALSE
+  inputOnly      SFVec3f set_location
+  inputOnly      SFVec3f set_direction
+  inputOnly      SFVec3f set_upVector
+  inputOutput    SFNode  textureProjector NULL
+  initializeOnly SFNode  projector DEF Projector Transform {
+    children ScreenGroup {
+      children Transform {
+        translation 0 0 -15
+        children [
+          DEF Box_1 Transform {
+            children Shape {
+              appearance DEF _2 Appearance {
+                material Material {
+                  diffuseColor 0.2 0.2 0.2
+                  specularColor 1 1 1
+                }
+                shaders ToolShader { }
+              }
+              geometry Box {
+                size 40 20 30
+              }
+            }
+          }
+          DEF Cylinder Transform {
+            translation 0 0 5
+            rotation 0.999999999993254 3.67320512848233e-06 1.19222813476655e-18 1.5707963267949
+            children Shape {
+              appearance USE _2
+              geometry Cylinder {
+                top FALSE
+                height 40
+                radius 10
+                solid FALSE
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+  initializeOnly SFNode  self USE Tool
+
+  url "ecmascript:
+
+var routes = [ ];
+
+function set_textureProjector ()
+{
+	routes .forEach (function (routes)
+	{
+		Browser .currentScene .deleteRoute (route);
+	})
+
+	var type = textureProjector .getNodeType () .reverse ();
+
+	for (var i = 0; i < type .length; ++ i)
+	{
+		switch (type [i])
+		{
+			case X3DConstants .TextureProjectorParallel:
+			{
+				set_parallel ();
+				break;
+			}
+			case X3DConstants .TextureProjectorPerspective:
+			{
+				set_perspective ();
+				break;
+			}
+			default:
+				continue;
+		}
+
+		break;
+	}
+	
+	routes .push (Browser .currentScene .addRoute (textureProjector, \"location_changed\",  self, \"set_location\"));
+	routes .push (Browser .currentScene .addRoute (textureProjector, \"direction_changed\", self, \"set_direction\"));
+	routes .push (Browser .currentScene .addRoute (textureProjector, \"upVector_changed\",  self, \"set_upVector\"));
+	
+	set_location ();
+	set_rotation ();
+}
+
+function set_location ()
+{
+	projector .translation = textureProjector .location;
+}
+
+function set_direction ()
+{
+	set_rotation ();
+}
+
+function set_upVector ()
+{
+	set_rotation ();
+}
+
+function set_rotation ()
+{
+	var rotation = new SFRotation (new SFVec3f (0, 0, 1), textureProjector .direction);
+
+	projector .rotation = straightenHorizon (rotation);
+}
+
+function straightenHorizon (orientation)
+{
+	var localXAxis = orientation .multVec (new SFVec3f (-1, 0, 0));
+	var localZAxis = orientation .multVec (new SFVec3f (0, 0, 1));
+	var vector     = localZAxis .cross (textureProjector .upVector);
+
+	// If viewer looks along the up vector.
+	if (vector .equals (new SFVec3f (0, 0, 0)))
+		return orientation;
+
+	var rotation = new SFRotation (localXAxis, vector);
+
+	return orientation .multiply (rotation);
+}
+
+function set_parallel ()
+{
+	print (\"set_parallel\");
+}
+
+function set_perspective ()
+{
+	print (\"set_perspective\");
+}
+"
+  directOutput TRUE
+}
+
+Collision {
+  enabled FALSE
+  children USE Projector
+}
+
+EXPORT Tool

@@ -813,6 +813,9 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.lo \
 	$(current_dir)/Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.lo \
 	$(current_dir)/Titania/X3D/Tools/Picking/PickableGroupTool.lo \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorParallelTool.lo \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorPerspectiveTool.lo \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/X3DTextureProjectorNodeTool.lo \
 	$(current_dir)/Titania/X3D/Tools/Rendering/CoordinateTool.lo \
 	$(current_dir)/Titania/X3D/Tools/Rendering/IndexedLineSetTool.lo \
 	$(current_dir)/Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.lo \
@@ -1535,6 +1538,9 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/ViewpointTool.Plo \
 	$(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo \
 	$(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallelTool.Plo \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspectiveTool.Plo \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNodeTool.Plo \
 	$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo \
 	$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedLineSetTool.Plo \
 	$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleFanSetTool.Plo \
@@ -2477,6 +2483,9 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorParallelTool.cpp \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorPerspectiveTool.cpp \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/X3DTextureProjectorNodeTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Rendering/IndexedLineSetTool.cpp \
 	$(current_dir)/Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \
@@ -4985,6 +4994,18 @@ $(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp):
 $(current_dir)/Titania/X3D/Tools/Picking/PickableGroupTool.lo:  \
 	$(current_dir)/Titania/X3D/Tools/Picking/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping
+	@: > $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)
+	@: > $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorParallelTool.lo: $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/TextureProjectorPerspectiveTool.lo: $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/X3DTextureProjectorNodeTool.lo: $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/Tools/Rendering/$(am__dirstamp):
 	@$(MKDIR_P) $(current_dir)/Titania/X3D/Tools/Rendering
 	@: > $(current_dir)/Titania/X3D/Tools/Rendering/$(am__dirstamp)
@@ -5326,6 +5347,8 @@ mostlyclean-compile:
 	-rm -f $(current_dir)/Titania/X3D/Tools/Navigation/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Picking/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Tools/Picking/*.lo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Tools/RigidBodyPhysics/*.$(OBJEXT)
@@ -6020,6 +6043,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/ViewpointTool.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallelTool.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspectiveTool.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNodeTool.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedLineSetTool.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleFanSetTool.Plo@am__quote@ # am--include-marker
@@ -6217,6 +6243,7 @@ clean-libtool:
 	-rm -rf $(current_dir)/Titania/X3D/Tools/NURBS/.libs $(current_dir)/Titania/X3D/Tools/NURBS/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Tools/Navigation/.libs $(current_dir)/Titania/X3D/Tools/Navigation/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Tools/Picking/.libs $(current_dir)/Titania/X3D/Tools/Picking/_libs
+	-rm -rf $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/.libs $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Tools/Rendering/.libs $(current_dir)/Titania/X3D/Tools/Rendering/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Tools/RigidBodyPhysics/.libs $(current_dir)/Titania/X3D/Tools/RigidBodyPhysics/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Tools/SnapTool/.libs $(current_dir)/Titania/X3D/Tools/SnapTool/_libs
@@ -6571,6 +6598,8 @@ distclean-generic:
 	-test -z "$(current_dir)/Titania/X3D/Tools/Navigation/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/Navigation/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Tools/Picking/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/Picking/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Tools/Rendering/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Tools/RigidBodyPhysics/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Tools/RigidBodyPhysics/$(DEPDIR)/$(am__dirstamp)
@@ -7271,6 +7300,9 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/ViewpointTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallelTool.Plo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspectiveTool.Plo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNodeTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedLineSetTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleFanSetTool.Plo
@@ -8019,6 +8051,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/ViewpointTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorParallelTool.Plo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/TextureProjectorPerspectiveTool.Plo
+	-rm -f $(current_dir)/Titania/X3D/Tools/ProjectiveTextureMapping/$(DEPDIR)/X3DTextureProjectorNodeTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedLineSetTool.Plo
 	-rm -f $(current_dir)/Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleFanSetTool.Plo

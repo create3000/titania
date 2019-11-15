@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,127 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
+#include "TextureProjectorParallelTool.h"
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class ProjectiveTextureContainer;
-
-class TextureProjectorParallel :
-	virtual public X3DTextureProjectorNode
+TextureProjectorParallelTool::TextureProjectorParallelTool (X3DBaseNode* const node) :
+	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	   TextureProjectorParallel (node -> getExecutionContext ()),
+	                X3DBaseTool (node),
+	X3DTextureProjectorNodeTool ()
 {
-public:
+	addType (X3DConstants::TextureProjectorParallelTool);
+}
 
-	///  @name Construction
+void
+TextureProjectorParallelTool::initialize ()
+{
+	X3DTextureProjectorNodeTool::initialize ();
+}
 
-	TextureProjectorParallel (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	MFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	virtual
-	const MFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Member access
-
-	virtual
-	double
-	getMinimumX () const;
-
-	virtual
-	double
-	getMinimumY () const;
-
-	virtual
-	double
-	getMaximumX () const;
-
-	virtual
-	double
-	getMaximumY () const;
-
-	///  @name Operations
-
-	virtual
-	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) override;
-
-	///  @name Destruction
-
-	virtual
-	~TextureProjectorParallel () override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Member access
-
-	double
-	getSizeX () const;
-
-	double
-	getSizeY () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		MFFloat* const fieldOfView;
-	};
-
-	Fields fields;
-
-};
+TextureProjectorParallelTool::~TextureProjectorParallelTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

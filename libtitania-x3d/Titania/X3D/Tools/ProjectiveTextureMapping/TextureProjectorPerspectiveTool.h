@@ -48,86 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
-#define __TITANIA_X3D_COMPONENTS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PARALLEL_H__
+#ifndef __TITANIA_X3D_TOOLS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_PROJECTIVE_TEXTURE_MAPPING_TEXTURE_PROJECTOR_PERSPECTIVE_TOOL_H__
 
-#include "../ProjectiveTextureMapping/X3DTextureProjectorNode.h"
+#include "../ProjectiveTextureMapping/X3DTextureProjectorNodeTool.h"
+
+#include "../../Components/ProjectiveTextureMapping/TextureProjectorPerspective.h"
 
 namespace titania {
 namespace X3D {
 
-class ProjectiveTextureContainer;
-
-class TextureProjectorParallel :
-	virtual public X3DTextureProjectorNode
+class TextureProjectorPerspectiveTool :
+	virtual public TextureProjectorPerspective,
+	public X3DTextureProjectorNodeTool
 {
 public:
 
 	///  @name Construction
 
-	TextureProjectorParallel (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	const Component &
-	getComponent () const final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	TextureProjectorPerspectiveTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
 	virtual
-	MFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
+	SFFloat &
+	fieldOfView () final override
+	{ return getNode <TextureProjectorPerspective> () -> fieldOfView (); }
 
 	virtual
-	const MFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
-	///  @name Member access
-
-	virtual
-	double
-	getMinimumX () const;
-
-	virtual
-	double
-	getMinimumY () const;
-
-	virtual
-	double
-	getMaximumX () const;
-
-	virtual
-	double
-	getMaximumY () const;
+	const SFFloat &
+	fieldOfView () const final override
+	{ return getNode <TextureProjectorPerspective> () -> fieldOfView (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) override;
+	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override
+	{ X3DTextureProjectorNodeTool::setGlobalVariables (renderObject, container); }
 
 	///  @name Destruction
 
 	virtual
-	~TextureProjectorParallel () override;
+	~TextureProjectorPerspectiveTool () final override;
 
 
 protected:
@@ -136,35 +99,7 @@ protected:
 
 	virtual
 	void
-	initialize () override;
-
-
-private:
-
-	///  @name Member access
-
-	double
-	getSizeX () const;
-
-	double
-	getSizeY () const;
-
-	///  @name Static members
-
-	static const Component   component;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Fields
-
-	struct Fields
-	{
-		Fields ();
-
-		MFFloat* const fieldOfView;
-	};
-
-	Fields fields;
+	initialize () final override;
 
 };
 

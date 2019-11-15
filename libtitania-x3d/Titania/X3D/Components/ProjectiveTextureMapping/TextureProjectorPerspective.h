@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class TextureProjectorPerspective :
-	public X3DTextureProjectorNode
+	virtual public X3DTextureProjectorNode
 {
 public:
 
@@ -88,10 +88,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFFloat &
 	fieldOfView ()
 	{ return *fields .fieldOfView; }
 
+	virtual
 	const SFFloat &
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
@@ -100,12 +102,12 @@ public:
 
 	virtual
 	void
-	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) final override;
+	setGlobalVariables (X3DRenderObject* const renderObject, ProjectiveTextureContainer* const container) override;
 
 	///  @name Destruction
 
 	virtual
-	~TextureProjectorPerspective () final override;
+	~TextureProjectorPerspective () override;
 
 
 protected:
@@ -114,7 +116,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:

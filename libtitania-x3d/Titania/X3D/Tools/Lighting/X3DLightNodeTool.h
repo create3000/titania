@@ -177,7 +177,7 @@ public:
 	float
 	getAmbientIntensity () const final override
 	{ return getNode <X3DLightNode> () -> getAmbientIntensity (); }
-	
+
 	virtual
 	float
 	getIntensity () const final override
@@ -187,12 +187,12 @@ public:
 	const Color3f &
 	getShadowColor () const final override
 	{ return getNode <X3DLightNode> () -> getShadowColor (); }
-	
+
 	virtual
 	float
 	getShadowIntensity () const final override
 	{ return getNode <X3DLightNode> () -> getShadowIntensity (); }
-	
+
 	virtual
 	float
 	getShadowBias () const final override
@@ -208,17 +208,17 @@ public:
 	virtual
 	void
 	push (X3DRenderObject* const renderObject, X3DGroupingNode* const group) final override
-	{ return getNode <X3DLightNode> () -> push (renderObject, group); }
+	{ getNode <X3DLightNode> () -> push (renderObject, group); }
 
 	virtual
 	void
 	pop (X3DRenderObject* const renderObject) final override
-	{ return getNode  <X3DLightNode>() -> pop (renderObject); }
+	{ getNode  <X3DLightNode>() -> pop (renderObject); }
 
 	virtual
 	void
 	draw (const GLenum lightId) override
-	{ return getNode <X3DLightNode> () -> draw (lightId); }
+	{ getNode <X3DLightNode> () -> draw (lightId); }
 
 	virtual
 	void
