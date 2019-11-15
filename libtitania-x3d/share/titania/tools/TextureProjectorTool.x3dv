@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 12:38:45 GMT"
+META "modified" "Fri, 15 Nov 2019 13:26:10 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -288,28 +288,48 @@ function set_parallelAspectRatio ()
 
 function set_parallel ()
 {
-	var fov  = textureProjector .fieldOfView;
-	var minX = fov .length > 0 ? fov [0] : -1; 
-	var minY = fov .length > 1 ? fov [1] : -1; 
-	var maxX = fov .length > 2 ? fov [2] :  1; 
-	var maxY = fov .length > 3 ? fov [3] :  1;
-	var w    = 1;
-	var h    = 1;
+	var fov    = textureProjector .fieldOfView;
+	var minX   = fov .length > 0 ? fov [0] : -1; 
+	var minY   = fov .length > 1 ? fov [1] : -1; 
+	var maxX   = fov .length > 2 ? fov [2] :  1; 
+	var maxY   = fov .length > 3 ? fov [3] :  1;
+	var sizeX  = maxX - minX;
+	var sizeY  = maxY - minY;
+	var aspect = textureProjector .aspectRatio;
+	
+	if (aspect > sizeX / sizeY)
+	{
+		var center  = (minX + maxX) / 2;
+		var size1_2 = (sizeY * aspect) / 2;
 
-	if (textureProjector .aspectRatio > 1)
-		w = textureProjector .aspectRatio;
+		var x1 = center - size1_2;
+		var x2 = center + size1_2;
+		var y1 = minY;
+		var y2 = maxY;
+	}
 	else
-		h = 1 / textureProjector .aspectRatio;
+	{
+		var center  = (minY + maxY) / 2;
+		var size1_2 = (sizeX / aspect) / 2;
 
-	frustum .point [0] = new SFVec3f (minX * w, minY * h, textureProjector .nearDistance);
-	frustum .point [2] = new SFVec3f (maxX * w, minY * h, textureProjector .nearDistance);
-	frustum .point [4] = new SFVec3f (maxX * w, maxY * h, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f (minX * w, maxY * h, textureProjector .nearDistance);
+		var x1 = minX;
+		var x2 = maxX;
+		var y1 = center - size1_2;
+		var y2 = center + size1_2;
+	}
 
-	frustum .point [1] = new SFVec3f (minX * w, minY * h, textureProjector .farDistance);
-	frustum .point [3] = new SFVec3f (maxX * w, minY * h, textureProjector .farDistance);
-	frustum .point [5] = new SFVec3f (maxX * w, maxY * h, textureProjector .farDistance);
-	frustum .point [7] = new SFVec3f (minX * w, maxY * h, textureProjector .farDistance);
+	x1 = -x1;
+	x2 = -x2;
+
+	frustum .point [0] = new SFVec3f (x1, y1, textureProjector .nearDistance);
+	frustum .point [2] = new SFVec3f (x2, y1, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (x2, y2, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f (x1, y2, textureProjector .nearDistance);
+
+	frustum .point [1] = new SFVec3f (x1, y1, textureProjector .farDistance);
+	frustum .point [3] = new SFVec3f (x2, y1, textureProjector .farDistance);
+	frustum .point [5] = new SFVec3f (x2, y2, textureProjector .farDistance);
+	frustum .point [7] = new SFVec3f (x1, y2, textureProjector .farDistance);
 }
 
 function set_perspectiveFieldOfView ()
@@ -334,9 +354,12 @@ function set_perspectiveAspectRatio ()
 
 function set_perspective ()
 {
-	var fov1_2 = textureProjector .fieldOfView / 2;
-	var n      = Math .tan (fov1_2) * textureProjector .nearDistance;
-	var f      = Math .tan (fov1_2) * textureProjector .farDistance;
+	var fov = textureProjector .fieldOfView;
+
+	fov = fov > 0 && fov < Math .PI ? fov : Math .PI / 4;
+
+	var n      = Math .tan (fov / 2) * textureProjector .nearDistance;
+	var f      = Math .tan (fov / 2) * textureProjector .farDistance;
 	var w      = 1;
 	var h      = 1;
 
