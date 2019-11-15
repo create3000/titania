@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 13:26:10 GMT"
+META "modified" "Fri, 15 Nov 2019 15:05:20 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -131,40 +131,49 @@ WorldInfo {
                       geometry IndexedLineSet {
                         coordIndex [
                           0,
+                          8,
+                          -1,
                           1,
+                          9,
                           -1,
                           2,
+                          10,
+                          -1,
                           3,
+                          11,
+                          -1,
+                          0,
+                          1,
+                          2,
+                          3,
+                          0,
                           -1,
                           4,
                           5,
-                          -1,
                           6,
                           7,
-                          -1,
-                          0,
-                          2,
                           4,
-                          6,
-                          0,
                           -1,
-                          1,
-                          3,
-                          5,
-                          7,
-                          1,
+                          8,
+                          9,
+                          10,
+                          11,
                           -1
                         ]
                         coord DEF _4 Coordinate {
                           point [
                             0 0 0,
+                            0 0 0,
+                            0 0 0,
+                            0 0 0,
                             1 1 1,
-                            0 0 0,
                             -1 1 1,
-                            0 0 0,
                             -1 -1 1,
-                            0 0 0,
-                            1 -1 1
+                            1 -1 1,
+                            2 2 2,
+                            -2 2 2,
+                            -2 -2 2,
+                            2 -2 2
                           ]
                         }
                       }
@@ -321,15 +330,20 @@ function set_parallel ()
 	x1 = -x1;
 	x2 = -x2;
 
-	frustum .point [0] = new SFVec3f (x1, y1, textureProjector .nearDistance);
-	frustum .point [2] = new SFVec3f (x2, y1, textureProjector .nearDistance);
-	frustum .point [4] = new SFVec3f (x2, y2, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f (x1, y2, textureProjector .nearDistance);
+	frustum .point [0] = new SFVec3f (x1, y1, 0);
+	frustum .point [1] = new SFVec3f (x2, y1, 0);
+	frustum .point [2] = new SFVec3f (x2, y2, 0);
+	frustum .point [3] = new SFVec3f (x1, y2, 0);
 
-	frustum .point [1] = new SFVec3f (x1, y1, textureProjector .farDistance);
-	frustum .point [3] = new SFVec3f (x2, y1, textureProjector .farDistance);
-	frustum .point [5] = new SFVec3f (x2, y2, textureProjector .farDistance);
-	frustum .point [7] = new SFVec3f (x1, y2, textureProjector .farDistance);
+	frustum .point [4] = new SFVec3f (x1, y1, textureProjector .nearDistance);
+	frustum .point [5] = new SFVec3f (x2, y1, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f (x2, y2, textureProjector .nearDistance);
+	frustum .point [7] = new SFVec3f (x1, y2, textureProjector .nearDistance);
+
+	frustum .point [8]  = new SFVec3f (x1, y1, textureProjector .farDistance);
+	frustum .point [9]  = new SFVec3f (x2, y1, textureProjector .farDistance);
+	frustum .point [10] = new SFVec3f (x2, y2, textureProjector .farDistance);
+	frustum .point [11] = new SFVec3f (x1, y2, textureProjector .farDistance);
 }
 
 function set_perspectiveFieldOfView ()
@@ -368,15 +382,20 @@ function set_perspective ()
 	else
 		h = 1 / textureProjector .aspectRatio;
 
-	frustum .point [0] = new SFVec3f ( n * w,  n * h, textureProjector .nearDistance);
-	frustum .point [2] = new SFVec3f (-n * w,  n * h, textureProjector .nearDistance);
-	frustum .point [4] = new SFVec3f (-n * w, -n * h, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f ( n * w, -n * h, textureProjector .nearDistance);
+	frustum .point [0] = new SFVec3f ();
+	frustum .point [1] = new SFVec3f ();
+	frustum .point [2] = new SFVec3f ();
+	frustum .point [3] = new SFVec3f ();
 
-	frustum .point [1] = new SFVec3f ( f * w,  f * h, textureProjector .farDistance);
-	frustum .point [3] = new SFVec3f (-f * w,  f * h, textureProjector .farDistance);
-	frustum .point [5] = new SFVec3f (-f * w, -f * h, textureProjector .farDistance);
-	frustum .point [7] = new SFVec3f ( f * w, -f * h, textureProjector .farDistance);
+	frustum .point [4] = new SFVec3f ( n * w,  n * h, textureProjector .nearDistance);
+	frustum .point [5] = new SFVec3f (-n * w,  n * h, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f (-n * w, -n * h, textureProjector .nearDistance);
+	frustum .point [7] = new SFVec3f ( n * w, -n * h, textureProjector .nearDistance);
+
+	frustum .point [8]  = new SFVec3f ( f * w,  f * h, textureProjector .farDistance);
+	frustum .point [9]  = new SFVec3f (-f * w,  f * h, textureProjector .farDistance);
+	frustum .point [10] = new SFVec3f (-f * w, -f * h, textureProjector .farDistance);
+	frustum .point [11] = new SFVec3f ( f * w, -f * h, textureProjector .farDistance);
 }
 "
               directOutput TRUE
