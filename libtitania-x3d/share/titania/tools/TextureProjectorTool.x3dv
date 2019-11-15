@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 16:28:00 GMT"
+META "modified" "Fri, 15 Nov 2019 16:33:26 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -69,6 +69,7 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value Switch { }
           }
           DEF selectGeometry MetadataBoolean {
             name "selectGeometry"
@@ -426,17 +427,22 @@ function set_parallel ()
 	x1 = -x1;
 	x2 = -x2;
 
-	/*
-	frustum .point [0] = new SFVec3f (x2, y2, 0);
-	frustum .point [1] = new SFVec3f (x1, y2, 0);
-	frustum .point [2] = new SFVec3f (x1, y1, 0);
-	frustum .point [3] = new SFVec3f (x2, y1, 0);
-	*/
+	var parallel = false; // First point of frustum.
 
-	frustum .point [0] = new SFVec3f ();
-	frustum .point [1] = new SFVec3f ();
-	frustum .point [2] = new SFVec3f ();
-	frustum .point [3] = new SFVec3f ();
+	if (parallel)
+	{
+		frustum .point [0] = new SFVec3f (x2, y2, 0);
+		frustum .point [1] = new SFVec3f (x1, y2, 0);
+		frustum .point [2] = new SFVec3f (x1, y1, 0);
+		frustum .point [3] = new SFVec3f (x2, y1, 0);
+	}
+	else
+	{
+		frustum .point [0] = new SFVec3f ();
+		frustum .point [1] = new SFVec3f ();
+		frustum .point [2] = new SFVec3f ();
+		frustum .point [3] = new SFVec3f ();
+	}
 
 	frustum .point [4] = new SFVec3f (x2, y2, textureProjector .nearDistance);
 	frustum .point [5] = new SFVec3f (x1, y2, textureProjector .nearDistance);
