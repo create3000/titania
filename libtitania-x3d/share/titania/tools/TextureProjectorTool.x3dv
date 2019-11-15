@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 15:18:04 GMT"
+META "modified" "Fri, 15 Nov 2019 15:56:40 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -121,6 +121,7 @@ DEF Tool Script {
   inputOnly      SFFloat set_perspectiveNearDistance
   inputOnly      SFFloat set_perspectiveFarDistance
   inputOnly      SFFloat set_perspectiveAspectRatio
+  inputOnly      SFNode  set_texture
   inputOutput    SFNode  textureProjector NULL
   initializeOnly SFNode  projector DEF Projector Transform {
     children [
@@ -218,9 +219,46 @@ DEF Tool Script {
           }
         }
       }
+      DEF Image Transform {
+        children Shape {
+          appearance DEF _5 Appearance {
+            material Material {
+              transparency 0.5
+            }
+            shaders USE _3
+          }
+          geometry IndexedFaceSet {
+            solid FALSE
+            texCoordIndex [
+              0,
+              1,
+              2,
+              3,
+              -1
+            ]
+            coordIndex [
+              4,
+              5,
+              6,
+              7,
+              -1
+            ]
+            texCoord TextureCoordinate {
+              point [
+                1 1,
+                0 1,
+                0 0,
+                1 0
+              ]
+            }
+            coord USE _4
+          }
+        }
+      }
     ]
   }
   initializeOnly SFNode  frustum USE _4
+  initializeOnly SFNode  image USE _5
   initializeOnly SFNode  self USE Tool
 
   url "ecmascript:
@@ -272,9 +310,11 @@ function set_textureProjector ()
 	routes .push (Browser .currentScene .addRoute (textureProjector, \"location_changed\",  self, \"set_location\"));
 	routes .push (Browser .currentScene .addRoute (textureProjector, \"direction_changed\", self, \"set_direction\"));
 	routes .push (Browser .currentScene .addRoute (textureProjector, \"upVector_changed\",  self, \"set_upVector\"));
+	routes .push (Browser .currentScene .addRoute (textureProjector, \"texture_changed\",   self, \"set_texture\"));
 	
 	set_location ();
 	set_rotation ();
+	set_texture ();
 }
 
 function set_location ()
@@ -312,6 +352,11 @@ function straightenHorizon (orientation)
 	var rotation = new SFRotation (localXAxis, vector);
 
 	return orientation .multiply (rotation);
+}
+
+function set_texture ()
+{
+	image .texture = textureProjector .texture;
 }
 
 function set_parallelFieldOfView ()
@@ -369,20 +414,20 @@ function set_parallel ()
 	x1 = -x1;
 	x2 = -x2;
 
-	frustum .point [0] = new SFVec3f (x1, y1, 0);
-	frustum .point [1] = new SFVec3f (x2, y1, 0);
-	frustum .point [2] = new SFVec3f (x2, y2, 0);
-	frustum .point [3] = new SFVec3f (x1, y2, 0);
+	frustum .point [0] = new SFVec3f (x2, y2, 0);
+	frustum .point [1] = new SFVec3f (x1, y2, 0);
+	frustum .point [2] = new SFVec3f (x1, y1, 0);
+	frustum .point [3] = new SFVec3f (x2, y1, 0);
 
-	frustum .point [4] = new SFVec3f (x1, y1, textureProjector .nearDistance);
-	frustum .point [5] = new SFVec3f (x2, y1, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f (x2, y2, textureProjector .nearDistance);
-	frustum .point [7] = new SFVec3f (x1, y2, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (x2, y2, textureProjector .nearDistance);
+	frustum .point [5] = new SFVec3f (x1, y2, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f (x1, y1, textureProjector .nearDistance);
+	frustum .point [7] = new SFVec3f (x2, y1, textureProjector .nearDistance);
 
-	frustum .point [8]  = new SFVec3f (x1, y1, textureProjector .farDistance);
-	frustum .point [9]  = new SFVec3f (x2, y1, textureProjector .farDistance);
-	frustum .point [10] = new SFVec3f (x2, y2, textureProjector .farDistance);
-	frustum .point [11] = new SFVec3f (x1, y2, textureProjector .farDistance);
+	frustum .point [8]  = new SFVec3f (x2, y2, textureProjector .farDistance);
+	frustum .point [9]  = new SFVec3f (x1, y2, textureProjector .farDistance);
+	frustum .point [10] = new SFVec3f (x1, y1, textureProjector .farDistance);
+	frustum .point [11] = new SFVec3f (x2, y1, textureProjector .farDistance);
 }
 
 function set_perspectiveFieldOfView ()
@@ -426,15 +471,15 @@ function set_perspective ()
 	frustum .point [2] = new SFVec3f ();
 	frustum .point [3] = new SFVec3f ();
 
-	frustum .point [4] = new SFVec3f ( n * w,  n * h, textureProjector .nearDistance);
-	frustum .point [5] = new SFVec3f (-n * w,  n * h, textureProjector .nearDistance);
-	frustum .point [6] = new SFVec3f (-n * w, -n * h, textureProjector .nearDistance);
-	frustum .point [7] = new SFVec3f ( n * w, -n * h, textureProjector .nearDistance);
+	frustum .point [4] = new SFVec3f (-n * w,  n * h, textureProjector .nearDistance);
+	frustum .point [5] = new SFVec3f ( n * w,  n * h, textureProjector .nearDistance);
+	frustum .point [6] = new SFVec3f ( n * w, -n * h, textureProjector .nearDistance);
+	frustum .point [7] = new SFVec3f (-n * w, -n * h, textureProjector .nearDistance);
 
-	frustum .point [8]  = new SFVec3f ( f * w,  f * h, textureProjector .farDistance);
-	frustum .point [9]  = new SFVec3f (-f * w,  f * h, textureProjector .farDistance);
-	frustum .point [10] = new SFVec3f (-f * w, -f * h, textureProjector .farDistance);
-	frustum .point [11] = new SFVec3f ( f * w, -f * h, textureProjector .farDistance);
+	frustum .point [8]  = new SFVec3f (-f * w,  f * h, textureProjector .farDistance);
+	frustum .point [9]  = new SFVec3f ( f * w,  f * h, textureProjector .farDistance);
+	frustum .point [10] = new SFVec3f ( f * w, -f * h, textureProjector .farDistance);
+	frustum .point [11] = new SFVec3f (-f * w, -f * h, textureProjector .farDistance);
 }
 "
   directOutput TRUE
