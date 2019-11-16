@@ -66,6 +66,12 @@ class X3DTextureProjectorNodeTool :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext) final override;
+
 	///  @name Fields
 
 	virtual

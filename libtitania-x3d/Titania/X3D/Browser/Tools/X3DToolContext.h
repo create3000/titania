@@ -116,6 +116,10 @@ public:
 	getSoundTools () const
 	{ return soundTools; }
 
+	const X3DWeakPtrArray <X3DTextureProjectorNodeTool> &
+	getTextureProjectorTools () const
+	{ return textureProjectorTools; }
+
 	const X3DWeakPtrArray <TransformSensorTool> &
 	getTransformSensorTools () const
 	{ return transformSensorTools; }
@@ -166,6 +170,7 @@ protected:
 	friend class SoundTool;
 	friend class TransformSensorTool;
 	friend class VisibilitySensorTool;
+	friend class X3DTextureProjectorNodeTool;
 	friend class X3DViewpointNodeTool;
 
 	///  @name Construction
@@ -180,43 +185,49 @@ protected:
 
 	void
 	addTransformTool (X3DTransformNodeTool* const node);
-	
+
 	void
 	removeTransformTool (X3DTransformNodeTool* const node);
 
 	void
 	addLightTool (X3DLightNodeTool* const node);
-	
+
 	void
 	removeLightTool (X3DLightNodeTool* const node);
 
 	void
 	addProximitySensorTool (ProximitySensorTool* const node);
-	
+
 	void
 	removeProximitySensorTool (ProximitySensorTool* const node);
 
 	void
 	addSoundTool (SoundTool* const node);
-	
+
 	void
 	removeSoundTool (SoundTool* const node);
 
 	void
 	addTransformSensorTool (TransformSensorTool* const node);
-	
+
 	void
 	removeTransformSensorTool (TransformSensorTool* const node);
 
 	void
+	addTextureProjectorTool (X3DTextureProjectorNodeTool* const node);
+
+	void
+	removeTextureProjectorTool (X3DTextureProjectorNodeTool* const node);
+
+	void
 	addVisibilitySensorTool (VisibilitySensorTool* const node);
-	
+
 	void
 	removeVisibilitySensorTool (VisibilitySensorTool* const node);
 
 	void
 	addViewpointTool (X3DViewpointNodeTool* const node);
-	
+
 	void
 	removeViewpointTool (X3DViewpointNodeTool* const node);
 
@@ -232,12 +243,13 @@ private:
 	X3DPtr <TransformToolOptions>          transformToolOptions;
 	X3DWeakPtrArray <X3DTransformNodeTool> transformTools;
 
-	X3DWeakPtrArray <X3DLightNodeTool>     lightTools;
-	X3DWeakPtrArray <ProximitySensorTool>  proximitySensorTools;
-	X3DWeakPtrArray <SoundTool>            soundTools;
-	X3DWeakPtrArray <TransformSensorTool>  transformSensorTools;
-	X3DWeakPtrArray <VisibilitySensorTool> visibilitySensorTools;
-	X3DWeakPtrArray <X3DViewpointNodeTool> viewpointTools;
+	X3DWeakPtrArray <X3DLightNodeTool>            lightTools;
+	X3DWeakPtrArray <ProximitySensorTool>         proximitySensorTools;
+	X3DWeakPtrArray <SoundTool>                   soundTools;
+	X3DWeakPtrArray <TransformSensorTool>         transformSensorTools;
+	X3DWeakPtrArray <X3DTextureProjectorNodeTool> textureProjectorTools;
+	X3DWeakPtrArray <VisibilitySensorTool>        visibilitySensorTools;
+	X3DWeakPtrArray <X3DViewpointNodeTool>        viewpointTools;
 
 	X3DPtr <SnapTargetTool> snapTarget;
 	X3DPtr <SnapSourceTool> snapSource;

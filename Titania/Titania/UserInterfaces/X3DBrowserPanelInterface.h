@@ -202,6 +202,10 @@ public:
 	{ return *m_SoundsMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getTextureProjectorsMenuItem () const
+	{ return *m_TextureProjectorsMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getTransformSensorsMenuItem () const
 	{ return *m_TransformSensorsMenuItem; }
 
@@ -357,6 +361,10 @@ public:
 
 	virtual
 	void
+	on_texture_projectors_toggled () = 0;
+
+	virtual
+	void
 	on_transform_sensors_toggled () = 0;
 
 	virtual
@@ -459,6 +467,7 @@ private:
 	Gtk::CheckMenuItem* m_LightsMenuItem;
 	Gtk::CheckMenuItem* m_ProximitySensorsMenuItem;
 	Gtk::CheckMenuItem* m_SoundsMenuItem;
+	Gtk::CheckMenuItem* m_TextureProjectorsMenuItem;
 	Gtk::CheckMenuItem* m_TransformSensorsMenuItem;
 	Gtk::CheckMenuItem* m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem* m_ViewpointsMenuItem;

@@ -74,10 +74,22 @@ X3DTextureProjectorNodeTool::X3DTextureProjectorNodeTool () :
 }
 
 void
+X3DTextureProjectorNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> removeTextureProjectorTool (this);
+
+	X3DChildNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> addTextureProjectorTool (this);
+}
+
+void
 X3DTextureProjectorNodeTool::initialize ()
 {
 	X3DChildNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
+
+	getBrowser () -> addTextureProjectorTool (this);
 
 	requestAsyncLoad ({ get_tool ("TextureProjectorTool.x3dv") .str () });
 }
@@ -148,7 +160,7 @@ X3DTextureProjectorNodeTool::addTool ()
 void
 X3DTextureProjectorNodeTool::removeTool (const bool really)
 {
-	if (really or true)
+	if (really)
 	{
 		X3DChildNodeTool::removeTool ();
 	}
@@ -200,6 +212,8 @@ X3DTextureProjectorNodeTool::endUndo (const UndoStepPtr & undoStep)
 void
 X3DTextureProjectorNodeTool::dispose ()
 {
+	getBrowser () -> removeTextureProjectorTool (this);
+
 	X3DBoundedObject::dispose ();
 	X3DChildNodeTool::dispose ();
 

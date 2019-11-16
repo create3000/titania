@@ -62,6 +62,7 @@
 #include <Titania/X3D/Components/Lighting/X3DLightNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
+#include <Titania/X3D/Components/ProjectiveTextureMapping/X3DTextureProjectorNode.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
 #include <Titania/X3D/Parser/Filter.h>
 
@@ -88,12 +89,13 @@ X3DBrowserPanelMenuBar::initialize ()
 
 	getPage () -> getMainBrowser () -> getExecutionContext () .addInterest (&X3DBrowserPanelMenuBar::set_scene, this);
 
-	getPage () -> getMainBrowser () -> getLightTools ()            .addInterest (&X3DBrowserPanelMenuBar::set_lightTools,            this);
-	getPage () -> getMainBrowser () -> getProximitySensorTools ()  .addInterest (&X3DBrowserPanelMenuBar::set_proximitySensorTools,  this);
-	getPage () -> getMainBrowser () -> getSoundTools ()            .addInterest (&X3DBrowserPanelMenuBar::set_soundTools,            this);
-	getPage () -> getMainBrowser () -> getTransformSensorTools ()  .addInterest (&X3DBrowserPanelMenuBar::set_transformSensorTools,  this);
-	getPage () -> getMainBrowser () -> getVisibilitySensorTools () .addInterest (&X3DBrowserPanelMenuBar::set_visibilitySensorTools, this);
-	getPage () -> getMainBrowser () -> getViewpointTools ()        .addInterest (&X3DBrowserPanelMenuBar::set_viewpointTools,        this);
+	getPage () -> getMainBrowser () -> getLightTools ()             .addInterest (&X3DBrowserPanelMenuBar::set_lightTools,            this);
+	getPage () -> getMainBrowser () -> getProximitySensorTools ()   .addInterest (&X3DBrowserPanelMenuBar::set_proximitySensorTools,  this);
+	getPage () -> getMainBrowser () -> getSoundTools ()             .addInterest (&X3DBrowserPanelMenuBar::set_soundTools,            this);
+	getPage () -> getMainBrowser () -> getTextureProjectorTools ()  .addInterest (&X3DBrowserPanelMenuBar::set_textureProjectorTools, this);
+	getPage () -> getMainBrowser () -> getTransformSensorTools ()   .addInterest (&X3DBrowserPanelMenuBar::set_transformSensorTools,  this);
+	getPage () -> getMainBrowser () -> getVisibilitySensorTools ()  .addInterest (&X3DBrowserPanelMenuBar::set_visibilitySensorTools, this);
+	getPage () -> getMainBrowser () -> getViewpointTools ()         .addInterest (&X3DBrowserPanelMenuBar::set_viewpointTools,        this);
 
 	on_menubar_toggled ();
 	on_main_browser_hierarchy_changed (nullptr);
@@ -103,6 +105,7 @@ X3DBrowserPanelMenuBar::initialize ()
 	set_lightTools            (getPage () -> getMainBrowser () -> getLightTools ());
 	set_proximitySensorTools  (getPage () -> getMainBrowser () -> getProximitySensorTools ());
 	set_soundTools            (getPage () -> getMainBrowser () -> getSoundTools ());
+	set_textureProjectorTools (getPage () -> getMainBrowser () -> getTextureProjectorTools ());
 	set_transformSensorTools  (getPage () -> getMainBrowser () -> getTransformSensorTools ());
 	set_visibilitySensorTools (getPage () -> getMainBrowser () -> getVisibilitySensorTools ());
 	set_viewpointTools        (getPage () -> getMainBrowser () -> getViewpointTools ());
@@ -431,6 +434,16 @@ X3DBrowserPanelMenuBar::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTo
 }
 
 void
+X3DBrowserPanelMenuBar::set_textureProjectorTools (const X3D::X3DWeakPtrArray <X3D::X3DTextureProjectorNodeTool> & tools)
+{
+	changing = tools .empty ();
+
+	getTextureProjectorsMenuItem () .set_active (tools .size ());
+
+	changing = false;
+}
+
+void
 X3DBrowserPanelMenuBar::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools)
 {
 	changing = tools .empty ();
@@ -601,6 +614,36 @@ X3DBrowserPanelMenuBar::on_sounds_toggled ()
 }
 
 void
+X3DBrowserPanelMenuBar::on_texture_projectors_toggled ()
+{
+	if (changing)
+		return;
+
+	if (getTextureProjectorsMenuItem () .get_active ())
+	{
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[ ] (X3D::SFNode & node)
+		{
+			if (dynamic_cast <X3D::X3DTextureProjectorNode*> (node .getValue ()))
+				node -> addTool ();
+
+			return true;
+		});
+	}
+	else
+	{
+		X3D::traverse (getPage () -> getMainBrowser () -> getExecutionContext () -> getRootNodes (),
+		[&] (X3D::SFNode & node)
+		{
+			if (dynamic_cast <X3D::X3DTextureProjectorNode*> (node .getValue ()))
+				node -> removeTool (true);
+
+			return true;
+		});
+	}
+}
+
+void
 X3DBrowserPanelMenuBar::on_transform_sensors_toggled ()
 {
 	if (changing)
@@ -701,6 +744,9 @@ X3DBrowserPanelMenuBar::on_hide_all_iconic_objects_activated ()
 
 	if (getSoundsMenuItem () .get_active ())
 		getSoundsMenuItem () .set_active (false);
+
+	if (getTextureProjectorsMenuItem () .get_active ())
+		getTextureProjectorsMenuItem () .set_active (false);
 
 	if (getTransformSensorsMenuItem () .get_active ())
 		getTransformSensorsMenuItem () .set_active (false);

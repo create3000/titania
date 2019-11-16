@@ -324,8 +324,8 @@
                       <object class="GtkCheckMenuItem" id="ProximitySensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/ProximitySensors</property>
-                        <property name="label" translatable="yes">_ProximitySensors</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Proximity Sensors</property>
+                        <property name="label" translatable="yes">_Proximity Sensors</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_proximity_sensors_toggled" swapped="no"/>
                       </object>
@@ -341,11 +341,21 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkCheckMenuItem" id="TextureProjectorsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Texture Projectors</property>
+                        <property name="label" translatable="yes">Te_xture Projectors</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_texture_projectors_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkCheckMenuItem" id="TransformSensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/TransformSensors</property>
-                        <property name="label" translatable="yes">_TransformSensors</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Transform Sensors</property>
+                        <property name="label" translatable="yes">_Transform Sensors</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_transform_sensors_toggled" swapped="no"/>
                       </object>
@@ -354,8 +364,8 @@
                       <object class="GtkCheckMenuItem" id="VisibilitySensorsMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/VisibilitySensors</property>
-                        <property name="label" translatable="yes">V_isibilitySensors</property>
+                        <property name="accel_path">&lt;BrowserPanel&gt;/Show/Visibility Sensors</property>
+                        <property name="label" translatable="yes">V_isibility Sensors</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_visibility_sensors_toggled" swapped="no"/>
                       </object>

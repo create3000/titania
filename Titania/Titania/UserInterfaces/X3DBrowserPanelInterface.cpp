@@ -108,6 +108,7 @@ X3DBrowserPanelInterface::create ()
 	m_builder -> get_widget ("LightsMenuItem", m_LightsMenuItem);
 	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
 	m_builder -> get_widget ("SoundsMenuItem", m_SoundsMenuItem);
+	m_builder -> get_widget ("TextureProjectorsMenuItem", m_TextureProjectorsMenuItem);
 	m_builder -> get_widget ("TransformSensorsMenuItem", m_TransformSensorsMenuItem);
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
@@ -158,6 +159,7 @@ X3DBrowserPanelInterface::create ()
 	m_LightsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_lights_toggled));
 	m_ProximitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_proximity_sensors_toggled));
 	m_SoundsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_sounds_toggled));
+	m_TextureProjectorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_texture_projectors_toggled));
 	m_TransformSensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_transform_sensors_toggled));
 	m_VisibilitySensorsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_visibility_sensors_toggled));
 	m_ViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserPanelInterface::on_viewpoints_toggled));

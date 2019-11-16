@@ -61,6 +61,7 @@
 #include "../../Tools/Grouping/X3DTransformNodeTool.h"
 #include "../../Tools/Lighting/X3DLightNodeTool.h"
 #include "../../Tools/Navigation/X3DViewpointNodeTool.h"
+#include "../../Tools/ProjectiveTextureMapping/X3DTextureProjectorNodeTool.h"
 #include "../../Tools/SnapTool/SnapTargetTool.h"
 #include "../../Tools/SnapTool/SnapSourceTool.h"
 #include "../../Tools/Sound/SoundTool.h"
@@ -79,6 +80,7 @@ X3DToolContext::X3DToolContext () :
 	 proximitySensorTools (),
 	           soundTools (),
 	 transformSensorTools (),
+	textureProjectorTools (),
 	visibilitySensorTools (),
 	       viewpointTools (),
 	           snapTarget (),
@@ -91,6 +93,7 @@ X3DToolContext::X3DToolContext () :
 	                 proximitySensorTools,
 	                 soundTools,
 	                 transformSensorTools,
+	                 textureProjectorTools,
 	                 visibilitySensorTools,
 	                 viewpointTools,
 	                 snapTarget,
@@ -173,6 +176,19 @@ X3DToolContext::removeTransformSensorTool (TransformSensorTool* const node)
 {
 	transformSensorTools .remove (X3DWeakPtr <TransformSensorTool> (node));
 	transformSensorTools .remove (nullptr);
+}
+
+void
+X3DToolContext::addTextureProjectorTool (X3DTextureProjectorNodeTool* const node)
+{
+	textureProjectorTools .emplace_back (node);
+}
+
+void
+X3DToolContext::removeTextureProjectorTool (X3DTextureProjectorNodeTool* const node)
+{
+	textureProjectorTools .remove (X3DWeakPtr <X3DTextureProjectorNodeTool> (node));
+	textureProjectorTools .remove (nullptr);
 }
 
 void

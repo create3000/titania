@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -150,26 +150,26 @@ private:
 	virtual
 	void
 	on_phong_toggled () final override;
-	
+
 	virtual
 	void
 	on_gouraud_toggled () final override;
-	
+
 	virtual
 	void
 	on_flat_toggled () final override;
-	
+
 	virtual
 	void
 	on_wireframe_toggled () final override;
-	
+
 	virtual
 	void
 	on_pointset_toggled () final override;
 
 	void
 	on_shading_changed (const std::string & value);
-	
+
 	void
 	set_shading (const X3D::SFString & value);
 
@@ -191,19 +191,22 @@ private:
 
 	void
 	set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools);
-	
+
 	void
 	set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools);
-	
+
 	void
 	set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools);
-	
+
+	void
+	set_textureProjectorTools (const X3D::X3DWeakPtrArray <X3D::X3DTextureProjectorNodeTool> & tools);
+
 	void
 	set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools);
-	
+
 	void
 	set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools);
-	
+
 	void
 	set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools);
 
@@ -228,6 +231,10 @@ private:
 	virtual
 	void
 	on_sounds_toggled () final override;
+
+	virtual
+	void
+	on_texture_projectors_toggled () final override;
 
 	virtual
 	void
