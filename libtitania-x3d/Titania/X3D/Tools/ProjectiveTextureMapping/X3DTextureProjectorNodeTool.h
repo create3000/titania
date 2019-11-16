@@ -200,6 +200,22 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
+	virtual
+	void
+	addTool () final override;
+
+	virtual
+	void
+	removeTool (const bool really) final override;
+
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -223,6 +239,15 @@ protected:
 	virtual
 	void
 	realize () override;
+
+
+private:
+
+	///  @name Member access
+
+	Vector3f startLocation;
+	Vector3f startDirection;
+	Vector3f startUpVector;
 
 };
 

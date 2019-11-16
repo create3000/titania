@@ -9,10 +9,20 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Fri, 15 Nov 2019 16:35:35 GMT"
+META "modified" "Sat, 16 Nov 2019 01:00:31 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
+
+EXTERNPROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+"library/BooleanSwitch.x3dv"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -69,224 +79,199 @@ WorldInfo {
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF _1 Switch {
-              children DEF Image Transform {
-                children Shape {
-                  appearance DEF _2 Appearance {
-                    material Material {
-                      transparency 0.5
-                    }
-                    shaders DEF _3 ToolShader { }
-                  }
-                  geometry IndexedFaceSet {
-                    solid FALSE
-                    texCoordIndex [
-                      0,
-                      1,
-                      2,
-                      3,
-                      -1
-                    ]
-                    coordIndex [
-                      4,
-                      5,
-                      6,
-                      7,
-                      -1
-                    ]
-                    texCoord TextureCoordinate {
-                      point [
-                        1 1,
-                        0 1,
-                        0 0,
-                        1 0
+            value DEF Tool Script {
+              inputOutput    SFBool     enabled FALSE
+              inputOutput    SFBool     selected FALSE
+              inputOnly      SFVec3f    set_direction
+              inputOnly      SFVec3f    set_connectDirection
+              inputOnly      SFVec3f    set_upVector
+              inputOnly      SFVec3f    set_connectUpVector
+              inputOnly      SFRotation set_rotation
+              inputOnly      SFRotation set_connectRotation
+              inputOnly      MFFloat    set_parallelFieldOfView
+              inputOnly      SFFloat    set_parallelNearDistance
+              inputOnly      SFFloat    set_parallelFarDistance
+              inputOnly      SFFloat    set_parallelAspectRatio
+              inputOnly      SFFloat    set_perspectiveFieldOfView
+              inputOnly      SFFloat    set_perspectiveNearDistance
+              inputOnly      SFFloat    set_perspectiveFarDistance
+              inputOnly      SFFloat    set_perspectiveAspectRatio
+              inputOnly      SFNode     set_texture
+              inputOutput    SFNode     textureProjector NULL
+              initializeOnly SFNode     projector DEF Projector Transform {
+                children [
+                  DEF Beamer ScreenGroup {
+                    children Transform {
+                      translation 0 0 -15
+                      children [
+                        DEF Box_1 Transform {
+                          children Shape {
+                            appearance DEF _2 Appearance {
+                              material Material {
+                                diffuseColor 0.2 0.2 0.2
+                                specularColor 1 1 1
+                              }
+                              shaders DEF _3 ToolShader { }
+                            }
+                            geometry Box {
+                              size 40 20 30
+                            }
+                          }
+                        }
+                        DEF Cylinder Transform {
+                          translation 0 0 15
+                          rotation 0.999999999993254 3.67320512848233e-06 1.19222813476655e-18 1.5707963267949
+                          children Shape {
+                            appearance USE _2
+                            geometry Cylinder {
+                              top FALSE
+                              height 20
+                              radius 12
+                              solid FALSE
+                            }
+                          }
+                        }
                       ]
                     }
-                    coord DEF _4 Coordinate {
-                      point [
-                        0 0 0,
-                        0 0 0,
-                        0 0 0,
-                        0 0 0,
-                        1 1 1,
-                        -1 1 1,
-                        -1 -1 1,
-                        1 -1 1,
-                        2 2 2,
-                        -2 2 2,
-                        -2 -2 2,
-                        2 -2 2
-                      ]
+                  }
+                  DEF Frustum Transform {
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          emissiveColor 1 0.985342 0.807597
+                        }
+                        shaders USE _3
+                      }
+                      geometry IndexedLineSet {
+                        coordIndex [
+                          0,
+                          4,
+                          -1,
+                          4,
+                          8,
+                          -1,
+                          1,
+                          5,
+                          -1,
+                          5,
+                          9,
+                          -1,
+                          2,
+                          6,
+                          -1,
+                          6,
+                          10,
+                          -1,
+                          3,
+                          7,
+                          -1,
+                          7,
+                          11,
+                          -1,
+                          0,
+                          1,
+                          2,
+                          3,
+                          0,
+                          -1,
+                          4,
+                          5,
+                          6,
+                          7,
+                          4,
+                          -1,
+                          8,
+                          9,
+                          10,
+                          11,
+                          8,
+                          -1
+                        ]
+                        coord DEF _4 Coordinate {
+                          point [
+                            0 0 0,
+                            0 0 0,
+                            0 0 0,
+                            0 0 0,
+                            1 1 1,
+                            -1 1 1,
+                            -1 -1 1,
+                            1 -1 1,
+                            2 2 2,
+                            -2 2 2,
+                            -2 -2 2,
+                            2 -2 2
+                          ]
+                        }
+                      }
+                    }
+                  }
+                  Switch {
+                    children DEF Image Transform {
+                      children Shape {
+                        appearance DEF _5 Appearance {
+                          material Material {
+                            transparency 0.5
+                          }
+                          shaders USE _3
+                        }
+                        geometry IndexedFaceSet {
+                          solid FALSE
+                          texCoordIndex [
+                            0,
+                            1,
+                            2,
+                            3,
+                            -1
+                          ]
+                          coordIndex [
+                            4,
+                            5,
+                            6,
+                            7,
+                            -1
+                          ]
+                          texCoord TextureCoordinate {
+                            point [
+                              1 1,
+                              0 1,
+                              0 0,
+                              1 0
+                            ]
+                          }
+                          coord USE _4
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+              initializeOnly SFNode     frustum USE _4
+              initializeOnly SFNode     image USE _5
+              initializeOnly SFNode     transform DEF TransformTool Transform {
+                children ScreenGroup {
+                  children DEF Box Transform {
+                    scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          transparency 1
+                        }
+                        shaders ToolShader { }
+                      }
+                      geometry Box {
+                        size 60 60 60
+                      }
                     }
                   }
                 }
               }
-            }
-          }
-          DEF selectGeometry MetadataBoolean {
-            name "selectGeometry"
-            reference "http://titania.create3000.de"
-            value FALSE
-          }
-        ]
-      }
-      DEF Page MetadataSet {
-        name "Page"
-        reference "http://titania.create3000.de"
-        value [
-          DEF activeView MetadataInteger {
-            name "activeView"
-            reference "http://titania.create3000.de"
-            value 1
-          }
-          DEF multiView MetadataInteger {
-            name "multiView"
-            reference "http://titania.create3000.de"
-            value 0
-          }
-        ]
-      }
-      DEF Grid MetadataSet {
-        name "Grid"
-        reference "http://titania.create3000.de"
-        value DEF enabled MetadataBoolean {
-          name "enabled"
-          reference "http://titania.create3000.de"
-          value TRUE
-        }
-      }
-    ]
-  }
-  title "LightTool"
-}
+              initializeOnly SFNode     self USE Tool
 
-DEF Tool Script {
-  inputOutput    SFBool  enabled FALSE
-  inputOutput    SFBool  selected FALSE
-  inputOnly      SFVec3f set_location
-  inputOnly      SFVec3f set_direction
-  inputOnly      SFVec3f set_upVector
-  inputOnly      MFFloat set_parallelFieldOfView
-  inputOnly      SFFloat set_parallelNearDistance
-  inputOnly      SFFloat set_parallelFarDistance
-  inputOnly      SFFloat set_parallelAspectRatio
-  inputOnly      SFFloat set_perspectiveFieldOfView
-  inputOnly      SFFloat set_perspectiveNearDistance
-  inputOnly      SFFloat set_perspectiveFarDistance
-  inputOnly      SFFloat set_perspectiveAspectRatio
-  inputOnly      SFNode  set_texture
-  inputOutput    SFNode  textureProjector NULL
-  initializeOnly SFNode  projector DEF Projector Transform {
-    children [
-      DEF Beamer ScreenGroup {
-        children Transform {
-          translation 0 0 -15
-          children [
-            DEF Box_5 Transform {
-              children Shape {
-                appearance DEF _6 Appearance {
-                  material Material {
-                    diffuseColor 0.2 0.2 0.2
-                    specularColor 1 1 1
-                  }
-                  shaders USE _3
-                }
-                geometry Box {
-                  size 40 20 30
-                }
-              }
-            }
-            DEF Cylinder Transform {
-              translation 0 0 15
-              rotation 0.999999999993254 3.67320512848233e-06 1.19222813476655e-18 1.5707963267949
-              children Shape {
-                appearance USE _6
-                geometry Cylinder {
-                  top FALSE
-                  height 20
-                  radius 12
-                  solid FALSE
-                }
-              }
-            }
-          ]
-        }
-      }
-      DEF Frustum Transform {
-        children Shape {
-          appearance Appearance {
-            material Material {
-              emissiveColor 1 0.985342 0.807597
-            }
-            shaders USE _3
-          }
-          geometry IndexedLineSet {
-            coordIndex [
-              0,
-              4,
-              -1,
-              4,
-              8,
-              -1,
-              1,
-              5,
-              -1,
-              5,
-              9,
-              -1,
-              2,
-              6,
-              -1,
-              6,
-              10,
-              -1,
-              3,
-              7,
-              -1,
-              7,
-              11,
-              -1,
-              0,
-              1,
-              2,
-              3,
-              0,
-              -1,
-              4,
-              5,
-              6,
-              7,
-              4,
-              -1,
-              8,
-              9,
-              10,
-              11,
-              8,
-              -1
-            ]
-            coord USE _4
-          }
-        }
-      }
-      USE _1
-    ]
-  }
-  initializeOnly SFNode  frustum USE _4
-  initializeOnly SFNode  image USE _2
-  initializeOnly SFNode  self USE Tool
-
-  url "ecmascript:
-
-var routes = [ ];
+              url "ecmascript:
 
 function set_textureProjector ()
 {
-	routes .forEach (function (routes)
-	{
-		Browser .currentScene .deleteRoute (route);
-	})
-
 	var type = textureProjector .getNodeType () .reverse ();
 
 	for (var i = 0; i < type .length; ++ i)
@@ -295,20 +280,20 @@ function set_textureProjector ()
 		{
 			case X3DConstants .TextureProjectorParallel:
 			{
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_parallelFieldOfView\"));
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_parallelNearDistance\"));
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_parallelFarDistance\"));
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"aspectRatio\",          self, \"set_parallelAspectRatio\"));
+				Browser .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_parallelFieldOfView\");
+				Browser .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_parallelNearDistance\");
+				Browser .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_parallelFarDistance\");
+				Browser .addRoute (textureProjector, \"aspectRatio\",          self, \"set_parallelAspectRatio\");
 				
 				set_parallel ();
 				break;
 			}
 			case X3DConstants .TextureProjectorPerspective:
 			{
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_perspectiveFieldOfView\"));
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_perspectiveNearDistance\"));
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_perspectiveFarDistance\"));
-				routes .push (Browser .currentScene .addRoute (textureProjector, \"aspectRatio\",          self, \"set_perspectiveAspectRatio\"));
+				Browser .addRoute (textureProjector, \"fieldOfView_changed\",  self, \"set_perspectiveFieldOfView\");
+				Browser .addRoute (textureProjector, \"nearDistance_changed\", self, \"set_perspectiveNearDistance\");
+				Browser .addRoute (textureProjector, \"farDistance_changed\",  self, \"set_perspectiveFarDistance\");
+				Browser .addRoute (textureProjector, \"aspectRatio\",          self, \"set_perspectiveAspectRatio\");
 				
 				set_perspective ();
 				break;
@@ -320,38 +305,67 @@ function set_textureProjector ()
 		break;
 	}
 
-	routes .length = 0;
-
-	routes .push (Browser .currentScene .addRoute (textureProjector, \"location_changed\",  self, \"set_location\"));
-	routes .push (Browser .currentScene .addRoute (textureProjector, \"direction_changed\", self, \"set_direction\"));
-	routes .push (Browser .currentScene .addRoute (textureProjector, \"upVector_changed\",  self, \"set_upVector\"));
-	routes .push (Browser .currentScene .addRoute (textureProjector, \"texture_changed\",   self, \"set_texture\"));
+	Browser .addRoute (textureProjector, \"direction_changed\", self, \"set_direction\");
+	Browser .addRoute (textureProjector, \"upVector_changed\",  self, \"set_upVector\");
+	Browser .addRoute (textureProjector, \"texture_changed\",   self, \"set_texture\");
 	
-	set_location ();
-	set_rotation ();
-	set_texture ();
-}
+	Browser .addRoute (textureProjector, 'location', transform, 'translation');
+	Browser .addRoute (transform, 'translation', textureProjector, 'location');
+	Browser .addRoute (transform, 'rotation', self, 'set_rotation');
 
-function set_location ()
-{
-	projector .translation = textureProjector .location;
+	transform .translation = textureProjector .location;
+
+	set_directionAndUpVector ();
+	set_texture ();
 }
 
 function set_direction ()
 {
-	set_rotation ();
+	set_directionAndUpVector ();
+}
+
+function set_connectDirection (value)
+{
+	Browser .deleteRoute (textureProjector, 'direction', self, 'set_connectDirection');
+	Browser .addRoute (textureProjector, 'direction', self, 'set_direction');
 }
 
 function set_upVector ()
 {
-	set_rotation ();
+	set_directionAndUpVector ();
 }
 
-function set_rotation ()
+function set_connectUpVector (value)
+{
+	Browser .deleteRoute (textureProjector, 'upVector', self, 'set_connectUpVector');
+	Browser .addRoute (textureProjector, 'upVector', self, 'set_upVector');
+}
+
+function set_directionAndUpVector ()
 {
 	var rotation = new SFRotation (new SFVec3f (0, 0, 1), textureProjector .direction);
 
-	projector .rotation = straightenHorizon (rotation);
+	transform .rotation = straightenHorizon (rotation);
+
+	Browser .deleteRoute (transform, 'rotation', self, 'set_rotation');
+	Browser .addRoute (transform, 'rotation', self, 'set_connectRotation');
+}
+
+function set_rotation (value)
+{
+	textureProjector .direction = transform .rotation .multVec (new SFVec3f (0, 0, 1));
+	textureProjector .upVector  = transform .rotation .multVec (new SFVec3f (0, 1, 0));
+	
+	Browser .deleteRoute (textureProjector, 'direction', self, 'set_direction');
+	Browser .deleteRoute (textureProjector, 'upVector', self, 'set_upVector');
+	Browser .addRoute (textureProjector, 'direction', self, 'set_connectDirection');
+	Browser .addRoute (textureProjector, 'upVector', self, 'set_connectUpVector');
+}
+
+function set_connectRotation (value)
+{
+	Browser .deleteRoute (transform, 'rotation', self, 'set_connectRotation');
+	Browser .addRoute (transform, 'rotation', self, 'set_rotation');
 }
 
 function straightenHorizon (orientation)
@@ -509,12 +523,65 @@ function set_perspective ()
 	frustum .point [11] = new SFVec3f (-f * w, -f * h, textureProjector .farDistance);
 }
 "
-  directOutput TRUE
+              directOutput TRUE
+            }
+          }
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+        ]
+      }
+      DEF Page MetadataSet {
+        name "Page"
+        reference "http://titania.create3000.de"
+        value [
+          DEF activeView MetadataInteger {
+            name "activeView"
+            reference "http://titania.create3000.de"
+            value 1
+          }
+          DEF multiView MetadataInteger {
+            name "multiView"
+            reference "http://titania.create3000.de"
+            value 0
+          }
+        ]
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+    ]
+  }
+  title "LightTool"
 }
+
+USE Tool
 
 Collision {
   enabled FALSE
-  children USE Projector
+  children [
+    DEF _6 BooleanSwitch {
+      whichChoice TRUE
+      children [
+        DEF _7 Group { }
+        USE TransformTool
+      ]
+    }
+    USE Projector
+  ]
 }
 
+ROUTE Tool.selected_changed TO _6.set_whichChoice
+ROUTE TransformTool.translation_changed TO Projector.set_translation
+ROUTE TransformTool.rotation_changed TO Projector.set_rotation
+
 EXPORT Tool
+EXPORT TransformTool

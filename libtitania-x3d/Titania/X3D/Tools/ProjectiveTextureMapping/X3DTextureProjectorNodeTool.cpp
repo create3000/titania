@@ -51,7 +51,11 @@
 #include "X3DTextureProjectorNodeTool.h"
 
 #include "../../Browser/Networking/config.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
+
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -59,7 +63,10 @@ namespace X3D {
 X3DTextureProjectorNodeTool::X3DTextureProjectorNodeTool () :
 	X3DTextureProjectorNode (),
 	       X3DChildNodeTool (),
-	       X3DBoundedObject ()
+	       X3DBoundedObject (),
+	          startLocation (),
+	         startDirection (),
+	          startUpVector ()
 {
 	addType (X3DConstants::X3DTextureProjectorNodeTool);
 
@@ -80,12 +87,19 @@ X3DTextureProjectorNodeTool::realize ()
 {
 	try
 	{
-		const auto & toolNode = getToolNode ();
+		setTransformTool (0, getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
+
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
 
 		toolNode -> setPrivate (true);
 		toolNode -> getField <SFNode> ("image") -> setPrivate (true);
-
 		toolNode -> setField <SFNode> ("textureProjector", getNode <X3DTextureProjectorNode> ());
+
+		transformTool -> setField <SFBool> ("displayCenter", false);
+		transformTool -> setField <MFString> ("tools", MFString ({ "TRANSLATE", "ROTATE" }));
+
+		addTool ();
 	}
 	catch (const X3DError & error)
 	{
@@ -110,6 +124,77 @@ X3DTextureProjectorNodeTool::traverse (const TraverseType type, X3DRenderObject*
 	// Tool
 
 	X3DToolObject::traverse (type, renderObject);
+}
+
+void
+X3DTextureProjectorNodeTool::addTool ()
+{
+	try
+	{
+		if (getTransformTools () .empty ())
+			return;
+
+		const auto & transformTool = getTransformTools () [0];
+		const auto & toolNode      = getToolNode ();
+		const auto   selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+
+		transformTool -> setField <SFBool> ("grouping", selected);
+		toolNode      -> setField <SFBool> ("selected", selected);
+	}
+	catch (const X3DError & error)
+	{ }
+}
+
+void
+X3DTextureProjectorNodeTool::removeTool (const bool really)
+{
+	if (really or true)
+	{
+		X3DChildNodeTool::removeTool ();
+	}
+	else
+	{
+		try
+		{
+			if (getTransformTools () .empty ())
+				return;
+
+			const auto & transformTool = getTransformTools () [0];
+			const auto & toolNode      = getToolNode ();
+
+			transformTool -> setField <SFBool> ("grouping", false);
+			toolNode      -> setField <SFBool> ("selected", false);
+		}
+		catch (const X3DError &)
+		{ }
+	}
+}
+
+void
+X3DTextureProjectorNodeTool::beginUndo ()
+{
+	startLocation  = location ();
+	startDirection = direction ();
+	startUpVector  = upVector ();
+}
+
+void
+X3DTextureProjectorNodeTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (location ()  not_eq startLocation or
+	    direction () not_eq startDirection or
+		 upVector ()  not_eq startUpVector)
+	{
+		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (upVector ()), startUpVector);
+		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (direction ()), startDirection);
+		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (location ()), startLocation);
+		undoStep -> addUndoFunction (&X3DTextureProjectorNodeTool::setChanging, X3DPtr <X3DTextureProjectorNode> (this), 0, true);
+
+		undoStep -> addRedoFunction (&X3DTextureProjectorNodeTool::setChanging, X3DPtr <X3DTextureProjectorNode> (this), 0, true);
+		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (location ()), location ());
+		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (direction ()), direction ());
+		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (upVector ()), upVector ());
+	}
 }
 
 void
