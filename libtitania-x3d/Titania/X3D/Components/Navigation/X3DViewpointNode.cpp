@@ -370,10 +370,7 @@ X3DViewpointNode::straightenHorizon (const Rotation4d & orientation) const
 	if (vector == Vector3d ())
 		return Rotation4d ();
 
-	if (vector == localXAxis)
-		return Rotation4d ();
-
-	if (vector == -localXAxis)
+	if (std::abs (dot (vector, localXAxis)) >= 1)
 		return Rotation4d ();
 
 	const auto rotation = Rotation4d (localXAxis, vector);
