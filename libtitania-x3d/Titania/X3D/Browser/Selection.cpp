@@ -326,8 +326,8 @@ Selection::setNodes (const MFNode & value)
 
 			if (not lowestNodes .empty ())
 			{
-				auto hierarchies       = findNode (value .back ());
-				auto lowestHierarchies = findNode (value .back (), lowestNodes .front ());
+				auto       hierarchies       = findNode (value .back ());
+				const auto lowestHierarchies = findNode (value .back (), lowestNodes .front ());
 
 				for (auto & hierarchy : hierarchies)
 				{
@@ -460,15 +460,24 @@ Selection::selectNode (X3DBrowser* const browser)
 
 			// Append lowest hierarchy:
 
-			auto hierarchy   = nearestHit -> getHierarchy ();
-			auto lowestNodes = getGeometries ({ node });
+			auto       hierarchy        = nearestHit -> getHierarchy ();
+			const auto executionContext = node -> getExecutionContext ();
+
+			hierarchy .erase (std::remove_if (hierarchy .begin (), hierarchy .end (),
+			[&] (const SFNode & node)
+			{
+				return node -> getExecutionContext () not_eq executionContext;
+			}),
+			hierarchy .end ());
+
+			auto lowestNodes = getGeometries ({ hierarchy .back () });
 
 			if (lowestNodes .empty ())
-				lowestNodes = getLowest ({ node });
+				lowestNodes = getLowest ({ hierarchy .back () });
 
 			if (not lowestNodes .empty ())
 			{
-				auto lowestHierarchies = findNode (node, lowestNodes .front ());
+				const auto lowestHierarchies = findNode (hierarchy .back (), lowestNodes .front ());
 
 				for (const auto & lowestHierarchy : lowestHierarchies)
 				{
