@@ -458,7 +458,26 @@ Selection::selectNode (X3DBrowser* const browser)
 			else
 				setNodes ({ node });
 
-			setHierarchy (node, nearestHit -> getHierarchy ());
+			// Append lowest hierarchy:
+
+			auto hierarchy   = nearestHit -> getHierarchy ();
+			auto lowestNodes = getGeometries ({ node });
+
+			if (lowestNodes .empty ())
+				lowestNodes = getLowest ({ node });
+
+			if (not lowestNodes .empty ())
+			{
+				auto lowestHierarchies = findNode (node, lowestNodes .front ());
+
+				for (const auto & lowestHierarchy : lowestHierarchies)
+				{
+					hierarchy .insert (hierarchy .end (), lowestHierarchy .begin () + 1, lowestHierarchy .end ());
+					break;
+				}
+			}
+
+			setHierarchy (node, hierarchy);
 
 			touchTime = getCurrentTime ();
 
@@ -481,31 +500,21 @@ Selection::setHierarchy (const SFNode & node, const MFNode & value)
 
 	// Erase NULL nodes.
 
-	hierarchy .erase (std::remove_if (hierarchy .begin (), hierarchy .end (), [&] (const SFNode & node) { return not node; }), hierarchy .end ());
-
-	// Find first foreign node and remove these.
-
-	const auto iter = std::find_if (hierarchy .begin (),
-	                                hierarchy .end (),
-	                                [&] (const SFNode & node)
-	                                { return node -> getExecutionContext () not_eq executionContext; });
-
-	if (iter == hierarchy .end ())
-		return;
-
-	const auto foreignNode = *iter;
-
-	hierarchy .erase (iter, hierarchy .end ());
-
-	// Add X3DPrototypeInstance to hierarchy.
-
-	const auto protoInstance = foreignNode -> getExecutionContext ();
-
-	if (protoInstance -> isType ({ X3DConstants::X3DPrototypeInstance }))
+	hierarchy .erase (std::remove_if (hierarchy .begin (), hierarchy .end (),
+	[&] (const SFNode & node)
 	{
-		if (protoInstance -> getExecutionContext () == executionContext)
-			hierarchy .emplace_back (protoInstance);
-	}
+		return not node;
+	}),
+	hierarchy .end ());
+
+	// Erase foreign nodes.
+
+	hierarchy .erase (std::remove_if (hierarchy .begin (), hierarchy .end (),
+	[&] (const SFNode & node)
+	{
+		return node -> getExecutionContext () not_eq executionContext;
+	}),
+	hierarchy .end ());
 }
 
 MFNode
