@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Sat, 16 Nov 2019 13:05:05 GMT"
+META "modified" "Sat, 16 Nov 2019 13:22:58 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -345,10 +345,7 @@ function set_directionAndUpVector ()
 {
 	var rotation = new SFRotation (new SFVec3f (0, 0, 1), textureProjector .direction);
 
-	print (\"set_directionAndUpVector\");
-	print (rotation);
 	transform .rotation = straightenHorizon (rotation);
-	print (transform .rotation );
 
 	Browser .deleteRoute (transform, 'rotation', self, 'set_rotation');
 	Browser .addRoute (transform, 'rotation', self, 'set_connectRotation');
