@@ -591,6 +591,7 @@ Selection::getSelection (const MFNode & hierarchy) const
 		X3DConstants::X3DLightNode,
 		X3DConstants::X3DNBodyCollidableNode,
 		X3DConstants::X3DPrototypeInstance,
+		X3DConstants::X3DTextureProjectorNode,
 		X3DConstants::X3DTransformNode,
 		X3DConstants::X3DViewpointNode,
 	};
