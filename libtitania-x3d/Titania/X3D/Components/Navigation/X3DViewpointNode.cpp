@@ -68,9 +68,6 @@
 namespace titania {
 namespace X3D {
 
-static constexpr Vector3d yAxis (0, 1, 0);
-static constexpr Vector3d zAxis (0, 0, 1);
-
 X3DViewpointNode::Fields::Fields () :
 	           orientation (new SFRotation ()),
 	                  jump (new SFBool (true)),
@@ -365,17 +362,23 @@ X3DViewpointNode::straighten (const bool horizon)
 Rotation4d
 X3DViewpointNode::straightenHorizon (const Rotation4d & orientation) const
 {
-	// Taken from Billboard
-
-	const auto direction = zAxis * orientation;
-	const auto normal    = cross (direction, getUpVector ());
-	const auto vector    = cross (direction, yAxis * orientation);
+	const auto localXAxis = Vector3d (-1, 0, 0) * orientation;
+	const auto localZAxis = Vector3d ( 0, 0, 1) * orientation;
+	const auto vector     = cross (localZAxis, getUpVector ());
 
 	// If viewer looks along the up vector.
-	if (normal == Vector3d ())
+	if (vector == Vector3d ())
 		return Rotation4d ();
 
-	return Rotation4d (vector, normal);
+	if (vector == localXAxis)
+		return Rotation4d ();
+
+	if (vector == -localXAxis)
+		return Rotation4d ();
+
+	const auto rotation = Rotation4d (localXAxis, vector);
+
+	return rotation;
 }
 
 ///  This function straightens the view in a way that the viewpoint looks along the upVector plane.
@@ -383,7 +386,7 @@ X3DViewpointNode::straightenHorizon (const Rotation4d & orientation) const
 Rotation4d
 X3DViewpointNode::straightenView (const Rotation4d & orientation) const
 {
-	return Rotation4d (yAxis * orientation, getUpVector ());
+	return Rotation4d (Vector3d (0, 1, 0) * orientation, getUpVector ());
 }
 
 ///  Flys to @a point in world coordinates to a distance of @a factor and centers the point within the browser surface.
@@ -435,7 +438,7 @@ X3DViewpointNode::lookAt (const Vector3d & point, const std::pair <double, doubl
    const auto offset      = point + Vector3d (0, 0, distance .first) * getUserOrientation () - getPosition ();
 	const auto translation = lerp <Vector3d> (positionOffset (), offset, factor);
 	const auto direction   = getPosition () + translation - point;
-	auto       rotation    = orientationOffset () * Rotation4d (zAxis * getUserOrientation (), direction);
+	auto       rotation    = orientationOffset () * Rotation4d (Vector3d (0, 0, 1) * getUserOrientation (), direction);
 
 	if (straighten)
 		rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
@@ -449,7 +452,7 @@ X3DViewpointNode::lookAt (const Vector3d & point, const std::pair <double, doubl
 		timeSensor -> stopTime ()      = getCurrentTime ();
 		timeSensor -> startTime ()     = getCurrentTime ();
 		timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
-	
+
 		easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
 		positionInterpolator         -> keyValue () = { positionOffset () .getValue (),         translation };
@@ -509,7 +512,7 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 				else
 					transitionType = TransitionType::TELEPORT;
 			}
-			
+
 			setAnimate (false);
 
 			// End VRML behaviour.

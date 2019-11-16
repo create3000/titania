@@ -141,6 +141,12 @@ X3DTextureProjectorNode::straightenHorizon (const Rotation4d & orientation) cons
 	if (vector == Vector3d ())
 		return orientation;
 
+	if (vector == localXAxis)
+		return orientation;
+
+	if (vector == -localXAxis)
+		return orientation;
+
 	const auto rotation = Rotation4d (localXAxis, vector);
 
 	return orientation * rotation;
