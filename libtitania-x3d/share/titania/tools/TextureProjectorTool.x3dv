@@ -9,7 +9,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V4.6.7, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TextureProjectorTool.x3dv"
-META "modified" "Sat, 16 Nov 2019 13:52:25 GMT"
+META "modified" "Sun, 17 Nov 2019 05:23:16 GMT"
 
 EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
@@ -372,13 +372,14 @@ function straightenHorizon (orientation)
 {
 	var localXAxis = orientation .multVec (new SFVec3f (-1, 0, 0));
 	var localZAxis = orientation .multVec (new SFVec3f (0, 0, 1));
-	var vector     = localZAxis .cross (textureProjector .upVector .normalize ());
+	var upVector   = textureProjector .upVector .normalize ();
+	var vector     = localZAxis .cross (upVector);
 
 	// If viewer looks along the up vector.
-	if (vector .equals (new SFVec3f (0, 0, 0)))
+	if (Math .abs (localZAxis .dot (upVector)) >= 1)
 		return orientation;
 
-	if (Math .abs (vector .dot (localXAxis)) === 1)
+	if (Math .abs (vector .dot (localXAxis)) >= 1)
 		return orientation;
 
 	var rotation = new SFRotation (localXAxis, vector);

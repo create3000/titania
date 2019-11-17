@@ -367,7 +367,7 @@ X3DViewpointNode::straightenHorizon (const Rotation4d & orientation) const
 	const auto vector     = cross (localZAxis, getUpVector ());
 
 	// If viewer looks along the up vector.
-	if (vector == Vector3d ())
+	if (std::abs (dot (localZAxis, getUpVector ())) >= 1)
 		return Rotation4d ();
 
 	if (std::abs (dot (vector, localXAxis)) >= 1)
