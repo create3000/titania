@@ -250,6 +250,14 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	if (browser -> getMultiTexturing ())
 		constants << "#define X3D_MULTI_TEXTURING\n";
 
+	constants << "#define X3D_PROJECTIVE_TEXTURE_MAPPING\n";
+
+	if (shadow)
+	{
+		constants << "#define X3D_SHADOWS\n";
+		constants << "#define X3D_PCF_FILTERING\n";
+	}
+
 	constants << "#line " << (lines1 + 1) << std::endl;
 
 	definitions << "#define x3d_None 0\n";
@@ -318,11 +326,6 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	definitions << "#define x3d_NoiseEye                    " << int (TextureCoordinateGenerator::ModeType::NOISE_EYE) << "\n";
 	definitions << "#define x3d_SphereReflect               " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT) << "\n";
 	definitions << "#define x3d_SphereReflectLocal          " << int (TextureCoordinateGenerator::ModeType::SPHERE_REFLECT_LOCAL) << "\n";
-
-	if (shadow)
-		definitions << "#define X3D_SHADOWS\n";
-
-	definitions << "#define X3D_PCF_FILTERING\n";
 
 	// Legacy
 
