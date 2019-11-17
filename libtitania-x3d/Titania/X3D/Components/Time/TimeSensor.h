@@ -166,7 +166,7 @@ private:
 	///  @name Member access;
 
 	void
-	setRange (const float currentFraction, const float firstFraction, const float lastFraction);
+	setRange (const double currentFraction, const double firstFraction, const double lastFraction);
 
 	///  @name Event handlers
 

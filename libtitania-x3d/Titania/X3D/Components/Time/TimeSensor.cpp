@@ -122,13 +122,13 @@ TimeSensor::initialize  ()
 }
 
 void
-TimeSensor::setRange (const float currentFraction, const float firstFraction, const float lastFraction)
+TimeSensor::setRange (const double currentFraction, const double firstFraction, const double lastFraction)
 {
 	first    = firstFraction;
 	last     = lastFraction;
 	scale    = last - first;
 	interval = cycleInterval () * scale;
-	fraction = fract ((currentFraction >= 1 ? 0 : currentFraction) + (getCurrentTime () - startTime ()) / interval);
+	fraction = fract ((currentFraction >= 1 ? 0 : currentFraction) + (interval ? (getCurrentTime () - startTime ()) / interval : 0.0));
 	cycle    = getCurrentTime () - (fraction - first) * cycleInterval ();
 }
 
