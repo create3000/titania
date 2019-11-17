@@ -112,10 +112,6 @@ void
 PointLight::initialize ()
 {
 	X3DLightNode::initialize ();
-
-	addInterest (&PointLight::eventsProcessed, this);
-
-	eventsProcessed ();
 }
 
 float
@@ -145,45 +141,6 @@ PointLight::getFarValue (const Box3d & box, const Vector3d & location) const
 	return std::min <double> (getRadius (), farValue);
 }
 
-void
-PointLight::eventsProcessed ()
-{
-	const auto ambientIntensity = getAmbientIntensity ();
-	const auto intensity        = getIntensity ();
-
-	glAmbient [0] = ambientIntensity * color () .getRed ();
-	glAmbient [1] = ambientIntensity * color () .getGreen ();
-	glAmbient [2] = ambientIntensity * color () .getBlue ();
-	glAmbient [3] = 1;
-
-	glDiffuseSpecular [0] = intensity * color () .getRed ();
-	glDiffuseSpecular [1] = intensity * color () .getGreen ();
-	glDiffuseSpecular [2] = intensity * color () .getBlue ();
-	glDiffuseSpecular [3] = 1;
-
-	glPosition [0] = location () .getX ();
-	glPosition [1] = location () .getY ();
-	glPosition [2] = location () .getZ ();
-	glPosition [3] = 1;                       // point light
-}
-
-void
-PointLight::draw (GLenum lightId)
-{
-	glLightfv (lightId, GL_AMBIENT,  glAmbient);
-	glLightfv (lightId, GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (lightId, GL_SPECULAR, glDiffuseSpecular);
-
-	glLightf  (lightId, GL_SPOT_EXPONENT, 0);
-	glLightf  (lightId, GL_SPOT_CUTOFF, 180); // point light
-
-	glLightf  (lightId, GL_CONSTANT_ATTENUATION,  std::max (0.0f, attenuation () .getX ()));
-	glLightf  (lightId, GL_LINEAR_ATTENUATION,    std::max (0.0f, attenuation () .getY ()));
-	glLightf  (lightId, GL_QUADRATIC_ATTENUATION, std::max (0.0f, attenuation () .getZ ()));
-
-	glLightfv (lightId, GL_POSITION, glPosition);
-}
-
 bool
 PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer* const lightContainer)
 {
@@ -209,7 +166,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 			Vector4d (0.75, 0.5, 0.25, 0.5), // front
 			Vector4d (0.25, 0.5, 0.25, 0.5), // back
 			Vector4d (0.0,  0,   0.5,  0.5), // bottom
-			Vector4d (0.5,  0,   0.5,  0.5), // top   
+			Vector4d (0.5,  0,   0.5,  0.5), // top
 		};
 
 		const auto modelMatrix         = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
@@ -218,7 +175,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 		invLightSpaceMatrix .translate (location () .getValue ());
 		invLightSpaceMatrix .inverse ();
 
-		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();                            
+		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();
 		const auto   groupNode           = lightContainer -> getGroup (); // Group to be shadowed.
 		const auto   shadowMapSize       = getShadowMapSize ();
 

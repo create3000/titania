@@ -141,22 +141,17 @@ public:
 	float
 	getBeamWidth () const final override
 	{ return getNode <SpotLight> () -> getBeamWidth (); }
-	
+
 	virtual
 	float
 	getCutOffAngle () const final override
 	{ return getNode <SpotLight> () -> getCutOffAngle (); }
 
 	///  @name Operations
-	
+
 	virtual
 	Box3d
 	getBBox () const final override;
-
-	virtual
-	void
-	draw (const GLenum lightId) final override
-	{ return X3DLightNodeTool::draw (lightId); }
 
 	virtual
 	void

@@ -121,10 +121,6 @@ void
 SpotLight::initialize ()
 {
 	X3DLightNode::initialize ();
-
-	addInterest (&SpotLight::eventsProcessed, this);
-
-	eventsProcessed ();
 }
 
 float
@@ -150,54 +146,6 @@ float
 SpotLight::getCutOffAngle () const
 {
 	return std::clamp <float> (cutOffAngle (), 0, pi <float> / 2);
-}
-
-void
-SpotLight::eventsProcessed ()
-{
-	const auto ambientIntensity = getAmbientIntensity ();
-	const auto intensity        = getIntensity ();
-	const auto beamWidth        = getBeamWidth ();
-
-	glAmbient [0] = ambientIntensity * color () .getRed ();
-	glAmbient [1] = ambientIntensity * color () .getGreen ();
-	glAmbient [2] = ambientIntensity * color () .getBlue ();
-	glAmbient [3] = 1;
-
-	glDiffuseSpecular [0] = intensity * color () .getRed ();
-	glDiffuseSpecular [1] = intensity * color () .getGreen ();
-	glDiffuseSpecular [2] = intensity * color () .getBlue ();
-	glDiffuseSpecular [3] = 1;
-
-	glSpotExponent = std::clamp <float> (beamWidth ? 0.5f / beamWidth : 0.0f, 0, 128);
-	glSpotCutOff   = std::clamp <float> (math::degrees (getCutOffAngle ()), 0, 90);
-
-	glPosition [0] = location () .getX ();
-	glPosition [1] = location () .getY ();
-	glPosition [2] = location () .getZ ();
-	glPosition [3] = 1; // point light
-
-	glSpotDirection [0] = direction () .getX ();
-	glSpotDirection [1] = direction () .getY ();
-	glSpotDirection [2] = direction () .getZ ();
-}
-
-void
-SpotLight::draw (GLenum lightId)
-{
-	glLightfv (lightId, GL_AMBIENT,  glAmbient);
-	glLightfv (lightId, GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (lightId, GL_SPECULAR, glDiffuseSpecular);
-
-	glLightf (lightId, GL_SPOT_EXPONENT, glSpotExponent);
-	glLightf (lightId, GL_SPOT_CUTOFF,   glSpotCutOff);
-
-	glLightf (lightId, GL_CONSTANT_ATTENUATION,  std::max (0.0f, attenuation () .getX ()));
-	glLightf (lightId, GL_LINEAR_ATTENUATION,    std::max (0.0f, attenuation () .getY ()));
-	glLightf (lightId, GL_QUADRATIC_ATTENUATION, std::max (0.0f, attenuation () .getZ ()));
-
-	glLightfv (lightId, GL_POSITION,       glPosition);
-	glLightfv (lightId, GL_SPOT_DIRECTION, glSpotDirection);
 }
 
 bool
@@ -249,7 +197,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		renderObject -> getCameraSpaceMatrix        () .pop ();
 
 		shadowTextureBuffer -> unbind ();
-	
+
 		renderObject -> getBrowser () -> getDisplayTools () .pop ();
 
 		//#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
@@ -260,10 +208,10 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 			const auto viewport = Vector4i (0, 0, 100, 100);
 
 			FrameBuffer frameBuffer (renderObject -> getBrowser (), 100, 100, 4);
-	
+
 			frameBuffer .setup ();
 			frameBuffer .bind ();
-	
+
 			renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
 			renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 			renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
@@ -281,15 +229,15 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 			renderObject -> getViewVolumes              () .pop_back ();
 			renderObject -> getInverseCameraSpaceMatrix () .pop ();
 			renderObject -> getCameraSpaceMatrix        () .pop ();
-	
+
 			frameBuffer .readDepth ();
 			frameBuffer .unbind ();
-	
+
 			glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
 		}
 		#endif
 		#endif
-	
+
 		if (not global ())
 			invLightSpaceMatrix .mult_left (inverse (modelMatrix));
 
@@ -311,7 +259,7 @@ SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 
 	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], SPOT_LIGHT);
 	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, getColor () .data ());
-	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], getIntensity ()); 
+	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], getIntensity ());
 	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], getAmbientIntensity ());
 	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
 	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());

@@ -133,10 +133,6 @@ public:
 
 	virtual
 	void
-	draw (const GLenum) override;
-
-	virtual
-	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix, const Matrix3d & lightMatrix) final override;
 
 
@@ -172,18 +168,13 @@ private:
 	double
 	getFarValue (const Box3d & box, const Vector3d &) const;
 
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
-
 	///  @name Static members
 
 	static const Component   component;
 	static const std::string typeName;
 	static const std::string containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -195,10 +186,6 @@ private:
 	};
 
 	Fields fields;
-
-	GLfloat glAmbient [4];
-	GLfloat glDiffuseSpecular [4];
-	GLfloat glPosition [4];
 
 };
 

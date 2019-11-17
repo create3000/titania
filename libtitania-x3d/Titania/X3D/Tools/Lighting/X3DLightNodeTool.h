@@ -217,11 +217,6 @@ public:
 
 	virtual
 	void
-	draw (const GLenum lightId) override
-	{ getNode <X3DLightNode> () -> draw (lightId); }
-
-	virtual
-	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	virtual

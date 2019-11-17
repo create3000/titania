@@ -166,7 +166,7 @@ public:
 	virtual
 	float
 	getAmbientIntensity () const;
-	
+
 	virtual
 	float
 	getIntensity () const;
@@ -174,11 +174,11 @@ public:
 	virtual
 	const Color3f &
 	getShadowColor () const;
-	
+
 	virtual
 	float
 	getShadowIntensity () const;
-	
+
 	virtual
 	float
 	getShadowBias () const;
@@ -196,10 +196,6 @@ public:
 	virtual
 	void
 	pop (X3DRenderObject* const renderObject);
-
-	virtual
-	void
-	draw (const GLenum) = 0;
 
 	virtual
 	void

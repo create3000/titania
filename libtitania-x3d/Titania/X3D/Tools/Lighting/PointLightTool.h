@@ -113,15 +113,10 @@ public:
 	{ return getNode <PointLight> () -> getShadowMapSize (); }
 
 	///  @name Operations
-	
+
 	virtual
 	Box3d
 	getBBox () const final override;
-
-	virtual
-	void
-	draw (const GLenum lightId) final override
-	{ return X3DLightNodeTool::draw (lightId); }
 
 	virtual
 	void

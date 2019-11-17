@@ -108,45 +108,6 @@ void
 DirectionalLight::initialize ()
 {
 	X3DLightNode::initialize ();
-
-	addInterest (&DirectionalLight::eventsProcessed, this);
-
-	eventsProcessed ();
-}
-
-void
-DirectionalLight::eventsProcessed ()
-{
-	const auto ambientIntensity = getAmbientIntensity ();
-	const auto intensity        = getIntensity ();
-
-	glAmbient [0] = ambientIntensity * color () .getRed ();
-	glAmbient [1] = ambientIntensity * color () .getGreen ();
-	glAmbient [2] = ambientIntensity * color () .getBlue ();
-	glAmbient [3] = 1;
-
-	glDiffuseSpecular [0] = intensity * color () .getRed ();
-	glDiffuseSpecular [1] = intensity * color () .getGreen ();
-	glDiffuseSpecular [2] = intensity * color () .getBlue ();
-	glDiffuseSpecular [3] = 1;
-
-	glPosition [0] = -direction () .getX ();
-	glPosition [1] = -direction () .getY ();
-	glPosition [2] = -direction () .getZ ();
-	glPosition [3] = 0; // directional light
-}
-
-void
-DirectionalLight::draw (GLenum lightId)
-{
-	glLightfv (lightId, GL_AMBIENT,  glAmbient);
-	glLightfv (lightId, GL_DIFFUSE,  glDiffuseSpecular);
-	glLightfv (lightId, GL_SPECULAR, glDiffuseSpecular);
-
-	glLightf  (lightId, GL_SPOT_EXPONENT, 0);
-	glLightf  (lightId, GL_SPOT_CUTOFF, 180);
-
-	glLightfv (lightId, GL_POSITION, glPosition);
 }
 
 // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
@@ -160,10 +121,10 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 
 		const auto modelMatrix         = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix = global () ? modelMatrix : Matrix4d ();
-	
+
 		invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
 		invLightSpaceMatrix .inverse ();
-	
+
 		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();
 		const auto   groupNode           = lightContainer -> getGroup ();                                          // Group to be shadowd
 		const auto   groupBBox           = groupNode -> getSubBBox ();                                             // Group bbox.
@@ -180,35 +141,35 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 		renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
 		renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 		renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-	
+
 		renderObject -> render (TraverseType::DEPTH, [&groupNode]
 		(const TraverseType type, X3DRenderObject* const renderObject)
 		{
 			groupNode -> X3DGroupingNode::traverse (type, renderObject);
 		});
-	
+
 		renderObject -> getModelViewMatrix          () .pop ();
 		renderObject -> getProjectionMatrix         () .pop ();
 		renderObject -> getViewVolumes              () .pop_back ();
 		renderObject -> getInverseCameraSpaceMatrix () .pop ();
 		renderObject -> getCameraSpaceMatrix        () .pop ();
-	
+
 		shadowTextureBuffer -> unbind ();
 
 		renderObject -> getBrowser () -> getDisplayTools () .pop ();
-	
+
 		//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
 		// Disable background in renderer when debug framebuffer.
 		{
 			const auto viewport = Vector4i (0, 0, 100, 100);
-	
+
 			FrameBuffer frameBuffer (renderObject -> getBrowser (), 100, 100, 4);
-		
+
 			frameBuffer .setup ();
 			frameBuffer .bind ();
-		
+
 			renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
 			renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
 			renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
@@ -226,18 +187,18 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 			renderObject -> getViewVolumes              () .pop_back ();
 			renderObject -> getInverseCameraSpaceMatrix () .pop ();
 			renderObject -> getCameraSpaceMatrix        () .pop ();
-		
+
 			zframeBuffer .readDepth ();
 			frameBuffer .unbind ();
-		
+
 			glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
 		}
 		#endif
 		#endif
-		
+
 		if (not global ())
 			invLightSpaceMatrix .mult_left (inverse (modelMatrix));
-	
+
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 
 		return true;
