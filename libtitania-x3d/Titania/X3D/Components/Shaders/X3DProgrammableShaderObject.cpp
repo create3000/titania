@@ -136,10 +136,6 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                          x3d_Texture2D (),
 	                          x3d_Texture3D (),
 	                     x3d_CubeMapTexture (),
-	              x3d_NumProjectiveTextures (-1),
-	                  x3d_ProjectiveTexture (),
-	            x3d_ProjectiveTextureMatrix (),
-	          x3d_ProjectiveTextureLocation (),
 	                  x3d_MultiTextureColor (-1),
 	                   x3d_MultiTextureMode (),
 	              x3d_MultiTextureAlphaMode (),
@@ -147,6 +143,10 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_MultiTextureFunction (),
 	     x3d_TextureCoordinateGeneratorMode (),
 	x3d_TextureCoordinateGeneratorParameter (),
+	              x3d_NumProjectiveTextures (-1),
+	                  x3d_ProjectiveTexture (),
+	            x3d_ProjectiveTextureMatrix (),
+	          x3d_ProjectiveTextureLocation (),
 	                           x3d_Viewport (-1),
 	                   x3d_ProjectionMatrix (-1),
 	                    x3d_ModelViewMatrix (-1),
@@ -204,15 +204,15 @@ X3DProgrammableShaderObject::initialize ()
 	x3d_Texture2D                           .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_Texture3D                           .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_CubeMapTexture                      .resize (getBrowser () -> getMaxTextures (), -1);
-	x3d_ProjectiveTexture                   .resize (getBrowser () -> getMaxTextures (), -1);
-	x3d_ProjectiveTextureMatrix             .resize (getBrowser () -> getMaxTextures (), -1);
-	x3d_ProjectiveTextureLocation           .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_MultiTextureMode                    .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_MultiTextureAlphaMode               .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_MultiTextureSource                  .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_MultiTextureFunction                .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_TextureCoordinateGeneratorMode      .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_TextureCoordinateGeneratorParameter .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_ProjectiveTexture                   .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_ProjectiveTextureMatrix             .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_ProjectiveTextureLocation           .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_TextureMatrix                       .resize (getBrowser () -> getMaxTextures (), -1);
 	x3d_TexCoord                            .resize (getBrowser () -> getMaxTextures (), -1);
 
@@ -338,10 +338,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_Texture3D      [i] = glGetUniformLocation (program, ("x3d_Texture3D[" + is + "]")      .c_str ());
 		x3d_CubeMapTexture [i] = glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ());
 
-		x3d_ProjectiveTexture         [i] = glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ());
-		x3d_ProjectiveTextureMatrix   [i] = glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ());
-		x3d_ProjectiveTextureLocation [i] = glGetUniformLocation (program, ("x3d_ProjectiveTextureLocation[" + is + "]") .c_str ());
-
 		x3d_MultiTextureMode      [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].mode")      .c_str ());
 		x3d_MultiTextureAlphaMode [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].alphaMode") .c_str ());
 		x3d_MultiTextureSource    [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].source")    .c_str ());
@@ -349,6 +345,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 
 		x3d_TextureCoordinateGeneratorMode      [i] = glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ());
 		x3d_TextureCoordinateGeneratorParameter [i] = glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ());
+
+		x3d_ProjectiveTexture         [i] = glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ());
+		x3d_ProjectiveTextureMatrix   [i] = glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ());
+		x3d_ProjectiveTextureLocation [i] = glGetUniformLocation (program, ("x3d_ProjectiveTextureLocation[" + is + "]") .c_str ());
 
 		x3d_TextureMatrix [i] = glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ());
 		x3d_TexCoord      [i] = getAttribLocation (program, "x3d_TexCoord" + is, i ? "" : "x3d_TexCoord");

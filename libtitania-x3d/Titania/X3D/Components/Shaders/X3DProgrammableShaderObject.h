@@ -322,21 +322,7 @@ public:
 	getNumTexturesUniformLocation () const
 	{ return x3d_NumTextures; }
 
-	GLint
-	getNumProjectiveTexturesUniformLocation () const
-	{ return x3d_NumProjectiveTextures; }
-
-	const std::vector <GLint> &
-	getTextureTypeUniformLocation () const
-	{ return x3d_TextureType; }
-
-	const std::vector <GLint> &
-	getProjectiveTextureMatrixUniformLocation () const
-	{ return x3d_ProjectiveTextureMatrix; }
-
-	const std::vector <GLint> &
-	getProjectiveTextureLocationUniformLocation () const
-	{ return x3d_ProjectiveTextureLocation; }
+	///  @name Multi Texturing
 
 	GLint
 	getMultiTextureColorUniformLocation () const
@@ -358,6 +344,7 @@ public:
 	getMultiTextureFunctionUniformLocation () const
 	{ return x3d_MultiTextureFunction; }
 
+	///  @name Texture Coordinate Generator
 
 	const std::vector <GLint> &
 	getTextureCoordinateGeneratorModeUniformLocation () const
@@ -366,6 +353,24 @@ public:
 	const std::vector <GLint> &
 	getTextureCoordinateGeneratorParameterUniformLocation () const
 	{ return x3d_TextureCoordinateGeneratorParameter; }
+
+	///  @name Projective Texture Mapping
+
+	GLint
+	getNumProjectiveTexturesUniformLocation () const
+	{ return x3d_NumProjectiveTextures; }
+
+	const std::vector <GLint> &
+	getTextureTypeUniformLocation () const
+	{ return x3d_TextureType; }
+
+	const std::vector <GLint> &
+	getProjectiveTextureMatrixUniformLocation () const
+	{ return x3d_ProjectiveTextureMatrix; }
+
+	const std::vector <GLint> &
+	getProjectiveTextureLocationUniformLocation () const
+	{ return x3d_ProjectiveTextureLocation; }
 
 	///  @name Matrices
 
@@ -656,11 +661,6 @@ private:
 	std::vector <GLint> x3d_Texture3D;
 	std::vector <GLint> x3d_CubeMapTexture;
 
-	GLint               x3d_NumProjectiveTextures;
-	std::vector <GLint> x3d_ProjectiveTexture;
-	std::vector <GLint> x3d_ProjectiveTextureMatrix;
-	std::vector <GLint> x3d_ProjectiveTextureLocation;
-
 	GLint               x3d_MultiTextureColor;
 	std::vector <GLint> x3d_MultiTextureMode;
 	std::vector <GLint> x3d_MultiTextureAlphaMode;
@@ -669,6 +669,11 @@ private:
 
 	std::vector <GLint> x3d_TextureCoordinateGeneratorMode;
 	std::vector <GLint> x3d_TextureCoordinateGeneratorParameter;
+
+	GLint               x3d_NumProjectiveTextures;
+	std::vector <GLint> x3d_ProjectiveTexture;
+	std::vector <GLint> x3d_ProjectiveTextureMatrix;
+	std::vector <GLint> x3d_ProjectiveTextureLocation;
 
 	GLint               x3d_Viewport;
 	GLint               x3d_ProjectionMatrix;
