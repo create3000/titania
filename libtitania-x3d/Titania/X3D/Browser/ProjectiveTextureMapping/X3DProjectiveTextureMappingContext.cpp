@@ -63,11 +63,24 @@ X3DProjectiveTextureMappingContext::X3DProjectiveTextureMappingContext () :
 void
 X3DProjectiveTextureMappingContext::initialize ()
 {
-	for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+	if (getProjectiveTextureMapping ())
 	{
-		projectivetextureUnits .emplace_back (getBrowser () -> getCombinedTextureUnits () .top ());
-		getBrowser () -> getCombinedTextureUnits () .pop ();
+		for (size_t i = 0, size = getBrowser () -> getMaxTextures (); i < size; ++ i)
+		{
+			projectivetextureUnits .emplace_back (getBrowser () -> getCombinedTextureUnits () .top ());
+			getBrowser () -> getCombinedTextureUnits () .pop ();
+		}
 	}
+}
+
+bool
+X3DProjectiveTextureMappingContext::getProjectiveTextureMapping () const
+{
+	int32_t maxVertexTextureUnits = 0;
+
+	glGetIntegerv (GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxVertexTextureUnits);
+
+	return maxVertexTextureUnits > 8;
 }
 
 X3DProjectiveTextureMappingContext::~X3DProjectiveTextureMappingContext ()

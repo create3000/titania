@@ -383,8 +383,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	glUniform1iv (x3d_Texture2D [0],            texture2D         .size (), texture2D         .data ());
 	glUniform1iv (x3d_Texture3D [0],            texture3D         .size (), texture3D         .data ());
 	glUniform1iv (x3d_CubeMapTexture [0],       cubeMapTexture    .size (), cubeMapTexture    .data ());
-	glUniform1iv (x3d_ProjectiveTexture [0],    projectiveTexture .size (), projectiveTexture .data ());
 	glUniform1iv (x3d_ShadowMap [0],            shadowMap         .size (), shadowMap         .data ());
+
+	if (getBrowser () -> getProjectiveTextureMapping ())
+		glUniform1iv (x3d_ProjectiveTexture [0], projectiveTexture .size (), projectiveTexture .data ());
 }
 
 GLint

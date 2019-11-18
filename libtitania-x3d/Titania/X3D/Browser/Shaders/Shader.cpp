@@ -250,7 +250,8 @@ Shader::addDefinitions (X3DBrowser* const browser, std::string source, const boo
 	if (browser -> getMultiTexturing ())
 		constants << "#define X3D_MULTI_TEXTURING\n";
 
-	constants << "#define X3D_PROJECTIVE_TEXTURE_MAPPING\n";
+	if (browser -> getProjectiveTextureMapping ())
+		constants << "#define X3D_PROJECTIVE_TEXTURE_MAPPING\n";
 
 	if (shadow)
 	{

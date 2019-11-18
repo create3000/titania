@@ -64,6 +64,11 @@ class X3DProjectiveTextureMappingContext :
 {
 public:
 
+	///  @name Member access
+
+	bool
+	getProjectiveTextureMapping () const;
+
 	///  @name Destruction
 
 	virtual

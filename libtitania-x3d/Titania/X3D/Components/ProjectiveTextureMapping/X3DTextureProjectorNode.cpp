@@ -51,6 +51,7 @@
 #include "X3DTextureProjectorNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ProjectiveTextureContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../Texturing/X3DTexture2DNode.h"
@@ -153,6 +154,9 @@ X3DTextureProjectorNode::straightenHorizon (const Rotation4d & orientation) cons
 void
 X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 {
+	if (not getBrowser () -> getProjectiveTextureMapping ())
+		return;
+
 	if (textureNode and on ())
 	{
 		if (renderObject -> isIndependent ())
@@ -201,6 +205,9 @@ X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 void
 X3DTextureProjectorNode::pop (X3DRenderObject* const renderObject)
 {
+	if (not getBrowser () -> getProjectiveTextureMapping ())
+		return;
+
 	if (textureNode and on () and not global ())
 		renderObject -> getLocalProjectiveTextures () .pop_back ();
 }
