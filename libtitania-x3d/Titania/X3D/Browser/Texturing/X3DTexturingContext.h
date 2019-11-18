@@ -104,6 +104,9 @@ public:
 	getMaxCombinedTextureUnits () const
 	{ return maxCombinedTextureUnits; }
 
+	bool
+	getMultiTexturing () const;
+
 	///  @name Member access
 
 	TextureUnitStack &

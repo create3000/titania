@@ -520,8 +520,7 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
 
 	///  @name Operations
 

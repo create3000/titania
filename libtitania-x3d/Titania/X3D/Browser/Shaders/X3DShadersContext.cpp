@@ -76,8 +76,7 @@ X3DShadersContext::X3DShadersContext () :
 	            gouraudShader (),
 	              phongShader (),
 	            defaultShader (),
-	             shadowShader (),
-	           multiTexturing (true)
+	             shadowShader ()
 {
 	addChildObjects (shaders,
                     pointShader,
@@ -174,25 +173,7 @@ X3DShadersContext::set_gouraud_shader_valid ()
 	if (gouraudShader -> isValid () and ShaderTest::verify (getBrowser (), gouraudShader))
 		return;
 
-	getBrowser () -> getConsole () -> warn ("*** Warning: Disabling multi-texuring, as it might not work.\n\n");
-
-	gouraudShader -> isValid () .addInterest (&X3DShadersContext::set_fallback_shader_valid, this);
-
-	multiTexturing = false;
-
-	gouraudShader -> parts () [0] -> getField ("url") -> addEvent ();
-	gouraudShader -> parts () [1] -> getField ("url") -> addEvent ();
-}
-
-void
-X3DShadersContext::set_fallback_shader_valid ()
-{
-	gouraudShader -> isValid () .removeInterest (&X3DShadersContext::set_fallback_shader_valid, this);
-
-	if (gouraudShader -> isValid () and ShaderTest::verify (getBrowser (), gouraudShader))
-		return;
-
-	getBrowser () -> getConsole () -> warn ("*** Warning: All else fails, using fallback shader.\n\n");
+	getBrowser () -> getConsole () -> warn ("*** Warning: All else fails, using fallback VRML shader.\n\n");
 
 	gouraudShader -> parts () [0] -> setField <MFString> ("url", MFString ({ get_shader ("Shaders/Fallback.vs") .str () }));
 	gouraudShader -> parts () [1] -> setField <MFString> ("url", MFString ({ get_shader ("Shaders/Fallback.fs") .str () }));

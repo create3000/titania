@@ -54,33 +54,27 @@ namespace titania {
 namespace X3D {
 
 X3DLightingContext::X3DLightingContext () :
-	X3DBaseNode (),
-	  maxLights (0),
-	     lights ()
+	X3DBaseNode ()
 { }
 
 void
 X3DLightingContext::initialize ()
-{
-	const float light_model_ambient [ ] = { 0, 0, 0, 1 };
-
-	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,       light_model_ambient);
-	glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  false);
-	glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      true);
-	glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
-
-	// Lights
-
-	glGetIntegerv (GL_MAX_LIGHTS, &maxLights);
-
-	for (int32_t i = maxLights - 1; i >= 0; -- i)
-		lights .push (GL_LIGHT0 + i);
-}
+{ }
 
 size_t
 X3DLightingContext::getMaxLights () const
 {
-	return 8;
+	int32_t maxVertexTextureUnits = 0;
+
+	glGetIntegerv (GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxVertexTextureUnits);
+
+	if (maxVertexTextureUnits > 16)
+		return 8;
+
+	if (maxVertexTextureUnits > 8)
+		return 4;
+
+	return 2;
 }
 
 X3DLightingContext::~X3DLightingContext ()

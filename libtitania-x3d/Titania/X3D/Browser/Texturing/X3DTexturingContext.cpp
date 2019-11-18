@@ -116,7 +116,21 @@ X3DTexturingContext::initialize ()
 size_t
 X3DTexturingContext::getMaxTextures () const
 {
-	return 2;
+	int32_t maxVertexTextureUnits = 0;
+
+	glGetIntegerv (GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxVertexTextureUnits);
+
+	return maxVertexTextureUnits > 8 ? 2 : 1;
+}
+
+bool
+X3DTexturingContext::getMultiTexturing () const
+{
+	int32_t maxVertexTextureUnits = 0;
+
+	glGetIntegerv (GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxVertexTextureUnits);
+
+	return maxVertexTextureUnits > 8;
 }
 
 size_t

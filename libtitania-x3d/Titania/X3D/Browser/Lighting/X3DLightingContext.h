@@ -71,10 +71,6 @@ public:
 	size_t
 	getMaxLights () const;
 
-	LightStack &
-	getLights ()
-	{ return lights; }
-
 	///  @name Destruction
 
 	virtual
@@ -95,14 +91,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-
-private:
-
-	///  @name Members
-
-	int32_t    maxLights;
-	LightStack lights;
 
 };
 

@@ -80,7 +80,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	            x3d_LogarithmicFarFactor1_2 (-1),
 	                       x3d_GeometryType (-1),
 	                      x3d_NumClipPlanes (-1),
-	                          x3d_ClipPlane (getBrowser () -> getMaxClipPlanes (), -1),
+	                          x3d_ClipPlane (),
 	                            x3d_FogType (-1),
 	                           x3d_FogColor (-1),
 	                 x3d_FogVisibilityRange (-1),
@@ -101,23 +101,23 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                           x3d_Lighting (-1),
 	                      x3d_ColorMaterial (-1),
 	                          x3d_NumLights (-1),
-	                          x3d_LightType (getBrowser () -> getMaxLights (), -1),
-	                         x3d_LightColor (getBrowser () -> getMaxLights (), -1),
-	              x3d_LightAmbientIntensity (getBrowser () -> getMaxLights (), -1),
-	                     x3d_LightIntensity (getBrowser () -> getMaxLights (), -1),
-	                   x3d_LightAttenuation (getBrowser () -> getMaxLights (), -1),
-	                      x3d_LightLocation (getBrowser () -> getMaxLights (), -1),
-	                     x3d_LightDirection (getBrowser () -> getMaxLights (), -1),
-	                     x3d_LightBeamWidth (getBrowser () -> getMaxLights (), -1),
-	                   x3d_LightCutOffAngle (getBrowser () -> getMaxLights (), -1),
-	                        x3d_LightRadius (getBrowser () -> getMaxLights (), -1),
-	                        x3d_LightMatrix (getBrowser () -> getMaxLights (), -1),
-	                        x3d_ShadowColor (getBrowser () -> getMaxLights (), -1),
-	                    x3d_ShadowIntensity (getBrowser () -> getMaxLights (), -1),
-	                         x3d_ShadowBias (getBrowser () -> getMaxLights (), -1),
-	                       x3d_ShadowMatrix (getBrowser () -> getMaxLights (), -1),
-	                      x3d_ShadowMapSize (getBrowser () -> getMaxLights (), -1),
-	                          x3d_ShadowMap (getBrowser () -> getMaxLights (), -1),
+	                          x3d_LightType (),
+	                         x3d_LightColor (),
+	              x3d_LightAmbientIntensity (),
+	                     x3d_LightIntensity (),
+	                   x3d_LightAttenuation (),
+	                      x3d_LightLocation (),
+	                     x3d_LightDirection (),
+	                     x3d_LightBeamWidth (),
+	                   x3d_LightCutOffAngle (),
+	                        x3d_LightRadius (),
+	                        x3d_LightMatrix (),
+	                        x3d_ShadowColor (),
+	                    x3d_ShadowIntensity (),
+	                         x3d_ShadowBias (),
+	                       x3d_ShadowMatrix (),
+	                      x3d_ShadowMapSize (),
+	                          x3d_ShadowMap (),
 	                  x3d_SeparateBackColor (-1),
 	                   x3d_AmbientIntensity (-1),
 	                       x3d_DiffuseColor (-1),
@@ -132,30 +132,30 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                      x3d_BackShininess (-1),
 	                   x3d_BackTransparency (-1),
 	                        x3d_NumTextures (-1),
-	                        x3d_TextureType (getBrowser () -> getMaxTextures (), -1),
-	                          x3d_Texture2D (getBrowser () -> getMaxTextures (), -1),
-	                          x3d_Texture3D (getBrowser () -> getMaxTextures (), -1),
-	                     x3d_CubeMapTexture (getBrowser () -> getMaxTextures (), -1),
+	                        x3d_TextureType (),
+	                          x3d_Texture2D (),
+	                          x3d_Texture3D (),
+	                     x3d_CubeMapTexture (),
 	              x3d_NumProjectiveTextures (-1),
-	                  x3d_ProjectiveTexture (getBrowser () -> getMaxTextures (), -1),
-	            x3d_ProjectiveTextureMatrix (getBrowser () -> getMaxTextures (), -1),
-	          x3d_ProjectiveTextureLocation (getBrowser () -> getMaxTextures (), -1),
+	                  x3d_ProjectiveTexture (),
+	            x3d_ProjectiveTextureMatrix (),
+	          x3d_ProjectiveTextureLocation (),
 	                  x3d_MultiTextureColor (-1),
-	                   x3d_MultiTextureMode (getBrowser () -> getMaxTextures (), -1),
-	              x3d_MultiTextureAlphaMode (getBrowser () -> getMaxTextures (), -1),
-	                 x3d_MultiTextureSource (getBrowser () -> getMaxTextures (), -1),
-	               x3d_MultiTextureFunction (getBrowser () -> getMaxTextures (), -1),
-	     x3d_TextureCoordinateGeneratorMode (getBrowser () -> getMaxTextures (), -1),
-	x3d_TextureCoordinateGeneratorParameter (getBrowser () -> getMaxTextures (), -1),
+	                   x3d_MultiTextureMode (),
+	              x3d_MultiTextureAlphaMode (),
+	                 x3d_MultiTextureSource (),
+	               x3d_MultiTextureFunction (),
+	     x3d_TextureCoordinateGeneratorMode (),
+	x3d_TextureCoordinateGeneratorParameter (),
 	                           x3d_Viewport (-1),
 	                   x3d_ProjectionMatrix (-1),
 	                    x3d_ModelViewMatrix (-1),
 	                       x3d_NormalMatrix (-1),
-	                      x3d_TextureMatrix (getBrowser () -> getMaxTextures (), -1),
+	                      x3d_TextureMatrix (),
 	                  x3d_CameraSpaceMatrix (-1),
 	                           x3d_FogDepth (-1),
 	                              x3d_Color (-1),
-	                           x3d_TexCoord (getBrowser () -> getMaxTextures (), -1),
+	                           x3d_TexCoord (),
 	                             x3d_Normal (-1),
 	                             x3d_Vertex (-1),
 	                         x3d_ParticleId (-1),
@@ -166,8 +166,8 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                        numGlobalLights (0),
 	            numGlobalProjectiveTextures (0),
 	                           fogContainer (nullptr),
-	                        lightContainers (getBrowser () -> getMaxLights ()),
-	            projectiveTextureContainers (getBrowser () -> getMaxTextures ()),
+	                        lightContainers (),
+	            projectiveTextureContainers (),
 	                               textures ()
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
@@ -178,6 +178,47 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
  *  Construction
  *
  */
+
+void
+X3DProgrammableShaderObject::initialize ()
+{
+	x3d_ClipPlane                           .resize (getBrowser () -> getMaxClipPlanes (), -1);
+	x3d_LightType                           .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightColor                          .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightAmbientIntensity               .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightIntensity                      .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightAttenuation                    .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightLocation                       .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightDirection                      .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightBeamWidth                      .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightCutOffAngle                    .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightRadius                         .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_LightMatrix                         .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_ShadowColor                         .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_ShadowIntensity                     .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_ShadowBias                          .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_ShadowMatrix                        .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_ShadowMapSize                       .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_ShadowMap                           .resize (getBrowser () -> getMaxLights (), -1);
+	x3d_TextureType                         .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_Texture2D                           .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_Texture3D                           .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_CubeMapTexture                      .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_ProjectiveTexture                   .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_ProjectiveTextureMatrix             .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_ProjectiveTextureLocation           .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_MultiTextureMode                    .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_MultiTextureAlphaMode               .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_MultiTextureSource                  .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_MultiTextureFunction                .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_TextureCoordinateGeneratorMode      .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_TextureCoordinateGeneratorParameter .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_TextureMatrix                       .resize (getBrowser () -> getMaxTextures (), -1);
+	x3d_TexCoord                            .resize (getBrowser () -> getMaxTextures (), -1);
+
+	lightContainers                         .resize (getBrowser () -> getMaxLights ());
+	projectiveTextureContainers             .resize (getBrowser () -> getMaxTextures ());
+}
 
 void
 X3DProgrammableShaderObject::setOpenGLES (const bool openGLES)
@@ -209,40 +250,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 {
 	const auto program = getProgramId ();
 
-	x3d_ClipPlane                           .clear ();
-	x3d_LightType                           .clear ();
-	x3d_LightColor                          .clear ();
-	x3d_LightAmbientIntensity               .clear ();
-	x3d_LightIntensity                      .clear ();
-	x3d_LightAttenuation                    .clear ();
-	x3d_LightLocation                       .clear ();
-	x3d_LightDirection                      .clear ();
-	x3d_LightBeamWidth                      .clear ();
-	x3d_LightCutOffAngle                    .clear ();
-	x3d_LightRadius                         .clear ();
-	x3d_LightMatrix                         .clear ();
-	x3d_ShadowColor                         .clear ();
-	x3d_ShadowIntensity                     .clear ();
-	x3d_ShadowBias                          .clear ();
-	x3d_ShadowMatrix                        .clear ();
-	x3d_ShadowMapSize                       .clear ();
-	x3d_ShadowMap                           .clear ();
-	x3d_TextureType                         .clear ();
-	x3d_Texture2D                           .clear ();
-	x3d_Texture3D                           .clear ();
-	x3d_CubeMapTexture                      .clear ();
-	x3d_ProjectiveTexture                   .clear ();
-	x3d_ProjectiveTextureMatrix             .clear ();
-	x3d_ProjectiveTextureLocation           .clear ();
-	x3d_MultiTextureMode                    .clear ();
-	x3d_MultiTextureAlphaMode               .clear ();
-	x3d_MultiTextureSource                  .clear ();
-	x3d_MultiTextureFunction                .clear ();
-	x3d_TextureCoordinateGeneratorMode      .clear ();
-	x3d_TextureCoordinateGeneratorParameter .clear ();
-	x3d_TextureMatrix                       .clear ();
-	x3d_TexCoord                            .clear ();
-
 	// Get default uniforms.
 
 	x3d_LogarithmicFarFactor1_2 = glGetUniformLocation (program, "x3d_LogarithmicFarFactor1_2");
@@ -251,7 +258,7 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_NumClipPlanes = glGetUniformLocation (program, "x3d_NumClipPlanes");
 
 	for (size_t i = 0, size = getBrowser () -> getMaxClipPlanes (); i < size; ++ i)
-		x3d_ClipPlane .emplace_back (glGetUniformLocation (program, ("x3d_ClipPlane[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ()));
+		x3d_ClipPlane [i] = glGetUniformLocation (program, ("x3d_ClipPlane[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ());
 
 	x3d_FogType            = getUniformLocation (program, "x3d_Fog.type",            "x3d_FogType");
 	x3d_FogColor           = getUniformLocation (program, "x3d_Fog.color",           "x3d_FogColor");
@@ -282,24 +289,24 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	{
 		const auto is = basic::to_string (i, std::locale::classic ());
 
-		x3d_LightType             .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].type",             "x3d_LightType[" + is + "]"));
-		x3d_LightColor            .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].color",            "x3d_LightColor[" + is + "]"));
-		x3d_LightAmbientIntensity .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].ambientIntensity", "x3d_LightAmbientIntensity[" + is + "]"));
-		x3d_LightIntensity        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].intensity",        "x3d_LightIntensity[" + is + "]"));
-		x3d_LightAttenuation      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].attenuation",      "x3d_LightAttenuation[" + is + "]"));
-		x3d_LightLocation         .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].location",         "x3d_LightLocation[" + is + "]"));
-		x3d_LightDirection        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].direction",        "x3d_LightDirection[" + is + "]"));
-		x3d_LightBeamWidth        .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].beamWidth",        "x3d_LightBeamWidth[" + is + "]"));
-		x3d_LightCutOffAngle      .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]"));
-		x3d_LightRadius           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]"));
-		x3d_LightMatrix           .emplace_back (getUniformLocation (program, "x3d_LightSource[" + is + "].matrix",           "x3d_LightMatrix[" + is + "]"));
+		x3d_LightType             [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].type",             "x3d_LightType[" + is + "]");
+		x3d_LightColor            [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].color",            "x3d_LightColor[" + is + "]");
+		x3d_LightAmbientIntensity [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].ambientIntensity", "x3d_LightAmbientIntensity[" + is + "]");
+		x3d_LightIntensity        [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].intensity",        "x3d_LightIntensity[" + is + "]");
+		x3d_LightAttenuation      [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].attenuation",      "x3d_LightAttenuation[" + is + "]");
+		x3d_LightLocation         [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].location",         "x3d_LightLocation[" + is + "]");
+		x3d_LightDirection        [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].direction",        "x3d_LightDirection[" + is + "]");
+		x3d_LightBeamWidth        [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].beamWidth",        "x3d_LightBeamWidth[" + is + "]");
+		x3d_LightCutOffAngle      [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].cutOffAngle",      "x3d_LightCutOffAngle[" + is + "]");
+		x3d_LightRadius           [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].radius",           "x3d_LightRadius[" + is + "]");
+		x3d_LightMatrix           [i] = getUniformLocation (program, "x3d_LightSource[" + is + "].matrix",           "x3d_LightMatrix[" + is + "]");
 
-		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowColor") .c_str ()));
-		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowIntensity") .c_str ()));
-		x3d_ShadowBias            .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowBias") .c_str ()));
-		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMatrix") .c_str ()));
-		x3d_ShadowMapSize         .emplace_back (glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMapSize") .c_str ()));
-		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap[" + is + "]") .c_str ()));
+		x3d_ShadowColor           [i] = glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowColor") .c_str ());
+		x3d_ShadowIntensity       [i] = glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowIntensity") .c_str ());
+		x3d_ShadowBias            [i] = glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowBias") .c_str ());
+		x3d_ShadowMatrix          [i] = glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMatrix") .c_str ());
+		x3d_ShadowMapSize         [i] = glGetUniformLocation (program, ("x3d_LightSource[" + is + "].shadowMapSize") .c_str ());
+		x3d_ShadowMap             [i] = glGetUniformLocation (program, ("x3d_ShadowMap[" + is + "]") .c_str ());
 	}
 
 	x3d_SeparateBackColor = glGetUniformLocation (program, "x3d_SeparateBackColor");
@@ -326,25 +333,25 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	{
 		const auto is = basic::to_string (i, std::locale::classic ());
 
-		x3d_TextureType    .emplace_back (glGetUniformLocation (program, ("x3d_TextureType[" + is + "]")    .c_str ()));
-		x3d_Texture2D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture2D[" + is + "]")      .c_str ()));
-		x3d_Texture3D      .emplace_back (glGetUniformLocation (program, ("x3d_Texture3D[" + is + "]")      .c_str ()));
-		x3d_CubeMapTexture .emplace_back (glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ()));
+		x3d_TextureType    [i] = glGetUniformLocation (program, ("x3d_TextureType[" + is + "]")    .c_str ());
+		x3d_Texture2D      [i] = glGetUniformLocation (program, ("x3d_Texture2D[" + is + "]")      .c_str ());
+		x3d_Texture3D      [i] = glGetUniformLocation (program, ("x3d_Texture3D[" + is + "]")      .c_str ());
+		x3d_CubeMapTexture [i] = glGetUniformLocation (program, ("x3d_CubeMapTexture[" + is + "]") .c_str ());
 
-		x3d_MultiTextureMode      .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].mode")      .c_str ()));
-		x3d_MultiTextureAlphaMode .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].alphaMode") .c_str ()));
-		x3d_MultiTextureSource    .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].source")    .c_str ()));
-		x3d_MultiTextureFunction  .emplace_back (glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].function")  .c_str ()));
+		x3d_ProjectiveTexture         [i] = glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ());
+		x3d_ProjectiveTextureMatrix   [i] = glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ());
+		x3d_ProjectiveTextureLocation [i] = glGetUniformLocation (program, ("x3d_ProjectiveTextureLocation[" + is + "]") .c_str ());
 
-		x3d_TextureCoordinateGeneratorMode      .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ()));
-		x3d_TextureCoordinateGeneratorParameter .emplace_back (glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ()));
+		x3d_MultiTextureMode      [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].mode")      .c_str ());
+		x3d_MultiTextureAlphaMode [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].alphaMode") .c_str ());
+		x3d_MultiTextureSource    [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].source")    .c_str ());
+		x3d_MultiTextureFunction  [i] = glGetUniformLocation (program, ("x3d_MultiTexture[" + is + "].function")  .c_str ());
 
-		x3d_TextureMatrix .emplace_back (glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ()));
-		x3d_TexCoord      .emplace_back (getAttribLocation (program, "x3d_TexCoord" + is, i ? "" : "x3d_TexCoord"));
+		x3d_TextureCoordinateGeneratorMode      [i] = glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].mode")      .c_str ());
+		x3d_TextureCoordinateGeneratorParameter [i] = glGetUniformLocation (program, ("x3d_TextureCoordinateGenerator[" + is + "].parameter") .c_str ());
 
-		x3d_ProjectiveTexture         .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTexture[" + is + "]") .c_str ()));
-		x3d_ProjectiveTextureMatrix   .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTextureMatrix[" + is + "]") .c_str ()));
-		x3d_ProjectiveTextureLocation .emplace_back (glGetUniformLocation (program, ("x3d_ProjectiveTextureLocation[" + is + "]") .c_str ()));
+		x3d_TextureMatrix [i] = glGetUniformLocation (program, ("x3d_TextureMatrix[" + is + "]") .c_str ());
+		x3d_TexCoord      [i] = getAttribLocation (program, "x3d_TexCoord" + is, i ? "" : "x3d_TexCoord");
 	}
 
 	x3d_Viewport          = glGetUniformLocation (program, "x3d_Viewport");

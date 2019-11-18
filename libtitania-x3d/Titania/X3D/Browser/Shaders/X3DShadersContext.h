@@ -115,10 +115,6 @@ public:
 	getShadowShader () const
 	{ return shadowShader; }
 
-	bool
-	getMultiTexturing () const
-	{ return multiTexturing; }
-
 	///  @name Destruction
 
 	virtual
@@ -163,9 +159,6 @@ private:
 	set_gouraud_shader_valid ();
 
 	void
-	set_fallback_shader_valid ();
-
-	void
 	set_phong_shader_valid ();
 
 	void
@@ -187,8 +180,6 @@ private:
 	X3DPtr <ComposedShader> phongShader;
 	X3DPtr <ComposedShader> defaultShader;
 	X3DPtr <ComposedShader> shadowShader;
-	bool                    multiTexturing;
-
 
 };
 
