@@ -95,11 +95,13 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	virtual
 	void
-	push (X3DRenderObject* const renderObject);
+	push (X3DRenderObject* const renderObject, X3DGroupingNode* const) final override;
 
+	virtual
 	void
-	pop (X3DRenderObject* const renderObject);
+	pop (X3DRenderObject* const renderObject) final override;
 
 	virtual
 	void

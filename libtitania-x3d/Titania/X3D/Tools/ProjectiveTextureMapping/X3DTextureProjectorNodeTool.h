@@ -189,8 +189,8 @@ public:
 
 	virtual
 	void
-	push (X3DRenderObject* const renderObject) final override
-	{ getNode <X3DTextureProjectorNode> () -> push (renderObject); }
+	push (X3DRenderObject* const renderObject, X3DGroupingNode* const groupNode) final override
+	{ getNode <X3DTextureProjectorNode> () -> push (renderObject, groupNode); }
 
 	virtual
 	void

@@ -73,6 +73,16 @@ public:
 	isPickableObject () const
 	{ return pickableObject; }
 
+	virtual
+	void
+	push (X3DRenderObject* const renderObject, X3DGroupingNode* const groupNode)
+	{ }
+
+	virtual
+	void
+	pop (X3DRenderObject* const renderObject)
+	{ }
+
 
 protected:
 
