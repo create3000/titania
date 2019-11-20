@@ -545,6 +545,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 	glUniform1i (shaderNode -> getNumTexturesUniformLocation (),                        1);
 	glUniform1i (shaderNode -> getTextureTypeUniformLocation () [0],                    2);
 	glUniform1i (shaderNode -> getTextureCoordinateGeneratorModeUniformLocation () [0], 0);
+	glUniform1i (shaderNode -> getNumProjectiveTexturesUniformLocation (),              0);
 
 	// ProjectionMatrix
 	// TexureMatrix
