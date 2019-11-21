@@ -191,11 +191,11 @@ public:
 
 	virtual
 	void
-	push (X3DRenderObject* const renderObject, X3DGroupingNode* const);
+	push (X3DRenderObject* const renderObject, X3DGroupingNode* const) override;
 
 	virtual
 	void
-	pop (X3DRenderObject* const renderObject);
+	pop (X3DRenderObject* const renderObject) override;
 
 	virtual
 	void

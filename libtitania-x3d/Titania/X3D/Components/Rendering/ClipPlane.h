@@ -101,17 +101,19 @@ public:
 	const SFVec4f &
 	plane () const
 	{ return *fields .plane; }
-	
+
 	///  @name Operations
 
 	bool
 	isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix);
 
+	virtual
 	void
-	push (X3DRenderObject* const renderObject);
-	
+	push (X3DRenderObject* const renderObject, X3DGroupingNode* const) final override;
+
+	virtual
 	void
-	pop (X3DRenderObject* const renderObject);
+	pop (X3DRenderObject* const renderObject) final override;
 
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix);
