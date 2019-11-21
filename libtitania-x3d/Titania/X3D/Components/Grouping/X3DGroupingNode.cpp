@@ -125,7 +125,7 @@ X3DGroupingNode::initialize ()
 	textureProjectorNodes     .setTainted (true);
 	childNodes                .setTainted (true);
 
-		transformSensors_changed () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
+	transformSensors_changed () .addInterest (&X3DGroupingNode::set_pickableObjects, this);
 
 	addChildren ()    .addInterest (&X3DGroupingNode::set_addChildren,    this);
 	removeChildren () .addInterest (&X3DGroupingNode::set_removeChildren, this);
