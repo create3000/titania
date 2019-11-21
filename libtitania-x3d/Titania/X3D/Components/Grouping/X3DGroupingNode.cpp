@@ -90,7 +90,6 @@ X3DGroupingNode::X3DGroupingNode () :
 	            localFogNodes (),
 	               lightNodes (),
 	    textureProjectorNodes (),
-	             displayNodes (),
 	               childNodes ()
 {
 	addType (X3DConstants::X3DGroupingNode);
@@ -105,7 +104,6 @@ X3DGroupingNode::X3DGroupingNode () :
 	                 localFogNodes,
 	                 lightNodes,
 	                 textureProjectorNodes,
-	                 displayNodes,
 	                 childNodes);
 }
 
@@ -359,7 +357,6 @@ X3DGroupingNode::add (const size_t first, const MFNode & children)
 
 	set_cameraObjects ();
 	set_pickableObjects ();
-	set_display_nodes ();
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
@@ -505,7 +502,6 @@ X3DGroupingNode::remove (const MFNode & children)
 
 	set_cameraObjects ();
 	set_pickableObjects ();
-	set_display_nodes ();
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
@@ -568,24 +564,6 @@ X3DGroupingNode::set_pickableObjects ()
 }
 
 void
-X3DGroupingNode::set_display_nodes ()
-{
-	displayNodes .clear ();
-
-	for (const auto & clipPlaneNode : clipPlaneNodes)
-		displayNodes .emplace_back (clipPlaneNode);
-
-	for (const auto & localFogNode : localFogNodes)
-		displayNodes .emplace_back (localFogNode);
-
-	for (const auto & lightNode: lightNodes)
-		displayNodes .emplace_back (lightNode);
-
-	for (const auto & textureProjectorNode : textureProjectorNodes)
-		displayNodes .emplace_back (textureProjectorNode);
-}
-
-void
 X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
@@ -603,7 +581,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			}
 
 			for (const auto & clipPlaneNode : clipPlaneNodes)
-				clipPlaneNode -> push (renderObject, this);
+				clipPlaneNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
@@ -655,7 +633,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		case TraverseType::DEPTH:
 		{
 			for (const auto & clipPlaneNode : clipPlaneNodes)
-				clipPlaneNode -> push (renderObject, this);
+				clipPlaneNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
@@ -667,14 +645,32 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		}
 		case TraverseType::DISPLAY:
 		{
-			for (const auto & displayNode : displayNodes)
-				displayNode -> push (renderObject, this);
+			for (const auto & clipPlaneNode : clipPlaneNodes)
+				clipPlaneNode -> push (renderObject);
+
+			for (const auto & localFogNode : localFogNodes)
+				localFogNode -> push (renderObject);
+
+			for (const auto & lightNode : lightNodes)
+				lightNode -> push (renderObject, this);
+
+			for (const auto & textureProjectorNode : textureProjectorNodes)
+				textureProjectorNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
-			for (const auto & displayNode : basic::make_reverse_range (displayNodes))
-				displayNode -> pop (renderObject);
+			for (const auto & textureProjectorNode : basic::make_reverse_range (textureProjectorNodes))
+				textureProjectorNode -> pop (renderObject);
+
+			for (const auto & lightNode : basic::make_reverse_range (lightNodes))
+				lightNode -> pop (renderObject);
+
+			for (const auto & localFogNode : basic::make_reverse_range (localFogNodes))
+				localFogNode -> pop (renderObject);
+
+			for (const auto & clipPlaneNode : basic::make_reverse_range (clipPlaneNodes))
+				clipPlaneNode -> pop (renderObject);
 
 			return;
 		}

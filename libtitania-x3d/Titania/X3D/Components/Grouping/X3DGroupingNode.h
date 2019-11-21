@@ -196,9 +196,6 @@ private:
 	void
 	set_removeChildren ();
 
-	void
-	set_display_nodes ();
-
 	///  @name Operations
 
 	void
@@ -237,7 +234,6 @@ private:
 	X3DPtrArray <LocalFog>                    localFogNodes;
 	X3DPtrArray <X3DLightNode>                lightNodes;
 	X3DPtrArray <X3DTextureProjectorNode>     textureProjectorNodes;
-	X3DPtrArray <X3DChildNode>                displayNodes;
 	X3DPtrArray <X3DChildNode>                childNodes;
 
 };

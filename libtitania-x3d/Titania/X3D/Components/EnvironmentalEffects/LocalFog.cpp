@@ -94,7 +94,7 @@ LocalFog::initialize ()
 }
 
 void
-LocalFog::push (X3DRenderObject* const renderObject, X3DGroupingNode* const)
+LocalFog::push (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
 		renderObject -> getLocalFogs () .emplace_back (std::make_shared <FogContainer> (this, renderObject -> getModelViewMatrix () .get ()));

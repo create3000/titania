@@ -152,7 +152,7 @@ X3DTextureProjectorNode::straightenHorizon (const Rotation4d & orientation) cons
 }
 
 void
-X3DTextureProjectorNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const)
+X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 {
 	if (not getBrowser () -> getProjectiveTextureMapping ())
 		return;
