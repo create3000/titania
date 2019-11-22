@@ -24,6 +24,10 @@ foreach my $node ($f -> get_groups ())
 	{
 		next if $field =~ /containerField|componentName|componentLevel/;
 		
+		my @values = split ";", $f -> get_string ($node, $field);
+		
+		next if $values [1] =~ /inputOnly|outputOnly/;
+		
 		push @fields, $field;
 	}
 }
