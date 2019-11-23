@@ -627,9 +627,6 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 		for (const auto & object : getLights ())
 			object -> renderShadowMap (this);
 
-		for (const auto & object : getProjectiveTextures ())
-			object -> setGlobalVariables (this);
-
 		// Render generated cube map textures.
 
 		for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
@@ -642,6 +639,9 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 
 	for (const auto & object : getGlobalLights ())
 		object -> enable ();
+
+	for (const auto & object : getProjectiveTextures ())
+		object -> setGlobalVariables (this);
 
 	// Set global uniforms.
 
