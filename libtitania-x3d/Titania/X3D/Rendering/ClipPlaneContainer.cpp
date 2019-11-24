@@ -52,6 +52,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Rendering/ClipPlane.h"
+#include "../Components/Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -60,8 +61,7 @@ ClipPlaneContainer::ClipPlaneContainer (X3DBrowser* const browser, ClipPlane* co
 	X3DCollectableObject (),
 	             browser (browser),
 	                node (node),
-	     modelViewMatrix (modelViewMatrix),
-	             planeId (0)
+	     modelViewMatrix (modelViewMatrix)
 { }
 
 bool
@@ -71,8 +71,10 @@ ClipPlaneContainer::isClipped (const Vector3d & point) const
 }
 
 void
-ClipPlaneContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
+ClipPlaneContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject)
 {
+	const auto i = shaderObject -> getClipPlaneIndex ();
+
 	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
 }
 

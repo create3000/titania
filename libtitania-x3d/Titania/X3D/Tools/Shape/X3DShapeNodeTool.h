@@ -90,7 +90,7 @@ public:
 	const SFNode &
 	geometry () const final override
 	{ return getNode <X3DShapeNode> () -> geometry (); }
-	
+
 	///  @name Member access
 
 	virtual
@@ -102,7 +102,7 @@ public:
 	Box3d
 	getBBox () const override
 	{ return getNode <X3DShapeNode> () -> getBBox (); }
-	
+
 	virtual
 	void
 	isHidden (const bool value) final override
@@ -130,7 +130,7 @@ public:
 
 	virtual
 	bool
-	intersects (const Box3d & box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) override
+	intersects (const Box3d & box, const CollectableObjectArray & clipPlanes, const Matrix4d & modelViewMatrix) override
 	{ return getNode <X3DShapeNode> () -> intersects (box, clipPlanes, modelViewMatrix); }
 
 	virtual

@@ -68,7 +68,7 @@ X3DLineGeometryNode::X3DLineGeometryNode () :
 
 bool
 X3DLineGeometryNode::intersects (Line3d line,
-                                 const ClipPlaneContainerArray & clipPlanes,
+                                 const CollectableObjectArray & clipPlanes,
                                  Matrix4d modelViewMatrix,
                                  std::vector <IntersectionPtr> & intersections) const
 {
@@ -77,7 +77,7 @@ X3DLineGeometryNode::intersects (Line3d line,
 
 bool
 X3DLineGeometryNode::intersects (Box3d box,
-                                 const ClipPlaneContainerArray & clipPlanes,
+                                 const CollectableObjectArray & clipPlanes,
                                  Matrix4d modelViewMatrix) const
 {
 	return false;
@@ -100,7 +100,7 @@ X3DLineGeometryNode::transfer ()
 	if (getGeometryType () == 1)
 	{
 		getMultiTexCoords () .emplace_back ();
-	
+
 		for (size_t i = 0, size = getVertices () .size (); i < size; i += 2)
 		{
 			const auto & p = getVertices () [i];
@@ -128,12 +128,12 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 
 		if (not shaderNode -> isValid ())
 			return;
-	
+
 		if (shaderNode == browser -> getDefaultShader ())
 			shaderNode = getShaderNode (browser);
-	
+
 		// Setup shader.
-	
+
 		context -> setGeometryType (getGeometryType ());
 		context -> setFogCoord (not getFogDepths () .empty ());
 		context -> setColorMaterial (not getColors () .empty ());
@@ -143,40 +143,40 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		shaderNode -> setLocalUniforms (context);
 
 		// Setup vertex attributes.
-	
+
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
-	
+
 		if (not getFogDepths () .empty ())
 			shaderNode -> enableFogDepthAttrib (getFogDepthBufferId (), GL_FLOAT, 0, nullptr);
-	
+
 		if (not getColors () .empty ())
 			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
-	
+
 		if (not getMultiTexCoords () .empty ())
 			shaderNode -> enableTexCoordAttrib (getMultiTexCoordBufferIds (), GL_FLOAT, { }, { });
 
 		shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
-	
+
 		// Draw
 		// Wireframes are always solid so only one drawing call is needed.
-	
+
 		for (const auto & element : getElements ())
 		{
 			glDrawArrays (pointShading ? GL_POINTS : element .vertexMode (), element .first (), element .count ());
 		}
-	
+
 		// VertexAttribs
-	
+
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> disable (shaderNode);
-	
+
 		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableTexCoordAttrib ();
 		shaderNode -> disableVertexAttrib ();
 		shaderNode -> disable ();
-	
+
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}
 	catch (const std::exception & error)
@@ -193,15 +193,15 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		const auto browser       = context -> getBrowser ();
 		const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
 		auto       shaderNode    = context -> getShader ();
-	
+
 		if (not shaderNode -> isValid ())
 			return;
-	
+
 		if (shaderNode == browser -> getDefaultShader ())
 			shaderNode = getShaderNode (browser);
-	
+
 		// Setup shader.
-	
+
 		context -> setGeometryType  (getGeometryType ());
 		context -> setFogCoord (not getFogDepths () .empty ());
 		context -> setColorMaterial (not getColors () .empty ());
@@ -211,21 +211,21 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		shaderNode -> setLocalUniforms (context);
 
 		// Setup vertex attributes.
-	
+
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
-	
+
 		if (not getFogDepths () .empty ())
 			shaderNode -> enableFogDepthAttrib (getFogDepthBufferId (), GL_FLOAT, 0, nullptr);
-	
+
 		if (not getColors () .empty ())
 			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
-	
+
 		if (not getMultiTexCoords () .empty ())
 			shaderNode -> enableTexCoordAttrib (getMultiTexCoordBufferIds (), GL_FLOAT, { }, { });
 
 		shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
-	
+
 		// Draw
 
 		auto       modelViewMatrix = context -> getModelViewMatrix ();
@@ -241,24 +241,24 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 			shaderNode -> setParticle (p, particle, modelViewMatrix);
 
 			// Wireframes are always solid so only one drawing call is needed.
-		
+
 			for (const auto & element : getElements ())
 			{
 				glDrawArrays (pointShading ? GL_POINTS : element .vertexMode (), element .first (), element .count ());
 			}
 		}
-	
+
 		// VertexAttribs
-	
+
 		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
 			getAttribs () [i] -> disable (shaderNode);
-	
+
 		shaderNode -> disableFogDepthAttrib ();
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableTexCoordAttrib ();
 		shaderNode -> disableVertexAttrib ();
 		shaderNode -> disable ();
-	
+
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}
 	catch (const std::exception & error)

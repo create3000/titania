@@ -237,17 +237,17 @@ X3DGeometryNode::addElements (const GLenum vertexMode, const size_t count)
 }
 
 bool
-X3DGeometryNode::isClipped (const Vector3d & point, const ClipPlaneContainerArray & clipPlanes) const
+X3DGeometryNode::isClipped (const Vector3d & point, const CollectableObjectArray & clipPlanes) const
 {
 	return std::any_of (clipPlanes .cbegin (),
 	                    clipPlanes .cend (),
-	                    [&point] (const std::shared_ptr <ClipPlaneContainer> & clipPlane)
+	                    [&point] (const std::shared_ptr <X3DCollectableObject> & clipPlane)
 	                    { return clipPlane -> isClipped (point); });
 }
 
 bool
 X3DGeometryNode::intersects (Line3d line,
-                             const ClipPlaneContainerArray & clipPlanes,
+                             const CollectableObjectArray & clipPlanes,
                              Matrix4d modelViewMatrix,
                              std::vector <IntersectionPtr> & intersections) const
 {
@@ -322,7 +322,7 @@ X3DGeometryNode::intersects (const Line3d & line,
                              const size_t i3,
                              const size_t first,
                              const size_t last,
-                             const ClipPlaneContainerArray & clipPlanes,
+                             const CollectableObjectArray & clipPlanes,
                              const Matrix4d & modelViewMatrix,
                              std::vector <IntersectionPtr> & intersections) const
 {
@@ -361,7 +361,7 @@ X3DGeometryNode::intersects (const Line3d & line,
 
 bool
 X3DGeometryNode::intersects (Box3d box,
-                             const ClipPlaneContainerArray & clipPlanes,
+                             const CollectableObjectArray & clipPlanes,
                              Matrix4d modelViewMatrix) const
 {
 	try

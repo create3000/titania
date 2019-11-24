@@ -167,8 +167,8 @@ X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 				                                                                                       this,
 				                                                                                       renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getGlobalProjectiveTextures () .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures ()       .emplace_back (projectiveTextureContainer);
+				renderObject -> getGlobalObjects ()      .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
 			}
 			else
 			{
@@ -176,8 +176,8 @@ X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 				                                                                                       this,
 				                                                                                       renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getLocalProjectiveTextures () .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures ()      .emplace_back (projectiveTextureContainer);
+				renderObject -> getLocalObjects ()       .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
 			}
 		}
 		else
@@ -188,15 +188,15 @@ X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 			{
 				projectiveTextureContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getGlobalProjectiveTextures () .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures ()       .emplace_back (projectiveTextureContainer);
+				renderObject -> getGlobalObjects ()      .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
 			}
 			else
 			{
 				projectiveTextureContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getLocalProjectiveTextures () .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures ()      .emplace_back (projectiveTextureContainer);
+				renderObject -> getLocalObjects ()       .emplace_back (projectiveTextureContainer);
+				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
 			}
 		}
 	}
@@ -209,7 +209,7 @@ X3DTextureProjectorNode::pop (X3DRenderObject* const renderObject)
 		return;
 
 	if (textureNode and on () and not global ())
-		renderObject -> getLocalProjectiveTextures () .pop_back ();
+		renderObject -> getLocalObjects () .pop_back ();
 }
 
 X3DTextureProjectorNode::~X3DTextureProjectorNode ()

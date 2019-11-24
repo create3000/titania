@@ -122,15 +122,10 @@ LightContainer::enable ()
 }
 
 void
-LightContainer::disable ()
+LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject)
 {
-	if (textureUnit)
-		browser -> getCombinedTextureUnits () .push (textureUnit);
-}
+	const auto i = shaderObject -> getLightIndex ();
 
-void
-LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
-{
 	if (shaderObject -> hasLight (i, this))
 		return;
 
@@ -148,7 +143,7 @@ LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgr
 			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, (cameraSpaceMatrix * shadowMatrix) .front () .data ());
 		else
 			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (cameraSpaceMatrix * shadowMatrix) .front () .data ());
-	
+
 		glUniform1i (shaderObject -> getShadowMapSizeUniformLocation () [i], node -> getShadowMapSize ());
 		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
 	}
@@ -156,6 +151,13 @@ LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgr
 	{
 		glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], 0);
 	}
+}
+
+void
+LightContainer::disable ()
+{
+	if (textureUnit)
+		browser -> getCombinedTextureUnits () .push (textureUnit);
 }
 
 LightContainer::~LightContainer ()

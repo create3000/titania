@@ -199,14 +199,14 @@ public:
 	virtual
 	bool
 	intersects (Line3d line,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
 	            std::vector <IntersectionPtr> & intersections) const;
 
 	virtual
 	bool
 	intersects (Box3d,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix) const;
 
 	virtual
@@ -434,12 +434,12 @@ private:
 	            const size_t i2,
 	            const size_t first,
 	            const size_t last,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            const Matrix4d & modelViewMatrix,
 	            std::vector <IntersectionPtr> & intersections) const;
 
 	bool
-	isClipped (const Vector3d &, const ClipPlaneContainerArray &) const;
+	isClipped (const Vector3d &, const CollectableObjectArray &) const;
 
 	void
 	triangulate (const size_t i1,

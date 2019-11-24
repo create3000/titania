@@ -68,21 +68,13 @@ public:
 
 	ClipPlaneContainer (X3DBrowser* const browser, ClipPlane* const node, const Matrix4d & modelViewMatrix);
 
+	virtual
 	bool
-	isClipped (const Vector3d & point) const;
+	isClipped (const Vector3d & point) const final override;
 
 	virtual
 	void
-	enable () final override
-	{ }
-
-	virtual
-	void
-	disable () final override
-	{ }
-
-	void
-	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i);
+	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject) final override;
 
 
 private:
@@ -90,7 +82,6 @@ private:
 	X3DBrowser* const browser;
 	ClipPlane* const  node;
 	const Matrix4d    modelViewMatrix;
-	GLenum            planeId;
 
 };
 

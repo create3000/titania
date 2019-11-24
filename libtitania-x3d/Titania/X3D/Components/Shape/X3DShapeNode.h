@@ -96,7 +96,7 @@ public:
 	const SFNode &
 	geometry () const
 	{ return *fields .geometry; }
-	
+
 	///  @name Member access
 
 	virtual
@@ -128,11 +128,11 @@ public:
 	getGeometryType () const = 0;
 
 	///  @name Operations
-	
+
 	virtual
 	bool
 	intersects (const Box3d & box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            const Matrix4d & modelViewMatrix) = 0;
 
 	virtual

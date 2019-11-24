@@ -106,14 +106,14 @@ void
 ClipPlane::push (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		renderObject -> getClipPlanes () .emplace_back (new ClipPlaneContainer (renderObject -> getBrowser (), this, renderObject -> getModelViewMatrix () .get ()));
+		renderObject -> getLocalObjects () .emplace_back (new ClipPlaneContainer (renderObject -> getBrowser (), this, renderObject -> getModelViewMatrix () .get ()));
 }
 
 void
 ClipPlane::pop (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		renderObject-> getClipPlanes () .pop_back ();
+		renderObject-> getLocalObjects () .pop_back ();
 }
 
 void
@@ -122,9 +122,9 @@ ClipPlane::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 	try
 	{
 		auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
-	
+
 		clipPlane .mult_right (modelViewMatrix);
-	
+
 		glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i],
 		             clipPlane .normal () .x (),
 		             clipPlane .normal () .y (),

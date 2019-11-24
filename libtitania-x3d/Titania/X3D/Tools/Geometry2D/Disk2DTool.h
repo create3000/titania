@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -123,7 +123,7 @@ public:
 	virtual
 	bool
 	intersects (Line3d line,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
 	            std::vector <IntersectionPtr> & intersections) const final override
 	{ return X3DGeometryNodeTool::intersects (line, clipPlanes, modelViewMatrix, intersections); }
@@ -131,7 +131,7 @@ public:
 	virtual
 	bool
 	intersects (Box3d box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix) const final override
 	{ return X3DGeometryNodeTool::intersects (box, clipPlanes, modelViewMatrix); }
 
@@ -205,22 +205,22 @@ private:
 
 	void
 	set_outerRadius ();
-	
+
 	void
 	set_scale1 ();
-	
+
 	void
 	set_scale2 ();
-	
+
 	void
 	connectInnerRadius (const SFFloat & field);
-	
+
 	void
 	connectOuterRadius (const SFFloat & field);
-	
+
 	void
 	connectScale1 (const SFVec3f & field);
-	
+
 	void
 	connectScale2 (const SFVec3f & field);
 

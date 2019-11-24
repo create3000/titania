@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,7 +69,7 @@ public:
 	virtual
 	bool
 	intersects (Line3d line,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
 	            std::vector <IntersectionPtr> & intersections) const override
 	{ return X3DGeometryNodeTool::intersects (line, clipPlanes, modelViewMatrix, intersections); }
@@ -77,7 +77,7 @@ public:
 	virtual
 	bool
 	intersects (Box3d box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix) const override
 	{ return X3DGeometryNodeTool::intersects (box, clipPlanes, modelViewMatrix); }
 

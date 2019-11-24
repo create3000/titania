@@ -59,17 +59,32 @@
 namespace titania {
 namespace X3D {
 
+class X3DRenderObject;
+class X3DProgrammableShaderObject;
+
 class X3DCollectableObject
 {
 public:
 
 	virtual
-	void
-	enable () = 0;
+	bool
+	isClipped (const Vector3d & point) const
+	{ return false; }
 
 	virtual
 	void
-	disable () = 0;
+	enable ()
+	{ }
+
+	virtual
+	void
+	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject)
+	{ }
+
+	virtual
+	void
+	disable ()
+	{ }
 
 	virtual
 	~X3DCollectableObject ()

@@ -53,7 +53,6 @@
 
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
-#include "../Rendering/X3DCollectableObject.h"
 #include "../Rendering/X3DShapeContainer.h"
 
 #include "../Types/Geometry.h"

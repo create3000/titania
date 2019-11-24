@@ -115,7 +115,7 @@ Disk2D::initialize ()
 	try
 	{
 		const auto metaOptions = getMetadataSet ("/Disk2D/options");
-	
+
 		optionsNode .set (MakePtr <Disk2DOptions> (getExecutionContext ()));
 
 		optionsNode -> addInterest (&Disk2D::requestRebuild, this);
@@ -257,14 +257,14 @@ Disk2D::build ()
 		const auto i1 = (i + 1) % size;
 
 		// TexCoords
-	
+
 		getTexCoords () .emplace_back (texCoords [i] .x () * scale + (1 - scale) / 2, texCoords [i] .y () * scale + (1 - scale) / 2, 0, 1);
 		getTexCoords () .emplace_back (texCoords [i]);
 		getTexCoords () .emplace_back (texCoords [i1]);
 		getTexCoords () .emplace_back (texCoords [i1] .x () * scale + (1 - scale) / 2, texCoords [i1] .y () * scale + (1 - scale) / 2, 0, 1);
 
 		// Normals
-	
+
 		getNormals () .emplace_back (normals [i]);
 		getNormals () .emplace_back (normals [i]);
 		getNormals () .emplace_back (normals [i1]);
@@ -285,7 +285,7 @@ Disk2D::build ()
 
 bool
 Disk2D::intersects (Line3d line,
-                    const ClipPlaneContainerArray & clipPlanes,
+                    const CollectableObjectArray & clipPlanes,
                     Matrix4d modelViewMatrix,
                     std::vector <IntersectionPtr> & intersections) const
 {
@@ -297,7 +297,7 @@ Disk2D::intersects (Line3d line,
 
 bool
 Disk2D::intersects (Box3d box,
-                    const ClipPlaneContainerArray & clipPlanes,
+                    const CollectableObjectArray & clipPlanes,
                     Matrix4d modelViewMatrix) const
 {
 	if (innerRadius () == outerRadius ())
@@ -355,19 +355,19 @@ Disk2D::toPrimitive () const
 		if (radius == 0)
 		{
 			// Point
-		
+
 			const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 			const auto geometry = getExecutionContext () -> createNode <PointSet> ();
-	
+
 			geometry -> coord () = coord;
-	
+
 			coord -> point () .emplace_back ();
-	
+
 			return SFNode (geometry);
 		}
 
 		// Circle
-	
+
 		const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 		const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
@@ -403,7 +403,7 @@ Disk2D::toPrimitive () const
 		// Disk
 
 		const float radius = std::abs (std::max (innerRadius (), outerRadius ()));
-	
+
 		coord -> point () .assign (optionsNode -> getVertices () .cbegin (), optionsNode -> getVertices () .cend ());
 
 		if (radius not_eq 1)

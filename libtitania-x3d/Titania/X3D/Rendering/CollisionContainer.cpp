@@ -68,10 +68,10 @@ CollisionContainer::intersects (Box3d box) const
 	{
 		if (getCollisions () .empty ())
 			return false;
-		
+
 		box *= inverse (getModelViewMatrix ());
 
-		return getShape () -> intersects (box, getClipPlanes (), getModelViewMatrix ());
+		return getShape () -> intersects (box, getLocalObjects (), getModelViewMatrix ());
 	}
 	catch (const std::domain_error &)
 	{
@@ -91,15 +91,9 @@ CollisionContainer::depth ()
 	for (const auto & localObject : getLocalObjects ())
 		localObject -> enable ();
 
-	for (const auto & clipPlane : getClipPlanes ())
-		clipPlane -> enable ();
-
 	glLoadMatrixd (getModelViewMatrix () .front () .data ());
 
 	getShape () -> depth (this);
-
-	for (const auto & clipPlane :  basic::make_reverse_range (getClipPlanes ()))
-		clipPlane -> disable ();
 
 	for (const auto & localObject : basic::make_reverse_range (getLocalObjects ()))
 		localObject -> disable ();

@@ -65,7 +65,8 @@ class X3DTextureProjectorNode;
 class X3DProgrammableShaderObject;
 class X3DRenderObject;
 
-class ProjectiveTextureContainer
+class ProjectiveTextureContainer :
+	public X3DCollectableObject
 {
 public:
 
@@ -104,8 +105,9 @@ public:
 	void
 	setGlobalVariables (X3DRenderObject* const renderObject);
 
+	virtual
 	void
-	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t index);
+	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject);
 
 	///  @name Destruction
 

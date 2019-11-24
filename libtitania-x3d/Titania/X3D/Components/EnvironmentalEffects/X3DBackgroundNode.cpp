@@ -393,7 +393,7 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 		}
 		case TraverseType::DISPLAY:
 		{
-			clipPlanes = renderObject -> getClipPlanes ();
+			clipPlanes = renderObject -> getLocalObjects ();
 			break;
 		}
 		default:
@@ -477,7 +477,7 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 
 	// Clip planes
 
-	shaderNode -> setClipPlanes (browser, clipPlanes);
+	shaderNode -> setLocalObjects (renderObject, clipPlanes);
 
 	// Enable vertex attribute arrays.
 
@@ -533,7 +533,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 
 	// Clip planes
 
-	shaderNode -> setClipPlanes (browser, clipPlanes);
+	shaderNode -> setLocalObjects (renderObject, clipPlanes);
 
 	// Uniforms
 

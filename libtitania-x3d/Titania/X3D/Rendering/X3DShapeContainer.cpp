@@ -57,8 +57,7 @@ X3DShapeContainer::X3DShapeContainer () :
 	          shape (nullptr),
 	        scissor (),
 	modelViewMatrix (),
-	   localObjects (),
-	     clipPlanes ()
+	   localObjects ()
 { }
 
 } // X3D

@@ -97,7 +97,6 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 	glBufferData (GL_ARRAY_BUFFER, sizeof (float) * normals .size (), normals .data (), GL_STATIC_COPY);
 
 	shaderNode -> enable ();
-	shaderNode -> setClipPlanes (browser, { });
 
 	glUniformMatrix4fv (shaderNode -> getProjectionMatrixUniformLocation (), 1, false, camera <float>::ortho (-1, 1, -1, 1, -1, 1) .front () .data ());
 	glUniformMatrix4fv (shaderNode -> getModelViewMatrixUniformLocation (),  1, false, Matrix4f () .front () .data ());
@@ -111,6 +110,7 @@ ShaderTest::verify (X3DBrowser* const browser, X3DPtr <ComposedShader> & shaderN
 	glUniform1i (shaderNode -> getNumLightsUniformLocation (),             0);
 	glUniform1i (shaderNode -> getNumTexturesUniformLocation (),           0);
 	glUniform1i (shaderNode -> getNumProjectiveTexturesUniformLocation (), 0);
+	glUniform1i (shaderNode -> getNumClipPlanesUniformLocation (),         0);
 
 	glUniform1i (shaderNode -> getSeparateBackColorUniformLocation (), false);
 	glUniform1f (shaderNode -> getAmbientIntensityUniformLocation (),  0);

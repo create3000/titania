@@ -163,6 +163,9 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	                x3d_ParticleElapsedTime (-1),
 	                 extensionGPUShaderFP64 (false),
 	              transformFeedbackVaryings (),
+	                          numClipPlanes (0),
+	                              numLights (0),
+	                  numProjectiveTextures (0),
 	                        numGlobalLights (0),
 	            numGlobalProjectiveTextures (0),
 	                           fogContainer (nullptr),
@@ -1137,6 +1140,24 @@ X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
 //	}
 }
 
+size_t
+X3DProgrammableShaderObject::getClipPlaneIndex ()
+{
+	return numClipPlanes ++;
+}
+
+size_t
+X3DProgrammableShaderObject::getLightIndex ()
+{
+	return numLights ++;
+}
+
+size_t
+X3DProgrammableShaderObject::getProjectiveTextureIndex ()
+{
+	return numProjectiveTextures ++;
+}
+
 bool
 X3DProgrammableShaderObject::hasFog (FogContainer* const fogContainer)
 {
@@ -1187,11 +1208,8 @@ X3DProgrammableShaderObject::hasProjectiveTexture (const size_t index, Projectiv
 void
 X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
-	const auto & browser                  = renderObject -> getBrowser ();
-	const auto & cameraSpaceMatrix        = renderObject -> getCameraSpaceMatrix () .get ();
-	const auto & projectionMatrix         = renderObject -> getProjectionMatrix () .get ();
-	const auto & globalLights             = renderObject -> getGlobalLights ();
-	const auto & globalProjectiveTextures = renderObject -> getGlobalProjectiveTextures ();
+	const auto & cameraSpaceMatrix = renderObject -> getCameraSpaceMatrix () .get ();
+	const auto & projectionMatrix  = renderObject -> getProjectionMatrix () .get ();
 
 	// Set viewport.
 
@@ -1214,23 +1232,19 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 
 	fogContainer = nullptr;
 
-	// Set global lights.
+	// Set global lights and global texture projectors
 
-	numGlobalLights = std::min (browser -> getMaxLights (), globalLights .size ());
-
-	for (size_t i = 0; i < numGlobalLights; ++ i)
-		globalLights [i] -> setShaderUniforms (renderObject, this, i);
+	numLights             = 0;
+	numProjectiveTextures = 0;
 
 	std::fill (lightContainers .begin (), lightContainers .end (), nullptr);
-
-	// Set global projective textures.
-
-	numGlobalProjectiveTextures = std::min (browser -> getMaxTextures (), globalProjectiveTextures .size ());
-
-	for (size_t i = 0; i < numGlobalProjectiveTextures; ++ i)
-		globalProjectiveTextures [i] -> setShaderUniforms (renderObject, this, i);
-
 	std::fill (projectiveTextureContainers .begin (), projectiveTextureContainers .end (), nullptr);
+
+	for (const auto & globalObject : renderObject -> getGlobalObjects ())
+		globalObject -> setShaderUniforms (renderObject, this);
+
+	numGlobalLights             = numLights;
+	numGlobalProjectiveTextures = numProjectiveTextures;
 
 	// Logarithmic depth buffer support.
 
@@ -1248,7 +1262,6 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
 	const auto   browser               = context -> getBrowser ();
 	const auto   renderObject          = context -> getRenderer ();
-	const auto & clipPlanes            = context -> getClipPlanes ();
 	const auto   stylePropertiesNode   = context -> getStyleProperties ();
 	const auto   materialNode          = context -> getMaterial ();
 	const auto   textureNode           = context -> getTexture ();
@@ -1261,34 +1274,18 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	glUniform1i (x3d_GeometryType, context -> getGeometryType ());
 
-	// Clip planes
+	// Clip planes and local lights
 
-	setClipPlanes (browser, clipPlanes);
+	numClipPlanes         = 0;
+	numLights             = numGlobalLights;
+	numProjectiveTextures = numGlobalProjectiveTextures;
 
-	// Lights
+	for (const auto localObject : context -> getLocalObjects ())
+		localObject -> setShaderUniforms (renderObject, this);
 
-	const auto & localLights = context -> getLocalLights ();
-	const auto   numLights   = std::min (browser -> getMaxLights (), numGlobalLights + localLights .size ());
-
-	for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
-		localLights [l] -> setShaderUniforms (renderObject, this, i);
-
-	glUniform1i (x3d_NumLights, numLights);
-
-	// Legacy
-
-	if (numLights < browser -> getMaxLights ())
-		glUniform1i (x3d_LightType [numLights], 0);
-
-	// Projective Textures
-
-	const auto & localProjectiveTextures = context -> getLocalProjectiveTextures ();
-	const auto   numProjectiveTextures   = std::min (browser -> getMaxTextures (), numGlobalProjectiveTextures + localProjectiveTextures .size ());
-
-	for (size_t i = numGlobalProjectiveTextures, l = 0; i < numProjectiveTextures; ++ i, ++ l)
-		localProjectiveTextures [l] -> setShaderUniforms (renderObject, this, i);
-
-	glUniform1i (x3d_NumProjectiveTextures, numProjectiveTextures);
+	glUniform1i (x3d_NumClipPlanes,         std::min (numClipPlanes,         browser -> getMaxClipPlanes ()));
+	glUniform1i (x3d_NumLights,             std::min (numLights,             browser -> getMaxLights ()));
+	glUniform1i (x3d_NumProjectiveTextures, std::min (numProjectiveTextures, browser -> getMaxTextures ()));
 
 	// Fog
 
@@ -1349,19 +1346,25 @@ X3DProgrammableShaderObject::getNormalMatrix (const Matrix4d & modelViewMatrix) 
 }
 
 void
-X3DProgrammableShaderObject::setClipPlanes (const X3DBrowser* const browser, const ClipPlaneContainerArray & clipPlanes)
+X3DProgrammableShaderObject::setLocalObjects (X3DRenderObject* const renderObject, const CollectableObjectArray & localObjects)
 {
-	const auto numClipPlanes = std::min (browser -> getMaxClipPlanes (), clipPlanes .size ());
+	const auto browser = renderObject -> getBrowser ();
 
-	for (size_t i = 0; i < numClipPlanes; ++ i)
-		clipPlanes [i] -> setShaderUniforms (this, i);
+	// Clip planes and local lights
 
-	glUniform1i (x3d_NumClipPlanes, numClipPlanes);
+	numClipPlanes         = 0;
+	numLights             = 0;
+	numProjectiveTextures = 0;
 
-	// Legacy
+	std::fill (lightContainers .begin (), lightContainers .end (), nullptr);
+	std::fill (projectiveTextureContainers .begin (), projectiveTextureContainers .end (), nullptr);
 
-	if (numClipPlanes < browser -> getMaxClipPlanes ())
-		glUniform4f (x3d_ClipPlane [numClipPlanes], 88, 51, 68, 33);
+	for (const auto & localObject : localObjects)
+		localObject -> setShaderUniforms (renderObject, this);
+
+	glUniform1i (x3d_NumClipPlanes,         std::min (numClipPlanes,         browser -> getMaxClipPlanes ()));
+	glUniform1i (x3d_NumLights,             std::min (numLights,             browser -> getMaxLights ()));
+	glUniform1i (x3d_NumProjectiveTextures, std::min (numProjectiveTextures, browser -> getMaxTextures ()));
 }
 
 void

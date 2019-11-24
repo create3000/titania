@@ -60,6 +60,7 @@ namespace titania {
 namespace X3D {
 
 ProjectiveTextureContainer::ProjectiveTextureContainer (X3DBrowser* const browser, X3DTextureProjectorNode* const node, const Matrix4d & modelViewMatrix) :
+	     X3DCollectableObject (),
 	                  browser (browser),
 	                     node (node),
 	          modelViewMatrix ({ modelViewMatrix }),
@@ -75,8 +76,10 @@ ProjectiveTextureContainer::setGlobalVariables (X3DRenderObject* const renderObj
 }
 
 void
-ProjectiveTextureContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
+ProjectiveTextureContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject)
 {
+	const auto i = shaderObject -> getProjectiveTextureIndex ();
+
 	if (shaderObject -> hasProjectiveTexture (i, this))
 		return;
 

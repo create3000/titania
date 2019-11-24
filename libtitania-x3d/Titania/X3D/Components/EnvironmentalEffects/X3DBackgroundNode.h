@@ -107,7 +107,7 @@ public:
 	{ return *fields .transparency; }
 
 	///  @name Member access
-	
+
 	void
 	isHidden (const bool);
 
@@ -165,7 +165,7 @@ public:
 	virtual
 	void
 	dispose () override;
-	
+
 	virtual
 	~X3DBackgroundNode () override;
 
@@ -264,7 +264,7 @@ private:
 
 	X3DPtrArray <X3DTextureNode> textures;
 	bool                         hidden;
-	ClipPlaneContainerArray      clipPlanes;
+	CollectableObjectArray       clipPlanes;
 	Matrix4d                     projectionMatrix;
 	Matrix4d                     modelMatrix;
 	std::vector <Color4f>        sphereColors;

@@ -187,20 +187,20 @@ public:
 	const X3DPtr <CoordinateTool> &
 	getCoordinateTool () const
 	{ return coordToolNode; }
-	
+
 	///  @name Operations
 
 	virtual
 	bool
 	intersects (Line3d,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
 	            std::vector <IntersectionPtr> &) const override;
 
 	virtual
 	bool
 	intersects (Box3d box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix) const override;
 
 	virtual

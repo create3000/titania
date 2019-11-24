@@ -485,7 +485,7 @@ X3DFlyViewer::display (const MoveType type)
 		return;
 
 	shaderNode -> enable ();
-	shaderNode -> setClipPlanes (getBrowser (), { });
+	shaderNode -> setLocalObjects (getBrowser () -> getActiveLayer (), { });
 	shaderNode -> enableVertexAttrib (lineBufferId, GL_DOUBLE, 0, nullptr);
 
 	glUniform1i (shaderNode -> getFogTypeUniformLocation (),               0);

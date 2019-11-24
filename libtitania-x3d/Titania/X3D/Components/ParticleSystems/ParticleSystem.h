@@ -251,7 +251,7 @@ public:
 	virtual
 	bool
 	intersects (const Box3d & box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            const Matrix4d & modelViewMatrix) override;
 
 	virtual

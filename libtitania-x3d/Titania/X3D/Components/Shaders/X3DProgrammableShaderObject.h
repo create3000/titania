@@ -102,6 +102,10 @@ public:
 
 	///  @name Uniform location access clip planes
 
+	GLint
+	getNumClipPlanesUniformLocation () const
+	{ return x3d_NumClipPlanes; }
+
 	const std::vector <GLint> &
 	getClipPlaneUniformLocation () const
 	{ return x3d_ClipPlane; }
@@ -409,6 +413,15 @@ public:
 
 	///  @name Pipeline
 
+	size_t
+	getClipPlaneIndex ();
+
+	size_t
+	getLightIndex ();
+
+	size_t
+	getProjectiveTextureIndex ();
+
 	bool
 	hasFog (FogContainer* const fogContainer);
 
@@ -427,7 +440,7 @@ public:
 	setLocalUniforms (ShapeContainer* const context);
 
 	void
-	setClipPlanes (const X3DBrowser* const browser, const ClipPlaneContainerArray & clipPlanes);
+	setLocalObjects (X3DRenderObject* const renderObject, const CollectableObjectArray & localObjects);
 
 	virtual
 	void
@@ -694,6 +707,9 @@ private:
 
 	bool                                             extensionGPUShaderFP64;
 	std::vector <std::string>                        transformFeedbackVaryings;
+	size_t                                           numClipPlanes;
+	size_t                                           numLights;
+	size_t                                           numProjectiveTextures;
 	size_t                                           numGlobalLights;
 	size_t                                           numGlobalProjectiveTextures;
 	FogContainer*                                    fogContainer;

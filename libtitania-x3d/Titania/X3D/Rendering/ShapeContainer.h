@@ -101,14 +101,6 @@ public:
 	getFog () const
 	{ return fog; }
 
-	void
-	setLocalLights (const LightContainerArray & value)
-	{ localLights = value; }
-
-	const LightContainerArray &
-	getLocalLights () const
-	{ return localLights; }
-
 	bool
 	getShadow () const
 	{ return shadow; }
@@ -190,14 +182,6 @@ public:
 	{ return textureCoordinate; }
 
 	void
-	setLocalProjectiveTextures (const ProjectiveTextureContainerArray & value)
-	{ localProjectiveTextures = value; }
-
-	const ProjectiveTextureContainerArray &
-	getLocalProjectiveTextures () const
-	{ return localProjectiveTextures; }
-
-	void
 	setDistance (double value)
 	{ distance = value; }
 
@@ -218,7 +202,6 @@ private:
 	X3DRenderObject* const          renderObject;
 	bool                            transparent;
 	FogContainerPtr                 fog;
-	LightContainerArray             localLights;
 	bool                            shadow;
 	X3DAppearanceChildNode*         styleProperties;
 	X3DMaterialNode*                material;
@@ -229,7 +212,6 @@ private:
 	bool                            colorMaterial;
 	bool                            fogCoord;
 	X3DTextureCoordinateNode*       textureCoordinate;
-	ProjectiveTextureContainerArray localProjectiveTextures;
 	double                          distance;
 
 };

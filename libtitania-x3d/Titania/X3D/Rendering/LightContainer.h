@@ -104,19 +104,20 @@ public:
 
 	///  @name Operations
 
+	void
+	renderShadowMap (X3DRenderObject* const renderObject);
+
 	virtual
 	void
 	enable () final override;
 
 	virtual
 	void
+	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject) final override;
+
+	virtual
+	void
 	disable () final override;
-
-	void
-	renderShadowMap (X3DRenderObject* const renderObject);
-
-	void
-	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t index);
 
 	///  @name Destruction
 

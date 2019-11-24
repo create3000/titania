@@ -130,7 +130,7 @@ Shape::getBBox () const
 
 bool
 Shape::intersects (const Box3d & box,
-                   const ClipPlaneContainerArray & clipPlanes,
+                   const CollectableObjectArray & clipPlanes,
                    const Matrix4d & modelViewMatrix)
 {
 	return getGeometry () -> intersects (box, clipPlanes, modelViewMatrix);
@@ -224,7 +224,7 @@ Shape::touch (X3DRenderObject* const renderObject)
 		const auto   invModelViewMatrix = inverse (modelViewMatrix);
 		const auto   hitRay             = browser -> getHitRay () * invModelViewMatrix;
 
-		if (not getGeometry () -> intersects (hitRay, renderObject -> getClipPlanes (), modelViewMatrix, intersections))
+		if (not getGeometry () -> intersects (hitRay, renderObject -> getLocalObjects (), modelViewMatrix, intersections))
 			return;
 
 		// Finally we have intersections and must now find the closest hit in front of the camera.

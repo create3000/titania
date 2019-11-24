@@ -89,17 +89,13 @@ X3DRenderObject::X3DRenderObject () :
 	        projectionMatrix (),
 	         modelViewMatrix (),
 	         viewVolumeStack (),
-	            globalLights (),
+	           globalObjects (),
 	            localObjects (),
-	              clipPlanes (),
 	               localFogs (1),
-	             localLights (),
 	                  lights (),
 	              lightIndex (0),
 	                  shadow ({ false }),
 	                 layouts (),
-	globalProjectiveTextures (),
-	 localProjectiveTextures (),
 	      projectiveTextures (),
 	  projectiveTextureIndex (0),
 	generatedCubeMapTextures (),
@@ -335,7 +331,6 @@ X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 	context -> setShape (shapeNode);
 	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
 
 	return true;
 }
@@ -362,7 +357,6 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shapeNode);
 	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
 
 	return true;
 }
@@ -410,10 +404,7 @@ X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 	context -> setShape (shapeNode);
 	context -> setFog (getLocalFogs () .back ());
 	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
-	context -> setLocalLights (getLocalLights ());
 	context -> setShadow (getShadow ());
-	context -> setLocalProjectiveTextures (getLocalProjectiveTextures ());
 	context -> setDistance (center);
 
 	return true;
@@ -637,24 +628,11 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 
 	// Enable global lights.
 
-	for (const auto & object : getGlobalLights ())
+	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
 	for (const auto & object : getProjectiveTextures ())
 		object -> setGlobalVariables (this);
-
-	// Set global uniforms.
-
-	getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
-	getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
-	getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
-	getBrowser () -> getShadowShader ()    -> setGlobalUniforms (this);
-
-	for (const auto & shaderNode : getShaders ())
-		shaderNode -> setGlobalUniforms (this);
-
-	glUseProgram (0);
-	glBindProgramPipeline (0);
 
 	// Configure viewport.
 
@@ -668,6 +646,19 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	glClear (GL_DEPTH_BUFFER_BIT);
 
 	getBackground () -> draw (this, viewport);
+
+	// Set global uniforms.
+
+	getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
+	getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
+	getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
+	getBrowser () -> getShadowShader ()    -> setGlobalUniforms (this);
+
+	for (const auto & shaderNode : getShaders ())
+		shaderNode -> setGlobalUniforms (this);
+
+	glUseProgram (0);
+	glBindProgramPipeline (0);
 
 	// Sorted blend.
 
@@ -697,17 +688,16 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 
 	// Disable global lights
 
-	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
+	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
 		object -> disable ();
 
 	// Clear node arrays.
 
 	getShaders                  () .clear ();
-	getGeneratedCubeMapTextures () .clear ();
-	getGlobalLights             () .clear ();
+	getGlobalObjects            () .clear ();
 	getLights                   () .clear ();
-	getGlobalProjectiveTextures () .clear ();
 	getProjectiveTextures       () .clear ();
+	getGeneratedCubeMapTextures () .clear ();
 }
 
 void
@@ -715,15 +705,11 @@ X3DRenderObject::dispose ()
 {
 	viewVolumeStack          .clear ();
 	generatedCubeMapTextures .clear ();
-	globalLights             .clear ();
+	globalObjects            .clear ();
 	localObjects             .clear ();
-	clipPlanes               .clear ();
 	localFogs                .clear ();
-	localLights              .clear ();
 	lights                   .clear ();
 	layouts                  .clear ();
-	globalProjectiveTextures .clear ();
-	localProjectiveTextures  .clear ();
 	projectiveTextures       .clear ();
 	shaders                  .clear ();
 	collisions               .clear ();

@@ -176,17 +176,13 @@ public:
 
 	///  @name Node stacks
 
-	LightContainerArray &
-	getGlobalLights ()
-	{ return globalLights; }
+	CollectableObjectArray &
+	getGlobalObjects ()
+	{ return globalObjects; }
 
 	CollectableObjectArray &
 	getLocalObjects ()
 	{ return localObjects; }
-
-	ClipPlaneContainerArray &
-	getClipPlanes ()
-	{ return clipPlanes; }
 
 	LocalFogStack &
 	getLocalFogs ()
@@ -195,10 +191,6 @@ public:
 	const LocalFogStack &
 	getLocalFogs () const
 	{ return localFogs; }
-
-	LightContainerArray &
-	getLocalLights ()
-	{ return localLights; }
 
 	LightContainerArray &
 	getLights ()
@@ -231,14 +223,6 @@ public:
 	X3DLayoutNode*
 	getParentLayout ()
 	{ return layouts .empty () ? nullptr : layouts .back (); }
-
-	ProjectiveTextureContainerArray &
-	getGlobalProjectiveTextures ()
-	{ return globalProjectiveTextures; }
-
-	ProjectiveTextureContainerArray &
-	getLocalProjectiveTextures ()
-	{ return localProjectiveTextures; }
 
 	ProjectiveTextureContainerArray &
 	getProjectiveTextures ()
@@ -355,17 +339,13 @@ private:
 	Matrix4dStack modelViewMatrix;
 
 	ViewVolumeStack                 viewVolumeStack;
-	LightContainerArray             globalLights;
+	CollectableObjectArray          globalObjects;
 	CollectableObjectArray          localObjects;
-	ClipPlaneContainerArray         clipPlanes;
 	LocalFogStack                   localFogs;
-	LightContainerArray             localLights;
 	LightContainerArray             lights;
 	size_t                          lightIndex;
 	ShadowStack                     shadow;
 	LayoutStack                     layouts;
-	ProjectiveTextureContainerArray globalProjectiveTextures;
-	ProjectiveTextureContainerArray localProjectiveTextures;
 	ProjectiveTextureContainerArray projectiveTextures;
 	size_t                          projectiveTextureIndex;
 	GeneratedCubeMapTextureSet      generatedCubeMapTextures;

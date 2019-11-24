@@ -82,7 +82,7 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	 X3DGeometryNode (),
 	     X3DNodeTool (),
 	          fields (),
-	  normalToolNode (new NormalTool (getExecutionContext ())), 
+	  normalToolNode (new NormalTool (getExecutionContext ())),
 	   coordToolNode (new CoordinateTool (getExecutionContext ())),
 	  normalsLineSet (),
 	    normalsCoord (),
@@ -106,7 +106,7 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	                 edgesCoord,
 	                 verticesCoord,
 	                 selection);
-	                 
+
 	setCameraObject (true);
 }
 
@@ -282,7 +282,7 @@ X3DGeometryNodeTool::set_rebuild ()
 		{
 			normalVertexCount .resize (size, SFInt32 (2));
 			normalPoint       .resize (2 * size);
-	
+
 			for (size_t i = 0; i < size; ++ i)
 			{
 				normalPoint [2 * i + 0] = vertices [i];
@@ -383,8 +383,8 @@ X3DGeometryNodeTool::set_rebuild ()
 
 bool
 X3DGeometryNodeTool::intersects (Line3d hitRay,
-                                 const ClipPlaneContainerArray & clipPlanes,
-                                 Matrix4d modelViewMatrix, 
+                                 const CollectableObjectArray & clipPlanes,
+                                 Matrix4d modelViewMatrix,
                                  std::vector <IntersectionPtr> & intersections) const
 {
 	return getNode <X3DGeometryNode> () -> intersects (hitRay, clipPlanes, modelViewMatrix, intersections);
@@ -392,7 +392,7 @@ X3DGeometryNodeTool::intersects (Line3d hitRay,
 
 bool
 X3DGeometryNodeTool::intersects (Box3d box,
-                                 const ClipPlaneContainerArray & clipPlanes,
+                                 const CollectableObjectArray & clipPlanes,
                                  Matrix4d modelViewMatrix) const
 {
 	return getNode <X3DGeometryNode> () -> intersects (box, clipPlanes, modelViewMatrix);

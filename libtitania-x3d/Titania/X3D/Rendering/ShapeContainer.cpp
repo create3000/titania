@@ -64,7 +64,6 @@ ShapeContainer::ShapeContainer (X3DRenderObject* const renderObject, const bool 
 	           renderObject (renderObject),
 	            transparent (transparent),
 	                    fog (nullptr),
-	            localLights (),
 	                 shadow (false),
 	        styleProperties (nullptr),
 	               material (nullptr),
@@ -75,7 +74,6 @@ ShapeContainer::ShapeContainer (X3DRenderObject* const renderObject, const bool 
 	          colorMaterial (false),
 	               fogCoord (false),
 	      textureCoordinate (nullptr),
-	localProjectiveTextures (),
 	               distance (0)
 { }
 
@@ -96,13 +94,7 @@ ShapeContainer::display ()
 	for (const auto & object : getLocalObjects ())
 		object -> enable ();
 
-	for (const auto & object : getLocalLights ())
-		object -> enable ();
-
 	getShape () -> display (this);
-
-	for (const auto & object : basic::make_reverse_range (getLocalLights ()))
-		object -> disable ();
 
 	for (const auto & object : basic::make_reverse_range (getLocalObjects ()))
 		object -> disable ();

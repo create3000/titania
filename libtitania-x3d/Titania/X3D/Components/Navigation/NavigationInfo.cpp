@@ -408,7 +408,7 @@ NavigationInfo::enable (const TraverseType type, X3DRenderObject* const renderOb
 	{
 		const auto & lightContainer = renderObject -> getBrowser () -> getHeadlight ();
 
-		renderObject -> getGlobalLights () .emplace_back (lightContainer);
+		renderObject -> getGlobalObjects () .emplace_back (lightContainer);
 	}
 }
 

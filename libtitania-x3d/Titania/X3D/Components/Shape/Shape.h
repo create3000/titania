@@ -87,7 +87,7 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-	
+
 	virtual
 	Box3d
 	getBBox () const override;
@@ -101,7 +101,7 @@ public:
 	virtual
 	bool
 	intersects (const Box3d & box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            const Matrix4d & modelViewMatrix) override;
 
 	virtual

@@ -141,14 +141,14 @@ public:
 	virtual
 	bool
 	intersects (Line3d line,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
 	            std::vector <IntersectionPtr> & intersections) const override;
 
 	virtual
 	bool
 	intersects (Box3d box,
-	            const ClipPlaneContainerArray & clipPlanes,
+	            const CollectableObjectArray & clipPlanes,
 	            Matrix4d modelViewMatrix) const override;
 
 	virtual

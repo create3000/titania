@@ -137,8 +137,8 @@ X3DLightNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const 
 				                                                               renderObject -> getLayer () -> getGroup (),
 				                                                               renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getGlobalLights () .emplace_back (lightContainer);
-				renderObject -> getLights ()       .emplace_back (lightContainer);
+				renderObject -> getGlobalObjects () .emplace_back (lightContainer);
+				renderObject -> getLights ()        .emplace_back (lightContainer);
 			}
 			else
 			{
@@ -147,8 +147,8 @@ X3DLightNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const 
 				                                                               group,
 				                                                               renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getLocalLights () .emplace_back (lightContainer);
-				renderObject -> getLights ()      .emplace_back (lightContainer);
+				renderObject -> getLocalObjects () .emplace_back (lightContainer);
+				renderObject -> getLights ()       .emplace_back (lightContainer);
 			}
 		}
 		else
@@ -159,15 +159,15 @@ X3DLightNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const 
 			{
 				lightContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getGlobalLights () .emplace_back (lightContainer);
-				renderObject -> getLights ()       .emplace_back (lightContainer);
+				renderObject -> getGlobalObjects () .emplace_back (lightContainer);
+				renderObject -> getLights ()        .emplace_back (lightContainer);
 			}
 			else
 			{
 				lightContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getLocalLights () .emplace_back (lightContainer);
-				renderObject -> getLights ()      .emplace_back (lightContainer);
+				renderObject -> getLocalObjects () .emplace_back (lightContainer);
+				renderObject -> getLights ()       .emplace_back (lightContainer);
 			}
 		}
 
@@ -180,7 +180,7 @@ X3DLightNode::pop (X3DRenderObject* const renderObject)
 {
 	if (on () and not global ())
 	{
-		renderObject -> getLocalLights () .pop_back ();
+		renderObject -> getLocalObjects () .pop_back ();
 		renderObject -> popShadow ();
 	}
 }
