@@ -98,6 +98,16 @@ public:
 	language () const
 	{ return *fields .language; }
 
+	///  @name Member access
+
+	void
+	setCustom (const bool value)
+	{ custom = value; }
+
+	bool
+	getCustom () const
+	{ return custom; }
+
 	///  @name Operations
 
 	virtual
@@ -127,7 +137,7 @@ public:
 	virtual
 	void
 	enableFloatAttrib (const std::string &, const GLuint, const size_t) = 0;
-	
+
 	virtual
 	void
 	disableFloatAttrib (const std::string &) = 0;
@@ -143,15 +153,15 @@ public:
 	virtual
 	void
 	enableMatrix3Attrib (const std::string &, const GLuint) = 0;
-	
+
 	virtual
 	void
 	disableMatrix3Attrib (const std::string &) = 0;
-	
+
 	virtual
 	void
 	enableMatrix4Attrib (const std::string &, const GLuint) = 0;
-	
+
 	virtual
 	void
 	disableMatrix4Attrib (const std::string &) = 0;
@@ -194,7 +204,7 @@ public:
 	virtual
 	void
 	enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) = 0;
-	
+
 	virtual
 	void
 	disableVertexAttrib () = 0;
@@ -230,7 +240,8 @@ private:
 	};
 
 	Fields fields;
-	
+
+	bool   custom;
 	size_t selected;
 
 };

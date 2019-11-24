@@ -129,7 +129,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		if (not shaderNode -> isValid ())
 			return;
 
-		if (shaderNode == browser -> getDefaultShader ())
+		if (not shaderNode -> getCustom ())
 			shaderNode = getShaderNode (browser);
 
 		// Setup shader.
@@ -197,7 +197,7 @@ X3DLineGeometryNode::drawParticles (ShapeContainer* const context, const std::ve
 		if (not shaderNode -> isValid ())
 			return;
 
-		if (shaderNode == browser -> getDefaultShader ())
+		if (not shaderNode -> getCustom ())
 			shaderNode = getShaderNode (browser);
 
 		// Setup shader.

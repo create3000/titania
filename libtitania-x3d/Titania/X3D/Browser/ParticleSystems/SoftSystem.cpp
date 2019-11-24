@@ -1126,7 +1126,7 @@ SoftSystem::display (ShapeContainer* const context)
 			if (not shaderNode -> isValid ())
 				return;
 
-			if (shaderNode == browser -> getDefaultShader ())
+			if (not shaderNode -> getCustom ())
 				shaderNode = this -> shaderNode;
 
 			// Setup shader.

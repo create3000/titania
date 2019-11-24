@@ -1680,7 +1680,7 @@ ParticleSystem::display (ShapeContainer* const context)
 		const auto browser    = context -> getBrowser ();
 		auto       shaderNode = context -> getShader ();
 
-		if (shaderNode == browser -> getDefaultShader ())
+		if (not shaderNode -> getCustom ())
 			shaderNode = this -> shaderNode;
 
 		context -> setGeometryType  (getGeometryType ());

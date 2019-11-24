@@ -67,6 +67,7 @@ X3DShaderNode::Fields::Fields () :
 X3DShaderNode::X3DShaderNode () :
 	X3DAppearanceChildNode (),
 	                fields (),
+	                custom (true),
 	              selected (0)
 {
 	addType (X3DConstants::X3DShaderNode);
@@ -85,11 +86,11 @@ void
 X3DShaderNode::deselect ()
 {
 	-- selected;
-	
+
 	if (not selected)
 	{
 		if (isSelected ())
-			isSelected () = false;	
+			isSelected () = false;
 	}
 }
 

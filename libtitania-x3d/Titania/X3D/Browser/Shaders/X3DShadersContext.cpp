@@ -155,6 +155,7 @@ X3DShadersContext::createShader (X3DExecutionContext* const executionContext,
 	vertexPart   -> url ()  = vertexUrl;
 	fragmentPart -> url ()  = fragmentUrl;
 
+	shaderNode -> setCustom (false);
 	shaderNode -> parts () .emplace_back (vertexPart);
 	shaderNode -> parts () .emplace_back (fragmentPart);
 
