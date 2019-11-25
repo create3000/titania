@@ -228,10 +228,6 @@ public:
 	getProjectiveTextures ()
 	{ return projectiveTextures; }
 
-	virtual
-	const std::shared_ptr <ProjectiveTextureContainer> &
-	getProjectiveTextureContainer () const;
-
 	GeneratedCubeMapTextureSet &
 	getGeneratedCubeMapTextures ()
 	{ return generatedCubeMapTextures; }
@@ -347,7 +343,6 @@ private:
 	ShadowStack                     shadow;
 	LayoutStack                     layouts;
 	ProjectiveTextureContainerArray projectiveTextures;
-	size_t                          projectiveTextureIndex;
 	GeneratedCubeMapTextureSet      generatedCubeMapTextures;
 	ShaderSet                       shaders;
 	CollisionArray                  collisions;

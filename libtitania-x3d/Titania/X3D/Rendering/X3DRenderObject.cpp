@@ -97,7 +97,6 @@ X3DRenderObject::X3DRenderObject () :
 	                  shadow ({ false }),
 	                 layouts (),
 	      projectiveTextures (),
-	  projectiveTextureIndex (0),
 	generatedCubeMapTextures (),
 	                 shaders (),
 	              collisions (),
@@ -282,10 +281,9 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 		}
 		case TraverseType::DISPLAY:
 		{
-			lightIndex             = 0;
-			projectiveTextureIndex = 0;
-			numOpaqueShapes        = 0;
-			numTransparentShapes   = 0;
+			lightIndex           = 0;
+			numOpaqueShapes      = 0;
+			numTransparentShapes = 0;
 
 			setGlobalFog (getFog ());
 
@@ -302,12 +300,6 @@ const std::shared_ptr <LightContainer> &
 X3DRenderObject::getLightContainer () const
 {
 	return lights [const_cast <size_t &> (lightIndex) ++];
-}
-
-const std::shared_ptr <ProjectiveTextureContainer> &
-X3DRenderObject::getProjectiveTextureContainer () const
-{
-	return projectiveTextures [const_cast <size_t &> (projectiveTextureIndex) ++];
 }
 
 bool
@@ -615,8 +607,8 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	{
 		// Render shadow maps.
 
-		for (const auto & object : getLights ())
-			object -> renderShadowMap (this);
+		for (const auto & light : getLights ())
+			light -> renderShadowMap (this);
 
 		// Render generated cube map textures.
 
@@ -631,8 +623,8 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
-	for (const auto & object : getProjectiveTextures ())
-		object -> setGlobalVariables (this);
+	for (const auto & projectiveTexture : getProjectiveTextures ())
+		projectiveTexture -> setGlobalVariables (this);
 
 	// Configure viewport.
 
@@ -714,8 +706,9 @@ X3DRenderObject::dispose ()
 	shaders                  .clear ();
 	collisions               .clear ();
 
-	lightIndex             = 0;
-	projectiveTextureIndex = 0;
+	localFogs .resize (1);
+
+	lightIndex = 0;
 
 	opaqueShapes      .clear ();
 	transparentShapes .clear ();

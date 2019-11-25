@@ -53,7 +53,6 @@
 
 #include "../Rendering/OpenGL.h"
 #include "../Rendering/X3DCollectableObject.h"
-#include "../Types/MatrixStack.h"
 
 #include <memory>
 
@@ -76,11 +75,11 @@ public:
 
 	///  @name Member access
 
-	Matrix4dStack &
+	Matrix4d &
 	getModelViewMatrix ()
 	{ return modelViewMatrix; }
 
-	const Matrix4dStack &
+	const Matrix4d &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -120,7 +119,7 @@ private:
 
 	X3DBrowser* const              browser;
 	X3DTextureProjectorNode* const node;
-	Matrix4dStack                  modelViewMatrix;
+	Matrix4d                       modelViewMatrix;
 	Matrix4d                       projectiveTextureMatrix;
 	Vector3f                       projectiveTextureLocation;
 

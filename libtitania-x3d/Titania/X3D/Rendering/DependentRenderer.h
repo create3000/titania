@@ -132,11 +132,6 @@ public:
 	{ return renderObject -> getLightContainer (); }
 
 	virtual
-	const std::shared_ptr <ProjectiveTextureContainer> &
-	getProjectiveTextureContainer () const final override
-	{ return renderObject -> getProjectiveTextureContainer (); }
-
-	virtual
 	void
 	render (const TraverseType type, const TraverseFunction & traverse) final override;
 

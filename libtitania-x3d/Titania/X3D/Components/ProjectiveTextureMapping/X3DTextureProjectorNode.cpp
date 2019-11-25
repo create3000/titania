@@ -159,45 +159,23 @@ X3DTextureProjectorNode::push (X3DRenderObject* const renderObject)
 
 	if (textureNode and on ())
 	{
-		if (renderObject -> isIndependent ())
+		if (global ())
 		{
-			if (global ())
-			{
-				const auto projectiveTextureContainer = std::make_shared <ProjectiveTextureContainer> (renderObject -> getBrowser (),
-				                                                                                       this,
-				                                                                                       renderObject -> getModelViewMatrix () .get ());
+			const auto projectiveTextureContainer = std::make_shared <ProjectiveTextureContainer> (renderObject -> getBrowser (),
+																																this,
+																																renderObject -> getModelViewMatrix () .get ());
 
-				renderObject -> getGlobalObjects ()      .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
-			}
-			else
-			{
-				const auto projectiveTextureContainer = std::make_shared <ProjectiveTextureContainer> (renderObject -> getBrowser (),
-				                                                                                       this,
-				                                                                                       renderObject -> getModelViewMatrix () .get ());
-
-				renderObject -> getLocalObjects ()       .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
-			}
+			renderObject -> getGlobalObjects ()      .emplace_back (projectiveTextureContainer);
+			renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
 		}
 		else
 		{
-			const auto & projectiveTextureContainer = renderObject -> getProjectiveTextureContainer ();
+			const auto projectiveTextureContainer = std::make_shared <ProjectiveTextureContainer> (renderObject -> getBrowser (),
+																																this,
+																																renderObject -> getModelViewMatrix () .get ());
 
-			if (global ())
-			{
-				projectiveTextureContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
-
-				renderObject -> getGlobalObjects ()      .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
-			}
-			else
-			{
-				projectiveTextureContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
-
-				renderObject -> getLocalObjects ()       .emplace_back (projectiveTextureContainer);
-				renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
-			}
+			renderObject -> getLocalObjects ()       .emplace_back (projectiveTextureContainer);
+			renderObject -> getProjectiveTextures () .emplace_back (projectiveTextureContainer);
 		}
 	}
 }
