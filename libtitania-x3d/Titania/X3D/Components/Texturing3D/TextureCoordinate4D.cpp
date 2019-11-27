@@ -109,6 +109,8 @@ TextureCoordinate4D::addTexCoord (const size_t channel, MultiTexCoordArray & tex
 {
 	if (index < point () .size ())
 		texCoords [channel] .emplace_back (point () [index]);
+	else if (point () .size ())
+		texCoords [channel] .emplace_back (point () .back ());
 	else
 		texCoords [channel] .emplace_back (0, 0, 0, 1);
 }

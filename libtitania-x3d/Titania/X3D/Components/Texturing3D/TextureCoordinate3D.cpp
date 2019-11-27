@@ -117,6 +117,11 @@ TextureCoordinate3D::addTexCoord (const size_t channel, MultiTexCoordArray & tex
 		const Vector3f & point3 = point () [index];
 		texCoords [channel] .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);
 	}
+	else if (point () .size ())
+	{
+		const Vector3f & point3 = point () .back ();
+		texCoords [channel] .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);
+	}
 	else
 		texCoords [channel] .emplace_back (0, 0, 0, 1);
 }
