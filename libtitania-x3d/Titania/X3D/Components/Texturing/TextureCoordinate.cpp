@@ -102,7 +102,7 @@ TextureCoordinate::get1Point (const size_t index) const
 	}
 	else if (point () .size ())
 	{
-	   const auto & p = point () .back ();
+	   const auto & p = point () [index % point () .size ()];
 		return Vector4d (p .x (), p .y (), 0, 1);
 	}
 
@@ -119,7 +119,7 @@ TextureCoordinate::addTexCoord (const size_t i, MultiTexCoordArray & texCoords, 
 	}
 	else if (point () .size ())
 	{
-		const Vector2f & point2 = point () .back ();
+		const Vector2f & point2 = point () [index % point () .size ()];
 		texCoords [i] .emplace_back (point2 .x (), point2 .y (), 0, 1);
 	}
 	else

@@ -99,7 +99,7 @@ TextureCoordinate4D::get1Point (const size_t index) const
 		return point () [index];
 
 	else if (point () .size ())
-		return point () .back ();
+		return point () [index % point () .size ()];
 
 	return Vector4f (0, 0, 0, 1);
 }
@@ -110,7 +110,7 @@ TextureCoordinate4D::addTexCoord (const size_t channel, MultiTexCoordArray & tex
 	if (index < point () .size ())
 		texCoords [channel] .emplace_back (point () [index]);
 	else if (point () .size ())
-		texCoords [channel] .emplace_back (point () .back ());
+		texCoords [channel] .emplace_back (point () [index % point () .size ()]);
 	else
 		texCoords [channel] .emplace_back (0, 0, 0, 1);
 }
