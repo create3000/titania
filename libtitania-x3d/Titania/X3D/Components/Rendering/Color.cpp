@@ -94,6 +94,11 @@ Color::get1Color (const size_t index) const
 		const auto & value = color () [index];
 		return Color4f (value .r (), value .g (), value .b (), 1);
 	}
+	else if (color () .size ())
+	{
+		const auto & value = color () .back ();
+		return Color4f (value .r (), value .g (), value .b (), 1);
+	}
 
 	return Color4f (1, 1, 1, 1);
 }

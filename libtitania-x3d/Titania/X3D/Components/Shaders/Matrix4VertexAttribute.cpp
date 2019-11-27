@@ -95,6 +95,16 @@ Matrix4VertexAttribute::addValue (std::vector <float> & array, const size_t inde
 				array .emplace_back (component);
 		}
 	}
+	else if (index < value () .size ())
+	{
+		const Matrix4f & mat4 = value () .back ();
+
+		for (const auto & vector : mat4)
+		{
+			for (const auto & component : vector)
+				array .emplace_back (component);
+		}
+	}
 	else
 	{
 		static constexpr Matrix4f mat4;

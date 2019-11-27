@@ -95,6 +95,16 @@ Matrix3VertexAttribute::addValue (std::vector <float> & array, const size_t inde
 				array .emplace_back (component);
 		}
 	}
+	else if (value () .size ())
+	{
+		const Matrix3f & mat3 = value () .back ();
+
+		for (const auto & vector : mat3)
+		{
+			for (const auto & component : vector)
+				array .emplace_back (component);
+		}
+	}
 	else
 	{
 		static constexpr Matrix3f mat3;

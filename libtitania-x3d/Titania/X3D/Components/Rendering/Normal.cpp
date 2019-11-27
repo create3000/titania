@@ -92,6 +92,9 @@ Normal::get1Vector (const size_t index) const
 	if (index < vector () .size ())
 		return vector () [index];
 
+	else if (vector () .size ())
+		return vector () .back ();
+
 	return Vector3f (0, 0, 0);
 }
 

@@ -100,6 +100,11 @@ TextureCoordinate::get1Point (const size_t index) const
 	   const auto & p = point () [index];
 		return Vector4d (p .x (), p .y (), 0, 1);
 	}
+	else if (point () .size ())
+	{
+	   const auto & p = point () .back ();
+		return Vector4d (p .x (), p .y (), 0, 1);
+	}
 
 	return Vector4f (0, 0, 0, 1);
 }
@@ -122,7 +127,7 @@ TextureCoordinate::getTexCoord (std::vector <Vector4f> & texCoords) const
 	texCoords .reserve (point () .size ());
 
 	for (const Vector2f & point2 : point ())
-		texCoords .emplace_back (point2 .x (), point2 .y (), 0, 1);	
+		texCoords .emplace_back (point2 .x (), point2 .y (), 0, 1);
 }
 
 void

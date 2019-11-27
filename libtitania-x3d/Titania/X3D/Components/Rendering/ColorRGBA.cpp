@@ -95,7 +95,7 @@ ColorRGBA::set_color ()
 {
 	setTransparent (std::any_of (color () .cbegin (),
 	                             color () .cend (),
-	                             [ ] (const Color4f & value) { return value .a () < 1; }));	                  
+	                             [ ] (const Color4f & value) { return value .a () < 1; }));
 }
 
 void
@@ -110,6 +110,9 @@ ColorRGBA::get1Color (const size_t index) const
 	if (index < color () .size ())
 		return color () [index];
 
+	else if (color () .size ())
+		return color () .back ();
+
 	return Color4f (1, 1, 1, 1);
 }
 
@@ -120,7 +123,7 @@ ColorRGBA::addColor (std::vector <Color4f> & colors, const size_t index) const
 
 	if (index < size)
 		colors .emplace_back (color () [index]);
-		
+
 	else if (size)
 		colors .emplace_back (color () .back ());
 
