@@ -93,7 +93,7 @@ Normal::get1Vector (const size_t index) const
 		return vector () [index];
 
 	else if (vector () .size ())
-		return vector () .back ();
+		return vector () [index % vector () .size ()];
 
 	return Vector3f (0, 0, 0);
 }
@@ -103,6 +103,9 @@ Normal::addVector (std::vector <Vector3f> & normals, const size_t index) const
 {
 	if (index < vector () .size ())
 		normals .emplace_back (vector () [index]);
+
+	else if (vector () .size ())
+		normals .emplace_back (vector () [index % vector () .size ()]);
 
 	else
 		normals .emplace_back (0, 0, 0);

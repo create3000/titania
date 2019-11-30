@@ -115,6 +115,9 @@ FogCoordinate::addDepth (std::vector <float> & depths, const size_t index) const
 
 	else if (depth () .size ())
 		depths .emplace_back (depth () .back ());
+
+	else
+		depths .emplace_back (0);
 }
 
 void
