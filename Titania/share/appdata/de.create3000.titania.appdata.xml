@@ -44,10 +44,10 @@
       1024 MB RAM und eine Monitorauflösung von mindestens 1280 × 1024 Pixeln.
     </p>
   </description>
-  <update_contact>holger.seelig@create3000.de</update_contact>
+  <update_contact>holger.seelig@gmail.com</update_contact>
   <developer_name>Holger Seelig</developer_name>
-  <url type="homepage">http://create3000.de/</url>
-  <url type="help">http://create3000.de/titania/documentation/</url>
+  <url type="homepage">https://github.com/create3000/titania</url>
+  <url type="help">https://github.com/create3000/titania</url>
   <url type="bugtracker">https://github.com/create3000/titania/issues</url>
   <launchable type="desktop-id">de.create3000.titania.desktop</launchable>
   <icon type="remote" height="64" width="64">http://create3000.de/wp-content/uploads/2019/04/icon64.png</icon>
