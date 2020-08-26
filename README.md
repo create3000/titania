@@ -17,32 +17,6 @@ Links
 
 * [Installation Instructions](https://github.com/create3000/titania/wiki)
 
-Acknowledgments
----------------
-
-Titania wouldn't be possible without parts of source code or inspiration from other software packages. We would like to
-say thank to everyone for their great work and help.
-
-* [H3D](http://www.h3dapi.org/)
-* [FreeWRL](http://freewrl.sourceforge.net/)
-* [GeoVRML](http://www.ai.sri.com/geovrml/)
-* [X3Dom](http://www.x3dom.org/)
-* [X3D-Edit](https://savage.nps.edu/X3D-Edit/)
-* [Coin 3D](https://bitbucket.org/Coin3D/coin/wiki/Home)
-* [SGI Open Inventor](http://oss.sgi.com/projects/inventor/)
-* [SGI Standard Template Library](https://www.sgi.com/tech/stl/)
-* [GraphicsGems](http://tog.acm.org/resources/GraphicsGems/)
-* [Perl Quaternion](http://search.cpan.org/~jchin/Math-Quaternion-0.02/lib/Math/Quaternion.pm)
-* [Natural Sort](https://github.com/jjk-jacky/natsort)
-* [Chromium Browser Project](https://www.chromium.org/)
-* [NVidia](http://www.nvidia.de/page/home.html)
-* [Mozilla Foundation](https://www.mozilla.org/de/)
-* [Deepak Bandyopadhyay, Lutz Kettner](http://www.cs.unc.edu/Research/compgeom/gzstream/) for gzstream
-* [kishan at hackorama dot com](http://www.hackorama.com) for AnyOptions
-* Etienne Lachance <etienne.lachance@polymtl.ca> for quaternion.cpp
-* Max Wagner <mwagner@digipen.edu> for his paper »Generating Vertex Normals«
-* Johnny Huynh for his paper »Separating Axis Theorem for Oriented Bounding Boxes«
-* Erik B. Dam <erikdam@diku.dk>, Martin Koch <myth@diku.dk> and Martin Lillholm <grumse@diku.dk> for their paper »Quaternions, Interpolation and Animation«
-* And very special thanks to [Silvio Borchard](http://www.union3d.net/), who built most examples worlds that comes with Titania, and [Norbert Meissner](http://www.norbertmeissner.info/) for his support in the past.
-
-And all others not listed here.
+License
+--------------------------------------
+Titania is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License version 3](LICENSE.md) only, as published by the Free Software Foundation.
