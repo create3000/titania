@@ -10,7 +10,7 @@ It can be used as a simple 3D viewer for .x3dv/.x3d files, as high quality 3D an
 
 Furthermore Titania can also be used as an easy to use X3D/VRML beautifier and converter.
 
-For more information, documentation and installation instructions please visit our wiki at [https://github.com/create3000/titania/wiki).
+For more information, documentation and installation instructions please visit our [wiki](https://github.com/create3000/titania/wiki).
 
 Links
 -----
