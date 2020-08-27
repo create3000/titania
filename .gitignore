@@ -13,6 +13,7 @@
 .bzr
 .libs
 .deps
+.DS_Store
 
 Makefile
 Makefile.include
