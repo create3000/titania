@@ -14,6 +14,7 @@
 .libs
 .deps
 .DS_Store
+._*
 
 Makefile
 Makefile.include
@@ -58,4 +59,3 @@ titania_*.snap
 
 .vs
 .vscode/ipch
-
