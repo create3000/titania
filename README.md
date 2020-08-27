@@ -16,6 +16,9 @@ Links
 -----
 
 * [Installation Instructions](https://github.com/create3000/titania/wiki)
+* [Whats's new](https://github.com/create3000/titania/wiki/What's-new)
+* [Supported Nodes](https://github.com/create3000/titania/wiki/Supported-Nodes)
+* [Documentation](https://github.com/create3000/titania/wiki/Documentation)
 
 License
 --------------------------------------
