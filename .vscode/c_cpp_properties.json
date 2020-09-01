@@ -30,6 +30,7 @@
                 "/usr/include/gtkmm-3.0",
                 "/usr/include/gtksourceview-3.0",
                 "/usr/include/gtksourceviewmm-3.0",
+                "/usr/include/harfbuzz",
                 "/usr/include/mozjs-68",
                 "/usr/include/pango-1.0",
                 "/usr/include/pangomm-1.4",
