@@ -9,6 +9,7 @@
         "**/*.lo": true,
         "**/*.o": true,
         "**/*~": true,
+        "**/._.DS_Store": true,
         "**/autom4te.cache": true,
         "aclocal.m4": true,
         "compile": true,
