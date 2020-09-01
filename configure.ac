@@ -135,7 +135,7 @@ gstreamermm-1.0
 fontconfig
 glu
 glew
-mozjs-60
+mozjs-68
 libxml++-2.6
 json-c
 libgtop-2.0

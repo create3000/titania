@@ -18,7 +18,7 @@ icon: titania.png
 
 grade: stable
 confinement: strict
-base: core18
+base: core20
 
 architectures:
   - build-on: amd64
@@ -88,9 +88,8 @@ parts:
     after:
       - desktop-gtk3
       - desktop-titania
-    configflags:
-      - --enable-debug
     build-packages:
+      - build-essential
       - intltool
       - libbullet-dev
       - libcgal-dev
@@ -108,7 +107,7 @@ parts:
       - libgtksourceviewmm-3.0-dev
       - libgtop2-dev
       - libjson-c-dev
-      - libmozjs-60-dev
+      - libmozjs-68-dev
       - libmpfr-dev
       - libsqlite3-dev
       - libtool
@@ -133,10 +132,9 @@ parts:
       - gstreamer1.0-x
       - ibus-gtk3
       - libappindicator3-1
-      - libbullet2.87
+      - libbullet2.88
       - libc-bin
       - libc6
-      - libcgal13
       - libcurl4
       - libdcmtk14
       - libfontconfig1
@@ -153,8 +151,8 @@ parts:
       - libgtksourceviewmm-3.0-0v5
       - libgtop-2.0-11
       - libibus-1.0-5
-      - libjson-c3
-      - libmozjs-60-0
+      - libjson-c4
+      - libmozjs-68-0
       - libmpfr6
       - libsqlite3-0
       - libstdc++6 # extra
