@@ -83,7 +83,7 @@ parts:
       chmod +x bin/titania-launch
   titania:
     plugin: autotools
-    source: https://github.com/create3000/titania
+    source: https://github.com/create3000/titania.git
     source-type: git
     after:
       - desktop-gtk3
