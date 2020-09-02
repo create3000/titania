@@ -4971,10 +4971,10 @@ LayerSet {
                         }
                       }
                       DEF TouchSensor7 TouchSensor {
-                        description "http://media.create3000.de/components/Rendering/LineSet/LineSet.x3d"
+                        description "https://create3000.github.io/media/examples/Rendering/LineSet/LineSet.x3d"
                       }
                       DEF URL7 SFString {
-                        keyValue "http://media.create3000.de/components/Rendering/LineSet/LineSet.x3d"
+                        keyValue "https://create3000.github.io/media/examples/Rendering/LineSet/LineSet.x3d"
                       }
                     ]
                   }

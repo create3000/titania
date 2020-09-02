@@ -180,7 +180,7 @@ Parser::importProto (const std::string & name)
 
 	if (not extensions .emplace (name) .second)
 		return;
-	
+
 	const auto externprotos = scene -> getExternProtoDeclarations () .size ();
 	const auto rootNodes    = scene -> getRootNodes () .size ();
 	const auto filename     = get_shader ((USE_PROTOTYPES ? "/glTF/Prototypes/" : "/glTF/") + name + ".x3d");
@@ -197,9 +197,7 @@ Parser::importProto (const std::string & name)
 	for (const auto & externproto : importedExternprotos)
 	{
 		externproto -> url () = {
-			"https://code.create3000.de/titania/" + getBrowser () -> getVersion () + "/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
-			"https://cdn.rawgit.com/create3000/titania/" + getBrowser () -> getVersion () + "/libtitania-x3d/share/titania/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
-			"https://rawgit.com/create3000/titania/" + getBrowser () -> getVersion () + "/libtitania-x3d/share/titania/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
+			"https://create3000.github.io/titania/code/" + getBrowser () -> getVersion () + "/shaders/glTF/Prototypes/" + name + ".x3d#" + name,
 		};
 	}
 
@@ -399,7 +397,7 @@ Parser::nodesObject (json_object* const jobj)
 	// 1st Pass.
 	{
 		const int32_t size = json_object_array_length (jobj);
-	
+
 		for (int32_t i = 0; i < size; ++ i)
 		{
 			auto node = node1Value (json_object_array_get_idx (jobj, i));
@@ -460,17 +458,17 @@ Parser::node1Value (json_object* const jobj)
 		Vector3d   translation;
 		Rotation4d rotation;
 		Vector3d   scale;
-	
+
 		if (vector3dValue (json_object_object_get (jobj, "scale"), scale))
 		{
 			matrix .scale (scale);
 		}
-	
+
 		if (rotation4dValue (json_object_object_get (jobj, "rotation"), rotation))
 		{
 			matrix .rotate (rotation);
 		}
-	
+
 		if (vector3dValue (json_object_object_get (jobj, "translation"), translation))
 		{
 			matrix .translate (translation);
@@ -679,7 +677,7 @@ Parser::primitiveValue (json_object* const jobj)
 	const auto primitive = std::make_shared <Primitive> ();
 
 	primitive -> attributes = std::move (attributes);
-	
+
 	// indices
 
 	int32_t indices = -1;
@@ -695,7 +693,7 @@ Parser::primitiveValue (json_object* const jobj)
 
 		primitive -> indices = asseccor;
 	}
-	
+
 	// material
 
 	int32_t material = -1;
@@ -1916,9 +1914,9 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 		try
 		{
 			const auto joints = getScalarArray <int32_t> (attribute);
-	
+
 			std::map <int32_t, std::vector <int32_t>> map;
-	
+
 			for (size_t i = 0, size = indices .size () - indices .size () % 3; i < size; i += 3)
 			{
 				const auto joint = joints .at (indices [i]);
@@ -1931,10 +1929,10 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 			for (const auto & pair : map)
 			{
 				const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
-		
+
 				for (const auto index : pair .second)
 					jointGeometryNode -> index () .emplace_back (index);
-	
+
 				jointGeometryNode -> solid ()           = geometryNode -> solid ();
 				jointGeometryNode -> coord ()           = geometryNode -> coord ();
 				jointGeometryNode -> normal ()          = geometryNode -> normal ();
@@ -1942,7 +1940,7 @@ Parser::createIndexedTriangleSet (const PrimitivePtr & primitive, const X3D::X3D
 				jointGeometryNode -> attrib ()          = geometryNode -> attrib ();
 				jointGeometryNode -> color ()           = geometryNode -> color ();
 				jointGeometryNode -> normalPerVertex () = geometryNode -> normalPerVertex ();
-	
+
 				primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
 			}
 		}
@@ -2004,7 +2002,7 @@ Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3
 		for (const auto & pair : map)
 		{
 			const auto jointGeometryNode = scene -> createNode <X3D::IndexedTriangleSet> ();
-	
+
 			for (const auto index : pair .second)
 				jointGeometryNode -> index () .emplace_back (index);
 
@@ -2017,7 +2015,7 @@ Parser::createTriangleSet (const PrimitivePtr & primitive, const X3D::X3DPtr <X3
 			primitive -> jointGeometryNodes .emplace (pair .first, jointGeometryNode);
 		}
 	}
-		
+
 	return geometryNode;
 }
 
@@ -2265,16 +2263,16 @@ Parser::createColor (const AccessorPtr & accessor) const
 
 			const auto transparent = std::any_of (array .cbegin (),
 			                                      array .cend (),
-			                                      [ ] (const Vector4d & value) { return value .w () < 1; });	  
+			                                      [ ] (const Vector4d & value) { return value .w () < 1; });
 
 			if (transparent)
 			{
 				const auto colorNode = scene -> createNode <X3D::ColorRGBA> ();
 				auto &     color     = colorNode -> color ();
-	
+
 				for (const auto & value : array)
 					color .emplace_back (value .x (), value .y (), value .z (), value .w ());
-	
+
 				return colorNode;
 			}
 			else
@@ -2284,7 +2282,7 @@ Parser::createColor (const AccessorPtr & accessor) const
 
 				for (const auto & value : array)
 					color .emplace_back (value .x (), value .y (), value .z ());
-	
+
 				return colorNode;
 			}
 		}
@@ -2516,7 +2514,7 @@ Parser::animationTargetValue (json_object* const jobj)
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return nullptr;
- 
+
 	// Create Animation Target
 
 	const auto animationTarget = std::make_shared <AnimationTarget> ();
@@ -2704,13 +2702,13 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 
 			for (const auto t : times)
 				interpolatorNode -> key () .emplace_back (t / cycleInterval);
-		
+
 			for (const auto keyValue : keyValues)
 				interpolatorNode -> keyValue () .emplace_back (keyValue);
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_translation");
-		
+
 			return interpolatorNode;
 		}
 		case InterpolationType::STEP:
@@ -2746,10 +2744,10 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 				if (keyValues .size () > 1)
 					interpolatorNode -> keyValue () .emplace_back (keyValues .back ());
 			}
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_translation");
-		
+
 			return interpolatorNode;
 		}
 		case InterpolationType::CUBICSPLINE:
@@ -2757,16 +2755,16 @@ Parser::createTranslationInterpolator (const std::vector <double> & times,
 			const auto interpolatorNode = scene -> createNode <X3D::SplinePositionInterpolator> ();
 			const auto keyValues        = getVectorArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
-		
+
 			for (const auto t : times)
 				interpolatorNode -> key () .emplace_back (t / cycleInterval);
 
 			for (const auto keyValue : keyValues)
 				interpolatorNode -> keyValue () .emplace_back (keyValue);
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_translation");
-		
+
 			return interpolatorNode;
 		}
 	}
@@ -2796,7 +2794,7 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_rotation");
-		
+
 			return interpolatorNode;
 		}
 		case InterpolationType::STEP:
@@ -2832,10 +2830,10 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 				if (keyValues .size () > 1)
 					interpolatorNode -> keyValue () .emplace_back (getRotation (keyValues .back ()));
 			}
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_rotation");
-		
+
 			return interpolatorNode;
 		}
 		case InterpolationType::CUBICSPLINE:
@@ -2843,16 +2841,16 @@ Parser::createRotationInterpolator (const std::vector <double> & times,
 			const auto interpolatorNode = scene -> createNode <X3D::SquadOrientationInterpolator> ();
 			const auto keyValues        = getVectorArray <Vector4d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
-		
+
 			for (const auto t : times)
 				interpolatorNode -> key () .emplace_back (t / cycleInterval);
 
 			for (const auto keyValue : keyValues)
 				interpolatorNode -> keyValue () .emplace_back (getRotation (keyValue));
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_rotation");
-		
+
 			return interpolatorNode;
 		}
 	}
@@ -2876,13 +2874,13 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 
 			for (const auto t : times)
 				interpolatorNode -> key () .emplace_back (t / cycleInterval);
-		
+
 			for (const auto keyValue : keyValues)
 				interpolatorNode -> keyValue () .emplace_back (keyValue);
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_scale");
-		
+
 			return interpolatorNode;
 		}
 		case InterpolationType::STEP:
@@ -2918,10 +2916,10 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 				if (keyValues .size () > 1)
 					interpolatorNode -> keyValue () .emplace_back (keyValues .back ());
 			}
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_scale");
-		
+
 			return interpolatorNode;
 		}
 		case InterpolationType::CUBICSPLINE:
@@ -2929,16 +2927,16 @@ Parser::createScaleInterpolator (const std::vector <double> & times,
 			const auto interpolatorNode = scene -> createNode <X3D::SplinePositionInterpolator> ();
 			const auto keyValues        = getVectorArray <Vector3d> (animationSampler -> output);
 			const auto cycleInterval    = times .back ();
-		
+
 			for (const auto t : times)
 				interpolatorNode -> key () .emplace_back (t / cycleInterval);
 
 			for (const auto keyValue : keyValues)
 				interpolatorNode -> keyValue () .emplace_back (keyValue);
-			
+
 			scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 			scene -> addRoute (interpolatorNode, "value_changed", transformNode, "set_scale");
-		
+
 			return interpolatorNode;
 		}
 	}
@@ -2954,7 +2952,7 @@ Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
 	try
 	{
 		auto coordinateNode = X3D::X3DPtr <X3D::Coordinate> (geometryNode -> getField <X3D::SFNode> ("coord"));
-	
+
 		if (not coordinateNode)
 		{
 			coordinateNode = scene -> createNode <X3D::Coordinate> ();
@@ -2963,9 +2961,9 @@ Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
 			{
 				if (not targets .front () -> position)
 					return nullptr;
-	
+
 				const auto array = getVectorArray <Vector3d> (targets .front () -> position);
-	
+
 				for (const auto & value : array)
 					coordinateNode -> point () .emplace_back (value);
 			}
@@ -2990,7 +2988,7 @@ Parser::createCoordinateInterpolator (const AttributesPtrArray & targets,
 			for (const auto & value : array)
 				interpolatorNode -> keyValue () .emplace_back (value);
 		}
-	
+
 		scene -> addRoute (timeSensorNode, "fraction_changed", interpolatorNode, "set_fraction");
 		scene -> addRoute (interpolatorNode, "value_changed", coordinateNode, "set_point");
 
@@ -3020,9 +3018,9 @@ Parser::createNormalInterpolator (const AttributesPtrArray & targets,
 			{
 				if (not targets .front () -> normal)
 					return nullptr;
-	
+
 				const auto array = getVectorArray <Vector3d> (targets .front () -> normal);
-	
+
 				for (const auto & value : array)
 					normalNode -> vector () .emplace_back (value);
 			}
@@ -3094,7 +3092,7 @@ Parser::skinsObject (json_object* const jobj)
 	for (const auto & node : nodes)
 	{
 		try
-		{	
+		{
 			if (node -> skin == -1)
 				continue;
 
@@ -3217,7 +3215,7 @@ Parser::jointsValue (json_object* const jobj)
 		try
 		{
 			int32_t node = -1;
-	
+
 			integerValue (json_object_array_get_idx (jobj, i), node);
 
 			joints .emplace_back (nodes .at (node));

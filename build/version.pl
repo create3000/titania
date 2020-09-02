@@ -4,7 +4,10 @@
 use strict;
 use warnings;
 use v5.10.0;
+use utf8;
 use open qw/:std :utf8/;
+
+use File::Basename qw(dirname);
 
 my $CWD = `pwd`;
 chomp $CWD;
@@ -17,6 +20,24 @@ $VERSION =~ /version\s*=\s*"(.*?)"/;
 $VERSION = $1;
 
 my $ALPHA = $VERSION =~ /a$/;
+
+sub share
+{
+	my $version = shift;
+	my $share   = "$CWD/libtitania-x3d/share/titania/";
+	my $docs    = "$CWD/docs/code/$version/";
+
+	my @folders = (
+		"shaders/glTF",
+	);
+
+	foreach (@folders)
+	{
+		system "rm", "-r", "$docs/$_";
+		system "mkdir", "-p", "$docs/$_";
+		system "cp", "-r", "$share/$_", "$docs/" . dirname ($_);
+	}
+}
 
 sub appdata
 {
@@ -47,6 +68,7 @@ sub commit
 {
 	my $version = shift;
 
+	system "git", "add", "-A";
 	system "git", "commit", "-am", "Published version $VERSION";
 	system "git", "push";
 	system "git", "push", "origin";
@@ -63,40 +85,6 @@ sub publish
 	system "git", "push", "origin", "--tags";
 }
 
-sub rsync
-{
-	my $release = shift;
-	my $local   = "/home/holger/Projekte/Titania/libtitania-x3d/share/titania";
-	my $ftp     = "/html/create3000.de/code/htdocs/titania/$release/";
-	my $host    = "alfa3008.alfahosting-server.de";
-	my $user    = netuser ($host);
-
-	my @folders = (
-		"/shaders/glTF",
-	);
-
-	say "Uploading $release";
-
-	foreach (@folders)
-	{
-		#system "mkdir", "-p", "$ftp/$_";
-		#system "rsync", "-r", "-x", "-c", "-v", "--progress", "--delete", "$local/$_", "$ftp/$_";
-
-		system "lftp", "-e", "mkdir -p $ftp/$_; bye", "ftp://$user\@$host";
-		system "lftp", "-e", "mirror --reverse --delete --use-cache --verbose $local/$_ $ftp/$_; bye", "ftp://$user\@$host";
-	}
-}
-
-sub netuser
-{
-	my $host  = shift;
-	my $netrc = `cat ~/.netrc`;
-
-	$netrc =~ /machine\s+$host\s+login\s+(\w+)/;
-
-	return $1;
-}
-
 my $result = system "zenity", "--question", "--text=Do you really want to publish X_ITE X3D v$VERSION now?", "--ok-label=Yes", "--cancel-label=No";
 
 if ($result == 0)
@@ -105,17 +93,18 @@ if ($result == 0)
 
 	# GitHub
 
+	share ("alpha");
 	appdata ();
 	commit ();
-
-	publish ("$VERSION");
-	rsync ($VERSION);
-	rsync ("alpha");
+exit;
 
 	unless ($ALPHA)
 	{
+		share ($VERSION);
+		share ("latest");
+		commit ();
+		publish ($VERSION);
 		publish ("latest");
-		rsync ("latest");
 	}
 }
 else
