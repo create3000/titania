@@ -57,6 +57,11 @@
 #include "Fields/SFImage.h"
 #include "Fields/SFNode.h"
 
+extern "C"
+{
+	#include "C-bind/bind.h"
+}
+
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
@@ -140,13 +145,13 @@ private:
 	///  @name Construction
 
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
-	static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
+	static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::MutableHandleIdVector properties, bool enumerableOnly);
 	static bool resolve   (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
 
 	///  @name Member access
 
-	static bool set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result);
-	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+	static bool set1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp);
+	static bool get1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp);
 
 	static bool setLength (JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
@@ -418,7 +423,7 @@ X3DArrayFieldTemplate <ValueType, InternalType>::construct (JSContext* cx, unsig
 
 template <class ValueType, class InternalType>
 bool
-X3DArrayFieldTemplate <ValueType, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly)
+X3DArrayFieldTemplate <ValueType, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::MutableHandleIdVector properties, bool enumerableOnly)
 {
 	try
 	{
@@ -446,9 +451,9 @@ X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::Han
 		JS_DefineProperty (cx,
 		                   obj,
 		                   basic::to_string (index, std::locale::classic ()) .c_str (),
-		                   JS_PROPERTYOP_GETTER (&X3DArrayFieldTemplate::get1Value),
-		                   JS_PROPERTYOP_SETTER (&X3DArrayFieldTemplate::set1Value),
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING);
+		                   JSNative (partial_bind ((void*) &X3DArrayFieldTemplate::get1Value, 4, 1, index)),
+		                   JSNative (partial_bind ((void*) &X3DArrayFieldTemplate::set1Value, 4, 1, index)),
+		                   JSPROP_RESOLVING);
 
 		*resolvedp = true;
 		return true;
@@ -460,56 +465,55 @@ X3DArrayFieldTemplate <ValueType, InternalType>::resolve (JSContext* cx, JS::Han
 
 template <class ValueType, class InternalType>
 bool
-X3DArrayFieldTemplate <ValueType, InternalType>::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
+X3DArrayFieldTemplate <ValueType, InternalType>::set1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
-		const auto index = JSID_TO_INT (id);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
 
 		if (index >= 0)
-			array -> set1Value (index, getArgument <ValueType> (cx, vp, 0));
+			array -> set1Value (index, getArgument <ValueType> (cx, args, 0));
 
-		result .succeed ();
 		return true;
 	}
 	catch (const std::bad_alloc & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, JSID_TO_INT (id));
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, index);
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, index, error .what ());
 	}
 }
 
 template <class ValueType, class InternalType>
 bool
-X3DArrayFieldTemplate <ValueType, InternalType>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+X3DArrayFieldTemplate <ValueType, InternalType>::get1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto array = getThis <X3DArrayFieldTemplate> (cx, obj);
-		const auto index = JSID_TO_INT (id);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <X3DArrayFieldTemplate> (cx, args);
 
 		if (index < 0)
 		{
-			vp .setUndefined ();
+			args .rval () .setUndefined ();
 		}
 		else
 		{
-			vp .set (getReference <typename InternalType::value_type> (cx, array, index));
+			args .rval () .set (getReference <typename InternalType::value_type> (cx, array, index));
 		}
 
 		return true;
 	}
 	catch (const std::bad_alloc & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, JSID_TO_INT (id));
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, index);
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, index, error .what ());
 	}
 }
 

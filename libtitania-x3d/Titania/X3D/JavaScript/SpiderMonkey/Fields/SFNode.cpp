@@ -57,6 +57,11 @@
 #include "../../../Components/Scripting/Script.h"
 #include "../../../InputOutput/FileLoader.h"
 
+extern "C"
+{
+	#include "../C-bind/bind.h"
+}
+
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
@@ -128,25 +133,25 @@ SFNode::create (JSContext* const cx, const X3D::SFNode & field)
 				JS_DefineProperty (cx,
 				                   object,
 				                   name .c_str (),
-				                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-				                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
-				                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0));
+				                   JSNative (partial_bind ((void*) &SFNode::getProperty, 4, 1, fieldDefinition)),
+				                   JSNative (partial_bind ((void*) &SFNode::setProperty, 4, 1, fieldDefinition)),
+				                   JSPROP_PERMANENT | (fieldDefinition -> isInitializable () ? JSPROP_ENUMERATE : 0));
 
 				if (fieldDefinition -> getAccessType () == X3D::inputOutput)
 				{
 					JS_DefineProperty (cx,
 					                   object,
 					                   ("set_" + name) .c_str (),
-					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
-					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+					                   JSNative (partial_bind ((void*) &SFNode::getProperty, 4, 1, fieldDefinition)),
+					                   JSNative (partial_bind ((void*) &SFNode::setProperty, 4, 1, fieldDefinition)),
+					                   JSPROP_PERMANENT);
 
 					JS_DefineProperty (cx,
 					                   object,
 					                   (name + "_changed") .c_str (),
-					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
-					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+					                   JSNative (partial_bind ((void*) &SFNode::getProperty, 4, 1, fieldDefinition)),
+					                   JSNative (partial_bind ((void*) &SFNode::setProperty, 4, 1, fieldDefinition)),
+					                   JSPROP_PERMANENT);
 				}
 			}
 
@@ -154,30 +159,31 @@ SFNode::create (JSContext* const cx, const X3D::SFNode & field)
 			{
 				for (const auto & [alias, name] : node -> getAliases (node -> getExecutionContext () -> getSpecificationVersion ()))
 				{
-					const auto fieldDefinition = node -> getField (alias);
+					const auto fieldDefinition = node -> getField (name);
+
 
 					JS_DefineProperty (cx,
 					                   object,
 					                   alias .c_str (),
-					                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-					                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
-					                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+					                   JSNative (partial_bind ((void*) &SFNode::getProperty, 4, 1, fieldDefinition)),
+					                   JSNative (partial_bind ((void*) &SFNode::setProperty, 4, 1, fieldDefinition)),
+					                   JSPROP_PERMANENT);
 
 					if (fieldDefinition -> getAccessType () == X3D::inputOutput)
 					{
 						JS_DefineProperty (cx,
 						                   object,
 						                   ("set_" + alias) .c_str (),
-						                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
-						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+						                   JSNative (partial_bind ((void*) &SFNode::getProperty, 4, 1, fieldDefinition)),
+						                   JSNative (partial_bind ((void*) &SFNode::setProperty, 4, 1, fieldDefinition)),
+						                   JSPROP_PERMANENT);
 
 						JS_DefineProperty (cx,
 						                   object,
 						                   (alias + "_changed") .c_str (),
-						                   JS_PROPERTYOP_GETTER (&SFNode::getProperty),
-						                   JS_PROPERTYOP_SETTER (&SFNode::setProperty),
-						                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT);
+						                   JSNative (partial_bind ((void*) &SFNode::getProperty, 4, 1, fieldDefinition)),
+						                   JSNative (partial_bind ((void*) &SFNode::setProperty, 4, 1, fieldDefinition)),
+						                   JSPROP_PERMANENT);
 					}
 				}
 			}
@@ -230,65 +236,59 @@ SFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 }
 
 bool
-SFNode::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
+SFNode::setProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
 		try
 		{
-			const auto self  = getThis <SFNode> (cx, obj);
-			const auto name  = to_string (cx, id);
-			const auto field = self -> getValue () -> getField (name);
+			const auto args  = JS::CallArgsFromVp (argc, vp);
 
 			if (field -> getAccessType () not_eq X3D::outputOnly)
-				setValue (cx, field, vp);
+				setValue (cx, field, args [0]);
 
-			result .succeed ();
 			return true;
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> & error)
 		{
-			result .succeed ();
 			return true;
 		}
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .%s: %s.", getClass () -> name, to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .%s: %s.", getClass () -> name, field -> getName () .c_str (), error .what ());
 	}
 }
 
 bool
-SFNode::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+SFNode::getProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
+		const auto args = JS::CallArgsFromVp (argc, vp);
+
 		try
 		{
-			const auto self  = getThis <SFNode> (cx, obj);
-			const auto name  = to_string (cx, id);
-			const auto field = self -> getValue () -> getField (name);
-
 			if (field -> getAccessType () == X3D::inputOnly)
 			{
-				vp .setUndefined ();
+				args .rval () .setUndefined ();
 			}
 			else
 			{
-				vp .set (getValue (cx, field));
+				args .rval () .set (getValue (cx, field));
 			}
 
 			return true;
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> & error)
 		{
-			vp .setUndefined ();
+			args .rval () .setUndefined ();
 			return true;
 		}
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s .%s: %s.", getClass () -> name, to_string (cx, id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .%s: %s.", getClass () -> name, field -> getName () .c_str (), error .what ());
 	}
 }
 
@@ -344,7 +344,7 @@ SFNode::getNodeType (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto self = getThis <SFNode> (cx, args);
 		const auto node = self -> getValue ();
 
-		JS::AutoValueVector array (cx);
+		JS::RootedValueVector array (cx);
 
 		for (const auto & type : node -> getType ())
 			array .append (JS::Int32Value (type));

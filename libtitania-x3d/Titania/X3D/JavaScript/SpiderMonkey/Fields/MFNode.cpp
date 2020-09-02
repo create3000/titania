@@ -110,18 +110,18 @@ MFNode::construct (JSContext* cx, unsigned argc, JS::Value* vp)
 
 template <>
 bool
-MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
+MFNode::set1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto array = getThis <MFNode> (cx, obj);
-		const auto index = JSID_TO_INT (id);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <MFNode> (cx, args);
 
 		if (index >= 0)
 		{
 			try
 			{
-				array -> set1Value (index, getArgument <SFNode> (cx, vp, 0));
+				array -> set1Value (index, getArgument <SFNode> (cx, args, 0));
 			}
 			catch (const std::domain_error & error)
 			{
@@ -129,16 +129,15 @@ MFNode::set1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::Han
 			}
 		}
 
-		result .succeed ();
 		return true;
 	}
 	catch (const std::bad_alloc & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, JSID_TO_INT (id));
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: out of memory.", getClass () -> name, index);
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, index, error .what ());
 	}
 }
 

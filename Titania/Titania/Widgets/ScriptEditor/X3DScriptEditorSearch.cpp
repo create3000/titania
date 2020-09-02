@@ -508,9 +508,10 @@ X3DScriptEditorSearch::on_search_backward (GAsyncResult* const result)
 	Gsv::Buffer::iterator matchBegin;
 	Gsv::Buffer::iterator matchEnd;
 
-	GError* error = nullptr;
+	GError*  error            = nullptr;
+	gboolean hasWrappedAround = false;
 
-	if (not gtk_source_search_context_backward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
+	if (not gtk_source_search_context_backward_finish2 (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &hasWrappedAround, &error))
 		return;
 
 	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
@@ -553,9 +554,10 @@ X3DScriptEditorSearch::on_search_forward (GAsyncResult* const result)
 	Gsv::Buffer::iterator matchBegin;
 	Gsv::Buffer::iterator matchEnd;
 
-	GError* error = nullptr;
+	GError*  error            = nullptr;
+	gboolean hasWrappedAround = false;
 
-	if (not gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
+	if (not gtk_source_search_context_forward_finish2 (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &hasWrappedAround, &error))
 		return;
 
 	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::phi <double>);
@@ -593,7 +595,7 @@ X3DScriptEditorSearch::on_replace_forward_clicked ()
 
 			GError* error = nullptr;
 
-			gtk_source_search_context_replace (searchContext, selectionBegin .gobj (), selectionEnd .gobj (), string .c_str (), string .size (), &error);
+			gtk_source_search_context_replace2 (searchContext, selectionBegin .gobj (), selectionEnd .gobj (), string .c_str (), string .size (), &error);
 		}
 	}
 

@@ -475,11 +475,11 @@ X3DBrowser::createX3DFromURL (JSContext* cx, unsigned argc, JS::Value* vp)
 			if (not nodeObj)
 				nodeObj = context -> getGlobal ();
 
-			JS::RootedValue     rval (cx);
-			JS::AutoValueVector argv (cx);
+			JS::RootedValue        rval (cx);
+			JS::AutoValueArray <2> argv (cx);
 
-			argv .append (X3DScene::create (cx, scene));
-			argv .append (JS::DoubleValue (script -> getCurrentTime ()));
+			argv [0] .set (X3DScene::create (cx, scene));
+			argv [1] .set (JS::DoubleValue (script -> getCurrentTime ()));
 
 			JS::RootedObject rooted (cx, nodeObj);
 

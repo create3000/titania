@@ -101,7 +101,7 @@ private:
 
 	///  @name Properties
 
-	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+	static bool get1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Destruction

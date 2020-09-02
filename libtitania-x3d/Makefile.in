@@ -608,6 +608,8 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/InputOutput/X3DGenerator.lo \
 	$(current_dir)/Titania/X3D/InputOutput/XMLGenerator.lo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey.lo \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind.lo \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind_utilities.lo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.lo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.lo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Context.lo \
@@ -1357,6 +1359,8 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind.Plo \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind_utilities.Plo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo \
@@ -2277,6 +2281,8 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/InputOutput/X3DGenerator.cpp \
 	$(current_dir)/Titania/X3D/InputOutput/XMLGenerator.cpp \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey.cpp \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind.c \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind_utilities.c \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.cpp \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \
@@ -4235,6 +4241,16 @@ $(current_dir)/Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp):
 $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey.lo:  \
 	$(current_dir)/Titania/X3D/JavaScript/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind
+	@: > $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(am__dirstamp)
+$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)
+	@: > $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind.lo: $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind_utilities.lo: $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp):
 	@$(MKDIR_P) $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey
 	@: > $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp)
@@ -5276,6 +5292,8 @@ mostlyclean-compile:
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/*.lo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/*.lo
+	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/*.$(OBJEXT)
+	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/*.lo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/*.$(OBJEXT)
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/*.lo
 	-rm -f $(current_dir)/Titania/X3D/Parser/*.$(OBJEXT)
@@ -5861,6 +5879,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind_utilities.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo@am__quote@ # am--include-marker
@@ -6207,6 +6227,7 @@ clean-libtool:
 	-rm -rf $(current_dir)/Titania/X3D/InputOutput/.libs $(current_dir)/Titania/X3D/InputOutput/_libs
 	-rm -rf $(current_dir)/Titania/X3D/JavaScript/.libs $(current_dir)/Titania/X3D/JavaScript/_libs
 	-rm -rf $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/.libs $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/_libs
+	-rm -rf $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/.libs $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/_libs
 	-rm -rf $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/.libs $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Parser/.libs $(current_dir)/Titania/X3D/Parser/_libs
 	-rm -rf $(current_dir)/Titania/X3D/Parser/Autodesk/.libs $(current_dir)/Titania/X3D/Parser/Autodesk/_libs
@@ -6527,6 +6548,8 @@ distclean-generic:
 	-test -z "$(current_dir)/Titania/X3D/JavaScript/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp)
 	-test -z "$(current_dir)/Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)" || rm -f $(current_dir)/Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
@@ -7118,6 +7141,8 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo
+	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind.Plo
+	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind_utilities.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo
@@ -7869,6 +7894,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DRoute.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/X3DScene.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR)/value.Plo
+	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind.Plo
+	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/$(DEPDIR)/bind_utilities.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/ArrayFields.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/MFNode.Plo
 	-rm -f $(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFColor.Plo

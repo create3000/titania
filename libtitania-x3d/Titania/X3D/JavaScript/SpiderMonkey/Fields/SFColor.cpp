@@ -189,11 +189,11 @@ SFColor::getHSV (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto self = getThis <SFColor> (cx, args);
 		const auto hsv  = self -> getHSV ();
 
-		JS::AutoValueVector array (cx);
+		JS::AutoValueArray <3> array (cx);
 
-		array .append (JS::DoubleValue (hsv [0]));
-		array .append (JS::DoubleValue (hsv [1]));
-		array .append (JS::DoubleValue (hsv [2]));
+		array [0] .set (JS::DoubleValue (hsv [0]));
+		array [1] .set (JS::DoubleValue (hsv [1]));
+		array [2] .set (JS::DoubleValue (hsv [2]));
 
 		const auto result = JS_NewArrayObject (cx, array);
 

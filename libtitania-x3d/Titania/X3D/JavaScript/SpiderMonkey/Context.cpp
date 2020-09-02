@@ -78,6 +78,15 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Thread/SceneFuture.h"
 
+#include <js/Warnings.h>
+#include <js/CompilationAndEvaluation.h>
+#include <js/SourceText.h>
+
+extern "C"
+{
+	#include "C-bind/bind.h"
+}
+
 #include <cassert>
 
 namespace titania {
@@ -93,7 +102,7 @@ const JSClassOps Context::globalOps = {
 	nullptr, // delProperty
 	nullptr, // enumerate
 	nullptr, // newEnumerate
-	nullptr, // resolve
+	resolveStandardClasses, // resolve
 	nullptr, // mayResolve
 	nullptr, // finalize
 	nullptr, // call
@@ -144,6 +153,16 @@ Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
 		future -> setExecutionContext (executionContext);
 
 	X3DJavaScriptContext::setExecutionContext (executionContext);
+}
+
+bool
+Context::resolveStandardClasses (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp)
+{
+	if (JS_ResolveStandardClass (cx, obj, id, resolvedp))
+		return true;
+
+	*resolvedp = false;
+	return true;
 }
 
 void
@@ -278,9 +297,9 @@ Context::defineProperty (JS::HandleObject obj,
 			JS_DefineProperty (cx,
 			                   obj,
 			                   name .c_str (),
-			                   JS_PROPERTYOP_GETTER (&Context::getBuildInProperty),
-			                   JS_PROPERTYOP_SETTER (&Context::setProperty),
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs);
+			                   JSNative (partial_bind ((void*) &Context::getBuildInProperty, 4, 1, field)),
+							   JSNative (partial_bind ((void*) &Context::setProperty,        4, 1, field)),
+			                   JSPROP_PERMANENT | attrs);
 			break;
 		}
 		default:
@@ -288,76 +307,75 @@ Context::defineProperty (JS::HandleObject obj,
 			JS_DefineProperty (cx,
 			                   obj,
 			                   name .c_str (),
-			                   JS_PROPERTYOP_GETTER (&Context::getProperty),
-			                   JS_PROPERTYOP_SETTER (&Context::setProperty),
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | attrs);
+			                   JSNative (partial_bind ((void*) &Context::getProperty, 4, 1, field)),
+			                   JSNative (partial_bind ((void*) &Context::setProperty, 4, 1, field)),
+			                   JSPROP_PERMANENT | attrs);
 			break;
 		}
 	}
 }
 
 bool
-Context::setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult & result)
+Context::setProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & script = getContext (cx) -> getScriptNode ();
-		const auto   field  = script -> getField (to_string (cx, id));
+		const auto args = JS::CallArgsFromVp (argc, vp);
 
-		setValue (cx, field, vp);
-		result .succeed ();
+		setValue (cx, field, args [0]);
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "Couldn't assing value to user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't assing value to user-defined field '%s': %s.", field -> getName () .c_str (), error .what ());
 	}
 }
 
 bool
-Context::getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+Context::getBuildInProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & script = getContext (cx) -> getScriptNode ();
-		const auto   field  = script -> getField (to_string (cx, id));
+		const auto args = JS::CallArgsFromVp (argc, vp);
 
-		vp .set (getValue (cx, field));
+		args .rval () .set (getValue (cx, field));
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", field -> getName () .c_str (), error .what ());
 	}
 }
 
 bool
-Context::getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+Context::getProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		vp .set (*getContext (cx) -> fields .at (to_string (cx, id)));
+		const auto args = JS::CallArgsFromVp (argc, vp);
+
+		args .rval () .set (*getContext (cx) -> fields .at (field -> getName ()));
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", to_string (cx, id) .c_str (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", field -> getName (), error .what ());
 	}
 }
 
 bool
 Context::evaluate (const std::string & string, const std::string & filename)
 {
+	JS::SourceText <mozilla::Utf8Unit> srcBuf;
 	JS::CompileOptions options (cx);
-	JS::RootedScript   script (cx);
+	JS::RootedValue rval (cx);
 
-	options .setUTF8 (true);
+	options .setFile (filename .c_str ());
 
-	if (JS_CompileScript (cx, string .c_str (), string .length (), options, &script))
-	{
-		if (JS_ExecuteScript (cx, script))
-			return true;
-	}
+	srcBuf .init (cx, string .c_str (), string .size (), JS::SourceOwnership::Borrowed);
+
+	if (JS::Evaluate (cx, options, srcBuf, &rval))
+		return true;
 
 	reportException ();
 	return false;
@@ -391,7 +409,7 @@ Context::getFunction (const std::string & name, JS::MutableHandleValue value) co
 		{
 			const auto obj = value .toObjectOrNull ();
 
-			if (obj and JS_ObjectIsFunction (cx, obj))
+			if (obj and JS_ObjectIsFunction (obj))
 				return true;
 		}
 	}
@@ -482,21 +500,19 @@ Context::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
 
-	const JSAutoRequest ar (cx);
-
-	JS::CompartmentOptions options;
+	JS::RealmOptions options;
 
 	global = std::make_unique <JS::PersistentRooted <JSObject*>> (cx, JS_NewGlobalObject (cx, &globalClass, nullptr, JS::FireOnNewGlobalHook, options));
 
 	if (not *global)
 		throw std::runtime_error ("Couldn't create JavaScript global object.");
 
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 
 	setObject (global .get () -> get (), this);
 
-	if (not JS_InitStandardClasses (cx, *global))
-		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
+//	if (not JS_InitStandardClasses (cx, *global))
+//		throw std::runtime_error ("Couldn't create JavaScript standard classes.");
 
 	JS::SetWarningReporter (cx, &Context::reportError);
 
@@ -529,8 +545,7 @@ Context::initialize ()
 void
 Context::set_live ()
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 
 	if ((getExecutionContext () -> isLive () or getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance })) and isLive ())
 	{
@@ -586,14 +601,13 @@ Context::set_live ()
 void
 Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue)
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 	const JS::AutoSaveExceptionState ases (cx);
 
-	JS::RootedValue     rval (cx);
-	JS::AutoValueVector args (cx);
+	JS::RootedValue rval (cx);
+	JS::AutoValueArray <1> args (cx);
 
-	args .append (JS::DoubleValue (getCurrentTime ()));
+	args [0] .set (JS::DoubleValue (getCurrentTime ()));
 
 	JS_CallFunctionValue (cx, *global, *functionValue, args, &rval);
 	reportException ();
@@ -602,17 +616,16 @@ Context::prepareEvents (const std::shared_ptr <JS::PersistentRooted <JS::Value>>
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr <JS::PersistentRooted <JS::Value>> & inputFunction)
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 	const JS::AutoSaveExceptionState ases (cx);
 
 	field -> setTainted (true);
 
-	JS::RootedValue     rval (cx);
-	JS::AutoValueVector args (cx);
+	JS::RootedValue rval (cx);
+	JS::AutoValueArray <2> args (cx);
 
-	args .append (getValue (cx, field));
-	args .append (JS::DoubleValue (getCurrentTime ()));
+	args [0] .set (getValue (cx, field));
+	args [1] .set (JS::DoubleValue (getCurrentTime ()));
 
 	JS_CallFunctionValue (cx, *global, *inputFunction, args, &rval);
 	reportException ();
@@ -623,8 +636,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const std::shared_ptr 
 void
 Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value>> & functionValue)
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 	const JS::AutoSaveExceptionState ases (cx);
 
 	call (*functionValue);
@@ -633,8 +645,7 @@ Context::eventsProcessed (const std::shared_ptr <JS::PersistentRooted <JS::Value
 void
 Context::shutdown ()
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 	const JS::AutoSaveExceptionState ases (cx);
 
 	if (shutdownFunction)
@@ -646,8 +657,7 @@ Context::shutdown ()
 void
 Context::collectGarbage ()
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 
 	//__LOG__ << objects .size () << std::endl;
 
@@ -699,8 +709,7 @@ Context::reportError (JSContext* cx, JSErrorReport* const report)
 void
 Context::dispose ()
 {
-	const JSAutoRequest ar (cx);
-	const JSAutoCompartment ac (cx, *global);
+	const JSAutoRealm ar (cx, *global);
 
 	futures          .clear ();
 	shutdownFunction .reset ();

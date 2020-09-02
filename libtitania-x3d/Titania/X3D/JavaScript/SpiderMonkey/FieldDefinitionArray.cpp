@@ -57,6 +57,11 @@
 
 #include "X3DFieldDefinition.h"
 
+extern "C"
+{
+	#include "C-bind/bind.h"
+}
+
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
@@ -140,9 +145,9 @@ FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArr
 			JS_DefineProperty (cx,
 			                   object,
 			                   basic::to_string (i, std::locale::classic ()) .c_str (),
-			                   JS_PROPERTYOP_GETTER (&FieldDefinitionArray::get1Value),
+			                   JSNative (partial_bind ((void*) &FieldDefinitionArray::get1Value, 4, 1, i)),
 			                   nullptr,
-			                   JSPROP_PROPOP_ACCESSORS | JSPROP_PERMANENT | JSPROP_ENUMERATE);
+			                   JSPROP_PERMANENT | JSPROP_ENUMERATE);
 		}
 
 		return JS::ObjectValue (*obj);
@@ -150,19 +155,19 @@ FieldDefinitionArray::create (JSContext* const cx, const X3D::FieldDefinitionArr
 }
 
 bool
-FieldDefinitionArray::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+FieldDefinitionArray::get1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto array = getThis <FieldDefinitionArray> (cx, obj);
-		const auto index = JSID_TO_INT (id);
+		const auto args  = JS::CallArgsFromVp (argc, vp);
+		const auto array = getThis <FieldDefinitionArray> (cx, args);
 
-		vp .set (X3DFieldDefinition::create (cx, (*array) [index]));
+		args .rval () .set (X3DFieldDefinition::create (cx, (*array) [index]));
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, index, error .what ());
 	}
 }
 

@@ -90,16 +90,13 @@ to_string (JSContext* const cx, JSString* const jsstring)
 	if (not jsstring)
 		return "";
 
-	JS::RootedString str (cx, jsstring);
+	JS::PersistentRooted <JSString*> rstring (cx, jsstring);
 
-	JSAutoByteString bytes;
+	auto utf8string = JS_EncodeStringToUTF8 (cx, rstring);
 
-	const auto utf8_string = bytes .encodeUtf8 (cx, str);
+	std::string string (utf8string .get ());
 
-	if (not utf8_string)
-		return "";
-
-	return std::string (utf8_string);
+	return string;
 }
 
 std::string

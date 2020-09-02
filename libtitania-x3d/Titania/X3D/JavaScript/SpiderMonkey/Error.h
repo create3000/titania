@@ -72,21 +72,20 @@ ThrowException (JSContext* const cx, const char* format, Args && ... args)
 
 	if (JS_GetClassObject (cx, ErrorKind, &constructor))
 	{
-		JS::AutoValueVector args (cx);
+		JS::AutoValueArray <1> args (cx);
 
-		if (args .append (StringValue (cx, message)))
+		args [0] .set (StringValue (cx, message));
+
+		const auto error = JS_New (cx, constructor, args);
+
+		if (error)
 		{
-			const auto error = JS_New (cx, constructor, args);
-
-			if (error)
-			{
-				JS_SetPendingException (cx, JS::RootedValue (cx, JS::ObjectOrNullValue (error)));
-				return false;
-			}
+			JS_SetPendingException (cx, JS::RootedValue (cx, JS::ObjectOrNullValue (error)));
+			return false;
 		}
 	}
 
-	JS_ReportWarningUTF8 (cx, "Failed to throw exception '%s'", message .c_str ());
+	JS_ReportErrorUTF8 (cx, "Failed to throw exception '%s'", message .c_str ());
 	return false;
 }
 

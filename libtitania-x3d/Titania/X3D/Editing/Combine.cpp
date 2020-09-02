@@ -86,7 +86,7 @@ Combine::getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> & shapes)
 		geometryNodes .emplace_back (geometryNode);
 	}
 
-	return std::move (geometryNodes);
+	return geometryNodes;
 }
 
 ///  Creates a mesh from @a geometryNode and @a coordNode and applys matrix to points.

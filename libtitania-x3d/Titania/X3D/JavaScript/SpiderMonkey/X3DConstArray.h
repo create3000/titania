@@ -58,6 +58,11 @@
 
 #include <jsapi.h>
 
+extern "C"
+{
+	#include "C-bind/bind.h"
+}
+
 namespace titania {
 namespace X3D {
 namespace spidermonkey {
@@ -98,12 +103,12 @@ private:
 	///  @name Construction
 
 	static bool construct (JSContext* cx, unsigned argc, JS::Value* vp);
-	//static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
+	static bool enumerate (JSContext* cx, JS::HandleObject obj, JS::MutableHandleIdVector properties, bool enumerableOnly);
 	static bool resolve   (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
 
 	///  @name Properties
 
-	static bool get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+	static bool get1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp);
 	static bool getLength (JSContext* cx, unsigned argc, JS::Value* vp);
 
 	///  @name Destruction
@@ -124,7 +129,7 @@ const JSClassOps X3DConstArray <ValueType, InternalType>::class_ops = {
 	nullptr, // addProperty
 	nullptr, // delProperty
 	nullptr, // enumerate
-	nullptr, // newEnumerate
+	enumerate, // newEnumerate
 	resolve, // resolve
 	nullptr, // mayResolve
 	finalize, // finalize
@@ -195,24 +200,24 @@ X3DConstArray <ValueType, InternalType>::construct (JSContext* cx, unsigned argc
 	return ThrowException <JSProto_Error> (cx, "new %s: %s.", getClass () -> name, "object is not constructible");
 }
 
-//template <class ValueType, class InternalType>
-//bool
-//X3DConstArray <ValueType, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::AutoIdVector & properties, bool enumerableOnly);
-//{
-//	try
-//	{
-//		const auto & array = *getThis <X3DConstArray> (cx, obj);
-//
-//		for (size_t i = 0, size = array -> size (); i < size; ++ i)
-//			properties .append (INT_TO_JSID (i));
-//
-//		return true;
-//	}
-//	catch (const std::exception & error)
-//	{
-//		return ThrowException <JSProto_Error> (cx, "%s .enumerate: %s.", getClass () -> name, error .what ());
-//	}
-//}
+template <class ValueType, class InternalType>
+bool
+X3DConstArray <ValueType, InternalType>::enumerate (JSContext* cx, JS::HandleObject obj, JS::MutableHandleIdVector properties, bool enumerableOnly)
+{
+	try
+	{
+		const auto & array = *getThis <X3DConstArray> (cx, obj);
+
+		for (size_t i = 0, size = array -> size (); i < size; ++ i)
+			properties .append (INT_TO_JSID (i));
+
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException <JSProto_Error> (cx, "%s .enumerate: %s.", getClass () -> name, error .what ());
+	}
+}
 
 template <class ValueType, class InternalType>
 bool
@@ -225,9 +230,9 @@ X3DConstArray <ValueType, InternalType>::resolve (JSContext* cx, JS::HandleObjec
 		JS_DefineProperty (cx,
 		                   obj,
 		                   basic::to_string (index, std::locale::classic ()) .c_str (),
-		                   JS_PROPERTYOP_GETTER (&X3DConstArray::get1Value),
+			               JSNative (partial_bind ((void*) &X3DConstArray::get1Value, 4, 1, index)),
 		                   nullptr,
-		                   JSPROP_PROPOP_ACCESSORS | JSPROP_RESOLVING);
+		                   JSPROP_RESOLVING);
 
 		*resolvedp = true;
 		return true;
@@ -239,27 +244,27 @@ X3DConstArray <ValueType, InternalType>::resolve (JSContext* cx, JS::HandleObjec
 
 template <class ValueType, class InternalType>
 bool
-X3DConstArray <ValueType, InternalType>::get1Value (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp)
+X3DConstArray <ValueType, InternalType>::get1Value (const size_t index, JSContext* cx, unsigned argc, JS::Value* vp)
 {
 	try
 	{
-		const auto & array = *getThis <X3DConstArray> (cx, obj);
-		const auto   index = JSID_TO_INT (id);
+		const auto   args  = JS::CallArgsFromVp (argc, vp);
+		const auto & array = *getThis <X3DConstArray> (cx, args);
 
-		if (index >= 0 and index < (int32_t) array -> size ())
+		if (index >= 0 and index < array -> size ())
 		{
-			vp .set (ValueType::create (cx, (*array) [index]));
+			args .rval () .set (ValueType::create (cx, (*array) [index]));
 		}
 		else
 		{
-			vp .setUndefined ();
+			args .rval () .setUndefined ();
 		}
 
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "%s [%d]: %s.", getClass () -> name, JSID_TO_INT (id), error .what ());
+		return ThrowException <JSProto_Error> (cx, "%s .prototype .length: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -274,10 +279,6 @@ X3DConstArray <ValueType, InternalType>::getLength (JSContext* cx, unsigned argc
 
 		args .rval () .setNumber (uint32_t (array -> size ()));
 		return true;
-	}
-	catch (const std::bad_alloc & error)
-	{
-		return ThrowException <JSProto_Error> (cx, "%s .prototype .length: out of memory.", getClass () -> name);
 	}
 	catch (const std::exception & error)
 	{

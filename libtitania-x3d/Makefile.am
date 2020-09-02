@@ -479,6 +479,8 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/InputOutput/X3DGenerator.cpp \
 	$(current_dir)/Titania/X3D/InputOutput/XMLGenerator.cpp \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey.cpp \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind.c \
+	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/C-bind/bind_utilities.c \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/ComponentInfo.cpp \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/ComponentInfoArray.cpp \
 	$(current_dir)/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp \

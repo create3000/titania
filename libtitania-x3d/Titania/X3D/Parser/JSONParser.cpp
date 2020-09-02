@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -417,7 +417,7 @@ JSONParser::childrenArray (json_object* const jobj, MFNode & field)
 		{
 			field .emplace_back (std::move (node));
 		}
-	}	
+	}
 }
 
 bool
@@ -469,9 +469,9 @@ JSONParser::externProtoDeclareObject (json_object* const jobj)
 		if (mfstringValue (json_object_object_get (jobj, "@url"), &URLList))
 		{
 			const auto externproto = getExecutionContext () -> createExternProtoDeclaration (nameCharacters, { }, URLList);
-	
+
 			fieldArray (json_object_object_get (jobj, "field"), externproto);
-	
+
 			getExecutionContext () -> updateExternProtoDeclaration (nameCharacters, externproto);
 		}
 	}
@@ -532,15 +532,15 @@ JSONParser::routeObject (json_object* const jobj)
 	if (stringValue (json_object_object_get (jobj, "@fromNode"), fromNodeCharacters))
 	{
 		std::string fromFieldCharacters;
-	
+
 		if (stringValue (json_object_object_get (jobj, "@fromField"), fromFieldCharacters))
 		{
 			std::string toNodeCharacters;
-		
+
 			if (stringValue (json_object_object_get (jobj, "@toNode"), toNodeCharacters))
 			{
 				std::string toFieldCharacters;
-			
+
 				if (stringValue (json_object_object_get (jobj, "@toField"), toFieldCharacters))
 				{
 					try
@@ -572,11 +572,11 @@ JSONParser::importObject (json_object* const jobj)
 	if (stringValue (json_object_object_get (jobj, "@inlineDEF"), inlineDEFCharacters))
 	{
 		std::string importedDEFCharacters;
-	
+
 		if (stringValue (json_object_object_get (jobj, "@importedDEF"), importedDEFCharacters))
 		{
 			std::string ASCharacters;
-		
+
 			stringValue (json_object_object_get (jobj, "@AS"), ASCharacters);
 
 			try
@@ -604,7 +604,7 @@ JSONParser::exportObject (json_object* const jobj)
 	if (stringValue (json_object_object_get (jobj, "@localDEF"), localDEFCharacters))
 	{
 		std::string ASCharacters;
-	
+
 		stringValue (json_object_object_get (jobj, "@AS"), ASCharacters);
 
 		if (ASCharacters .empty ())
@@ -631,11 +631,11 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 	try
 	{
 		std::string nodeNameCharacters;
-	
+
 		if (nodeNameString (json_object_object_get (jobj, "@USE"), nodeNameCharacters))
 		{
 			FilterBadUTF8Characters (nodeNameCharacters);
-	
+
 			node = getExecutionContext () -> getNamedNode (nodeNameCharacters);
 			return;
 		}
@@ -655,7 +655,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 		if (nodeType == ProtoInstance)
 		{
 			std::string nameCharacters;
-		
+
 			if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
 			{
 				node = getExecutionContext () -> createProto (nameCharacters) .getValue ();
@@ -762,7 +762,7 @@ JSONParser::fieldValueArray (json_object* const jobj, const SFNode & node)
 	for (int32_t i = 0; i < size; ++ i)
 	{
 		fieldValueObject (json_object_array_get_idx (jobj, i), node);
-	}	
+	}
 }
 
 void
@@ -789,13 +789,13 @@ JSONParser::fieldValueObject (json_object* const jobj, const SFNode & node)
 					case X3DConstants::SFNode:
 					{
 						MFNode value;
-	
+
 						if (fieldValueValue (json_object_object_get (jobj, "-children"), &value))
 						{
 							if (not value .empty ())
 								*static_cast <SFNode*> (field) = value [0];
 						}
-	
+
 						break;
 					}
 					case X3DConstants::MFNode:
@@ -828,7 +828,7 @@ JSONParser::fieldArray (json_object* const jobj, X3DBaseNode* const baseNode)
 	for (int32_t i = 0; i < size; ++ i)
 	{
 		fieldObject (json_object_array_get_idx (jobj, i), baseNode);
-	}	
+	}
 }
 
 void
@@ -847,17 +847,17 @@ JSONParser::fieldObject (json_object* const jobj, X3DBaseNode* const baseNode)
 		try
 		{
 			const auto & accessType = Parser::getAccessTypes () .at (accessTypeCharacters);
-	
+
 			std::string typeCharacters;
-		
+
 			if (stringValue (json_object_object_get (jobj, "@type"), typeCharacters))
 			{
 				try
 				{
 					const X3DFieldDefinition* supportedField = getBrowser () -> getSupportedField (typeCharacters);
-		
+
 					std::string nameCharacters;
-				
+
 					if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
 					{
 						const auto field = supportedField -> create ();
@@ -976,7 +976,7 @@ JSONParser::connectObject (json_object* const jobj, const SFNode & node)
 	if (stringValue (json_object_object_get (jobj, "@nodeField"), nodeFieldCharacters))
 	{
 		std::string protoFieldCharacters;
-	
+
 		if (stringValue (json_object_object_get (jobj, "@protoField"), protoFieldCharacters))
 		{
 			try
@@ -1315,7 +1315,7 @@ JSONParser::sfcolorValue (json_object* const jobj, SFColor* const field)
 		if (size == 3)
 		{
 			Color3f value;
-	
+
 			if (color3fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1392,7 +1392,7 @@ JSONParser::sfcolorRGBAValue (json_object* const jobj, SFColorRGBA* const field)
 		if (size == 4)
 		{
 			Color4f value;
-	
+
 			if (color4fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1602,7 +1602,7 @@ JSONParser::mfimageValue (json_object* const jobj, MFImage* const field)
 			field -> emplace_back ();
 
 			int32_t width, height, components;
-	
+
 			if (integerValue (json_object_array_get_idx (jobj, i + 0), width))
 			{
 				if (integerValue (json_object_array_get_idx (jobj, i + 1), height))
@@ -1633,7 +1633,7 @@ JSONParser::mfimageValue (json_object* const jobj, MFImage* const field)
 }
 
 void
-JSONParser::imageValue (json_object* const jobj, const int32_t index, const int32_t width, const int32_t height, MFInt32 & array)
+JSONParser::imageValue (json_object* const jobj, const size_t index, const size_t width, const size_t height, MFInt32 & array)
 {
 	int32_t value;
 
@@ -1702,7 +1702,7 @@ JSONParser::sfmatrix3dValue (json_object* const jobj, SFMatrix3d* const field)
 		if (size == 9)
 		{
 			Matrix3d value;
-	
+
 			if (matrix3dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1797,7 +1797,7 @@ JSONParser::sfmatrix3fValue (json_object* const jobj, SFMatrix3f* const field)
 		if (size == 9)
 		{
 			Matrix3f value;
-	
+
 			if (matrix3fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1892,7 +1892,7 @@ JSONParser::sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field)
 		if (size == 16)
 		{
 			Matrix4d value;
-	
+
 			if (matrix4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -2008,7 +2008,7 @@ JSONParser::sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field)
 		if (size == 16)
 		{
 			Matrix4f value;
-	
+
 			if (matrix4fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -2153,7 +2153,7 @@ JSONParser::sfrotationValue (json_object* const jobj, SFRotation* const field)
 		if (size == 4)
 		{
 			Rotation4d value;
-	
+
 			if (rotation4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -2315,7 +2315,7 @@ JSONParser::sfvec2dValue (json_object* const jobj, SFVec2d* const field)
 		if (size == 2)
 		{
 			Vector2d value;
-	
+
 			if (vector2dValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
@@ -2391,7 +2391,7 @@ JSONParser::sfvec2fValue (json_object* const jobj, SFVec2f* const field)
 		if (size == 2)
 		{
 			Vector2f value;
-	
+
 			if (vector2fValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
@@ -2467,7 +2467,7 @@ JSONParser::sfvec3dValue (json_object* const jobj, SFVec3d* const field)
 		if (size == 3)
 		{
 			Vector3d value;
-	
+
 			if (vector3dValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
@@ -2547,7 +2547,7 @@ JSONParser::sfvec3fValue (json_object* const jobj, SFVec3f* const field)
 		if (size == 3)
 		{
 			Vector3f value;
-	
+
 			if (vector3fValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
@@ -2627,7 +2627,7 @@ JSONParser::sfvec4dValue (json_object* const jobj, SFVec4d* const field)
 		if (size == 4)
 		{
 			Vector4d value;
-	
+
 			if (vector4dValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);
@@ -2711,7 +2711,7 @@ JSONParser::sfvec4fValue (json_object* const jobj, SFVec4f* const field)
 		if (size == 4)
 		{
 			Vector4f value;
-	
+
 			if (vector4fValue (jobj, 0, field -> getUnit (), value))
 			{
 				field -> setValue (value);

@@ -192,12 +192,12 @@ SFColorRGBA::getHSVA (JSContext* cx, unsigned argc, JS::Value* vp)
 		const auto self = getThis <SFColorRGBA> (cx, args);
 		const auto hsva = self -> getHSVA ();
 
-		JS::AutoValueVector array (cx);
+		JS::AutoValueArray <4> array (cx);
 
-		array .append (JS::DoubleValue (hsva [0]));
-		array .append (JS::DoubleValue (hsva [1]));
-		array .append (JS::DoubleValue (hsva [2]));
-		array .append (JS::DoubleValue (hsva [3]));
+		array [0] .set (JS::DoubleValue (hsva [0]));
+		array [1] .set (JS::DoubleValue (hsva [1]));
+		array [2] .set (JS::DoubleValue (hsva [2]));
+		array [3] .set (JS::DoubleValue (hsva [3]));
 
 		const auto result = JS_NewArrayObject (cx, array);
 

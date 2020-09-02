@@ -154,6 +154,10 @@ private:
 
 	///  @name Operations
 
+	static
+	bool
+	resolveStandardClasses (JSContext* cx, JS::HandleObject obj, JS::HandleId id, bool* resolvedp);
+
 	void
 	addClasses ();
 
@@ -168,15 +172,15 @@ private:
 
 	static
 	bool
-	setProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::HandleValue vp, JS::ObjectOpResult& result);
+	setProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp);
 
 	static
 	bool
-	getBuildInProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+	getBuildInProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp);
 
 	static
 	bool
-	getProperty (JSContext* cx, JS::HandleObject obj, JS::HandleId id, JS::MutableHandleValue vp);
+	getProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsigned argc, JS::Value* vp);
 
 	bool
 	evaluate (const std::string & string, const std::string & filename);

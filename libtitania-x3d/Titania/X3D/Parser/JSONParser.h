@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -96,7 +96,7 @@ private:
 
 	bool
 	encodingString (json_object* const jobj, std::string & encodingCharacters);
-	
+
 	bool
 	profileString (json_object* const jobj, std::string & profileCharacters);
 
@@ -115,7 +115,7 @@ private:
 	bool
 	componentNameString (json_object* const jobj, std::string & componentNameCharacters)
 	{ return stringValue (jobj, componentNameCharacters); }
-	
+
 	bool
 	componentSupportLevelNumber (json_object* const jobj, int32_t & componentSupportLevel)
 	{ return integerValue (jobj, componentSupportLevel); }
@@ -193,10 +193,10 @@ private:
 
 	void
 	fieldValueObject (json_object* const jobj, const SFNode & node);
-	
+
 	void
 	fieldArray (json_object* const jobj, X3DBaseNode* const node);
-	
+
 	void
 	fieldObject (json_object* const jobj, X3DBaseNode* const node);
 
@@ -237,28 +237,28 @@ private:
 	stringValue (json_object* const jobj, std::string & value);
 
 	///  @name Field value handling
-	
+
 	bool
 	sfboolValue (json_object* const jobj, SFBool* const field);
-	
+
 	bool
 	mfboolValue (json_object* const jobj, MFBool* const field);
 
 	bool
 	sfcolorValue (json_object* const jobj, SFColor* const field);
-	
+
 	bool
 	mfcolorValue (json_object* const jobj, MFColor* const field);
-	
+
 	bool
 	color3fValue (json_object* const jobj, const int32_t i, Color3f & value);
 
 	bool
 	sfcolorRGBAValue (json_object* const jobj, SFColorRGBA* const field);
-	
+
 	bool
 	mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field);
-	
+
 	bool
 	color4fValue (json_object* const jobj, const int32_t i, Color4f & value);
 
@@ -276,12 +276,12 @@ private:
 
 	bool
 	sfimageValue (json_object* const jobj, SFImage* const field);
-	
+
 	bool
 	mfimageValue (json_object* const jobj, MFImage* const field);
-	
+
 	void
-	imageValue (json_object* const jobj, const int32_t index, const int32_t width, const int32_t height, MFInt32 & array);
+	imageValue (json_object* const jobj, const size_t index, const size_t width, const size_t height, MFInt32 & array);
 
 	bool
 	sfint32Value (json_object* const jobj, SFInt32* const field);
@@ -294,7 +294,7 @@ private:
 
 	bool
 	mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field);
-	
+
 	bool
 	matrix3dValue (json_object* const jobj, const int32_t i, Matrix3d & value);
 
@@ -303,25 +303,25 @@ private:
 
 	bool
 	mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field);
-	
+
 	bool
 	matrix3fValue (json_object* const jobj, const int32_t i, Matrix3f & value);
 
 	bool
 	sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field);
-	
+
 	bool
 	mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field);
-	
+
 	bool
 	matrix4dValue (json_object* const jobj, const int32_t i, Matrix4d & value);
 
 	bool
 	sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field);
-	
+
 	bool
 	mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field);
-	
+
 	bool
 	matrix4fValue (json_object* const jobj, const int32_t i, Matrix4f & value);
 
@@ -342,7 +342,7 @@ private:
 
 	bool
 	sfstringValue (json_object* const jobj, SFString* const field);
-	
+
 	bool
 	mfstringValue (json_object* const jobj, MFString* const field);
 
@@ -417,7 +417,7 @@ private:
 	using ElementsFunction = std::function <void (JSONParser*, json_object* const)>;
 
 	///  @name Static members
-	
+
 	static const std::map <std::string, ElementsFunction> objectsIndex;
 	static const std::string                              ProtoInstance;
 
