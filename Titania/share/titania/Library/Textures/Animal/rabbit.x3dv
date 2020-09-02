@@ -13,10 +13,7 @@ DEF rabbit Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Animal/rabbit.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Animal/rabbit.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Animal/rabbit.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Animal/rabbit.jpg"
+          "https://create3000.github.io/Library/Textures/Animal/rabbit.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

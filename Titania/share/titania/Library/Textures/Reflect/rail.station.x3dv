@@ -13,10 +13,7 @@ DEF railstation Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/rail.station.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/rail.station.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/rail.station.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/rail.station.png"
+          "https://create3000.github.io/Library/Textures/Reflect/rail.station.png"
         ]
         repeatS FALSE
         repeatT FALSE

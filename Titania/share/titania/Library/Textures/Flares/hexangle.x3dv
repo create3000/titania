@@ -13,10 +13,7 @@ DEF hexangle Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/hexangle.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/hexangle.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Flares/hexangle.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Flares/hexangle.png"
+          "https://create3000.github.io/Library/Textures/Flares/hexangle.png"
         ]
         repeatS FALSE
         repeatT FALSE

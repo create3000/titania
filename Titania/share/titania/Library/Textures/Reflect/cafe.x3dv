@@ -13,10 +13,7 @@ DEF cafe Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cafe.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cafe.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cafe.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cafe.png"
+          "https://create3000.github.io/Library/Textures/Reflect/cafe.png"
         ]
         repeatS FALSE
         repeatT FALSE

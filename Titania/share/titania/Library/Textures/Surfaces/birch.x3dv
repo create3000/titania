@@ -13,10 +13,7 @@ DEF birch Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/birch.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/birch.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/birch.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/birch.png"
+          "https://create3000.github.io/Library/Textures/Surfaces/birch.png"
         ]
         repeatS FALSE
         repeatT FALSE

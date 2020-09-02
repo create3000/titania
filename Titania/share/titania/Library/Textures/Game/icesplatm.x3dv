@@ -13,10 +13,7 @@ DEF icesplatm Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/icesplatm.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/icesplatm.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/icesplatm.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/icesplatm.png"
+          "https://create3000.github.io/Library/Textures/Game/icesplatm.png"
         ]
         repeatS FALSE
         repeatT FALSE

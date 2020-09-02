@@ -13,10 +13,7 @@ DEF focus Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/focus.gif",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/focus.gif",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/focus.gif",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/focus.gif"
+          "https://create3000.github.io/Library/Textures/Game/focus.gif"
         ]
         repeatS FALSE
         repeatT FALSE

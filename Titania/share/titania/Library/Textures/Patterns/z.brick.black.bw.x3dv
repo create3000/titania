@@ -13,10 +13,7 @@ DEF zbrickblackbw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Patterns/z.brick.black.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Patterns/z.brick.black.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Patterns/z.brick.black.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Patterns/z.brick.black.bw.png"
+          "https://create3000.github.io/Library/Textures/Patterns/z.brick.black.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

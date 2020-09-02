@@ -13,10 +13,7 @@ DEF quadangle Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadangle.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadangle.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadangle.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadangle.png"
+          "https://create3000.github.io/Library/Textures/Flares/quadangle.png"
         ]
         repeatS FALSE
         repeatT FALSE

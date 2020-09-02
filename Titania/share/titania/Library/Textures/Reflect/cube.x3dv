@@ -13,10 +13,7 @@ DEF cube Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cube.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cube.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cube.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/cube.png"
+          "https://create3000.github.io/Library/Textures/Reflect/cube.png"
         ]
         repeatS FALSE
         repeatT FALSE

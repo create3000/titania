@@ -13,10 +13,7 @@ DEF beamcfx Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/beamcfx.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/beamcfx.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/beamcfx.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/beamcfx.png"
+          "https://create3000.github.io/Library/Textures/Game/beamcfx.png"
         ]
         repeatS FALSE
         repeatT FALSE

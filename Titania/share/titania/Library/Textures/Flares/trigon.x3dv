@@ -13,10 +13,7 @@ DEF trigon Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/trigon.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/trigon.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Flares/trigon.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Flares/trigon.png"
+          "https://create3000.github.io/Library/Textures/Flares/trigon.png"
         ]
         repeatS FALSE
         repeatT FALSE

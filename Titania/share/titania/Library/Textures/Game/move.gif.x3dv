@@ -13,10 +13,7 @@ DEF move Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/move.gif",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/move.gif",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/move.gif",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/move.gif"
+          "https://create3000.github.io/Library/Textures/Game/move.gif"
         ]
         repeatS FALSE
         repeatT FALSE

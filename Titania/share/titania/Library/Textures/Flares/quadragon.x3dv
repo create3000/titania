@@ -13,10 +13,7 @@ DEF quadragon Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadragon.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadragon.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadragon.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Flares/quadragon.png"
+          "https://create3000.github.io/Library/Textures/Flares/quadragon.png"
         ]
         repeatS FALSE
         repeatT FALSE

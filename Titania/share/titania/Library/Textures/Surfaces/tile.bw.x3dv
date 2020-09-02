@@ -13,10 +13,7 @@ DEF tilebw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/tile.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/tile.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/tile.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/tile.bw.png"
+          "https://create3000.github.io/Library/Textures/Surfaces/tile.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

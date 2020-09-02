@@ -13,10 +13,7 @@ DEF CloudySky-left Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg"
+          "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

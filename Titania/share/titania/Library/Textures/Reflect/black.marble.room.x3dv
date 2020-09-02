@@ -13,10 +13,7 @@ DEF blackmarbleroom Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/black.marble.room.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/black.marble.room.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/black.marble.room.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/black.marble.room.png"
+          "https://create3000.github.io/Library/Textures/Reflect/black.marble.room.png"
         ]
         repeatS FALSE
         repeatT FALSE

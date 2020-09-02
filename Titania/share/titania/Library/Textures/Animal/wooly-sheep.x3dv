@@ -13,10 +13,7 @@ DEF wooly-sheep Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Animal/wooly-sheep.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Animal/wooly-sheep.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Animal/wooly-sheep.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Animal/wooly-sheep.jpg"
+          "https://create3000.github.io/Library/Textures/Animal/wooly-sheep.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

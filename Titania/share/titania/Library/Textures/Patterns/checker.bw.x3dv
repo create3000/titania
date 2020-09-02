@@ -13,10 +13,7 @@ DEF checkerbw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Patterns/checker.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Patterns/checker.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Patterns/checker.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Patterns/checker.bw.png"
+          "https://create3000.github.io/Library/Textures/Patterns/checker.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

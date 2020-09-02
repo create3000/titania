@@ -17,49 +17,31 @@ DEF WideOcean Transform {
         front ImageTexture {
           url [
             "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg"
-          ]
+         ]
         }
         back ImageTexture {
           url [
             "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg"
           ]
         }
         left ImageTexture {
           url [
             "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg"
           ]
         }
         right ImageTexture {
           url [
             "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg"
           ]
         }
         top ImageTexture {
           url [
             "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg"
           ]
         }
         bottom ImageTexture {
           url [
             "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg"
           ]
         }
       }

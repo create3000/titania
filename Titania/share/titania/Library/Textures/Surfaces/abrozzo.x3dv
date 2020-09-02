@@ -13,10 +13,7 @@ DEF abrozzo Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/abrozzo.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/abrozzo.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/abrozzo.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/abrozzo.png"
+          "https://create3000.github.io/Library/Textures/Surfaces/abrozzo.png"
         ]
         repeatS FALSE
         repeatT FALSE

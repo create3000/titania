@@ -13,10 +13,7 @@ DEF marble Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Stone/marble.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Stone/marble.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Stone/marble.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Stone/marble.png"
+          "https://create3000.github.io/Library/Textures/Stone/marble.png"
         ]
         repeatS FALSE
         repeatT FALSE

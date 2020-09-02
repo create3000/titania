@@ -13,10 +13,7 @@ DEF river Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/river.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Reflect/river.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/river.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Reflect/river.png"
+          "https://create3000.github.io/Library/Textures/Reflect/river.png"
         ]
         repeatS FALSE
         repeatT FALSE

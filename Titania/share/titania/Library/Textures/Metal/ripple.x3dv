@@ -13,10 +13,7 @@ DEF ripple Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/ripple.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/ripple.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Metal/ripple.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Metal/ripple.jpg"
+          "https://create3000.github.io/Library/Textures/Metal/ripple.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

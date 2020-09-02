@@ -13,10 +13,7 @@ DEF WideOcean-right Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg"
+          "https://create3000.github.io/Library/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

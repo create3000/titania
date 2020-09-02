@@ -13,10 +13,7 @@ DEF otomanbw Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Textiles/otoman.bw.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Textiles/otoman.bw.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Textiles/otoman.bw.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Textiles/otoman.bw.png"
+          "https://create3000.github.io/Library/Textures/Textiles/otoman.bw.png"
         ]
         repeatS FALSE
         repeatT FALSE

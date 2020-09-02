@@ -10,10 +10,7 @@ META "titania magic" "Background"
 DEF ViolentDays TextureBackground {
   frontTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-front.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-front.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-front.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-front.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/ViolentDays/ViolentDays-front.jpg",
     ]
     textureProperties DEF _1 TextureProperties {
       minificationFilter "DEFAULT"
@@ -26,46 +23,31 @@ DEF ViolentDays TextureBackground {
   }
   backTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-back.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-back.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-back.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-back.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/ViolentDays/ViolentDays-back.jpg",
     ]
     textureProperties USE _1
   }
   leftTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-left.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-left.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-left.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-left.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/ViolentDays/ViolentDays-left.jpg",
     ]
     textureProperties USE _1
   }
   rightTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-right.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-right.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-right.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-right.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/ViolentDays/ViolentDays-right.jpg",
     ]
     textureProperties USE _1
   }
   topTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/ViolentDays/ViolentDays-top.jpg",
     ]
     textureProperties USE _1
   }
   bottomTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-bottom.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-bottom.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-bottom.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/ViolentDays/ViolentDays-bottom.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/ViolentDays/ViolentDays-bottom.jpg",
     ]
     textureProperties USE _1
   }

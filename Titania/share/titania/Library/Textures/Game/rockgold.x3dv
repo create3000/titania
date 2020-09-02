@@ -13,10 +13,7 @@ DEF rockgold Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/rockgold.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/rockgold.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/rockgold.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/rockgold.png"
+          "https://create3000.github.io/Library/Textures/Game/rockgold.png"
         ]
         repeatS FALSE
         repeatT FALSE

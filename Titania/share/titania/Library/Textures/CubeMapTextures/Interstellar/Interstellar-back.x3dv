@@ -13,10 +13,7 @@ DEF Interstellar-back Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Interstellar/Interstellar-back.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Interstellar/Interstellar-back.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Interstellar/Interstellar-back.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Interstellar/Interstellar-back.jpg"
+          "https://create3000.github.io/Library/Textures/CubeMapTextures/Interstellar/Interstellar-back.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

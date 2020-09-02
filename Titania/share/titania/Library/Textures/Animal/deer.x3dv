@@ -13,10 +13,7 @@ DEF deer Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Animal/deer.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Animal/deer.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Animal/deer.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Animal/deer.jpg"
+          "https://create3000.github.io/Library/Textures/Animal/deer.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

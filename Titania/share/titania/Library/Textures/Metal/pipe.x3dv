@@ -13,10 +13,7 @@ DEF pipe Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/pipe.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/pipe.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Metal/pipe.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Metal/pipe.jpg"
+          "https://create3000.github.io/Library/Textures/Metal/pipe.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -13,10 +13,7 @@ DEF bark2 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Plants/bark2..jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Plants/bark2..jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Plants/bark2..jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Plants/bark2..jpg"
+          "https://create3000.github.io/Library/Textures/Plants/bark2..jpg"
         ]
         repeatS FALSE
         repeatT FALSE

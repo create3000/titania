@@ -13,10 +13,7 @@ DEF triangle Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/triangle.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Flares/triangle.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Flares/triangle.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Flares/triangle.png"
+          "https://create3000.github.io/Library/Textures/Flares/triangle.png"
         ]
         repeatS FALSE
         repeatT FALSE

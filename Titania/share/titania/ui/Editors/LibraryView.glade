@@ -229,9 +229,6 @@
       <row>
         <col id="0" translatable="yes">Primitives</col>
       </row>
-      <row>
-        <col id="0" translatable="yes">Prototypes</col>
-      </row>
     </data>
   </object>
   <object class="GtkPopover" id="FoldersPopover">

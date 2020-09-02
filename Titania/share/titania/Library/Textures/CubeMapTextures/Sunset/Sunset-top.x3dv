@@ -13,10 +13,7 @@ DEF Sunset-top Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg"
+          "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-top.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

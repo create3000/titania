@@ -13,10 +13,7 @@ DEF mesh1 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/mesh1.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Metal/mesh1.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Metal/mesh1.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Metal/mesh1.jpg"
+          "https://create3000.github.io/Library/Textures/Metal/mesh1.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -13,10 +13,7 @@ DEF cotton Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Textiles/cotton.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Textiles/cotton.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Textiles/cotton.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Textiles/cotton.png"
+          "https://create3000.github.io/Library/Textures/Textiles/cotton.png"
         ]
         repeatS FALSE
         repeatT FALSE

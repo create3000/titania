@@ -13,10 +13,7 @@ DEF house6 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Buildings/house6.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Buildings/house6.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Buildings/house6.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Buildings/house6.jpg"
+          "https://create3000.github.io/Library/Textures/Buildings/house6.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

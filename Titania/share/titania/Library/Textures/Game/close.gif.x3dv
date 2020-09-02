@@ -13,10 +13,7 @@ DEF close Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/close.gif",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/close.gif",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/close.gif",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/close.gif"
+          "https://create3000.github.io/Library/Textures/Game/close.gif"
         ]
         repeatS FALSE
         repeatT FALSE

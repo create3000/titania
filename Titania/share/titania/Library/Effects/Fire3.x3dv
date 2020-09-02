@@ -144,10 +144,7 @@ DEF Fire3 Transform {
       }
       texture ImageTexture {
         url [
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Effects/fire3.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Effects/fire3.png",
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Effects/fire3.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Effects/fire3.png"
+          "https://create3000.github.io/Library/Textures/Effects/fire3.png",
         ]
       }
     }

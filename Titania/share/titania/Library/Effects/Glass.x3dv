@@ -60,10 +60,10 @@ main ()
 	vRefract [1]       = refract (I, worldNormal, refraction * 0.99);
 	vRefract [2]       = refract (I, worldNormal, refraction * 0.98);
 	vReflectionFactor  = pow (1.0 + dot (I, worldNormal), 1.0 - reflection);
-	
+
 	if (x3d_Lighting)
 		vN = normalize (x3d_NormalMatrix * x3d_Normal);
-		
+
 	v = position .xyz;
 
 	gl_Position = x3d_ProjectionMatrix * position;
@@ -110,7 +110,7 @@ float
 getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 {
 	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
-	
+
 	if (spotAngle >= cutOffAngle)
 		return 0.0;
 	else if (spotAngle <= beamWidth)
@@ -123,7 +123,7 @@ vec4
 getMaterialColor (in x3d_MaterialParameters material)
 {
 	vec4 textureColor = getTextureColor ();
-	
+
 	if (x3d_Lighting)
 	{
 		vec3  N  = normalize (gl_FrontFacing ? vN : -vN);
@@ -144,7 +144,7 @@ getMaterialColor (in x3d_MaterialParameters material)
 		{
 			if (i == x3d_NumLights)
 				break;
-			
+
 			x3d_LightSourceParameters light = x3d_LightSource [i];
 
 			vec3  vL = light .location - v;
@@ -206,10 +206,7 @@ DEF Sphere Transform {
         cubeMapTexture DEF _1 ComposedCubeMapTexture {
           front ImageTexture {
             url [
-              "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-              "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-              "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-              "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg"
+              "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
             ]
             textureProperties DEF _2 TextureProperties {
               minificationFilter "DEFAULT"
@@ -222,46 +219,31 @@ DEF Sphere Transform {
           }
           back ImageTexture {
             url [
-              "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-              "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-              "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-              "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-back.jpg"
-            ]
+              "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
+           ]
             textureProperties USE _2
           }
           left ImageTexture {
             url [
-              "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-              "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-              "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-              "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-left.jpg"
+              "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
             ]
             textureProperties USE _2
           }
           right ImageTexture {
             url [
-              "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-              "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-              "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-              "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-right.jpg"
+              "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
             ]
             textureProperties USE _2
           }
           top ImageTexture {
             url [
-              "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-              "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-              "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-              "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-top.jpg"
+              "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
             ]
             textureProperties USE _2
           }
           bottom ImageTexture {
             url [
-              "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-              "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-              "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-              "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg"
+              "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
             ]
             textureProperties USE _2
           }

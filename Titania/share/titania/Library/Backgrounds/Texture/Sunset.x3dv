@@ -10,10 +10,7 @@ META "titania magic" "Background"
 DEF Sunset TextureBackground {
   frontTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-front.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
     ]
     textureProperties DEF _1 TextureProperties {
       minificationFilter "DEFAULT"
@@ -26,46 +23,31 @@ DEF Sunset TextureBackground {
   }
   backTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-back.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
     ]
     textureProperties USE _1
   }
   leftTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-left.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
     ]
     textureProperties USE _1
   }
   rightTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-right.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
     ]
     textureProperties USE _1
   }
   topTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-top.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
     ]
     textureProperties USE _1
   }
   bottomTexture ImageTexture {
     url [
-      "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
-      "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
-      "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
-      "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg"
+      "https://create3000.github.io/Library/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
     ]
     textureProperties USE _1
   }

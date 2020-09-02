@@ -13,10 +13,7 @@ DEF lena Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/lena.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/lena.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/lena.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/lena.jpg"
+          "https://create3000.github.io/Library/Textures/Miscellaneous/lena.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

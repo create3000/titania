@@ -13,10 +13,7 @@ DEF ubuntu Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/ubuntu.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/ubuntu.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/ubuntu.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Miscellaneous/ubuntu.jpg"
+          "https://create3000.github.io/Library/Textures/Miscellaneous/ubuntu.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -13,10 +13,7 @@ DEF LostValley-front Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/LostValley/LostValley-front.jpg"
+          "https://create3000.github.io/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

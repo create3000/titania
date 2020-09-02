@@ -13,10 +13,7 @@ DEF paver3 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Stone/paver3.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Stone/paver3.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Stone/paver3.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Stone/paver3.png"
+          "https://create3000.github.io/Library/Textures/Stone/paver3.png"
         ]
         repeatS FALSE
         repeatT FALSE

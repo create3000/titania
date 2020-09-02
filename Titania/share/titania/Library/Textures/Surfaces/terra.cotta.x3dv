@@ -13,10 +13,7 @@ DEF terracotta Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/terra.cotta.png",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/terra.cotta.png",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/terra.cotta.png",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Surfaces/terra.cotta.png"
+          "https://create3000.github.io/Library/Textures/Surfaces/terra.cotta.png"
         ]
         repeatS FALSE
         repeatT FALSE

@@ -16,50 +16,32 @@ DEF CloudySky Transform {
       texture ComposedCubeMapTexture {
         front ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg"
+            "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
           ]
         }
         back ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg"
+            "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
           ]
         }
         left ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg"
+            "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
           ]
         }
         right ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg"
+            "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
           ]
         }
         top ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg"
+            "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
           ]
         }
         bottom ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
-            "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
-            "http://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
-            "https://rawgit.com/create3000/Library/1.0.4/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg"
+            "https://create3000.github.io/Library/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
           ]
         }
       }

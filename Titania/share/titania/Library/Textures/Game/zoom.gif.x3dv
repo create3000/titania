@@ -13,10 +13,7 @@ DEF zoom Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/zoom.gif",
-          "https://cdn.rawgit.com/create3000/Library/1.0.4/Textures/Game/zoom.gif",
-          "http://rawgit.com/create3000/Library/1.0.4/Textures/Game/zoom.gif",
-          "https://rawgit.com/create3000/Library/1.0.4/Textures/Game/zoom.gif"
+          "https://create3000.github.io/Library/Textures/Game/zoom.gif"
         ]
         repeatS FALSE
         repeatT FALSE
