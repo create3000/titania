@@ -123,23 +123,23 @@ void
 MetadataSet::removeValue (const std::string & name)
 {
 	const auto iter = std::remove_if (value () .begin (), value () .end (), [&] (const SFNode &node)
-	                                  {
-	                                     const auto metadataObject = x3d_cast <X3DMetadataObject*> (node);
+	{
+		const auto metadataObject = x3d_cast <X3DMetadataObject*> (node);
 
-	                                     if (not metadataObject)
-														 return false;
+		if (not metadataObject)
+			return false;
 
-	                                     if (not metadataObject -> getBelongsToProvider ())
-														  return false;
+		if (not metadataObject -> getBelongsToProvider ())
+			return false;
 
-	                                     if (metadataObject -> name () == name)
-	                                     {
-	                                        metadataIndex .erase (name);
-	                                        return true;
-	                                     }
+		if (metadataObject -> name () == name)
+		{
+			metadataIndex .erase (name);
+			return true;
+		}
 
-	                                     return false;
-												 });
+		return false;
+	});
 
 	value () .erase (iter, value () .end ());
 }

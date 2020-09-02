@@ -63,7 +63,7 @@ namespace X3D {
 
 static constexpr size_t DOWNLOAD_THREADS_MAX = 8;
 
-const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000.de";
+const std::string X3DNetworkingContext::providerUrl = "https://github.com/create3000/titania/wiki";
 
 X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
@@ -151,7 +151,7 @@ X3DNetworkingContext::removeLoadCount (const void* const object)
 	{
 		if (not loadingObjects .erase (object))
 			return;
- 
+
 		loadCount = loadingObjects .size ();
 
 		set_loadCount ();
@@ -173,7 +173,7 @@ X3DNetworkingContext::set_loadCount ()
 			case 1:
 				getBrowser () -> getNotification () -> string () = basic::sprintf (_ ("Loading %d file"), loadCount .getValue ());
 				break;
-			default:   
+			default:
 				getBrowser () -> getNotification () -> string () = basic::sprintf (_ ("Loading %d files"), loadCount .getValue ());
 				break;
 		}
@@ -188,7 +188,7 @@ X3DNetworkingContext::resetLoadCount ()
 	loadingTotal = 0;
 	loadCount    = 0;
 
-	loadingObjects .clear ();			   
+	loadingObjects .clear ();
 }
 
 void

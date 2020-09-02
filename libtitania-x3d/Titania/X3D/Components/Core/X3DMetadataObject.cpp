@@ -74,7 +74,12 @@ X3DMetadataObject::initialize ()
 bool
 X3DMetadataObject::getBelongsToProvider () const
 {
-	return reference () == getBrowser () -> getProviderUrl ();
+	if (reference () == getBrowser () -> getProviderUrl ())
+		return true;
+
+	if (reference () == "http://titania.create3000.de")
+
+	return false;
 }
 
 void
