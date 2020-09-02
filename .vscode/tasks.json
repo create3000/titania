@@ -59,6 +59,12 @@
             "problemMatcher": []
         },
         {
+            "label": "Make Snap",
+            "type": "shell",
+            "command": "cd snap && make all",
+            "problemMatcher": []
+        },
+        {
             "label": "Publish to Flathub",
             "type": "shell",
             "command": "make flathub",
