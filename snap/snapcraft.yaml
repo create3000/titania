@@ -172,4 +172,3 @@ parts:
       snapcraftctl build
       glib-compile-schemas $SNAPCRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
       update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
-      update-mime-database $SNAPCRAFT_PART_INSTALL/share/mime
