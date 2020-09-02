@@ -359,7 +359,7 @@ Context::getProperty (X3D::X3DFieldDefinition* const field, JSContext* cx, unsig
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", field -> getName (), error .what ());
+		return ThrowException <JSProto_Error> (cx, "Couldn't retrieve value of user-defined field '%s': %s.", field -> getName () .c_str (), error .what ());
 	}
 }
 
