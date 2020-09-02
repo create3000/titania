@@ -96,7 +96,6 @@ if ($result == 0)
 	share ("alpha");
 	appdata ();
 	commit ();
-exit;
 
 	unless ($ALPHA)
 	{
