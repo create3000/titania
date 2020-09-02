@@ -78,6 +78,7 @@ X3DMetadataObject::getBelongsToProvider () const
 		return true;
 
 	if (reference () == "http://titania.create3000.de")
+		return true;
 
 	return false;
 }
