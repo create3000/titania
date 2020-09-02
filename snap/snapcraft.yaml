@@ -1,6 +1,5 @@
 name: titania
-version-script: perl -wln -e 'print $1 if /version\s*=\s*"(.*?)"/' ../libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp
-version: devel
+version: 4.6.11
 summary: Titania is a X3D/VRML editor and browser for the Linux Platform.
 description: |
   Titania is a X3D/VRML editor and browser for the Linux Platform. It is fully
@@ -46,8 +45,8 @@ slots:
 
 apps:
   titania:
-    command: bin/desktop-launch $SNAP/bin/titania-launch $SNAP/bin/titania
-    desktop: share/applications/de.create3000.titania.desktop
+    command: bin/desktop-launch $SNAP/bin/titania-launch $SNAP/usr/local/bin/titania
+    desktop: usr/local/share/applications/de.create3000.titania.desktop
     adapter: none
     environment:
       HOME: "$SNAP_USER_COMMON"
@@ -170,5 +169,7 @@ parts:
     override-build: |
       set -eux
       snapcraftctl build
+      sed -i 's|Icon=de.create3000.titania|${SNAP}/meta/gui/icon.png|g' $SNAPCRAFT_PART_INSTALL/usr/local/share/applications/de.create3000.titania.desktop
       glib-compile-schemas $SNAPCRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
       update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
+      update-mime-database $SNAPCRAFT_PART_INSTALL/usr/local/share/mime
