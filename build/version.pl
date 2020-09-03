@@ -91,16 +91,6 @@ if ($result == 0)
 {
 	say "Publishing Titania X3D v$VERSION now.";
 
-	# SNAP
-
-	my $snap = `cat '$CWD/snap/snapcraft.yaml'`;
-
-	$snap =~ s/version:\s*[\d\.]+/version: $VERSION/;
-
-	open SNAP, ">", "$CWD/snap/snapcraft.yaml";
-	print SNAP $snap;
-	close SNAP;
-
 	# GitHub
 
 	share ("alpha");

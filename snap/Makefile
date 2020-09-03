@@ -1,7 +1,7 @@
 
 SNAPCRAFT=snapcraft
 
-all: clean compile
+all: clean version-number compile
 
 clean:
 	${SNAPCRAFT} clean
@@ -10,6 +10,12 @@ clean:
 	rm -r -f snap
 	rm -r -f stage
 	rm -f titania_*.snap
+
+VERSION=`perl -wln -e 'print $$1 if /version\s*=\s*"(.*?)"/' ../libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp`
+
+version-number:
+	echo ${VERSION}
+	perl -pi -e 's/version:\s*[\d\.]+/version: '${VERSION}'/sg' snapcraft.yaml
 
 compile:
 	${SNAPCRAFT}
