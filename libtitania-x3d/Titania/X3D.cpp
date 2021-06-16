@@ -57,26 +57,21 @@ namespace titania {
 namespace X3D {
 
 /***
- *  Init function must be the first X3D function call in a multi-threaded program, and it must complete before any other X3D call is made. 
+ *  Init function must be the first X3D function call in a multi-threaded program, and it must complete before any other X3D call is made.
  */
 void
 Init (int argc, char** argv)
 {
-	// XInitThreads function must be the first Xlib function a multi-threaded program calls, and it must complete before any other Xlib call is made. 
+	#ifndef __APPLE__
+	// XInitThreads function must be the first Xlib function a multi-threaded program calls, and it must complete before any other Xlib call is made.
 	XInitThreads (); // GStreamer
+	#endif
 
 	// Replace the C++ global locale as well as the C locale with the user-preferred locale.
 	std::locale::global (std::locale (""));
 
 	// Initialize SpiderMonkey
 	JS_Init ();
-
-//	// Initialize Gtk
-//	const bool success = gtk_init_check (&argc, &argv);
-//
-//	gtk_init (&argc, &argv);
-//
-//	return success;
 }
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
@@ -90,15 +85,15 @@ getBrowser (/* parameter */)
 		static Gtk::Main kit (0, nullptr);
 
 		static BrowserApplicationPtr browserApplication;
-	
+
 		if (not browserApplication)
 		{
 			browserApplication = new BrowserApplication ({ }, { });
-	
+
 			browserApplication -> setLoadUrlObjects (false);
 			browserApplication -> setup ();
 		}
-	
+
 		return browserApplication;
 	}
 	catch (const std::exception & error)
@@ -136,7 +131,7 @@ createBrowser (const BrowserPtr & sharedBrowser, const MFString & url, const MFS
 	{
 		if (not sharedBrowser)
 			throw Error <INVALID_NODE> ("createBrowser: Shared browser is NULL.");
-	
+
 		return BrowserPtr (new Browser (sharedBrowser, url, parameter));
 	}
 	catch (const std::exception & error)

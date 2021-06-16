@@ -127,7 +127,7 @@ public:
 
 	virtual
 	Vector3d
-	getPosition () const
+	getPosition () const final override
 	{ return position () .getValue (); }
 
 	virtual
@@ -160,8 +160,9 @@ private:
 	double
 	getFieldOfView () const;
 
+	virtual
 	std::pair <double, double>
-	getLookAtDistance (const Box3d &) const;
+	getLookAtDistance (const Box3d &) const final override;
 
 	///  @name Static members
 

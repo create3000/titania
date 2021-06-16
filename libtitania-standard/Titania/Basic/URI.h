@@ -563,7 +563,7 @@ basic_uri <StringT>::basic_uri (const basic_uri & base, const basic_uri & uri) :
 
 template <class StringT>
 inline
-typename basic_uri <StringT>::basic_uri &
+basic_uri <StringT> &
 basic_uri <StringT>::operator = (const basic_uri & other)
 {
 	m_local    = other .m_local;
@@ -582,7 +582,7 @@ basic_uri <StringT>::operator = (const basic_uri & other)
 
 template <class StringT>
 inline
-typename basic_uri <StringT>::basic_uri &
+basic_uri <StringT> &
 basic_uri <StringT>::operator = (basic_uri && other)
 {
 	m_local    = std::exchange (other .m_local, true);
@@ -601,7 +601,7 @@ basic_uri <StringT>::operator = (basic_uri && other)
 
 template <class StringT>
 inline
-typename basic_uri <StringT>::basic_uri &
+basic_uri <StringT> &
 basic_uri <StringT>::operator = (const string_type & string)
 {
 	return *this = basic_uri (string);
@@ -609,7 +609,7 @@ basic_uri <StringT>::operator = (const string_type & string)
 
 template <class StringT>
 inline
-typename basic_uri <StringT>::basic_uri &
+basic_uri <StringT> &
 basic_uri <StringT>::operator = (const char_type* string)
 {
 	return *this = basic_uri (string);
@@ -1298,6 +1298,41 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 }
 
 ///  @relates basic_uri
+
+#ifdef __APPLE__
+template <>
+const char basic_uri <std::string>::Signs::Zero;
+
+template <>
+const char basic_uri <std::string>::Signs::Colon;
+
+template <>
+const char basic_uri <std::string>::Signs::Slash;
+
+template <>
+const char basic_uri <std::string>::Signs::QuestionMark;
+
+template <>
+const char basic_uri <std::string>::Signs::NumberSign;
+
+template <>
+const char basic_uri <std::string>::Signs::Dot;
+
+template <>
+const std::string::value_type basic_uri <std::string>::Signs::SlashQuestionNumber [3];
+
+template <>
+const std::string::value_type basic_uri <std::string>::Signs::QuestionNumber [2];
+
+template <>
+const std::string basic_uri <std::string>::DataSchemeId;
+
+template <>
+const std::string basic_uri <std::string>::FileSchemeId;
+
+template <>
+std::map <std::string, std::string::size_type> basic_uri <std::string>::well_known_ports;
+#endif
 
 using uri = basic_uri <std::string>;
 

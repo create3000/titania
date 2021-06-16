@@ -206,7 +206,7 @@ LayerSet {
               }
               geometry DEF Text Text {
                 fontStyle ScreenFontStyle {
-                  family "monospace"
+                  family "TYPEWRITER"
                   pointSize 7.5
                   spacing 1.2
                   justify [
@@ -247,7 +247,7 @@ function set_textBounds (value, time)
 	{
 		if (is_even (geometry .size .x))
 			++ geometry .size .x;
-		
+
 		if (is_even (geometry .size .y))
 			++ geometry .size .y;
 	}

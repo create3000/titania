@@ -78,7 +78,7 @@ namespace X3D {
  */
 template <class ValueType>
 class X3DNativeArrayField :
-	public X3DField <Array <ValueType>> 
+	public X3DField <Array <ValueType>>
 {
 public:
 
@@ -104,6 +104,7 @@ public:
 
 	using X3DField <internal_type>::addInterest;
 	using X3DField <internal_type>::addEvent;
+	using X3DField <internal_type>::copy;
 	using X3DField <internal_type>::getType;
 	using X3DField <internal_type>::getValue;
 	using X3DField <internal_type>::getUnit;

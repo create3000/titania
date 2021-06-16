@@ -52,8 +52,11 @@
 
 #include "../Base/X3DChildObject.h"
 
-#include <malloc.h>
 #include <thread>
+
+#ifndef __APPLE__
+#include <malloc.h>
+#endif
 
 namespace titania {
 namespace X3D {
@@ -66,7 +69,9 @@ std::mutex                       X3DGarbageCollector::mutex;
 void
 X3DGarbageCollector::trimFreeMemory ()
 {
+	#ifndef __APPLE__
 	malloc_trim (0);
+	#endif
 }
 
 void

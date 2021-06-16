@@ -80,7 +80,7 @@ protected:
 
 	friend class TransformSensor;
 	friend class PickableGroup;
-	friend class PickingHierarchyGuard;
+	friend struct PickingHierarchyGuard;
 	friend class Shape;
 	friend class X3DGroupingNode;
 	friend class X3DPickSensorNode;

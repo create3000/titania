@@ -242,8 +242,6 @@ BrowserOptions::set_TextureQuality ()
 		cubeMapTextureProperties -> minificationFilter  () = "AVG_PIXEL";
 		cubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
 
-		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
-		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 		return;
 	}
 
@@ -267,8 +265,6 @@ BrowserOptions::set_TextureQuality ()
 		cubeMapTextureProperties -> minificationFilter  () = "NEAREST_PIXEL";
 		cubeMapTextureProperties -> magnificationFilter () = "NEAREST_PIXEL";
 
-		glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
-		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 		return;
 	}
 
@@ -291,9 +287,6 @@ BrowserOptions::set_TextureQuality ()
 
 	cubeMapTextureProperties -> minificationFilter  () = "AVG_PIXEL";
 	cubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
-
-	glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
-	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 }
 
 void
@@ -409,26 +402,22 @@ BrowserOptions::set_Shading ()
 		case ShadingType::POINT:
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
-			glShadeModel (GL_SMOOTH);
 			break;
 		}
 		case ShadingType::WIREFRAME:
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-			glShadeModel (GL_SMOOTH);
 			break;
 		}
 		case ShadingType::FLAT:
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-			glShadeModel (GL_FLAT);
 			break;
 		}
 		case ShadingType::DEFAULT:
 		case ShadingType::GOURAUD:
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-			glShadeModel (GL_SMOOTH);
 
 			getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
 			break;
@@ -436,7 +425,6 @@ BrowserOptions::set_Shading ()
 		case ShadingType::PHONG:
 		{
 			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-			glShadeModel (GL_SMOOTH);
 			break;
 		}
 	}

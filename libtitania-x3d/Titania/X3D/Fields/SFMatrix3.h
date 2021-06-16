@@ -62,6 +62,20 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <Matrix3d>::typeName;
+
+template <>
+const std::string X3DField <Matrix3f>::typeName;
+
+template <>
+const FieldType X3DField <Matrix3d>::type;
+
+template <>
+const FieldType X3DField <Matrix3f>::type;
+#endif
+
 extern template class X3DField <Matrix3d>;
 extern template class X3DField <Matrix3f>;
 
@@ -86,6 +100,7 @@ public:
 
 	using X3DField <InternalType>::addInterest;
 	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::copy;
 	using X3DField <InternalType>::getUnit;
 	using X3DField <InternalType>::setValue;
 	using X3DField <InternalType>::getValue;

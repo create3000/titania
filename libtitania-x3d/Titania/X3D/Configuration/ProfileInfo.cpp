@@ -60,10 +60,10 @@ const std::string ProfileInfo::typeName = "ProfileInfo";
 ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, const ComponentInfoArray & componentList) :
 	X3DChildObject (),
 	         title (title),
-	          name (name),
 	   providerUrl ("http://titania.create3000.de"),
 	    components (new ComponentInfoArray (componentList))
 {
+	setName (name);
 	addChildObjects (components);
 	setup ();
 }
@@ -76,7 +76,7 @@ ProfileInfo::copy (const CopyType type) const
 	for (const auto & component : *components)
 		componentList .emplace_back (component -> copy (type));
 
-	return new ProfileInfo (title, name, componentList);
+	return new ProfileInfo (title, getName (), componentList);
 }
 
 void
@@ -89,13 +89,13 @@ ProfileInfo::toStream (std::ostream & ostream) const
 	ostream
 		<< "PROFILE"
 		<< Generator::Space
-		<< name;
+		<< getName ();
 }
 
 void
 ProfileInfo::toXMLStream (std::ostream & ostream) const
 {
-	ostream << name;
+	ostream << getName ();
 }
 
 void
@@ -103,7 +103,7 @@ ProfileInfo::toJSONStream (std::ostream & ostream) const
 {
 	ostream
 		<< '"'
-		<< name
+		<< getName ()
 		<< '"';
 }
 

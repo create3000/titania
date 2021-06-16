@@ -122,7 +122,7 @@ private:
 	///  @name Construction
 
 	void
-	initialize ();
+	initialize () final override;
 
 	///  @name Operations
 

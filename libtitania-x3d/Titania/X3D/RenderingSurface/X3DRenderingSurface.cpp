@@ -50,19 +50,15 @@
 
 #include "X3DRenderingSurface.h"
 
-#include <glibmm/main.h>
-#include <gtkmm/container.h>
-#include <gdkmm/screen.h>
-
-#include "../RenderingSurface/ContextLock.h"
-#include "../RenderingSurface/RenderingContext.h"
+#include "ContextLock.h"
 #include "../Rendering/FrameBuffer.h"
+#include "../Rendering/OpenGL.h"
 
-#include <Titania/String.h>
-#include <Titania/LOG.h>
-
+#include <gtkmm.h>
 #include <atomic>
 #include <thread>
+#include <Titania/String.h>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {
@@ -75,16 +71,17 @@ namespace X3D {
  *  A X3DRenderingSurface object must be instantiated and disposed in the main thread.
  */
 
-static const std::atomic <std::thread::id> mainTreadId (std::this_thread::get_id ());
+static const std::atomic <std::thread::id> mainThreadId (std::this_thread::get_id ());
 
 X3DRenderingSurface::X3DRenderingSurface () :
 	X3DRenderingSurface (nullptr)
 { }
 
 X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
-	  Gtk::DrawingArea (),
+	   Gtk::DrawingArea (),
 	        initialized (false),
-	            context (new RenderingContext (other ? other -> context : nullptr)),
+	            context (other ? other -> getContext () : createContext ()),
+               surface (Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, 1, 1)),
 	         extensions (),
 	       antialiasing (0),
 	          frameRate (60),
@@ -104,16 +101,34 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	set_app_paintable (true);
 	get_style_context () -> add_class ("titania-surface");
 
+	// Use context.
+
+	#ifdef __APPLE__
+	extensions .emplace ("GL_EXT_framebuffer_multisample");
+	#else
 	glewInit ();
 
 	basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
 
 	//for (const auto & extension : extensions)
 	//	__LOG__ << extension << std::endl;
+	#endif
+
+	// Setup framebuffer and connect.
 
 	frameBuffer -> setup ();
 
 	timeoutDispatcher -> connect (sigc::mem_fun (this, &X3DRenderingSurface::on_dispatch));
+}
+
+Glib::RefPtr <Gdk::GLContext>
+X3DRenderingSurface::createContext () const
+{
+	GdkWindowAttr attributes;
+
+	attributes .window_type = GDK_WINDOW_TOPLEVEL;
+
+	return Glib::wrap (gdk_window_new (nullptr, &attributes, 0)) -> create_gl_context ();
 }
 
 bool
@@ -139,7 +154,7 @@ X3DRenderingSurface::queue_render ()
 {
 	if (processRenderEvents)
 	{
-		if (std::this_thread::get_id () == mainTreadId)
+		if (std::this_thread::get_id () == mainThreadId)
 		{
 			on_dispatch ();
 		}
@@ -158,15 +173,15 @@ X3DRenderingSurface::on_realize ()
 	{
 		Gtk::DrawingArea::on_realize ();
 
-		if (not initialized)
-		{
-			initialized = true;
+		if (initialized)
+			return;
 
-			ContextLock lock (this);
+		initialized = true;
 
-			on_setup ();
-			setupSignal .emit ();
-		}
+		ContextLock lock (this);
+
+		on_setup ();
+		setupSignal .emit ();
 	}
 	catch (const std::exception & error)
 	{
@@ -201,7 +216,7 @@ X3DRenderingSurface::on_size_allocate (Gtk::Allocation & allocation)
 	{
 		Gtk::DrawingArea::on_size_allocate (allocation);
 
-		if (not get_mapped ())
+		if (not get_realized ())
 			return;
 
 		ContextLock lock (this);
@@ -220,8 +235,8 @@ X3DRenderingSurface::on_size_allocate (Gtk::Allocation & allocation)
 		const auto w = allocation .get_width ()  - x - (margin .get_right () + border .get_right () + padding .get_right ());
 		const auto h = allocation .get_height () - y - (margin .get_top ()   + border .get_top ()   + padding .get_top ());
 
-		glViewport (0, 0, allocation .get_width (), allocation .get_height ());
-		glScissor  (0, 0, allocation .get_width (), allocation .get_height ());
+		glViewport (x, y, w, h);
+		glScissor  (x, y, w, h);
 
 		glClearColor (0, 0, 0, 0);
 		glClear (GL_COLOR_BUFFER_BIT);
@@ -267,55 +282,20 @@ X3DRenderingSurface::on_timeout ()
 		on_render ();
 		renderSignal .emit ();
 
-		queue_draw ();
-
 		if (frameBuffer)
+		{
+			frameBuffer -> readPixels (GL_BGRA);
+
+			surface = Cairo::ImageSurface::create (const_cast <uint8_t*> (frameBuffer -> getPixels () .data ()),
+			                                       Cairo::FORMAT_ARGB32,
+			                                       frameBuffer -> getWidth (),
+			                                       frameBuffer -> getHeight (),
+			                                       cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, frameBuffer -> getWidth ()));
+
 			frameBuffer -> unbind ();
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+		}
 
-	return false;
-}
-
-bool
-X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-	try
-	{
-		Gtk::DrawingArea::on_draw (cairo);
-
-		ContextLock lock (this);
-
-		frameBuffer -> bind ();
-		frameBuffer -> readPixels (GL_BGRA);
-
-		const auto state   = get_style_context () -> get_state ();
-		const auto margin  = get_style_context () -> get_margin (state);
-		const auto surface = Cairo::ImageSurface::create (const_cast <uint8_t*> (frameBuffer -> getPixels () .data ()),
-		                                                  Cairo::FORMAT_ARGB32,
-		                                                  frameBuffer -> getWidth (),
-		                                                  frameBuffer -> getHeight (),
-		                                                  cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, frameBuffer -> getWidth ()));
-
-		get_style_context () -> render_background (cairo, 0, 0, get_width (), get_height ());
-
-		cairo -> save ();
-		cairo -> set_operator (Cairo::OPERATOR_OVER);
-		cairo -> set_source (surface, 0, 0);
-		cairo -> get_source () -> set_matrix (Cairo::Matrix (1, 0, 0, -1, 0, frameBuffer -> getHeight ()));
-		cairo -> paint_with_alpha (get_opacity ());
-		cairo -> restore ();
-
-		get_style_context () -> render_frame (cairo,
-		                                      margin .get_left (),
-		                                      margin .get_top (),
-		                                      get_width ()  - margin .get_left () - margin .get_right (),
-		                                      get_height () - margin .get_top ()  - margin .get_bottom ());
-
-		frameBuffer -> unbind ();
+		queue_draw ();
 	}
 	catch (const std::exception & error)
 	{
@@ -329,6 +309,37 @@ bool
 X3DRenderingSurface::on_render ()
 {
 	return false;
+}
+
+bool
+X3DRenderingSurface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	try
+	{
+		const auto state   = get_style_context () -> get_state ();
+		const auto margin  = get_style_context () -> get_margin (state);
+
+		get_style_context () -> render_background (cairo, 0, 0, get_width (), get_height ());
+
+		cairo -> save ();
+		cairo -> set_operator (Cairo::OPERATOR_OVER);
+		cairo -> set_source (surface, 0, 0);
+		cairo -> get_source () -> set_matrix (Cairo::Matrix (1, 0, 0, -1, 0, surface -> get_height ()));
+		cairo -> paint_with_alpha (get_opacity ());
+		cairo -> restore ();
+
+		get_style_context () -> render_frame (cairo,
+		                                      margin .get_left (),
+		                                      margin .get_top (),
+		                                      get_width ()  - margin .get_left () - margin .get_right (),
+		                                      get_height () - margin .get_top ()  - margin .get_bottom ());
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	return true;
 }
 
 void

@@ -67,6 +67,7 @@ public:
 	using internal_type = InternalType;
 
 	using X3DFieldDefinition::addEvent;
+	using X3DFieldDefinition::addEventObject;
 	using X3DFieldDefinition::addInterest;
 	using X3DFieldDefinition::processInterests;
 
@@ -75,7 +76,7 @@ public:
    ///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	virtual
 	void
-	copy (X3DExecutionContext* const, X3DFieldDefinition* field, const CopyType) const
+	copy (X3DExecutionContext* const, X3DFieldDefinition* field, const CopyType) const override
 	{ static_cast <X3DField*> (field) -> set (getValue ()); }
 
 	///  @name Assignment operators

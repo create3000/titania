@@ -57,6 +57,14 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <Color3f>::typeName;
+
+template <>
+const FieldType X3DField <Color3f>::type;
+#endif
+
 extern template class X3DField <Color3f>;
 
 /**
@@ -70,6 +78,7 @@ public:
 	using value_type = Color3f::value_type;
 	using size_type  = Color3f::size_type;
 
+	using X3DField <Color3f>::copy;
 	using X3DField <Color3f>::addInterest;
 	using X3DField <Color3f>::setValue;
 	using X3DField <Color3f>::getValue;

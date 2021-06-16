@@ -6,6 +6,7 @@ lib_LTLIBRARIES =  \
 	libtitania-ftgl.la
 
 libtitania_ftgl_la_LIBADD = $(TITANIA_FTGL_LIBS) \
+	$(TITANIA_GL_LIBS) \
 	$(TITANIA_STANDARD_LIBS) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la
 
@@ -23,5 +24,6 @@ libtitania_ftgl_la_SOURCES =  \
 	$(current_dir)/Titania/FTGL/Vectorizer.cpp
 
 AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) \
+	$(TITANIA_GL_CFLAGS) \
 	$(TITANIA_STANDARD_CFLAGS) \
 	-I$(top_builddir)/libtitania-standard

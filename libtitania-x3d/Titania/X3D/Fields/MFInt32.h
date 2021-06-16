@@ -56,6 +56,14 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <Array <int32_t>>::typeName;
+
+template <>
+const FieldType X3DField <Array <int32_t>>::type;
+#endif
+
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DField <Array <int32_t>>;
 extern template class X3DNativeArrayField <int32_t>;

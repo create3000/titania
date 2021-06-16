@@ -127,13 +127,13 @@ AngleGridTool::getSnapPosition (const Vector3d & position, const bool snapY) con
 	if (std::abs (snapAngle - angle) > std::abs (snapDistance () * phi) or dimension () [1] == 0)
 		snapAngle = angle;
 
-	const auto snapPolar = std::polar (snapRadius, snapAngle);
+	const auto snapPolar = X3D::polar (snapRadius, snapAngle);
 
 	translation .x (snapPolar .real ());
 	translation .z (snapPolar .imag ());
 
 	const auto y = getSnapPosition (translation .y ());
-	
+
 	if (snapY)
 	{
 		if (std::abs (y - translation .y ()) < std::abs (snapDistance ()))

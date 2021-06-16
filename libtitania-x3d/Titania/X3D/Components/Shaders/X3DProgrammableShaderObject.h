@@ -66,7 +66,7 @@ class FogContainer;
 class LightContainer;
 class ProjectiveTextureContainer;
 class ShapeContainer;
-class SoftParticle;
+struct SoftParticle;
 
 class X3DProgrammableShaderObject :
 	virtual public X3DBaseNode

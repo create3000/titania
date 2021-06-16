@@ -121,7 +121,7 @@ ArcClose2D::initialize ()
 	try
 	{
 		const auto metaOptions = getMetadataSet ("/ArcClose2D/options");
-	
+
 		optionsNode .set (MakePtr <ArcClose2DOptions> (getExecutionContext ()));
 
 		optionsNode -> addInterest (&ArcClose2D::requestRebuild, this);
@@ -164,7 +164,7 @@ ArcClose2D::getSweepAngle () const
 
 	if (not std::isnan (sweepAngle))
 		return sweepAngle;
-	
+
 	// We must test for NAN, as NAN to int32_t is undefined.
 	return 0;
 }
@@ -192,38 +192,73 @@ ArcClose2D::build ()
 		optionsNode -> toMetaData (createMetadataSet ("/ArcClose2D/options"));
 
 	const double sweepAngle = getSweepAngle ();
-	const auto   circle     = sweepAngle == pi2 <double>;
 	const auto   steps      = std::max <int32_t> (4, sweepAngle * optionsNode -> dimension () / (2 * pi <double>) + 1);
+	const auto   steps_1    = steps - 1;
+	auto         texCoords  = std::vector <Vector4f> ();
+	auto         points     = std::vector <Vector3d> ();
 
 	getMultiTexCoords () .emplace_back ();
-
-	if (not circle)
-	{
-		// If it is a arc, add a center point otherwise it is a circle.
-
-		if (closureType () not_eq "CHORD")
-		{
-			getTexCoords () .emplace_back (0.5, 0.5, 0, 1);
-			getNormals   () .emplace_back (0, 0, 1);
-			getVertices  () .emplace_back (0, 0, 0);
-		}
-	}
-
-	const auto steps_1 = steps - 1;
 
 	for (int32_t n = 0; n < steps; ++ n)
 	{
 		const auto   t        = double (n) / steps_1;
 		const double theta    = startAngle () + (sweepAngle * t);
-		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
+		const auto   texCoord = X3D::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
+		const auto   point    = X3D::polar <double> (std::abs (radius ()), theta);
 
-		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
-		getNormals   () .emplace_back (0, 0, 1);
-		getVertices  () .emplace_back (point .real (), point .imag (), 0);
+		texCoords .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
+		points    .emplace_back (point .real (), point .imag (), 0);
 	}
 
-	addElements (GL_POLYGON, getVertices () .size ());
+	if (closureType () == "CHORD")
+	{
+		const auto & t0 = texCoords [0];
+		const auto & p0 = points [0];
+
+		for (int32_t i = 1; i < steps_1; ++ i)
+		{
+			const auto & t1 = texCoords [i];
+			const auto & t2 = texCoords [i + 1];
+			const auto & p1 = points [i];
+			const auto & p2 = points [i + 1];
+
+			getTexCoords () .emplace_back (t0);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p0);
+
+			getTexCoords () .emplace_back (t1);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p1);
+
+			getTexCoords () .emplace_back (t2);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p2);
+		}
+	}
+	else
+	{
+		for (int32_t i = 0; i < steps_1; ++ i)
+		{
+			const auto & t1 = texCoords [i];
+			const auto & t2 = texCoords [i + 1];
+			const auto & p1 = points [i];
+			const auto & p2 = points [i + 1];
+
+			getTexCoords () .emplace_back (0.5, 0.5, 0, 1);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (0, 0, 0);
+
+			getTexCoords () .emplace_back (t1);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p1);
+
+			getTexCoords () .emplace_back (t2);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p2);
+		}
+	}
+
+	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
 }
 
@@ -260,8 +295,8 @@ ArcClose2D::toPrimitive () const
 	{
 		const auto   t        = double (n) / steps_1;
 		const double theta    = startAngle () + (sweepAngle * t);
-		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
+		const auto   texCoord = X3D::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
+		const auto   point    = X3D::polar <double> (std::abs (radius ()), theta);
 
 		texCoords -> point () .emplace_back (texCoord .real (), texCoord .imag ());
 		coord -> point () .emplace_back (point .real (), point .imag (), 0);

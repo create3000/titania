@@ -95,7 +95,7 @@ public:
 	static
 	constexpr ObjectType
 	getId ()
-	{ throw std::runtime_error ("getId"); }
+	{ throw std::runtime_error ("getId"); return ObjectType (); }
 
 
 private:

@@ -59,6 +59,120 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+// typeName
+
+template <>
+const std::string X3DField <Array <bool>>::typeName;
+
+template <>
+const std::string X3DField <Array <Color3f>>::typeName;
+
+template <>
+const std::string X3DField <Array <Color4f>>::typeName;
+
+template <>
+const std::string X3DField <Array <double>>::typeName;
+
+template <>
+const std::string X3DField <Array <float>>::typeName;
+
+//template <>
+//const std::string X3DField <Array <SFImage*>>::typeName;
+
+template <>
+const std::string X3DField <Array <Matrix3d>>::typeName;
+
+template <>
+const std::string X3DField <Array <Matrix3f>>::typeName;
+
+template <>
+const std::string X3DField <Array <Matrix4d>>::typeName;
+
+template <>
+const std::string X3DField <Array <Matrix4f>>::typeName;
+
+template <>
+const std::string X3DField <Array <Rotation4d>>::typeName;
+
+template <>
+const std::string X3DField <Array <String>>::typeName;
+
+template <>
+const std::string X3DField <Array <Vector2d>>::typeName;
+
+template <>
+const std::string X3DField <Array <Vector2f>>::typeName;
+
+template <>
+const std::string X3DField <Array <Vector3d>>::typeName;
+
+template <>
+const std::string X3DField <Array <Vector3f>>::typeName;
+
+template <>
+const std::string X3DField <Array <Vector4d>>::typeName;
+
+template <>
+const std::string X3DField <Array <Vector4f>>::typeName;
+
+// type
+
+template <>
+const FieldType X3DField <Array <bool>>::type;
+
+template <>
+const FieldType X3DField <Array <Color3f>>::type;
+
+template <>
+const FieldType X3DField <Array <Color4f>>::type;
+
+template <>
+const FieldType X3DField <Array <double>>::type;
+
+template <>
+const FieldType X3DField <Array <float>>::type;
+
+//template <>
+//const FieldType X3DField <Array <SFImage*>>::type;
+
+template <>
+const FieldType X3DField <Array <Matrix3d>>::type;
+
+template <>
+const FieldType X3DField <Array <Matrix3f>>::type;
+
+template <>
+const FieldType X3DField <Array <Matrix4d>>::type;
+
+template <>
+const FieldType X3DField <Array <Matrix4f>>::type;
+
+template <>
+const FieldType X3DField <Array <Rotation4d>>::type;
+
+template <>
+const FieldType X3DField <Array <String>>::type;
+
+template <>
+const FieldType X3DField <Array <Vector2d>>::type;
+
+template <>
+const FieldType X3DField <Array <Vector2f>>::type;
+
+template <>
+const FieldType X3DField <Array <Vector3d>>::type;
+
+template <>
+const FieldType X3DField <Array <Vector3f>>::type;
+
+template <>
+const FieldType X3DField <Array <Vector4d>>::type;
+
+template <>
+const FieldType X3DField <Array <Vector4f>>::type;
+#endif
+
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DField <Array <bool>> ;
 extern template class X3DField <Array <Color3f>> ;

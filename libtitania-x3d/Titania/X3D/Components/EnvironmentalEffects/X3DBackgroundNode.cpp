@@ -224,7 +224,6 @@ X3DBackgroundNode::buildHalfSphere (const double radius, const std::vector <doub
 	double phi = 0;
 
 	std::complex <double> y;
-	Vector3f              p;
 
 	const auto    vAngleMax   = bottom ? pi_2 <double> : pi <double>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
@@ -240,8 +239,8 @@ X3DBackgroundNode::buildHalfSphere (const double radius, const std::vector <doub
 			theta2 = pi <double> - theta2;
 		}
 
-		const auto z1 = std::polar (radius, theta1);
-		const auto z2 = std::polar (radius, theta2);
+		const auto z1 = X3D::polar (radius, theta1);
+		const auto z2 = X3D::polar (radius, theta2);
 
 		const auto c1 = getColor (vAngle [v],     color, angle);
 		const auto c2 = getColor (vAngle [v + 1], color, angle);
@@ -251,28 +250,46 @@ X3DBackgroundNode::buildHalfSphere (const double radius, const std::vector <doub
 			// The last point is the first one.
 			const size_t u1 = u < U_DIMENSION - 1 ? u + 1 : 0;
 
+			// Triangle 1
+
 			// p1
 			phi = pi2 <double> * (u / U_DIMENSION);
-			y   = std::polar (-z1 .imag (), phi);
+			y   = X3D::polar (-z1 .imag (), phi);
 
 			sphereColors   .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
 			sphereVertices .emplace_back (y .imag (), z1 .real (), y .real ());
 
 			// p2
-			y = std::polar (-z2 .imag (), phi);
+			y = X3D::polar (-z2 .imag (), phi);
 
 			sphereColors   .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
 			sphereVertices .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p3
 			phi = pi2 <double> * (u1 / U_DIMENSION);
-			y   = std::polar (-z2 .imag (), phi);
+			y   = X3D::polar (-z2 .imag (), phi);
+
+			sphereColors   .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
+			sphereVertices .emplace_back (y .imag (), z2 .real (), y .real ());
+
+			// Triangle 2
+
+			// p1
+			phi = pi2 <double> * (u / U_DIMENSION);
+			y   = X3D::polar (-z1 .imag (), phi);
+
+			sphereColors   .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
+			sphereVertices .emplace_back (y .imag (), z1 .real (), y .real ());
+
+			// p3
+			phi = pi2 <double> * (u1 / U_DIMENSION);
+			y   = X3D::polar (-z2 .imag (), phi);
 
 			sphereColors   .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
 			sphereVertices .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p4
-			y = std::polar (-z1 .imag (), phi);
+			y = X3D::polar (-z1 .imag (), phi);
 
 			sphereColors   .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
 			sphereVertices .emplace_back (y .imag (), z1 .real (), y .real ());
@@ -302,11 +319,17 @@ X3DBackgroundNode::build ()
 		sphereVertices .emplace_back (-s,  s, -s);
 		sphereVertices .emplace_back ( s,  s, -s);
 		sphereVertices .emplace_back ( s, -s, -s);
+
+		sphereVertices .emplace_back (-s,  s, -s);
+		sphereVertices .emplace_back ( s, -s, -s);
 		sphereVertices .emplace_back (-s, -s, -s);
 
 		// Front
 		sphereVertices .emplace_back ( s,  s,  s);
 		sphereVertices .emplace_back (-s,  s,  s);
+		sphereVertices .emplace_back (-s, -s,  s);
+
+		sphereVertices .emplace_back ( s,  s,  s);
 		sphereVertices .emplace_back (-s, -s,  s);
 		sphereVertices .emplace_back ( s, -s,  s);
 
@@ -314,11 +337,17 @@ X3DBackgroundNode::build ()
 		sphereVertices .emplace_back (-s,  s,  s);
 		sphereVertices .emplace_back (-s,  s, -s);
 		sphereVertices .emplace_back (-s, -s, -s);
+
+		sphereVertices .emplace_back (-s,  s,  s);
+		sphereVertices .emplace_back (-s, -s, -s);
 		sphereVertices .emplace_back (-s, -s,  s);
 
 		// Right
 		sphereVertices .emplace_back (s,  s, -s);
 		sphereVertices .emplace_back (s,  s,  s);
+		sphereVertices .emplace_back (s, -s,  s);
+
+		sphereVertices .emplace_back (s,  s, -s);
 		sphereVertices .emplace_back (s, -s,  s);
 		sphereVertices .emplace_back (s, -s, -s);
 
@@ -326,11 +355,17 @@ X3DBackgroundNode::build ()
 		sphereVertices .emplace_back (-s,  s,  s);
 		sphereVertices .emplace_back ( s,  s,  s);
 		sphereVertices .emplace_back ( s,  s, -s);
+
+		sphereVertices .emplace_back (-s,  s,  s);
+		sphereVertices .emplace_back ( s,  s, -s);
 		sphereVertices .emplace_back (-s,  s, -s);
 
 		// Bottom
 		sphereVertices .emplace_back ( s, -s,  s);
 		sphereVertices .emplace_back (-s, -s,  s);
+		sphereVertices .emplace_back (-s, -s, -s);
+
+		sphereVertices .emplace_back ( s, -s,  s);
 		sphereVertices .emplace_back (-s, -s, -s);
 		sphereVertices .emplace_back ( s, -s, -s);
 
@@ -499,7 +534,7 @@ X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 
 	// Draw.
 
-	glDrawArrays (GL_QUADS, 0, sphereVertices .size ());
+	glDrawArrays (GL_TRIANGLES, 0, sphereVertices .size ());
 
 	// Disable vertex attribute arrays.
 
@@ -607,11 +642,7 @@ X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 
 	renderObject -> getModelViewMatrix () .pop ();
 
-	glDisable (GL_TEXTURE_2D);
-
 	glDisable (GL_BLEND);
-	glDisable (GL_TEXTURE_2D);
-
 	glDepthMask (GL_TRUE);
 	glEnable (GL_DEPTH_TEST);
 }

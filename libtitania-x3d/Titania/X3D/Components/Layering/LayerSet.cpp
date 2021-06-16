@@ -106,8 +106,8 @@ LayerSet::initialize ()
 
 	privateActiveLayer () .addInterest (&LayerSet::set_activeLayer, this);
 	activeLayer ()        .addInterest (&LayerSet::set_activeLayer, this);
-	order ()              .addInterest (&LayerSet::set_layers, this);
-	layers ()             .addInterest (&LayerSet::set_layers, this);
+	order ()              .addInterest (&LayerSet::set_layers,      this);
+	layers ()             .addInterest (&LayerSet::set_layers,      this);
 
 	set_layers ();
 }

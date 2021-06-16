@@ -72,7 +72,7 @@ public:
 
 	ComponentInfo*
 	copy (const CopyType type) const
-	{ return new ComponentInfo (title, name, level); }
+	{ return new ComponentInfo (title, getName (), level); }
 
 	ComponentInfo*
 	copy (X3DExecutionContext* const executionContext, const CopyType type) const
@@ -90,10 +90,6 @@ public:
 	const std::string &
 	getTitle () const
 	{ return title; }
-
-	const std::string &
-	getName () const
-	{ return name; }
 
 	size_t
 	getLevel () const
@@ -139,10 +135,9 @@ private:
 
 	///  @name Members
 
-	const std::string   title;
-	const std::string   name;
-	const size_t        level;
-	const std::string   providerUrl;
+	const std::string title;
+	const size_t      level;
+	const std::string providerUrl;
 
 };
 

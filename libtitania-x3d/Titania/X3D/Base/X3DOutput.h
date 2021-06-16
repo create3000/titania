@@ -51,8 +51,10 @@
 #ifndef __TITANIA_X3D_BASE_X3DOUTPUT_H__
 #define __TITANIA_X3D_BASE_X3DOUTPUT_H__
 
+#ifndef __APPLE__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpmf-conversions"
+#endif
 
 #include "../Base/X3DBase.h"
 #include <functional>
@@ -96,7 +98,9 @@ public:
 	bool
 	hasInterest (Function && memberFunction, Class* const object) const
 	{
-		return checkInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		union u { typename std::remove_reference <Function>::type f; void* p; };
+
+		return checkInterest ((X3DInput*) object, u { memberFunction } .p);
 	}
 
 	template <class Function, class Class>
@@ -110,11 +114,13 @@ public:
 	void
 	addInterest (Function && memberFunction, Class* const object, Arguments && ... arguments) const
 	{
+		union u { typename std::remove_reference <Function>::type f; void* p; };
+
 		bool inserted = insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
-		                                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		                                (X3DInput*) object, u { memberFunction } .p);
 
 		if (inserted)
-			insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
+			insertInput (object, u { memberFunction } .p);
 	}
 
 	template <class Function, class Class, class ... Arguments>
@@ -126,11 +132,13 @@ public:
 	void
 	addInterest (Class* const object, void (Class::* memberFunction) (void)) const
 	{
+		union u { void (Class::* f) (void); void* p; };
+
 		bool inserted = insertInterest (std::bind (memberFunction, object),
-		                                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		                                (X3DInput*) object, u { memberFunction } .p);
 
 		if (inserted)
-			insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
+			insertInput (object, u { memberFunction } .p);
 	}
 
 	template <class Function, class Class>
@@ -147,8 +155,10 @@ public:
 	void
 	removeInterest (Function && memberFunction, Class* const object) const
 	{
-		eraseInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		union u { typename std::remove_reference <Function>::type f; void* p; };
+
+		eraseInput (object, u { memberFunction } .p);
+		eraseInterest ((X3DInput*) object, u { memberFunction } .p);
 	}
 
 	template <class Function, class Class>
@@ -253,6 +263,8 @@ private:
 } // X3D
 } // titania
 
+#ifndef __APPLE__
 #pragma GCC diagnostic pop
+#endif
 
 #endif

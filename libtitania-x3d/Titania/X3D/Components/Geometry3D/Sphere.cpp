@@ -109,7 +109,7 @@ Sphere::initialize ()
 	{
 		const auto typeName    = getMetaData <std::string> ("/Sphere/options/@typeName", "QuadSphereOptions");
 		const auto metaOptions = getMetadataSet ("/Sphere/options");
-	
+
 		if (typeName == "IcosahedronOptions")
 			optionsNode .set (MakePtr <IcosahedronOptions> (getExecutionContext ()));
 		else if (typeName == "OctahedronOptions")

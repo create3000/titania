@@ -78,10 +78,6 @@ public:
 	size_t
 	getMaxClipPlanes () const;
 
-	ClipPlaneStack &
-	getClipPlanes ()
-	{ return clipPlanes; }
-
 	const X3DPtr <MotionBlur> &
 	getMotionBlur () const
 	{ return motionBlur; }
@@ -122,7 +118,6 @@ private:
 
 	MFInt32             viewport;
 	int32_t             maxClipPlanes;
-	ClipPlaneStack      clipPlanes;
 	X3DPtr <MotionBlur> motionBlur;
 
 };

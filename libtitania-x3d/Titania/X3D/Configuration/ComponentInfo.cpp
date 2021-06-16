@@ -60,10 +60,10 @@ const std::string ComponentInfo::typeName = "ComponentInfo";
 ComponentInfo::ComponentInfo (const std::string & title, const std::string & name, const size_t level) :
 	X3DChildObject (),
 	         title (title),
-	          name (name),
 	         level (level),
 	   providerUrl ("http://titania.create3000.de")
 {
+	setName (name);
 	setup ();
 }
 
@@ -79,7 +79,7 @@ ComponentInfo::toStream (std::ostream & ostream) const
 	ostream
 		<< "COMPONENT"
 		<< Generator::Space
-		<< name
+		<< getName ()
 		<< Generator::TidySpace
 		<< ':'
 		<< Generator::TidySpace
@@ -96,7 +96,7 @@ ComponentInfo::toXMLStream (std::ostream & ostream) const
 		<< "<component"
 		<< Generator::Space
 		<< "name='"
-		<< name
+		<< getName ()
 		<< "'"
 		<< Generator::Space
 		<< "level='"
@@ -121,7 +121,7 @@ ComponentInfo::toJSONStream (std::ostream & ostream) const
 		<< ':'
 		<< Generator::TidySpace
 		<< '"'
-		<< name
+		<< getName ()
 		<< '"'
 		<< ','
 		<< Generator::TidyBreak;
@@ -145,7 +145,7 @@ ComponentInfo::toJSONStream (std::ostream & ostream) const
 void
 ComponentInfo::dispose ()
 {
-	X3DChildObject::dispose (); 
+	X3DChildObject::dispose ();
 }
 
 ComponentInfo::~ComponentInfo ()

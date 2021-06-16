@@ -550,7 +550,6 @@ enum NodeType : uint16_t
 	X3DParser,
 	X3DProtoDeclarationNode,
 	X3DRenderObject,
-	X3DRouterObject,
 	X3DScene,
 
 	// Viewer

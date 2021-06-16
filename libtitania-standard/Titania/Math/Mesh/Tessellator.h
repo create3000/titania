@@ -55,8 +55,16 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Functional.h>
 
+extern "C"
+{
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
+}
 
 #include <iostream>
 #include <functional>
@@ -310,12 +318,12 @@ tessellator <Type, Args ...>::tessellator (const bool debug) :
 	if (m_tess)
 	{
 		gluTessProperty (m_tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (m_tess, GLU_TESS_BEGIN_DATA,   _GLUfuncptr (&tessellator::tess_begin_data));
-		gluTessCallback (m_tess, GLU_TESS_VERTEX_DATA,  _GLUfuncptr (&tessellator::tess_vertex_data));
-		gluTessCallback (m_tess, GLU_TESS_END_DATA,     _GLUfuncptr (&tessellator::tess_end_data));
+		gluTessCallback (m_tess, GLU_TESS_BEGIN_DATA,   (void (*)()) &tessellator::tess_begin_data);
+		gluTessCallback (m_tess, GLU_TESS_VERTEX_DATA,  (void (*)()) &tessellator::tess_vertex_data);
+		gluTessCallback (m_tess, GLU_TESS_END_DATA,     (void (*)()) &tessellator::tess_end_data);
 
 		if (debug)
-			gluTessCallback (m_tess, GLU_TESS_ERROR, _GLUfuncptr (&tessellator::tess_error));
+			gluTessCallback (m_tess, GLU_TESS_ERROR, (void (*)()) (&tessellator::tess_error));
 	}
 }
 
@@ -342,7 +350,7 @@ tessellator <Type, Args ...>::combine (const combine_function_type & value)
 	m_combine = value;
 
 	if (m_combine)
-		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tess_combine_data));
+		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, (void (*)()) &tessellator::tess_combine_data);
 	else
 		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, nullptr);
 }

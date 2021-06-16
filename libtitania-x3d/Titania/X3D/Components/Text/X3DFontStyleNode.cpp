@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/FileLoader.h"
+#include "../../Browser/Networking/config.h"
 
 namespace titania {
 namespace X3D {
@@ -83,7 +84,7 @@ X3DFontStyleNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	style ()       .addInterest (&X3DFontStyleNode::set_style, this);
+	style ()       .addInterest (&X3DFontStyleNode::set_style,   this);
 	horizontal ()  .addInterest (&X3DFontStyleNode::set_justify, this);
 	leftToRight () .addInterest (&X3DFontStyleNode::set_justify, this);
 	topToBottom () .addInterest (&X3DFontStyleNode::set_justify, this);
@@ -161,13 +162,24 @@ X3DFontStyleNode::createFont (const String & rawFamilyName, bool & isExactMatch)
 	// Test if familyName is a valid path local path.
 	// TODO: add support for network paths.
 
-	static const std::map <std::string, std::string> defaultFonts = {
-		std::pair ("SERIF",      "Droid Serif"),
-		std::pair ("SANS",       "Ubuntu"),
-		std::pair ("TYPEWRITER", "Ubuntu Mono"),
+	static const std::map <std::tuple <std::string, bool, bool>, std::string> defaultFonts = {
+		std::pair (std::make_tuple ("SERIF",      false, false), get_font ("DroidSerif-Regular.ttf")    .str ()),
+		std::pair (std::make_tuple ("SERIF",      false, true),  get_font ("DroidSerif-Italic.ttf")     .str ()),
+		std::pair (std::make_tuple ("SERIF",      true,  false), get_font ("DroidSerif-Bold.ttf")       .str ()),
+		std::pair (std::make_tuple ("SERIF",      true,  true),  get_font ("DroidSerif-BoldItalic.ttf") .str ()),
+
+		std::pair (std::make_tuple ("SANS",       false, false), get_font ("Ubuntu-R.ttf")              .str ()),
+		std::pair (std::make_tuple ("SANS",       false, true),  get_font ("Ubuntu-RI.ttf")             .str ()),
+		std::pair (std::make_tuple ("SANS",       true,  false), get_font ("Ubuntu-B.ttf")              .str ()),
+		std::pair (std::make_tuple ("SANS",       true,  true),  get_font ("Ubuntu-BI.ttf")             .str ()),
+
+		std::pair (std::make_tuple ("TYPEWRITER", false, false), get_font ("UbuntuMono-R.ttf")          .str ()),
+		std::pair (std::make_tuple ("TYPEWRITER", false, true),  get_font ("UbuntuMono-RI.ttf")         .str ()),
+		std::pair (std::make_tuple ("TYPEWRITER", true,  false), get_font ("UbuntuMono-B.ttf")          .str ()),
+		std::pair (std::make_tuple ("TYPEWRITER", true,  true),  get_font ("UbuntuMono-BI.ttf")         .str ()),
 	};
 
-	const auto iter       = defaultFonts .find (rawFamilyName);
+	const auto iter       = defaultFonts .find (std::make_tuple (rawFamilyName, bold, italic));
 	const auto familyName = iter == defaultFonts .end () ? rawFamilyName .raw () : iter -> second;
 
 	try

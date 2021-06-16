@@ -132,7 +132,7 @@ LightSaber::on_motion1_notify_event (GdkEventMotion* event)
 
 		auto complex = std::complex <double> (direction .x (), direction .y ());
 
-		complex = std::polar (std::abs (complex), std::round (std::arg (complex) / snapAngle) * snapAngle);
+		complex = X3D::polar (std::abs (complex), std::round (std::arg (complex) / snapAngle) * snapAngle);
 
 		points [1] = points [0] + Vector2d (complex .real (), complex .imag ());
 	}

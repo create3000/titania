@@ -129,7 +129,7 @@ X3DViewer::getDistanceToCenter () const
 Vector3d
 X3DViewer::trackballProjectToSphere (double x, double y) const
 {
-	x = x / getBrowser () -> get_width () - 0.5;
+	x =  x / getBrowser () -> get_width ()  - 0.5;
 	y = -y / getBrowser () -> get_height () + 0.5;
 
 	return Vector3d (x, y, tb_project_to_sphere (0.5, x, y));

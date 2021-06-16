@@ -64,6 +64,8 @@ class X3DTextureCoordinateNode :
 {
 public:
 
+	using X3DGeometricPropertyNode::assign;
+
 	///  @name Member access
 
 	virtual

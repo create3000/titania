@@ -119,10 +119,16 @@ ScreenFontStyle::getLineHeight () const
 double
 ScreenFontStyle::getSize () const
 {
-	const double height   = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
+	#ifdef __APPLE__
+	const auto   monitor  = Gdk::Display::get_default () -> get_monitor (0);
+	const double height_p = Gdk::Screen::get_default () -> get_height (); // Screen height in pixel
+	const double height_m = monitor -> get_height_mm () / 1000.0;         // Screen height in meter
+	#else
+	const double height_p = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
 	const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Screen height in meter
+	#endif
 
-	return point <double> * pointSize () * height / height_m;
+	return point <double> * pointSize () * height_p / height_m;
 }
 
 void

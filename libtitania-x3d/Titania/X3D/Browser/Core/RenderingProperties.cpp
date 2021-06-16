@@ -141,27 +141,28 @@ RenderingProperties::initialize ()
 	Renderer () = getBrowser () -> getRenderer ();
 	Version ()  = getBrowser () -> getGLVersion ();
 
-	GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
+	GLint glRedBits = 8, glGreen = 8, glBlueBits = 8, glAlphaBits = 8;
 	GLint textureMemory, maxTextureSize, maxTextureUnits;
 
 	if (getBrowser () -> getExtension ("GL_NVX_gpu_memory_info"))
 	{
+		#ifdef GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX
 		int32_t kbytes = 0;
 
 		glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &kbytes);
 
 		textureMemory = size_t (kbytes) * 1024;
+		#else
+		textureMemory = 0;
+		#endif
 	}
 	else
+	{
 		textureMemory = 0;
+	}
 
 	glGetIntegerv (GL_MAX_TEXTURE_SIZE,  &maxTextureSize);
-	glGetIntegerv (GL_MAX_TEXTURE_UNITS, &maxTextureUnits);
-
-	glGetIntegerv (GL_RED_BITS,   &glRedBits);
-	glGetIntegerv (GL_GREEN_BITS, &glGreen);
-	glGetIntegerv (GL_BLUE_BITS,  &glBlueBits);
-	glGetIntegerv (GL_ALPHA_BITS, &glAlphaBits);
+	glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
 
 	TextureUnits ()   = maxTextureUnits;
 	MaxTextureSize () = maxTextureSize;
@@ -180,7 +181,7 @@ void
 RenderingProperties::set_Enabled ()
 {
 	// Visual display of RenderingProperties
-	
+
 	getBrowser () -> initialized () .removeInterest (&RenderingProperties::set_Enabled, this);
 
 	try
@@ -195,11 +196,11 @@ RenderingProperties::set_Enabled ()
 		{
 			headUpDisplay -> order ()  .emplace_back (headUpDisplay -> layers () .size () + 1);
 			headUpDisplay -> layers () .emplace_back (layer);
-	
+
 			getBrowser () -> initialized ()   .addInterest (&RenderingProperties::reset, this);
 			getBrowser () -> prepareEvents () .addInterest (&RenderingProperties::prepare, this);
 			getBrowser () -> displayed ()     .addInterest (&RenderingProperties::display, this);
-	
+
 			reset ();
 		}
 		else
@@ -308,34 +309,35 @@ RenderingProperties::build ()
 {
 	try
 	{
+		const auto name = Vendor () .str () + " " + Renderer () .str ();
+
 		GLint sampleBuffers, samples;
-	
+
 		glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
-		glGetIntegerv (GL_SAMPLES, &samples);
-	
+		glGetIntegerv (GL_SAMPLES,        &samples);
+
 		size_t numOpaqueShapes      = 0;
 		size_t numTransparentShapes = 0;
-	
+
 		for (const auto & layer : getBrowser () -> getWorld () -> getLayerSet () -> getLayers ())
 		{
 			numOpaqueShapes      += layer -> getNumOpaqueShapes ();
 			numTransparentShapes += layer -> getNumTransparentShapes ();
 		}
-	
+
 		const auto statistics = scene -> getNamedNode ("RenderingProperties");
 		auto &     string     = statistics -> getField <MFString> ("string");
 
 		string .clear ();
 
-		std::ostringstream stringstream;
-
 		string .emplace_back (_ ("Current Graphics Renderer"));
-		string .emplace_back (basic::sprintf (_ ("  Name: %s %s"), Vendor () .c_str (), Renderer () .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("  Name: %.32s"), name .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
 		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getViewport () [2], getBrowser () -> getViewport () [3]));
 		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd"), getBrowser () -> getCombinedTextureUnits () .size ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
+		#ifndef __APPLE__
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), MaxLights () .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Max clip planes:           %zd"), getBrowser () -> getMaxClipPlanes ()));
@@ -343,6 +345,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Texture memory:            %s"), Glib::format_size (getBrowser () -> getTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), Glib::format_size (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), Glib::format_size (getBrowser () -> getMemoryUsage ()) .c_str ()));
+		#endif
 		string .emplace_back ();
 		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (SFTime::now () - initialized) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f m/s"), getBrowser () -> getCurrentSpeed ()));

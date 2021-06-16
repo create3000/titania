@@ -71,12 +71,14 @@ class X3DCoordinateNode :
 {
 public:
 
+	using X3DGeometricPropertyNode::assign;
+
 	///  @name Member access
 
 	virtual
 	Box3d
 	getBBox () const = 0;
-	
+
 	virtual
 	void
 	set1Point (const size_t index, const Vector3d & value) = 0;
@@ -121,7 +123,7 @@ public:
 	virtual
 	void
 	erasePoint (const size_t index) = 0;
-	
+
 	virtual
 	void
 	resize (const size_t value) = 0;

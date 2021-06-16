@@ -91,7 +91,7 @@ SpiderMonkey::initialize ()
 JSContext*
 SpiderMonkey::createContext ()
 {
-	const auto cx = JS_NewContext (2048uL * 1024uL * 1024uL);
+	const auto cx = JS_NewContext (JS::DefaultHeapMaxBytes);
 
 	if (not cx)
 		return nullptr;

@@ -34,11 +34,12 @@ mkinstalldirs
 rules.make
 stamp-h1
 
+/Titania/titania
 
 */bin
 */obj
-experimental/experimental
-experimental/titania-experimental
+/experimental/experimental
+/experimental/titania-experimental
 
 .debhelper
 debian/titania
@@ -59,3 +60,5 @@ titania_*.snap
 
 .vs
 .vscode/ipch
+
+brew

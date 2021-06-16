@@ -89,7 +89,6 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	    commentCharacters ()
 { }
 
-
 ///  throws Error <INVALID_X3D>
 void
 Parser::parseIntoScene ()
@@ -815,7 +814,7 @@ Parser::proto ()
 
 			if (Grammar::OpenBracket (istream))
 			{
-				auto _comments = std::move (getComments ());
+				auto _comments = getComments ();
 
 				FieldDefinitionArray _interfaceDeclarations = interfaceDeclarations ();
 
@@ -823,7 +822,7 @@ Parser::proto ()
 
 				if (Grammar::CloseBracket (istream))
 				{
-					auto _interfaceComments = std::move (getComments ());
+					auto _interfaceComments = getComments ();
 
 					comments ();
 
@@ -1062,15 +1061,15 @@ Parser::externproto ()
 
 			if (Grammar::OpenBracket (istream))
 			{
-				auto _comments = std::move (getComments ());
+				auto _comments = getComments ();
 
-				FieldDefinitionArray _externInterfaceDeclarations = std::move (externInterfaceDeclarations ());
+				FieldDefinitionArray _externInterfaceDeclarations = externInterfaceDeclarations ();
 
 				comments ();
 
 				if (Grammar::CloseBracket (istream))
 				{
-					auto _interfaceComments = std::move (getComments ());
+					auto _interfaceComments = getComments ();
 
 					MFString _URLList;
 
@@ -1281,9 +1280,9 @@ Parser::routeStatement ()
 									try
 									{
 										const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
-	
+
 										_route -> addComments (getComments ());
-	
+
 										return true;
 									}
 									catch (const Error <IMPORTED_NODE> & error)
@@ -1470,7 +1469,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 								catch (const Error <INVALID_NAME> &)
 								{
 									exception ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
-									
+
 									return true;
 								}
 
@@ -1544,8 +1543,12 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 		istream .clear (state);
 
+		#ifdef __APPLE__
+			istream .seekg (pos);
+		#else
 		for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
 			istream .unget ();
+		#endif
 	}
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();
@@ -2366,14 +2369,14 @@ Parser::sfimageValue (SFImage* _field)
 				_field -> setWidth (width);
 				_field -> setHeight (height);
 				_field -> setComponents (components);
-		
+
 				MFInt32 & array = _field -> getArray ();
 
 				for (size_t i = 0, size = array .size (); i < size; ++ i)
 				{
 					if (Int32 (pixel))
 						array [i] = pixel;
-				
+
 					else
 						throw Error <INVALID_X3D> ("Expected more pixel values.");
 				}

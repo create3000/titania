@@ -35,7 +35,7 @@
                 <ComposedShader DEF='ComposedShader'
                     language='GLSL'>
                   <ShaderPart DEF='VertexShader'>
-<![CDATA[data:x-shader/x-vertex,#version 300 es
+<![CDATA[data:x-shader/x-vertex,#version 330
 
 precision mediump float;
 
@@ -62,7 +62,7 @@ main ()
                   </ShaderPart>
                   <ShaderPart DEF='FragmentShader'
                       type='FRAGMENT'>
-<![CDATA[data:x-shader/x-fragment,#version 300 es
+<![CDATA[data:x-shader/x-fragment,#version 330
 
 precision mediump float;
 precision mediump sampler3D;

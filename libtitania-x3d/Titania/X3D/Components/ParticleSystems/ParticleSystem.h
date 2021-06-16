@@ -300,7 +300,7 @@ private:
 	///  @name Member types
 
 	class Particle;
-	class Vertex;
+	struct Vertex;
 	class OddEvenMergeSort;
 
 	enum class GeometryType :

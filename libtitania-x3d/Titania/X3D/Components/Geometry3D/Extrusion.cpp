@@ -521,11 +521,9 @@ Extrusion::build ()
 	for (size_t i = 0, size = coordIndex .size (); i < size; ++ i)
 		getVertices () .emplace_back (points [coordIndex [i]]);
 
-	addElements (GL_TRIANGLES, getVertices () .size ());
-
 	// Build caps
 
-	if (capMax and crossSection () .size () > 2)
+	if (capMax and numCapPoints > 2)
 	{
 		if (beginCap ())
 		{
@@ -533,20 +531,44 @@ Extrusion::build ()
 
 			if (convex ())
 			{
-				Vector3f normal = Triangle3f (points [INDEX (j, 2)], points [INDEX (j, 1)], points [INDEX (j, 0)]) .normal ();
+				auto texCoords = std::vector <Vector4f> ();
+				auto capPoints = std::vector <Vector3d> ();
+
+				for (size_t k = 0; k < numCapPoints; ++ k)
+				{
+					const auto t = (crossSection () .get1Value (numCapPoints - 1 - k) - min) / capMax;
+
+					texCoords .emplace_back (t .x (), t .y (), 0, 1);
+					capPoints .emplace_back (points [INDEX (j, numCapPoints - 1 - k)]);
+				}
+
+				auto normal = Triangle3f (points [INDEX (j, 2)], points [INDEX (j, 1)], points [INDEX (j, 0)]) .normal ();
 
 				if (not ccw ())
 					normal .negate ();
 
-				for (size_t k = 0; k < numCapPoints; ++ k)
-				{
-					const Vector2f t = (crossSection () .get1Value (numCapPoints - 1 - k) - min) / capMax;
-					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals   () .emplace_back (normal);
-					getVertices  () .emplace_back (points [INDEX (j, numCapPoints - 1 - k)]);
-				}
+				const auto & t0 = texCoords [0];
+				const auto & p0 = capPoints [0];
 
-				addElements (getVertexMode (numCapPoints), numCapPoints);
+				for (size_t i = 1, size = capPoints .size () - 1; i < size; ++ i)
+				{
+					const auto & t1 = texCoords [i];
+					const auto & t2 = texCoords [i + 1];
+					const auto & p1 = capPoints [i];
+					const auto & p2 = capPoints [i + 1];
+
+					getTexCoords () .emplace_back (t0);
+					getNormals ()   .emplace_back (normal);
+					getVertices ()  .emplace_back (p0);
+
+					getTexCoords () .emplace_back (t1);
+					getNormals ()   .emplace_back (normal);
+					getVertices ()  .emplace_back (p1);
+
+					getTexCoords () .emplace_back (t2);
+					getNormals ()   .emplace_back (normal);
+					getVertices ()  .emplace_back (p2);
+				}
 			}
 			else
 			{
@@ -570,20 +592,44 @@ Extrusion::build ()
 
 			if (convex ())
 			{
-				Vector3f normal = Triangle3f (points [INDEX (j, 0)], points [INDEX (j, 1)], points [INDEX (j, 2)]) .normal ();
+				auto texCoords = std::vector <Vector4f> ();
+				auto capPoints = std::vector <Vector3d> ();
+
+				for (size_t k = 0; k < numCapPoints; ++ k)
+				{
+					const auto t = (crossSection () .get1Value (k) - min) / capMax;
+
+					texCoords .emplace_back (t .x (), t .y (), 0, 1);
+					capPoints .emplace_back (points [INDEX (j, k)]);
+				}
+
+				auto normal = Triangle3f (points [INDEX (j, 0)], points [INDEX (j, 1)], points [INDEX (j, 2)]) .normal ();
 
 				if (not ccw ())
 					normal .negate ();
 
-				for (size_t k = 0; k < numCapPoints; ++ k)
-				{
-					const Vector2f t = (crossSection () .get1Value (k) - min) / capMax;
-					getTexCoords () .emplace_back (t .x (), t .y (), 0, 1);
-					getNormals   () .emplace_back (normal);
-					getVertices  () .emplace_back (points [INDEX (j, k)]);
-				}
+				const auto & t0 = texCoords [0];
+				const auto & p0 = capPoints [0];
 
-				addElements (getVertexMode (numCapPoints), numCapPoints);
+				for (size_t i = 1, size = capPoints .size () - 1; i < size; ++ i)
+				{
+					const auto & t1 = texCoords [i];
+					const auto & t2 = texCoords [i + 1];
+					const auto & p1 = capPoints [i];
+					const auto & p2 = capPoints [i + 1];
+
+					getTexCoords () .emplace_back (t0);
+					getNormals ()   .emplace_back (normal);
+					getVertices ()  .emplace_back (p0);
+
+					getTexCoords () .emplace_back (t1);
+					getNormals ()   .emplace_back (normal);
+					getVertices ()  .emplace_back (p1);
+
+					getTexCoords () .emplace_back (t2);
+					getNormals ()   .emplace_back (normal);
+					getVertices ()  .emplace_back (p2);
+				}
 			}
 			else
 			{
@@ -602,6 +648,7 @@ Extrusion::build ()
 		}
 	}
 
+	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
 
@@ -617,8 +664,6 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	static constexpr size_t I = 0;
 	static constexpr size_t K = 1;
 
-	const size_t size = getVertices () .size ();
-
 	Vector3f normal;
 
 	for (const auto & polygon : tessellator .polygons ())
@@ -629,9 +674,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
-					normal += Triangle3f (points [std::get < I > (polygon [0] .data ())],
-					                      points [std::get < I > (polygon [i] .data ())],
-					                      points [std::get < I > (polygon [i + 1] .data ())]) .normal ();
+					normal += Triangle3f (points [std::get <I> (polygon [0] .data ())],
+					                      points [std::get <I> (polygon [i] .data ())],
+					                      points [std::get <I> (polygon [i + 1] .data ())]) .normal ();
 				}
 
 				break;
@@ -640,9 +685,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
-					normal += Triangle3f (points [std::get < I > (polygon [is_odd (i) ? i + 1 : i] .data ())],
-					                      points [std::get < I > (polygon [is_odd (i) ? i : i + 1] .data ())],
-					                      points [std::get < I > (polygon [i + 2] .data ())]) .normal ();
+					normal += Triangle3f (points [std::get <I> (polygon [is_odd (i) ? i + 1 : i] .data ())],
+					                      points [std::get <I> (polygon [is_odd (i) ? i : i + 1] .data ())],
+					                      points [std::get <I> (polygon [i + 2] .data ())]) .normal ();
 				}
 
 				break;
@@ -651,9 +696,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 			{
 				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
-					normal += Triangle3f (points [std::get < I > (polygon [i] .data ())],
-					                      points [std::get < I > (polygon [i + 1] .data ())],
-					                      points [std::get < I > (polygon [i + 2] .data ())]) .normal ();
+					normal += Triangle3f (points [std::get <I> (polygon [i] .data ())],
+					                      points [std::get <I> (polygon [i + 1] .data ())],
+					                      points [std::get <I> (polygon [i + 2] .data ())]) .normal ();
 				}
 
 				break;
@@ -742,8 +787,6 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 				break;
 		}
 	}
-
-	addElements (GL_TRIANGLES, getVertices () .size () - size);
 }
 
 SFNode
@@ -932,7 +975,7 @@ Extrusion::toPrimitive () const
 
 	// Build caps
 
-	if (capMax and crossSection () .size () > 2)
+	if (capMax and numCapPoints > 2)
 	{
 		if (beginCap ())
 		{

@@ -49,6 +49,8 @@ class X3DBrowser :
 {
 public:
 
+	using X3DBrowserContext::getProfile;
+
 	///  @name Common members
 
 	virtual
@@ -282,7 +284,7 @@ private:
 	void
 	set_scene (const X3DScenePtr &);
 
-	///  @name 
+	///  @name
 
 	///  @name Static members
 

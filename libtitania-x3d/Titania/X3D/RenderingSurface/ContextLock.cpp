@@ -50,7 +50,7 @@
 
 #include "ContextLock.h"
 
-#include "../RenderingSurface/RenderingContext.h"
+#include "../Browser/X3DBrowser.h"
 #include "../RenderingSurface/X3DRenderingSurface.h"
 
 #include <thread>
@@ -75,41 +75,34 @@ private:
 
 	///  @name Static members
 
-	static std::map <std::thread::id, std::shared_ptr <RenderingContext>> currentContexts;
+	static std::map <std::thread::id, Glib::RefPtr <Gdk::GLContext>> currentContexts;
 
 	static std::mutex mutex;
 
 	///  @name Members
 
-	std::lock_guard <X3DRenderingSurface> surfaceLock;
-	std::shared_ptr <RenderingContext>    previousContext;
+	Glib::RefPtr <Gdk::GLContext> previousContext;
 
 };
 
-std::map <std::thread::id, std::shared_ptr <RenderingContext>> ContextLock::Implementation::currentContexts;
+std::map <std::thread::id, Glib::RefPtr <Gdk::GLContext>> ContextLock::Implementation::currentContexts;
 std::mutex ContextLock::Implementation::mutex;
 
 ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface) :
-	    surfaceLock (*renderingSurface),
 	previousContext ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
 	const auto currentContext = renderingSurface -> getContext ();
 
+	if (not currentContext)
+		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+
 	previousContext = currentContexts [std::this_thread::get_id ()];
 
-	if (currentContext)
-	{
-		if (currentContext -> makeCurrent ())
-		{
-			currentContexts [std::this_thread::get_id ()] = currentContext;
-		   return;
-		}
-	}
+	currentContext -> make_current ();
 
-	// Throw an exception if it cannot make current!  The destructor is then not called.
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	currentContexts [std::this_thread::get_id ()] = currentContext;
 }
 
 ContextLock::Implementation::~Implementation ()
@@ -118,17 +111,21 @@ ContextLock::Implementation::~Implementation ()
 
 	if (previousContext)
 	{
-		if (previousContext -> makeCurrent ())
-		{
-			currentContexts [std::this_thread::get_id ()] = previousContext;
-			return;
-		}
+		previousContext -> make_current ();
+
+		currentContexts [std::this_thread::get_id ()] = previousContext;
 	}
+	else
+	{
+		currentContexts .erase (std::this_thread::get_id ());
 
-	currentContexts .erase (std::this_thread::get_id ());
-
-	RenderingContext::clearCurrent ();
+		Gdk::GLContext::clear_current ();
+	}
 }
+
+ContextLock::ContextLock (X3DBrowser* const browser) :
+	ContextLock (static_cast <X3DRenderingSurface*> (browser))
+{ }
 
 /**
  *  When a ContextLock object is created, it attempts to aquire the OpenGL context of the browser instance, otherwise
@@ -141,9 +138,6 @@ ContextLock::Implementation::~Implementation ()
 ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface) :
 	implementation ()
 {
-	if (not renderingSurface)
-		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-
 	implementation .reset (new Implementation (renderingSurface));
 }
 

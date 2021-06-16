@@ -54,6 +54,8 @@
 #include "../Rendering/MotionBlur.h"
 #include "../../Rendering/OpenGL.h"
 
+#include "../../Debug.h"
+
 namespace titania {
 namespace X3D {
 
@@ -61,7 +63,6 @@ X3DRenderingContext::X3DRenderingContext () :
 	         X3DBaseNode (),
 	            viewport ({ 0, 0, 0, 0 }),
 	       maxClipPlanes (0),
-	          clipPlanes (),
 	          motionBlur (new MotionBlur (getExecutionContext ()))
 {
 	addChildObjects (viewport, motionBlur);
@@ -72,30 +73,23 @@ X3DRenderingContext::initialize ()
 {
 	// Configure context
 
-	glEnable (GL_POINT_SPRITE);
+	// Set default VAO.
+	GLuint vertexArrayId = 0;
+	glGenVertexArrays (1, &vertexArrayId);
+	glBindVertexArray (vertexArrayId);
+
+	GL_ERROR;
+	glEnable (GL_POINT_SPRITE); // Throws error on __APPLE__.
+	GL_ERROR;
 	glEnable (GL_PROGRAM_POINT_SIZE);
 
 	glEnable (GL_SCISSOR_TEST);
-
 	glCullFace (GL_BACK);
-	glEnable (GL_NORMALIZE);
-
 	glDepthFunc (GL_LEQUAL);
 	glClearDepth (1);
 
 	glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
-
-	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
-
-	glHint (GL_FOG_HINT, GL_NICEST);
-
-	// ClipPlanes
-
-	glGetIntegerv (GL_MAX_CLIP_PLANES, &maxClipPlanes);
-
-	for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
-		clipPlanes .push (GL_CLIP_PLANE0 + i);
 
 	// Setup
 

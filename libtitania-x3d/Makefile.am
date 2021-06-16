@@ -616,11 +616,9 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Rendering/X3DRenderObject.cpp \
 	$(current_dir)/Titania/X3D/Rendering/X3DShapeContainer.cpp \
 	$(current_dir)/Titania/X3D/RenderingSurface/ContextLock.cpp \
-	$(current_dir)/Titania/X3D/RenderingSurface/RenderingContext.cpp \
 	$(current_dir)/Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	$(current_dir)/Titania/X3D/Routing/Route.cpp \
 	$(current_dir)/Titania/X3D/Routing/Router.cpp \
-	$(current_dir)/Titania/X3D/Routing/X3DRouterObject.cpp \
 	$(current_dir)/Titania/X3D/Thread/SceneFuture.cpp \
 	$(current_dir)/Titania/X3D/Thread/Texture3DFuture.cpp \
 	$(current_dir)/Titania/X3D/Thread/TextureFuture.cpp \
@@ -715,20 +713,22 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Tools/X_ITE/TouchGroupTool.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
-	$(TITANIA_FTGL_LIBS) \
+	$(TITANIA_GL_LIBS) \
 	$(TITANIA_STANDARD_LIBS) \
 	$(TITANIA_STREAM_LIBS) \
-	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
+	$(TITANIA_FTGL_LIBS) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
-	$(top_builddir)/libtitania-stream/libtitania-stream.la
+	$(top_builddir)/libtitania-stream/libtitania-stream.la \
+	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
-	$(TITANIA_FTGL_CFLAGS) \
+	$(TITANIA_GL_CFLAGS) \
 	$(TITANIA_STANDARD_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
-	-I$(top_builddir)/libtitania-ftgl \
+	$(TITANIA_FTGL_CFLAGS) \
 	-I$(top_builddir)/libtitania-standard \
-	-I$(top_builddir)/libtitania-stream
+	-I$(top_builddir)/libtitania-stream \
+	-I$(top_builddir)/libtitania-ftgl
 
 AM_LDFLAGS = -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -ldcmjpeg -ldcmjpls -lijg8 -lijg12 -lijg16 -lofstd
 

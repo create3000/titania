@@ -252,8 +252,9 @@ private:
 
 	///  @name Event handlers
 
+	virtual
 	void
-	initialize ();
+	initialize () final override;
 
 	void
 	set_type ();

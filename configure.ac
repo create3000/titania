@@ -44,7 +44,7 @@ dnl ***************************************************************************
 dnl ******* add "-flto --plugin=$(gcc --print-file-name=liblto_plugin.so)" flags (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 dnl ******* CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
 
-CXXFLAGS="-std=c++17 -O3 -fopenmp -Wall -Wno-narrowing -Wno-deprecated -Wno-unused-result"
+CXXFLAGS="-std=c++17 -O3 -Wall -Wno-narrowing -Wno-deprecated -Wno-unused-result"
 
 ### add GTKMM_DISABLE_DEPRECATED
 
@@ -60,7 +60,17 @@ if test "x$enable_flatpak_spawn" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_FLATPAK_SPAWN"
 fi
 
-LDFLAGS="-rdynamic -latomic"
+LDFLAGS="-rdynamic"
+
+if uname -s | grep -q "Darwin"; then
+   export PKG_CONFIG_PATH="/opt/X11/lib/pkgconfig:"`pwd`/brew/mozjs/lib/pkgconfig:`pwd`/brew/gstreamermm/lib/pkgconfig
+	CXXFLAGS=$CXXFLAGS" -static"
+	CXXFLAGS=$CXXFLAGS" -I/usr/local/include"
+	CXXFLAGS=$CXXFLAGS" -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR -D_LIBCPP_ENABLE_CXX17_REMOVED_FEATURES -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED"
+	LDFLAGS=$LDFLAGS" -L/usr/local/lib -lomp -framework OpenGL"
+else
+	CXXFLAGS=$CXXFLAGS" -latomic -fopenmp"
+fi
 
 
 
@@ -101,10 +111,11 @@ AC_CHECK_HEADERS([GL/gl.h GL/glx.h], [:], [USE_GLX="no"])
 AC_CHECK_LIB([GL], [glXCreateContext], [:] [USE_GLX="no"])
 AM_CONDITIONAL(USE_GLX, test "$USE_GLX" = "yes")
 
-if test "$USE_GLX" = "no"; then
-	AC_MSG_ERROR([*** Please install X11 backend.])
+if ! uname -s | grep -q "Darwin"; then
+   if test "$USE_GLX" = "no"; then
+      AC_MSG_ERROR([*** Please install X11 backend.])
+   fi
 fi
-
 
 
 dnl ***************************************************************************
@@ -125,27 +136,31 @@ dnl Check required libraries
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(TITANIA,
+gtkmm-3.0
 gtksourceviewmm-3.0)
 
 PKG_CHECK_MODULES(TITANIA_X3D,
 gtkmm-3.0
-gl
 glibmm-2.4
 gstreamermm-1.0
 fontconfig
-glu
-glew
 mozjs-68
 libxml++-2.6
 json-c
 libgtop-2.0
-bullet)
+bullet
+x11)
+
+if ! uname -s | grep -q "Darwin"; then
+	PKG_CHECK_MODULES(TITANIA_GL,
+	gl
+	glu
+	glew)
+fi
 
 PKG_CHECK_MODULES(TITANIA_FTGL,
 freetype2
-fontconfig
-gl
-glu)
+fontconfig)
 
 PKG_CHECK_MODULES(TITANIA_STREAM,
 libcurl
@@ -157,9 +172,10 @@ sqlite3)
 PKG_CHECK_MODULES(TITANIA_STANDARD,
 giomm-2.4
 glibmm-2.4
-gl
-glu
 zlib)
+
+PKG_CHECK_MODULES(TITANIA_EXPERIMENTAL,
+gtkmm-3.0)
 
 
 AC_OUTPUT([

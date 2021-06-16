@@ -67,11 +67,12 @@ public:
 
 	Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter);
 
+	virtual
 	Browser*
-	create (X3DExecutionContext* const executionContext) const;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Destruction
-	
+
 	virtual
 	~Browser () final override;
 

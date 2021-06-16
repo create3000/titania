@@ -1795,7 +1795,7 @@
         <signal name="style-updated" handler="on_style_updated" swapped="no"/>
         <child>
           <object class="GtkHeaderBar" id="HeaderBar">
-            <property name="visible">True</property>
+            <property name="visible">False</property>
             <property name="can_focus">False</property>
             <property name="title">Titania</property>
             <property name="show_close_button">True</property>

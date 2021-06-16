@@ -88,7 +88,7 @@ public:
 	constexpr
 	ObjectType
 	getId ()
-	{ throw std::runtime_error ("getId"); }
+	{ throw std::runtime_error ("getId"); return ObjectType (); }
 
 
 private:
@@ -573,6 +573,14 @@ SFVec3 <X3D::SFVec3f>::getId ()
 
 using SFVec3d = SFVec3 <X3D::SFVec3d>;
 using SFVec3f = SFVec3 <X3D::SFVec3f>;
+
+#ifdef __APPLE__
+template <>
+const JSClass SFVec3d::static_class;
+
+template <>
+const JSClass SFVec3f::static_class;
+#endif
 
 extern template class SFVec3 <X3D::SFVec3d>;
 extern template class SFVec3 <X3D::SFVec3f>;

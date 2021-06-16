@@ -76,8 +76,8 @@ libtitania_standard_la_SOURCES =  \
 	$(current_dir)/Titania/String/sprintf.cpp \
 	$(current_dir)/Titania/String/trim.cpp
 
-libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS)
+libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) $(TITANIA_GL_LIBS)
 
-AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS)
+AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS) $(TITANIA_GL_CFLAGS)
 
 AM_LDFLAGS = -lgmp -lmpfr

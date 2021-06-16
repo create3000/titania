@@ -98,19 +98,21 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 	{
 		if (points .empty ())
 			return false;
-	
+
 		ContextLock lock (getBrowser ());
-	
+
+		const auto & viewport = getBrowser () -> getViewport ();
+
 		getBrowser () -> addEvent ();
 		getBrowser () -> displayed () .removeInterest (&X3DSelector::display, this);
 
 		// Hide tools.
-	
+
 		getBrowser () -> getDisplayTools () .push (false);
 
 		// Depth buffer
-	
-		getBrowser () -> getDepthBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0, true));
+
+		getBrowser () -> getDepthBuffer () .reset (new FrameBuffer (getBrowser (), viewport [2], viewport [3], 0, true));
 		getBrowser () -> getDepthBuffer () -> setup ();
 		getBrowser () -> getDepthBuffer () -> bind ();
 
@@ -121,7 +123,7 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 
 		// Selection buffer
 
-		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
+		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), viewport [2], viewport [3], 0));
 		getBrowser () -> getSelectionBuffer () -> setup ();
 		getBrowser () -> getSelectionBuffer () -> bind ();
 
@@ -139,7 +141,7 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 		getBrowser () -> setSelectionType (selectionType);
 
 		// Show tools.
-	
+
 		getBrowser () -> getDisplayTools () .pop ();
 
 		// Reset

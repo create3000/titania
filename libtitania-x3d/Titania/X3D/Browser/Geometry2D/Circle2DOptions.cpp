@@ -89,7 +89,7 @@ Circle2DOptions::build ()
 
 	for (int32_t n = 0, size = dimension (); n < size; ++ n)
 	{
-		const auto point = std::polar <double> (1, angle * n);
+		const auto point = X3D::polar <double> (1, angle * n);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

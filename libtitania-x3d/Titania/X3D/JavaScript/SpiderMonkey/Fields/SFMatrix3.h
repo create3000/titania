@@ -94,7 +94,7 @@ public:
 	constexpr
 	ObjectType
 	getId ()
-	{ throw std::runtime_error ("getId"); }
+	{ throw std::runtime_error ("getId"); return ObjectType (); }
 
 
 private:
@@ -387,7 +387,7 @@ SFMatrix3 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 		{
 			if (argc > 1)
 			{
-				const auto complex = std::polar <typename InternalType::value_type> (1, rotation);
+				const auto complex = X3D::polar <typename InternalType::value_type> (1, rotation);
 
 				getArgument <rotation_type> (cx, args, 1) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), rotation));
 			}
@@ -407,7 +407,7 @@ SFMatrix3 <InternalType>::getTransform (JSContext* cx, unsigned argc, JS::Value*
 		{
 			if (argc > 3)
 			{
-				const auto complex = std::polar <typename InternalType::value_type> (1, scaleOrientation);
+				const auto complex = X3D::polar <typename InternalType::value_type> (1, scaleOrientation);
 
 				getArgument <rotation_type> (cx, args, 3) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
 			}
@@ -612,6 +612,14 @@ SFMatrix3 <X3D::SFMatrix3f>::getId ()
 
 using SFMatrix3d = SFMatrix3 <X3D::SFMatrix3d>;
 using SFMatrix3f = SFMatrix3 <X3D::SFMatrix3f>;
+
+#ifdef __APPLE__
+template <>
+const JSClass SFMatrix3d::static_class;
+
+template <>
+const JSClass SFMatrix3f::static_class;
+#endif
 
 extern template class SFMatrix3 <X3D::SFMatrix3d>;
 extern template class SFMatrix3 <X3D::SFMatrix3f>;

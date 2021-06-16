@@ -61,6 +61,20 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <Vector4d>::typeName;
+
+template <>
+const std::string X3DField <Vector4f>::typeName;
+
+template <>
+const FieldType X3DField <Vector4d>::type;
+
+template <>
+const FieldType X3DField <Vector4f>::type;
+#endif
+
 extern template class X3DField <Vector4d>;
 extern template class X3DField <Vector4f>;
 
@@ -83,6 +97,7 @@ public:
 
 	using X3DField <InternalType>::addInterest;
 	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::copy;
 	using X3DField <InternalType>::setValue;
 	using X3DField <InternalType>::getValue;
 	using X3DField <InternalType>::getUnit;

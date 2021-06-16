@@ -78,15 +78,15 @@ FileGenerator::write (std::ostream & ostream, const X3DScenePtr & scene, const s
 	using GeneratorCallback = std::function <bool (std::ostream &, const X3DScenePtr &)>;
 
 	static const std::map <std::string, GeneratorCallback> generators = {
-		std::pair (".x3d",   generate_x3d),
-		std::pair (".x3dz",  generate_x3d),
-		std::pair (".x3dj",  generate_x3dj),
-		std::pair (".x3dv",  generate_x3dv),
-		std::pair (".x3dvz", generate_x3dv),
-		std::pair (".wrl",   generate_wrl),
-		std::pair (".vrml",  generate_wrl),
-		std::pair (".vrm",   generate_wrl),
-		std::pair (".wrz",   generate_wrl),
+		std::pair (".x3d",   &generate_x3d),
+		std::pair (".x3dz",  &generate_x3d),
+		std::pair (".x3dj",  &generate_x3dj),
+		std::pair (".x3dv",  &generate_x3dv),
+		std::pair (".x3dvz", &generate_x3dv),
+		std::pair (".wrl",   &generate_wrl),
+		std::pair (".vrml",  &generate_wrl),
+		std::pair (".vrm",   &generate_wrl),
+		std::pair (".wrz",   &generate_wrl),
 	};
 
 	Generator::Style    (ostream, outputStyle);
@@ -137,13 +137,13 @@ FileGenerator::write (const X3DScenePtr & scene, basic::uri worldURL, const std:
 			if (compressed .at (worldURL .extension ()))
 			{
 				basic::ogzstream ostream (worldURL .path ());
-		
+
 				write (ostream, scene, worldURL .extension (), outputStyle, metadata);
 			}
 			else
 			{
 				std::ofstream ostream (worldURL .path ());
-		
+
 				write (ostream, scene, worldURL .extension (), outputStyle, metadata);
 			}
 		}

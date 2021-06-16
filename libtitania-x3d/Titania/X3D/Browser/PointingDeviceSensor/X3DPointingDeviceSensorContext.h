@@ -122,7 +122,7 @@ protected:
 	///  @name Friends
 
 	friend class Anchor;
-	friend class HierarchyGuard;
+	friend struct HierarchyGuard;
 	friend class LayerSet;
 	friend class LightSaber;
 	friend class ParicleSystem;

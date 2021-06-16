@@ -198,7 +198,7 @@ HAnimHumanoid::initialize ()
 	transformNode -> center ()           = center ();
 	transformNode -> bboxSize ()         = bboxSize ();
 	transformNode -> bboxCenter ()       = bboxCenter ();
-	transformNode -> children ()         = { viewpointsNode, skeletonNode, skinNode };
+	transformNode -> children ()         = X3DPtrArray <Group> ({ viewpointsNode, skeletonNode, skinNode });
 
 	transformNode -> isCameraObject ()   .addInterest (&HAnimHumanoid::setCameraObject,   static_cast <X3DChildNode*> (this));
 	transformNode -> isPickableObject () .addInterest (&HAnimHumanoid::setPickableObject, static_cast <X3DChildNode*> (this));

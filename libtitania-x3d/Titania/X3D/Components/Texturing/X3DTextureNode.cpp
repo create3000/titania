@@ -97,23 +97,24 @@ void
 X3DTextureNode::updateTextureProperties (const GLenum target,
                                          const bool haveTextureProperties,
                                          const X3DPtr <TextureProperties> & textureProperties,
-                                         const size_t width, 
-                                         const size_t height, 
-                                         const bool repeatS, 
-                                         const bool repeatT, 
+                                         const size_t width,
+                                         const size_t height,
+                                         const bool repeatS,
+                                         const bool repeatT,
                                          const bool repeatR)
 {
 	glBindTexture (target, getTextureId ());
 
 	if (std::max (width, height) < getBrowser () -> getMinTextureSize () and not haveTextureProperties)
 	{
-		glTexParameteri (target, GL_GENERATE_MIPMAP,    false);
 		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 	else
 	{
-		glTexParameteri (target, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
+		if (textureProperties -> generateMipMaps ())
+			glGenerateMipmap (target);
+
 		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
 		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
 	}
@@ -133,7 +134,7 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 
 	glTexParameterfv (target, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());
 	glTexParameterf  (target, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
-	glTexParameterf  (target, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
+	//glTexParameterf  (target, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
 
 	glBindTexture (target, 0);
 }

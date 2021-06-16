@@ -82,7 +82,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject)
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override
 	{ }
 
 	virtual
@@ -102,10 +102,10 @@ protected:
 	X3DTextGeometry (Text* const, const X3DFontStyleNode* const);
 
 	void
-	initialize ();
+	initialize () final override;
 
 	X3DBrowser*
-	getBrowser () const;
+	getBrowser () const final override;
 
 	Text*
 	getText () const

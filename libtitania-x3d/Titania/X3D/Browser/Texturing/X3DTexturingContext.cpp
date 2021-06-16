@@ -85,6 +85,7 @@ X3DTexturingContext::initialize ()
 {
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
+	#ifdef GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX
 	if (getBrowser () -> getExtension ("GL_NVX_gpu_memory_info"))
 	{
 		int32_t kbytes = 0;
@@ -93,6 +94,7 @@ X3DTexturingContext::initialize ()
 
 		textureMemory = size_t (kbytes) * 1024;
 	}
+	#endif
 
 	glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &maxTextureSize);
 	glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxCombinedTextureUnits);
@@ -140,6 +142,7 @@ X3DTexturingContext::getAvailableTextureMemory () const
 	{
 		ContextLock lock (getBrowser ());
 
+		#ifdef GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX
 		if (getBrowser () -> getExtension ("GL_NVX_gpu_memory_info"))
 		{
 			int32_t kbytes = 0;
@@ -148,7 +151,9 @@ X3DTexturingContext::getAvailableTextureMemory () const
 
 			return size_t (kbytes) * 1024;
 		}
+		#endif
 
+		#ifdef TEXTURE_FREE_MEMORY_ATI
 		if (getBrowser () -> getExtension ("GL_ATI_meminfo"))
 		{
 			static constexpr GLenum TEXTURE_FREE_MEMORY_ATI = 0x87FC;
@@ -159,6 +164,7 @@ X3DTexturingContext::getAvailableTextureMemory () const
 
 			return size_t (kbytes [0]) * 1024;
 		}
+		#endif
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }

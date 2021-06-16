@@ -79,20 +79,20 @@ public:
 		const auto t_b = top - bottom;
 		const auto f_n = farVal - nearVal;
 		const auto n_2 = 2 * nearVal;
-	
+
 		const auto A = (right + left) / r_l;
 		const auto B = (top + bottom) / t_b;
 		const auto C = -(farVal + nearVal) / f_n;
 		const auto D = -n_2 * farVal / f_n;
 		const auto E = n_2 / r_l;
 		const auto F = n_2 / t_b;
-	
+
 		return matrix4 <Type> (E, 0, 0, 0,
 		                       0, F, 0, 0,
 		                       A, B, C, -1,
 		                       0, 0, D, 0);
 	}
-	
+
 	///  Creates an perspective projection matrix.
 	///  @param fieldOfView   Specify the field of view angle.
 	///  @param nearVal       Specify the distances to the nearer depth clipping plane.
@@ -104,7 +104,7 @@ public:
 	perspective (const Type & fieldOfView, const Type & nearVal, const Type & farVal, const Type & width, const Type & height)
 	{
 		const auto ratio = std::tan (fieldOfView / 2) * nearVal;
-	
+
 		if (width > height)
 		{
 			const auto aspect = width * ratio / height;
@@ -116,7 +116,7 @@ public:
 			return frustum (-ratio, ratio, -aspect, aspect, nearVal, farVal);
 		}
 	}
-	
+
 	///  Creates an perspective projection matrix.
 	///  @param fieldOfView   Specify the field of view angle for both width and height.
 	///  @param nearVal       Specify the distances to the nearer depth clipping plane.
@@ -128,10 +128,10 @@ public:
 	perspective2 (const Type & fieldOfView, const Type & nearVal, const Type & farVal, const Type & width, const Type & height)
 	{
 		const auto ratio = std::tan (fieldOfView / 2) * nearVal;
-	
+
 		return frustum (-ratio, ratio, -ratio, ratio, nearVal, farVal);
 	}
-	
+
 	///  Creates an othographic projection matrix.
 	///  @param left      Specify the coordinates for the left vertical clipping plane.
 	///  @param right     Specify the coordinates for the left vertical clipping plane.
@@ -148,20 +148,20 @@ public:
 		const auto r_l = right - left;
 		const auto t_b = top - bottom;
 		const auto f_n = farVal - nearVal;
-	
+
 		const auto A =  2 / r_l;
 		const auto B =  2 / t_b;
 		const auto C = -2 / f_n;
 		const auto D = -(right + left) / r_l;
 		const auto E = -(top + bottom) / t_b;
 		const auto F = -(farVal + nearVal) / f_n;
-	
+
 		return matrix4 <Type> (A, 0, 0, 0,
 		                       0, B, 0, 0,
 		                       0, 0, C, 0,
 		                       D, E, F, 1);
 	}
-	
+
 	///  Creates an othographic projection matrix that has the size of @a box.
 	static
 	matrix4 <Type>
@@ -170,7 +170,7 @@ public:
 		const auto   extents = box .extents ();
 		const auto & min     = extents .first;
 		const auto & max     = extents .second;
-	
+
 		return ortho (min .x (), max .x (), min .y (), max .y (), -max .z (), -min .z ());
 	}
 };

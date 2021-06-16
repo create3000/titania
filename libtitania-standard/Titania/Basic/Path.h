@@ -115,7 +115,7 @@ public:
 	///  Random access iterator
 	using iterator = typename array_type::iterator;
 
-	///  Constant random access iterator 
+	///  Constant random access iterator
 	using const_iterator = typename array_type::const_iterator;
 
 	///  std::reverse_iterator <iterator>
@@ -187,12 +187,12 @@ public:
 	operator [ ] (const size_type index) const
 	{ return m_array [index]; }
 
-	///  Returns a reference to the first element in the container. 
+	///  Returns a reference to the first element in the container.
 	const_reference
 	front () const
 	{ return m_array .front (); }
 
-	///  Returns reference to the last element in the container. 
+	///  Returns reference to the last element in the container.
 	const_reference
 	back () const
 	{ return m_array .back (); }
@@ -829,6 +829,17 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 
 	return ostream;
 }
+
+#ifdef __APPLE__
+template <>
+const std::string basic_path <std::string>::Signs::Dot;
+
+template <>
+const std::string basic_path <std::string>::Signs::Dots;
+
+template <>
+const std::string basic_path <std::string>::Signs::Slash;
+#endif
 
 using path  = basic_path <std::string>;
 //using wpath = basic_path <std::wstring>;

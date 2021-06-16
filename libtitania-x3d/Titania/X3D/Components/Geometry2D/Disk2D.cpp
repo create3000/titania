@@ -178,9 +178,12 @@ Disk2D::build ()
 	if (options ())
 		optionsNode -> toMetaData (createMetadataSet ("/Disk2D/options"));
 
-	if (innerRadius () == outerRadius ())
+	const double minRadius = std::min (std::abs (innerRadius ()), std::abs (outerRadius ()));
+	const double maxRadius = std::max (std::abs (innerRadius ()), std::abs (outerRadius ()));
+
+	if (minRadius == maxRadius)
 	{
-		const double radius = std::abs (outerRadius ());
+		const double radius = minRadius;
 
 		// Point
 
@@ -201,7 +204,6 @@ Disk2D::build ()
 		}
 		else
 		{
-
 			for (const auto & vertex : optionsNode -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
 		}
@@ -212,28 +214,41 @@ Disk2D::build ()
 		return;
 	}
 
-	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
+	if (minRadius == 0)
 	{
 		// Disk
 
-		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
+		const double radius = maxRadius;
 
 		getMultiTexCoords () .emplace_back ();
 
-		getTexCoords () = optionsNode -> getTexCoords ();
-		getNormals   () = optionsNode -> getNormals  ();
+		const auto & texCoords = optionsNode -> getTexCoords ();
+		const auto & vertices  = optionsNode -> getVertices ();
 
-		if (radius == 1)
+		const auto t0 = Vector4f (0.5, 0.5, 0, 1);
+		const auto p0 = Vector3d (0, 0, 0);
+
+		for (size_t i = 0, size = vertices .size () - 1; i < size; ++ i)
 		{
-			getVertices () = optionsNode -> getVertices ();
-		}
-		else
-		{
-			for (const auto & vertex : optionsNode -> getVertices ())
-				getVertices () .emplace_back (vertex * radius);
+			const auto & t1 = texCoords [i];
+			const auto & p1 = vertices [i];
+			const auto & t2 = texCoords [i + 1];
+			const auto & p2 = vertices [i + 1];
+
+			getTexCoords () .emplace_back (t0);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p0);
+
+			getTexCoords () .emplace_back (t1);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p1 * radius);
+
+			getTexCoords () .emplace_back (t2);
+			getNormals ()   .emplace_back (0, 0, 1);
+			getVertices ()  .emplace_back (p2 * radius);
 		}
 
-		addElements (GL_POLYGON, getVertices () .size ());
+		addElements (GL_TRIANGLES, getVertices () .size ());
 		setGeometryType (2);
 		setSolid (solid ());
 		return;
@@ -246,39 +261,57 @@ Disk2D::build ()
 	getMultiTexCoords () .emplace_back ();
 
 	const auto & texCoords = optionsNode -> getTexCoords ();
-	const auto & normals   = optionsNode -> getNormals ();
 	const auto & vertices  = optionsNode -> getVertices ();
-	const double maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
-	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	const double scale     = minRadius / maxRadius;
 
 	for (size_t i = 0, size = optionsNode -> getVertices () .size (); i < size; ++ i)
 	{
 		const auto i1 = (i + 1) % size;
+		const auto t0 = Vector4f (texCoords [i] .x () * scale + (1 - scale) / 2, texCoords [i] .y () * scale + (1 - scale) / 2, 0, 1);
+		const auto t1 = Vector4f (texCoords [i]);
+		const auto t2 = Vector4f (texCoords [i1]);
+		const auto t3 = Vector4f (texCoords [i1] .x () * scale + (1 - scale) / 2, texCoords [i1] .y () * scale + (1 - scale) / 2, 0, 1);
+		const auto p0 = Vector3d (vertices [i]  * minRadius);
+		const auto p1 = Vector3d (vertices [i]  * maxRadius);
+		const auto p2 = Vector3d (vertices [i1] * maxRadius);
+		const auto p3 = Vector3d (vertices [i1] * minRadius);
 
-		// TexCoords
+		// Triangle 1
 
-		getTexCoords () .emplace_back (texCoords [i] .x () * scale + (1 - scale) / 2, texCoords [i] .y () * scale + (1 - scale) / 2, 0, 1);
-		getTexCoords () .emplace_back (texCoords [i]);
-		getTexCoords () .emplace_back (texCoords [i1]);
-		getTexCoords () .emplace_back (texCoords [i1] .x () * scale + (1 - scale) / 2, texCoords [i1] .y () * scale + (1 - scale) / 2, 0, 1);
+		// p0
+		getTexCoords () .emplace_back (t0);
+		getNormals ()   .emplace_back (0, 0, 1);
+		getVertices ()  .emplace_back (p0);
 
-		// Normals
+		// p1
+		getTexCoords () .emplace_back (t1);
+		getNormals ()   .emplace_back (0, 0, 1);
+		getVertices ()  .emplace_back (p1);
 
-		getNormals () .emplace_back (normals [i]);
-		getNormals () .emplace_back (normals [i]);
-		getNormals () .emplace_back (normals [i1]);
-		getNormals () .emplace_back (normals [i1]);
+		// p2
+		getTexCoords () .emplace_back (t2);
+		getNormals ()   .emplace_back (0, 0, 1);
+		getVertices ()  .emplace_back (p2);
 
-		// Vertices
+		// Triangle 2
 
-		getVertices () .emplace_back (vertices [i]  * minRadius);
-		getVertices () .emplace_back (vertices [i]  * maxRadius);
-		getVertices () .emplace_back (vertices [i1] * maxRadius);
-		getVertices () .emplace_back (vertices [i1] * minRadius);
+		// p0
+		getTexCoords () .emplace_back (t0);
+		getNormals ()   .emplace_back (0, 0, 1);
+		getVertices ()  .emplace_back (p0);
+
+		// p2
+		getTexCoords () .emplace_back (t2);
+		getNormals ()   .emplace_back (0, 0, 1);
+		getVertices ()  .emplace_back (p2);
+
+		// p3
+		getTexCoords () .emplace_back (t3);
+		getNormals ()   .emplace_back (0, 0, 1);
+		getVertices ()  .emplace_back (p3);
 	}
 
-	addElements (GL_QUADS, getVertices () .size ());
+	addElements (GL_TRIANGLES, getVertices () .size ());
 	setGeometryType (2);
 	setSolid (solid ());
 }

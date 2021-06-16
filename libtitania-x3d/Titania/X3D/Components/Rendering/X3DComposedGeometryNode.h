@@ -61,6 +61,8 @@ class X3DComposedGeometryNode :
 {
 public:
 
+	using X3DGeometryNode::toPrimitive;
+
 	///  @name Fields
 
 	virtual
@@ -213,6 +215,8 @@ public:
 
 
 protected:
+
+	using X3DGeometryNode::build;
 
 	///  @name Construction
 

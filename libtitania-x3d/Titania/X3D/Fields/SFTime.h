@@ -73,6 +73,7 @@ public:
 
 	using value_type = time_type;
 
+	using X3DField <time_type>::copy;
 	using X3DField <time_type>::toLocaleString;
 	using X3DField <time_type>::addInterest;
 	using X3DField <time_type>::operator =;
@@ -93,7 +94,7 @@ public:
 
 	///  throws Error <INVALID_NAME>, Error <NOT_SUPPORTED>
 	SFTime*
-	copy (const CopyType) const
+	copy (const CopyType) const final override
 	{ return new SFTime (*this); }
 
 	///  @name Common members

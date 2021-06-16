@@ -88,7 +88,7 @@ public:
 	///  Initializes this node.
 	virtual
 	void
-	setup ();
+	setup () override;
 
 	///  Constructs a new node into @a executionContext.
 	virtual

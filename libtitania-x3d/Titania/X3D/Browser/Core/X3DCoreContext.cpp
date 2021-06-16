@@ -102,7 +102,7 @@ X3DCoreContext::getMaxRenderBufferSize () const
 	try
 	{
 		ContextLock lock (getBrowser ());
-	
+
 		glGetIntegerv (GL_MAX_RENDERBUFFER_SIZE, &maxRenderBufferSize);
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)

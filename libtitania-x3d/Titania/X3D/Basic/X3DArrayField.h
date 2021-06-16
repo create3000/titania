@@ -73,7 +73,7 @@ namespace X3D {
  */
 template <class ValueType>
 class X3DArrayField :
-	public X3DField <Array <ValueType*>> 
+	public X3DField <Array <ValueType*>>
 {
 public:
 
@@ -99,6 +99,7 @@ public:
 
 	using X3DField <internal_type>::addInterest;
 	using X3DField <internal_type>::addEvent;
+	using X3DField <internal_type>::copy;
 	using X3DField <internal_type>::getType;
 	using X3DField <internal_type>::getValue;
 	using X3DField <internal_type>::getUnit;
@@ -740,12 +741,12 @@ X3DArrayField <ValueType>::insert (const iterator & location, InputIterator firs
 		for (auto & field : basic::make_range (iter, count))
 		{
 			field = new ValueType (*first);
-	
+
 			addChild (field);
-	
+
 			++ first;
 		}
-	
+
 		addEvent ();
 	}
 
@@ -865,7 +866,7 @@ X3DArrayField <ValueType>::resize (const size_type count, const ValueType & valu
 			field = new ValueType (value);
 			addChild (field);
 		}
-	
+
 		addEvent ();
 	}
 	else if (count < currentSize)
@@ -873,7 +874,7 @@ X3DArrayField <ValueType>::resize (const size_type count, const ValueType & valu
 		removeChildren (get () .begin () + count, get () .end ());
 
 		get () .resize (count);
-	
+
 		addEvent ();
 	}
 }

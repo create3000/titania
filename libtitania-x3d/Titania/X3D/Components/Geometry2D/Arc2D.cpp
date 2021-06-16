@@ -116,7 +116,7 @@ Arc2D::initialize ()
 	try
 	{
 		const auto metaOptions = getMetadataSet ("/Arc2D/options");
-	
+
 		optionsNode .set (MakePtr <Arc2DOptions> (getExecutionContext ()));
 
 		optionsNode -> addInterest (&Arc2D::requestRebuild, this);
@@ -165,7 +165,7 @@ Arc2D::getSweepAngle ()
 
 	if (not std::isnan (sweepAngle))
 		return sweepAngle;
-	
+
 	// We must test for NAN, as NAN to int32_t is undefined.
 	return 0;
 }
@@ -211,7 +211,7 @@ Arc2D::build ()
 	{
 		const auto   t     = double (n) / steps_1;
 		const double theta = startAngle () + (sweepAngle * t);
-		const auto   point = std::polar <double> (std::abs (radius ()), theta);
+		const auto   point = X3D::polar <double> (std::abs (radius ()), theta);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

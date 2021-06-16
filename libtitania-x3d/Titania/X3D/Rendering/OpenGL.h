@@ -55,13 +55,16 @@
 
 extern "C"
 {
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
+#include <OpenGL/glu.h>
+#else
 #include <GL/glew.h>
-
 #include <GL/glu.h>
-
 #include <GL/gl.h>
-
 #include <GL/glx.h>
+#endif
 }
 
 #include "../Types/Numbers.h"
@@ -80,26 +83,21 @@ public:
 
 		glPolygonMode (GL_FRONT_AND_BACK, type);
 	}
-	
+
 	GLenum
-	front () const
+	mode () const
 	{ return m_polygonMode [0]; }
-	
-	GLenum
-	back () const
-	{ return m_polygonMode [1]; }
-	
+
 	~PolygonModeLock ()
 	{
-		glPolygonMode (GL_FRONT, m_polygonMode [0]);
-		glPolygonMode (GL_BACK,  m_polygonMode [1]);
+		glPolygonMode (GL_FRONT_AND_BACK, m_polygonMode [0]);
 	}
 
 private:
 
-	GLint m_polygonMode [2];
+	GLint m_polygonMode [2]; // Front & back
 };
-	              
+
 class PolygonOffsetLock
 {
 public:
@@ -132,7 +130,7 @@ private:
 	float  m_factor;
 	float  m_units;
 };
-	              
+
 class DepthTestLock
 {
 public:

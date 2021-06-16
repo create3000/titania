@@ -211,28 +211,12 @@ IndexedFaceSet::build ()
 
 	// Fill GeometryNode
 
-	GLenum vertexMode  = getVertexMode (polygons [0] .elements [0] .size ());
-	size_t numVertices = 0;
-
 	for (const auto & polygon : polygons)
 	{
 		const auto face = polygon .face;
 
 		for (const auto & element : polygon .elements)
 		{
-			const auto currentVertexMode  = getVertexMode (element .size ());
-			const auto currentNumVertices = getVertices () .size ();
-
-			if (currentVertexMode not_eq vertexMode or (vertexMode == GL_POLYGON and currentNumVertices))
-			{
-				const auto count = currentNumVertices - numVertices;
-
-				addElements (vertexMode, count);
-
-				numVertices = currentNumVertices;
-				vertexMode  = currentVertexMode;
-			}
-
 			for (const auto & i : element)
 			{
 				const size_t index = coordIndex () [i];
@@ -269,7 +253,7 @@ IndexedFaceSet::build ()
 		}
 	}
 
-	addElements (vertexMode, getVertices () .size () - numVertices);
+	addElements (GL_TRIANGLES, getVertices () .size ());
 
 	// Autogenerate normal if not specified.
 
@@ -375,7 +359,20 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 
 	if (not tessellator)
 	{
-		elements .emplace_back (vertices);
+		elements .emplace_back ();
+
+		const auto & p0 = vertices [0];
+
+		for (size_t i = 1, size = vertices .size () - 1; i < size; ++ i)
+		{
+			const auto & p1 = vertices [i];
+			const auto & p2 = vertices [i + 1];
+
+			elements .back () .emplace_back (p0);
+			elements .back () .emplace_back (p1);
+			elements .back () .emplace_back (p2);
+		}
+
 		return;
 	}
 

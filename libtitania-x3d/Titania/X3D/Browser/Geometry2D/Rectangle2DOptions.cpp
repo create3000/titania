@@ -79,11 +79,11 @@ Rectangle2DOptions::create (X3DExecutionContext* const executionContext) const
 void
 Rectangle2DOptions::build ()
 {
-	getTexCoords () .reserve (4);
-	getNormals   () .reserve (4);
-	getVertices  () .reserve (4);
+	getTexCoords () .reserve (6);
+	getNormals   () .reserve (6);
+	getVertices  () .reserve (6);
 
-	// Front Face
+	// Front Face 1
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (-1, -1, 0);
@@ -91,6 +91,15 @@ Rectangle2DOptions::build ()
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (1, -1, 0);
+
+	getTexCoords () .emplace_back (1, 1, 0, 1);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (1, 1, 0);
+
+	// Front Face 2
+	getTexCoords () .emplace_back (0, 0, 0, 1);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (-1, -1, 0);
 
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);

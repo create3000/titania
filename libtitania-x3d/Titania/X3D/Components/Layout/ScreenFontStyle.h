@@ -112,7 +112,7 @@ public:
 
 	virtual
 	X3DPtr <X3DTextGeometry>
-	getTextGeometry (Text* const) const;
+	getTextGeometry (Text* const) const final override;
 
 	virtual
 	const Font &
@@ -148,7 +148,7 @@ private:
 	initialize () final override;
 
 	///  @name Event handlers
-	
+
 	void
 	set_font ();
 

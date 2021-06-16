@@ -298,7 +298,7 @@ Context::defineProperty (JS::HandleObject obj,
 			                   obj,
 			                   name .c_str (),
 			                   JSNative (partial_bind ((void*) &Context::getBuildInProperty, 4, 1, field)),
-							   JSNative (partial_bind ((void*) &Context::setProperty,        4, 1, field)),
+			                   JSNative (partial_bind ((void*) &Context::setProperty,        4, 1, field)),
 			                   JSPROP_PERMANENT | attrs);
 			break;
 		}

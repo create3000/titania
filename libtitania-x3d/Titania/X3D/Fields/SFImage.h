@@ -60,6 +60,14 @@ namespace X3D {
 template <class ValueType>
 class X3DArrayField;
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <Image>::typeName;
+
+template <>
+const FieldType X3DField <Image>::type;
+#endif
+
 extern template class X3DField <Image>;
 
 /**
@@ -76,6 +84,7 @@ public:
 	using size_type  = Image::size_type;
 
 	using X3DField <Image>::addInterest;
+	using X3DField <Image>::copy;
 	using X3DField <Image>::setValue;
 	using X3DField <Image>::getValue;
 	using X3DField <Image>::operator =;

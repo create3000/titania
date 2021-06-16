@@ -60,6 +60,32 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <bool>::typeName;
+
+template <>
+const std::string X3DField <double>::typeName;
+
+template <>
+const std::string X3DField <float>::typeName;
+
+template <>
+const std::string X3DField <int32_t>::typeName;
+
+template <>
+const FieldType X3DField <bool>::type;
+
+template <>
+const FieldType X3DField <double>::type;
+
+template <>
+const FieldType X3DField <float>::type;
+
+template <>
+const FieldType X3DField <int32_t>::type;
+#endif
+
 extern template class X3DField <bool>;
 extern template class X3DField <double>;
 extern template class X3DField <float>;
@@ -83,6 +109,7 @@ public:
 
 	using X3DField <InternalType>::addInterest;
 	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::copy;
 	using X3DField <InternalType>::operator =;
 	using X3DField <InternalType>::getValue;
 	using X3DField <InternalType>::getUnit;

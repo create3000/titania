@@ -6,6 +6,18 @@ test -z "$srcdir" && srcdir=.
 
 DIE=0
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+   Darwin*)
+      #MACOS
+      LIBTOOL="glibtool"
+      LIBTOOLIZE="glibtoolize"
+   ;;
+   *)
+      LIBTOOL="libtool"
+      LIBTOOLIZE="libtoolize"
+esac
+
 if [ -n "$GNOME2_DIR" ]; then
 	ACLOCAL_FLAGS="-I $GNOME2_DIR/share/aclocal $ACLOCAL_FLAGS"
 	LD_LIBRARY_PATH="$GNOME2_DIR/lib:$LD_LIBRARY_PATH"
@@ -30,7 +42,7 @@ fi
 
 (grep "^IT_PROG_INTLTOOL" $srcdir/configure.ac >/dev/null) && {
   (intltoolize --version) < /dev/null > /dev/null 2>&1 || {
-    echo 
+    echo
     echo "**Error**: You must have \`intltool' installed."
     echo "You can get it from:"
     echo "  ftp://ftp.gnome.org/pub/GNOME/"
@@ -49,7 +61,7 @@ fi
 }
 
 (grep "^LT_INIT" $srcdir/configure.ac >/dev/null) && {
-  (libtool --version) < /dev/null > /dev/null 2>&1 || {
+  ($LIBTOOL --version) < /dev/null > /dev/null 2>&1 || {
     echo
     echo "**Error**: You must have \`libtool' installed."
     echo "You can get it from: ftp://ftp.gnu.org/pub/gnu/"
@@ -102,7 +114,7 @@ xlc )
 esac
 
 for coin in `find $srcdir -path $srcdir/CVS -prune -o -name configure.ac -print`
-do 
+do
   dr=`dirname $coin`
   if test -f $dr/NO-AUTO-GEN; then
     echo skipping $dr -- flagged as no auto-gen
@@ -129,9 +141,9 @@ do
 	xml-i18n-toolize --copy --force --automake
       fi
       if grep "^LT_INIT" configure.ac >/dev/null; then
-	if test -z "$NO_LIBTOOLIZE" ; then 
+	if test -z "$NO_LIBTOOLIZE" ; then
 	  echo "Running libtoolize..."
-	  libtoolize --force --copy
+	  $LIBTOOLIZE --force --copy
 	fi
       fi
       echo "Running aclocal $aclocalinclude ..."

@@ -5,9 +5,9 @@
 #include <string.h>
 #include <stdarg.h>
 #include <unistd.h>
-#include <syscall.h>
+#include <sys/syscall.h>
 #include <sys/mman.h>
-
+#include <pthread.h>
 
 /** A boolean */
 typedef enum { false = 0, true } bool;
@@ -205,10 +205,12 @@ static long gettid() {
 	return syscall(SYS_gettid);
 }
 
+#ifndef __APPLE__
 /** tkill syscall */
 static long tkill(int tid, int sig) {
 	return syscall(SYS_tkill, tid, sig);
 }
+#endif
 
 /** Invoke a systemv bound_internals_t on its store arguments */
 __attribute__ ((noinline))
@@ -229,7 +231,12 @@ ret_t systemv_invoke(bound_internals_t * bb) {
 	ASSERT_ZERO(sigaction, systemv_invoke_sig, &new, &old);
 	bind_lock(full_systemv_arg_lock);
 	full_systemv_arg_global = bb;
+	#ifdef __APPLE__
+	systemv_invoke_helper(systemv_invoke_sig);
+	#else
 	ASSERT_ZERO(tkill, gettid(), systemv_invoke_sig);
+	#endif
+
 	ASSERT_ZERO(sigaction, systemv_invoke_sig, &old, NULL);
 
 	// Release the ret lock and return the return value

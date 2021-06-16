@@ -79,108 +79,194 @@ BoxOptions::create (X3DExecutionContext* const executionContext) const
 void
 BoxOptions::build ()
 {
-	getTexCoords () .reserve (24);
-	getNormals  ()  .reserve (24);
-	getVertices ()  .reserve (24);
-
 	// Front Face
+
+	// p1
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (-1, -1, 1);
 
+	// p2
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (1, -1, 1);
 
+	// p3
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (1, 1, 1);
 
+	// p1
+	getTexCoords () .emplace_back (0, 0, 0, 1);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (-1, -1, 1);
+
+	// p3
+	getTexCoords () .emplace_back (1, 1, 0, 1);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (1, 1, 1);
+
+	// p4
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (0, 0, 1);
 	getVertices  () .emplace_back (-1, 1, 1);
 
 	// Back Face
+
+	// p1
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (0, 0, -1);
 	getVertices  () .emplace_back (-1, -1, -1);
 
+	// p2
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back  (0, 0, -1);
 	getVertices  () .emplace_back (-1, 1, -1);
 
+	// p3
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (0, 0, -1);
 	getVertices  () .emplace_back (1, 1, -1);
 
+	// p1
+	getTexCoords () .emplace_back (1, 0, 0, 1);
+	getNormals   () .emplace_back (0, 0, -1);
+	getVertices  () .emplace_back (-1, -1, -1);
+
+	// p3
+	getTexCoords () .emplace_back (0, 1, 0, 1);
+	getNormals   () .emplace_back (0, 0, -1);
+	getVertices  () .emplace_back (1, 1, -1);
+
+	// p4
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (0, 0, -1);
 	getVertices  () .emplace_back (1, -1, -1);
 
 	// Top Face
+
+	// p1
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (0, 1, 0);
 	getVertices  () .emplace_back (-1, 1, -1);
 
+	// p2
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (0, 1, 0);
 	getVertices  () .emplace_back (-1, 1, 1);
 
+	// p3
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (0, 1, 0);
 	getVertices  () .emplace_back (1, 1, 1);
 
+	// p1
+	getTexCoords () .emplace_back (0, 1, 0, 1);
+	getNormals   () .emplace_back (0, 1, 0);
+	getVertices  () .emplace_back (-1, 1, -1);
+
+	// p3
+	getTexCoords () .emplace_back (1, 0, 0, 1);
+	getNormals   () .emplace_back (0, 1, 0);
+	getVertices  () .emplace_back (1, 1, 1);
+
+	// p4
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back (0, 1, 0);
 	getVertices  () .emplace_back  (1, 1, -1);
 
 	// Bottom Face
+
+	// p1
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (0, -1, 0);
 	getVertices  () .emplace_back (-1, -1, -1);
 
+	// p2
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (0, -1, 0);
 	getVertices  () .emplace_back (1, -1, -1);
 
+	// p3
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back (0, -1, 0);
 	getVertices  () .emplace_back (1, -1, 1);
 
+	// p1
+	getTexCoords () .emplace_back (0, 0, 0, 1);
+	getNormals   () .emplace_back (0, -1, 0);
+	getVertices  () .emplace_back (-1, -1, -1);
+
+	// p3
+	getTexCoords () .emplace_back (1, 1, 0, 1);
+	getNormals   () .emplace_back (0, -1, 0);
+	getVertices  () .emplace_back (1, -1, 1);
+
+	// p4
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (0, -1, 0);
 	getVertices  () .emplace_back (-1, -1, 1);
 
 	// Right face
+
+	// p1
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (1, 0, 0);
 	getVertices  () .emplace_back (1, -1, -1);
 
+	// p2
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back (1, 0, 0);
 	getVertices  () .emplace_back (1, 1, -1);
 
+	// p3
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (1, 0, 0);
 	getVertices  () .emplace_back (1, 1, 1);
 
+	// p1
+	getTexCoords () .emplace_back (1, 0, 0, 1);
+	getNormals   () .emplace_back (1, 0, 0);
+	getVertices  () .emplace_back (1, -1, -1);
+
+	// p3
+	getTexCoords () .emplace_back (0, 1, 0, 1);
+	getNormals   () .emplace_back (1, 0, 0);
+	getVertices  () .emplace_back (1, 1, 1);
+
+	// p4
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (1, 0, 0);
 	getVertices  () .emplace_back (1, -1, 1);
 
 	// Left Face
+
+	// p1
 	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals   () .emplace_back (-1, 0, 0);
 	getVertices  () .emplace_back (-1, -1, -1);
 
+	// p2
 	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals   () .emplace_back (-1, 0, 0);
 	getVertices  () .emplace_back (-1, -1, 1);
 
+	// p3
 	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals   () .emplace_back (-1, 0, 0);
 	getVertices  () .emplace_back (-1, 1, 1);
 
+	// p1
+	getTexCoords () .emplace_back (0, 0, 0, 1);
+	getNormals   () .emplace_back (-1, 0, 0);
+	getVertices  () .emplace_back (-1, -1, -1);
+
+	// p3
+	getTexCoords () .emplace_back (1, 1, 0, 1);
+	getNormals   () .emplace_back (-1, 0, 0);
+	getVertices  () .emplace_back (-1, 1, 1);
+
+	// p4
 	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals   () .emplace_back (-1, 0, 0);
 	getVertices  () .emplace_back (-1, 1, -1);

@@ -74,12 +74,12 @@ nurbs_tessellator::nurbs_tessellator (const bool debug) :
 
 	gluNurbsCallbackData (m_tess, this);
 
-	gluNurbsCallback (m_tess, GLU_NURBS_BEGIN_DATA,         _GLUfuncptr (&nurbs_tessellator::tess_begin_data));
-	gluNurbsCallback (m_tess, GLU_NURBS_TEXTURE_COORD_DATA, _GLUfuncptr (&nurbs_tessellator::tess_tex_coord_data));
-	gluNurbsCallback (m_tess, GLU_NURBS_NORMAL_DATA,        _GLUfuncptr (&nurbs_tessellator::tess_normal_data));
-	gluNurbsCallback (m_tess, GLU_NURBS_VERTEX_DATA,        _GLUfuncptr (&nurbs_tessellator::tess_vertex_data));
-	gluNurbsCallback (m_tess, GLU_NURBS_END_DATA,           _GLUfuncptr (&nurbs_tessellator::tess_end_data));
-	gluNurbsCallback (m_tess, GLU_ERROR,                    _GLUfuncptr (&nurbs_tessellator::tess_error));
+	gluNurbsCallback (m_tess, GLU_NURBS_BEGIN_DATA,         (void (*)()) &nurbs_tessellator::tess_begin_data);
+	gluNurbsCallback (m_tess, GLU_NURBS_TEXTURE_COORD_DATA, (void (*)()) &nurbs_tessellator::tess_tex_coord_data);
+	gluNurbsCallback (m_tess, GLU_NURBS_NORMAL_DATA,        (void (*)()) &nurbs_tessellator::tess_normal_data);
+	gluNurbsCallback (m_tess, GLU_NURBS_VERTEX_DATA,        (void (*)()) &nurbs_tessellator::tess_vertex_data);
+	gluNurbsCallback (m_tess, GLU_NURBS_END_DATA,           (void (*)()) &nurbs_tessellator::tess_end_data);
+	gluNurbsCallback (m_tess, GLU_ERROR,                    (void (*)()) &nurbs_tessellator::tess_error);
 
 	// Options
 

@@ -32,7 +32,7 @@ if (($min > 16 and $min < 20) or $firstTime)
 
 $ENV {PATH}            = "$SOLUTION_DIR/Titania:$ENV{PATH}";
 $ENV {LD_LIBRARY_PATH} = "/usr/local/lib";
-$ENV {XDG_DATA_DIRS}   = "$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
+$ENV {XDG_DATA_DIRS}   = "$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:/usr/local/share:$ENV{XDG_DATA_DIRS}";
 $ENV {GDK_SYNCHRONIZE} = "1";
 #$ENV {GTK_DEBUG}      = "interactive";
 
@@ -41,7 +41,9 @@ delete $ENV {GDK_PIXBUF_MODULEDIR};
 
 my $dirname = dirname $0;
 
+say "Titania will be started now...";
 system "$dirname/titania", @argv;
+#system "lldb", "$dirname/titania", @argv;
 
 if (-d "$HOME/.config/Titania.O")
 {

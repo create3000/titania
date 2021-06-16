@@ -69,8 +69,7 @@ LightContainer::LightContainer (X3DBrowser* const browser, X3DLightNode* const n
 	         lightMatrix (),
 	        shadowMatrix (),
 	 shadowTextureBuffer (),
-	         textureUnit (0),
-	             lightId (0)
+	         textureUnit (0)
 {
 	try
 	{

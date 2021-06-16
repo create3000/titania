@@ -93,7 +93,7 @@ public:
 	constexpr
 	ObjectType
 	getId ()
-	{ throw std::runtime_error ("getId"); }
+	{ throw std::runtime_error ("getId"); return ObjectType (); }
 
 
 private:
@@ -624,6 +624,17 @@ SFMatrix4 <X3D::VrmlMatrix>::getId ()
 using SFMatrix4d = SFMatrix4 <X3D::SFMatrix4d>;
 using SFMatrix4f = SFMatrix4 <X3D::SFMatrix4f>;
 using VrmlMatrix = SFMatrix4 <X3D::VrmlMatrix>;
+
+#ifdef __APPLE__
+template <>
+const JSClass SFMatrix4d::static_class;
+
+template <>
+const JSClass SFMatrix4f::static_class;
+
+template <>
+const JSClass VrmlMatrix::static_class;
+#endif
 
 extern template class SFMatrix4 <X3D::SFMatrix4d>;
 extern template class SFMatrix4 <X3D::SFMatrix4f>;

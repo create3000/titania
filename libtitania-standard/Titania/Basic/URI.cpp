@@ -55,16 +55,22 @@ namespace basic {
 
 template <>
 const char basic_uri <std::string>::Signs::Zero = '0';
+
 template <>
 const char basic_uri <std::string>::Signs::Colon = ':';
+
 template <>
 const char basic_uri <std::string>::Signs::Slash = '/';
+
 template <>
 const char basic_uri <std::string>::Signs::QuestionMark = '?';
+
 template <>
 const char basic_uri <std::string>::Signs::NumberSign = '#';
+
 template <>
 const char basic_uri <std::string>::Signs::Dot = '.';
+
 template <>
 const std::string::value_type basic_uri <std::string>::Signs::SlashQuestionNumber [3] = { basic_uri <std::string>::Signs::Slash,
 	                                                                                       basic_uri <std::string>::Signs::QuestionMark,
@@ -84,7 +90,6 @@ std::map <std::string, std::string::size_type> basic_uri <std::string>::well_kno
 	std::pair ("http",   80),
 	std::pair ("https", 443),
 	std::pair ("ftps",  990)
-
 };
 
 //

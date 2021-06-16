@@ -87,7 +87,7 @@ public:
 	virtual
 	GLenum
 	getVertexMode () const final override
-	{ return GL_QUADS; }
+	{ return GL_TRIANGLES; }
 
 	///  @name Operations
 

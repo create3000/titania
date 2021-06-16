@@ -135,7 +135,7 @@ ScreenText::setTextBounds ()
 	getText () -> textBounds () = math::ceil (getText () -> textBounds () .getValue ());
 
 	const auto extents = X3DTextGeometry::getBBox () .extents ();
-	
+
 	min = extents .first;
 	max = extents .second;
 
@@ -230,7 +230,7 @@ ScreenText::build ()
 			try
 			{
 				const auto & line = getText () -> string () .get1Value (i);
-	
+
 				if (not line .empty ())
 				{
 					const double x = alignment .x () + getTranslations () [i] .x ();
@@ -301,7 +301,7 @@ ScreenText::build ()
 		{
 			const auto & line = getText () -> string () .get1Value (i);
 
-			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
+			for (const auto glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
 			{
 				const double x = alignment .x () + getTranslations () [g] .x ();
 				const double y = alignment .y () - getTranslations () [g] .y ();
@@ -337,7 +337,6 @@ ScreenText::build ()
 
 	glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
 
-	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    false);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP);
@@ -366,23 +365,41 @@ ScreenText::build ()
 	auto & normals   = getText () -> getNormals ();
 	auto & vertices  = getText () -> getVertices ();
 
+	// Triangle 1
+
+	// p1
 	texCoords .emplace_back (0, 1, 0, 1);
 	normals   .emplace_back (0, 0, 1);
 	vertices  .emplace_back (min .x (), min .y (), min .z ());
 
+	// p2
 	texCoords .emplace_back (1, 1, 0, 1);
 	normals   .emplace_back (0, 0, 1);
 	vertices  .emplace_back (max .x (), min .y (), min .z ());
 
+	// p3
 	texCoords .emplace_back (1, 0, 0, 1);
 	normals   .emplace_back (0, 0, 1);
 	vertices  .emplace_back (max .x (), max .y (), max .z ());
 
+	// Triangle 2
+
+	// p1
+	texCoords .emplace_back (0, 1, 0, 1);
+	normals   .emplace_back (0, 0, 1);
+	vertices  .emplace_back (min .x (), min .y (), min .z ());
+
+	// p3
+	texCoords .emplace_back (1, 0, 0, 1);
+	normals   .emplace_back (0, 0, 1);
+	vertices  .emplace_back (max .x (), max .y (), max .z ());
+
+	// p4
 	texCoords .emplace_back (0, 0, 0, 1);
 	normals   .emplace_back (0, 0, 1);
 	vertices  .emplace_back (min .x (), max .y (), min .z ());
 
-	getText () -> addElements (GL_QUADS, vertices .size ());
+	getText () -> addElements (GL_TRIANGLES, vertices .size ());
 	getText () -> setSolid (getText () -> solid ());
 }
 
@@ -392,7 +409,7 @@ ScreenText::transform (X3DRenderObject* const renderObject)
 	try
 	{
 		// Determine model view matrix and bbox.
-	
+
 		const auto & modelViewMatrix  = renderObject -> getModelViewMatrix () .get ();
 		const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
 		const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
@@ -404,17 +421,17 @@ ScreenText::transform (X3DRenderObject* const renderObject)
 		                              modelViewMatrix .w ());
 
 		// Snap to whole pixel
-	
+
 		auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
-	
+
 		screenPoint .x (std::round (screenPoint .x ()));
 		screenPoint .y (std::round (screenPoint .y ()));
-	
+
 		auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
-	
+
 		offset .z (0);
 		screenMatrix .translate (offset);
-	
+
 		// Assign modelViewMatrix and relative matrix
 
 		matrix = screenMatrix * inverse (modelViewMatrix);

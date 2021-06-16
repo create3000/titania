@@ -112,7 +112,7 @@ X3DVolumeDataNode::initialize ()
 	appearanceNode -> setPrivate (true);
 
 	proximitySensorNode -> size ()         = Vector3f (-1, -1, -1);
-	transformNode -> children ()           = { shapeNode };
+	transformNode -> children ()           = X3DPtrArray <Shape> ({ shapeNode });
 	shapeNode -> appearance ()             = appearanceNode;
 	shapeNode -> geometry ()               = geometryNode;
 	appearanceNode -> textureTransform ()  = textureTransformNode;
@@ -182,7 +182,7 @@ X3DVolumeDataNode::getShader () const
 void
 X3DVolumeDataNode::setShader (const X3DPtr <ComposedShader> & shaderNode)
 {
-	appearanceNode -> shaders () = { shaderNode };
+	appearanceNode -> shaders () = X3DPtrArray <ComposedShader> ({ shaderNode });
 
 	shaderNode -> addUserDefinedField (inputOutput, "x3d_TextureNormalMatrix" , new SFMatrix3f ());
 

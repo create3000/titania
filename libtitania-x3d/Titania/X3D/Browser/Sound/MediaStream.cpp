@@ -57,8 +57,10 @@
 
 extern "C"
 {
+#ifndef __APPLE__
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
+#endif
 }
 
 #include <Titania/Backtrace.h>
@@ -179,7 +181,7 @@ MediaStream::setUri (const basic::uri & uri)
 			return uri;
 
 		basic::ifilestream istream (uri, 30'000);
-	
+
 		if (not istream)
 			return uri;
 
@@ -491,18 +493,18 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 	if (pad)
 	{
 		auto caps = pad -> get_current_caps ();
-	
+
 		if (caps)
 		{
 			caps = caps -> create_writable ();
-	
+
 			const auto structure = caps -> get_structure (0);
-	
+
 			if (structure)
 			{
 				int32_t w = 0;
 				int32_t h = 0;
-	
+
 				structure .get_field ("width",  w);
 				structure .get_field ("height", h);
 
@@ -514,7 +516,7 @@ MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const
 					{
 						width  = w;
 						height = h;
-		
+
 						XMoveResizeWindow (xDisplay, xWindow, 0, 0, width, height);
 						XSync (xDisplay, FALSE);
 					}

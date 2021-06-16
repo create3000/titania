@@ -57,6 +57,14 @@
 namespace titania {
 namespace X3D {
 
+#ifdef __APPLE__
+template <>
+const std::string X3DField <String>::typeName;
+
+template <>
+const FieldType X3DField <String>::type;
+#endif
+
 extern template class X3DField <String>;
 
 /**
@@ -72,6 +80,7 @@ public:
 	using size_type  = internal_type::size_type;
 
 	using X3DField <String>::addInterest;
+	using X3DField <String>::copy;
 	using X3DField <String>::operator =;
 
 	///  @name Construction

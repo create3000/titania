@@ -58,6 +58,7 @@
 namespace titania {
 namespace X3D {
 
+class X3DBrowser;
 class X3DBrowserContext;
 class X3DExecutionContext;
 class X3DRenderingSurface;
@@ -65,6 +66,9 @@ class X3DRenderingSurface;
 class ContextLock
 {
 public:
+
+	///  throws Error <INVALID_OPERATION_TIMING>
+	ContextLock (X3DBrowser* const browser);
 
 	///  throws Error <INVALID_OPERATION_TIMING>
 	ContextLock (X3DRenderingSurface* const renderingSurface);

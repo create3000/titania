@@ -318,6 +318,9 @@ protected:
 
 private:
 
+	using X3DComposedGeometryNode::getIndex;
+	using X3DComposedGeometryNode::buildNormals;
+
 	///  @name Member types
 
 	using ElementArray = std::vector <Vertices>;

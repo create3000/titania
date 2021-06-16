@@ -118,7 +118,7 @@ Cone::initialize ()
 	try
 	{
 		const auto metaOptions = getMetadataSet ("/Cone/options");
-	
+
 		optionsNode .set (MakePtr <ConeOptions> (getExecutionContext ()));
 
 		optionsNode -> addInterest (&Cone::requestRebuild, this);
@@ -185,7 +185,7 @@ Cone::build ()
 	const double xDimension = optionsNode -> xDimension ();
 	const double y1         = height () / 2;
 	const double y2         = -y1;
-	const auto   nz         = std::polar <double> (1, -pi <double> / 2 + std::atan (bottomRadius () / height ()));
+	const auto   nz         = X3D::polar <double> (1, -pi <double> / 2 + std::atan (bottomRadius () / height ()));
 
 	getMultiTexCoords () .emplace_back ();
 
@@ -195,17 +195,17 @@ Cone::build ()
 		{
 			const double u1     = (i + 0.5f) / xDimension;
 			const double theta1 = 2 * pi <double> * u1;
-			const auto   n1     = std::polar <double> (nz .imag (), theta1);
+			const auto   n1     = X3D::polar <double> (nz .imag (), theta1);
 
 			const double u2     = i / xDimension;
 			const double theta2 = 2 * pi <double> * u2;
-			const auto   p2     = std::polar <double> (-bottomRadius (), theta2);
-			const auto   n2     = std::polar <double> (nz .imag (), theta2);
+			const auto   p2     = X3D::polar <double> (-bottomRadius (), theta2);
+			const auto   n2     = X3D::polar <double> (nz .imag (), theta2);
 
 			const double u3     = (i + 1) / xDimension;
 			const double theta3 = 2 * pi <double> * u3;
-			const auto   p3     = std::polar <double> (-bottomRadius (), theta3);
-			const auto   n3     = std::polar <double> (nz .imag (), theta3);
+			const auto   p3     = X3D::polar <double> (-bottomRadius (), theta3);
+			const auto   n3     = X3D::polar <double> (nz .imag (), theta3);
 
 			/*    p1
 			 *   /  \
@@ -228,26 +228,50 @@ Cone::build ()
 			getNormals   () .emplace_back (n3 .imag (), nz .real (), n3 .real ());
 			getVertices  () .emplace_back (p3 .imag (), y2, p3 .real ());
 		}
-
-		addElements (GL_TRIANGLES, getVertices () .size ());
 	}
 
 	if (bottom ())
 	{
+		auto texCoords = std::vector <Vector4f> ();
+		auto points    = std::vector <Vector3d> ();
+
 		for (int32_t i = xDimension - 1; i > -1; -- i)
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * pi <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = X3D::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
 
-			getTexCoords () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
-			getNormals   () .emplace_back (0, -1, 0);
-			getVertices  () .emplace_back (p .imag (), y2, p .real ());
+			texCoords .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
+			points    .emplace_back (p .imag (), y2, p .real ());
 		}
 
-		addElements (GL_POLYGON, xDimension);
+		const auto & t0 = texCoords [0];
+		const auto & p0 = points [0];
+
+		for (size_t i = 1, size = points .size () - 1; i < size; ++ i)
+		{
+			const auto & t1 = texCoords [i];
+			const auto & t2 = texCoords [i + 1];
+			const auto & p1 = points [i];
+			const auto & p2 = points [i + 1];
+
+			getTexCoords () .emplace_back (t0);
+			getNormals ()   .emplace_back (0, -1, 0);
+			getVertices ()  .emplace_back (p0);
+
+			getTexCoords () .emplace_back (t1);
+			getNormals ()   .emplace_back (0, -1, 0);
+			getVertices ()  .emplace_back (p1);
+
+			getTexCoords () .emplace_back (t2);
+			getNormals ()   .emplace_back (0, -1, 0);
+			getVertices ()  .emplace_back (p2);
+		}
 	}
+
+	if (not getVertices () .empty ())
+		addElements (GL_TRIANGLES, getVertices () .size ());
 
 	setSolid (solid ());
 }
@@ -291,7 +315,7 @@ Cone::toPrimitive () const
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * pi <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = X3D::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
 
 			if (bottom ())

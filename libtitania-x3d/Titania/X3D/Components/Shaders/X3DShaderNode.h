@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class ShapeContainer;
-class SoftParticle;
+struct SoftParticle;
 
 class X3DShaderNode :
 	public X3DAppearanceChildNode

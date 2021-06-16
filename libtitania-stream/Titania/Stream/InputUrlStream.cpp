@@ -34,7 +34,7 @@ namespace titania {
 namespace basic {
 
 iurlstream::iurlstream () :
-	         std::istream (),
+	         std::istream (nullptr),
 	                  buf (new urlstreambuf ()),
 	  request_headers_map (),
 	 response_headers_map (),
@@ -53,7 +53,7 @@ iurlstream::iurlstream (const basic::uri & url, size_t timeout) :
 }
 
 iurlstream::iurlstream (iurlstream && other) :
-	         std::istream (),
+	         std::istream (nullptr),
 	                  buf (other .buf),
 	  request_headers_map (std::move (other .request_headers_map)),
 	 response_headers_map (std::move (other .response_headers_map)),
@@ -106,7 +106,7 @@ iurlstream::parse_status_line ()
 		line
 			>> response_http_version
 			>> response_status;
-		
+
 		if (line)
 		{
 			sentry s (line);

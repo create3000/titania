@@ -109,11 +109,11 @@ public:
 
 	virtual
 	SFNode &
-	metadata ();
+	metadata () final override;
 
 	virtual
 	const SFNode &
-	metadata () const;
+	metadata () const final override;
 
 	///  @name Member access
 

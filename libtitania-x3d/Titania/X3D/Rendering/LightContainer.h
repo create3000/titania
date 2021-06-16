@@ -136,7 +136,6 @@ private:
 	Matrix4d                        shadowMatrix;
 	std::unique_ptr <TextureBuffer> shadowTextureBuffer;
 	size_t                          textureUnit;
-	GLenum                          lightId;
 
 };
 

@@ -126,7 +126,7 @@ mesh_to_polyhedron (const mesh3 <double> & mesh)
 	if (polyhedron .empty ())
 		throw std::domain_error ("Couldn't create polyhedron.");
 
-	return std::move (polyhedron);
+	return polyhedron;
 }
 
 static

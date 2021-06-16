@@ -1280,7 +1280,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	numLights             = numGlobalLights;
 	numProjectiveTextures = numGlobalProjectiveTextures;
 
-	for (const auto localObject : context -> getLocalObjects ())
+	for (const auto & localObject : context -> getLocalObjects ())
 		localObject -> setShaderUniforms (renderObject, this);
 
 	glUniform1i (x3d_NumClipPlanes,         std::min (numClipPlanes,         browser -> getMaxClipPlanes ()));
@@ -1418,9 +1418,8 @@ X3DProgrammableShaderObject::enableFloatAttrib (const std::string & name, const 
 	if (location == -1)
 		return;
 
-	glEnableVertexAttribArray (location);
-
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glEnableVertexAttribArray (location);
 	glVertexAttribPointer (location, components, GL_FLOAT, false, 0, (void*) 0);
 }
 
@@ -1443,9 +1442,8 @@ X3DProgrammableShaderObject::enableIntegerAttrib (const std::string & name, cons
 	if (location == -1)
 		return;
 
-	glEnableVertexAttribArray (location);
-
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glEnableVertexAttribArray (location);
 	glVertexAttribPointer (location, components, GL_INT, false, 0, (void*) 0);
 }
 
@@ -1468,11 +1466,11 @@ X3DProgrammableShaderObject::enableMatrix3Attrib (const std::string & name, cons
 	if (location == -1)
 		return;
 
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+
 	glEnableVertexAttribArray (location + 0);
 	glEnableVertexAttribArray (location + 1);
 	glEnableVertexAttribArray (location + 2);
-
-	glBindBuffer (GL_ARRAY_BUFFER, buffer);
 
 	glVertexAttribPointer (location + 0, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 0));
 	glVertexAttribPointer (location + 1, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 1));
@@ -1500,12 +1498,12 @@ X3DProgrammableShaderObject::enableMatrix4Attrib (const std::string & name, cons
 	if (location == -1)
 		return;
 
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+
 	glEnableVertexAttribArray (location + 0);
 	glEnableVertexAttribArray (location + 1);
 	glEnableVertexAttribArray (location + 2);
 	glEnableVertexAttribArray (location + 3);
-
-	glBindBuffer (GL_ARRAY_BUFFER, buffer);
 
 	glVertexAttribPointer (location + 0, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 0));
 	glVertexAttribPointer (location + 1, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 1));
@@ -1533,9 +1531,8 @@ X3DProgrammableShaderObject::enableFogDepthAttrib (const GLuint buffer, const GL
 	if (x3d_FogDepth == -1)
 		return;
 
-	glEnableVertexAttribArray (x3d_FogDepth);
-
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glEnableVertexAttribArray (x3d_FogDepth);
 	glVertexAttribPointer (x3d_FogDepth, 1, type, false, stride, pointer);
 }
 
@@ -1554,9 +1551,8 @@ X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer, const GLenu
 	if (x3d_Color == -1)
 		return;
 
-	glEnableVertexAttribArray (x3d_Color);
-
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glEnableVertexAttribArray (x3d_Color);
 	glVertexAttribPointer (x3d_Color, 4, type, false, stride, pointer);
 }
 
@@ -1582,9 +1578,8 @@ X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & 
 		if (x3d_TexCoord [i] == -1)
 			continue;
 
-		glEnableVertexAttribArray (x3d_TexCoord [i]);
-
 		glBindBuffer (GL_ARRAY_BUFFER, buffer [i]);
+		glEnableVertexAttribArray (x3d_TexCoord [i]);
 		glVertexAttribPointer (x3d_TexCoord [i], 4, type, false, stride .empty () ? 0 : stride [i], pointer .empty () ? nullptr : pointer [i]);
 	}
 }
@@ -1607,9 +1602,8 @@ X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer, const GLen
 	if (x3d_Normal == -1)
 		return;
 
-	glEnableVertexAttribArray (x3d_Normal);
-
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glEnableVertexAttribArray (x3d_Normal);
 	glVertexAttribPointer (x3d_Normal, 3, type, false, stride, pointer);
 }
 
@@ -1628,9 +1622,8 @@ X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer, const GLen
 	if (x3d_Vertex == -1)
 		return;
 
-	glEnableVertexAttribArray (x3d_Vertex);
-
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glEnableVertexAttribArray (x3d_Vertex);
 	glVertexAttribPointer (x3d_Vertex, 3, type, false, stride, pointer);
 }
 

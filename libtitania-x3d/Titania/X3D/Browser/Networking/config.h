@@ -66,6 +66,9 @@ basic::uri
 get_shader (const std::string & filename);
 
 basic::uri
+get_font (const std::string & filename);
+
+basic::uri
 get_linetype (const int32_t index);
 
 basic::uri

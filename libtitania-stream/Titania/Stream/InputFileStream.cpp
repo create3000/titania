@@ -67,7 +67,7 @@ const std::string ifilestream::reasons [2] = { "OK", "File not found." };
 const std::string ifilestream::empty_string;
 
 ifilestream::ifilestream () :
-	         std::istream (),
+	         std::istream (nullptr),
 	             gzfilter (),
 	         data_istream (),
 	         file_istream (),
@@ -272,7 +272,7 @@ ifilestream::guess_content_type (const basic::uri & url, std::istream* const ist
 
 	// Guess content type.
 
-	auto         data      = std::string (511, 0);
+	auto         data      = std::string (255, 0);
 	const size_t data_size = istream -> rdbuf () -> sgetn (&data [0], data .size ());
 
 	bool        result_uncertain;

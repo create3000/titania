@@ -1,4 +1,4 @@
-#version 300 es
+#version 330
 
 precision mediump float;
 precision mediump int;

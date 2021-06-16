@@ -128,6 +128,20 @@ basic_multi_string <CharT, Traits>::operator () (std::basic_istream <CharT, Trai
 	return std::pair (empty, false);
 }
 
+#ifdef __APPLE__
+template <>
+const std::string basic_multi_string <std::string::value_type>::empty;
+
+template <>
+const std::string basic_multi_string <std::string::value_type>::delimiter;
+
+template <>
+const std::wstring basic_multi_string <std::wstring::value_type>::empty;
+
+template <>
+const std::wstring basic_multi_string <std::wstring::value_type>::delimiter;
+#endif
+
 using multi_string  = basic_multi_string <char>;
 using multi_wstring = basic_multi_string <wchar_t>;
 

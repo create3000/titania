@@ -99,7 +99,6 @@ QuadSphereOptions::createTexCoordIndex () const
 		texCoordIndices .emplace_back (p);
 		texCoordIndices .emplace_back (p + xDimension ());
 		texCoordIndices .emplace_back (p + xDimension () + 1);
-		texCoordIndices .emplace_back (p);
 	}
 
 	for (int32_t v = 1; v < yDimension () - 2; ++ v, ++ p)
@@ -109,6 +108,9 @@ QuadSphereOptions::createTexCoordIndex () const
 			texCoordIndices .emplace_back (p);
 			texCoordIndices .emplace_back (p + xDimension () + 1);
 			texCoordIndices .emplace_back (p + xDimension () + 2);
+
+			texCoordIndices .emplace_back (p);
+			texCoordIndices .emplace_back (p + xDimension () + 2);
 			texCoordIndices .emplace_back (p + 1);
 		}
 	}
@@ -116,7 +118,6 @@ QuadSphereOptions::createTexCoordIndex () const
 	for (int32_t u = 0; u < xDimension (); ++ u, ++ p)
 	{
 		texCoordIndices .emplace_back (p);
-		texCoordIndices .emplace_back (p + xDimension () + 1);
 		texCoordIndices .emplace_back (p + xDimension () + 1);
 		texCoordIndices .emplace_back (p + 1);
 	}
@@ -164,12 +165,30 @@ QuadSphereOptions::createCoordIndex () const
 {
 	std::vector <int32_t> coordIndices;
 
-	for (int32_t p = 0, v = 0; v < yDimension () - 1; ++ v, ++ p)
+	size_t p = 1;
+
+	for (size_t u = 0; u < xDimension () - 1; ++ u, ++ p)
 	{
-		for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+		coordIndices .emplace_back (0);
+		coordIndices .emplace_back (p);
+		coordIndices .emplace_back (p + 1);
+	}
+
+	coordIndices .emplace_back (0);
+	coordIndices .emplace_back (p);
+	coordIndices .emplace_back (1);
+
+	p = 1;
+
+	for (size_t v = 1; v < yDimension () - 2; ++ v, ++ p)
+	{
+		for (size_t u = 0; u < xDimension () - 1; ++ u, ++ p)
 		{
 			coordIndices .emplace_back (p);
 			coordIndices .emplace_back (p + xDimension ());
+			coordIndices .emplace_back (p + xDimension () + 1);
+
+			coordIndices .emplace_back (p);
 			coordIndices .emplace_back (p + xDimension () + 1);
 			coordIndices .emplace_back (p + 1);
 		}
@@ -177,8 +196,24 @@ QuadSphereOptions::createCoordIndex () const
 		coordIndices .emplace_back (p);
 		coordIndices .emplace_back (p + xDimension ());
 		coordIndices .emplace_back (p + 1);
+
+		coordIndices .emplace_back (p);
+		coordIndices .emplace_back (p + 1);
 		coordIndices .emplace_back (p - xDimension () + 1);
 	}
+
+	const size_t l = p + xDimension ();
+
+	for (size_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+	{
+		coordIndices .emplace_back (p);
+		coordIndices .emplace_back (l);
+		coordIndices .emplace_back (p + 1);
+	}
+
+	coordIndices .emplace_back (p);
+	coordIndices .emplace_back (l);
+	coordIndices .emplace_back (p - xDimension () + 1);
 
 	return coordIndices;
 }
@@ -188,26 +223,24 @@ QuadSphereOptions::createPoints () const
 {
 	std::vector <Vector3d> points;
 
-	// north pole
-	for (int32_t u = 0; u < xDimension (); ++ u)
-		points .emplace_back (0, 1, 0);
+	// North pole
+	points .emplace_back (0, 1, 0);
 
-	// sphere segments
-	for (int32_t v = 1; v < yDimension () - 1; ++ v)
+	// Sphere segments
+	for (size_t v = 1; v < yDimension () - 1; ++ v)
 	{
-		const auto zPlane = std::polar <double> (1, -pi <double> * (v / double (yDimension () - 1)));
+		const auto zPlane = X3D::polar (1.0, -pi <double> * v / (yDimension () - 1));
 
-		for (int32_t u = 0; u < xDimension (); ++ u)
+		for (size_t u = 0; u < xDimension (); ++ u)
 		{
-			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * pi <double> * (u / double (xDimension ())));
+			const auto yPlane = X3D::polar (zPlane .imag (), 2 * pi <double> * u / xDimension ());
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
 	}
 
-	// south pole
-	for (int32_t u = 0; u < xDimension (); ++ u)
-		points .emplace_back (0, -1, 0);
+	// South pole
+	points .emplace_back (0, -1, 0);
 
 	return points;
 }
@@ -221,7 +254,7 @@ QuadSphereOptions::build ()
 	const std::vector <Vector3d> points          = createPoints ();
 
 	auto texCoordIndex = texCoordIndices .begin ();
-	auto coordIndex    = coordIndices .begin ();
+	auto coordIndex    = coordIndices    .begin ();
 
 	for ( ; coordIndex not_eq coordIndices .end (); ++ coordIndex, ++ texCoordIndex)
 	{
@@ -236,15 +269,10 @@ QuadSphereOptions::build ()
 SFNode
 QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
 {
-	const auto xDimension_1    = xDimension ();
-	const auto xDimension_2    = xDimension () - 1;
 	const auto texCoordIndices = createTexCoordIndex ();
 	auto       texCoords       = createTexCoord ();
 	const auto coordIndices    = createCoordIndex ();
 	auto       points          = createPoints ();
-
-	points .erase (points .begin (), points .begin () + xDimension_2);
-	points .erase (points .end () - xDimension_2, points .end ());
 
 	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
 	const auto coord    = executionContext -> createNode <Coordinate> ();
@@ -254,7 +282,7 @@ QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) con
 	geometry -> texCoord ()    = texCoord;
 	geometry -> coord ()       = coord;
 
-	for (size_t i = 0, size = xDimension_1 * 4; i < size; i += 4)
+	for (size_t i = 0, size = texCoordIndices .size (); i < size; i += 3)
 	{
 		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i]);
 		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 1]);
@@ -262,45 +290,11 @@ QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) con
 		geometry -> texCoordIndex () .emplace_back (-1);
 	}
 
-	for (size_t i = xDimension_1 * 4, size = texCoordIndices .size () - xDimension_1 * 4; i < size; i += 4)
+	for (size_t i = 0, size = coordIndices .size (); i < size; i += 3)
 	{
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i]);
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 1]);
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 2]);
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 3]);
-		geometry -> texCoordIndex () .emplace_back (-1);
-	}
-
-	for (size_t i = texCoordIndices .size () - xDimension_1 * 4, size = texCoordIndices .size (); i < size; i += 4)
-	{
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i]);
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 1]);
-		geometry -> texCoordIndex () .emplace_back (texCoordIndices [i + 3]);
-		geometry -> texCoordIndex () .emplace_back (-1);
-	}
-
-	for (size_t i = 0, size = xDimension_1 * 4; i < size; i += 4)
-	{
-		geometry -> coordIndex () .emplace_back (0);
-		geometry -> coordIndex () .emplace_back (coordIndices [i + 1] - xDimension_2);
-		geometry -> coordIndex () .emplace_back (coordIndices [i + 2] - xDimension_2);
-		geometry -> coordIndex () .emplace_back (-1);
-	}
-
-	for (size_t i = xDimension_1 * 4, size = coordIndices .size () - xDimension_1 * 4; i < size; i += 4)
-	{
-		geometry -> coordIndex () .emplace_back (coordIndices [i]     - xDimension_2);
-		geometry -> coordIndex () .emplace_back (coordIndices [i + 1] - xDimension_2);
-		geometry -> coordIndex () .emplace_back (coordIndices [i + 2] - xDimension_2);
-		geometry -> coordIndex () .emplace_back (coordIndices [i + 3] - xDimension_2);
-		geometry -> coordIndex () .emplace_back (-1);
-	}
-
-	for (size_t i = coordIndices .size () - xDimension_1 * 4, size = coordIndices .size (); i < size; i += 4)
-	{
-		geometry -> coordIndex () .emplace_back (coordIndices [i] - xDimension_2);
-		geometry -> coordIndex () .emplace_back (points .size () - 1);
-		geometry -> coordIndex () .emplace_back (coordIndices [i + 3] - xDimension_2);
+		geometry -> coordIndex () .emplace_back (coordIndices [i]);
+		geometry -> coordIndex () .emplace_back (coordIndices [i + 1]);
+		geometry -> coordIndex () .emplace_back (coordIndices [i + 2]);
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
@@ -311,7 +305,6 @@ QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) con
 
 	return geometry;
 }
-
 
 } // X3D
 } // titania

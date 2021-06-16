@@ -107,7 +107,7 @@ public:
 
 	virtual
 	GLuint
-	getProgramId () const
+	getProgramId () const final override
 	{ return programId; }
 
 	///  @name Operations

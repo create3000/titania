@@ -62,6 +62,7 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <cstdint>
+#include <complex>
 #include <string>
 
 namespace titania {
@@ -120,6 +121,13 @@ using Vector3 = vector3 <Type>;
 
 template <class Type>
 using Vector4 = vector4 <Type>;
+
+template <class T>
+std::complex <T>
+polar (const T & r, const T & theta = T ())
+{
+	return std::complex (r * std::cos (theta), r * std::sin (theta));
+}
 
 } // X3D
 } // titania

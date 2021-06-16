@@ -120,7 +120,7 @@ Cylinder::initialize ()
 	try
 	{
 		const auto metaOptions = getMetadataSet ("/Cylinder/options");
-	
+
 		optionsNode .set (MakePtr <CylinderOptions> (getExecutionContext ()));
 
 		optionsNode -> addInterest (&Cylinder::requestRebuild, this);
@@ -199,17 +199,19 @@ Cylinder::build ()
 		{
 			const double u1     = i / xDimension;
 			const double theta1 = 2 * pi <double> * u1;
-			const auto   n1     = std::polar <double> (-1, theta1);
+			const auto   n1     = X3D::polar <double> (-1, theta1);
 			const auto   p1     = n1 * double (radius () .getValue ());
 
 			const double u2     = (i + 1) / xDimension;
 			const double theta2 = 2 * pi <double> * u2;
-			const auto   n2     = std::polar <double> (-1, theta2);
+			const auto   n2     = X3D::polar <double> (-1, theta2);
 			const auto   p2     = n2 * double (radius () .getValue ());
 
 			// p1 - p4
-			//  |   |
+			//  | \ |
 			// p2 - p3
+
+			// Triangle 1
 
 			// p1
 			getTexCoords () .emplace_back (u1, 1, 0, 1);
@@ -226,48 +228,107 @@ Cylinder::build ()
 			getNormals   () .emplace_back (n2 .imag (), 0, n2 .real ());
 			getVertices  () .emplace_back (p2 .imag (), y2, p2 .real ());
 
+			// Triangle 2
+
+			// p1
+			getTexCoords () .emplace_back (u1, 1, 0, 1);
+			getNormals   () .emplace_back (n1 .imag (), 0, n1 .real ());
+			getVertices  () .emplace_back (p1 .imag (), y1, p1 .real ());
+
+			// p3
+			getTexCoords () .emplace_back (u2, 0, 0, 1);
+			getNormals   () .emplace_back (n2 .imag (), 0, n2 .real ());
+			getVertices  () .emplace_back (p2 .imag (), y2, p2 .real ());
+
 			// p4
 			getTexCoords () .emplace_back (u2, 1, 0, 1);
 			getNormals   () .emplace_back (n2 .imag (), 0, n2 .real ());
 			getVertices  () .emplace_back (p2 .imag (), y1, p2 .real ());
 		}
-
-		addElements (GL_QUADS, xDimension * 4);
 	}
 
 	if (top ())
 	{
+		auto texCoords = std::vector <Vector4f> ();
+		auto points    = std::vector <Vector3d> ();
+
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * pi <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = X3D::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
-			getTexCoords () .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
-			getNormals   () .emplace_back (0, 1, 0);
-			getVertices  () .emplace_back (p .imag (), y1, p .real ());
+			texCoords .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
+			points    .emplace_back (p .imag (), y1, p .real ());
 		}
 
-		addElements (GL_POLYGON, xDimension);
+		const auto & t0 = texCoords [0];
+		const auto & p0 = points [0];
+
+		for (size_t i = 1, size = points .size () - 1; i < size; ++ i)
+		{
+			const auto & t1 = texCoords [i];
+			const auto & t2 = texCoords [i + 1];
+			const auto & p1 = points [i];
+			const auto & p2 = points [i + 1];
+
+			getTexCoords () .emplace_back (t0);
+			getNormals ()   .emplace_back (0, 1, 0);
+			getVertices ()  .emplace_back (p0);
+
+			getTexCoords () .emplace_back (t1);
+			getNormals ()   .emplace_back (0, 1, 0);
+			getVertices ()  .emplace_back (p1);
+
+			getTexCoords () .emplace_back (t2);
+			getNormals ()   .emplace_back (0, 1, 0);
+			getVertices ()  .emplace_back (p2);
+		}
 	}
 
 	if (bottom ())
 	{
+		auto texCoords = std::vector <Vector4f> ();
+		auto points    = std::vector <Vector3d> ();
+
 		for (int32_t i = xDimension - 1; i > -1; -- i)
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * pi <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = X3D::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
-			getTexCoords () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
-			getNormals   () .emplace_back (0, -1, 0);
-			getVertices  () .emplace_back (p .imag (), y2, p .real ());
+			texCoords .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
+			points    .emplace_back (p .imag (), y2, p .real ());
 		}
 
-		addElements (GL_POLYGON, xDimension);
+		const auto & t0 = texCoords [0];
+		const auto & p0 = points [0];
+
+		for (size_t i = 1, size = points .size () - 1; i < size; ++ i)
+		{
+			const auto & t1 = texCoords [i];
+			const auto & t2 = texCoords [i + 1];
+			const auto & p1 = points [i];
+			const auto & p2 = points [i + 1];
+
+			getTexCoords () .emplace_back (t0);
+			getNormals ()   .emplace_back (0, -1, 0);
+			getVertices ()  .emplace_back (p0);
+
+			getTexCoords () .emplace_back (t1);
+			getNormals ()   .emplace_back (0, -1, 0);
+			getVertices ()  .emplace_back (p1);
+
+			getTexCoords () .emplace_back (t2);
+			getNormals ()   .emplace_back (0, -1, 0);
+			getVertices ()  .emplace_back (p2);
+		}
 	}
+
+	if (not getVertices () .empty ())
+		addElements (GL_TRIANGLES, getVertices () .size ());
 
 	setSolid (solid ());
 }
@@ -295,7 +356,7 @@ Cylinder::toPrimitive () const
 		{
 			const auto u     = i / xDimension;
 			const auto theta = 2 * pi <double> * u;
-			const auto t     = std::polar <double> (-1, theta);
+			const auto t     = X3D::polar <double> (-1, theta);
 			const auto p     = t * double (radius () .getValue ());
 
 			if (top ())
@@ -311,7 +372,7 @@ Cylinder::toPrimitive () const
 		{
 			const auto u     = i / xDimension;
 			const auto theta = 2 * pi <double> * u;
-			const auto t     = std::polar <double> (-1, theta);
+			const auto t     = X3D::polar <double> (-1, theta);
 			const auto p     = t * double (radius () .getValue ());
 
 			if (bottom ())
@@ -345,7 +406,7 @@ Cylinder::toPrimitive () const
 			geometry -> texCoordIndex () .emplace_back (i);
 			geometry -> coordIndex ()    .emplace_back (i);
 		}
-		
+
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
 
@@ -365,7 +426,7 @@ Cylinder::toPrimitive () const
 
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
-	
+
 		t += xDimension;
 	}
 
@@ -374,7 +435,7 @@ Cylinder::toPrimitive () const
 		for (int32_t i = 0, size = xDimension - 1; i < size; ++ i)
 		{
 			const int32_t i2 = i * 2;
-		
+
 			geometry -> texCoordIndex () .emplace_back (t + i2);
 			geometry -> texCoordIndex () .emplace_back (t + i2 + 1);
 			geometry -> texCoordIndex () .emplace_back (t + i2 + 3);
@@ -450,7 +511,7 @@ Cylinder::toPrimitive () const
 //		texCoord -> point () .emplace_back (1, 1);
 //		texCoord -> point () .emplace_back (1, 0);
 //	}
-//	
+//
 //	int32_t first = 0;
 //
 //	if (top ())
@@ -460,10 +521,10 @@ Cylinder::toPrimitive () const
 //			geometry -> texCoordIndex () .emplace_back (i);
 //			geometry -> coordIndex ()    .emplace_back (i);
 //		}
-//		
+//
 //		geometry -> texCoordIndex () .emplace_back (-1);
 //		geometry -> coordIndex ()    .emplace_back (-1);
-//		
+//
 //		first += xDimension;
 //	}
 //
@@ -484,7 +545,7 @@ Cylinder::toPrimitive () const
 //	if (side ())
 //	{
 //		const int32_t xDimension2 = xDimension * 2;
-//	
+//
 //		for (int32_t i = 0, size = xDimension2 - 2; i < size; i += 2)
 //		{
 //			geometry -> texCoordIndex () .emplace_back (first + i);
@@ -492,7 +553,7 @@ Cylinder::toPrimitive () const
 //			geometry -> texCoordIndex () .emplace_back (first + i + 3);
 //			geometry -> texCoordIndex () .emplace_back (first + i + 2);
 //			geometry -> texCoordIndex () .emplace_back (-1);
-//	
+//
 //			geometry -> coordIndex () .emplace_back (first + i);
 //			geometry -> coordIndex () .emplace_back (first + i + 1);
 //			geometry -> coordIndex () .emplace_back (first + i + 3);

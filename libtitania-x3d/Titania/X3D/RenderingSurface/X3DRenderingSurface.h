@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_RENDERING_SURFACE_X3DRENDERING_SURFACE_H__
 
 #include <gtkmm/drawingarea.h>
+#include <gdkmm/glcontext.h>
 #include <glibmm/dispatcher.h>
 
 #include <memory>
@@ -62,7 +63,6 @@ namespace titania {
 namespace X3D {
 
 class FrameBuffer;
-class RenderingContext;
 
 class X3DRenderingSurface :
 	public Gtk::DrawingArea
@@ -153,7 +153,7 @@ protected:
 
 	///  @name Operations
 
-	const std::shared_ptr <RenderingContext> &
+	const Glib::RefPtr <Gdk::GLContext> &
 	getContext () const
 	{ return context; }
 
@@ -210,6 +210,11 @@ protected:
 
 private:
 
+	///  @name Construction
+
+	Glib::RefPtr <Gdk::GLContext>
+	createContext () const;
+
 	///  @name Event handler
 
 	void
@@ -221,7 +226,8 @@ private:
 	///  @name Members
 
 	bool                                                    initialized;
-	std::shared_ptr <RenderingContext>                      context;
+	Glib::RefPtr <Gdk::GLContext>                           context;
+	Cairo::RefPtr <Cairo::ImageSurface>                     surface;
 	std::set <std::string>                                  extensions;
 	size_t                                                  antialiasing;
 	size_t                                                  frameRate;

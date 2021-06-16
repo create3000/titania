@@ -85,10 +85,6 @@ public:
 	{ return GL_TEXTURE_CUBE_MAP; }
 
 	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const = 0;
-
-	virtual
 	size_t
 	getWidth () const  = 0;
 
@@ -99,7 +95,7 @@ public:
 	virtual
 	size_t
 	getComponents () const = 0;
-	
+
 	///  @name Operations
 
 	virtual
@@ -126,7 +122,7 @@ protected:
 
 	void
 	setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data);
-	
+
 
 private:
 

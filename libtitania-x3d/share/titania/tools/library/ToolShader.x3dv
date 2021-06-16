@@ -18,7 +18,7 @@ PROTO ToolShader [ ]
     language "GLSL"
     parts [
       DEF ToolVertexShader ShaderPart {
-        url "data:text/plain,#version 300 es
+        url "data:text/plain,#version 330
 
 precision mediump float;
 
@@ -55,7 +55,7 @@ main ()
       }
       DEF ToolFragmentShader ShaderPart {
         type "FRAGMENT"
-        url "data:text/plain,#version 300 es
+        url "data:text/plain,#version 330
 
 precision mediump float;
 

@@ -429,7 +429,7 @@ X3DGeometryNodeTool::traverse (const TraverseType type, X3DRenderObject* const r
 void
 X3DGeometryNodeTool::draw (ShapeContainer* const context)
 {
-	if (PolygonModeLock (GL_FILL) .front () == GL_FILL)
+	if (PolygonModeLock (GL_FILL) .mode () == GL_FILL)
 	{
 		PolygonOffsetLock polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
 
@@ -440,7 +440,7 @@ X3DGeometryNodeTool::draw (ShapeContainer* const context)
 void
 X3DGeometryNodeTool::drawParticles (ShapeContainer* const context, const std::vector <SoftParticle> & particles, const size_t numParticles)
 {
-	if (PolygonModeLock (GL_FILL) .front () == GL_FILL)
+	if (PolygonModeLock (GL_FILL) .mode () == GL_FILL)
 	{
 		PolygonOffsetLock polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
 

@@ -91,8 +91,8 @@ Disk2DOptions::build ()
 	{
 		const auto theta = angle * n;
 
-		const auto texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const auto point    = std::polar <double> (1, theta);
+		const auto texCoord = X3D::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
+		const auto point    = X3D::polar <double> (1, theta);
 
 		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals   () .emplace_back (0, 0, 1);

@@ -49,39 +49,108 @@
  ******************************************************************************/
 
 #include <Titania/X3D.h>
-
-#include <btBulletDynamicsCommon.h>
-//#include <filesystem>
+#include <gtkmm.h>
 
 using namespace titania;
 using namespace titania::X3D;
 
-class A
+namespace Test
+{
+class DrawingArea :
+	public Gtk::DrawingArea
 {
 public:
 
-	virtual
-	void
-	f ()
-	{
-		__LOG__ << std::endl;
-	}
+	DrawingArea ();
+
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
 
 };
 
-class B :
-	public A
+DrawingArea::DrawingArea () :
+	Gtk::DrawingArea ()
+{ }
+
+bool
+DrawingArea::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	cairo -> set_source_rgb (1, 0, 0);
+  	cairo -> move_to (0, 10);
+  	cairo -> line_to (100, 10);
+  	cairo -> stroke ();
+
+	return false;
+}
+
+class Window :
+	public Gtk::Window
 {
 public:
 
+	Window ();
+
+private:
+
+	Gtk::Box box;
+
+	X3D::BrowserPtr browser1;
+	X3D::BrowserPtr browser2;
+};
+
+// file:///Users/holger/Desktop/X3D/beethoven/beethoven-no-normals.x3dv
+
+Window::Window () :
+	Gtk::Window (),
+	   browser1 (X3D::createBrowser ({ "file:///Users/holger/Desktop/test.x3dv" })),
+	   browser2 (X3D::createBrowser ({ "file:///Users/holger/Desktop/X3D/beethoven/beethoven-no-normals.x3dv" }))
+{
+	set_title ("Test GLArea");
+	set_default_size (400, 200);
+	set_size_request (400, 200);
+
+	box .pack_start (*browser1);
+	box .pack_start (*browser2);
+
+	add (box);
+	show_all ();
+}
+
+class Application :
+	public Gtk::Application
+{
+public:
+
+	Application (int & argc, char** & argv);
+
 	virtual
 	void
-	f () final override
-	{
-		__LOG__ << std::endl;
-	}
+	on_activate () final override;
 
 };
+
+Application::Application (int & argc, char** & argv) :
+	     Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN)
+{
+	Glib::set_application_name ("Titania");
+}
+
+void
+Application::on_activate ()
+{
+	static Window* window = nullptr;
+
+	if (!window)
+	{
+		window = new Window ();
+
+		add_window (*window);
+	}
+
+	window -> present ();
+}
+
+} // namespace Test
 
 int
 main (int argc, char** argv)
@@ -96,27 +165,18 @@ main (int argc, char** argv)
 	//std::cout << std::setprecision (std::numeric_limits <double>::digits10);
 	//std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 	//std::cerr << std::setprecision (std::numeric_limits <double>::digits10);
-	std::cout .imbue (std::locale (""));
-	std::clog .imbue (std::locale (""));
-	std::cerr .imbue (std::locale (""));
 
-	std::locale::global (std::locale (""));
+	//std::cout .imbue (std::locale (""));
+	//std::clog .imbue (std::locale (""));
+	//std::cerr .imbue (std::locale (""));
+
+	//std::locale::global (std::locale (""));
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	A () .f ();
-	B () .f ();
+	X3D::Init (argc, argv);
 
-	B b;
-
-	A* a1 = &b;
-	A& a2 = b;
-
-	auto f1 = std::bind (&A::f, a1);
-	auto f2 = std::bind (&A::f, std::ref (a2));
-
-	f1 ();
-	f2 ();
+	Test::Application (argc, argv) .run ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

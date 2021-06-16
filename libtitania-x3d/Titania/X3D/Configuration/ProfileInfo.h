@@ -89,10 +89,6 @@ public:
 	{ return title; }
 
 	const std::string &
-	getName () const
-	{ return name; }
-
-	const std::string &
 	getProviderUrl () const
 	{ return providerUrl; }
 
@@ -137,7 +133,6 @@ private:
 	///  @name Members
 
 	const std::string title;
-	const std::string name;
 	const std::string providerUrl;
 
 	ComponentInfoArrayPtr components;

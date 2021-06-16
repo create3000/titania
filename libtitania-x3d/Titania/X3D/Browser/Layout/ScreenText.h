@@ -97,7 +97,7 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
+	isTransparent () const final override
 	{ return true; }
 
 	virtual
