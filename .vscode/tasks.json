@@ -6,7 +6,7 @@
         {
             "label": "Make",
             "type": "shell",
-            "command": "make -j`perl -e \"print do { local @ARGV='/proc/cpuinfo'; scalar grep /^processor\\s+:/, <>;}\"`",
+            "command": "make -j4",
             "problemMatcher": {
                 "base": "$gcc",
                 "fileLocation": "absolute"
