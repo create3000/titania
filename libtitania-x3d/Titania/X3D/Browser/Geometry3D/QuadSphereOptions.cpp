@@ -167,7 +167,7 @@ QuadSphereOptions::createCoordIndex () const
 
 	size_t p = 1;
 
-	for (size_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+	for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
 	{
 		coordIndices .emplace_back (0);
 		coordIndices .emplace_back (p);
@@ -180,9 +180,9 @@ QuadSphereOptions::createCoordIndex () const
 
 	p = 1;
 
-	for (size_t v = 1; v < yDimension () - 2; ++ v, ++ p)
+	for (int32_t v = 1; v < yDimension () - 2; ++ v, ++ p)
 	{
-		for (size_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+		for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
 		{
 			coordIndices .emplace_back (p);
 			coordIndices .emplace_back (p + xDimension ());
@@ -202,9 +202,9 @@ QuadSphereOptions::createCoordIndex () const
 		coordIndices .emplace_back (p - xDimension () + 1);
 	}
 
-	const size_t l = p + xDimension ();
+	const int32_t l = p + xDimension ();
 
-	for (size_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+	for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
 	{
 		coordIndices .emplace_back (p);
 		coordIndices .emplace_back (l);
@@ -227,11 +227,11 @@ QuadSphereOptions::createPoints () const
 	points .emplace_back (0, 1, 0);
 
 	// Sphere segments
-	for (size_t v = 1; v < yDimension () - 1; ++ v)
+	for (int32_t v = 1; v < yDimension () - 1; ++ v)
 	{
 		const auto zPlane = X3D::polar (1.0, -pi <double> * v / (yDimension () - 1));
 
-		for (size_t u = 0; u < xDimension (); ++ u)
+		for (int32_t u = 0; u < xDimension (); ++ u)
 		{
 			const auto yPlane = X3D::polar (zPlane .imag (), 2 * pi <double> * u / xDimension ());
 

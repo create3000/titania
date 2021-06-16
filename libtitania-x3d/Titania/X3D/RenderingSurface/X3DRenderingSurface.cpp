@@ -94,6 +94,7 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	  timeoutConnection (),
 	              mutex ()
 {
+	// Use context.
 	ContextLock lock (this);
 
 	// Enable map event.
@@ -101,18 +102,11 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 	set_app_paintable (true);
 	get_style_context () -> add_class ("titania-surface");
 
-	// Use context.
-
-	#ifdef __APPLE__
-	extensions .emplace ("GL_EXT_framebuffer_multisample");
-	#else
+	#ifndef __APPLE__
 	glewInit ();
-
-	basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
-
-	//for (const auto & extension : extensions)
-	//	__LOG__ << extension << std::endl;
 	#endif
+
+	extensions .emplace ("GL_EXT_framebuffer_multisample");
 
 	// Setup framebuffer and connect.
 
@@ -124,11 +118,10 @@ X3DRenderingSurface::X3DRenderingSurface (X3DRenderingSurface* const other) :
 Glib::RefPtr <Gdk::GLContext>
 X3DRenderingSurface::createContext () const
 {
-	GdkWindowAttr attributes;
+	const auto window  = Gdk::Window::get_default_root_window ();
+	const auto context = window -> create_gl_context ();
 
-	attributes .window_type = GDK_WINDOW_TOPLEVEL;
-
-	return Glib::wrap (gdk_window_new (nullptr, &attributes, 0)) -> create_gl_context ();
+	return context;
 }
 
 bool
