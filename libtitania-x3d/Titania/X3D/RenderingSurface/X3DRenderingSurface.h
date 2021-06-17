@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_RENDERING_SURFACE_X3DRENDERING_SURFACE_H__
 #define __TITANIA_X3D_RENDERING_SURFACE_X3DRENDERING_SURFACE_H__
 
+#ifdef __APPLE__
 #include <gtkmm/drawingarea.h>
 #include <gdkmm/glcontext.h>
 #include <glibmm/dispatcher.h>
@@ -244,5 +245,194 @@ private:
 
 } // X3D
 } // titania
+#else
+#include <gtkmm/drawingarea.h>
+#include <glibmm/dispatcher.h>
+
+#include <memory>
+#include <set>
+#include <mutex>
+
+namespace titania {
+namespace X3D {
+
+class FrameBuffer;
+class RenderingContext;
+
+class X3DRenderingSurface :
+	public Gtk::DrawingArea
+{
+public:
+
+	///  @name Member access
+
+	///  Returns true if OpenGL @a extensions is available, otherwise false.
+	bool
+	getExtension (const std::string & name) const;
+
+	///  Sets the number of antialiasing samples, default is 0.
+	void
+	setAntialiasing (const size_t samples)
+	{ antialiasing = samples; }
+
+	///  Returns the number of antialiasing samples.
+	size_t
+	getAntialiasing () const
+	{ return antialiasing; }
+
+	///  Sets the the disired frame rate, default is 60.
+	void
+	setFrameRate (const size_t value)
+	{ frameRate = value; }
+
+	///  Returns the the disired frame rate.
+	size_t
+	getFrameRate () const
+	{ return frameRate; }
+
+	///  Sets whether the context should process render events.
+	void
+	setProcessRenderEvents (const bool value)
+	{ processRenderEvents = value; }
+
+	///  Sets whether the context should process render events.
+	bool
+	getProcessRenderEvents () const
+	{ return processRenderEvents; }
+
+	///  @name Operations
+
+	///  Marks the currently rendered data (if any) as invalid, and queues a redraw of the widget.
+	void
+	queue_render ();
+
+	///  @name Signals
+
+	///  Signal setup.
+	sigc::signal <void> &
+	signal_setup ()
+	{ return setupSignal; }
+
+	///  Signal reshape.
+	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> &
+	signal_reshape ()
+	{ return reshapeSignal; }
+
+	///  Signal render.
+	sigc::signal <bool> &
+	signal_render ()
+	{ return renderSignal; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose ();
+
+	virtual
+	~X3DRenderingSurface () override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class ContextLock;
+	friend class std::lock_guard <X3DRenderingSurface>;
+
+	///  @name Construction
+
+	X3DRenderingSurface ();
+
+	X3DRenderingSurface (X3DRenderingSurface* const other);
+
+	///  @name Operations
+
+	const std::shared_ptr <RenderingContext> &
+	getContext () const
+	{ return context; }
+
+	///  @name Thread handling
+
+	void
+	lock ();
+
+	void
+	unlock ();
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_realize () override;
+
+	virtual
+	void
+	on_setup ();
+
+	virtual
+	void
+	on_map () override;
+
+	virtual
+	void
+	on_style_updated () override;
+
+	virtual
+	void
+	on_size_allocate (Gtk::Allocation & allocation) override;
+
+	virtual
+	void
+	on_reshape (const int32_t x, const int32_t y, const int32_t width, const int32_t height);
+
+	virtual
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
+
+	virtual
+	bool
+	on_render ();
+
+	virtual
+	void
+	on_unmap () override;
+
+	virtual
+	void
+	on_unrealize () override;
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	on_dispatch ();
+
+	bool
+	on_timeout ();
+
+	///  @name Members
+
+	bool                                                    initialized;
+	std::shared_ptr <RenderingContext>                      context;
+	std::set <std::string>                                  extensions;
+	size_t                                                  antialiasing;
+	size_t                                                  frameRate;
+	bool                                                    processRenderEvents;
+	std::unique_ptr <FrameBuffer>                           frameBuffer;
+	sigc::signal <void>                                     setupSignal;
+	sigc::signal <bool, int32_t, int32_t, int32_t, int32_t> reshapeSignal;
+	sigc::signal <bool>                                     renderSignal;
+	std::unique_ptr <Glib::Dispatcher>                      timeoutDispatcher;
+	sigc::connection                                        timeoutConnection;
+	std::recursive_mutex                                    mutex;
+
+};
+
+} // X3D
+} // titania
+#endif
 
 #endif

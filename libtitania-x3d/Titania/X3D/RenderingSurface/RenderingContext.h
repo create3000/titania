@@ -48,72 +48,68 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
-#define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
+#ifndef __TITANIA_X3D_RENDERING_SURFACE_RENDERING_CONTEXT_H__
+#define __TITANIA_X3D_RENDERING_SURFACE_RENDERING_CONTEXT_H__
 
-#ifdef __APPLE__
-#include "../Bits/Error.h"
+#ifndef __APPLE__
+#include "../Rendering/OpenGL.h"
 
-#include <memory>
-
-namespace titania {
-namespace X3D {
-
-class X3DBrowser;
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
-
-class ContextLock
-{
-public:
-
-	///  throws Error <INVALID_OPERATION_TIMING>
-	ContextLock (X3DBrowser* const browser);
-
-	///  throws Error <INVALID_OPERATION_TIMING>
-	ContextLock (X3DRenderingSurface* const renderingSurface);
-
-	~ContextLock ();
-
-
-private:
-
-	class Implementation;
-
-	std::unique_ptr <Implementation> implementation;
-
-};
-
-} // X3D
-} // titania
-#else
-#include "../Bits/Error.h"
-
-#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowserContext;
-class X3DExecutionContext;
-class X3DRenderingSurface;
-
-class ContextLock
+class RenderingContext
 {
 public:
 
-	///  throws Error <INVALID_OPERATION_TIMING>
-	ContextLock (X3DRenderingSurface* const renderingSurface);
+	///  @name Construction
 
-	~ContextLock ();
+	RenderingContext (const std::shared_ptr <RenderingContext> & sharedContext);
+
+	///  @name Operations
+
+	bool
+	makeCurrent ();
+
+	static
+	void
+	clearCurrent ();
+
+	///  @name Destruction
+
+	~RenderingContext ();
 
 
 private:
 
-	class Implementation;
+	///  @name Construction
 
-	std::unique_ptr <Implementation> implementation;
+	Pixmap
+	createPixmap (Display* const xDisplay, const size_t width, const size_t height);
+
+	GLXPixmap
+	createDrawable (Display* const xDisplay, const Pixmap xPixmap);
+
+	XVisualInfo*
+	createVisualInfo (Display* const xDisplay);
+
+	GLXContext
+	createContext (Display* const xDisplay,
+	               XVisualInfo* const xVisualInfo,
+	               const std::shared_ptr <RenderingContext> & sharedContext,
+	               const bool direct);
+
+	///  @name Members
+
+	const Glib::RefPtr <Gdk::Display>        display;
+	const std::shared_ptr <RenderingContext> sharedContext;
+
+	Display* const xDisplay;
+	Pixmap         xPixmap;
+	GLXDrawable    xDrawable;
+	XVisualInfo*   xVisualInfo;
+	GLXContext     xContext;
 
 };
 

@@ -745,6 +745,7 @@ am_libtitania_x3d_la_OBJECTS = $(current_dir)/Titania/X3D.lo \
 	$(current_dir)/Titania/X3D/Rendering/X3DRenderObject.lo \
 	$(current_dir)/Titania/X3D/Rendering/X3DShapeContainer.lo \
 	$(current_dir)/Titania/X3D/RenderingSurface/ContextLock.lo \
+	$(current_dir)/Titania/X3D/RenderingSurface/RenderingContext.lo \
 	$(current_dir)/Titania/X3D/RenderingSurface/X3DRenderingSurface.lo \
 	$(current_dir)/Titania/X3D/Routing/Route.lo \
 	$(current_dir)/Titania/X3D/Routing/Router.lo \
@@ -1470,6 +1471,7 @@ am__depfiles_remade = $(current_dir)/Titania/$(DEPDIR)/X3D.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DRenderObject.Plo \
 	$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DShapeContainer.Plo \
 	$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/ContextLock.Plo \
+	$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/RenderingContext.Plo \
 	$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/X3DRenderingSurface.Plo \
 	$(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Route.Plo \
 	$(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Router.Plo \
@@ -2418,6 +2420,7 @@ libtitania_x3d_la_SOURCES = \
 	$(current_dir)/Titania/X3D/Rendering/X3DRenderObject.cpp \
 	$(current_dir)/Titania/X3D/Rendering/X3DShapeContainer.cpp \
 	$(current_dir)/Titania/X3D/RenderingSurface/ContextLock.cpp \
+	$(current_dir)/Titania/X3D/RenderingSurface/RenderingContext.cpp \
 	$(current_dir)/Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	$(current_dir)/Titania/X3D/Routing/Route.cpp \
 	$(current_dir)/Titania/X3D/Routing/Router.cpp \
@@ -4687,6 +4690,9 @@ $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp):
 $(current_dir)/Titania/X3D/RenderingSurface/ContextLock.lo:  \
 	$(current_dir)/Titania/X3D/RenderingSurface/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp)
+$(current_dir)/Titania/X3D/RenderingSurface/RenderingContext.lo:  \
+	$(current_dir)/Titania/X3D/RenderingSurface/$(am__dirstamp) \
+	$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp)
 $(current_dir)/Titania/X3D/RenderingSurface/X3DRenderingSurface.lo:  \
 	$(current_dir)/Titania/X3D/RenderingSurface/$(am__dirstamp) \
 	$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/$(am__dirstamp)
@@ -5986,6 +5992,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DRenderObject.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DShapeContainer.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/ContextLock.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/RenderingContext.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/X3DRenderingSurface.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Route.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@$(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Router.Plo@am__quote@ # am--include-marker
@@ -7246,6 +7253,7 @@ distclean: distclean-am
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DRenderObject.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DShapeContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/ContextLock.Plo
+	-rm -f $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/RenderingContext.Plo
 	-rm -f $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/X3DRenderingSurface.Plo
 	-rm -f $(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Route.Plo
 	-rm -f $(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Router.Plo
@@ -7997,6 +8005,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DRenderObject.Plo
 	-rm -f $(current_dir)/Titania/X3D/Rendering/$(DEPDIR)/X3DShapeContainer.Plo
 	-rm -f $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/ContextLock.Plo
+	-rm -f $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/RenderingContext.Plo
 	-rm -f $(current_dir)/Titania/X3D/RenderingSurface/$(DEPDIR)/X3DRenderingSurface.Plo
 	-rm -f $(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Route.Plo
 	-rm -f $(current_dir)/Titania/X3D/Routing/$(DEPDIR)/Router.Plo

@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+#ifdef __APPLE__
 #include "ContextLock.h"
 
 #include "../Browser/X3DBrowser.h"
@@ -146,3 +147,109 @@ ContextLock::~ContextLock ()
 
 } // X3D
 } // titania
+#else
+#include "ContextLock.h"
+
+#include "../RenderingSurface/RenderingContext.h"
+#include "../RenderingSurface/X3DRenderingSurface.h"
+
+#include <thread>
+
+namespace titania {
+namespace X3D {
+
+class ContextLock::Implementation
+{
+public:
+
+	///  @name Construction
+
+	Implementation (X3DRenderingSurface* const renderingSurface);
+
+	///  @name Destruction
+
+	~Implementation ();
+
+
+private:
+
+	///  @name Static members
+
+	static std::map <std::thread::id, std::shared_ptr <RenderingContext>> currentContexts;
+
+	static std::mutex mutex;
+
+	///  @name Members
+
+	std::lock_guard <X3DRenderingSurface> surfaceLock;
+	std::shared_ptr <RenderingContext>    previousContext;
+
+};
+
+std::map <std::thread::id, std::shared_ptr <RenderingContext>> ContextLock::Implementation::currentContexts;
+std::mutex ContextLock::Implementation::mutex;
+
+ContextLock::Implementation::Implementation (X3DRenderingSurface* const renderingSurface) :
+	    surfaceLock (*renderingSurface),
+	previousContext ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	const auto currentContext = renderingSurface -> getContext ();
+
+	previousContext = currentContexts [std::this_thread::get_id ()];
+
+	if (currentContext)
+	{
+		if (currentContext -> makeCurrent ())
+		{
+			currentContexts [std::this_thread::get_id ()] = currentContext;
+		   return;
+		}
+	}
+
+	// Throw an exception if it cannot make current!  The destructor is then not called.
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+ContextLock::Implementation::~Implementation ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	if (previousContext)
+	{
+		if (previousContext -> makeCurrent ())
+		{
+			currentContexts [std::this_thread::get_id ()] = previousContext;
+			return;
+		}
+	}
+
+	currentContexts .erase (std::this_thread::get_id ());
+
+	RenderingContext::clearCurrent ();
+}
+
+/**
+ *  When a ContextLock object is created, it attempts to aquire the OpenGL context of the browser instance, otherwise
+ *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous OpenGL context is restored.
+ *
+ *  @param  renderingSurface  A valid X3DRenderingSurface instance.
+ *
+ *  throws Error <INVALID_OPERATION_TIMING>
+ */
+ContextLock::ContextLock (X3DRenderingSurface* const renderingSurface) :
+	implementation ()
+{
+	if (not renderingSurface)
+		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+
+	implementation .reset (new Implementation (renderingSurface));
+}
+
+ContextLock::~ContextLock ()
+{ }
+
+} // X3D
+} // titania
+#endif

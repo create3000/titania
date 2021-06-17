@@ -73,15 +73,11 @@ X3DBrowserApplication::getBrowserWindow () const
 void
 X3DBrowserApplication::realize ()
 {
-	__LOG__ << std::endl;
 	browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("logo.x3dv") })));
 
-	__LOG__ << std::endl;
 	add_window (browserWindow -> getWindow ());
 
-	__LOG__ << std::endl;
 	browserWindow -> present ();
-	__LOG__ << std::endl;
 }
 
 void

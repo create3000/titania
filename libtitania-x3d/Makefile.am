@@ -616,6 +616,7 @@ libtitania_x3d_la_SOURCES =  \
 	$(current_dir)/Titania/X3D/Rendering/X3DRenderObject.cpp \
 	$(current_dir)/Titania/X3D/Rendering/X3DShapeContainer.cpp \
 	$(current_dir)/Titania/X3D/RenderingSurface/ContextLock.cpp \
+	$(current_dir)/Titania/X3D/RenderingSurface/RenderingContext.cpp \
 	$(current_dir)/Titania/X3D/RenderingSurface/X3DRenderingSurface.cpp \
 	$(current_dir)/Titania/X3D/Routing/Route.cpp \
 	$(current_dir)/Titania/X3D/Routing/Router.cpp \
