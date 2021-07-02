@@ -70,7 +70,7 @@ RigidBody::Fields::Fields () :
 	      linearVelocity (new SFVec3f ()),
 	     angularVelocity (new SFVec3f ()),
 	   useFiniteRotation (new SFBool ()),
-	  finiteRotationAxis (new SFVec3f ()),
+	  finiteRotationAxis (new SFVec3f (0, 1, 0)),
 	            autoDamp (new SFBool ()),
 	 linearDampingFactor (new SFFloat (0.001)),
 	angularDampingFactor (new SFFloat (0.001)),
@@ -384,7 +384,7 @@ RigidBody::set_geometry ()
 	for (const auto & node : geometry ())
 	{
 		const auto geometryNode = x3d_cast <X3DNBodyCollidableNode*> (node);
-		
+
 		if (not geometryNode)
 			continue;
 
