@@ -89,52 +89,52 @@ public:
 	///  @name Fields
 
 	SFNode &
-	front ()
-	{ return *fields .front; }
+	frontTexture ()
+	{ return *fields .frontTexture; }
 
 	const SFNode &
-	front () const
-	{ return *fields .front; }
+	frontTexture () const
+	{ return *fields .frontTexture; }
 
 	SFNode &
-	back ()
-	{ return *fields .back; }
+	backTexture ()
+	{ return *fields .backTexture; }
 
 	const SFNode &
-	back () const
-	{ return *fields .back; }
+	backTexture () const
+	{ return *fields .backTexture; }
 
 	SFNode &
-	left ()
-	{ return *fields .left; }
+	leftTexture ()
+	{ return *fields .leftTexture; }
 
 	const SFNode &
-	left () const
-	{ return *fields .left; }
+	leftTexture () const
+	{ return *fields .leftTexture; }
 
 	SFNode &
-	right ()
-	{ return *fields .right; }
+	rightTexture ()
+	{ return *fields .rightTexture; }
 
 	const SFNode &
-	right () const
-	{ return *fields .right; }
+	rightTexture () const
+	{ return *fields .rightTexture; }
 
 	SFNode &
-	top ()
-	{ return *fields .top; }
+	topTexture ()
+	{ return *fields .topTexture; }
 
 	const SFNode &
-	top () const
-	{ return *fields .top; }
+	topTexture () const
+	{ return *fields .topTexture; }
 
 	SFNode &
-	bottom ()
-	{ return *fields .bottom; }
+	bottomTexture ()
+	{ return *fields .bottomTexture; }
 
 	const SFNode &
-	bottom () const
-	{ return *fields .bottom; }
+	bottomTexture () const
+	{ return *fields .bottomTexture; }
 
 	///  @name Operations
 
@@ -199,12 +199,12 @@ private:
 	{
 		Fields ();
 
-		SFNode* const front;
-		SFNode* const back;
-		SFNode* const left;
-		SFNode* const right;
-		SFNode* const top;
-		SFNode* const bottom;
+		SFNode* const frontTexture;
+		SFNode* const backTexture;
+		SFNode* const leftTexture;
+		SFNode* const rightTexture;
+		SFNode* const topTexture;
+		SFNode* const bottomTexture;
 	};
 
 	Fields fields;

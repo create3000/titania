@@ -63,12 +63,12 @@ const std::string ComposedCubeMapTexture::typeName       = "ComposedCubeMapTextu
 const std::string ComposedCubeMapTexture::containerField = "texture";
 
 ComposedCubeMapTexture::Fields::Fields () :
-	 front (new SFNode ()),
-	  back (new SFNode ()),
-	  left (new SFNode ()),
-	 right (new SFNode ()),
-	   top (new SFNode ()),
-	bottom (new SFNode ())
+	 frontTexture (new SFNode ()),
+	  backTexture (new SFNode ()),
+	  leftTexture (new SFNode ()),
+	 rightTexture (new SFNode ()),
+	   topTexture (new SFNode ()),
+	bottomTexture (new SFNode ())
 { }
 
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -83,13 +83,41 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 {
 	addType (X3DConstants::ComposedCubeMapTexture);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "front",    front ());
-	addField (inputOutput, "back",     back ());
-	addField (inputOutput, "left",     left ());
-	addField (inputOutput, "right",    right ());
-	addField (inputOutput, "top",      top ());
-	addField (inputOutput, "bottom",   bottom ());
+	addField (inputOutput, "metadata",      metadata ());
+	addField (inputOutput, "frontTexture",  frontTexture ());
+	addField (inputOutput, "backTexture",   backTexture ());
+	addField (inputOutput, "leftTexture",   leftTexture ());
+	addField (inputOutput, "rightTexture",  rightTexture ());
+	addField (inputOutput, "topTexture",    topTexture ());
+	addField (inputOutput, "bottomTexture", bottomTexture ());
+
+	addField (X3D_V3_3, "front",  "frontTexture");
+	addField (X3D_V3_3, "back",   "backTexture");
+	addField (X3D_V3_3, "left",   "leftTexture");
+	addField (X3D_V3_3, "right",  "rightTexture");
+	addField (X3D_V3_3, "top",    "topTexture");
+	addField (X3D_V3_3, "bottom", "bottomTexture");
+
+	addField (X3D_V3_2, "front",  "frontTexture");
+	addField (X3D_V3_2, "back",   "backTexture");
+	addField (X3D_V3_2, "left",   "leftTexture");
+	addField (X3D_V3_2, "right",  "rightTexture");
+	addField (X3D_V3_2, "top",    "topTexture");
+	addField (X3D_V3_2, "bottom", "bottomTexture");
+
+	addField (X3D_V3_1, "front",  "frontTexture");
+	addField (X3D_V3_1, "back",   "backTexture");
+	addField (X3D_V3_1, "left",   "leftTexture");
+	addField (X3D_V3_1, "right",  "rightTexture");
+	addField (X3D_V3_1, "top",    "topTexture");
+	addField (X3D_V3_1, "bottom", "bottomTexture");
+
+	addField (X3D_V3_0, "front",  "frontTexture");
+	addField (X3D_V3_0, "back",   "backTexture");
+	addField (X3D_V3_0, "left",   "leftTexture");
+	addField (X3D_V3_0, "right",  "rightTexture");
+	addField (X3D_V3_0, "top",    "topTexture");
+	addField (X3D_V3_0, "bottom", "bottomTexture");
 
 	addChildObjects (textureProperties (), nodes, loadState);
 }
@@ -107,19 +135,19 @@ ComposedCubeMapTexture::initialize ()
 
 	if (getBrowser () -> getLoadUrlObjects ())
 	{
-		front ()  .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (front ()),  0);
-		back ()   .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (back ()),   1);
-		left ()   .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (left ()),   2);
-		right ()  .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (right ()),  3);
-		top ()    .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (top ()),    4);
-		bottom () .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (bottom ()), 5);
+		frontTexture ()  .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (frontTexture ()),  0);
+		backTexture ()   .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (backTexture ()),   1);
+		leftTexture ()   .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (leftTexture ()),   2);
+		rightTexture ()  .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (rightTexture ()),  3);
+		topTexture ()    .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (topTexture ()),    4);
+		bottomTexture () .addInterest (&ComposedCubeMapTexture::set_texture, this, std::cref (bottomTexture ()), 5);
 
-		set_texture (front (),  0);
-		set_texture (back (),   1);
-		set_texture (left (),   2);
-		set_texture (right (),  3);
-		set_texture (top (),    4);
-		set_texture (bottom (), 5);
+		set_texture (frontTexture (),  0);
+		set_texture (backTexture (),   1);
+		set_texture (leftTexture (),   2);
+		set_texture (rightTexture (),  3);
+		set_texture (topTexture (),    4);
+		set_texture (bottomTexture (), 5);
 	}
 }
 
