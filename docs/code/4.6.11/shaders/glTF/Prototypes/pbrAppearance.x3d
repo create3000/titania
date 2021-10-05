@@ -54,7 +54,7 @@
               <connect nodeField='normalTexture' protoField='normalTexture'/>
             </IS>
             <ShaderPart DEF='pbrVertexShader2'>
-<![CDATA[data:x-shader/x-vertex,#version 300 es
+<![CDATA[data:x-shader/x-vertex,#version 330
 
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
@@ -225,7 +225,7 @@ main ()
             </ShaderPart>
             <ShaderPart DEF='pbrFragmentShader2'
                 type='FRAGMENT'>
-<![CDATA[data:x-shader/x-fragment,#version 300 es
+<![CDATA[data:x-shader/x-fragment,#version 330
 
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
 
