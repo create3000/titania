@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Mon, 05 Feb 2018 07:19:25 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/pbrAppearance.x3d'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 06:53:31 GMT'/>
+  </head>
+  <Scene>
+    <ExternProtoDeclare name='pbrAppearance' url='"Prototypes/pbrAppearance.x3d#pbrAppearance", "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrAppearance.x3d#pbrAppearance"'>
+      <field accessType='inputOutput' type='MFString' name='defines'/>
+      <field accessType='inputOutput' type='SFString' name='alphaMode'/>
+      <field accessType='inputOutput' type='SFVec3f' name='emissiveFactor'/>
+      <field accessType='inputOutput' type='SFFloat' name='occlusionStrength'/>
+      <field accessType='inputOutput' type='SFFloat' name='normalScale'/>
+      <field accessType='inputOutput' type='SFNode' name='emissiveTexture'/>
+      <field accessType='inputOutput' type='SFNode' name='occlusionTexture'/>
+      <field accessType='inputOutput' type='SFNode' name='normalTexture'/>
+      <field accessType='inputOutput' type='SFNode' name='metallicRoughness'/>
+      <field accessType='inputOutput' type='MFNode' name='extensions'/>
+    </ExternProtoDeclare>
+    <WorldInfo>
+      <MetadataSet DEF='Titania_1'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='Prototype' containerField='value'
+            name='Prototype'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='path' containerField='value'
+              name='path'
+              reference='http://titania.create3000.de'
+              value='"pbrAppearance"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Selection_2' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataSet DEF='nodes' containerField='value'
+              name='nodes'
+              reference='http://titania.create3000.de'>
+            <ProtoInstance name='pbrAppearance' DEF='_3' containerField='value'/>
+          </MetadataSet>
+          <MetadataBoolean DEF='selectGeometry' containerField='value'
+              name='selectGeometry'
+              reference='http://titania.create3000.de'
+              value='false'/>
+        </MetadataSet>
+        <MetadataSet DEF='Grid' containerField='value'
+            name='Grid'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='enabled' containerField='value'
+              name='enabled'
+              reference='http://titania.create3000.de'
+              value='true'/>
+        </MetadataSet>
+        <MetadataSet DEF='Page' containerField='value'
+            name='Page'
+            reference='http://titania.create3000.de'>
+          <MetadataInteger DEF='activeView' containerField='value'
+              name='activeView'
+              reference='http://titania.create3000.de'
+              value='1'/>
+          <MetadataInteger DEF='multiView' containerField='value'
+              name='multiView'
+              reference='http://titania.create3000.de'
+              value='0'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <ProtoInstance name='pbrAppearance' USE='_3'/>
+  </Scene>
+</X3D>

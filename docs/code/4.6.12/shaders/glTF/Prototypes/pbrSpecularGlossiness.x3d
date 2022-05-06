@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Tue, 13 Feb 2018 02:13:23 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V4.0.6a, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/shaders/glTF/Prototypes/pbrSpecularGlossiness.x3d'/>
+    <meta name='modified' content='Tue, 13 Feb 2018 07:53:09 GMT'/>
+  </head>
+  <Scene>
+    <ProtoDeclare name='pbrSpecularGlossiness'>
+      <ProtoInterface>
+        <field accessType='inputOutput' type='SFVec4f' name='diffuseFactor' value='1 1 1 1'/>
+        <field accessType='inputOutput' type='SFVec3f' name='specularFactor' value='1 1 1'/>
+        <field accessType='inputOutput' type='SFFloat' name='glossinessFactor' value='1'/>
+        <field accessType='inputOutput' type='SFNode' name='diffuseTexture'/>
+        <field accessType='inputOutput' type='SFNode' name='specularGlossinessTexture'/>
+      </ProtoInterface>
+      <ProtoBody>
+      </ProtoBody>
+    </ProtoDeclare>
+    <WorldInfo
+        title='pbrSpecularGlossiness'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='Page' containerField='value'
+            name='Page'
+            reference='http://titania.create3000.de'>
+          <MetadataInteger DEF='activeView' containerField='value'
+              name='activeView'
+              reference='http://titania.create3000.de'
+              value='1'/>
+          <MetadataInteger DEF='multiView' containerField='value'
+              name='multiView'
+              reference='http://titania.create3000.de'
+              value='0'/>
+        </MetadataSet>
+        <MetadataSet DEF='Selection' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='selectGeometry' containerField='value'
+              name='selectGeometry'
+              reference='http://titania.create3000.de'
+              value='false'/>
+        </MetadataSet>
+        <MetadataSet DEF='Prototype' containerField='value'
+            name='Prototype'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='path' containerField='value'
+              name='path'
+              reference='http://titania.create3000.de'
+              value='"pbrSpecularGlossiness"'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+  </Scene>
+</X3D>
