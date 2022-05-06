@@ -98,11 +98,11 @@ X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DExecut
 	cubeMapTexture -> frontTexture ()  .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, frontPreview,  std::cref (cubeMapTexture -> frontTexture ()));
 	cubeMapTexture -> backTexture ()   .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, backPreview,   std::cref (cubeMapTexture -> backTexture ()));
 	cubeMapTexture -> leftTexture ()   .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, leftPreview,   std::cref (cubeMapTexture -> leftTexture ()));
-	cubeMapTexture -> righTexturet ()  .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, rightPreview,  std::cref (cubeMapTexture -> rightTexture ()));
+	cubeMapTexture -> rightTexture ()  .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, rightPreview,  std::cref (cubeMapTexture -> rightTexture ()));
 	cubeMapTexture -> topTexture ()    .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, topPreview,    std::cref (cubeMapTexture -> topTexture ()));
 	cubeMapTexture -> bottomTexture () .addInterest (&X3DComposedCubeMapTextureEditor::set_texture, this, bottomPreview, std::cref (cubeMapTexture -> bottomTexture ()));
 
-	set_texture (frontPreview,  cubeMapTexture -> Texture ());
+	set_texture (frontPreview,  cubeMapTexture -> frontTexture ());
 	set_texture (backPreview,   cubeMapTexture -> backTexture ());
 	set_texture (leftPreview,   cubeMapTexture -> leftTexture ());
 	set_texture (rightPreview , cubeMapTexture -> rightTexture ());
