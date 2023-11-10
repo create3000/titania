@@ -1,6 +1,11 @@
 [Titania](https://github.com/create3000/titania/wiki) — Titania X3D Editor
 ==========================================================================
 
+Attention
+---------
+
+This project is no longer being developed, please use the follow-up project [Sunrize](https://github.com/create3000/sunrize/).
+
 Introduction
 ------------
 
